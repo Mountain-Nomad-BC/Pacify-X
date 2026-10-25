@@ -7,6 +7,23 @@ from tests.test_studio_operation_mirror_custody import native
 ROOT = Path(__file__).resolve().parents[1]
 
 
+def test_revision_succession_ownership_is_complete_and_deterministic() -> None:
+    generated = build(ROOT)
+    assert generated == build(ROOT)
+    records = {row["path"]: row for row in generated["records"]}
+    paths = sorted((ROOT / "contracts/project_revision_succession").glob("*.json"))
+    assert len(paths) == 4
+    for path in paths:
+        record = records[path.relative_to(ROOT).as_posix()]
+        assert record["owner"] == "runtime/project_revision_succession.py"
+        assert record["enforcement"] == "revision_succession_runtime_boundary"
+        assert "runtime/revision_campaign_lifecycle.py" in record["producers"]
+        assert "runtime/test_profiles.py" in record["consumers"]
+        for field in ("producers", "consumers", "tests"):
+            assert record[field]
+            assert all((ROOT / item).is_file() for item in record[field])
+
+
 def test_contract_cli_uses_native_publication_and_settlement(native, monkeypatch) -> None:
     import hashlib
     import json

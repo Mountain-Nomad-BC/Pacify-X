@@ -34,6 +34,8 @@ sit under a vendored directory is still classified as evidence.
 
 from __future__ import annotations
 
+from .secure_publish import atomic_write_bytes
+
 import hashlib
 import json
 import re
@@ -835,9 +837,7 @@ def write_boundary(root: Path) -> Path:
     ).hexdigest()
     target = root / BOUNDARY_RELATIVE
     target.parent.mkdir(parents=True, exist_ok=True)
-    temporary = target.with_name(target.name + ".new")
-    temporary.write_text(json.dumps(body, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-    temporary.replace(target)
+    atomic_write_bytes(target, (json.dumps(body, indent=2, sort_keys=True) + "\n").encode("utf-8"))
     return target
 
 

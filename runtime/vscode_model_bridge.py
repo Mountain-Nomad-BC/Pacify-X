@@ -7,9 +7,10 @@ accepts an arbitrary localhost endpoint from a caller.
 """
 from __future__ import annotations
 
+from .secure_publish import atomic_write_bytes
+
 import argparse
 import json
-import os
 from pathlib import Path
 import sys
 from typing import Iterable, Mapping
@@ -378,9 +379,7 @@ def set_sandbox_mode(engine_root: Path, project_root: Path, payload: Mapping[str
     state_root = project_root / ".agentic_engineering_os_px" / "sandbox"
     state_root.mkdir(parents=True, exist_ok=True)
     target = state_root / "isolated-agent-sandbox.json"
-    tmp = target.with_name(target.name + ".prepared")
-    tmp.write_text(json.dumps(image, indent=2, sort_keys=True) + "\n", encoding="utf-8", newline="\n")
-    os.replace(tmp, target)
+    atomic_write_bytes(target, (json.dumps(image, indent=2, sort_keys=True) + "\n").encode("utf-8"))
     return {
         "schema_version": "px.isolated-agent-sandbox-result/1.0",
         "mode": policy.mode,

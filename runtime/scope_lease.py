@@ -21,8 +21,9 @@ grant before acquiring a lease.
 
 from __future__ import annotations
 
+from .secure_publish import atomic_write_bytes
+
 import json
-import os
 from dataclasses import dataclass, replace
 from datetime import datetime, timezone
 from pathlib import Path
@@ -153,12 +154,7 @@ class ScopeLeaseStore:
         image = bounded_canonical_json_bytes(
             {"schema_version": LEDGER_SCHEMA_VERSION, "leases": leases}, max_bytes=MAX_LEDGER_BYTES
         )
-        prepared = self.path.parent / f".scope-leases-{os.getpid()}.prepared"
-        with prepared.open("wb") as stream:
-            stream.write(image)
-            stream.flush()
-            os.fsync(stream.fileno())
-        os.replace(prepared, self.path)
+        atomic_write_bytes(self.path, image)
 
     def active(self, *, effect: str, now_utc: str | None = None) -> tuple[ScopeLease, ...]:
         """Return live, unexpired leases for one effect."""

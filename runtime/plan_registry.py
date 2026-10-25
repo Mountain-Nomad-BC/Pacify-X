@@ -20,6 +20,8 @@ bytes, and a drift between the ledger and the archive is detectable.
 
 from __future__ import annotations
 
+from .secure_publish import atomic_write_bytes
+
 import hashlib
 import json
 import re
@@ -77,9 +79,7 @@ def _write_digest_bound(target: Path, body: dict[str, Any]) -> Path:
     payload.pop("artifact_sha256", None)
     payload["artifact_sha256"] = _digest(payload)
     target.parent.mkdir(parents=True, exist_ok=True)
-    temporary = target.with_name(target.name + ".new")
-    temporary.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-    temporary.replace(target)
+    atomic_write_bytes(target, (json.dumps(payload, indent=2, sort_keys=True) + "\n").encode("utf-8"))
     return target
 
 

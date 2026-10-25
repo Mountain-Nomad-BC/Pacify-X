@@ -137,3 +137,7 @@ Source push is authorized by the user. It is distinct from release/Marketplace p
 After all repairs, follow D1-13 through D1-18 in order: operational verification, freeze,
 reconciliation, current sections, exactly one full profile and validation, package, install,
 installed operational proof and certification. The oracle currently refuses certification.
+
+## 2026-10-25 repair-kit continuation
+
+First kit tracking is C:/Users/Ben/Downloads/PX_REPAIR_UNBLOCK_AND_COMPLETION_PLAN/tracking. Original 45 dirty files are backed up; 15 paths diverge, 9 match old base, 21 are additions. No automatic overwrite. Supplied inventory parser corrected in tracking copy (JSON suffix bug). Cards008/009/010 historical-byte defects reproduced; three current regressions added; generated ownership remains stale and must await reconciliation. G02 cards031-036/046/048/059 now have shared secure persistence, 162 passing focused/neighbor tests and passing governed secure-persistence/release-lifecycle gates. See secure-persistence-20261025.json and external per-card receipts. Independent P1 review/crash/platform breadth remain pending; no newly closed cards, no certification. Standalone second kit stays queued.

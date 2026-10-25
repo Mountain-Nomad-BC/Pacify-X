@@ -2422,6 +2422,37 @@
       "max_parallel_chunks": 1,
       "chunk_timeout_seconds": 600,
       "timeout_seconds": 2100
+    },
+    "secure-persistence": {
+      "description": "Exclusive atomic persistence and Windows ancestor-handle custody; causal audit staging attacks, failure/retry and concurrency.",
+      "source_patterns": [
+        "runtime/secure_publish.py",
+        "runtime/vscode_model_bridge.py",
+        "runtime/nsai_knowledge.py",
+        "runtime/plan_registry.py",
+        "runtime/effect_intent.py",
+        "runtime/scope_lease.py",
+        "runtime/mutation_queue.py",
+        "runtime/tool_intake.py",
+        "runtime/source_freeze.py",
+        "runtime/source_boundary.py",
+        "runtime/semantic_entity.py",
+        "tests/test_secure_publish.py",
+        "registry/test_profiles.json"
+      ],
+      "command": [
+        "python",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "tests/test_secure_publish.py"
+      ],
+      "chunk_size": 0,
+      "max_parallel_chunks": 1,
+      "chunk_timeout_seconds": 120,
+      "timeout_seconds": 180
     }
   },
   "certification": {
@@ -2433,7 +2464,8 @@
       "execution-placement",
       "hardware-routing",
       "runtime-domain-contracts",
-      "release-lifecycle"
+      "release-lifecycle",
+      "secure-persistence"
     ],
     "whole_suite_after_sections": true,
     "required_groups": [

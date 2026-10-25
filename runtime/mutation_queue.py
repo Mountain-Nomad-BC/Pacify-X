@@ -17,8 +17,9 @@ The queue is deliberately conservative:
 
 from __future__ import annotations
 
+from .secure_publish import atomic_write_bytes
+
 import json
-import os
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Iterable
@@ -111,12 +112,7 @@ class MutationQueue:
         image = bounded_canonical_json_bytes(
             {"schema_version": LEDGER_SCHEMA_VERSION, "items": items}, max_bytes=MAX_LEDGER_BYTES
         )
-        prepared = self.path.parent / f".mutation-queue-{os.getpid()}.prepared"
-        with prepared.open("wb") as stream:
-            stream.write(image)
-            stream.flush()
-            os.fsync(stream.fileno())
-        os.replace(prepared, self.path)
+        atomic_write_bytes(self.path, image)
 
     def enqueue(self, *, item_id: str, execution_id: str, effect: str, scopes: Iterable[str],
                 idempotency_key: str, depends_on: Iterable[str] = (), reason: str = "") -> MutationItem:

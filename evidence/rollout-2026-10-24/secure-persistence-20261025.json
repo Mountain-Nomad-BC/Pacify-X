@@ -1,0 +1,41 @@
+{
+  "segment": "G02-shared-secure-publication",
+  "timestamp_utc": "2026-10-25T06:28:29.402601+00:00",
+  "admission_event_id": "gap-event:px-rev1xx-2026-10-01:000000000495",
+  "cards": [
+    "PX-AUD-031",
+    "PX-AUD-032",
+    "PX-AUD-033",
+    "PX-AUD-034",
+    "PX-AUD-035",
+    "PX-AUD-036",
+    "PX-AUD-046",
+    "PX-AUD-048",
+    "PX-AUD-059"
+  ],
+  "status": "TESTED_INTEGRATION; independent review pending",
+  "neighbor_tests": 162,
+  "gates": {
+    "secure-persistence": {
+      "valid": true,
+      "input_sha256": "73644c646e4dabf5f77a427a807f13db0985c83dad0679c32def15dee2cf8932",
+      "exit_code": 0,
+      "timed_out": false,
+      "duration_seconds": 6.536778,
+      "receipt_published": true,
+      "resource_id": "process-03dd766b59ef457ea71e5d3def886432"
+    },
+    "release-lifecycle": {
+      "valid": true,
+      "input_sha256": "db1a5207e630b89d9ace4546337c1711bb780966f65c49e7930a09fb66eddfde",
+      "exit_code": 0,
+      "timed_out": false,
+      "duration_seconds": 20.247616,
+      "receipt_published": true,
+      "resource_id": null
+    }
+  },
+  "closed_cards": 0,
+  "second_kit": "QUEUED",
+  "known_unrelated_failure": "Generated ownership registry lacks four succession records; retain until post-freeze reconciliation."
+}

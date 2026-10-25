@@ -28,6 +28,8 @@ the repository in place.
 
 from __future__ import annotations
 
+from .secure_publish import atomic_write_bytes, atomic_write_stream
+
 import hashlib
 import json
 import platform
@@ -186,20 +188,19 @@ def freeze_source(root: Path, *, freeze_id: str, note: str = "", current_campaig
                 if len(data) != row["bytes"] or _sha256_bytes(data) != row["sha256"]:
                     raise SourceFreezeError("current source archive bytes differ")
     else:
-        prepared_archive = archive_path.with_name(archive_path.name + ".new")
-        reject_path_links(prepared_archive)
-        with zipfile.ZipFile(prepared_archive, "w", compression=zipfile.ZIP_DEFLATED) as bundle:
-            for row in rows:
-                data = (root / row["path"]).read_bytes()
-                if len(data) != row["bytes"] or _sha256_bytes(data) != row["sha256"]:
-                    raise SourceFreezeError("source changed during archive capture")
-                info = zipfile.ZipInfo(row["path"], date_time=(1980, 1, 1, 0, 0, 0))
-                info.compress_type = zipfile.ZIP_DEFLATED
-                info.external_attr = 0o644 << 16
-                bundle.writestr(info, data)
-        if _manifest(root, authored_paths(root)) != rows:
-            raise SourceFreezeError("source inventory changed during freeze")
-        prepared_archive.replace(archive_path)
+        def capture_archive(stream):
+            with zipfile.ZipFile(stream, "w", compression=zipfile.ZIP_DEFLATED) as bundle:
+                for row in rows:
+                    data = (root / row["path"]).read_bytes()
+                    if len(data) != row["bytes"] or _sha256_bytes(data) != row["sha256"]:
+                        raise SourceFreezeError("source changed during archive capture")
+                    info = zipfile.ZipInfo(row["path"], date_time=(1980, 1, 1, 0, 0, 0))
+                    info.compress_type = zipfile.ZIP_DEFLATED
+                    info.external_attr = 0o644 << 16
+                    bundle.writestr(info, data)
+            if _manifest(root, authored_paths(root)) != rows:
+                raise SourceFreezeError("source inventory changed during freeze")
+        atomic_write_stream(archive_path, capture_archive)
 
     versions = _versions(root)
     if _manifest(root, authored_paths(root)) != rows:
@@ -239,9 +240,7 @@ def freeze_source(root: Path, *, freeze_id: str, note: str = "", current_campaig
                 raise SourceFreezeError("current content-addressed freeze receipt differs")
             return FreezeReceipt(tree.hexdigest(), len(rows), total, existing)
     target.parent.mkdir(parents=True, exist_ok=True)
-    temporary = target.with_name(target.name + ".new")
-    temporary.write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-    temporary.replace(target)
+    atomic_write_bytes(target, (json.dumps(receipt, indent=2, sort_keys=True) + "\n").encode("utf-8"))
     return FreezeReceipt(
         tree_sha256=receipt["tree_sha256"],
         file_count=len(rows),

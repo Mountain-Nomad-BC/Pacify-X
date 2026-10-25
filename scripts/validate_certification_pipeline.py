@@ -33,6 +33,7 @@ from scripts.run_release_stage_owner import Config as StageConfig  # noqa: E402
 SCHEMA = "px.certification-pipeline-validation/1.0"
 
 REQUIRED_LIFECYCLE_TESTS = (
+    "tests/test_secure_publish.py",
     "tests/test_project_revision_succession.py",
     "tests/test_revision_campaign_lifecycle.py",
     "tests/test_release_candidate_driver.py",
@@ -82,6 +83,7 @@ def certification_coverage(root: Path) -> dict[str, Any]:
             "duplicate_members": duplicate}
 
 REQUIRED_REPO_FILES = (
+    "runtime/secure_publish.py",
     # Direct certification control surface.
     "scripts/run_release_candidate.py",
     "scripts/run_release_stage_owner.py",

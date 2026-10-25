@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from .secure_publish import atomic_write_bytes
+
 from datetime import datetime, timezone
 import hashlib
 import json
@@ -379,10 +381,8 @@ def record_tool_intake(
         history = target_root / "history" / f"tool-intake-{_sha(target)[:16]}.json"
         history.parent.mkdir(parents=True, exist_ok=True)
         if not history.exists():
-            history.write_bytes(target.read_bytes())
-    temporary = target.with_suffix(".json.next")
-    temporary.write_bytes(payload)
-    os.replace(temporary, target)
+            atomic_write_bytes(history, target.read_bytes())
+    atomic_write_bytes(target, payload)
     state = json.loads(state_path.read_text(encoding="utf-8"))
     state.setdefault("evidence", {})["tool_intake_records"] = [
         target.relative_to(project_root).as_posix()
@@ -391,8 +391,6 @@ def record_tool_intake(
     prior = target_root / "history" / f"state-{_sha(state_path)[:16]}.json"
     prior.parent.mkdir(parents=True, exist_ok=True)
     if not prior.exists():
-        prior.write_bytes(state_path.read_bytes())
-    state_next = state_path.with_suffix(".json.next")
-    state_next.write_text(json.dumps(state, indent=2) + "\n", encoding="utf-8")
-    os.replace(state_next, state_path)
+        atomic_write_bytes(prior, state_path.read_bytes())
+    atomic_write_bytes(state_path, (json.dumps(state, indent=2) + "\n").encode("utf-8"))
     return {**record, "applied": True, "target": target.as_posix()}

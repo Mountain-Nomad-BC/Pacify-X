@@ -236,3 +236,7 @@ Latest material candidate checkpoint: 482; current local integration admission a
 Query actual current ledger expiry/closure before continuing. All source changes for this
 segment are confined to the rollout worktree and explicit review evidence. No required full
 profile, package, install, final validation or certificate was attempted.
+
+### S13 - ordered repair intake, source custody and secure publication
+
+Preserved original dirty edits and exact manifests in first-kit tracking. Corrected inventory parser false missing JSON anchors. Added explicit succession schema/fixture/ownership regressions and historical exact-byte red evidence. Implemented shared atomic byte/stream publisher with exclusive random staging, pinned physical ancestors (Windows no-delete-share directory handles; POSIX directory descriptors), target hardlink/reparse checks, fsync and handled-failure cleanup. Migrated ten source owners and source archives/history. Added mandatory secure-persistence section and pipeline coverage requirement. Focused neighboring suites:162 passed; governed persistence and release-lifecycle sections passed. Retained original failed test runs and corrected NSAI red fixture. Tool-intake unit test isolates unrelated global registry freshness; actual stale ownership failure remains tracked. Independent review and full release remain open.

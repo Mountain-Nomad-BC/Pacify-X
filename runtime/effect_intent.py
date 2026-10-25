@@ -13,8 +13,9 @@ any required approval. An intent is a fence, not permission.
 
 from __future__ import annotations
 
+from .secure_publish import atomic_write_bytes
+
 import json
-import os
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Iterable, Mapping
@@ -106,12 +107,7 @@ class EffectIntentLedger:
         self.path.parent.mkdir(parents=True, exist_ok=True)
         reject_path_links(self.path.parent)
         image = bounded_canonical_json_bytes(dict(document), max_bytes=MAX_LEDGER_BYTES)
-        prepared = self.path.parent / f".effect-intents-{os.getpid()}.prepared"
-        with prepared.open("wb") as stream:
-            stream.write(image)
-            stream.flush()
-            os.fsync(stream.fileno())
-        os.replace(prepared, self.path)
+        atomic_write_bytes(self.path, image)
 
     def _find(self, document: Mapping[str, object], key: str) -> dict[str, object] | None:
         return next((row for row in document["intents"] if row.get("idempotency_key") == key), None)

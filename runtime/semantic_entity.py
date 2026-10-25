@@ -48,6 +48,8 @@ come back and a proposed one cannot be treated as accepted.
 
 from __future__ import annotations
 
+from .secure_publish import atomic_write_bytes
+
 import hashlib
 import json
 from dataclasses import dataclass, field, replace
@@ -557,13 +559,7 @@ def publish_registry(registry: "EntityRegistry", root: Path) -> dict[str, Any]:
                 "content_sha256": digest,
                 "authority_granted": False,
             }
-        prepared = target.parent / f".entity-registry-{digest[:16]}.prepared"
-        import os as _os
-        with prepared.open("wb") as stream:
-            stream.write(image)
-            stream.flush()
-            _os.fsync(stream.fileno())
-        _os.replace(prepared, target)
+        atomic_write_bytes(target, image)
     return {
         "schema_version": "px.semantic-entity-publication/1.0",
         "status": "PUBLISHED",
