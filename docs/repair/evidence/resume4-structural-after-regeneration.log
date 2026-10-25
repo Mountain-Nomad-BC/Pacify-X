@@ -1,0 +1,16 @@
+....FF...................F...............                                [100%]
+================================== FAILURES ===================================
+E   AssertionError: ["duplicate_logic: unreviewed duplicate logic group: ['tests/test_memory_broker.py:16:_record', 'tests/test_memory_bro... stale', 'markers: incomplete marker audit failed: [] unreviewed=3', 'generated_artifacts: artifact_reachability', ...]
+    assert not ["duplicate_logic: unreviewed duplicate logic group: ['tests/test_memory_broker.py:16:_record', 'tests/test_memory_bro... stale', 'markers: incomplete marker audit failed: [] unreviewed=3', 'generated_artifacts: artifact_reachability', ...]
+C:\Users\Ben\Documents\bootstrap_project\Pacify-X\tests\test_structural_integrity.py:142: AssertionError: ["duplicate_logic: unreviewed duplicate logic group: ['tests/test_memory_broker.py:16:_record', 'tests/test_memory_bro... stale', 'markers: incomplete marker audit failed: [] unreviewed=3', 'generated_artifacts: artifact_reachability', ...]
+E   assert False
+     +  where False = all(<generator object test_hash_ledger_head_and_anchor_are_a_reviewed_exact_projection.<locals>.<genexpr> at 0x0000016263344860>)
+C:\Users\Ben\Documents\bootstrap_project\Pacify-X\tests\test_structural_integrity.py:158: assert False
+E   AssertionError: ['artifact_reachability', 'contract_ownership']
+    assert False
+C:\Users\Ben\Documents\bootstrap_project\Pacify-X\tests\test_generated_artifacts.py:39: AssertionError: ['artifact_reachability', 'contract_ownership']
+=========================== short test summary info ===========================
+FAILED tests/test_structural_integrity.py::test_structural_integrity_has_closed_denominators
+FAILED tests/test_structural_integrity.py::test_hash_ledger_head_and_anchor_are_a_reviewed_exact_projection
+FAILED tests/test_generated_artifacts.py::test_all_generated_projections_match_one_canonical_owner
+3 failed, 38 passed in 1192.60s (0:19:52)

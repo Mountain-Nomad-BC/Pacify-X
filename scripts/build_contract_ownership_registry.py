@@ -704,6 +704,13 @@ def build(root: Path) -> dict[str, object]:
                 "tests/test_contract_runtime.py",
                 "tests/test_research_contract_admission.py",
             ]
+        elif path.parent.name == "project_revision_succession":
+            owner, enforcement = (
+                "runtime/project_revision_succession.py",
+                "revision_succession_runtime_boundary",
+            )
+            producers = [owner, "runtime/revision_campaign_lifecycle.py"]
+            tests = ["tests/test_project_revision_succession.py"]
         elif name in DECLARED_SUITE_OWNERS:
             owner, enforcement = (
                 "runtime/declared_suite.py",
@@ -747,7 +754,10 @@ def build(root: Path) -> dict[str, object]:
                 "title": schema.get("title", name),
                 "owner": owner,
                 "producers": producers,
-                "consumers": ["runtime/contracts.py"],
+                "consumers": (["runtime/contracts.py", "runtime/project_revision_succession.py",
+                               "runtime/revision_campaign_lifecycle.py", "runtime/test_profiles.py"]
+                              if path.parent.name == "project_revision_succession"
+                              else ["runtime/contracts.py"]),
                 "enforcement": enforcement,
                 "packaged": True,
                 "tests": list(
@@ -759,7 +769,7 @@ def build(root: Path) -> dict[str, object]:
         "schema_version": "2.0",
         "policy": "Every shipped schema has one explicit owner and an honest enforcement classification.",
         "contract_count": len(records),
-        "records": records,
+        "records": sorted(records, key=lambda record: record["path"]),
     }
 
 

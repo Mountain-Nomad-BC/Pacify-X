@@ -1,7 +1,7 @@
 {
   "schema_version": "2.0",
   "policy": "Every shipped schema has one explicit owner and an honest enforcement classification.",
-  "contract_count": 180,
+  "contract_count": 184,
   "records": [
     {
       "path": "contracts/agent_handoff_packet.schema.json",
@@ -2115,6 +2115,98 @@
       "tests": [
         "tests/test_contract_runtime.py",
         "tests/test_project_mapping.py"
+      ]
+    },
+    {
+      "path": "contracts/project_revision_succession/active-revision.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:project_revision_succession:active-revision",
+      "contract_version": "1.0.0",
+      "title": "Hash-bound active project revision pointer",
+      "owner": "runtime/project_revision_succession.py",
+      "producers": [
+        "runtime/project_revision_succession.py",
+        "runtime/revision_campaign_lifecycle.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py",
+        "runtime/project_revision_succession.py",
+        "runtime/revision_campaign_lifecycle.py",
+        "runtime/test_profiles.py"
+      ],
+      "enforcement": "revision_succession_runtime_boundary",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_project_revision_succession.py"
+      ]
+    },
+    {
+      "path": "contracts/project_revision_succession/authorization.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:project_revision_succession:authorization",
+      "contract_version": "1.0.0",
+      "title": "Owner-signed project revision succession authorization",
+      "owner": "runtime/project_revision_succession.py",
+      "producers": [
+        "runtime/project_revision_succession.py",
+        "runtime/revision_campaign_lifecycle.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py",
+        "runtime/project_revision_succession.py",
+        "runtime/revision_campaign_lifecycle.py",
+        "runtime/test_profiles.py"
+      ],
+      "enforcement": "revision_succession_runtime_boundary",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_project_revision_succession.py"
+      ]
+    },
+    {
+      "path": "contracts/project_revision_succession/owner-policy.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:project_revision_succession:owner-policy",
+      "contract_version": "1.0.0",
+      "title": "Project revision succession owner policy",
+      "owner": "runtime/project_revision_succession.py",
+      "producers": [
+        "runtime/project_revision_succession.py",
+        "runtime/revision_campaign_lifecycle.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py",
+        "runtime/project_revision_succession.py",
+        "runtime/revision_campaign_lifecycle.py",
+        "runtime/test_profiles.py"
+      ],
+      "enforcement": "revision_succession_runtime_boundary",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_project_revision_succession.py"
+      ]
+    },
+    {
+      "path": "contracts/project_revision_succession/state.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:project_revision_succession:state",
+      "contract_version": "1.0.0",
+      "title": "Append-only project revision succession state",
+      "owner": "runtime/project_revision_succession.py",
+      "producers": [
+        "runtime/project_revision_succession.py",
+        "runtime/revision_campaign_lifecycle.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py",
+        "runtime/project_revision_succession.py",
+        "runtime/revision_campaign_lifecycle.py",
+        "runtime/test_profiles.py"
+      ],
+      "enforcement": "revision_succession_runtime_boundary",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_project_revision_succession.py"
       ]
     },
     {

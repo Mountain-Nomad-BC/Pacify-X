@@ -1,0 +1,437 @@
+............................F.F............................FFFF....FF... [ 82%]
+...............                                                          [100%]
+================================== FAILURES ===================================
+_______ test_certification_groups_are_exhaustive_exclusive_and_bounded ________
+
+    def test_certification_groups_are_exhaustive_exclusive_and_bounded():
+>       groups = resolve_test_groups(ROOT)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_test_profiles.py:636: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+runtime\test_profiles.py:1323: in resolve_test_groups
+    return resolve_groups(root)
+           ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X')
+capture = <runtime.verification_inputs.CapturedInputs object at 0x0000020CA8B0B890>
+historical_index = False
+
+    def resolve_groups(root, *, capture=None, historical_index=False):
+        from .input_files import contained_file, read_file_image
+        from .json_io import decode_json_object
+    
+        owned = capture is None
+        capture = capture if capture is not None else CapturedInputs(root)
+        capture.capture(POLICY)
+        definitions = _definitions(capture.config, 'groups')
+        required(capture.config, 'groups', definitions)
+        capture.capture(INDEX)
+        path, info = contained_file(capture.root, INDEX)
+        raw = read_file_image(path, info, limit=8 * 1024**2, deadline=capture.deadline)
+        if hashlib.sha256(raw).digest() != capture.digests[INDEX]:
+            raise ValueError('test group index changed during resolution')
+        index = decode_json_object(raw, max_bytes=8 * 1024**2, max_depth=32, max_nodes=300000)
+        expected = {'schema_version', 'topology_sha256', 'dependency_parser', 'test_file_count',
+                    'tracked_python_file_count', 'verified_file_count', 'files', 'groups', 'index_sha256'}
+        if set(index) != expected or index['schema_version'] != INDEX_SCHEMA:
+            raise ValueError('test group index schema is stale or malformed; explicit reconciliation required')
+        supplied = index['index_sha256']
+        body = {k: v for k, v in index.items() if k != 'index_sha256'}
+        digest = hashlib.sha256(json.dumps(body, sort_keys=True, separators=(',', ':')).encode()).hexdigest()
+        parser_current = index['dependency_parser'] == _parser_identity()
+        if type(supplied) is not str or supplied != digest or (not parser_current and not historical_index):
+            raise ValueError('test group index content or parser identity is invalid')
+        topology_current = index['topology_sha256'] == _topology(capture.config)
+        if not topology_current and not historical_index:
+            raise ValueError('test group topology is stale; explicit reconciliation required')
+        if type(index['groups']) is not list or len(index['groups']) != len(definitions):
+            raise ValueError('test group index denominator is invalid')
+        groups, tests = _group_rows(capture)
+        membership_current = type(index['test_file_count']) is int and index['test_file_count'] == len(tests)
+        if type(index['test_file_count']) is not int or (not membership_current and not historical_index):
+>           raise ValueError('test group membership is stale; explicit reconciliation required')
+E           ValueError: test group membership is stale; explicit reconciliation required
+
+runtime\verification_status.py:216: ValueError
+_______ test_group_status_is_receipt_driven_and_covers_every_test_file ________
+
+    def test_group_status_is_receipt_driven_and_covers_every_test_file():
+>       status = group_status(ROOT)
+                 ^^^^^^^^^^^^^^^^^^
+
+tests\test_test_profiles.py:754: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+runtime\test_profiles.py:1344: in group_status
+    return status(root)
+           ^^^^^^^^^^^^
+runtime\verification_status.py:257: in group_status
+    groups = resolve_groups(root, capture=capture, historical_index=historical_index)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X')
+capture = <runtime.verification_inputs.CapturedInputs object at 0x0000020CABA92210>
+historical_index = False
+
+    def resolve_groups(root, *, capture=None, historical_index=False):
+        from .input_files import contained_file, read_file_image
+        from .json_io import decode_json_object
+    
+        owned = capture is None
+        capture = capture if capture is not None else CapturedInputs(root)
+        capture.capture(POLICY)
+        definitions = _definitions(capture.config, 'groups')
+        required(capture.config, 'groups', definitions)
+        capture.capture(INDEX)
+        path, info = contained_file(capture.root, INDEX)
+        raw = read_file_image(path, info, limit=8 * 1024**2, deadline=capture.deadline)
+        if hashlib.sha256(raw).digest() != capture.digests[INDEX]:
+            raise ValueError('test group index changed during resolution')
+        index = decode_json_object(raw, max_bytes=8 * 1024**2, max_depth=32, max_nodes=300000)
+        expected = {'schema_version', 'topology_sha256', 'dependency_parser', 'test_file_count',
+                    'tracked_python_file_count', 'verified_file_count', 'files', 'groups', 'index_sha256'}
+        if set(index) != expected or index['schema_version'] != INDEX_SCHEMA:
+            raise ValueError('test group index schema is stale or malformed; explicit reconciliation required')
+        supplied = index['index_sha256']
+        body = {k: v for k, v in index.items() if k != 'index_sha256'}
+        digest = hashlib.sha256(json.dumps(body, sort_keys=True, separators=(',', ':')).encode()).hexdigest()
+        parser_current = index['dependency_parser'] == _parser_identity()
+        if type(supplied) is not str or supplied != digest or (not parser_current and not historical_index):
+            raise ValueError('test group index content or parser identity is invalid')
+        topology_current = index['topology_sha256'] == _topology(capture.config)
+        if not topology_current and not historical_index:
+            raise ValueError('test group topology is stale; explicit reconciliation required')
+        if type(index['groups']) is not list or len(index['groups']) != len(definitions):
+            raise ValueError('test group index denominator is invalid')
+        groups, tests = _group_rows(capture)
+        membership_current = type(index['test_file_count']) is int and index['test_file_count'] == len(tests)
+        if type(index['test_file_count']) is not int or (not membership_current and not historical_index):
+>           raise ValueError('test group membership is stale; explicit reconciliation required')
+E           ValueError: test group membership is stale; explicit reconciliation required
+
+runtime\verification_status.py:216: ValueError
+__ test_completion_reads_compact_blocker_index_without_materialized_snapshot __
+
+    def test_completion_reads_compact_blocker_index_without_materialized_snapshot() -> None:
+        head = json.loads(
+            (ROOT / "registry/operational_gap_ledger.head.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        head["dashboard"] = {
+            **dict(head.get("dashboard", {})),
+            "critical_high_blocker_ids": ["PX-OS-1067"],
+            "critical_high_blocker_count": 1,
+        }
+        with patch(
+            "runtime.operational_gap_ledger.read_head", return_value=head
+        ), patch(
+            "runtime.operational_gap_ledger.read_snapshot",
+            side_effect=AssertionError("full materialized snapshot must stay lazy"),
+        ) as materialized:
+>           generated = build(ROOT)
+                        ^^^^^^^^^^^
+
+tests\test_completion_status.py:32: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\build_completion_status.py:166: in build
+    groups = group_status(root)
+             ^^^^^^^^^^^^^^^^^^
+runtime\test_profiles.py:1344: in group_status
+    return status(root)
+           ^^^^^^^^^^^^
+runtime\verification_status.py:257: in group_status
+    groups = resolve_groups(root, capture=capture, historical_index=historical_index)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X')
+capture = <runtime.verification_inputs.CapturedInputs object at 0x0000020CA853CE60>
+historical_index = False
+
+    def resolve_groups(root, *, capture=None, historical_index=False):
+        from .input_files import contained_file, read_file_image
+        from .json_io import decode_json_object
+    
+        owned = capture is None
+        capture = capture if capture is not None else CapturedInputs(root)
+        capture.capture(POLICY)
+        definitions = _definitions(capture.config, 'groups')
+        required(capture.config, 'groups', definitions)
+        capture.capture(INDEX)
+        path, info = contained_file(capture.root, INDEX)
+        raw = read_file_image(path, info, limit=8 * 1024**2, deadline=capture.deadline)
+        if hashlib.sha256(raw).digest() != capture.digests[INDEX]:
+            raise ValueError('test group index changed during resolution')
+        index = decode_json_object(raw, max_bytes=8 * 1024**2, max_depth=32, max_nodes=300000)
+        expected = {'schema_version', 'topology_sha256', 'dependency_parser', 'test_file_count',
+                    'tracked_python_file_count', 'verified_file_count', 'files', 'groups', 'index_sha256'}
+        if set(index) != expected or index['schema_version'] != INDEX_SCHEMA:
+            raise ValueError('test group index schema is stale or malformed; explicit reconciliation required')
+        supplied = index['index_sha256']
+        body = {k: v for k, v in index.items() if k != 'index_sha256'}
+        digest = hashlib.sha256(json.dumps(body, sort_keys=True, separators=(',', ':')).encode()).hexdigest()
+        parser_current = index['dependency_parser'] == _parser_identity()
+        if type(supplied) is not str or supplied != digest or (not parser_current and not historical_index):
+            raise ValueError('test group index content or parser identity is invalid')
+        topology_current = index['topology_sha256'] == _topology(capture.config)
+        if not topology_current and not historical_index:
+            raise ValueError('test group topology is stale; explicit reconciliation required')
+        if type(index['groups']) is not list or len(index['groups']) != len(definitions):
+            raise ValueError('test group index denominator is invalid')
+        groups, tests = _group_rows(capture)
+        membership_current = type(index['test_file_count']) is int and index['test_file_count'] == len(tests)
+        if type(index['test_file_count']) is not int or (not membership_current and not historical_index):
+>           raise ValueError('test group membership is stale; explicit reconciliation required')
+E           ValueError: test group membership is stale; explicit reconciliation required
+
+runtime\verification_status.py:216: ValueError
+_____ test_generated_completion_status_is_current_and_does_not_overclaim ______
+
+    def test_generated_completion_status_is_current_and_does_not_overclaim() -> None:
+>       generated = build(ROOT)
+                    ^^^^^^^^^^^
+
+tests\test_completion_status.py:46: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\build_completion_status.py:166: in build
+    groups = group_status(root)
+             ^^^^^^^^^^^^^^^^^^
+runtime\test_profiles.py:1344: in group_status
+    return status(root)
+           ^^^^^^^^^^^^
+runtime\verification_status.py:257: in group_status
+    groups = resolve_groups(root, capture=capture, historical_index=historical_index)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X')
+capture = <runtime.verification_inputs.CapturedInputs object at 0x0000020CA853CE60>
+historical_index = False
+
+    def resolve_groups(root, *, capture=None, historical_index=False):
+        from .input_files import contained_file, read_file_image
+        from .json_io import decode_json_object
+    
+        owned = capture is None
+        capture = capture if capture is not None else CapturedInputs(root)
+        capture.capture(POLICY)
+        definitions = _definitions(capture.config, 'groups')
+        required(capture.config, 'groups', definitions)
+        capture.capture(INDEX)
+        path, info = contained_file(capture.root, INDEX)
+        raw = read_file_image(path, info, limit=8 * 1024**2, deadline=capture.deadline)
+        if hashlib.sha256(raw).digest() != capture.digests[INDEX]:
+            raise ValueError('test group index changed during resolution')
+        index = decode_json_object(raw, max_bytes=8 * 1024**2, max_depth=32, max_nodes=300000)
+        expected = {'schema_version', 'topology_sha256', 'dependency_parser', 'test_file_count',
+                    'tracked_python_file_count', 'verified_file_count', 'files', 'groups', 'index_sha256'}
+        if set(index) != expected or index['schema_version'] != INDEX_SCHEMA:
+            raise ValueError('test group index schema is stale or malformed; explicit reconciliation required')
+        supplied = index['index_sha256']
+        body = {k: v for k, v in index.items() if k != 'index_sha256'}
+        digest = hashlib.sha256(json.dumps(body, sort_keys=True, separators=(',', ':')).encode()).hexdigest()
+        parser_current = index['dependency_parser'] == _parser_identity()
+        if type(supplied) is not str or supplied != digest or (not parser_current and not historical_index):
+            raise ValueError('test group index content or parser identity is invalid')
+        topology_current = index['topology_sha256'] == _topology(capture.config)
+        if not topology_current and not historical_index:
+            raise ValueError('test group topology is stale; explicit reconciliation required')
+        if type(index['groups']) is not list or len(index['groups']) != len(definitions):
+            raise ValueError('test group index denominator is invalid')
+        groups, tests = _group_rows(capture)
+        membership_current = type(index['test_file_count']) is int and index['test_file_count'] == len(tests)
+        if type(index['test_file_count']) is not int or (not membership_current and not historical_index):
+>           raise ValueError('test group membership is stale; explicit reconciliation required')
+E           ValueError: test group membership is stale; explicit reconciliation required
+
+runtime\verification_status.py:216: ValueError
+____________ test_completion_projection_writer_is_atomic_and_exact ____________
+
+    def test_completion_projection_writer_is_atomic_and_exact() -> None:
+        target = ROOT / "registry/completion_status.json"
+        before = target.read_bytes()
+        try:
+>           written = write(ROOT)
+                      ^^^^^^^^^^^
+
+tests\test_completion_status.py:160: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\build_completion_status.py:388: in write
+    value = build(root)
+            ^^^^^^^^^^^
+scripts\build_completion_status.py:166: in build
+    groups = group_status(root)
+             ^^^^^^^^^^^^^^^^^^
+runtime\test_profiles.py:1344: in group_status
+    return status(root)
+           ^^^^^^^^^^^^
+runtime\verification_status.py:257: in group_status
+    groups = resolve_groups(root, capture=capture, historical_index=historical_index)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X')
+capture = <runtime.verification_inputs.CapturedInputs object at 0x0000020CA853CE60>
+historical_index = False
+
+    def resolve_groups(root, *, capture=None, historical_index=False):
+        from .input_files import contained_file, read_file_image
+        from .json_io import decode_json_object
+    
+        owned = capture is None
+        capture = capture if capture is not None else CapturedInputs(root)
+        capture.capture(POLICY)
+        definitions = _definitions(capture.config, 'groups')
+        required(capture.config, 'groups', definitions)
+        capture.capture(INDEX)
+        path, info = contained_file(capture.root, INDEX)
+        raw = read_file_image(path, info, limit=8 * 1024**2, deadline=capture.deadline)
+        if hashlib.sha256(raw).digest() != capture.digests[INDEX]:
+            raise ValueError('test group index changed during resolution')
+        index = decode_json_object(raw, max_bytes=8 * 1024**2, max_depth=32, max_nodes=300000)
+        expected = {'schema_version', 'topology_sha256', 'dependency_parser', 'test_file_count',
+                    'tracked_python_file_count', 'verified_file_count', 'files', 'groups', 'index_sha256'}
+        if set(index) != expected or index['schema_version'] != INDEX_SCHEMA:
+            raise ValueError('test group index schema is stale or malformed; explicit reconciliation required')
+        supplied = index['index_sha256']
+        body = {k: v for k, v in index.items() if k != 'index_sha256'}
+        digest = hashlib.sha256(json.dumps(body, sort_keys=True, separators=(',', ':')).encode()).hexdigest()
+        parser_current = index['dependency_parser'] == _parser_identity()
+        if type(supplied) is not str or supplied != digest or (not parser_current and not historical_index):
+            raise ValueError('test group index content or parser identity is invalid')
+        topology_current = index['topology_sha256'] == _topology(capture.config)
+        if not topology_current and not historical_index:
+            raise ValueError('test group topology is stale; explicit reconciliation required')
+        if type(index['groups']) is not list or len(index['groups']) != len(definitions):
+            raise ValueError('test group index denominator is invalid')
+        groups, tests = _group_rows(capture)
+        membership_current = type(index['test_file_count']) is int and index['test_file_count'] == len(tests)
+        if type(index['test_file_count']) is not int or (not membership_current and not historical_index):
+>           raise ValueError('test group membership is stale; explicit reconciliation required')
+E           ValueError: test group membership is stale; explicit reconciliation required
+
+runtime\verification_status.py:216: ValueError
+_______ test_runtime_completion_projection_binds_exact_artifact_custody _______
+
+tmp_path = WindowsPath('C:/Users/Ben/AppData/Local/Temp/pytest-of-Ben/pytest-314/test_runtime_completion_projec0')
+
+    def test_runtime_completion_projection_binds_exact_artifact_custody(
+        tmp_path: Path,
+    ) -> None:
+        target = (
+            ROOT
+            / ".engineering-bootstrap"
+            / "runtime-core"
+            / "completion_status.json"
+        )
+        before = target.read_bytes() if target.is_file() else None
+        artifact_dir = tmp_path / "artifacts"
+        artifact_dir.mkdir()
+        try:
+>           written = write_runtime(ROOT, artifact_dir=artifact_dir)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_completion_status.py:180: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+scripts\build_completion_status.py:402: in write_runtime
+    value = build(root, artifact_dir=artifact_dir)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+scripts\build_completion_status.py:166: in build
+    groups = group_status(root)
+             ^^^^^^^^^^^^^^^^^^
+runtime\test_profiles.py:1344: in group_status
+    return status(root)
+           ^^^^^^^^^^^^
+runtime\verification_status.py:257: in group_status
+    groups = resolve_groups(root, capture=capture, historical_index=historical_index)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X')
+capture = <runtime.verification_inputs.CapturedInputs object at 0x0000020CABA90B90>
+historical_index = False
+
+    def resolve_groups(root, *, capture=None, historical_index=False):
+        from .input_files import contained_file, read_file_image
+        from .json_io import decode_json_object
+    
+        owned = capture is None
+        capture = capture if capture is not None else CapturedInputs(root)
+        capture.capture(POLICY)
+        definitions = _definitions(capture.config, 'groups')
+        required(capture.config, 'groups', definitions)
+        capture.capture(INDEX)
+        path, info = contained_file(capture.root, INDEX)
+        raw = read_file_image(path, info, limit=8 * 1024**2, deadline=capture.deadline)
+        if hashlib.sha256(raw).digest() != capture.digests[INDEX]:
+            raise ValueError('test group index changed during resolution')
+        index = decode_json_object(raw, max_bytes=8 * 1024**2, max_depth=32, max_nodes=300000)
+        expected = {'schema_version', 'topology_sha256', 'dependency_parser', 'test_file_count',
+                    'tracked_python_file_count', 'verified_file_count', 'files', 'groups', 'index_sha256'}
+        if set(index) != expected or index['schema_version'] != INDEX_SCHEMA:
+            raise ValueError('test group index schema is stale or malformed; explicit reconciliation required')
+        supplied = index['index_sha256']
+        body = {k: v for k, v in index.items() if k != 'index_sha256'}
+        digest = hashlib.sha256(json.dumps(body, sort_keys=True, separators=(',', ':')).encode()).hexdigest()
+        parser_current = index['dependency_parser'] == _parser_identity()
+        if type(supplied) is not str or supplied != digest or (not parser_current and not historical_index):
+            raise ValueError('test group index content or parser identity is invalid')
+        topology_current = index['topology_sha256'] == _topology(capture.config)
+        if not topology_current and not historical_index:
+            raise ValueError('test group topology is stale; explicit reconciliation required')
+        if type(index['groups']) is not list or len(index['groups']) != len(definitions):
+            raise ValueError('test group index denominator is invalid')
+        groups, tests = _group_rows(capture)
+        membership_current = type(index['test_file_count']) is int and index['test_file_count'] == len(tests)
+        if type(index['test_file_count']) is not int or (not membership_current and not historical_index):
+>           raise ValueError('test group membership is stale; explicit reconciliation required')
+E           ValueError: test group membership is stale; explicit reconciliation required
+
+runtime\verification_status.py:216: ValueError
+______________ test_structural_integrity_has_closed_denominators ______________
+
+    def test_structural_integrity_has_closed_denominators() -> None:
+        result = _root_audit()
+        non_document_errors = [
+            item
+            for item in result["errors"]
+            if not item.startswith("documentation: stale deployment claim")
+        ]
+>       assert not non_document_errors, non_document_errors
+E       AssertionError: ["duplicate_logic: unreviewed duplicate logic group: ['tests/test_memory_broker.py:16:_record', 'tests/test_memory_bro...te marker audit failed: [] unreviewed=3', 'documentation: README denominator drift: Runtime modules expected 370', ...]
+E       assert not ["duplicate_logic: unreviewed duplicate logic group: ['tests/test_memory_broker.py:16:_record', 'tests/test_memory_bro...te marker audit failed: [] unreviewed=3', 'documentation: README denominator drift: Runtime modules expected 370', ...]
+
+tests\test_structural_integrity.py:142: AssertionError
+______ test_hash_ledger_head_and_anchor_are_a_reviewed_exact_projection _______
+
+    def test_hash_ledger_head_and_anchor_are_a_reviewed_exact_projection() -> None:
+        result = _root_audit()
+        groups = [
+            item
+            for item in result["duplicate_file_groups"]
+            if item["classification"] == "ledger-authority-head-anchor"
+        ]
+        assert groups
+        assert all(any(path.endswith("/head.json") for path in group["paths"]) for group in groups)
+        assert all(any("/anchors/" in path for path in group["paths"]) for group in groups)
+        assert result["category_count"] == 15
+        assert result["reachability_records"] > 100
+        assert result["required_audit_item_count"] == 21
+>       assert all(item["passed"] for item in result["audit_items"].values())
+E       assert False
+E        +  where False = all(<generator object test_hash_ledger_head_and_anchor_are_a_reviewed_exact_projection.<locals>.<genexpr> at 0x0000020CA69FFAC0>)
+
+tests\test_structural_integrity.py:158: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_test_profiles.py::test_certification_groups_are_exhaustive_exclusive_and_bounded
+FAILED tests/test_test_profiles.py::test_group_status_is_receipt_driven_and_covers_every_test_file
+FAILED tests/test_completion_status.py::test_completion_reads_compact_blocker_index_without_materialized_snapshot
+FAILED tests/test_completion_status.py::test_generated_completion_status_is_current_and_does_not_overclaim
+FAILED tests/test_completion_status.py::test_completion_projection_writer_is_atomic_and_exact
+FAILED tests/test_completion_status.py::test_runtime_completion_projection_binds_exact_artifact_custody
+FAILED tests/test_structural_integrity.py::test_structural_integrity_has_closed_denominators
+FAILED tests/test_structural_integrity.py::test_hash_ledger_head_and_anchor_are_a_reviewed_exact_projection
+8 failed, 79 passed in 1223.31s (0:20:23)

@@ -9,38 +9,7 @@ from runtime.memory_broker import (
 )
 from runtime.memory_fabric import MemoryRecord
 
-
-NOW = datetime(2026, 9, 5, tzinfo=timezone.utc)
-
-
-def _record(memory_id: str, **changes: object) -> MemoryRecord:
-    values = {
-        "memory_id": memory_id, "workspace_id": "workspace", "project_id": "project",
-        "owner_id": "actor", "session_id": "session", "lease_id": "lease",
-        "title": "Decision", "memory_type": "decision", "summary": "Use bounded proof",
-        "source_artifact": "evidence.json", "source_sha256": "a" * 64,
-        "evidence_locator": "evidence:one", "epistemic_status": "observation",
-        "confidence": 0.9, "confidence_method": "direct", "classification": "internal",
-        "acl": ("project", "actor"), "observed_at": NOW, "effective_at": NOW,
-        "certification_status": "certified", "retrieval_enabled": True, "layer": "L1",
-        "visibility": "project", "priority": 80,
-    }
-    values.update(changes)
-    return MemoryRecord(**values)
-
-
-def _plan(**changes):
-    values = {
-        "project_id": "project", "subject_id": "task", "actor_id": "actor",
-        "agent_id": "agent", "binding_ids": ("memory:one",),
-        "memory_classes": ("decision",), "tiers": ("L1",), "max_items": 2,
-        "max_bytes": 4096, "max_tokens": 1024, "trust_floor": 0.8,
-        "max_age_seconds": 3600, "conflict_policy": "quarantine",
-        "provenance_required": True, "writeback_policy": "deny",
-        "source_revision": "source-1", "dependency_revisions": {"memory": "revision-1"},
-    }
-    values.update(changes)
-    return build_memory_query_plan(**values)
+from tests.support.fixtures import NOW, plan as _plan, record as _record
 
 
 def test_current_scoped_trusted_memory_materializes_with_provenance() -> None:

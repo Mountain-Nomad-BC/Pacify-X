@@ -1,0 +1,12 @@
+....FF.................................                                  [100%]
+================================== FAILURES ===================================
+E   AssertionError: ['markers: incomplete marker audit failed: [] unreviewed=3']
+    assert not ['markers: incomplete marker audit failed: [] unreviewed=3']
+C:\Users\Ben\Documents\bootstrap_project\Pacify-X\tests\test_structural_integrity.py:142: AssertionError: ['markers: incomplete marker audit failed: [] unreviewed=3']
+E   assert False
+     +  where False = all(<generator object test_hash_ledger_head_and_anchor_are_a_reviewed_exact_projection.<locals>.<genexpr> at 0x00000221826EC1E0>)
+C:\Users\Ben\Documents\bootstrap_project\Pacify-X\tests\test_structural_integrity.py:158: assert False
+=========================== short test summary info ===========================
+FAILED tests/test_structural_integrity.py::test_structural_integrity_has_closed_denominators
+FAILED tests/test_structural_integrity.py::test_hash_ledger_head_and_anchor_are_a_reviewed_exact_projection
+2 failed, 37 passed in 1171.19s (0:19:31)

@@ -89,3 +89,35 @@ Prior unit-level CLOSED wording is superseded: ownership derivation has source-t
 Tested checkpoint:19passed (`evidence/resume3-isolation-ownership.log`). Bootstrap branch now codex/repair-reconcile-20261025 @67827f97; inherited edits preserved. Clone isolation regression was moved into its own test file for a bounded mandatory gate; rerun required after that move. New ownership-source-independence tests currently RED/unverified. No registry builders executed in this session.
 
 Source-authority checkpoint:27focused tests pass (`evidence/resume3-source-authority-focused-green.log`); corrupt previous-map RED preserved. Mandatory source-authority gate blocks before execution because historical September campaign is installed_operational. No state bypass or historical rewrite. New105-row REPAIR_STATUS.json tracks0reviewed-closed;7cards have14passing inherited Node checks but remain IMPLEMENTED_UNVERIFIED. Reconciliation inventory967paths is evidence only; no wholesale merge has occurred. Rollout billing controller now records usage before cancellation/status discard;32Node neighbors pass, governed billing gates running. Bootstrap cascade run remains active; do not claim it green.
+
+In-progress succession port: canonical runtime/lifecycle owners, selectors, tests and four native schemas imported with bootstrap state namespace; generator source now has explicit four-contract ownership/consumers, no fallback. Manifest: evidence/resume3-succession-port-manifest.json. First port script stopped after source copy on a generator-expression mismatch, so first diagnostic may carry incomplete-map failures; keep it. Corrected source requires a fresh focused rerun. Live campaign state remains UNCHANGED, no owner signature/activation fabricated.
+
+Production activation acceptance gap discovered after48port tests passed: signed envelope lacks fields required by planner/activation and actual September predecessor has no project_id. New real signed-policy + real WAL activation regression added (host admission/source-classification seams explicitly isolated); RED reproduction pending. Do not call successor activation complete.
+
+
+## Resumed session 4 ? 2026-10-25 (after updated continuation handoff)
+
+Trust anchor re-established from Git, not prose. Bootstrap tree had advanced: branch `codex/repair-reconcile-20261025` @ `6174918a` ("Derive ownership from source and isolate structural mutation fixtures"), committed by the prior agent, working tree still dirty (28 modified + 86 untracked incl. succession port). Rollout `codex/rollout-day1-20261024` @ `5ebc7368` ("Persist task budget reservations and bind settlement before output cancellation"), clean except untracked `.agentic_engineering_os_px/`.
+
+Fresh backup taken before any change: `.audit-handoff/20261025-resume4/{status-,unstaged-}<stamp>.{txt,patch}` + `untracked-<stamp>.tar`. First tar attempt was truncated (tar.exe raced the compression stream); it was discarded and rebuilt with python tarfile, 86/86 members verified readable. `.audit-handoff/20261025-resume3/` and `resume3-user-stop-20261025/` kept intact.
+
+FAULT-ISOLATED (new, evidence-backed): the "3 RED activation tests" recorded by resume3 were the same two real causes as the "3 failed, 47 passed" line. First cause only: `jsonschema` absent from `.venv-repair` -> `ModuleNotFoundError` at `tests/test_project_revision_succession.py:649`. Second, the genuine logic defect (`tests/test_project_revision_succession.py:674` expected `digest mismatch`, got `owner authorization source identity binding is invalid`), was NOT reproducible on the current tree. Installed `jsonschema==4.26.0` (pull deps: attrs 26.1.0, referencing 0.37.0, jsonschema-specifications 2025.9.1, rpds-py 2026.9.1). Result: `tests/test_project_revision_succession.py` + `tests/test_revision_activation_e2e.py` -> 40 passed (`evidence/resume4-succession-after-dep.log`; pre-fix RED preserved in `evidence/resume4-succession-before.log`). No test assertion was edited. Succession activation is TESTED_COMPONENT only; Windows host gates still open.
+
+Interrupted cascade (clone isolation, ownership source independence, python surface boundaries, test suite scope, test profiles, completion status, structural integrity) restarted as PID 18868 -> 8 failed / 79 passed (`evidence/resume4-cascade-stdout.log`). Both batches A and C then applied.
+
+## Resumed session 4 — batch 3 result (A + C, user-approved)
+
+State: bootstrap `codex/repair-reconcile-20261025` @ `6174918a`, dirty; rollout @ `5ebc7368`. Backup `.audit-handoff/20261025-resume4/` (86/86 untracked members verified).
+
+Fixed and verified this batch:
+- C: duplicate logic removed at its real owners (memory-broker `_record`/`_plan`, scheduler `_snapshot`, recovery telemetry literal) -> `tests/support/fixtures.py`; 39 tests green across six PX-AUD modules; `_logic_duplicates` -> 0 unreviewed.
+- A: `reachability` now PASSES with no allow-list entry; succession contracts carry correct canonical ownership from the regenerated registry.
+- Generated artifacts regenerated at canonical generators: contract_ownership (now sorted in `build()` too), provider_route_scan, python_surface_ownership, python_dependency_ownership, artifact_reachability, test_group_index, build_claims. `validate_generated_artifacts` -> 21/21 OK.
+- Succession RED was a missing `jsonschema` dependency, not a source defect: 40 passed (`evidence/resume4-succession-after-dep.log`). No assertion weakened.
+
+Structural set: 37 passed, 2 failed — both are the single intentional `markers` gate (3 unreviewed incomplete findings). Do not close it by editing the review registry or extending the allow-list.
+
+Current PX-AUD ID(s): none mid-repair. Next executable action: (1) finish the succession production-activation acceptance gap (real signed-policy + real WAL activation), (2) repair the 3 unreviewed markers, (3) re-run the full baseline and diff against `baseline-failures.txt`, (4) worktree reconciliation / conflict table, (5) commit this batch on the repair branch.
+
+Package/install: NOT RUN. Certification: NOT RUN.
+True blockers: unchanged (real-Windows Job Object/VSIX host, live provider credentials, broken `.venv-certify`, missing `Pacify-X-main_docs.zip`).
