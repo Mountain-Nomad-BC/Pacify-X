@@ -1,14 +1,38 @@
 'use strict';
 
 const { EventEmitter } = require('node:events');
-const { newId, nowIso } = require('./ids');
+const { newId, nowIso, sha256 } = require('./ids');
 const { PxEvent, parse } = require('./contracts');
+const MAX_PAYLOAD_BYTES = 64 * 1024;
+const MAX_BUFFER_BYTES = 256 * 1024;
+
+function boundedPayload(payload) {
+  const raw = JSON.stringify(payload);
+  const bytes = Buffer.byteLength(raw, 'utf8');
+  if (bytes <= MAX_PAYLOAD_BYTES) return JSON.parse(raw);
+  return { contentOmission: { reason: 'event-payload-byte-budget', bytes, sha256: sha256(raw), retained: false } };
+}
+
+function freezeEvent(event) {
+  const pending = [event];
+  while (pending.length) {
+    const value = pending.pop();
+    if (!value || typeof value !== 'object' || Object.isFrozen(value)) continue;
+    for (const child of Object.values(value)) if (child && typeof child === 'object') pending.push(child);
+    Object.freeze(value);
+  }
+}
 
 class CanonicalEventBus {
   constructor(options = {}) {
     this.maxEvents = Math.max(50, Math.min(5000, Number(options.maxEvents || 800)));
     this.events = [];
     this.sequence = 0;
+    this.bufferBytes = 0;
+    this.bufferEvictedEvents = 0;
+    this.omittedPayloads = 0;
+    this.onDiagnostic = typeof options.onDiagnostic === 'function' ? options.onDiagnostic : () => {};
+    this._omissions = [];
     this.emitter = new EventEmitter();
     this.emitter.setMaxListeners(100);
   }
@@ -16,25 +40,50 @@ class CanonicalEventBus {
   emit(type, input = {}) {
     const event = parse(PxEvent, {
       schemaVersion: 'px.agent-event/1.0',
-      eventId: newId('evt'), sequence: this.sequence++, type,
+      eventId: newId('evt'), sequence: this.sequence, type,
       emittedAt: nowIso(), taskId: input.taskId || null, runId: input.runId || null,
       turnId: input.turnId || null, roundId: input.roundId || null,
       actor: input.actor || 'px-harness', workerId: input.workerId || null,
       parentEventId: input.parentEventId || null, status: input.status || 'info',
-      summary: String(input.summary || '').slice(0, 1000), payload: input.payload || {}
+      summary: String(input.summary || '').slice(0, 1000), payload: boundedPayload(input.payload || {})
     }, 'agent-event');
+    freezeEvent(event);
     this.events.push(event);
-    if (this.events.length > this.maxEvents) this.events.splice(0, this.events.length - this.maxEvents);
-    this.emitter.emit('event', event);
+    this.sequence += 1;
+    if (event.payload.contentOmission) {
+      this.omittedPayloads += 1;
+      this._omissions.push(Object.freeze({ eventType: type, runId: input.runId || null,
+        taskId: input.taskId || null, ref: event.payload.contentOmission }));
+      if (this._omissions.length > 1000) this._omissions.shift();
+    }
+    this.bufferBytes += Buffer.byteLength(JSON.stringify(event), 'utf8');
+    while (this.events.length > this.maxEvents || this.bufferBytes > MAX_BUFFER_BYTES) {
+      this.bufferBytes -= Buffer.byteLength(JSON.stringify(this.events.shift()), 'utf8');
+      this.bufferEvictedEvents += 1;
+    }
+    const failed = () => {
+      try {
+        const result = this.onDiagnostic(`agent-event-observer-failed:${event.eventId}`);
+        if (result && typeof result.then === 'function') Promise.resolve(result).catch(() => {});
+      } catch { /* Diagnostics cannot alter the committed business outcome. */ }
+    };
+    for (const listener of this.emitter.rawListeners('event')) {
+      try {
+        const result = listener.call(this.emitter, event);
+        if (result && typeof result.then === 'function') Promise.resolve(result).catch(failed);
+      } catch { failed(); }
+    }
     return event;
   }
 
   subscribe(listener) { this.emitter.on('event', listener); return { dispose: () => this.emitter.off('event', listener) }; }
+  omissionSummary() { return { bufferEvictedEvents: this.bufferEvictedEvents, omittedPayloads: this.omittedPayloads, retainedBytes: this.bufferBytes }; }
   snapshot(options = {}) {
     const taskId = options.taskId || null; const runId = options.runId || null;
     return this.events.filter(e => (!taskId || e.taskId === taskId) && (!runId || e.runId === runId)).slice(-(options.limit || 200));
   }
-  dispose() { this.emitter.removeAllListeners(); this.events.length = 0; }
+  omissions() { return [...this._omissions]; }
+  dispose() { this.emitter.removeAllListeners(); this.events.length = 0; this.bufferBytes = 0; this._omissions.length = 0; }
 }
 
 module.exports = { CanonicalEventBus };

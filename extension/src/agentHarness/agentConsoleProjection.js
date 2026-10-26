@@ -21,10 +21,31 @@ function buildAgentConsoleProjection(state) {
 }
 
 function redactEventPayload(event) {
-  const payload = { ...(event.payload || {}) };
-  if (event.type === 'worker.completed' && typeof payload.text === 'string') payload.text = payload.text.slice(0, 120000);
-  for (const key of Object.keys(payload)) if (/secret|api.?key|authorization|credential/i.test(key)) payload[key] = '[redacted]';
-  return payload;
+  const seen = new WeakSet();
+  let remaining = 65536;
+  let nodes = 2048;
+  function redact(value, depth) {
+    if (--nodes < 0 || remaining <= 0 || depth > 12) return '[omitted]';
+    if (typeof value === 'string') {
+      const text = value.slice(0, Math.min(16000, remaining));
+      remaining -= Buffer.byteLength(JSON.stringify(text), 'utf8');
+      return text.length === value.length ? text : `${text}[omitted]`;
+    }
+    if (value === null || typeof value !== 'object') return value;
+    if (seen.has(value)) return '[cycle omitted]';
+    seen.add(value);
+    const out = Array.isArray(value) ? [] : Object.create(null);
+    for (const key of Object.keys(value)) {
+      if (nodes <= 0 || remaining <= 0) break;
+      remaining -= Buffer.byteLength(JSON.stringify(key), 'utf8');
+      out[key] = /secret|api.?key|authorization|credential|password|passwd|access.?token|refresh.?token|^token$/i.test(key)
+        ? '[redacted]' : redact(value[key], depth + 1);
+    }
+    seen.delete(value);
+    return out;
+  }
+  return redact(event.payload || {}, 0);
 }
 
-module.exports = { buildAgentConsoleProjection };
+
+module.exports = { buildAgentConsoleProjection, redactEventPayload };
