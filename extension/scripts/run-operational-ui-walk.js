@@ -11239,9 +11239,10 @@ async function settleInstalledCanonicalMemoryRecord(frameHost, timeoutMs = 30_00
 function installedFilesystemPathIdentity(value, { platform = process.platform, realpath = fs.realpathSync.native } = {}) {
   const supplied = String(value || '').trim();
   if (!supplied) return '';
-  const resolved = path.resolve(supplied);
+  const pathApi = platform === 'win32' ? path.win32 : path;
+  const resolved = pathApi.resolve(supplied);
   let canonical = resolved;
-  try { canonical = realpath(resolved); } catch { /* a missing path still has a deterministic resolved identity */ }
+  try { canonical = platform === 'win32' && process.platform !== 'win32' ? resolved : realpath(resolved); } catch { /* a missing path still has a deterministic resolved identity */ }
   return platform === 'win32' ? canonical.toLowerCase() : canonical;
 }
 
@@ -11253,8 +11254,10 @@ function installedFilesystemPathWithin(root, target, options) {
   const rootIdentity = installedFilesystemPathIdentity(root, options);
   const targetIdentity = installedFilesystemPathIdentity(target, options);
   if (!rootIdentity || !targetIdentity || rootIdentity === targetIdentity) return false;
-  const relative = path.relative(rootIdentity, targetIdentity);
-  return Boolean(relative) && relative !== '..' && !relative.startsWith(`..${path.sep}`) && !path.isAbsolute(relative);
+  const platform = (options && options.platform) || process.platform;
+  const pathApi = platform === 'win32' ? path.win32 : path;
+  const relative = pathApi.relative(rootIdentity, targetIdentity);
+  return Boolean(relative) && relative !== '..' && !relative.startsWith(`..${pathApi.sep}`) && !pathApi.isAbsolute(relative);
 }
 
 function isExternalVsCodeWillSaveTimeoutDiagnostic(diagnostic) {

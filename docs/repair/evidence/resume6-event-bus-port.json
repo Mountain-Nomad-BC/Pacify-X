@@ -1,0 +1,9 @@
+{
+  "source_commit": "5ebc7368",
+  "path": "runtime/operational_event_bus.py",
+  "before_sha256": "c62e41dbbfb1b3c8c12ed7d679b1cd92b64be41f991092bb6974af3d2e44a6bf",
+  "source_sha256": "afbfdbaf2649fc447e2f1244871565649f8653d33de9d3304b39651a718d7b4c",
+  "after_sha256": "afbfdbaf2649fc447e2f1244871565649f8653d33de9d3304b39651a718d7b4c",
+  "review": "Complete diff reviewed: preserved missing-state history refusal and existing expected generation; exact integer/head validation; finite serialization; reject duplicate ID; prepare entire <=41-event batch and commit once with last state/head/projection plus every event/receipt/anchor. Causal run7fail3pass.",
+  "status": "IMPLEMENTED_UNVERIFIED"
+}

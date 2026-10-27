@@ -1,0 +1,45 @@
+{
+  "schema_version": "px.native-job-operating-proof/1.0",
+  "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.tmp\\owned-host-probes\\pacifyx-hvjgurt2",
+  "certification": false,
+  "passed": false,
+  "observations": {},
+  "source_sha256": {
+    "runtime/process_supervisor.py": "53bcabb997356f972db194edb7273157e4492036486f56c055f5dcb4965c0886",
+    "runtime/resource_lifecycle.py": "b55c3919ad2996ed8e37a404a1363925ee0b760c64aff7e481b4d6ea25bc7a14",
+    "runtime/gremlin/host_enforcement_backend.py": "a8d82b5d5dc5563fd694ee4ffbcd6b1cc43783a447d4b74517f9548b753ee68c",
+    "scripts/probe_native_job_containment.py": "81549591996c46c68a26be7d9d7be64c0255825e95c9a9227c11cb14808e4c7f"
+  },
+  "error": "Traceback (most recent call last):\n  File \"C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\scripts\\probe_native_job_containment.py\", line 107, in main\n    raise AssertionError(\"heartbeat advanced after confirmed freeze\")\nAssertionError: heartbeat advanced after confirmed freeze\n",
+  "supervisor_thread_closed": true,
+  "process_result": {
+    "action_id": "resume6-native-job-proof",
+    "resource_id": "process-acdf8c36f6e64fa685f55a1d4a15422b",
+    "status": "cancelled",
+    "exit_code": 137,
+    "started_at": "2026-10-26T03:03:53.043Z",
+    "ended_at": "2026-10-26T03:04:01.197Z",
+    "duration_seconds": 8.15462860000116,
+    "stdout": {
+      "text": "ready\r\n",
+      "total_bytes": 7,
+      "retained_bytes": 7,
+      "dropped_bytes": 0,
+      "decode_error_count": 0,
+      "truncated": false
+    },
+    "stderr": {
+      "text": "",
+      "total_bytes": 0,
+      "retained_bytes": 0,
+      "dropped_bytes": 0,
+      "decode_error_count": 0,
+      "truncated": false
+    },
+    "shutdown_mode": "graceful",
+    "tree_closed": true,
+    "failure_type": null,
+    "audit_record_hash": "7af7a5cd7607ba3ed5d1e48241003f2c40f08fe0c5e5701198df0972e2b89cb9",
+    "receipt_path": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.tmp\\owned-host-probes\\cleanup-receipts\\process-6894b4e378484f1ca86a609541ac2c79.json"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "active_gap_id": "PX-OS-1067",
+  "evidence": [
+    {
+      "reference": "docs/repair/REPAIR_STATUS.json",
+      "claim": "All 105 findings now carry an explicit disposition from the kit queue; reviewed_closed 0 and no card closed.",
+      "artifact_sha256": "057d8d90a5d015f71e1081d9ed68ca099a2a029bf4a0fb7920ed2dc869144220",
+      "artifact_size": 66779
+    },
+    {
+      "reference": "C:/Users/Ben/Downloads/PX_REPAIR_UNBLOCK_AND_COMPLETION_PLAN/tracking/EXECUTION_LOG.jsonl",
+      "claim": "Bounded segment recorded in the kit execution log.",
+      "artifact_sha256": "d85bb26c4f9c501a04350e41dd3cd39961d2fd847a72c6a48e1d0f67f300fb3a",
+      "artifact_size": 17821
+    }
+  ],
+  "learned": "Status ledger now spans the real 105-card denominator. Two required certification suites remain unported and need real feature ports. HEAD moved to the prior owner commit 7b25e2e8; this segment committed nothing.",
+  "newly_discovered_gap_ids": [],
+  "next_action": "Run the single revision/generated-projection reconciliation, make every governed section current, then execute exactly one full profile, validation, package, install, installed-system operational test, and certification in registered order.",
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000036210",
+  "unresolved_branch_gap_ids": []
+}

@@ -627,6 +627,7 @@ function activateImplementation(context, transaction) {
     openControlPlane: () => openDashboard('/control-plane'),
     onDiagnostic: detail => codexOutput.appendLine(`[agent-console] ${detail}`),
     gatewayWorkers: PX_AGENT_GATEWAY_WORKERS.map(worker => ({ ...worker })),
+    gatewayWorkerCatalog: () => modelFabricClient.listModels(),
     providerGatewayInvoker: buildPxProviderGatewayInvoker({
       bridge: modelFabricClient,
       profileIdForWorker: worker => worker?.profileId || worker?.modelId || null

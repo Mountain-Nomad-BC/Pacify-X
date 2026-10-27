@@ -72,6 +72,19 @@ class MemoryQueryPlan:
         }
 
 
+def _validate_plan_quantities(max_items, max_bytes, max_tokens,
+                              trust_floor, max_age_seconds):
+    errors = []
+    for name, value in (('max_items', max_items), ('max_bytes', max_bytes),
+                        ('max_tokens', max_tokens), ('max_age_seconds', max_age_seconds)):
+        if type(value) is not int or value < 1:
+            errors.append(f'{name} must be a positive integer')
+    if (isinstance(trust_floor, bool) or not isinstance(trust_floor, (int, float))
+            or not math.isfinite(trust_floor) or not 0 <= trust_floor <= 1):
+        errors.append('trust_floor must be a finite number between zero and one')
+    return errors
+
+
 def build_memory_query_plan(
     *,
     project_id: str,
@@ -92,6 +105,10 @@ def build_memory_query_plan(
     source_revision: str,
     dependency_revisions: Mapping[str, object],
 ) -> MemoryQueryPlan:
+    quantity_errors = _validate_plan_quantities(max_items, max_bytes, max_tokens,
+                                                 trust_floor, max_age_seconds)
+    if quantity_errors:
+        raise ValueError('invalid memory query plan: ' + '; '.join(quantity_errors))
     base: dict[str, object] = {
         "schema_version": SCHEMA_VERSION,
         "project_id": project_id,
@@ -157,12 +174,9 @@ def validate_memory_query_plan(
             errors.append(f"{field} is required")
     if not plan.binding_ids or not plan.memory_classes or not plan.tiers:
         errors.append("binding IDs, memory classes, and tiers are required")
-    if plan.max_items < 1 or plan.max_bytes < 1 or plan.max_tokens < 1:
-        errors.append("memory budgets must be positive")
-    if not 0 <= plan.trust_floor <= 1:
-        errors.append("trust floor must be between zero and one")
-    if plan.max_age_seconds < 1:
-        errors.append("freshness budget must be positive")
+    errors.extend(_validate_plan_quantities(plan.max_items, plan.max_bytes,
+                                            plan.max_tokens, plan.trust_floor,
+                                            plan.max_age_seconds))
     if plan.conflict_policy not in {"reject", "quarantine"}:
         errors.append("conflict policy must reject or quarantine")
     if plan.writeback_policy not in {"deny", "proposal_only"}:
@@ -203,7 +217,12 @@ def materialize_memory_context(
         if record is None:
             violations.append(f"missing_memory:{memory_id}")
             continue
-        if record.project_id != plan.project_id or not can_access(caller, record):
+        if (isinstance(record.confidence, bool)
+                or not isinstance(record.confidence, (int, float))
+                or not math.isfinite(record.confidence)
+                or not 0 <= record.confidence <= 1):
+            violations.append(f"memory_invalid_confidence:{memory_id}")
+        elif record.project_id != plan.project_id or not can_access(caller, record):
             violations.append(f"foreign_or_unauthorized_memory:{memory_id}")
         elif record.memory_type not in plan.memory_classes or record.layer not in plan.tiers:
             violations.append(f"memory_class_or_tier_mismatch:{memory_id}")

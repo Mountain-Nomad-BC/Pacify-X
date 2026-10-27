@@ -1,0 +1,29 @@
+{
+  "action_id": "governed-provider-stream",
+  "audit_record_hash": "aac719621945211fe8ec93819f03c0478783161f22505fc8171830e326cee57e",
+  "duration_seconds": 0.5156543000048259,
+  "ended_at": "2026-10-26T19:37:49.897Z",
+  "exit_code": 1,
+  "failure_type": null,
+  "receipt_id": "process-24ee6bc5769043e48b188e13d4b8670d",
+  "resource_id": "process-ed550c8707cf4aacbe6e0bbf3e27c0b3",
+  "schema_version": "px.process-supervision-receipt/1.0",
+  "shutdown_mode": "natural",
+  "started_at": "2026-10-26T19:37:49.381Z",
+  "status": "exited",
+  "stderr": {
+    "decode_error_count": 0,
+    "dropped_bytes": 0,
+    "retained_bytes": 0,
+    "total_bytes": 0,
+    "truncated": false
+  },
+  "stdout": {
+    "decode_error_count": 0,
+    "dropped_bytes": 0,
+    "retained_bytes": 231,
+    "total_bytes": 231,
+    "truncated": false
+  },
+  "tree_closed": true
+}

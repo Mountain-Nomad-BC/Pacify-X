@@ -1,0 +1,29 @@
+{
+  "action_id": "lock-neighbors",
+  "audit_record_hash": "55d4303065ce68103c8e467723028621b173b65b904e8a1e6218342eb48074d6",
+  "duration_seconds": 22.216706899998826,
+  "ended_at": "2026-10-26T19:24:53.708Z",
+  "exit_code": 0,
+  "failure_type": null,
+  "receipt_id": "process-0f7e2e6ed50347f7bf90a2d091ccd258",
+  "resource_id": "process-2c836b7cc0604ec3bee330de64b79b61",
+  "schema_version": "px.process-supervision-receipt/1.0",
+  "shutdown_mode": "natural",
+  "started_at": "2026-10-26T19:24:31.491Z",
+  "status": "exited",
+  "stderr": {
+    "decode_error_count": 0,
+    "dropped_bytes": 0,
+    "retained_bytes": 0,
+    "total_bytes": 0,
+    "truncated": false
+  },
+  "stdout": {
+    "decode_error_count": 0,
+    "dropped_bytes": 0,
+    "retained_bytes": 102,
+    "total_bytes": 102,
+    "truncated": false
+  },
+  "tree_closed": true
+}

@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:gremlin-recovery-replay-ledger",
+  "title": "Gremlin durable recovery replay ledger event",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "sequence",
+    "kind",
+    "created_utc",
+    "payload",
+    "payload_sha256",
+    "previous_event_sha256",
+    "event_sha256"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": { "const": "1.0" },
+    "sequence": { "type": "integer", "minimum": 1 },
+    "kind": {
+      "enum": ["approval_consumed", "approval_revoked"]
+    },
+    "created_utc": { "type": "string", "format": "date-time" },
+    "payload": {
+      "anyOf": [
+        {
+          "type": "object",
+          "required": ["schema_version", "challenge_id", "approval_id"],
+          "additionalProperties": false,
+          "properties": {
+            "schema_version": { "const": "px.gremlin-recovery-replay-ledger/1.0" },
+            "challenge_id": { "$ref": "#/$defs/id" },
+            "approval_id": { "$ref": "#/$defs/id" }
+          }
+        },
+        {
+          "type": "object",
+          "required": ["schema_version", "approval_id", "revocation_id"],
+          "additionalProperties": false,
+          "properties": {
+            "schema_version": { "const": "px.gremlin-recovery-replay-ledger/1.0" },
+            "approval_id": { "$ref": "#/$defs/id" },
+            "revocation_id": { "$ref": "#/$defs/id" }
+          }
+        }
+      ]
+    },
+    "payload_sha256": { "$ref": "#/$defs/sha256" },
+    "previous_event_sha256": { "$ref": "#/$defs/sha256" },
+    "event_sha256": { "$ref": "#/$defs/sha256" }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": { "kind": { "const": "approval_consumed" } },
+        "required": ["kind"]
+      },
+      "then": {
+        "properties": {
+          "payload": { "required": ["challenge_id", "approval_id"] }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": { "kind": { "const": "approval_revoked" } },
+        "required": ["kind"]
+      },
+      "then": {
+        "properties": {
+          "payload": { "required": ["approval_id", "revocation_id"] }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,255}$"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  }
+}

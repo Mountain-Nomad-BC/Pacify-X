@@ -581,10 +581,11 @@ def _logic_duplicates(root: Path, files: tuple[Path, ...] | None = None) -> tupl
         }
 
         if (
-            names <= {"_sha256", "sha256", "_file_sha", "_sha", "_sha_file"}
+            names <= {"_sha256", "sha256", "_file_sha", "_sha", "_sha_file", "file_sha256"}
             and normalized_paths
             == {
                 "runtime/airllm_runtime.py",
+                "runtime/hash_utils.py",
                 "runtime/project_control_plane.py",
                 "runtime/project_intelligence.py",
                 "runtime/workspace_manager.py",

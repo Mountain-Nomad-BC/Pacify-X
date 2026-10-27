@@ -99,6 +99,7 @@ const WorkerDescriptor = z.object({
   providerId: Id,
   modelId: z.string().min(1).max(240),
   profileId: Id.optional(),
+  maxOutputTokens: z.number().int().positive().optional(),
   displayName: z.string().min(1).max(240),
   costClass: CostClass,
   contextLimit: z.number().int().positive().nullable(),

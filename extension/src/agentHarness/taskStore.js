@@ -3,12 +3,15 @@
 const { newId, nowIso } = require('./ids');
 const { PxTask, PxRun, parse } = require('./contracts');
 
+function immutable(value) { if (value && typeof value === 'object') { for (const item of Object.values(value)) immutable(item); Object.freeze(value); } return value; }
+function parseImmutable(...args) { return immutable(parse(...args)); }
+
 const EFFECT_ORDER = ['READ_ONLY', 'LOW_RISK', 'MUTATING', 'HIGH_RISK'];
 
 class TaskStore {
   constructor(options = {}) {
     this.tasks = new Map(); this.runs = new Map(); this.persistence = options.persistence || null;
-    this.persistenceError = null; this.writes = Promise.resolve(); this.pendingWrites = 0;
+    this.persistenceError = null; this.writes = Promise.resolve(); this.pendingWrites = 0; this.recoveryRequired = new Set();
     this._load(); this.committed = this.snapshot();
   }
 
@@ -20,7 +23,7 @@ class TaskStore {
     if (input.taskId && this.tasks.has(input.taskId)) throw new Error('task-already-exists');
     if (this.tasks.size >= 10000) throw new Error('task-store-capacity');
     const at = nowIso();
-    const task = parse(PxTask, {
+    const task = parseImmutable(PxTask, {
       schemaVersion: 'px.agent-task/1.0', taskId: input.taskId || newId('task'), createdAt: at, updatedAt: at,
       goal: input.goal, mode: input.mode || 'ASK', stage: 'INTAKE', targets: input.targets || [], activeSkills: [],
       constraints: {
@@ -41,7 +44,7 @@ class TaskStore {
     if (patch.constraints?.maxEffectClass && EFFECT_ORDER.indexOf(patch.constraints.maxEffectClass) < 0) throw new Error('task-effect-class-invalid');
     const terminalStage = { cancelled: 'CANCELLED', complete: 'COMPLETE', failed: 'FAILED' }[patch.status];
     if (terminalStage && patch.stage && patch.stage !== terminalStage) throw new Error('terminal-task-stage-invalid');
-    const next = parse(PxTask, { ...current, ...patch, ...(terminalStage ? { stage: terminalStage } : {}), constraints: { ...current.constraints, ...(patch.constraints || {}) }, updatedAt: nowIso() }, 'task');
+    const next = parseImmutable(PxTask, { ...current, ...patch, ...(terminalStage ? { stage: terminalStage } : {}), constraints: { ...current.constraints, ...(patch.constraints || {}) }, updatedAt: nowIso() }, 'task');
     const tasks = new Map(this.tasks); tasks.set(taskId, next);
     this._commit(tasks, this.runs); return next;
   }
@@ -52,7 +55,7 @@ class TaskStore {
     if (this.listRuns(taskId).some(run => ['running', 'waiting'].includes(run.status))) throw new Error('task-already-has-live-run');
     if (this.runs.size >= 10000) throw new Error('run-store-capacity');
     const at = nowIso();
-    const run = parse(PxRun, { schemaVersion: 'px.agent-run/1.0', runId: newId('run'), taskId, createdAt: at, updatedAt: at,
+    const run = parseImmutable(PxRun, { schemaVersion: 'px.agent-run/1.0', runId: newId('run'), taskId, createdAt: at, updatedAt: at,
       status: 'running', activeWorkerId: null, providerSessionRef: null, routeHistory: [], round: 0, lastError: null }, 'run');
     const runs = new Map(this.runs); runs.set(run.runId, run);
     this._commit(this.tasks, runs); return run;
@@ -60,9 +63,10 @@ class TaskStore {
 
   updateRun(runId, patch) {
     const current = this.requireRun(runId);
+    if (this.requiresRecovery(runId)) throw new Error('run-recovery-required');
     if (['complete', 'failed', 'cancelled'].includes(current.status)) throw new Error('terminal-run-immutable');
     for (const key of ['runId', 'taskId', 'createdAt', 'schemaVersion']) if (key in patch && patch[key] !== current[key]) throw new Error('run-identity-immutable');
-    const next = parse(PxRun, { ...current, ...patch, updatedAt: nowIso() }, 'run');
+    const next = parseImmutable(PxRun, { ...current, ...patch, updatedAt: nowIso() }, 'run');
     const runs = new Map(this.runs); runs.set(runId, next);
     this._commit(this.tasks, runs); return next;
   }
@@ -71,6 +75,8 @@ class TaskStore {
     const run = this.requireRun(runId);
     return this.updateRun(runId, { activeWorkerId: workerId, routeHistory: [...run.routeHistory, { workerId, selectedAt: nowIso(), reason: String(reason || 'selected').slice(0, 500) }].slice(-100) });
   }
+
+  requiresRecovery(id) { return this.recoveryRequired.has(id); }
 
   requireTask(id) { this._healthy(); const value = this.tasks.get(id); if (!value) throw new Error('task-not-found'); return value; }
   requireRun(id) { this._healthy(); const value = this.runs.get(id); if (!value) throw new Error('run-not-found'); return value; }
@@ -85,14 +91,14 @@ class TaskStore {
     if (snap.schemaVersion !== 'px.agent-task-store/1.0' || !Array.isArray(snap.tasks) || !Array.isArray(snap.runs)
         || snap.tasks.length > 10000 || snap.runs.length > 10000) throw new Error('task-state-corrupt-snapshot');
     const tasks = new Map(), runs = new Map();
-    for (const row of snap.tasks) { const task=parse(PxTask,row,'persisted-task'); if (tasks.has(task.taskId)) throw new Error('task-state-duplicate-task'); tasks.set(task.taskId,task); }
-    for (const row of snap.runs) { const run=parse(PxRun,row,'persisted-run'); if (runs.has(run.runId) || !tasks.has(run.taskId)) throw new Error('task-state-invalid-run-owner'); runs.set(run.runId,run); }
+    for (const row of snap.tasks) { const task=parseImmutable(PxTask,row,'persisted-task'); if (tasks.has(task.taskId)) throw new Error('task-state-duplicate-task'); tasks.set(task.taskId,task); }
+    for (const row of snap.runs) { const run=parseImmutable(PxRun,row,'persisted-run'); if (runs.has(run.runId) || !tasks.has(run.taskId)) throw new Error('task-state-invalid-run-owner'); runs.set(run.runId,run); if (run.activeWorkerId && ['running','waiting'].includes(run.status)) this.recoveryRequired.add(run.runId); }
     this.tasks = tasks; this.runs = runs;
   }
 
   _restoreCommitted() {
-    this.tasks = new Map(this.committed.tasks.map(row => [row.taskId, row]));
-    this.runs = new Map(this.committed.runs.map(row => [row.runId, row]));
+    this.tasks = new Map(this.committed.tasks.map(row => [row.taskId, immutable(row)]));
+    this.runs = new Map(this.committed.runs.map(row => [row.runId, immutable(row)]));
   }
 
   _commit(tasks, runs) {

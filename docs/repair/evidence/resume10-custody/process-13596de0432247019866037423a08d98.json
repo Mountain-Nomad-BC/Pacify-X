@@ -1,0 +1,29 @@
+{
+  "action_id": "governed-inventory",
+  "audit_record_hash": "013a5529427cb3fe1ddadb8172a2ab4fc8776e6e087ad77f13d055708080097f",
+  "duration_seconds": 0.8244804999994813,
+  "ended_at": "2026-10-26T19:33:43.406Z",
+  "exit_code": 1,
+  "failure_type": null,
+  "receipt_id": "process-13596de0432247019866037423a08d98",
+  "resource_id": "process-232be1296ffe427494d2b4f392c465ae",
+  "schema_version": "px.process-supervision-receipt/1.0",
+  "shutdown_mode": "natural",
+  "started_at": "2026-10-26T19:33:42.582Z",
+  "status": "exited",
+  "stderr": {
+    "decode_error_count": 0,
+    "dropped_bytes": 0,
+    "retained_bytes": 0,
+    "total_bytes": 0,
+    "truncated": false
+  },
+  "stdout": {
+    "decode_error_count": 0,
+    "dropped_bytes": 0,
+    "retained_bytes": 231,
+    "total_bytes": 231,
+    "truncated": false
+  },
+  "tree_closed": true
+}

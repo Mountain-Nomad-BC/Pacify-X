@@ -1,0 +1,41 @@
+{
+  "timestamp_utc": "2026-10-26T19:34:24.636362+00:00",
+  "segment": "resume10-source-intake-and-certification-coverage",
+  "findings": [
+    "PX-AUD-005",
+    "PX-AUD-008",
+    "PX-AUD-009",
+    "PX-AUD-010",
+    "PX-AUD-016"
+  ],
+  "source_sha256": {
+    "runtime/secure_publish.py": "dcab0da3d52466db16a0e4c9012e4f8e3ed2bdd194a7bbbf4a15800f5630bd53",
+    "scripts/rollout/compare_trees.py": "18a17842e667ee092e0a8795d66e7c8e4550da2f09829c76062abee6e497bd03",
+    "scripts/rollout/integration_plan.py": "4d38e05afdd6673af5b829ba7880c12156b1bb579e5102ba5eafde74f8841ab5",
+    "tests/test_rollout_inventory.py": "91e8fe43c83cb240f3cf1ff0d9d94dab75d9bde4ffbbb463e5941e59e514554a",
+    "registry/test_profiles.json": "202c2bf918d8ad53e4509b06d9f3798601dbba0571d619d919c8bae2cc3219c5"
+  },
+  "evidence": [
+    "docs/repair/evidence/resume10-inventory-hostile.json",
+    "docs/repair/evidence/resume10-release-lifecycle-neighbors.json",
+    "docs/repair/evidence/resume10-certification-coverage.json",
+    "docs/repair/evidence/resume10-contract-adjudication.json",
+    "docs/repair/evidence/resume10-governed-inventory.json"
+  ],
+  "observations": [
+    "79focused source/secure/preflight tests passed with no deselection;94release-owner tests passed",
+    "mandatory structural coverage valid:29required suites;21required sections now wired with actual files",
+    "source apply requires explicit per-file review, portable eligible authored path, all-denominator preimage validation, pinned atomic per-file publication, retained registered recovery/preimages, no deletion/generated overlay",
+    "new bounded physical reader pins ancestors, rejects leaf/ancestor reparse and hardlinks, creates no directories, verifies handle image stability",
+    "214candidate contractJSON=213schemas+1memorycontract; target196=195+1.188equal,2JSONequal,3targetstronger/canonical retained,21dependency review pending",
+    "reference ownership registry lacks4succession contracts; do not use its210record map as complete214authority"
+  ],
+  "limitations": [
+    "source overlay is per-file atomic, not a multi-file transaction; external editors do not honor cooperative writer lock; recover partial apply from retained preimages and journal",
+    "all real source application in tests was confined to disposable fixtures; no bulk overlay of canonical checkout",
+    "fullcertification validator, generated indexes and release not claimedgreen; only structural required-suite coverage passes",
+    "governed source gate blocked by historical installed_operational phase"
+  ],
+  "reviewer": "UNASSIGNED",
+  "closed": false
+}

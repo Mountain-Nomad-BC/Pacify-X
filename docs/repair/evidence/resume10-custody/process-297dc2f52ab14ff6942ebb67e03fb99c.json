@@ -1,0 +1,29 @@
+{
+  "action_id": "governed-release-lifecycle",
+  "audit_record_hash": "820f543defb9d6c0589b348c8c1dd7f0daafc2fc574f160c4cfc66bf6fabffd3",
+  "duration_seconds": 1.9282355999894207,
+  "ended_at": "2026-10-26T19:34:26.789Z",
+  "exit_code": 1,
+  "failure_type": null,
+  "receipt_id": "process-297dc2f52ab14ff6942ebb67e03fb99c",
+  "resource_id": "process-068c683109f74dc7806f857686329710",
+  "schema_version": "px.process-supervision-receipt/1.0",
+  "shutdown_mode": "natural",
+  "started_at": "2026-10-26T19:34:24.861Z",
+  "status": "exited",
+  "stderr": {
+    "decode_error_count": 0,
+    "dropped_bytes": 0,
+    "retained_bytes": 0,
+    "total_bytes": 0,
+    "truncated": false
+  },
+  "stdout": {
+    "decode_error_count": 0,
+    "dropped_bytes": 0,
+    "retained_bytes": 231,
+    "total_bytes": 231,
+    "truncated": false
+  },
+  "tree_closed": true
+}

@@ -1,0 +1,248 @@
+{
+  "batch": "g02",
+  "timestamp": "2026-10-26T01:32:15.118013+00:00",
+  "files": [
+    {
+      "path": "runtime/secure_publish.py",
+      "bootstrap_sha_before": "cbb1efd6cfdcc4c63c47dd6e5c535c9ddb91bc960ca01c21d0c039356e0e3a4e",
+      "rollout_sha": "cbb1efd6cfdcc4c63c47dd6e5c535c9ddb91bc960ca01c21d0c039356e0e3a4e",
+      "present_before": true,
+      "bootstrap_sha_after": "cbb1efd6cfdcc4c63c47dd6e5c535c9ddb91bc960ca01c21d0c039356e0e3a4e",
+      "copied_ok": true
+    },
+    {
+      "path": "runtime/source_freeze.py",
+      "bootstrap_sha_before": "5c70b4dee5c49e7032256ba58ea623b498c8be5195e74e316145f09db15c9b09",
+      "rollout_sha": "5c70b4dee5c49e7032256ba58ea623b498c8be5195e74e316145f09db15c9b09",
+      "present_before": true,
+      "bootstrap_sha_after": "5c70b4dee5c49e7032256ba58ea623b498c8be5195e74e316145f09db15c9b09",
+      "copied_ok": true
+    },
+    {
+      "path": "runtime/source_boundary.py",
+      "bootstrap_sha_before": "f3120eff553f5b04f5e78de8252aabd7628d104e24c5c49a8e5d40860250ce15",
+      "rollout_sha": "f3120eff553f5b04f5e78de8252aabd7628d104e24c5c49a8e5d40860250ce15",
+      "present_before": true,
+      "bootstrap_sha_after": "f3120eff553f5b04f5e78de8252aabd7628d104e24c5c49a8e5d40860250ce15",
+      "copied_ok": true
+    },
+    {
+      "path": "runtime/mutating_producer_registry.py",
+      "bootstrap_sha_before": "2a1382dcdac258c09f677e8e40cabdb923f830ad97d9291a678a149563a8b782",
+      "rollout_sha": "2a1382dcdac258c09f677e8e40cabdb923f830ad97d9291a678a149563a8b782",
+      "present_before": true,
+      "bootstrap_sha_after": "2a1382dcdac258c09f677e8e40cabdb923f830ad97d9291a678a149563a8b782",
+      "copied_ok": true
+    },
+    {
+      "path": "runtime/mutating_producer_custody_reviewed.py",
+      "bootstrap_sha_before": "b18c1a319984c63f4b9bbc20b6e0e5c1ce05528d52616332a916eb2cf20c9cf7",
+      "rollout_sha": "b18c1a319984c63f4b9bbc20b6e0e5c1ce05528d52616332a916eb2cf20c9cf7",
+      "present_before": true,
+      "bootstrap_sha_after": "b18c1a319984c63f4b9bbc20b6e0e5c1ce05528d52616332a916eb2cf20c9cf7",
+      "copied_ok": true
+    },
+    {
+      "path": "runtime/containment_invariants.py",
+      "bootstrap_sha_before": "f7892bac556d16f21c811ee4b5bf17476e1033116667f5832943c122a195be08",
+      "rollout_sha": "f7892bac556d16f21c811ee4b5bf17476e1033116667f5832943c122a195be08",
+      "present_before": true,
+      "bootstrap_sha_after": "f7892bac556d16f21c811ee4b5bf17476e1033116667f5832943c122a195be08",
+      "copied_ok": true
+    },
+    {
+      "path": "runtime/guarded_registry_projection.py",
+      "bootstrap_sha_before": "98e24c3655f91648cd9e058263e980a4c45db6315d56eec2e35e93112943182c",
+      "rollout_sha": "98e24c3655f91648cd9e058263e980a4c45db6315d56eec2e35e93112943182c",
+      "present_before": true,
+      "bootstrap_sha_after": "98e24c3655f91648cd9e058263e980a4c45db6315d56eec2e35e93112943182c",
+      "copied_ok": true
+    },
+    {
+      "path": "runtime/scope_lease.py",
+      "bootstrap_sha_before": "61337e6e272f5fe7b7576305ee11dbb66b69d93ee885dba340bad77b253bd746",
+      "rollout_sha": "61337e6e272f5fe7b7576305ee11dbb66b69d93ee885dba340bad77b253bd746",
+      "present_before": true,
+      "bootstrap_sha_after": "61337e6e272f5fe7b7576305ee11dbb66b69d93ee885dba340bad77b253bd746",
+      "copied_ok": true
+    },
+    {
+      "path": "runtime/release_process_custody.py",
+      "bootstrap_sha_before": "ee603c7c1245ce2196e96bf6eb3b42bf4c2815e57d2d7b37259e55b0a4e5c493",
+      "rollout_sha": "ee603c7c1245ce2196e96bf6eb3b42bf4c2815e57d2d7b37259e55b0a4e5c493",
+      "present_before": true,
+      "bootstrap_sha_after": "ee603c7c1245ce2196e96bf6eb3b42bf4c2815e57d2d7b37259e55b0a4e5c493",
+      "copied_ok": true
+    },
+    {
+      "path": "runtime/release_source_identity.py",
+      "bootstrap_sha_before": "c481ec51069da35f5eeae20dd523f599282131a8c2e99293a04186c70912421b",
+      "rollout_sha": "c481ec51069da35f5eeae20dd523f599282131a8c2e99293a04186c70912421b",
+      "present_before": true,
+      "bootstrap_sha_after": "c481ec51069da35f5eeae20dd523f599282131a8c2e99293a04186c70912421b",
+      "copied_ok": true
+    },
+    {
+      "path": "runtime/release_current_acceptance.py",
+      "bootstrap_sha_before": "7dbe453e39bc60f85b82cc37a622aef745b9edf41b6911c4e54321bfffaac6ec",
+      "rollout_sha": "7dbe453e39bc60f85b82cc37a622aef745b9edf41b6911c4e54321bfffaac6ec",
+      "present_before": true,
+      "bootstrap_sha_after": "7dbe453e39bc60f85b82cc37a622aef745b9edf41b6911c4e54321bfffaac6ec",
+      "copied_ok": true
+    },
+    {
+      "path": "runtime/hash_utils.py",
+      "bootstrap_sha_before": "a86b6416c06b38061b3df01ae9f52175c20468cac57e05af9445e2269400bcc4",
+      "rollout_sha": "a86b6416c06b38061b3df01ae9f52175c20468cac57e05af9445e2269400bcc4",
+      "present_before": true,
+      "bootstrap_sha_after": "a86b6416c06b38061b3df01ae9f52175c20468cac57e05af9445e2269400bcc4",
+      "copied_ok": true
+    },
+    {
+      "path": "runtime/engineering_os_paths.py",
+      "bootstrap_sha_before": "7d50d633fa7c4fe34a59e06bea191e02674b469cb22b8cbef785748dba6d803c",
+      "rollout_sha": "7d50d633fa7c4fe34a59e06bea191e02674b469cb22b8cbef785748dba6d803c",
+      "present_before": true,
+      "bootstrap_sha_after": "7d50d633fa7c4fe34a59e06bea191e02674b469cb22b8cbef785748dba6d803c",
+      "copied_ok": true
+    },
+    {
+      "path": "tests/test_secure_publish.py",
+      "bootstrap_sha_before": "53002d73367742ff185464e70492aca58be5b10ff760ef3ad8fea63673846d28",
+      "rollout_sha": "53002d73367742ff185464e70492aca58be5b10ff760ef3ad8fea63673846d28",
+      "present_before": true,
+      "bootstrap_sha_after": "53002d73367742ff185464e70492aca58be5b10ff760ef3ad8fea63673846d28",
+      "copied_ok": true
+    },
+    {
+      "path": "runtime/effect_intent.py",
+      "bootstrap_sha_before": "b4654b46403a5c8758aa899b171b515584100f42c90443d819e166d778fd2fa8",
+      "rollout_sha": "b4654b46403a5c8758aa899b171b515584100f42c90443d819e166d778fd2fa8",
+      "present_before": true,
+      "bootstrap_sha_after": "b4654b46403a5c8758aa899b171b515584100f42c90443d819e166d778fd2fa8",
+      "copied_ok": true
+    },
+    {
+      "path": "runtime/mutation_queue.py",
+      "bootstrap_sha_before": "85814ffe5f9e5224046bbc5ffc1f00d6873c06a8008335b9cc2601c42ade28d3",
+      "rollout_sha": "85814ffe5f9e5224046bbc5ffc1f00d6873c06a8008335b9cc2601c42ade28d3",
+      "present_before": true,
+      "bootstrap_sha_after": "85814ffe5f9e5224046bbc5ffc1f00d6873c06a8008335b9cc2601c42ade28d3",
+      "copied_ok": true
+    },
+    {
+      "path": "runtime/plan_registry.py",
+      "bootstrap_sha_before": "30ad5e5275e11b2a8633065b92bcc304bfde19a1af24a5ef1bf03b8d0afd2bd3",
+      "rollout_sha": "30ad5e5275e11b2a8633065b92bcc304bfde19a1af24a5ef1bf03b8d0afd2bd3",
+      "present_before": true,
+      "bootstrap_sha_after": "30ad5e5275e11b2a8633065b92bcc304bfde19a1af24a5ef1bf03b8d0afd2bd3",
+      "copied_ok": true
+    },
+    {
+      "path": "runtime/semantic_entity.py",
+      "bootstrap_sha_before": "8b467d15b4533329d64c83b1719fe5c1d5b8a418a6f3aad8b72282bf6de4d4bb",
+      "rollout_sha": "8b467d15b4533329d64c83b1719fe5c1d5b8a418a6f3aad8b72282bf6de4d4bb",
+      "present_before": true,
+      "bootstrap_sha_after": "8b467d15b4533329d64c83b1719fe5c1d5b8a418a6f3aad8b72282bf6de4d4bb",
+      "copied_ok": true
+    },
+    {
+      "path": "runtime/tool_intake.py",
+      "bootstrap_sha_before": "0dda93efa8bfa9670e839aaaf119b30d97490b3ffcc6e6a7fd28548c670a9c8e",
+      "rollout_sha": "0dda93efa8bfa9670e839aaaf119b30d97490b3ffcc6e6a7fd28548c670a9c8e",
+      "present_before": true,
+      "bootstrap_sha_after": "0dda93efa8bfa9670e839aaaf119b30d97490b3ffcc6e6a7fd28548c670a9c8e",
+      "copied_ok": true
+    },
+    {
+      "path": "runtime/bounded_walk.py",
+      "bootstrap_sha_before": "98090f9580a55f315d99231cd35dfb3fd1185bcfc115bbd911855d3f224be9d6",
+      "rollout_sha": "98090f9580a55f315d99231cd35dfb3fd1185bcfc115bbd911855d3f224be9d6",
+      "present_before": true,
+      "bootstrap_sha_after": "98090f9580a55f315d99231cd35dfb3fd1185bcfc115bbd911855d3f224be9d6",
+      "copied_ok": true
+    },
+    {
+      "path": "runtime/vscode_model_bridge.py",
+      "bootstrap_sha_before": "1768cea5da9c3f005420ae5f33caf9a33a23c33eba7699bccb9f60918d85030f",
+      "rollout_sha": "1768cea5da9c3f005420ae5f33caf9a33a23c33eba7699bccb9f60918d85030f",
+      "present_before": true,
+      "bootstrap_sha_after": "1768cea5da9c3f005420ae5f33caf9a33a23c33eba7699bccb9f60918d85030f",
+      "copied_ok": true
+    },
+    {
+      "path": "runtime/nsai_knowledge.py",
+      "bootstrap_sha_before": "3193e22d59e748cad88a0d2925290cca82c436bdd60b365ffa7578f69c236dca",
+      "rollout_sha": "3193e22d59e748cad88a0d2925290cca82c436bdd60b365ffa7578f69c236dca",
+      "present_before": true,
+      "bootstrap_sha_after": "3193e22d59e748cad88a0d2925290cca82c436bdd60b365ffa7578f69c236dca",
+      "copied_ok": true
+    },
+    {
+      "path": "runtime/isolated_sandbox.py",
+      "bootstrap_sha_before": null,
+      "rollout_sha": "55ed469ab2f12c0eb5cb836af8940686c3b1c05d5017d7eec086732df7039682",
+      "present_before": false,
+      "bootstrap_sha_after": "55ed469ab2f12c0eb5cb836af8940686c3b1c05d5017d7eec086732df7039682",
+      "copied_ok": true
+    },
+    {
+      "path": "runtime/execution_context.py",
+      "bootstrap_sha_before": null,
+      "rollout_sha": "977df7db44776bb0c2858cbf6d98577778fdfc909b3a0703c2fc4c7283893a28",
+      "present_before": false,
+      "bootstrap_sha_after": "977df7db44776bb0c2858cbf6d98577778fdfc909b3a0703c2fc4c7283893a28",
+      "copied_ok": true
+    },
+    {
+      "path": "runtime/chat_context.py",
+      "bootstrap_sha_before": null,
+      "rollout_sha": "53b8ccd4efada85eccb715f9b0c4ab2ac09a8cb13749c7e0141a8bbbd1464d50",
+      "present_before": false,
+      "bootstrap_sha_after": "53b8ccd4efada85eccb715f9b0c4ab2ac09a8cb13749c7e0141a8bbbd1464d50",
+      "copied_ok": true
+    },
+    {
+      "path": "runtime/prepared_group_transport.py",
+      "bootstrap_sha_before": null,
+      "rollout_sha": "6a88c677fecbaa86d5d175fbb7fa403e8638f84111ef039ca2eddceae45a1320",
+      "present_before": false,
+      "bootstrap_sha_after": "6a88c677fecbaa86d5d175fbb7fa403e8638f84111ef039ca2eddceae45a1320",
+      "copied_ok": true
+    },
+    {
+      "path": "runtime/remote_model_bridge.py",
+      "bootstrap_sha_before": null,
+      "rollout_sha": "1555ed7ecf959c925e69d1ba9c01409196a47bb8a3051af635e426fc3cf468e8",
+      "present_before": false,
+      "bootstrap_sha_after": "1555ed7ecf959c925e69d1ba9c01409196a47bb8a3051af635e426fc3cf468e8",
+      "copied_ok": true
+    }
+  ],
+  "count": 27,
+  "overwrote_existing": [
+    "runtime/secure_publish.py",
+    "runtime/source_freeze.py",
+    "runtime/source_boundary.py",
+    "runtime/mutating_producer_registry.py",
+    "runtime/mutating_producer_custody_reviewed.py",
+    "runtime/containment_invariants.py",
+    "runtime/guarded_registry_projection.py",
+    "runtime/scope_lease.py",
+    "runtime/release_process_custody.py",
+    "runtime/release_source_identity.py",
+    "runtime/release_current_acceptance.py",
+    "runtime/hash_utils.py",
+    "runtime/engineering_os_paths.py",
+    "tests/test_secure_publish.py",
+    "runtime/effect_intent.py",
+    "runtime/mutation_queue.py",
+    "runtime/plan_registry.py",
+    "runtime/semantic_entity.py",
+    "runtime/tool_intake.py",
+    "runtime/bounded_walk.py",
+    "runtime/vscode_model_bridge.py",
+    "runtime/nsai_knowledge.py"
+  ],
+  "verify_failures": []
+}

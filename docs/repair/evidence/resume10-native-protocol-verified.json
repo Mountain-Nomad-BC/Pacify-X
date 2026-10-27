@@ -1,0 +1,23 @@
+{
+  "command": [
+    "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.venv-repair\\Scripts\\python.exe",
+    "-m",
+    "pytest",
+    "tests/test_provider_protocol_audit.py",
+    "tests/test_model_protocol.py",
+    "tests/test_model_protocol_translate.py",
+    "tests/test_provider_gateway_streaming.py",
+    "tests/test_provider_budget.py",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "--basetemp=.tmp/pytest-resume10-native-protocol-verified"
+  ],
+  "exit_code": 0,
+  "tree_closed": true,
+  "resource_inactive": true,
+  "receipt": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.tmp\\resume10\\owned\\cleanup-receipts\\process-b74f967bd6e14b4da9a593560a1427de.json",
+  "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.tmp\\resume10\\owned\\pacifyx-hae35_n7",
+  "log": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\docs\\repair\\evidence\\resume10-native-protocol-verified.log",
+  "log_sha256": "ea7ed8710059d42cbfc6b78539ae88d7097e445052a9c787520601d7f556abc0"
+}

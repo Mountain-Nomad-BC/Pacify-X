@@ -1,0 +1,47 @@
+{
+  "schema_version": "px.repair-segment/1.0",
+  "timestamp_utc": "2026-10-26T14:04:39.226940+00:00",
+  "segment": "resume8-native-persistence-task-custody-and-receipt-boundary",
+  "source_commit": "7b25e2e8bc9bef6e99fe5a1aa77c6f99f2b49368",
+  "additional_source_state": "uncommitted Python/preflight/provider-adapter integration",
+  "closed": false,
+  "reviewer": "UNASSIGNED",
+  "evidence": [
+    "docs/repair/evidence/resume8-secure-operating.log",
+    "docs/repair/evidence/resume8-preflight-red.log",
+    "docs/repair/evidence/resume8-preflight-green.log",
+    "docs/repair/evidence/resume8-task-custody-red.log",
+    "docs/repair/evidence/resume8-controller-custody-red.log",
+    "docs/repair/evidence/resume8-agent-owner-checkpoint.log",
+    "docs/repair/evidence/resume8-budget-red.log",
+    "docs/repair/evidence/resume8-budget-green.log",
+    "docs/repair/evidence/resume8-provider-settlement-red.log",
+    "docs/repair/evidence/resume8-provider-settlement-green.log",
+    "docs/repair/evidence/resume8-cross-runtime.log"
+  ],
+  "source_sha256": {
+    "extension/src/agentHarness/taskStore.js": "cec360be9dcea555282c03c2be3de3bca44cd7e9672f24abd92dc0da3eb15bce",
+    "extension/src/agentHarness/workerRegistry.js": "fac840ad6e2ca6c2ebb6bcd9a5f91e9f7575e482f6311dedc5ed896607ced9f1",
+    "extension/src/agentHarness/harnessController.js": "e443dbc9e2cc0dec8baeea5603c53a1dff5fb3ff05758a18c00be10747de4c3f",
+    "runtime/capability_scheduler.py": "662b12de9a39797664842da772562e55cf4f118ccef2c836dabf6f00fc176144",
+    "extension/src/agentHarness/adapters/pxProviderGateway.js": "498655ecae468e4f205fab4b365306c9b77c3ffd79bc67c9e91f00a326c9adb8",
+    "scripts/validate_certification_pipeline.py": "67210d3f4b7f17e3919a7aa265716bcc1a624bc635d3b8dc7ef41ed4b3c9f25a",
+    "tests/test_secure_publish_operating.py": "52d10c6c95579b85d8b77147ca4f0e40f4dabfb890d233717f7fbc1f8ba5d3c6",
+    "tests/test_billing_budget_audit.py": "e06a7d2410ac598c87ab5c1b2bb61d2101442dfa1721bbfa19911cccd82525ac"
+  },
+  "observations": [
+    "35secure-publisher tests pass including actual Windows non-delete-shared reader locks and registered process os._exit during fsynced partial staging; old committed image survives and orphan is retained unchanged on restart",
+    "5preflight bypasses reproduced;18targeted preflight negatives pass;actual repository coverage is explicitly still false",
+    "8task/registration causal failures plus3controller integration causal failures repaired;32neighboring Node checks pass",
+    "17budget admission checks plus scheduler/resource/DAG neighbors41pass; bool/string/negative/incomplete/huge integer budgets deny while zero preserved; existing iterative DAG and resource repairs preserved",
+    "4non-native truthy gateway receipt cases reproduced then21Node checks pass;18Python checks include actual native provider gateway receipt accepted by registered Node child, tampering and wrong owner refused, custody settled"
+  ],
+  "limits": [
+    "No signed successor activation or current governed receipt",
+    "No full profile, generated refresh, package, install, network or certification in resume8",
+    "Paid-provider credentials absent; no live paid receipt claimed",
+    "Task snapshot format remains1.0; execution generation/context migration and evidence/mesh completion still open",
+    "Task/budget raw local component proofs do not close105card queue",
+    "Budget reservation and durable settlement integration is still pending"
+  ]
+}

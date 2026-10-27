@@ -1,0 +1,29 @@
+{
+  "action_id": "governed-secure",
+  "audit_record_hash": "6c271fc44734c7248831a516a96446cc5acfbbabe4be1e5df256cdaa1b53542d",
+  "duration_seconds": 1.1482971999939764,
+  "ended_at": "2026-10-26T19:37:51.340Z",
+  "exit_code": 1,
+  "failure_type": null,
+  "receipt_id": "process-c4fa6f830d894b2aa3d8ad319aa0220a",
+  "resource_id": "process-45899b555eee4bfda35ca6cde3185d39",
+  "schema_version": "px.process-supervision-receipt/1.0",
+  "shutdown_mode": "natural",
+  "started_at": "2026-10-26T19:37:50.191Z",
+  "status": "exited",
+  "stderr": {
+    "decode_error_count": 0,
+    "dropped_bytes": 0,
+    "retained_bytes": 0,
+    "total_bytes": 0,
+    "truncated": false
+  },
+  "stdout": {
+    "decode_error_count": 0,
+    "dropped_bytes": 0,
+    "retained_bytes": 231,
+    "total_bytes": 231,
+    "truncated": false
+  },
+  "tree_closed": true
+}

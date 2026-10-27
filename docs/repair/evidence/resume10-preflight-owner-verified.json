@@ -1,0 +1,24 @@
+{
+  "command": [
+    "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.venv-repair\\Scripts\\python.exe",
+    "-m",
+    "pytest",
+    "tests/test_certification_pipeline_readiness.py",
+    "tests/test_test_runner_controls.py",
+    "tests/test_release_candidate_driver.py",
+    "tests/test_release_stage_owner.py",
+    "tests/test_run_installed_operational_owner.py",
+    "tests/test_certification_readiness.py",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "--basetemp=.tmp/pytest-resume10-preflight-owner-verified"
+  ],
+  "exit_code": 0,
+  "tree_closed": true,
+  "resource_inactive": true,
+  "receipt": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.tmp\\resume10\\owned\\cleanup-receipts\\process-a2bb5e4b1daa49c591a07c766c1904ff.json",
+  "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.tmp\\resume10\\owned\\pacifyx-iclbhznq",
+  "log": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\docs\\repair\\evidence\\resume10-preflight-owner-verified.log",
+  "log_sha256": "51230ffa4db78c00ffbdeb60a052e146d8ea784c4a09ff6ad22d812f00af53e9"
+}

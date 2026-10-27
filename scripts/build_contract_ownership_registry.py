@@ -8,6 +8,18 @@ from pathlib import Path
 
 
 ROOT_OWNERS = {
+    'cancellation-scope.schema.json': ('runtime/cancellation_scope.py', ['runtime/cancellation_scope.py'], 'runtime_enforced', ['tests/test_contract_runtime.py', 'tests/test_agent_governed_integration.py']),
+    'context-generation-vector.schema.json': ('runtime/context_generation.py', ['runtime/context_generation.py', 'runtime/dependency_invalidation.py'], 'typed_scoped_archivist_metadata_boundary', ['tests/test_contract_runtime.py', 'tests/test_context_generation.py', 'tests/test_contract_ownership_registry.py']),
+    'dependency-identity.schema.json': ('runtime/dependency_identity.py', ['runtime/dependency_identity.py', 'runtime/dependency_invalidation.py'], 'canonical_dependency_observation_boundary', ['tests/test_contract_runtime.py', 'tests/test_dependency_invalidation.py', 'tests/test_dependency_contracts.py']),
+    'execution-context.schema.json': ('runtime/execution_context.py', ['runtime/execution_context.py', 'runtime/vscode_model_bridge.py'], 'execution_identity_and_currentness_boundary', ['tests/test_contract_runtime.py', 'tests/test_execution_context.py', 'tests/test_agent_governed_integration.py']),
+    'gremlin-containment-proof.schema.json': ('runtime/gremlin/containment.py', ['runtime/gremlin/containment.py'], 'runtime_enforced', ['tests/test_contract_runtime.py', 'tests/test_gremlin_containment.py']),
+    'gremlin-host-configuration.schema.json': ('runtime/gremlin/host_configuration.py', ['runtime/gremlin/host_configuration.py'], 'runtime_enforced', ['tests/test_contract_runtime.py', 'tests/test_gremlin_host_configuration.py']),
+    'gremlin-recovery-authority.schema.json': ('runtime/gremlin/recovery_authority.py', ['runtime/gremlin/recovery_authority.py'], 'runtime_enforced', ['tests/test_contract_runtime.py', 'tests/test_gremlin_recovery_authority.py']),
+    'gremlin-recovery-replay-ledger.schema.json': ('runtime/gremlin/recovery_authority.py', ['runtime/gremlin/recovery_authority.py'], 'runtime_enforced', ['tests/test_contract_runtime.py', 'tests/test_gremlin_recovery_authority.py']),
+    'gremlin-runtime-identity.schema.json': ('runtime/gremlin/runtime_identity.py', ['runtime/gremlin/runtime_identity.py'], 'runtime_enforced', ['tests/test_contract_runtime.py', 'tests/test_gremlin_runtime_identity.py']),
+    'isolated-agent-sandbox.schema.json': ('runtime/isolated_sandbox.py', ['runtime/isolated_sandbox.py'], 'runtime_enforced', ['tests/test_contract_runtime.py', 'tests/test_isolated_agent_sandbox.py']),
+    'projection-status.schema.json': ('runtime/projection_gate.py', ['runtime/projection_gate.py'], 'typed_scoped_archivist_metadata_boundary', ['tests/test_contract_runtime.py', 'tests/test_projection_gate.py', 'tests/test_contract_ownership_registry.py']),
+    'workflow-resume-decision.schema.json': ('runtime/workflow_resume.py', ['runtime/workflow_resume.py'], 'runtime_enforced', ['tests/test_contract_runtime.py', 'tests/test_workflow_resume.py']),
     "agent_handoff_packet.schema.json": (
         "runtime/agent_handoff.py",
         ["runtime/agent_handoff.py", "runtime/agent_runtime.py"],
@@ -506,6 +518,7 @@ COGNITIVE_DIR_PRODUCERS = {
 }
 
 OPERATIONS_DIR_OWNERS = {
+    "remote-provider-profile.schema.json": ("runtime/remote_provider_profiles.py", "signed_remote_profile_configuration_boundary"),
     "health-model-registry.schema.json": ("runtime/health_model.py", "runtime_control_equivalent"),
     "health-report.schema.json": ("runtime/health_model.py", "runtime_control_equivalent"),
     "operation-event.schema.json": (
@@ -535,6 +548,7 @@ OPERATIONS_DIR_OWNERS = {
 }
 
 OPERATIONS_DIR_PRODUCERS = {
+    "remote-provider-profile.schema.json": ["runtime/studio_authority.py"],
     "health-model-registry.schema.json": ["registry/health_taxonomy.json"],
     "health-report.schema.json": ["runtime/health_model.py"],
     "operation-event.schema.json": ["runtime/operational_visibility.py"],
@@ -546,6 +560,7 @@ OPERATIONS_DIR_PRODUCERS = {
 }
 
 OPERATIONS_DIR_TESTS = {
+    "remote-provider-profile.schema.json": "tests/test_remote_profile_catalog.py",
     "health-model-registry.schema.json": "tests/test_health_model.py",
     "health-report.schema.json": "tests/test_health_model.py",
     "operation-event.schema.json": "tests/test_operational_visibility.py",
@@ -757,7 +772,8 @@ def build(root: Path) -> dict[str, object]:
                 "consumers": (["runtime/contracts.py", "runtime/project_revision_succession.py",
                                "runtime/revision_campaign_lifecycle.py", "runtime/test_profiles.py"]
                               if path.parent.name == "project_revision_succession"
-                              else ["runtime/contracts.py"]),
+                              else ["runtime/contracts.py", "runtime/remote_provider_profiles.py", "runtime/remote_model_bridge.py"]
+                              if name == "remote-provider-profile.schema.json" else ["runtime/contracts.py"]),
                 "enforcement": enforcement,
                 "packaged": True,
                 "tests": list(

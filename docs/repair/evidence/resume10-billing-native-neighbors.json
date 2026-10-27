@@ -1,0 +1,20 @@
+{
+  "command": [
+    "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.venv-repair\\Scripts\\python.exe",
+    "-m",
+    "pytest",
+    "tests/test_billing_budget_audit.py",
+    "tests/test_provider_gateway_streaming.py",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "--basetemp=.tmp/pytest-resume10-billing-native"
+  ],
+  "exit_code": 0,
+  "tree_closed": true,
+  "resource_inactive": true,
+  "receipt": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.tmp\\resume10\\owned\\cleanup-receipts\\process-62b47c4d369b49f79483bfcb9c0e56b4.json",
+  "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.tmp\\resume10\\owned\\pacifyx-q95hwdrs",
+  "log": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\docs\\repair\\evidence\\resume10-billing-native-neighbors.log",
+  "log_sha256": "b9d90b2cbdb2097d79b370a53c6b019de27c138b34f2f36409fe142a4966d4ae"
+}

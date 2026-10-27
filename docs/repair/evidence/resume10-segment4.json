@@ -1,0 +1,48 @@
+{
+  "timestamp_utc": "2026-10-26T19:38:11.436850+00:00",
+  "segment": "resume10-restart-cancellation-and-stream-custody",
+  "findings": [
+    "PX-AUD-041",
+    "PX-AUD-043",
+    "PX-AUD-025",
+    "PX-AUD-058",
+    "PX-AUD-052",
+    "PX-AUD-053",
+    "PX-AUD-054",
+    "PX-AUD-055"
+  ],
+  "source_sha256": {
+    "extension/src/agentHarness/taskStore.js": "c26f32b23afe94bc5cebaec66ec698987a4b055354316980a15ba3b7de2c2ef7",
+    "extension/src/agentHarness/harnessController.js": "3fb4c7abf01a54a2816f11cc5bfcc8bf418953fc02667c65e7d855ddebcead13",
+    "extension/src/agentHarness/adapters/streamCustody.js": "b398b08a3ade26e52d9270ee101fa894f5489710593a2499bcf74ee3714938cc",
+    "extension/src/agentHarness/adapters/openaiCompatible.js": "6299c818a6231bf48e4a50bf1af5aa329309f607f495e371d2c88f259c0a530a",
+    "extension/src/agentHarness/adapters/ollama.js": "4ebaa07e051d15831fbb2daeeda01a73056de234c87b50e653ed659bbf41a62f",
+    "extension/tests/task-state-custody.test.js": "914db8676a57044e99b5e100c549388cf8f3138cccfe4d365bf69963727a95c5",
+    "extension/tests/agent-harness-streaming.test.js": "7a932f7a1a40113e39b54b25840a7331f3d26189f6996318cb6afb0aeb267062"
+  },
+  "evidence": [
+    "docs/repair/evidence/resume10-lifecycle-red.json",
+    "docs/repair/evidence/resume10-lifecycle-green.json",
+    "docs/repair/evidence/resume10-stream-custody-red.json",
+    "docs/repair/evidence/resume10-stream-custody-green.json",
+    "docs/repair/evidence/resume10-governed-agent-task.json",
+    "docs/repair/evidence/resume10-governed-provider-stream.json",
+    "docs/repair/evidence/resume10-governed-secure.json"
+  ],
+  "observations": [
+    "3task/restart/cancel causal failures repaired;48neighborspassed",
+    "4real ReadableStream abort/parse custody failures reproduced;50combinedneighborspassed",
+    "task/run outputs frozen; worker-selected running/waiting snapshots require recovery rather than implicit redispatch",
+    "interrupt request bounded; active attempt retained and same-task replacement denied until actual worker settles; timeout never masquerades as closure",
+    "direct streaming adapters cancel/release readers on malformed input or abort; fatal streaming UTF8; aggregate response8MiB limit; bounded HTTP error previews",
+    "changed agent/provider/secure governed sections all phaseblocked, not passed"
+  ],
+  "remaining": [
+    "unknown effect recovery is failclosed only; no genuine agent recovery owner or full execution-context epoch/generation integration wired",
+    "mesh execution still absent from bootstrap and source features remain pending; no mesh finding closed",
+    "interrupt remains worker-scoped API and does not supply per-invocation closure receipt; supported native custody integration still needed",
+    "stream tests use controlled sources, no credentialed route or installed-host claim"
+  ],
+  "closed": false,
+  "reviewer": "UNASSIGNED"
+}

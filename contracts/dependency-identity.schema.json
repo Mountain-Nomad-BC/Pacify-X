@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:dependency-identity",
+  "title": "PX owner-bound dependency identity",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "kind",
+    "semantic_key",
+    "canonical_owner",
+    "owner_revision",
+    "content_sha256",
+    "project_id",
+    "node_id",
+    "revision",
+    "schema_version",
+    "authority_granted"
+  ],
+  "properties": {
+    "kind": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 4096,
+      "enum": [
+        "agent",
+        "authority",
+        "execution_graph",
+        "formula",
+        "knowledge",
+        "model_profile",
+        "policy",
+        "projection",
+        "provider_config",
+        "release_evidence",
+        "retrieval_index",
+        "section",
+        "semantic_generation",
+        "skill",
+        "source",
+        "test",
+        "tool_config",
+        "workflow"
+      ]
+    },
+    "semantic_key": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 4096
+    },
+    "canonical_owner": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 4096
+    },
+    "owner_revision": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 4096
+    },
+    "content_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "project_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 4096
+    },
+    "node_id": {
+      "type": "string",
+      "pattern": "^pxdep:[0-9a-f]{64}$"
+    },
+    "revision": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "schema_version": {
+      "const": "px.dependency-identity/1.0"
+    },
+    "authority_granted": {
+      "const": false
+    }
+  }
+}

@@ -235,6 +235,60 @@ class ResourceRecord:
 
 
 @dataclass(frozen=True, slots=True)
+class VerifiedJobMembership:
+    parent_resource_id: str
+    job_object_id: str
+    member_pid: int
+    member_process_start_identity: str
+    verified_at_utc: str
+
+    def __post_init__(self) -> None:
+        for name in ("parent_resource_id", "job_object_id", "member_process_start_identity"):
+            value = getattr(self, name)
+            if type(value) is not str or not value.strip() or len(value) > 512:
+                raise ValueError(f"verified Job membership {name} is invalid")
+        if type(self.member_pid) is not int or self.member_pid <= 0:
+            raise ValueError("verified Job membership PID is invalid")
+        if type(self.verified_at_utc) is not str or not self.verified_at_utc.strip():
+            raise ValueError("verified Job membership timestamp is invalid")
+        datetime.fromisoformat(self.verified_at_utc.replace("Z", "+00:00"))
+
+    @property
+    def custody_sha256(self) -> str:
+        """Deterministic custody digest over the stable membership fields.
+
+        Unlike :attr:`evidence_sha256`, this digest excludes the volatile
+        verification timestamp, so a receipt signed at one re-verification binds
+        the same custody tuple at any later re-verification (the membership
+        fields, not the clock, are the custody identity).
+        """
+        body = {
+            "schema_version": "px.process-job-custody-tuple/1.0",
+            "parent_resource_id": self.parent_resource_id,
+            "job_object_id": self.job_object_id,
+            "member_pid": self.member_pid,
+            "member_process_start_identity": self.member_process_start_identity,
+        }
+        return hashlib.sha256(
+            json.dumps(body, sort_keys=True, separators=(",", ":")).encode("utf-8")
+        ).hexdigest()
+
+    @property
+    def evidence_sha256(self) -> str:
+        body = {
+            "schema_version": "px.process-job-custody-evidence/1.0",
+            "parent_resource_id": self.parent_resource_id,
+            "job_object_id": self.job_object_id,
+            "member_pid": self.member_pid,
+            "member_process_start_identity": self.member_process_start_identity,
+            "verified_at_utc": self.verified_at_utc,
+        }
+        return hashlib.sha256(
+            json.dumps(body, sort_keys=True, separators=(",", ":")).encode("utf-8")
+        ).hexdigest()
+
+
+@dataclass(frozen=True, slots=True)
 class CleanupReceipt:
     cleanup_id: str
     project_id: str
@@ -467,6 +521,236 @@ class ResourceManager:
         self._failed_creation_custody: dict[str, object] = {}
         self._supervision_failures: dict[str, object] = {}
         self._cleanup_effects: dict[str, dict] = {}
+        self._process_closure_expectations: dict[str, dict] = {}
+
+    @staticmethod
+    def _process_closure_identity(record, *, manager_state_path, job_object_id):
+        return {"resource_id": record.resource_id, "resource_type": record.resource_type,
+            "project_id": record.project_id, "run_id": record.run_id, "lane_id": record.lane_id,
+            "creator": record.creator,
+            "pid": record.pid, "process_identity": record.process_identity,
+            "host_boot_generation": record.host_boot_generation,
+            "manager_state_path": manager_state_path, "job_object_id": job_object_id}
+
+    def track_physical_process_tree_closure(self, resource_id: str, *, project_root: Path) -> dict:
+        """Bind a native suspended/live Job to eventual independently observed closure.
+
+        The retained objects are supervisor-owned handles, never worker claims.
+        This does not close or kill a process and does not grant execution authority.
+        """
+        root = Path(project_root).resolve(strict=True)
+        reject_path_links(root)
+        reject_path_links(self.ledger.path)
+        try:
+            state_path = self.ledger.path.relative_to(root).as_posix()
+        except ValueError as error:
+            raise PermissionError("process closure state must belong to the canonical project") from error
+        if not state_path.startswith(".engineering-bootstrap/"):
+            raise PermissionError("process closure requires native project resource state")
+        custody = self.verify_owned_job(resource_id)
+        record = self.ledger.get(resource_id)
+        identity = self._process_closure_identity(record, manager_state_path=state_path,
+            job_object_id=custody.job_object_id)
+        prior = self._process_closure_expectations.get(resource_id)
+        if prior is not None and (prior["identity"] != identity or prior["root"] != root):
+            raise PermissionError("process closure expectation cannot be rebound")
+        self._process_closure_expectations[resource_id] = {"root":root, "identity":identity,
+            "process":self._processes[resource_id], "job":self._process_jobs[resource_id]}
+        return dict(identity)
+
+    @staticmethod
+    def _physical_closure_path(root: Path, identity: Mapping[str, object]) -> Path:
+        from .studio_models import digest
+        key = digest({"manager_state_path":identity["manager_state_path"],
+            "resource_id":identity["resource_id"], "job_object_id":identity["job_object_id"]})
+        return root / ".engineering-bootstrap/runtime-core/process-tree-closures" / (key+".json")
+
+    def _publish_physical_process_tree_closure(self, resource_id: str) -> dict:
+        """Publish only after the exact retained kernel Job reports zero members."""
+        from .process_supervisor import _WindowsJob
+        from .studio_authority import StudioAuthorityStore
+        from .studio_models import digest, write_json_atomic
+        expected = self._process_closure_expectations.get(resource_id)
+        if expected is None:
+            raise PermissionError("native physical closure expectation is absent")
+        process, job = self._processes.get(resource_id), self._process_jobs.get(resource_id)
+        record = self.ledger.get(resource_id)
+        identity = self._process_closure_identity(record,
+            manager_state_path=expected["identity"]["manager_state_path"],
+            job_object_id=expected["identity"]["job_object_id"])
+        if (os.name != "nt" or type(job) is not _WindowsJob or not job.handle
+                or job is not expected["job"] or process is not expected["process"]
+                or process is None or process.pid != record.pid or process.poll() is None
+                or identity != expected["identity"] or job.custody_id != identity["job_object_id"]
+                or job.active_processes() != 0):
+            raise PermissionError("exact native process-tree closure is not independently proven")
+        body = {"schema_version":"px.physical-process-tree-closure/1.0",
+            "identity":identity, "closure_method":"native-windows-job-zero",
+            "verified_utc":_utc_now(), "authority_granted":False}
+        body["receipt_sha256"] = digest(body)
+        path = self._physical_closure_path(expected["root"], identity)
+        reject_path_links(path)
+        if path.is_file():
+            retained = StudioAuthorityStore(expected["root"]).verify_receipt(decode_json_object(
+                _bounded_image(path, limit=65536), max_bytes=65536))
+            retained_unsigned = {key:value for key,value in retained.items() if key != "receipt_sha256"}
+            if (retained.get("identity") != identity or retained.get("receipt_sha256") != digest(retained_unsigned)
+                    or retained.get("schema_version") != body["schema_version"]
+                    or retained.get("closure_method") != body["closure_method"]):
+                raise PermissionError("retained native closure receipt cannot be rewritten")
+            return retained
+        write_json_atomic(path, StudioAuthorityStore(expected["root"]).sign_receipt(body))
+        return body
+
+    def _verified_physical_process_tree_closure(self, record, *, project_root: Path,
+                                              job_object_id: str) -> dict:
+        from .studio_authority import StudioAuthorityStore
+        from .studio_models import digest
+        root = Path(project_root).resolve(strict=True)
+        reject_path_links(root)
+        reject_path_links(self.ledger.path)
+        state_path = self.ledger.path.relative_to(root).as_posix()
+        if not state_path.startswith(".engineering-bootstrap/"):
+            raise PermissionError("physical closure requires native project state")
+        identity = self._process_closure_identity(record, manager_state_path=state_path,
+            job_object_id=job_object_id)
+        path = self._physical_closure_path(root, identity)
+        reject_path_links(path)
+        body = StudioAuthorityStore(root).verify_receipt(decode_json_object(
+            _bounded_image(path, limit=65536), max_bytes=65536))
+        unsigned = {key:value for key,value in body.items() if key != "receipt_sha256"}
+        if (set(body) != {"schema_version","identity","closure_method","verified_utc","authority_granted","receipt_sha256"}
+                or body["schema_version"] != "px.physical-process-tree-closure/1.0"
+                or body["authority_granted"] is not False
+                or body["receipt_sha256"] != digest(unsigned) or body["identity"] != identity
+                or body["closure_method"] != "native-windows-job-zero"
+                or record.resource_type != "process" or not record.process_identity
+                or type(record.pid) is not int or record.pid <= 0):
+            raise PermissionError("physical closure proof is stale or mismatched")
+        return body
+
+    def read_physical_process_tree_closure(self, resource_id: str, *, project_root: Path,
+                                         job_object_id: str) -> dict:
+        """Observe independently produced proof only after native settlement acknowledgment."""
+        record = self.ledger.get(resource_id)
+        body = self._verified_physical_process_tree_closure(record,
+            project_root=project_root, job_object_id=job_object_id)
+        if record.active or record.status != ResourceStatus.RECLAIMED.value:
+            raise PermissionError("physical closure proof is not acknowledged by its native owner")
+        return body
+
+    def reconcile_physical_process_tree_closure(self, resource_id: str, *, project_root: Path,
+                                              job_object_id: str) -> dict:
+        """Recover a lost acknowledgment from actual retained proof plus kernel root absence.
+
+        No process is killed, no PID is adopted, and no caller closure boolean is
+        accepted. Identity is rechecked under the native resource writer lock.
+        """
+        with self.ledger._lock, _wal_lock(self.ledger.lock_path, 30.0):
+            records = self.ledger._load_unlocked()
+            record = next((row for row in records if row.resource_id == resource_id), None)
+            if record is None:
+                raise KeyError(resource_id)
+            body = self._verified_physical_process_tree_closure(record,
+                project_root=project_root, job_object_id=job_object_id)
+            if record.active or record.status != ResourceStatus.RECLAIMED.value:
+                if self._persisted_process_is_alive(record, expected_pid=record.pid):
+                    raise PermissionError("physical closure acknowledgment has conflicting live custody")
+                terminal = record.run_state if record.run_state not in {RunState.ACTIVE.value, RunState.RECOVERABLE.value} else RunState.ABANDONED.value
+                self.ledger._upsert_unlocked(replace(record, active=False,
+                    run_state=terminal, status=ResourceStatus.RECLAIMED.value,
+                    cleanup_result="physical_tree_closure:"+body["receipt_sha256"],last_activity_at=_utc_now()))
+            return body
+
+    def verify_job_member(self, parent_resource_id: str, pid: int) -> VerifiedJobMembership:
+        """Prove a live PID belongs to an active process's retained Windows Job.
+
+        The process start token and Job membership are read through the same
+        operating-system process handle. Unsupported platforms and missing
+        retained ownership fail closed.
+        """
+        if os.name != "nt":
+            raise OSError("verified Job Object membership is Windows-only")
+        from .process_supervisor import _WindowsJob
+
+        record = self.ledger.get(parent_resource_id)
+        process = self._processes.get(parent_resource_id)
+        job = self._process_jobs.get(parent_resource_id)
+        if (
+            record.resource_type != "process"
+            or not record.active
+            or process is None
+            or process.poll() is not None
+            or type(job) is not _WindowsJob
+            or not job.handle
+        ):
+            raise ValueError("parent process has no active retained supervisor Job")
+        if type(pid) is not int or pid <= 0 or pid == process.pid:
+            raise ValueError("candidate PID is not a distinct positive process identity")
+        parent_identity = job.verify_owned_process(process)
+        if record.process_identity != parent_identity:
+            raise ValueError("retained parent process identity no longer matches its resource record")
+        member_identity = job.verify_pid(pid)
+        return VerifiedJobMembership(
+            parent_resource_id=parent_resource_id,
+            job_object_id=job.custody_id,
+            member_pid=pid,
+            member_process_start_identity=member_identity,
+            verified_at_utc=_utc_now(),
+        )
+
+    def attach_suspended_child(self, parent_resource_id: str, child_resource_id: str) -> VerifiedJobMembership:
+        """Attach only an owned never-resumed child before supervisor release."""
+        from .process_supervisor import _WindowsContainedPopen
+        parent = self.ledger.get(parent_resource_id)
+        child = self.ledger.get(child_resource_id)
+        if parent_resource_id == child_resource_id or parent.project_id != child.project_id:
+            raise ValueError("child must be a distinct resource in the parent's project")
+        self.verify_owned_job(parent_resource_id)
+        self.verify_owned_job(child_resource_id)
+        process = self._processes.get(child_resource_id)
+        if (type(process) is not _WindowsContainedPopen or not process._px_initial_thread
+                or process._px_resume_attempted):
+            raise ValueError("child's initial thread is no longer held before first execution")
+        self._process_jobs[parent_resource_id].attach_suspended_owned_process(process)
+        return self.verify_job_member(parent_resource_id, process.pid)
+
+    def verify_closed_owned_process(self, resource_id: str, *, pid: int, process_identity: str) -> None:
+        """Require canonical settled custody before closing a protected identity."""
+        record = self.ledger.get(resource_id)
+        if (record.resource_type != "process" or record.active or record.pid != pid
+                or record.process_identity != process_identity
+                or resource_id in self._processes or resource_id in self._process_jobs):
+            raise ValueError("owned process custody is not settled for this exact identity")
+
+    def verify_owned_job(self, resource_id: str) -> VerifiedJobMembership:
+        """Prove the exact live supervised root is in its retained Windows Job."""
+        if os.name != "nt":
+            raise OSError("verified Job Object membership is Windows-only")
+        from .process_supervisor import _WindowsJob
+
+        record = self.ledger.get(resource_id)
+        process = self._processes.get(resource_id)
+        job = self._process_jobs.get(resource_id)
+        if (
+            record.resource_type != "process"
+            or not record.active
+            or process is None
+            or process.poll() is not None
+            or type(job) is not _WindowsJob
+            or not job.handle
+        ):
+            raise ValueError("process has no active retained supervisor Job")
+        identity = job.verify_owned_process(process)
+        if record.process_identity != identity:
+            raise ValueError("retained process identity no longer matches its resource record")
+        return VerifiedJobMembership(
+            parent_resource_id=resource_id,
+            job_object_id=job.custody_id,
+            member_pid=process.pid,
+            member_process_start_identity=identity,
+            verified_at_utc=_utc_now(),
+        )
 
     def register_path(
         self,
@@ -1277,6 +1561,8 @@ class ResourceManager:
                     5.0 if deadline is None else min(5.0, max(0.0, deadline - time.monotonic())), 0.02)
             if not getattr(job, '_verified_closed', False):
                 raise RuntimeError('owned process tree has not closed')
+        if resource_id in self._process_closure_expectations:
+            self._publish_physical_process_tree_closure(resource_id)
         self._close_process_handles(process)
         if job is not None:
             job.close()
@@ -1289,6 +1575,7 @@ class ResourceManager:
         )
         self._processes.pop(resource_id, None)
         self._process_jobs.pop(resource_id, None)
+        self._process_closure_expectations.pop(resource_id, None)
         return result
 
     def complete_current_process(

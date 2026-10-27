@@ -1,0 +1,19 @@
+{
+  "command": [
+    "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.venv-repair\\Scripts\\python.exe",
+    "-m",
+    "pytest",
+    "tests/test_file_lock_thread_custody.py",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "--basetemp=.tmp/pytest-resume10-lock-exception-red"
+  ],
+  "exit_code": 1,
+  "tree_closed": true,
+  "resource_inactive": true,
+  "receipt": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.tmp\\resume10\\owned\\cleanup-receipts\\process-f58171a22c8544e8be765708f06d6618.json",
+  "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.tmp\\resume10\\owned\\pacifyx-cgjyembk",
+  "log": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\docs\\repair\\evidence\\resume10-lock-exception-red.log",
+  "log_sha256": "ffde8e43e69e28f36ff83f5a7a7e9450f7bd5138549417d528c91e7887df2043"
+}

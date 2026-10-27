@@ -1,0 +1,30 @@
+{
+  "timestamp_utc": "2026-10-27T01:09:15.882598+00:00",
+  "segment": "resume10-final-lock-failure-custody-and-operating-recheck",
+  "findings": [
+    "PX-AUD-084",
+    "PX-AUD-085"
+  ],
+  "source_sha256": {
+    "runtime/file_lock.py": "4bc466db4a12e723db3c957f172b54f14797ff33a123dd6fb4b55ab60ad8e943",
+    "tests/test_file_lock_thread_custody.py": "9d8a21ce8ae462e795afa6f57dd5d417e433b3f48d0e653d546b0cf9e636dcb8"
+  },
+  "evidence": [
+    "docs/repair/evidence/resume10-lock-exception-red.json",
+    "docs/repair/evidence/resume10-lock-final-custody.json",
+    "docs/repair/evidence/resume10-final-native-operating.json",
+    "docs/repair/evidence/resume10-script-custody.json",
+    "docs/repair/evidence/resume10-current-topology.json",
+    "docs/repair/evidence/resume10-custody/manifest.json"
+  ],
+  "observations": [
+    "2additional causal file-lock exception leaks reproduced and repaired;68lock/event neighbors passed.",
+    "Identity query failure closes initial handle; close exception still releases registry after kernel unlock. Unsettled heartbeat retains lease instead of closing a live writer descriptor; explicit retry after true stop closes safely.",
+    "8actual native Job/verdict/Windows sharing/crash checks pass after final infrastructure changes; child process trees closed.",
+    "25mandatory section definitions resolve;33required suites structurally covered. Changed governed sections remain phaseblocked.",
+    "Exact copied kernel/publisher and process custody receipts retained in Git-reviewable evidence, original workspaces preserved.",
+    "Script directory parent registration was late; recorded as current retention custody, not fabricated at-creation registration. Per-run child/workspace registration and settlement remain native."
+  ],
+  "closed": false,
+  "reviewer": "UNASSIGNED"
+}

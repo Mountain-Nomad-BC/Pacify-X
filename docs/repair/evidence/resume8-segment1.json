@@ -1,0 +1,58 @@
+{
+  "timestamp_utc": "2026-10-26T13:37:44.594577+00:00",
+  "segment": "resume8-native-operating-and-ui-events",
+  "state": "TESTED_COMPONENT_AND_NATIVE_HOST",
+  "closed": false,
+  "reviewer": "UNASSIGNED",
+  "checkpoint": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000036205",
+  "admission": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000036206",
+  "files": [
+    {
+      "path": "extension/src/agentHarness/eventBus.js",
+      "before_sha256": "9e2fa8e7b77cfed10245658242f2ae2d32bdc24397f432cdaf43f9805270250a",
+      "after_sha256": "0a7dd8b50198d65276b3bf2cdd42197aa76596b0a0b8bd50d27aea0717456aaf"
+    },
+    {
+      "path": "extension/src/agentHarness/agentConsoleProjection.js",
+      "before_sha256": "de7bcf7c31eff7313ddce24dde97204464c9555d00e9580c46b009eed936faa7",
+      "after_sha256": "f0cd134973c63371a57f6527193650ce444ae361bfcd014736e371edbcde484b"
+    },
+    {
+      "path": "extension/src/agentHarness/agentConsoleView.js",
+      "before_sha256": "8fc2961b5244f8deb3d25821b6dac78e14dfc4b40a587aee70105aa5a6d978be",
+      "after_sha256": "4e4642c49ead6d79148dba311dd1c58a1b34d054c30671ae5096197b18c100f0"
+    },
+    {
+      "path": "extension/tests/event-integrity-audit.test.js",
+      "before_sha256": null,
+      "after_sha256": "fb9ff4837a404dd20a910a7b7d32b9c659f54fb902a13fd5e652c4b62a4ee72f"
+    },
+    {
+      "path": "scripts/probe_native_job_containment.py",
+      "before_sha256": "600aeb590309e4d7cbe65e9c68653c718c9b83491bfa06a249fa09cbc5f569f8",
+      "after_sha256": "039744c369e332c245618f936dc6496a5be308bd1284fb056ffde610c6592bc9"
+    },
+    {
+      "path": "tests/test_native_job_operating_probe.py",
+      "before_sha256": "d8017309e50b51602e325c8f08b5377386d28bbebf27c67053830f4682d3e534",
+      "after_sha256": "4f3eb6f32f08cc5a1a6ae2dd9764f4877ba04f8a3a3dcb7188231d74553d96d8"
+    },
+    {
+      "path": "tests/test_native_job_probe_verdict.py",
+      "before_sha256": null,
+      "after_sha256": "2af5692394733adf6fe48562a9e0afcb974547a116d21830e6c631b359825548"
+    }
+  ],
+  "evidence": [
+    "docs/repair/evidence/resume8-probe-verdict-red.log",
+    "docs/repair/evidence/resume8-native-proof.log",
+    "docs/repair/evidence/resume8-ui-event-before.log",
+    "docs/repair/evidence/resume8-ui-event-neighbors.log"
+  ],
+  "limits": [
+    "27Node checks are real owner/transport unit integration, not an installed VS Code host",
+    "Native operating gate blocked by inherited campaign phase; five focused tests pass including real68-member Job proof",
+    "UI event port deliberately excludes future execution-context/model-catalog features pending their owners",
+    "Certification coverage still missing required owner suites; no generated refresh or certificate"
+  ]
+}

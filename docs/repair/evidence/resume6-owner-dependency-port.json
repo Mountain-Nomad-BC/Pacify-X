@@ -1,0 +1,83 @@
+{
+  "source_commit": "5ebc7368",
+  "files": [
+    {
+      "path": "runtime/cancellation_scope.py",
+      "source_sha256": "83674bcdb52d0eb4dc632ac2f2aed53bc9380536eab1013dd12e67d7aa17d958",
+      "before_sha256": null,
+      "after_sha256": "83674bcdb52d0eb4dc632ac2f2aed53bc9380536eab1013dd12e67d7aa17d958",
+      "adaptation": "Preserve bootstrap state namespace; exact bytes otherwise"
+    },
+    {
+      "path": "runtime/context_generation.py",
+      "source_sha256": "60cd507495427c935b130339e9b5bee00332cd4092b5f981ee38e7b42b72d443",
+      "before_sha256": null,
+      "after_sha256": "60cd507495427c935b130339e9b5bee00332cd4092b5f981ee38e7b42b72d443",
+      "adaptation": "Preserve bootstrap state namespace; exact bytes otherwise"
+    },
+    {
+      "path": "runtime/dependency_identity.py",
+      "source_sha256": "80cfe724119d7ede36653a4aa736ade4a26e3a17d6b952d5bc58d2a78faec38f",
+      "before_sha256": null,
+      "after_sha256": "80cfe724119d7ede36653a4aa736ade4a26e3a17d6b952d5bc58d2a78faec38f",
+      "adaptation": "Preserve bootstrap state namespace; exact bytes otherwise"
+    },
+    {
+      "path": "runtime/projection_gate.py",
+      "source_sha256": "b4648220bdf1c7f31242fa8bb735c630a62ca2ccd4b32b10bdbfcf01cb45948b",
+      "before_sha256": null,
+      "after_sha256": "b4648220bdf1c7f31242fa8bb735c630a62ca2ccd4b32b10bdbfcf01cb45948b",
+      "adaptation": "Preserve bootstrap state namespace; exact bytes otherwise"
+    },
+    {
+      "path": "runtime/workflow_resume.py",
+      "source_sha256": "64b4ce6fbff83530b0b748e7e7da0857a711c7b17ea9afcd7e3e5fd4a317d1ba",
+      "before_sha256": null,
+      "after_sha256": "64b4ce6fbff83530b0b748e7e7da0857a711c7b17ea9afcd7e3e5fd4a317d1ba",
+      "adaptation": "Preserve bootstrap state namespace; exact bytes otherwise"
+    },
+    {
+      "path": "tests/test_context_generation.py",
+      "source_sha256": "1e78f1c0f43a180ae039b46d4eed13b022f726ffcb9f6bc8e91154c6762d757a",
+      "before_sha256": null,
+      "after_sha256": "1e78f1c0f43a180ae039b46d4eed13b022f726ffcb9f6bc8e91154c6762d757a",
+      "adaptation": "Preserve bootstrap state namespace; exact bytes otherwise"
+    },
+    {
+      "path": "tests/test_projection_gate.py",
+      "source_sha256": "341290bda88ab529a2f815ee967961c52b6e6fc0362b2da139a6e7189783199b",
+      "before_sha256": null,
+      "after_sha256": "341290bda88ab529a2f815ee967961c52b6e6fc0362b2da139a6e7189783199b",
+      "adaptation": "Preserve bootstrap state namespace; exact bytes otherwise"
+    },
+    {
+      "path": "tests/test_execution_context.py",
+      "source_sha256": "77e0a11296cce829950ef4cf1c10331f933e26fa24e7243d4663244e459eecf0",
+      "before_sha256": null,
+      "after_sha256": "77e0a11296cce829950ef4cf1c10331f933e26fa24e7243d4663244e459eecf0",
+      "adaptation": "Preserve bootstrap state namespace; exact bytes otherwise"
+    },
+    {
+      "path": "tests/test_isolated_agent_sandbox.py",
+      "source_sha256": "f3a2d10714483892cb01d9e356ef0621b286a2d5a8ebf30b5f6c2c278dd2f03e",
+      "before_sha256": null,
+      "after_sha256": "f3a2d10714483892cb01d9e356ef0621b286a2d5a8ebf30b5f6c2c278dd2f03e",
+      "adaptation": "Preserve bootstrap state namespace; exact bytes otherwise"
+    },
+    {
+      "path": "tests/test_gremlin_containment.py",
+      "source_sha256": "c27313d7d792748df8b7a8fe52f324a9c632eca4ed5254c65db03fdf4ba2cc53",
+      "before_sha256": null,
+      "after_sha256": "c27313d7d792748df8b7a8fe52f324a9c632eca4ed5254c65db03fdf4ba2cc53",
+      "adaptation": "Preserve bootstrap state namespace; exact bytes otherwise"
+    },
+    {
+      "path": "tests/test_host_enforcement_audit.py",
+      "source_sha256": "c4a4d5d564de5b318625e050174293c3955f40ec44e80133830f0aaaaf9180c2",
+      "before_sha256": null,
+      "after_sha256": "c4a4d5d564de5b318625e050174293c3955f40ec44e80133830f0aaaaf9180c2",
+      "adaptation": "Preserve bootstrap state namespace; exact bytes otherwise"
+    }
+  ],
+  "status": "IMPLEMENTED_UNVERIFIED; integration tests required"
+}

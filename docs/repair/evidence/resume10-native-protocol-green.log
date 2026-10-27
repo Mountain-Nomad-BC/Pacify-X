@@ -1,0 +1,22 @@
+................................F........................                [100%]
+================================== FAILURES ===================================
+________ test_safe_reverse_translation_refuses_stateless_tool_guessing ________
+
+    def test_safe_reverse_translation_refuses_stateless_tool_guessing() -> None:
+        text = CanonicalModelEvent("r", "a", "m", 0, "text_delta", {"text": "x"})
+        event_name, wire = canonical_event_to_wire("openai_responses", text)
+        assert event_name == "response.output_text.delta"
+        assert wire["delta"] == "x"  # type: ignore[index]
+    
+        tool = CanonicalModelEvent("r", "a", "m", 1, "tool_call_start", {"call_id": "c", "name": "lookup"})
+>       with pytest.raises(ValueError, match="stateful certified fa�ade"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: Regex pattern did not match.
+E         Expected regex: 'stateful certified fa�ade'
+E         Actual message: 'tool-call client wire translation requires a stateful certified façade'
+
+tests\test_model_protocol_translate.py:147: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_model_protocol_translate.py::test_safe_reverse_translation_refuses_stateless_tool_guessing
+1 failed, 56 passed in 21.16s
+

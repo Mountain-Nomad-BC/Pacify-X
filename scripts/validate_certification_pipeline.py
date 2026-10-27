@@ -31,7 +31,107 @@ from runtime.certification_contract import (  # noqa: E402
 from scripts.run_release_candidate import Config as AutomationConfig  # noqa: E402
 from scripts.run_release_stage_owner import Config as StageConfig  # noqa: E402
 
+from runtime.test_runner import TEST_COLLECTION_OVERRIDE_ENV
+
 SCHEMA = "px.certification-pipeline-validation/1.0"
+
+REQUIRED_LIFECYCLE_TESTS = (
+    "tests/test_remote_profile_catalog.py",
+    "tests/test_provider_protocol_audit.py",
+    "tests/test_file_lock_thread_custody.py",
+    "tests/test_secure_publish_operating.py",
+    "tests/test_native_job_operating_probe.py",
+    "tests/test_native_job_probe_verdict.py",
+    "tests/test_contract_length_bounds.py",
+    "tests/test_context_generation.py",
+    "tests/test_projection_gate.py",
+    "tests/test_execution_context.py",
+    "tests/test_workflow_resume.py",
+    "tests/test_gremlin_host_configuration.py",
+    "tests/test_isolated_agent_sandbox.py",
+    "tests/test_billing_budget_audit.py",
+    "tests/test_event_integrity_audit.py",
+    "tests/test_event_ledger_regression.py",
+    "tests/test_host_enforcement_audit.py",
+    "tests/test_secure_publish.py",
+    "tests/test_project_revision_succession.py",
+    "tests/test_revision_campaign_lifecycle.py",
+    "tests/test_release_candidate_driver.py",
+    "tests/test_release_stage_owner.py",
+    "tests/test_run_installed_operational_owner.py",
+    "tests/test_certificate_input_contracts.py",
+    "tests/test_certification_readiness.py",
+    "tests/test_rollout_inventory.py",
+    "tests/test_certification_pipeline_readiness.py",
+)
+REQUIRED_NODE_TESTS = ("extension/tests/gateway-catalog-binding.test.js", "extension/tests/mcp-client-protocol-audit.test.js", "extension/tests/context-provenance-audit.test.js", "extension/tests/agent-harness-streaming.test.js", "extension/tests/event-integrity-audit.test.js", "extension/tests/billing-settlement-audit.test.js", "extension/tests/task-state-custody.test.js", "extension/tests/provider-settlement-contract.test.js")
+
+
+def _unfiltered_pytest(command: list[str]) -> bool:
+    if command[:3] != ["python", "-m", "pytest"]:
+        return False
+    arguments = iter(command[3:])
+    for token in arguments:
+        if token == "-p":
+            if next(arguments, None) != "no:cacheprovider":
+                return False
+        elif token.startswith("-") and token not in {"-q", "-qq", "--quiet", "-ra", "--tb=short"}:
+            # Unknown options can replace collection or inject a plugin. A
+            # deny-list misses aliases such as -o addopts=--collect-only.
+            return False
+    return True
+
+
+def certification_coverage(root: Path) -> dict[str, Any]:
+    """Require the current release mechanisms to be exercised by governed sections."""
+    from runtime.json_io import load_json_object
+    profiles = load_json_object(root / "registry/test_profiles.json", max_bytes=2*1024*1024)
+    sections = profiles.get("sections")
+    if not isinstance(sections, dict) or not sections:
+        raise ValidationBlocked("governed section topology is missing")
+    environments = [profiles.get("environment", {})]
+    environments.extend(item.get("environment", {}) for item in sections.values() if isinstance(item, dict))
+    for environment in environments:
+        if (not isinstance(environment, dict)
+                or any(str(key).upper() in TEST_COLLECTION_OVERRIDE_ENV for key in environment)):
+            raise ValidationBlocked("governed environment cannot override required test collection")
+    required = profiles.get("certification", {}).get("required_sections")
+    if (not isinstance(required, list) or not required
+            or any(not isinstance(name, str) or name not in sections for name in required)
+            or len(required) != len(set(required))):
+        raise ValidationBlocked("required governed section denominator is malformed")
+    membership: dict[str, list[str]] = {}
+    for name, definition in sections.items():
+        if (not isinstance(definition, dict) or not isinstance(definition.get("command"), list)
+                or any(type(token) is not str for token in definition["command"])):
+            raise ValidationBlocked("governed section command is malformed")
+        command = definition["command"]
+        if any(token in REQUIRED_LIFECYCLE_TESTS for token in command):
+            if not _unfiltered_pytest(command):
+                raise ValidationBlocked("lifecycle coverage requires an unfiltered pytest command")
+        for token in definition["command"]:
+            if token in REQUIRED_LIFECYCLE_TESTS and name in required:
+                membership.setdefault(token, []).append(name)
+        if definition.get("cwd") == "extension":
+            for token in command:
+                path = "extension/" + str(token)
+                if path not in REQUIRED_NODE_TESTS:
+                    continue
+                if command[:2] != ["node", "--test"] or any(
+                    item.startswith("-") or not item.endswith(".test.js") for item in command[2:]
+                ):
+                    raise ValidationBlocked("UI event coverage requires an unfiltered node test command")
+                if name in required:
+                    membership.setdefault(path, []).append(name)
+    all_required = (*REQUIRED_LIFECYCLE_TESTS, *REQUIRED_NODE_TESTS)
+    missing = [path for path in all_required if path not in membership]
+    absent = [path for path in all_required
+              if not (root / path).is_file() or (root / path).is_symlink()]
+    duplicate = [path for path, owners in membership.items() if len(owners) != len(set(owners))]
+    return {"valid": not missing and not absent and not duplicate,
+            "required_count": len(all_required), "membership": membership,
+            "missing_membership": missing, "missing_files": absent,
+            "duplicate_members": duplicate}
 
 REQUIRED_REPO_FILES = (
     # Direct certification control surface.
@@ -181,6 +281,15 @@ def validate(automation_path: Path, stage_path: Path, *, allow_started: bool) ->
         return {"schema_version": SCHEMA, "valid": False, "errors": ["STAGE_CONFIG_SCHEMA"], "checks": checks}
 
     root = automation.root
+    try:
+        coverage = certification_coverage(root)
+        _add(checks, "GOVERNED_LIFECYCLE_COVERAGE", coverage["valid"],
+             "required repair and certification suites must have mandatory governed owners", **coverage)
+        if not coverage["valid"]:
+            errors.append("GOVERNED_LIFECYCLE_COVERAGE")
+    except (OSError, ValueError, TypeError, ValidationBlocked) as exc:
+        _add(checks, "GOVERNED_LIFECYCLE_COVERAGE", False, str(exc))
+        errors.append("GOVERNED_LIFECYCLE_COVERAGE")
     before = _status_snapshot(root)
 
     pair_checks = {

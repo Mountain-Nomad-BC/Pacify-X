@@ -1,0 +1,29 @@
+{
+  "action_id": "client-protocol-red",
+  "audit_record_hash": "bbe3038a94f8f9ab3a719dab24abe1c8e912f555e7873304b5085c690b47446a",
+  "duration_seconds": 0.6921653000026708,
+  "ended_at": "2026-10-27T01:15:20.302Z",
+  "exit_code": 1,
+  "failure_type": null,
+  "receipt_id": "process-601cb6357ea245e28ea9ab96c905d8b6",
+  "resource_id": "process-4a451327e5be4fbeb1c75e58c81b3792",
+  "schema_version": "px.process-supervision-receipt/1.0",
+  "shutdown_mode": "natural",
+  "started_at": "2026-10-27T01:15:19.610Z",
+  "status": "exited",
+  "stderr": {
+    "decode_error_count": 0,
+    "dropped_bytes": 0,
+    "retained_bytes": 0,
+    "total_bytes": 0,
+    "truncated": false
+  },
+  "stdout": {
+    "decode_error_count": 0,
+    "dropped_bytes": 0,
+    "retained_bytes": 5090,
+    "total_bytes": 5090,
+    "truncated": false
+  },
+  "tree_closed": true
+}

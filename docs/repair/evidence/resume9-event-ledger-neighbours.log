@@ -1,0 +1,11 @@
+................................                                         [100%]
+============================= slowest 8 durations =============================
+126.68s call     tests/test_wal_transaction.py::test_real_process_kill_at_every_write_boundary_recovers_atomically
+2.69s call     tests/test_wal_transaction.py::test_persistent_permission_denial_is_bounded_and_recoverable
+2.69s call     tests/test_wal_transaction.py::test_later_transaction_can_supersede_prior_committed_values
+1.52s call     tests/test_wal_transaction.py::test_roll_forward_recovery_is_idempotent
+1.51s call     tests/test_wal_transaction.py::test_committed_manifest_target_drift_blocks_recovery
+1.35s call     tests/test_wal_transaction.py::test_commit_retries_transient_permission_denial_during_file_publication
+1.34s call     tests/test_wal_transaction.py::test_inspect_reports_pending_recovery_without_any_filesystem_change
+1.26s call     tests/test_wal_transaction.py::test_commit_coordinates_every_semantic_json_artifact
+32 passed in 155.30s (0:02:35)

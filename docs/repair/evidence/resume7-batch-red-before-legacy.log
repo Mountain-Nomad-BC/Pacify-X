@@ -1,0 +1,755 @@
+﻿LEGACY publish_batch=one-event-at-a-time (HEAD ed119411)
+..FF.FFFF....FFFFFFFFFF.F...                                             [100%]
+================================== FAILURES ===================================
+____ test_entire_batch_is_validated_before_any_event_is_committed[invalid] ____
+
+tmp_path = WindowsPath('C:/Users/Ben/AppData/Local/Temp/pytest-of-Ben/pytest-314/test_entire_batch_is_validated0')
+failure = 'invalid'
+
+    @pytest.mark.parametrize("failure", ["invalid", "duplicate"])
+    def test_entire_batch_is_validated_before_any_event_is_committed(tmp_path, failure):
+        bus = OperationalEventBus(ROOT, tmp_path / "bus", tmp_path)
+        first = _event("batch-first", None)
+        second = deepcopy(first) if failure == "duplicate" else _event("batch-second", None)
+        if failure == "invalid":
+            second["source"]["coverage_tier"] = "incorrect"
+        with pytest.raises(ValueError):
+            bus.publish_batch([first, second], link_current_head=True)
+>       assert bus.replay()["revision"] == 0
+E       assert 1 == 0
+
+tests\test_event_integrity_audit.py:52: AssertionError
+___ test_entire_batch_is_validated_before_any_event_is_committed[duplicate] ___
+
+tmp_path = WindowsPath('C:/Users/Ben/AppData/Local/Temp/pytest-of-Ben/pytest-314/test_entire_batch_is_validated1')
+failure = 'duplicate'
+
+    @pytest.mark.parametrize("failure", ["invalid", "duplicate"])
+    def test_entire_batch_is_validated_before_any_event_is_committed(tmp_path, failure):
+        bus = OperationalEventBus(ROOT, tmp_path / "bus", tmp_path)
+        first = _event("batch-first", None)
+        second = deepcopy(first) if failure == "duplicate" else _event("batch-second", None)
+        if failure == "invalid":
+            second["source"]["coverage_tier"] = "incorrect"
+        with pytest.raises(ValueError):
+            bus.publish_batch([first, second], link_current_head=True)
+>       assert bus.replay()["revision"] == 0
+E       assert 1 == 0
+
+tests\test_event_integrity_audit.py:52: AssertionError
+_________ test_batch_is_one_wal_transaction_and_retains_all_receipts __________
+
+tmp_path = WindowsPath('C:/Users/Ben/AppData/Local/Temp/pytest-of-Ben/pytest-314/test_batch_is_one_wal_transact0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DCE014E190>
+
+    def test_batch_is_one_wal_transaction_and_retains_all_receipts(tmp_path, monkeypatch):
+        bus = OperationalEventBus(ROOT, tmp_path / "bus", tmp_path)
+        commits = []
+        original = bus.wal.commit
+        def commit(*args, **kwargs):
+            commits.append(kwargs["transaction_id"])
+            return original(*args, **kwargs)
+        monkeypatch.setattr(bus.wal, "commit", commit)
+        receipts = bus.publish_batch([_event("batch-one", None), _event("batch-two", None)], link_current_head=True)
+>       assert len(commits) == 1
+E       AssertionError: assert 2 == 1
+E        +  where 2 = len(['operation-00000001-036dce4af548', 'operation-00000002-be8402d62c8a'])
+
+tests\test_event_integrity_audit.py:77: AssertionError
+_____ test_interrupted_batch_recovers_all_events_without_republishing[0] ______
+
+tmp_path = WindowsPath('C:/Users/Ben/AppData/Local/Temp/pytest-of-Ben/pytest-314/test_interrupted_batch_recover0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DCE014E780>
+index = 0
+
+    @pytest.mark.parametrize("index", [0, 3, 8])
+    def test_interrupted_batch_recovers_all_events_without_republishing(tmp_path, monkeypatch, index):
+        bus = OperationalEventBus(ROOT, tmp_path / "bus", tmp_path)
+        original = bus.wal.commit
+        def interrupted(boundary):
+            if boundary == f"target:{index}:published":
+                raise RuntimeError("injected interruption")
+        def commit(*args, **kwargs):
+            return original(*args, **kwargs, fault_injector=interrupted)
+        monkeypatch.setattr(bus.wal, "commit", commit)
+        with pytest.raises(RuntimeError):
+            bus.publish_batch([_event("first", None), _event("second", None)], link_current_head=True)
+        replay = OperationalEventBus(ROOT, tmp_path / "bus", tmp_path).replay()
+        assert replay["valid"] is True
+>       assert [row["event"]["event_id"] for row in replay["events"]] == ["first", "second"]
+E       AssertionError: assert ['first'] == ['first', 'second']
+E         
+E         Right contains one more item: 'second'
+E         Use -v to get more diff
+
+tests\test_event_integrity_audit.py:98: AssertionError
+_____ test_interrupted_batch_recovers_all_events_without_republishing[3] ______
+
+tmp_path = WindowsPath('C:/Users/Ben/AppData/Local/Temp/pytest-of-Ben/pytest-314/test_interrupted_batch_recover1')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DCDFEFEE70>
+index = 3
+
+    @pytest.mark.parametrize("index", [0, 3, 8])
+    def test_interrupted_batch_recovers_all_events_without_republishing(tmp_path, monkeypatch, index):
+        bus = OperationalEventBus(ROOT, tmp_path / "bus", tmp_path)
+        original = bus.wal.commit
+        def interrupted(boundary):
+            if boundary == f"target:{index}:published":
+                raise RuntimeError("injected interruption")
+        def commit(*args, **kwargs):
+            return original(*args, **kwargs, fault_injector=interrupted)
+        monkeypatch.setattr(bus.wal, "commit", commit)
+        with pytest.raises(RuntimeError):
+            bus.publish_batch([_event("first", None), _event("second", None)], link_current_head=True)
+        replay = OperationalEventBus(ROOT, tmp_path / "bus", tmp_path).replay()
+        assert replay["valid"] is True
+>       assert [row["event"]["event_id"] for row in replay["events"]] == ["first", "second"]
+E       AssertionError: assert ['first'] == ['first', 'second']
+E         
+E         Right contains one more item: 'second'
+E         Use -v to get more diff
+
+tests\test_event_integrity_audit.py:98: AssertionError
+_____ test_interrupted_batch_recovers_all_events_without_republishing[8] ______
+
+tmp_path = WindowsPath('C:/Users/Ben/AppData/Local/Temp/pytest-of-Ben/pytest-314/test_interrupted_batch_recover2')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DCE00DCAF0>
+index = 8
+
+    @pytest.mark.parametrize("index", [0, 3, 8])
+    def test_interrupted_batch_recovers_all_events_without_republishing(tmp_path, monkeypatch, index):
+        bus = OperationalEventBus(ROOT, tmp_path / "bus", tmp_path)
+        original = bus.wal.commit
+        def interrupted(boundary):
+            if boundary == f"target:{index}:published":
+                raise RuntimeError("injected interruption")
+        def commit(*args, **kwargs):
+            return original(*args, **kwargs, fault_injector=interrupted)
+        monkeypatch.setattr(bus.wal, "commit", commit)
+>       with pytest.raises(RuntimeError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE RuntimeError
+
+tests\test_event_integrity_audit.py:94: Failed
+_ test_batch_failure_at_every_publication_point_keeps_one_custody_image[manifest:prepared:staged] _
+
+tmp_path = WindowsPath('C:/Users/Ben/AppData/Local/Temp/pytest-of-Ben/pytest-314/test_batch_failure_at_every_pu4')
+boundary = 'manifest:prepared:staged'
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DCDFE724E0>
+
+    @pytest.mark.parametrize("boundary", [
+        "intent:before_acceptance",
+        "journal:transaction:created",
+        "journal:after:0",
+        "journal:after:5",
+        "manifest:prepared:staged",
+        "manifest:prepared:published",
+        "manifest:applying:published",
+        "target:0:staged",
+        "target:2:published",
+        "target:4:staged",
+        "target:8:published",
+        "manifest:committed:staged",
+        "manifest:committed:published",
+        "journal:committed:published",
+    ])
+    def test_batch_failure_at_every_publication_point_keeps_one_custody_image(
+        tmp_path, boundary, monkeypatch
+    ):
+        "A crash at any WAL boundary recovers the whole batch, never a prefix."
+        bus = OperationalEventBus(ROOT, tmp_path / "bus", tmp_path)
+        original = bus.wal.commit
+        observed_boundaries = []
+        def interrupted(observed):
+            observed_boundaries.append(observed)
+            if observed == boundary:
+                raise RuntimeError(f"interrupted at {boundary}")
+    
+        def commit(wal_self, artifacts, **kwargs):
+            return original(artifacts, **kwargs, fault_injector=interrupted)
+    
+        monkeypatch.setattr(JsonWal, "commit", commit)
+        with pytest.raises(RuntimeError, match="interrupted at"):
+            bus.publish_batch(
+                [_event("boundary-a", None), _event("boundary-b", None)],
+                link_current_head=True,
+            )
+        # The injected boundary must be the exact one reached, not a neighbour.
+        assert observed_boundaries[-1] == boundary
+>       assert len(observed_boundaries) == 1 + [
+            "intent:before_acceptance", "journal:transaction:created", "journal:after:0",
+            "journal:after:1", "journal:after:2", "journal:after:3", "journal:after:4",
+            "journal:after:5", "journal:after:6", "journal:after:7", "journal:after:8",
+            "manifest:prepared:staged", "manifest:prepared:published",
+            "manifest:applying:staged", "manifest:applying:published",
+            *[f"target:{index}:{stage}" for index in range(9) for stage in ("staged", "published")],
+            "manifest:committed:staged", "manifest:committed:published",
+            "journal:committed:published",
+        ].index(boundary)
+E       AssertionError: assert 9 == (1 + 11)
+E        +  where 9 = len(['intent:before_acceptance', 'journal:transaction:created', 'journal:after:0', 'journal:after:1', 'journal:after:2', 'journal:after:3', ...])
+E        +  and   11 = <built-in method index of list object at 0x000001DCE002A400>('manifest:prepared:staged')
+E        +    where <built-in method index of list object at 0x000001DCE002A400> = ['intent:before_acceptance', 'journal:transaction:created', 'journal:after:0', 'journal:after:1', 'journal:after:2', 'journal:after:3', ...].index
+
+tests\test_event_integrity_audit.py:140: AssertionError
+_ test_batch_failure_at_every_publication_point_keeps_one_custody_image[manifest:prepared:published] _
+
+tmp_path = WindowsPath('C:/Users/Ben/AppData/Local/Temp/pytest-of-Ben/pytest-314/test_batch_failure_at_every_pu5')
+boundary = 'manifest:prepared:published'
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DCE004DE10>
+
+    @pytest.mark.parametrize("boundary", [
+        "intent:before_acceptance",
+        "journal:transaction:created",
+        "journal:after:0",
+        "journal:after:5",
+        "manifest:prepared:staged",
+        "manifest:prepared:published",
+        "manifest:applying:published",
+        "target:0:staged",
+        "target:2:published",
+        "target:4:staged",
+        "target:8:published",
+        "manifest:committed:staged",
+        "manifest:committed:published",
+        "journal:committed:published",
+    ])
+    def test_batch_failure_at_every_publication_point_keeps_one_custody_image(
+        tmp_path, boundary, monkeypatch
+    ):
+        "A crash at any WAL boundary recovers the whole batch, never a prefix."
+        bus = OperationalEventBus(ROOT, tmp_path / "bus", tmp_path)
+        original = bus.wal.commit
+        observed_boundaries = []
+        def interrupted(observed):
+            observed_boundaries.append(observed)
+            if observed == boundary:
+                raise RuntimeError(f"interrupted at {boundary}")
+    
+        def commit(wal_self, artifacts, **kwargs):
+            return original(artifacts, **kwargs, fault_injector=interrupted)
+    
+        monkeypatch.setattr(JsonWal, "commit", commit)
+        with pytest.raises(RuntimeError, match="interrupted at"):
+            bus.publish_batch(
+                [_event("boundary-a", None), _event("boundary-b", None)],
+                link_current_head=True,
+            )
+        # The injected boundary must be the exact one reached, not a neighbour.
+        assert observed_boundaries[-1] == boundary
+>       assert len(observed_boundaries) == 1 + [
+            "intent:before_acceptance", "journal:transaction:created", "journal:after:0",
+            "journal:after:1", "journal:after:2", "journal:after:3", "journal:after:4",
+            "journal:after:5", "journal:after:6", "journal:after:7", "journal:after:8",
+            "manifest:prepared:staged", "manifest:prepared:published",
+            "manifest:applying:staged", "manifest:applying:published",
+            *[f"target:{index}:{stage}" for index in range(9) for stage in ("staged", "published")],
+            "manifest:committed:staged", "manifest:committed:published",
+            "journal:committed:published",
+        ].index(boundary)
+E       AssertionError: assert 10 == (1 + 12)
+E        +  where 10 = len(['intent:before_acceptance', 'journal:transaction:created', 'journal:after:0', 'journal:after:1', 'journal:after:2', 'journal:after:3', ...])
+E        +  and   12 = <built-in method index of list object at 0x000001DCDFEE1480>('manifest:prepared:published')
+E        +    where <built-in method index of list object at 0x000001DCDFEE1480> = ['intent:before_acceptance', 'journal:transaction:created', 'journal:after:0', 'journal:after:1', 'journal:after:2', 'journal:after:3', ...].index
+
+tests\test_event_integrity_audit.py:140: AssertionError
+_ test_batch_failure_at_every_publication_point_keeps_one_custody_image[manifest:applying:published] _
+
+tmp_path = WindowsPath('C:/Users/Ben/AppData/Local/Temp/pytest-of-Ben/pytest-314/test_batch_failure_at_every_pu6')
+boundary = 'manifest:applying:published'
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DCE004D7F0>
+
+    @pytest.mark.parametrize("boundary", [
+        "intent:before_acceptance",
+        "journal:transaction:created",
+        "journal:after:0",
+        "journal:after:5",
+        "manifest:prepared:staged",
+        "manifest:prepared:published",
+        "manifest:applying:published",
+        "target:0:staged",
+        "target:2:published",
+        "target:4:staged",
+        "target:8:published",
+        "manifest:committed:staged",
+        "manifest:committed:published",
+        "journal:committed:published",
+    ])
+    def test_batch_failure_at_every_publication_point_keeps_one_custody_image(
+        tmp_path, boundary, monkeypatch
+    ):
+        "A crash at any WAL boundary recovers the whole batch, never a prefix."
+        bus = OperationalEventBus(ROOT, tmp_path / "bus", tmp_path)
+        original = bus.wal.commit
+        observed_boundaries = []
+        def interrupted(observed):
+            observed_boundaries.append(observed)
+            if observed == boundary:
+                raise RuntimeError(f"interrupted at {boundary}")
+    
+        def commit(wal_self, artifacts, **kwargs):
+            return original(artifacts, **kwargs, fault_injector=interrupted)
+    
+        monkeypatch.setattr(JsonWal, "commit", commit)
+        with pytest.raises(RuntimeError, match="interrupted at"):
+            bus.publish_batch(
+                [_event("boundary-a", None), _event("boundary-b", None)],
+                link_current_head=True,
+            )
+        # The injected boundary must be the exact one reached, not a neighbour.
+        assert observed_boundaries[-1] == boundary
+>       assert len(observed_boundaries) == 1 + [
+            "intent:before_acceptance", "journal:transaction:created", "journal:after:0",
+            "journal:after:1", "journal:after:2", "journal:after:3", "journal:after:4",
+            "journal:after:5", "journal:after:6", "journal:after:7", "journal:after:8",
+            "manifest:prepared:staged", "manifest:prepared:published",
+            "manifest:applying:staged", "manifest:applying:published",
+            *[f"target:{index}:{stage}" for index in range(9) for stage in ("staged", "published")],
+            "manifest:committed:staged", "manifest:committed:published",
+            "journal:committed:published",
+        ].index(boundary)
+E       AssertionError: assert 12 == (1 + 14)
+E        +  where 12 = len(['intent:before_acceptance', 'journal:transaction:created', 'journal:after:0', 'journal:after:1', 'journal:after:2', 'journal:after:3', ...])
+E        +  and   14 = <built-in method index of list object at 0x000001DCDFFA1140>('manifest:applying:published')
+E        +    where <built-in method index of list object at 0x000001DCDFFA1140> = ['intent:before_acceptance', 'journal:transaction:created', 'journal:after:0', 'journal:after:1', 'journal:after:2', 'journal:after:3', ...].index
+
+tests\test_event_integrity_audit.py:140: AssertionError
+_ test_batch_failure_at_every_publication_point_keeps_one_custody_image[target:0:staged] _
+
+tmp_path = WindowsPath('C:/Users/Ben/AppData/Local/Temp/pytest-of-Ben/pytest-314/test_batch_failure_at_every_pu7')
+boundary = 'target:0:staged'
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DCDFEE6EA0>
+
+    @pytest.mark.parametrize("boundary", [
+        "intent:before_acceptance",
+        "journal:transaction:created",
+        "journal:after:0",
+        "journal:after:5",
+        "manifest:prepared:staged",
+        "manifest:prepared:published",
+        "manifest:applying:published",
+        "target:0:staged",
+        "target:2:published",
+        "target:4:staged",
+        "target:8:published",
+        "manifest:committed:staged",
+        "manifest:committed:published",
+        "journal:committed:published",
+    ])
+    def test_batch_failure_at_every_publication_point_keeps_one_custody_image(
+        tmp_path, boundary, monkeypatch
+    ):
+        "A crash at any WAL boundary recovers the whole batch, never a prefix."
+        bus = OperationalEventBus(ROOT, tmp_path / "bus", tmp_path)
+        original = bus.wal.commit
+        observed_boundaries = []
+        def interrupted(observed):
+            observed_boundaries.append(observed)
+            if observed == boundary:
+                raise RuntimeError(f"interrupted at {boundary}")
+    
+        def commit(wal_self, artifacts, **kwargs):
+            return original(artifacts, **kwargs, fault_injector=interrupted)
+    
+        monkeypatch.setattr(JsonWal, "commit", commit)
+        with pytest.raises(RuntimeError, match="interrupted at"):
+            bus.publish_batch(
+                [_event("boundary-a", None), _event("boundary-b", None)],
+                link_current_head=True,
+            )
+        # The injected boundary must be the exact one reached, not a neighbour.
+        assert observed_boundaries[-1] == boundary
+>       assert len(observed_boundaries) == 1 + [
+            "intent:before_acceptance", "journal:transaction:created", "journal:after:0",
+            "journal:after:1", "journal:after:2", "journal:after:3", "journal:after:4",
+            "journal:after:5", "journal:after:6", "journal:after:7", "journal:after:8",
+            "manifest:prepared:staged", "manifest:prepared:published",
+            "manifest:applying:staged", "manifest:applying:published",
+            *[f"target:{index}:{stage}" for index in range(9) for stage in ("staged", "published")],
+            "manifest:committed:staged", "manifest:committed:published",
+            "journal:committed:published",
+        ].index(boundary)
+E       AssertionError: assert 13 == (1 + 15)
+E        +  where 13 = len(['intent:before_acceptance', 'journal:transaction:created', 'journal:after:0', 'journal:after:1', 'journal:after:2', 'journal:after:3', ...])
+E        +  and   15 = <built-in method index of list object at 0x000001DCDFFC8800>('target:0:staged')
+E        +    where <built-in method index of list object at 0x000001DCDFFC8800> = ['intent:before_acceptance', 'journal:transaction:created', 'journal:after:0', 'journal:after:1', 'journal:after:2', 'journal:after:3', ...].index
+
+tests\test_event_integrity_audit.py:140: AssertionError
+_ test_batch_failure_at_every_publication_point_keeps_one_custody_image[target:2:published] _
+
+tmp_path = WindowsPath('C:/Users/Ben/AppData/Local/Temp/pytest-of-Ben/pytest-314/test_batch_failure_at_every_pu8')
+boundary = 'target:2:published'
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DCDFD42F90>
+
+    @pytest.mark.parametrize("boundary", [
+        "intent:before_acceptance",
+        "journal:transaction:created",
+        "journal:after:0",
+        "journal:after:5",
+        "manifest:prepared:staged",
+        "manifest:prepared:published",
+        "manifest:applying:published",
+        "target:0:staged",
+        "target:2:published",
+        "target:4:staged",
+        "target:8:published",
+        "manifest:committed:staged",
+        "manifest:committed:published",
+        "journal:committed:published",
+    ])
+    def test_batch_failure_at_every_publication_point_keeps_one_custody_image(
+        tmp_path, boundary, monkeypatch
+    ):
+        "A crash at any WAL boundary recovers the whole batch, never a prefix."
+        bus = OperationalEventBus(ROOT, tmp_path / "bus", tmp_path)
+        original = bus.wal.commit
+        observed_boundaries = []
+        def interrupted(observed):
+            observed_boundaries.append(observed)
+            if observed == boundary:
+                raise RuntimeError(f"interrupted at {boundary}")
+    
+        def commit(wal_self, artifacts, **kwargs):
+            return original(artifacts, **kwargs, fault_injector=interrupted)
+    
+        monkeypatch.setattr(JsonWal, "commit", commit)
+        with pytest.raises(RuntimeError, match="interrupted at"):
+            bus.publish_batch(
+                [_event("boundary-a", None), _event("boundary-b", None)],
+                link_current_head=True,
+            )
+        # The injected boundary must be the exact one reached, not a neighbour.
+        assert observed_boundaries[-1] == boundary
+>       assert len(observed_boundaries) == 1 + [
+            "intent:before_acceptance", "journal:transaction:created", "journal:after:0",
+            "journal:after:1", "journal:after:2", "journal:after:3", "journal:after:4",
+            "journal:after:5", "journal:after:6", "journal:after:7", "journal:after:8",
+            "manifest:prepared:staged", "manifest:prepared:published",
+            "manifest:applying:staged", "manifest:applying:published",
+            *[f"target:{index}:{stage}" for index in range(9) for stage in ("staged", "published")],
+            "manifest:committed:staged", "manifest:committed:published",
+            "journal:committed:published",
+        ].index(boundary)
+E       AssertionError: assert 18 == (1 + 20)
+E        +  where 18 = len(['intent:before_acceptance', 'journal:transaction:created', 'journal:after:0', 'journal:after:1', 'journal:after:2', 'journal:after:3', ...])
+E        +  and   20 = <built-in method index of list object at 0x000001DCE0074E40>('target:2:published')
+E        +    where <built-in method index of list object at 0x000001DCE0074E40> = ['intent:before_acceptance', 'journal:transaction:created', 'journal:after:0', 'journal:after:1', 'journal:after:2', 'journal:after:3', ...].index
+
+tests\test_event_integrity_audit.py:140: AssertionError
+_ test_batch_failure_at_every_publication_point_keeps_one_custody_image[target:4:staged] _
+
+tmp_path = WindowsPath('C:/Users/Ben/AppData/Local/Temp/pytest-of-Ben/pytest-314/test_batch_failure_at_every_pu9')
+boundary = 'target:4:staged'
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DCDFF347D0>
+
+    @pytest.mark.parametrize("boundary", [
+        "intent:before_acceptance",
+        "journal:transaction:created",
+        "journal:after:0",
+        "journal:after:5",
+        "manifest:prepared:staged",
+        "manifest:prepared:published",
+        "manifest:applying:published",
+        "target:0:staged",
+        "target:2:published",
+        "target:4:staged",
+        "target:8:published",
+        "manifest:committed:staged",
+        "manifest:committed:published",
+        "journal:committed:published",
+    ])
+    def test_batch_failure_at_every_publication_point_keeps_one_custody_image(
+        tmp_path, boundary, monkeypatch
+    ):
+        "A crash at any WAL boundary recovers the whole batch, never a prefix."
+        bus = OperationalEventBus(ROOT, tmp_path / "bus", tmp_path)
+        original = bus.wal.commit
+        observed_boundaries = []
+        def interrupted(observed):
+            observed_boundaries.append(observed)
+            if observed == boundary:
+                raise RuntimeError(f"interrupted at {boundary}")
+    
+        def commit(wal_self, artifacts, **kwargs):
+            return original(artifacts, **kwargs, fault_injector=interrupted)
+    
+        monkeypatch.setattr(JsonWal, "commit", commit)
+        with pytest.raises(RuntimeError, match="interrupted at"):
+            bus.publish_batch(
+                [_event("boundary-a", None), _event("boundary-b", None)],
+                link_current_head=True,
+            )
+        # The injected boundary must be the exact one reached, not a neighbour.
+        assert observed_boundaries[-1] == boundary
+>       assert len(observed_boundaries) == 1 + [
+            "intent:before_acceptance", "journal:transaction:created", "journal:after:0",
+            "journal:after:1", "journal:after:2", "journal:after:3", "journal:after:4",
+            "journal:after:5", "journal:after:6", "journal:after:7", "journal:after:8",
+            "manifest:prepared:staged", "manifest:prepared:published",
+            "manifest:applying:staged", "manifest:applying:published",
+            *[f"target:{index}:{stage}" for index in range(9) for stage in ("staged", "published")],
+            "manifest:committed:staged", "manifest:committed:published",
+            "journal:committed:published",
+        ].index(boundary)
+E       AssertionError: assert 21 == (1 + 23)
+E        +  where 21 = len(['intent:before_acceptance', 'journal:transaction:created', 'journal:after:0', 'journal:after:1', 'journal:after:2', 'journal:after:3', ...])
+E        +  and   23 = <built-in method index of list object at 0x000001DCE0052000>('target:4:staged')
+E        +    where <built-in method index of list object at 0x000001DCE0052000> = ['intent:before_acceptance', 'journal:transaction:created', 'journal:after:0', 'journal:after:1', 'journal:after:2', 'journal:after:3', ...].index
+
+tests\test_event_integrity_audit.py:140: AssertionError
+_ test_batch_failure_at_every_publication_point_keeps_one_custody_image[target:8:published] _
+
+tmp_path = WindowsPath('C:/Users/Ben/AppData/Local/Temp/pytest-of-Ben/pytest-314/test_batch_failure_at_every_pu10')
+boundary = 'target:8:published'
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DCDFF9F800>
+
+    @pytest.mark.parametrize("boundary", [
+        "intent:before_acceptance",
+        "journal:transaction:created",
+        "journal:after:0",
+        "journal:after:5",
+        "manifest:prepared:staged",
+        "manifest:prepared:published",
+        "manifest:applying:published",
+        "target:0:staged",
+        "target:2:published",
+        "target:4:staged",
+        "target:8:published",
+        "manifest:committed:staged",
+        "manifest:committed:published",
+        "journal:committed:published",
+    ])
+    def test_batch_failure_at_every_publication_point_keeps_one_custody_image(
+        tmp_path, boundary, monkeypatch
+    ):
+        "A crash at any WAL boundary recovers the whole batch, never a prefix."
+        bus = OperationalEventBus(ROOT, tmp_path / "bus", tmp_path)
+        original = bus.wal.commit
+        observed_boundaries = []
+        def interrupted(observed):
+            observed_boundaries.append(observed)
+            if observed == boundary:
+                raise RuntimeError(f"interrupted at {boundary}")
+    
+        def commit(wal_self, artifacts, **kwargs):
+            return original(artifacts, **kwargs, fault_injector=interrupted)
+    
+        monkeypatch.setattr(JsonWal, "commit", commit)
+>       with pytest.raises(RuntimeError, match="interrupted at"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE RuntimeError
+
+tests\test_event_integrity_audit.py:133: Failed
+_ test_batch_failure_at_every_publication_point_keeps_one_custody_image[manifest:committed:staged] _
+
+tmp_path = WindowsPath('C:/Users/Ben/AppData/Local/Temp/pytest-of-Ben/pytest-314/test_batch_failure_at_every_pu11')
+boundary = 'manifest:committed:staged'
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DCE00FE990>
+
+    @pytest.mark.parametrize("boundary", [
+        "intent:before_acceptance",
+        "journal:transaction:created",
+        "journal:after:0",
+        "journal:after:5",
+        "manifest:prepared:staged",
+        "manifest:prepared:published",
+        "manifest:applying:published",
+        "target:0:staged",
+        "target:2:published",
+        "target:4:staged",
+        "target:8:published",
+        "manifest:committed:staged",
+        "manifest:committed:published",
+        "journal:committed:published",
+    ])
+    def test_batch_failure_at_every_publication_point_keeps_one_custody_image(
+        tmp_path, boundary, monkeypatch
+    ):
+        "A crash at any WAL boundary recovers the whole batch, never a prefix."
+        bus = OperationalEventBus(ROOT, tmp_path / "bus", tmp_path)
+        original = bus.wal.commit
+        observed_boundaries = []
+        def interrupted(observed):
+            observed_boundaries.append(observed)
+            if observed == boundary:
+                raise RuntimeError(f"interrupted at {boundary}")
+    
+        def commit(wal_self, artifacts, **kwargs):
+            return original(artifacts, **kwargs, fault_injector=interrupted)
+    
+        monkeypatch.setattr(JsonWal, "commit", commit)
+        with pytest.raises(RuntimeError, match="interrupted at"):
+            bus.publish_batch(
+                [_event("boundary-a", None), _event("boundary-b", None)],
+                link_current_head=True,
+            )
+        # The injected boundary must be the exact one reached, not a neighbour.
+        assert observed_boundaries[-1] == boundary
+>       assert len(observed_boundaries) == 1 + [
+            "intent:before_acceptance", "journal:transaction:created", "journal:after:0",
+            "journal:after:1", "journal:after:2", "journal:after:3", "journal:after:4",
+            "journal:after:5", "journal:after:6", "journal:after:7", "journal:after:8",
+            "manifest:prepared:staged", "manifest:prepared:published",
+            "manifest:applying:staged", "manifest:applying:published",
+            *[f"target:{index}:{stage}" for index in range(9) for stage in ("staged", "published")],
+            "manifest:committed:staged", "manifest:committed:published",
+            "journal:committed:published",
+        ].index(boundary)
+E       AssertionError: assert 25 == (1 + 33)
+E        +  where 25 = len(['intent:before_acceptance', 'journal:transaction:created', 'journal:after:0', 'journal:after:1', 'journal:after:2', 'journal:after:3', ...])
+E        +  and   33 = <built-in method index of list object at 0x000001DCE1305EC0>('manifest:committed:staged')
+E        +    where <built-in method index of list object at 0x000001DCE1305EC0> = ['intent:before_acceptance', 'journal:transaction:created', 'journal:after:0', 'journal:after:1', 'journal:after:2', 'journal:after:3', ...].index
+
+tests\test_event_integrity_audit.py:140: AssertionError
+_ test_batch_failure_at_every_publication_point_keeps_one_custody_image[manifest:committed:published] _
+
+tmp_path = WindowsPath('C:/Users/Ben/AppData/Local/Temp/pytest-of-Ben/pytest-314/test_batch_failure_at_every_pu12')
+boundary = 'manifest:committed:published'
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DCDFFD0730>
+
+    @pytest.mark.parametrize("boundary", [
+        "intent:before_acceptance",
+        "journal:transaction:created",
+        "journal:after:0",
+        "journal:after:5",
+        "manifest:prepared:staged",
+        "manifest:prepared:published",
+        "manifest:applying:published",
+        "target:0:staged",
+        "target:2:published",
+        "target:4:staged",
+        "target:8:published",
+        "manifest:committed:staged",
+        "manifest:committed:published",
+        "journal:committed:published",
+    ])
+    def test_batch_failure_at_every_publication_point_keeps_one_custody_image(
+        tmp_path, boundary, monkeypatch
+    ):
+        "A crash at any WAL boundary recovers the whole batch, never a prefix."
+        bus = OperationalEventBus(ROOT, tmp_path / "bus", tmp_path)
+        original = bus.wal.commit
+        observed_boundaries = []
+        def interrupted(observed):
+            observed_boundaries.append(observed)
+            if observed == boundary:
+                raise RuntimeError(f"interrupted at {boundary}")
+    
+        def commit(wal_self, artifacts, **kwargs):
+            return original(artifacts, **kwargs, fault_injector=interrupted)
+    
+        monkeypatch.setattr(JsonWal, "commit", commit)
+        with pytest.raises(RuntimeError, match="interrupted at"):
+            bus.publish_batch(
+                [_event("boundary-a", None), _event("boundary-b", None)],
+                link_current_head=True,
+            )
+        # The injected boundary must be the exact one reached, not a neighbour.
+        assert observed_boundaries[-1] == boundary
+>       assert len(observed_boundaries) == 1 + [
+            "intent:before_acceptance", "journal:transaction:created", "journal:after:0",
+            "journal:after:1", "journal:after:2", "journal:after:3", "journal:after:4",
+            "journal:after:5", "journal:after:6", "journal:after:7", "journal:after:8",
+            "manifest:prepared:staged", "manifest:prepared:published",
+            "manifest:applying:staged", "manifest:applying:published",
+            *[f"target:{index}:{stage}" for index in range(9) for stage in ("staged", "published")],
+            "manifest:committed:staged", "manifest:committed:published",
+            "journal:committed:published",
+        ].index(boundary)
+E       AssertionError: assert 26 == (1 + 34)
+E        +  where 26 = len(['intent:before_acceptance', 'journal:transaction:created', 'journal:after:0', 'journal:after:1', 'journal:after:2', 'journal:after:3', ...])
+E        +  and   34 = <built-in method index of list object at 0x000001DCE12D6300>('manifest:committed:published')
+E        +    where <built-in method index of list object at 0x000001DCE12D6300> = ['intent:before_acceptance', 'journal:transaction:created', 'journal:after:0', 'journal:after:1', 'journal:after:2', 'journal:after:3', ...].index
+
+tests\test_event_integrity_audit.py:140: AssertionError
+_ test_batch_failure_at_every_publication_point_keeps_one_custody_image[journal:committed:published] _
+
+tmp_path = WindowsPath('C:/Users/Ben/AppData/Local/Temp/pytest-of-Ben/pytest-314/test_batch_failure_at_every_pu13')
+boundary = 'journal:committed:published'
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001DCDFF8E490>
+
+    @pytest.mark.parametrize("boundary", [
+        "intent:before_acceptance",
+        "journal:transaction:created",
+        "journal:after:0",
+        "journal:after:5",
+        "manifest:prepared:staged",
+        "manifest:prepared:published",
+        "manifest:applying:published",
+        "target:0:staged",
+        "target:2:published",
+        "target:4:staged",
+        "target:8:published",
+        "manifest:committed:staged",
+        "manifest:committed:published",
+        "journal:committed:published",
+    ])
+    def test_batch_failure_at_every_publication_point_keeps_one_custody_image(
+        tmp_path, boundary, monkeypatch
+    ):
+        "A crash at any WAL boundary recovers the whole batch, never a prefix."
+        bus = OperationalEventBus(ROOT, tmp_path / "bus", tmp_path)
+        original = bus.wal.commit
+        observed_boundaries = []
+        def interrupted(observed):
+            observed_boundaries.append(observed)
+            if observed == boundary:
+                raise RuntimeError(f"interrupted at {boundary}")
+    
+        def commit(wal_self, artifacts, **kwargs):
+            return original(artifacts, **kwargs, fault_injector=interrupted)
+    
+        monkeypatch.setattr(JsonWal, "commit", commit)
+        with pytest.raises(RuntimeError, match="interrupted at"):
+            bus.publish_batch(
+                [_event("boundary-a", None), _event("boundary-b", None)],
+                link_current_head=True,
+            )
+        # The injected boundary must be the exact one reached, not a neighbour.
+        assert observed_boundaries[-1] == boundary
+>       assert len(observed_boundaries) == 1 + [
+            "intent:before_acceptance", "journal:transaction:created", "journal:after:0",
+            "journal:after:1", "journal:after:2", "journal:after:3", "journal:after:4",
+            "journal:after:5", "journal:after:6", "journal:after:7", "journal:after:8",
+            "manifest:prepared:staged", "manifest:prepared:published",
+            "manifest:applying:staged", "manifest:applying:published",
+            *[f"target:{index}:{stage}" for index in range(9) for stage in ("staged", "published")],
+            "manifest:committed:staged", "manifest:committed:published",
+            "journal:committed:published",
+        ].index(boundary)
+E       AssertionError: assert 27 == (1 + 35)
+E        +  where 27 = len(['intent:before_acceptance', 'journal:transaction:created', 'journal:after:0', 'journal:after:1', 'journal:after:2', 'journal:after:3', ...])
+E        +  and   35 = <built-in method index of list object at 0x000001DCE0067C40>('journal:committed:published')
+E        +    where <built-in method index of list object at 0x000001DCE0067C40> = ['intent:before_acceptance', 'journal:transaction:created', 'journal:after:0', 'journal:after:1', 'journal:after:2', 'journal:after:3', ...].index
+
+tests\test_event_integrity_audit.py:140: AssertionError
+___________ test_oversized_atomic_batch_is_rejected_before_effects ____________
+
+tmp_path = WindowsPath('C:/Users/Ben/AppData/Local/Temp/pytest-of-Ben/pytest-314/test_oversized_atomic_batch_is0')
+
+    def test_oversized_atomic_batch_is_rejected_before_effects(tmp_path):
+        bus = OperationalEventBus(ROOT, tmp_path / "bus", tmp_path)
+>       with pytest.raises(ValueError, match="atomic operational event batch"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests\test_event_integrity_audit.py:185: Failed
+=========================== short test summary info ===========================
+FAILED tests/test_event_integrity_audit.py::test_entire_batch_is_validated_before_any_event_is_committed[invalid]
+FAILED tests/test_event_integrity_audit.py::test_entire_batch_is_validated_before_any_event_is_committed[duplicate]
+FAILED tests/test_event_integrity_audit.py::test_batch_is_one_wal_transaction_and_retains_all_receipts
+FAILED tests/test_event_integrity_audit.py::test_interrupted_batch_recovers_all_events_without_republishing[0]
+FAILED tests/test_event_integrity_audit.py::test_interrupted_batch_recovers_all_events_without_republishing[3]
+FAILED tests/test_event_integrity_audit.py::test_interrupted_batch_recovers_all_events_without_republishing[8]
+FAILED tests/test_event_integrity_audit.py::test_batch_failure_at_every_publication_point_keeps_one_custody_image[manifest:prepared:staged]
+FAILED tests/test_event_integrity_audit.py::test_batch_failure_at_every_publication_point_keeps_one_custody_image[manifest:prepared:published]
+FAILED tests/test_event_integrity_audit.py::test_batch_failure_at_every_publication_point_keeps_one_custody_image[manifest:applying:published]
+FAILED tests/test_event_integrity_audit.py::test_batch_failure_at_every_publication_point_keeps_one_custody_image[target:0:staged]
+FAILED tests/test_event_integrity_audit.py::test_batch_failure_at_every_publication_point_keeps_one_custody_image[target:2:published]
+FAILED tests/test_event_integrity_audit.py::test_batch_failure_at_every_publication_point_keeps_one_custody_image[target:4:staged]
+FAILED tests/test_event_integrity_audit.py::test_batch_failure_at_every_publication_point_keeps_one_custody_image[target:8:published]
+FAILED tests/test_event_integrity_audit.py::test_batch_failure_at_every_publication_point_keeps_one_custody_image[manifest:committed:staged]
+FAILED tests/test_event_integrity_audit.py::test_batch_failure_at_every_publication_point_keeps_one_custody_image[manifest:committed:published]
+FAILED tests/test_event_integrity_audit.py::test_batch_failure_at_every_publication_point_keeps_one_custody_image[journal:committed:published]
+FAILED tests/test_event_integrity_audit.py::test_oversized_atomic_batch_is_rejected_before_effects
+17 failed, 11 passed in 18.45s

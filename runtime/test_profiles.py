@@ -88,7 +88,7 @@ def _require_campaign_write_admission(root: Path, admission_event_id: str) -> No
             ),
             None,
         ) if isinstance(scopes, list) else None
-        campaign_path = (root / PROJECT_REPAIR_CAMPAIGN_PATH).resolve().as_posix()
+        campaign_path = _repair_campaign_path(root)[0].resolve().as_posix()
         if (
             not isinstance(write_scope, list)
             or campaign_path not in {
@@ -180,6 +180,10 @@ def governed_full_profile_timeout_envelope(root: Path) -> dict[str, int]:
 
 
 def _repair_campaign_path(root: Path) -> tuple[Path, bool]:
+    from .project_revision_succession import current_revision_root
+    revision = current_revision_root(root)
+    if revision is not None:
+        return revision / "repair-campaign.json", True
     repository_campaign = root / REPAIR_CAMPAIGN_PATH
     if repository_campaign.is_file():
         return repository_campaign, True
@@ -192,6 +196,10 @@ def initialize_project_repair_campaign(root: Path) -> dict[str, Any]:
     """Create mandatory local processing-order state for a managed project."""
 
     root = root.resolve(strict=True)
+    from .project_revision_succession import current_revision_root
+    active_revision = current_revision_root(root)
+    if active_revision is not None:
+        raise ProcessingOrderBlocked("active successor revisions must use the append-only succession commissioning owner")
     marker = root / MANAGED_PROJECT_MARKER
     if not marker.is_file():
         raise ProcessingOrderBlocked(
@@ -201,7 +209,8 @@ def initialize_project_repair_campaign(root: Path) -> dict[str, Any]:
     project_id = str(project_record.get("project_id") or "")
     if not project_id.startswith("prj_"):
         raise ProcessingOrderBlocked("managed-project record is malformed")
-    path = root / PROJECT_REPAIR_CAMPAIGN_PATH
+    from .project_revision_succession import current_campaign_path
+    path = current_campaign_path(root)
     if path.exists():
         status = repair_campaign_status(root)
         return {
@@ -246,7 +255,10 @@ def reopen_invalid_repair_campaign(
 
     root = root.resolve(strict=True)
     marker = root / MANAGED_PROJECT_MARKER
-    path = root / PROJECT_REPAIR_CAMPAIGN_PATH
+    from .project_revision_succession import current_revision_root, current_campaign_path
+    if current_revision_root(root) is not None:
+        raise ProcessingOrderBlocked("active successor revisions must reopen through their revision-scoped campaign owner")
+    path = current_campaign_path(root)
     if not marker.is_file() or not path.is_file():
         raise ProcessingOrderBlocked("repair reopen requires managed campaign state")
     if (
@@ -308,7 +320,10 @@ def reopen_pre_freeze_repair_campaign(
 
     root = root.resolve(strict=True)
     marker = root / MANAGED_PROJECT_MARKER
-    path = root / PROJECT_REPAIR_CAMPAIGN_PATH
+    from .project_revision_succession import current_revision_root, current_campaign_path
+    if current_revision_root(root) is not None:
+        raise ProcessingOrderBlocked("active successor revisions must reopen through their revision-scoped campaign owner")
+    path = current_campaign_path(root)
     if not marker.is_file() or not path.is_file():
         raise ProcessingOrderBlocked("pre-freeze reopen requires managed campaign state")
     if (
@@ -362,7 +377,14 @@ def begin_repair_phase(root: Path, *, admission_event_id: str) -> dict[str, Any]
 
     root = root.resolve(strict=True)
     marker = root / MANAGED_PROJECT_MARKER
-    path = root / PROJECT_REPAIR_CAMPAIGN_PATH
+    from .project_revision_succession import current_revision_root, current_campaign_path
+    if current_revision_root(root) is not None:
+        from .revision_campaign_lifecycle import RevisionCampaignBlocked, begin_repair
+        try:
+            return begin_repair(root, admission_event_id=admission_event_id)
+        except RevisionCampaignBlocked as error:
+            raise ProcessingOrderBlocked(str(error)) from error
+    path = current_campaign_path(root)
     if not marker.is_file() or not path.is_file():
         raise ProcessingOrderBlocked("repair phase transition requires managed campaign state")
     if not isinstance(admission_event_id, str) or not admission_event_id.startswith("gap-event:"):
@@ -401,7 +423,14 @@ def resolve_repair_findings(
     """Resolve evidenced repair findings without closing staged intake."""
     root = root.resolve(strict=True)
     marker = root / MANAGED_PROJECT_MARKER
-    path = root / PROJECT_REPAIR_CAMPAIGN_PATH
+    from .project_revision_succession import current_revision_root, current_campaign_path
+    if current_revision_root(root) is not None:
+        from .revision_campaign_lifecycle import RevisionCampaignBlocked, resolve_findings as revision_resolve_findings
+        try:
+            return revision_resolve_findings(root, evidence_by_finding=evidence_by_finding, admission_event_id=admission_event_id)
+        except RevisionCampaignBlocked as error:
+            raise ProcessingOrderBlocked(str(error)) from error
+    path = current_campaign_path(root)
     if not marker.is_file() or not path.is_file():
         raise ProcessingOrderBlocked("finding reconciliation requires managed campaign state")
     if (not isinstance(admission_event_id, str) or not admission_event_id.startswith("gap-event:")
@@ -444,7 +473,14 @@ def register_repair_findings(
     """Add newly discovered findings while the repair intake remains open."""
     root = root.resolve(strict=True)
     marker = root / MANAGED_PROJECT_MARKER
-    path = root / PROJECT_REPAIR_CAMPAIGN_PATH
+    from .project_revision_succession import current_revision_root, current_campaign_path
+    if current_revision_root(root) is not None:
+        from .revision_campaign_lifecycle import RevisionCampaignBlocked, register_findings as revision_register_findings
+        try:
+            return revision_register_findings(root, finding_ids=finding_ids, admission_event_id=admission_event_id)
+        except RevisionCampaignBlocked as error:
+            raise ProcessingOrderBlocked(str(error)) from error
+    path = current_campaign_path(root)
     if not marker.is_file() or not path.is_file():
         raise ProcessingOrderBlocked("finding registration requires managed campaign state")
     if (
@@ -486,19 +522,20 @@ def register_repair_findings(
     return repair_campaign_status(root)
 
 
-def close_repair_intake(
-    root: Path, *, admission_event_id: str, closure_authority: str
-) -> dict[str, Any]:
-    """Close a zero-denominator repair intake and enter operational verification.
+def _prepared_campaign_state(previous_bytes: bytes) -> dict[str, Any]:
+    state = json.loads(previous_bytes)
+    if (not isinstance(state, dict) or state.get("schema_version") != "px.repair-campaign/1.0"
+            or state.get("phase") not in PROCESSING_PHASES
+            or type(state.get("intake_open")) is not bool
+            or type(state.get("unresolved")) is not list
+            or any(type(item) is not str or not item.strip() for item in state["unresolved"])
+            or len(state["unresolved"]) != len(set(state["unresolved"]))):
+        raise ProcessingOrderBlocked("repair campaign is malformed")
+    return state
 
-    This transition deliberately does not freeze repair. A separate, evidence-
-    bound operational verification must succeed before the freeze boundary.
-    """
-    root = root.resolve(strict=True)
-    marker = root / MANAGED_PROJECT_MARKER
-    path = root / PROJECT_REPAIR_CAMPAIGN_PATH
-    if not marker.is_file() or not path.is_file():
-        raise ProcessingOrderBlocked("intake closure requires managed campaign state")
+
+def prepare_intake_closure(previous_bytes: bytes, *, admission_event_id: str, closure_authority: str) -> dict[str, Any]:
+    """Validate and prepare closure without publishing any campaign state."""
     if (
         not isinstance(admission_event_id, str)
         or not admission_event_id.startswith("gap-event:")
@@ -506,13 +543,12 @@ def close_repair_intake(
         or not closure_authority.strip()
     ):
         raise ProcessingOrderBlocked("intake closure requires explicit authority and admission")
-    status = repair_campaign_status(root)
+    state = _prepared_campaign_state(previous_bytes)
+    status = state
     if status["phase"] != "repair" or not status["intake_open"] or status["unresolved"]:
         raise ProcessingOrderBlocked(
             "intake closure requires open repair intake with a zero unresolved denominator"
         )
-    previous_bytes = path.read_bytes()
-    state = json.loads(previous_bytes)
     history = state.get("phase_history", [])
     if not isinstance(history, list):
         raise ProcessingOrderBlocked("repair phase history is malformed")
@@ -531,6 +567,30 @@ def close_repair_intake(
     state["intake_closed_at"] = datetime.now(timezone.utc).isoformat()
     state["intake_closure_authority"] = closure_authority.strip()
     state["phase"] = "operational_verification"
+    return state
+
+
+def close_repair_intake(
+    root: Path, *, admission_event_id: str, closure_authority: str
+) -> dict[str, Any]:
+    """Close a zero-denominator repair intake and enter operational verification.
+
+    This transition deliberately does not freeze repair. A separate, evidence-
+    bound operational verification must succeed before the freeze boundary.
+    """
+    root = root.resolve(strict=True)
+    marker = root / MANAGED_PROJECT_MARKER
+    from .project_revision_succession import current_revision_root, current_campaign_path
+    if current_revision_root(root) is not None:
+        from .revision_campaign_lifecycle import close_intake
+        return close_intake(root, admission_event_id=admission_event_id,
+                            closure_authority=closure_authority)
+    path = current_campaign_path(root)
+    if not marker.is_file() or not path.is_file():
+        raise ProcessingOrderBlocked("intake closure requires managed campaign state")
+    previous_bytes = path.read_bytes()
+    state = prepare_intake_closure(previous_bytes, admission_event_id=admission_event_id,
+                                  closure_authority=closure_authority)
     _require_campaign_write_admission(root, admission_event_id)
     temporary = path.with_name(path.name + ".close-intake.new")
     with temporary.open("x", encoding="utf-8", newline="\n") as stream:
@@ -542,18 +602,12 @@ def close_repair_intake(
     return repair_campaign_status(root)
 
 
-def freeze_repair_campaign(
-    root: Path, *, admission_event_id: str, evidence_path: str
-) -> dict[str, Any]:
-    """Freeze only after a current, hash-bound operational-verification receipt."""
-    root = root.resolve(strict=True)
-    marker = root / MANAGED_PROJECT_MARKER
-    path = root / PROJECT_REPAIR_CAMPAIGN_PATH
-    if not marker.is_file() or not path.is_file():
-        raise ProcessingOrderBlocked("repair freeze requires managed campaign state")
+def prepare_repair_freeze(root: Path, path: Path, previous_bytes: bytes, *, admission_event_id: str, evidence_path: str) -> dict[str, Any]:
+    """Validate independent operational evidence and prepare an unpublished freeze."""
     if not isinstance(admission_event_id, str) or not admission_event_id.startswith("gap-event:"):
         raise ProcessingOrderBlocked("repair freeze requires a ledger admission reference")
-    status = repair_campaign_status(root)
+    state = _prepared_campaign_state(previous_bytes)
+    status = state
     if (
         status["phase"] != "operational_verification"
         or status["intake_open"]
@@ -563,6 +617,8 @@ def freeze_repair_campaign(
             "repair freeze requires closed zero-denominator operational verification"
         )
     supplied = root / evidence_path
+    from .archive_io import reject_path_links
+    reject_path_links(supplied)
     if supplied.is_symlink():
         raise ProcessingOrderBlocked("operational evidence cannot be a symbolic link")
     candidate = supplied.resolve(strict=True)
@@ -573,8 +629,6 @@ def freeze_repair_campaign(
     if not candidate.is_file():
         raise ProcessingOrderBlocked("operational evidence must be an exact regular file")
     receipt = json.loads(candidate.read_text(encoding="utf-8"))
-    previous_bytes = path.read_bytes()
-    state = json.loads(previous_bytes)
     campaign_id = str(state.get("campaign_id") or "")
     if (
         not isinstance(receipt, dict)
@@ -582,6 +636,7 @@ def freeze_repair_campaign(
         or receipt.get("valid") is not True
         or receipt.get("campaign_id") != campaign_id
         or receipt.get("campaign_state_sha256") != hashlib.sha256(previous_bytes).hexdigest()
+        or type(receipt.get("unresolved_count")) is not int
         or receipt.get("unresolved_count") != 0
         or not isinstance(receipt.get("checks"), list)
         or not receipt["checks"]
@@ -596,7 +651,8 @@ def freeze_repair_campaign(
         digest = check.get("artifact_sha256")
         if (
             not isinstance(name, str) or not name.strip() or name in seen_checks
-            or check.get("passed") is not True or check.get("exit_code") != 0
+            or check.get("passed") is not True
+            or type(check.get("exit_code")) is not int or check.get("exit_code") != 0
             or not isinstance(artifact_path, str) or not artifact_path.strip()
             or not isinstance(digest, str) or len(digest) != 64
             or any(character not in "0123456789abcdef" for character in digest)
@@ -604,6 +660,7 @@ def freeze_repair_campaign(
             raise ProcessingOrderBlocked("operational verification check lacks passing artifact evidence")
         seen_checks.add(name)
         source = root / artifact_path
+        reject_path_links(source)
         if source.is_symlink():
             raise ProcessingOrderBlocked("operational verification artifact cannot be a symbolic link")
         try:
@@ -640,6 +697,25 @@ def freeze_repair_campaign(
         "evidence_sha256": evidence_sha256,
         "governed_failure_nodes": [],
     }
+    return state
+
+
+def freeze_repair_campaign(
+    root: Path, *, admission_event_id: str, evidence_path: str
+) -> dict[str, Any]:
+    """Freeze only after a current, hash-bound operational-verification receipt."""
+    root = root.resolve(strict=True)
+    marker = root / MANAGED_PROJECT_MARKER
+    from .project_revision_succession import current_revision_root, current_campaign_path
+    if current_revision_root(root) is not None:
+        from .revision_campaign_lifecycle import freeze_repair
+        return freeze_repair(root, admission_event_id=admission_event_id, evidence_path=evidence_path)
+    path = current_campaign_path(root)
+    if not marker.is_file() or not path.is_file():
+        raise ProcessingOrderBlocked("repair freeze requires managed campaign state")
+    previous_bytes = path.read_bytes()
+    state = prepare_repair_freeze(root, path, previous_bytes,
+                                 admission_event_id=admission_event_id, evidence_path=evidence_path)
     _require_campaign_write_admission(root, admission_event_id)
     temporary = path.with_name(path.name + ".freeze-repair.new")
     with temporary.open("x", encoding="utf-8", newline="\n") as stream:
@@ -695,7 +771,7 @@ def repair_campaign_status(root: Path) -> dict[str, Any]:
     blocked = [stage for stage in STAGE_MINIMUM_PHASE if not processing_stage_allowed(phase, intake_open, unresolved, stage)]
     return {
         "schema_version": "px.processing-order-status/1.0", "valid": True,
-        "managed": True, "campaign_id": value.get("campaign_id"), "phase": phase,
+        "managed": True, "campaign_id": value.get("campaign_id"), "project_id": value.get("project_id"), "phase": phase,
         "intake_open": intake_open, "unresolved": list(unresolved),
         "unresolved_count": len(unresolved), "blocked_stages": blocked,
         "next_required_phase": PROCESSING_PHASES[min(PROCESSING_PHASES.index(phase) + 1, len(PROCESSING_PHASES) - 1)],

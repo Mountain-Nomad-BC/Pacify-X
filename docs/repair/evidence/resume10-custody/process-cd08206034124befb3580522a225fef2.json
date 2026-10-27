@@ -1,0 +1,29 @@
+{
+  "action_id": "native-protocol-final",
+  "audit_record_hash": "8759ec5b509052389ebe194b33b9b7f8641c89f150761784582369280368fb9f",
+  "duration_seconds": 19.9413285000046,
+  "ended_at": "2026-10-26T19:42:58.137Z",
+  "exit_code": 1,
+  "failure_type": null,
+  "receipt_id": "process-cd08206034124befb3580522a225fef2",
+  "resource_id": "process-f843192236b74beea6c5bc624113139a",
+  "schema_version": "px.process-supervision-receipt/1.0",
+  "shutdown_mode": "natural",
+  "started_at": "2026-10-26T19:42:38.195Z",
+  "status": "exited",
+  "stderr": {
+    "decode_error_count": 0,
+    "dropped_bytes": 0,
+    "retained_bytes": 0,
+    "total_bytes": 0,
+    "truncated": false
+  },
+  "stdout": {
+    "decode_error_count": 2,
+    "dropped_bytes": 0,
+    "retained_bytes": 1367,
+    "total_bytes": 1367,
+    "truncated": false
+  },
+  "tree_closed": true
+}

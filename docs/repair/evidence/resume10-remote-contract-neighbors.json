@@ -1,0 +1,22 @@
+{
+  "command": [
+    "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.venv-repair\\Scripts\\python.exe",
+    "-m",
+    "pytest",
+    "tests/test_remote_profile_catalog.py",
+    "tests/test_contract_runtime.py",
+    "tests/test_contract_length_bounds.py",
+    "tests/test_certification_pipeline_readiness.py",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "--basetemp=.tmp/pytest-resume10-remote-contract-neighbors"
+  ],
+  "exit_code": 1,
+  "tree_closed": true,
+  "resource_inactive": true,
+  "receipt": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.tmp\\resume10\\owned\\cleanup-receipts\\process-b2e30d67f7e34d5994904f6b534e2a78.json",
+  "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.tmp\\resume10\\owned\\pacifyx-w4lxwh_v",
+  "log": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\docs\\repair\\evidence\\resume10-remote-contract-neighbors.log",
+  "log_sha256": "2a75aabb3d08b89c9b4150b0591a2948a1ff746ae0640f87911a51a9e6065dc1"
+}

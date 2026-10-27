@@ -25,7 +25,7 @@ from .json_io import json_value_key, load_json_object, validate_json_value
 
 SUPPORTED_DIALECT = "https://json-schema.org/draft/2020-12/schema"
 MAX_REF_DEPTH = 64
-SUPPORTED_FORMATS = {"date", "date-time", "uri"}
+SUPPORTED_FORMATS = {"date", "date-time", "uri", "uuid"}
 ANNOTATION_KEYS = {"$schema", "$id", "$defs", "title", "description", "default"}
 VALIDATION_KEYS = {
     "$ref",
@@ -40,6 +40,7 @@ VALIDATION_KEYS = {
     "maxItems",
     "uniqueItems",
     "minLength",
+    "maxLength",
     "pattern",
     "minimum",
     "maximum",
@@ -382,6 +383,8 @@ def _errors(
     if isinstance(instance, str):
         if len(instance) < int(rule.get("minLength", 0)):
             errors.append(f"{at}: string is too short")
+        if "maxLength" in rule and len(instance) > rule["maxLength"]:
+            errors.append(f"{at}: string is too long")
         if "pattern" in rule and re.search(str(rule["pattern"]), instance) is None:
             errors.append(f"{at}: string does not match required pattern")
         if "format" in rule:
@@ -390,6 +393,10 @@ def _errors(
                 "date-time": _valid_datetime,
                 "date": _valid_date,
                 "uri": _valid_uri,
+                "uuid": lambda value: re.fullmatch(
+                    r"[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}",
+                    value, flags=re.IGNORECASE,
+                ) is not None,
             }.get(declared_format)
             if valid is None:
                 errors.append(f"{at}: unsupported format {declared_format}")
@@ -481,6 +488,8 @@ def _pattern_example(pattern: str) -> str:
         return "task-plan-" + "a" * 24
     if pattern == "^evidence/bundles/[A-Za-z0-9._/-]+\\.json$":
         return "evidence/bundles/example/manifest.json"
+    if pattern.startswith("^pxdep:"):
+        return "pxdep:" + "a" * 64
     if "64}" in pattern:
         return "a" * 64
     if pattern in {"^[0-9]+\\.[0-9]+\\.[0-9]+$", "^\\d+\\.\\d+\\.\\d+$"}:
@@ -607,9 +616,11 @@ def _minimal(
                     and "then" in child
                 ):
                     then = child["then"]
-                    for key in then.get("required", ()):
+                    constraints = then.get("properties", {})
+                    affected = set(then.get("required", ())) | (set(constraints) & set(value))
+                    for key in sorted(affected):
                         value[key] = _minimal(
-                            properties.get(key, {}),
+                            {**properties.get(key, {}), **constraints.get(key, {})},
                             root_schema,
                             schema_path,
                             contract_root,
@@ -667,13 +678,22 @@ def _minimal(
             return "2026-08-02"
         if rule.get("format") == "uri":
             return "urn:example:value"
+        if rule.get("format") == "uuid":
+            return "00000000-0000-4000-8000-000000000000"
         result = (
             _pattern_example(str(rule["pattern"])) if "pattern" in rule else "value"
         )
+        if "pattern" in rule and re.fullmatch(str(rule["pattern"]), result) is None:
+            # A bounded nonce example must meet its repetition constraint.
+            # The schema is unchanged; unsuccessful construction remains a gate failure.
+            for size in range(len(result) + 1, len(result) + 129):
+                candidate = result + "x" * (size - len(result))
+                if re.fullmatch(str(rule["pattern"]), candidate):
+                    result = candidate
+                    break
         minimum = int(rule.get("minLength", 0))
-        return (
-            result if len(result) >= minimum else result + "x" * (minimum - len(result))
-        )
+        result = result if len(result) >= minimum else result + "x" * (minimum - len(result))
+        return result[:rule["maxLength"]] if "maxLength" in rule else result
     if selected == "integer":
         value = int(rule.get("minimum", 0))
         multiple = int(rule.get("multipleOf", 1))
@@ -752,13 +772,16 @@ def _schema_structure_errors(
             errors.append(
                 f"{at}: additionalProperties must be a boolean or schema object"
             )
-        for key in ("minItems", "maxItems", "minLength"):
+        for key in ("minItems", "maxItems", "minLength", "maxLength"):
             if key in value and (
                 not isinstance(value[key], int)
                 or isinstance(value[key], bool)
                 or value[key] < 0
             ):
                 errors.append(f"{at}: {key} must be a non-negative integer")
+        if (type(value.get("minLength")) is int and type(value.get("maxLength")) is int
+                and value["minLength"] > value["maxLength"]):
+            errors.append(f"{at}: minLength must not exceed maxLength")
         if "uniqueItems" in value and not isinstance(value["uniqueItems"], bool):
             errors.append(f"{at}: uniqueItems must be a boolean")
         for key in ("minimum", "maximum", "multipleOf"):

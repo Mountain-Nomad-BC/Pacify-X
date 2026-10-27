@@ -1,0 +1,1052 @@
+{
+  "counts": {
+    "rollout_only_source": 311,
+    "python_files": 217
+  },
+  "groups": {
+    ".cursor": [
+      ".cursor/rules/agentic-engineering-os-px.mdc"
+    ],
+    ".git": [
+      ".git"
+    ],
+    ".windsurf": [
+      ".windsurf/rules/agentic-engineering-os-px.md"
+    ],
+    "contracts": [
+      "contracts/cancellation-scope.schema.json",
+      "contracts/context-generation-vector.schema.json",
+      "contracts/dependency-identity.schema.json",
+      "contracts/execution-context.schema.json",
+      "contracts/gremlin-containment-proof.schema.json",
+      "contracts/gremlin-host-configuration.schema.json",
+      "contracts/gremlin-recovery-authority.schema.json",
+      "contracts/gremlin-recovery-replay-ledger.schema.json",
+      "contracts/gremlin-runtime-identity.schema.json",
+      "contracts/isolated-agent-sandbox.schema.json",
+      "contracts/models/execution-generation-vector.schema.json",
+      "contracts/models/generation-bound-verdict.schema.json",
+      "contracts/models/governed-exception.schema.json",
+      "contracts/models/member-execution-input.schema.json",
+      "contracts/models/model-branch-artifact.schema.json",
+      "contracts/models/model-execution-group.schema.json",
+      "contracts/models/model-group-preparation.schema.json",
+      "contracts/models/model-router-preset-format.schema.json",
+      "contracts/models/model-router-preset.schema.json",
+      "contracts/models/work-disposition.schema.json",
+      "contracts/operations/remote-provider-profile.schema.json",
+      "contracts/project_revision_succession/AUTHORIZATION_ISSUANCE.md",
+      "contracts/projection-status.schema.json",
+      "contracts/remote_model_attachment.schema.json",
+      "contracts/semantic/compact-address-record.schema.json",
+      "contracts/semantic/locator-record.schema.json",
+      "contracts/semantic/relation-record.schema.json",
+      "contracts/semantic/semantic-entity.schema.json",
+      "contracts/semantic/source-census-binding.schema.json",
+      "contracts/workflow-model-group-node-config.schema.json",
+      "contracts/workflow-resume-decision.schema.json"
+    ],
+    "docs": [
+      "docs/adr/ADR-REV1XX-FRESH-VALIDATION-001.md",
+      "docs/architecture/PX-ARCHIVIST-TIE.md",
+      "docs/architecture/REV1XX-CURRENT-FOUNDATION-AUTHORITY.md",
+      "docs/architecture/REV1XX-LOCATOR-CURRENTNESS.md",
+      "docs/architecture/REV1XX-POWERSHELL-CONTROLS.md",
+      "docs/architecture/REV1XX-SOURCE-CENSUS.md",
+      "docs/rollout/DAY1_PLAN.md",
+      "docs/rollout/READINESS_EXECUTION_PLAN.md"
+    ],
+    "extension": [
+      "extension/src/agentHarness/durableTaskState.js",
+      "extension/src/agentHarness/executionContext.js",
+      "extension/src/agentHarness/legacyTaskMigration.js",
+      "extension/src/dataControlHost.js",
+      "extension/src/hostModelExecution.js",
+      "extension/src/isolatedAgentSandbox.js",
+      "extension/tests/agent-console-catalog-currentness.test.js",
+      "extension/tests/agent-console-model-fabric-catalog.test.js",
+      "extension/tests/agent-service-model-selection.test.js",
+      "extension/tests/billing-settlement-audit.test.js",
+      "extension/tests/codex-prepared-protocol.test.js",
+      "extension/tests/data-control-host.test.js",
+      "extension/tests/event-integrity-audit.test.js",
+      "extension/tests/host-model-currentness.test.js",
+      "extension/tests/isolated-agent-sandbox.test.js",
+      "extension/tests/personal-context-boundary.test.js",
+      "extension/tests/px-provider-invoker.test.js",
+      "extension/tests/remote-catalog-projection.test.js"
+    ],
+    "gremlin": [
+      "runtime/gremlin/__init__.py",
+      "runtime/gremlin/admin.py",
+      "runtime/gremlin/audit.py",
+      "runtime/gremlin/authorization.py",
+      "runtime/gremlin/commissioning.py",
+      "runtime/gremlin/composition.py",
+      "runtime/gremlin/containment.py",
+      "runtime/gremlin/deviation.py",
+      "runtime/gremlin/enrollment.py",
+      "runtime/gremlin/events.py",
+      "runtime/gremlin/health.py",
+      "runtime/gremlin/host_configuration.py",
+      "runtime/gremlin/host_process_observer.py",
+      "runtime/gremlin/identity.py",
+      "runtime/gremlin/intervention.py",
+      "runtime/gremlin/observers.py",
+      "runtime/gremlin/policy.py",
+      "runtime/gremlin/receipts.py",
+      "runtime/gremlin/recovery_authority.py",
+      "runtime/gremlin/recovery_verifier_console.py",
+      "runtime/gremlin/registry.py",
+      "runtime/gremlin/runtime_identity.py",
+      "runtime/gremlin/supervisor.py"
+    ],
+    "model-routing": [
+      "runtime/group_provider_adapters.py",
+      "runtime/hash_utils.py",
+      "runtime/model_branch_artifacts.py",
+      "runtime/model_branch_contracts.py",
+      "runtime/model_convergence.py",
+      "runtime/model_execution_group.py",
+      "runtime/model_group_preparation.py",
+      "runtime/model_router_preset.py",
+      "runtime/remote_member_execution.py",
+      "runtime/remote_model_attachment.py",
+      "runtime/remote_model_bridge.py",
+      "runtime/remote_model_contracts.json",
+      "runtime/remote_provider_adapters.py",
+      "runtime/remote_provider_placement.py",
+      "runtime/remote_provider_profiles.py",
+      "runtime/remote_service_protocols.json",
+      "runtime/remote_service_protocols.py"
+    ],
+    "policies": [
+      "policies/rev1xx-validation.json"
+    ],
+    "registry": [
+      "registry/extension_server_module_map.json",
+      "registry/mutating_producers.json",
+      "registry/plan_corpus.json",
+      "registry/planning/rev1xx/be9857ee72e6a91d6bb70c8088a0d52749be84d3a68ad6e84b93e2a464f90ff3.json",
+      "registry/planning/rev1xx/corpus-33039d503edb7c393eb86e18dbcde46a866630dbc398f418d11d50852d106182.json",
+      "registry/planning/rev1xx/corpus-6956a1def872695232e616b7b0c4886031acfd80bbfca42123c9b17ab19fa49e.json",
+      "registry/planning/rev1xx/requirement-routing.json",
+      "registry/planning/rev1xx/requirements-da7fbd846cf7d24dfa43d14503590297ab7ad90da67e5af0010e386604fdb8b8.json",
+      "registry/planning/rev1xx/source-12b284fba674186ae3f3e50b077fe9b2368033c2e41ae519abee674ca3e20c59.json",
+      "registry/planning/rev1xx/source-73a977da37db116874e35247b26f90b499a90d74c7b592e988a3e27649c32429.json",
+      "registry/planning/rev1xx/source-f993ba17e95c1c16eaf388e9fb963a405201b37dd396354e4a45ae4e2dc61d7b.json",
+      "registry/planning/rev1xx/waves-fb4e708aea5010da1166f7defc80c0758270ff30922dd5a752ee5f791db038fa.json",
+      "registry/punch_card_ledger.json",
+      "registry/punch_card_status.json",
+      "registry/semantic_address_vocabulary.json",
+      "registry/semantic_entity_index.json",
+      "registry/source_boundary.json"
+    ],
+    "runtime-other": [
+      "runtime/cancellation_scope.py",
+      "runtime/chat_context.py",
+      "runtime/compact_address.py",
+      "runtime/containment_invariants.py",
+      "runtime/context_generation.py",
+      "runtime/data_control_contracts.json",
+      "runtime/data_controls.py",
+      "runtime/data_inventory.py",
+      "runtime/data_subject_records.py",
+      "runtime/dependency_identity.py",
+      "runtime/deterministic_model_stub.py",
+      "runtime/effect_intent.py",
+      "runtime/engineering_os_paths.py",
+      "runtime/execution_context.py",
+      "runtime/gemini_protocol.py",
+      "runtime/generation_bound_verdict.py",
+      "runtime/governed_exception.py",
+      "runtime/guarded_registry_projection.py",
+      "runtime/hash_utils.py",
+      "runtime/isolated_sandbox.py",
+      "runtime/iterative_subgraph.py",
+      "runtime/member_execution.py",
+      "runtime/metacognitive_evolution/runner.py",
+      "runtime/mutating_producer_custody_reviewed.py",
+      "runtime/mutating_producer_registry.py",
+      "runtime/mutation_queue.py",
+      "runtime/personal_record_store.py",
+      "runtime/plan_registry.py",
+      "runtime/prepared_group_transport.py",
+      "runtime/projection_gate.py",
+      "runtime/release_current_acceptance.py",
+      "runtime/release_process_custody.py",
+      "runtime/release_source_identity.py",
+      "runtime/scope_lease.py",
+      "runtime/secure_publish.py",
+      "runtime/semantic_coverage.py",
+      "runtime/semantic_entity.py",
+      "runtime/semantic_locator.py",
+      "runtime/source_boundary.py",
+      "runtime/source_freeze.py",
+      "runtime/tie_experience.py",
+      "runtime/w1_exit_gate.py",
+      "runtime/work_disposition.py",
+      "runtime/workflow_group_config.py",
+      "runtime/workflow_resume.py",
+      "runtime/yaml_subject_files.py"
+    ],
+    "scripts": [
+      "runtime/engineering_os_paths.py",
+      "runtime/execution_context.py",
+      "runtime/gremlin/enrollment.py",
+      "runtime/gremlin/host_configuration.py",
+      "runtime/gremlin/host_process_observer.py",
+      "runtime/gremlin/observers.py",
+      "runtime/guarded_registry_projection.py",
+      "runtime/isolated_sandbox.py",
+      "runtime/mutating_producer_registry.py",
+      "runtime/source_boundary.py",
+      "scripts/admit_semantic_ownership.py",
+      "scripts/advance_open_gap_cards.py",
+      "scripts/build_mutating_producer_registry.py",
+      "scripts/close_out_gap_dispositions.py",
+      "scripts/declare_plan_corpus_count_owners.py",
+      "scripts/diagnose_receipt_policy.py",
+      "scripts/fix_boundary_rule_matching.py",
+      "scripts/measure_boundary_conformance.py",
+      "scripts/measure_extension_bundle.py",
+      "scripts/measure_source_boundary_coverage.py",
+      "scripts/phase0_inventory.py",
+      "scripts/prove_envelope_count_invariant.py",
+      "scripts/record_custody_correction.py",
+      "scripts/record_gap_0008_provenance.py",
+      "scripts/record_gap_completion_evidence.py",
+      "scripts/record_gap_completion_evidence_2.py",
+      "scripts/record_gap_dispositions.py",
+      "scripts/record_recovery_round.py",
+      "scripts/regenerate_projections.py",
+      "scripts/report_packaged_evidence_presence.py",
+      "scripts/rollout/compare_trees.py",
+      "scripts/rollout/integration_plan.py",
+      "scripts/run_audit_live.bat",
+      "scripts/run_coupled.bat",
+      "scripts/run_coupled.ps1",
+      "scripts/run_coupled2.bat",
+      "scripts/run_dist_controls.ps1",
+      "scripts/run_full_suite_snapshot.ps1",
+      "scripts/run_full_suite_snapshot2.ps1",
+      "scripts/run_full_suite_v3.ps1",
+      "scripts/run_full_sweep_v4.ps1",
+      "scripts/run_live_audit.bat",
+      "scripts/run_regression_batch1.ps1",
+      "scripts/run_sweep5.bat",
+      "scripts/run_sweep6.bat",
+      "scripts/show_extension_build_scripts.py",
+      "scripts/split_gap_0010.py",
+      "scripts/verify_evidence_custody.py",
+      "scripts/verify_gap_reconciliation.py"
+    ],
+    "semantic": [
+      "runtime/engineering_os_paths.py",
+      "runtime/hash_utils.py",
+      "runtime/semantic_address_vocabulary.py",
+      "runtime/semantic_authored_sources.py",
+      "runtime/semantic_census.py",
+      "runtime/semantic_census_report.py",
+      "runtime/semantic_census_v2.py",
+      "runtime/semantic_coverage.py",
+      "runtime/semantic_entity.py",
+      "runtime/semantic_entity_worthiness.py",
+      "runtime/semantic_evidence.py",
+      "runtime/semantic_evidence_graph.py",
+      "runtime/semantic_hierarchy.py",
+      "runtime/semantic_locator.py",
+      "runtime/semantic_migration.py",
+      "runtime/semantic_normalize.py",
+      "runtime/semantic_powershell_source.py",
+      "runtime/semantic_prefreeze_census.py",
+      "runtime/semantic_remap_transaction.py",
+      "runtime/semantic_stability_diagnosis.py",
+      "runtime/semantic_stability_repair.py",
+      "runtime/semantic_surfaces.py",
+      "runtime/semantic_taxonomy.py",
+      "runtime/semantic_taxonomy_census.py",
+      "runtime/source_boundary.py"
+    ],
+    "tests": [
+      "runtime/cancellation_scope.py",
+      "runtime/chat_context.py",
+      "runtime/compact_address.py",
+      "runtime/containment_invariants.py",
+      "runtime/context_generation.py",
+      "runtime/data_controls.py",
+      "runtime/data_inventory.py",
+      "runtime/data_subject_records.py",
+      "runtime/deterministic_model_stub.py",
+      "runtime/effect_intent.py",
+      "runtime/engineering_os_paths.py",
+      "runtime/execution_context.py",
+      "runtime/generation_bound_verdict.py",
+      "runtime/governed_exception.py",
+      "runtime/gremlin/__init__.py",
+      "runtime/gremlin/admin.py",
+      "runtime/gremlin/audit.py",
+      "runtime/gremlin/authorization.py",
+      "runtime/gremlin/commissioning.py",
+      "runtime/gremlin/composition.py",
+      "runtime/gremlin/containment.py",
+      "runtime/gremlin/deviation.py",
+      "runtime/gremlin/enrollment.py",
+      "runtime/gremlin/events.py",
+      "runtime/gremlin/health.py",
+      "runtime/gremlin/host_configuration.py",
+      "runtime/gremlin/identity.py",
+      "runtime/gremlin/observers.py",
+      "runtime/gremlin/policy.py",
+      "runtime/gremlin/receipts.py",
+      "runtime/gremlin/recovery_authority.py",
+      "runtime/gremlin/registry.py",
+      "runtime/gremlin/runtime_identity.py",
+      "runtime/gremlin/supervisor.py",
+      "runtime/group_provider_adapters.py",
+      "runtime/guarded_registry_projection.py",
+      "runtime/hash_utils.py",
+      "runtime/isolated_sandbox.py",
+      "runtime/member_execution.py",
+      "runtime/model_branch_artifacts.py",
+      "runtime/model_branch_contracts.py",
+      "runtime/model_convergence.py",
+      "runtime/model_execution_group.py",
+      "runtime/model_group_preparation.py",
+      "runtime/mutating_producer_registry.py",
+      "runtime/mutation_queue.py",
+      "runtime/personal_record_store.py",
+      "runtime/plan_registry.py",
+      "runtime/prepared_group_transport.py",
+      "runtime/projection_gate.py",
+      "runtime/release_current_acceptance.py",
+      "runtime/release_source_identity.py",
+      "runtime/remote_member_execution.py",
+      "runtime/remote_model_attachment.py",
+      "runtime/remote_model_bridge.py",
+      "runtime/remote_provider_adapters.py",
+      "runtime/remote_provider_placement.py",
+      "runtime/remote_provider_profiles.py",
+      "runtime/remote_service_protocols.py",
+      "runtime/scope_lease.py",
+      "runtime/secure_publish.py",
+      "runtime/semantic_address_vocabulary.py",
+      "runtime/semantic_authored_sources.py",
+      "runtime/semantic_coverage.py",
+      "runtime/semantic_entity.py",
+      "runtime/semantic_entity_worthiness.py",
+      "runtime/semantic_evidence_graph.py",
+      "runtime/semantic_locator.py",
+      "runtime/semantic_normalize.py",
+      "runtime/semantic_powershell_source.py",
+      "runtime/semantic_prefreeze_census.py",
+      "runtime/semantic_surfaces.py",
+      "runtime/semantic_taxonomy.py",
+      "runtime/semantic_taxonomy_census.py",
+      "runtime/source_boundary.py",
+      "runtime/source_freeze.py",
+      "runtime/tie_experience.py",
+      "runtime/workflow_group_config.py",
+      "runtime/yaml_subject_files.py",
+      "scripts/rollout/compare_trees.py",
+      "scripts/rollout/integration_plan.py",
+      "tests/foundry_publication_fixture.py",
+      "tests/mixed_provider_fixture.py",
+      "tests/test_anthropic_usage_components.py",
+      "tests/test_audit_regressions_rounds_1_5.py",
+      "tests/test_billing_budget_audit.py",
+      "tests/test_boundary_conformance.py",
+      "tests/test_certification_pipeline_readiness.py",
+      "tests/test_cognitive_cli_custody.py",
+      "tests/test_compact_address.py",
+      "tests/test_containment_invariants.py",
+      "tests/test_context_generation.py",
+      "tests/test_data_inventory_controls.py",
+      "tests/test_data_inventory_retained_copies.py",
+      "tests/test_data_subject_records.py",
+      "tests/test_effect_pure_string_discovery.py",
+      "tests/test_effect_stream_discovery.py",
+      "tests/test_engineering_os_paths.py",
+      "tests/test_event_integrity_audit.py",
+      "tests/test_evidence_revalidation.py",
+      "tests/test_execution_context.py",
+      "tests/test_execution_context_parity.py",
+      "tests/test_execution_layers.py",
+      "tests/test_foundry_publication_custody.py",
+      "tests/test_gemini_protocol.py",
+      "tests/test_gremlin_audit.py",
+      "tests/test_gremlin_composition.py",
+      "tests/test_gremlin_containment.py",
+      "tests/test_gremlin_recovery_authority.py",
+      "tests/test_gremlin_runtime_identity.py",
+      "tests/test_guarded_projection_callers.py",
+      "tests/test_host_enforcement_audit.py",
+      "tests/test_host_model_currentness.py",
+      "tests/test_isolated_agent_sandbox.py",
+      "tests/test_librarian_semantic_map.py",
+      "tests/test_mixed_provider_custody.py",
+      "tests/test_model_branch_artifact_custody.py",
+      "tests/test_model_execution_group.py",
+      "tests/test_model_group_preparation.py",
+      "tests/test_mutating_producer_registry.py",
+      "tests/test_mutating_producer_registry_hardening.py",
+      "tests/test_operational_gap_ledger_delta_lifecycle.py",
+      "tests/test_personal_chat_context.py",
+      "tests/test_plan_current_campaign.py",
+      "tests/test_plan_foundation_authority.py",
+      "tests/test_plan_registry.py",
+      "tests/test_plan_registry_integrity.py",
+      "tests/test_plan_status_authority.py",
+      "tests/test_plan_waves.py",
+      "tests/test_powershell_campaign_controls.py",
+      "tests/test_projection_gate.py",
+      "tests/test_projection_process_custody.py",
+      "tests/test_provider_budget_custody.py",
+      "tests/test_provider_route_index_custody.py",
+      "tests/test_py_cert_adapters.py",
+      "tests/test_read_only_normalization_candidates.py",
+      "tests/test_refines_generation_lineage.py",
+      "tests/test_refines_mesh_integration.py",
+      "tests/test_regenerate_projections_admission.py",
+      "tests/test_release_source_identity.py",
+      "tests/test_release_state_source_boundary.py",
+      "tests/test_remote_group_attachment.py",
+      "tests/test_remote_group_effect_owner.py",
+      "tests/test_remote_member_effect_owner.py",
+      "tests/test_remote_model_bridge.py",
+      "tests/test_remote_prepared_bridge.py",
+      "tests/test_remote_profile_asset_layout.py",
+      "tests/test_remote_qualified_identity.py",
+      "tests/test_remote_service_protocols.py",
+      "tests/test_rollout_inventory.py",
+      "tests/test_sandbox_bridge.py",
+      "tests/test_scope_quarantine.py",
+      "tests/test_secure_publish.py",
+      "tests/test_semantic_authored_sources.py",
+      "tests/test_semantic_coverage.py",
+      "tests/test_semantic_entity.py",
+      "tests/test_semantic_index_cli_custody.py",
+      "tests/test_semantic_locator.py",
+      "tests/test_semantic_powershell_source.py",
+      "tests/test_semantic_surfaces.py",
+      "tests/test_source_boundary.py",
+      "tests/test_source_boundary_conformance.py",
+      "tests/test_source_freeze.py",
+      "tests/test_studio_operation_mirror_custody.py",
+      "tests/test_tie_migration_receipt_custody.py",
+      "tests/test_usage_memory_custody.py",
+      "tests/test_workflow_group_effect_owner.py",
+      "tests/test_workflow_group_transport.py",
+      "tests/test_workflow_worker.py",
+      "tests/test_yaml_subject_files.py",
+      "tests/workflow_group_owner_fixture.py"
+    ]
+  },
+  "group_sizes": {
+    ".cursor": 1,
+    ".git": 1,
+    ".windsurf": 1,
+    "contracts": 31,
+    "docs": 8,
+    "extension": 18,
+    "gremlin": 23,
+    "model-routing": 17,
+    "policies": 1,
+    "registry": 17,
+    "runtime-other": 46,
+    "scripts": 49,
+    "semantic": 25,
+    "tests": 171
+  },
+  "edges": {
+    "runtime/cancellation_scope.py": [],
+    "runtime/chat_context.py": [],
+    "runtime/compact_address.py": [],
+    "runtime/containment_invariants.py": [],
+    "runtime/context_generation.py": [],
+    "runtime/data_controls.py": [],
+    "runtime/data_inventory.py": [],
+    "runtime/data_subject_records.py": [],
+    "runtime/dependency_identity.py": [],
+    "runtime/deterministic_model_stub.py": [],
+    "runtime/effect_intent.py": [],
+    "runtime/engineering_os_paths.py": [],
+    "runtime/execution_context.py": [],
+    "runtime/gemini_protocol.py": [],
+    "runtime/generation_bound_verdict.py": [],
+    "runtime/governed_exception.py": [],
+    "runtime/gremlin/__init__.py": [],
+    "runtime/gremlin/admin.py": [],
+    "runtime/gremlin/audit.py": [],
+    "runtime/gremlin/authorization.py": [],
+    "runtime/gremlin/commissioning.py": [],
+    "runtime/gremlin/composition.py": [],
+    "runtime/gremlin/containment.py": [],
+    "runtime/gremlin/deviation.py": [],
+    "runtime/gremlin/enrollment.py": [],
+    "runtime/gremlin/events.py": [],
+    "runtime/gremlin/health.py": [],
+    "runtime/gremlin/host_configuration.py": [],
+    "runtime/gremlin/host_process_observer.py": [],
+    "runtime/gremlin/identity.py": [],
+    "runtime/gremlin/intervention.py": [],
+    "runtime/gremlin/observers.py": [],
+    "runtime/gremlin/policy.py": [],
+    "runtime/gremlin/receipts.py": [],
+    "runtime/gremlin/recovery_authority.py": [],
+    "runtime/gremlin/recovery_verifier_console.py": [],
+    "runtime/gremlin/registry.py": [],
+    "runtime/gremlin/runtime_identity.py": [],
+    "runtime/gremlin/supervisor.py": [],
+    "runtime/group_provider_adapters.py": [],
+    "runtime/guarded_registry_projection.py": [],
+    "runtime/hash_utils.py": [],
+    "runtime/isolated_sandbox.py": [],
+    "runtime/iterative_subgraph.py": [],
+    "runtime/member_execution.py": [],
+    "runtime/metacognitive_evolution/runner.py": [],
+    "runtime/model_branch_artifacts.py": [],
+    "runtime/model_branch_contracts.py": [],
+    "runtime/model_convergence.py": [],
+    "runtime/model_execution_group.py": [],
+    "runtime/model_group_preparation.py": [],
+    "runtime/model_router_preset.py": [
+      "runtime/hash_utils.py"
+    ],
+    "runtime/mutating_producer_custody_reviewed.py": [],
+    "runtime/mutating_producer_registry.py": [],
+    "runtime/mutation_queue.py": [],
+    "runtime/personal_record_store.py": [],
+    "runtime/plan_registry.py": [],
+    "runtime/prepared_group_transport.py": [],
+    "runtime/projection_gate.py": [],
+    "runtime/release_current_acceptance.py": [],
+    "runtime/release_process_custody.py": [],
+    "runtime/release_source_identity.py": [],
+    "runtime/remote_member_execution.py": [],
+    "runtime/remote_model_attachment.py": [],
+    "runtime/remote_model_bridge.py": [],
+    "runtime/remote_provider_adapters.py": [],
+    "runtime/remote_provider_placement.py": [],
+    "runtime/remote_provider_profiles.py": [],
+    "runtime/remote_service_protocols.py": [],
+    "runtime/scope_lease.py": [],
+    "runtime/secure_publish.py": [],
+    "runtime/semantic_address_vocabulary.py": [],
+    "runtime/semantic_authored_sources.py": [
+      "runtime/semantic_taxonomy.py"
+    ],
+    "runtime/semantic_census.py": [],
+    "runtime/semantic_census_report.py": [
+      "runtime/semantic_census.py"
+    ],
+    "runtime/semantic_census_v2.py": [
+      "runtime/semantic_evidence.py",
+      "runtime/semantic_hierarchy.py"
+    ],
+    "runtime/semantic_coverage.py": [],
+    "runtime/semantic_entity.py": [],
+    "runtime/semantic_entity_worthiness.py": [],
+    "runtime/semantic_evidence.py": [],
+    "runtime/semantic_evidence_graph.py": [],
+    "runtime/semantic_hierarchy.py": [
+      "runtime/semantic_evidence.py",
+      "runtime/semantic_normalize.py"
+    ],
+    "runtime/semantic_locator.py": [
+      "runtime/semantic_entity.py"
+    ],
+    "runtime/semantic_migration.py": [],
+    "runtime/semantic_normalize.py": [],
+    "runtime/semantic_powershell_source.py": [],
+    "runtime/semantic_prefreeze_census.py": [
+      "runtime/semantic_entity_worthiness.py",
+      "runtime/semantic_evidence_graph.py",
+      "runtime/semantic_surfaces.py",
+      "runtime/semantic_taxonomy.py"
+    ],
+    "runtime/semantic_remap_transaction.py": [],
+    "runtime/semantic_stability_diagnosis.py": [
+      "runtime/semantic_prefreeze_census.py",
+      "runtime/semantic_taxonomy.py"
+    ],
+    "runtime/semantic_stability_repair.py": [],
+    "runtime/semantic_surfaces.py": [
+      "runtime/hash_utils.py",
+      "runtime/semantic_authored_sources.py",
+      "runtime/semantic_entity_worthiness.py",
+      "runtime/semantic_powershell_source.py",
+      "runtime/semantic_taxonomy.py",
+      "runtime/source_boundary.py"
+    ],
+    "runtime/semantic_taxonomy.py": [],
+    "runtime/semantic_taxonomy_census.py": [
+      "runtime/semantic_surfaces.py",
+      "runtime/semantic_taxonomy.py"
+    ],
+    "runtime/source_boundary.py": [
+      "runtime/engineering_os_paths.py"
+    ],
+    "runtime/source_freeze.py": [
+      "runtime/source_boundary.py"
+    ],
+    "runtime/tie_experience.py": [],
+    "runtime/w1_exit_gate.py": [
+      "runtime/compact_address.py",
+      "runtime/semantic_coverage.py",
+      "runtime/semantic_entity.py",
+      "runtime/semantic_locator.py"
+    ],
+    "runtime/work_disposition.py": [],
+    "runtime/workflow_group_config.py": [],
+    "runtime/workflow_resume.py": [],
+    "runtime/yaml_subject_files.py": [],
+    "scripts/admit_semantic_ownership.py": [],
+    "scripts/advance_open_gap_cards.py": [],
+    "scripts/build_mutating_producer_registry.py": [
+      "runtime/mutating_producer_registry.py"
+    ],
+    "scripts/close_out_gap_dispositions.py": [],
+    "scripts/declare_plan_corpus_count_owners.py": [],
+    "scripts/diagnose_receipt_policy.py": [],
+    "scripts/fix_boundary_rule_matching.py": [],
+    "scripts/measure_boundary_conformance.py": [
+      "runtime/source_boundary.py"
+    ],
+    "scripts/measure_extension_bundle.py": [],
+    "scripts/measure_source_boundary_coverage.py": [
+      "runtime/source_boundary.py"
+    ],
+    "scripts/phase0_inventory.py": [],
+    "scripts/prove_envelope_count_invariant.py": [],
+    "scripts/record_custody_correction.py": [],
+    "scripts/record_gap_0008_provenance.py": [],
+    "scripts/record_gap_completion_evidence.py": [],
+    "scripts/record_gap_completion_evidence_2.py": [],
+    "scripts/record_gap_dispositions.py": [],
+    "scripts/record_recovery_round.py": [],
+    "scripts/regenerate_projections.py": [
+      "runtime/execution_context.py",
+      "runtime/gremlin/enrollment.py",
+      "runtime/gremlin/host_configuration.py",
+      "runtime/gremlin/host_process_observer.py",
+      "runtime/gremlin/observers.py",
+      "runtime/guarded_registry_projection.py",
+      "runtime/isolated_sandbox.py"
+    ],
+    "scripts/report_packaged_evidence_presence.py": [],
+    "scripts/rollout/compare_trees.py": [],
+    "scripts/rollout/integration_plan.py": [
+      "runtime/source_boundary.py"
+    ],
+    "scripts/show_extension_build_scripts.py": [],
+    "scripts/split_gap_0010.py": [],
+    "scripts/verify_evidence_custody.py": [],
+    "scripts/verify_gap_reconciliation.py": [],
+    "tests/foundry_publication_fixture.py": [],
+    "tests/mixed_provider_fixture.py": [
+      "runtime/group_provider_adapters.py",
+      "runtime/model_execution_group.py",
+      "runtime/model_group_preparation.py",
+      "tests/test_model_group_preparation.py",
+      "tests/test_remote_group_effect_owner.py",
+      "tests/test_remote_model_bridge.py",
+      "tests/test_remote_qualified_identity.py"
+    ],
+    "tests/test_anthropic_usage_components.py": [],
+    "tests/test_audit_regressions_rounds_1_5.py": [
+      "runtime/effect_intent.py",
+      "runtime/gremlin/admin.py",
+      "runtime/gremlin/authorization.py",
+      "runtime/gremlin/containment.py",
+      "runtime/gremlin/events.py",
+      "runtime/gremlin/identity.py",
+      "runtime/gremlin/observers.py",
+      "runtime/gremlin/policy.py",
+      "runtime/gremlin/registry.py",
+      "runtime/gremlin/supervisor.py",
+      "runtime/isolated_sandbox.py"
+    ],
+    "tests/test_billing_budget_audit.py": [],
+    "tests/test_boundary_conformance.py": [
+      "runtime/source_boundary.py"
+    ],
+    "tests/test_certification_pipeline_readiness.py": [],
+    "tests/test_cognitive_cli_custody.py": [
+      "runtime/effect_intent.py",
+      "runtime/scope_lease.py",
+      "tests/test_studio_operation_mirror_custody.py"
+    ],
+    "tests/test_compact_address.py": [
+      "runtime/compact_address.py",
+      "runtime/semantic_address_vocabulary.py",
+      "runtime/semantic_entity.py"
+    ],
+    "tests/test_containment_invariants.py": [
+      "runtime/containment_invariants.py",
+      "runtime/gremlin/containment.py",
+      "runtime/gremlin/supervisor.py",
+      "runtime/model_convergence.py",
+      "runtime/source_boundary.py"
+    ],
+    "tests/test_context_generation.py": [
+      "runtime/context_generation.py"
+    ],
+    "tests/test_data_inventory_controls.py": [
+      "runtime/data_controls.py",
+      "runtime/data_inventory.py"
+    ],
+    "tests/test_data_inventory_retained_copies.py": [
+      "runtime/data_inventory.py"
+    ],
+    "tests/test_data_subject_records.py": [
+      "runtime/data_controls.py",
+      "runtime/data_inventory.py",
+      "runtime/data_subject_records.py",
+      "runtime/effect_intent.py",
+      "runtime/personal_record_store.py"
+    ],
+    "tests/test_effect_pure_string_discovery.py": [],
+    "tests/test_effect_stream_discovery.py": [],
+    "tests/test_engineering_os_paths.py": [
+      "runtime/engineering_os_paths.py"
+    ],
+    "tests/test_event_integrity_audit.py": [],
+    "tests/test_evidence_revalidation.py": [],
+    "tests/test_execution_context.py": [
+      "runtime/execution_context.py"
+    ],
+    "tests/test_execution_context_parity.py": [
+      "runtime/execution_context.py"
+    ],
+    "tests/test_execution_layers.py": [
+      "runtime/generation_bound_verdict.py",
+      "runtime/gremlin/containment.py",
+      "runtime/gremlin/enrollment.py",
+      "runtime/gremlin/identity.py",
+      "runtime/gremlin/supervisor.py",
+      "runtime/model_convergence.py",
+      "runtime/model_execution_group.py"
+    ],
+    "tests/test_foundry_publication_custody.py": [
+      "runtime/scope_lease.py",
+      "tests/foundry_publication_fixture.py"
+    ],
+    "tests/test_gemini_protocol.py": [
+      "runtime/remote_provider_profiles.py",
+      "runtime/remote_service_protocols.py",
+      "tests/test_remote_group_effect_owner.py",
+      "tests/test_remote_member_effect_owner.py",
+      "tests/test_remote_model_bridge.py"
+    ],
+    "tests/test_gremlin_audit.py": [
+      "runtime/gremlin/audit.py",
+      "runtime/gremlin/runtime_identity.py"
+    ],
+    "tests/test_gremlin_composition.py": [
+      "runtime/gremlin/composition.py",
+      "runtime/gremlin/host_configuration.py",
+      "runtime/gremlin/recovery_authority.py",
+      "runtime/gremlin/runtime_identity.py"
+    ],
+    "tests/test_gremlin_containment.py": [
+      "runtime/gremlin/admin.py",
+      "runtime/gremlin/authorization.py",
+      "runtime/gremlin/containment.py",
+      "runtime/gremlin/deviation.py",
+      "runtime/gremlin/enrollment.py",
+      "runtime/gremlin/events.py",
+      "runtime/gremlin/health.py",
+      "runtime/gremlin/identity.py",
+      "runtime/gremlin/observers.py",
+      "runtime/gremlin/policy.py",
+      "runtime/gremlin/receipts.py",
+      "runtime/gremlin/registry.py",
+      "runtime/gremlin/supervisor.py",
+      "runtime/isolated_sandbox.py"
+    ],
+    "tests/test_gremlin_recovery_authority.py": [
+      "runtime/gremlin/recovery_authority.py"
+    ],
+    "tests/test_gremlin_runtime_identity.py": [
+      "runtime/gremlin/audit.py",
+      "runtime/gremlin/commissioning.py",
+      "runtime/gremlin/receipts.py",
+      "runtime/gremlin/runtime_identity.py"
+    ],
+    "tests/test_guarded_projection_callers.py": [
+      "runtime/guarded_registry_projection.py"
+    ],
+    "tests/test_host_enforcement_audit.py": [
+      "runtime/gremlin/__init__.py"
+    ],
+    "tests/test_host_model_currentness.py": [],
+    "tests/test_isolated_agent_sandbox.py": [
+      "runtime/gremlin/containment.py",
+      "runtime/gremlin/events.py",
+      "runtime/gremlin/identity.py",
+      "runtime/gremlin/observers.py",
+      "runtime/gremlin/supervisor.py",
+      "runtime/isolated_sandbox.py"
+    ],
+    "tests/test_librarian_semantic_map.py": [
+      "runtime/semantic_entity.py",
+      "runtime/semantic_locator.py"
+    ],
+    "tests/test_mixed_provider_custody.py": [
+      "runtime/remote_member_execution.py",
+      "tests/mixed_provider_fixture.py",
+      "tests/test_remote_member_effect_owner.py",
+      "tests/test_remote_model_bridge.py"
+    ],
+    "tests/test_model_branch_artifact_custody.py": [
+      "runtime/effect_intent.py",
+      "runtime/model_branch_artifacts.py",
+      "runtime/model_group_preparation.py",
+      "runtime/scope_lease.py",
+      "tests/test_model_group_preparation.py"
+    ],
+    "tests/test_model_execution_group.py": [
+      "runtime/model_branch_contracts.py",
+      "runtime/model_execution_group.py"
+    ],
+    "tests/test_model_group_preparation.py": [
+      "runtime/context_generation.py",
+      "runtime/model_execution_group.py",
+      "runtime/model_group_preparation.py"
+    ],
+    "tests/test_mutating_producer_registry.py": [
+      "runtime/mutating_producer_registry.py"
+    ],
+    "tests/test_mutating_producer_registry_hardening.py": [
+      "runtime/effect_intent.py",
+      "runtime/guarded_registry_projection.py",
+      "runtime/mutating_producer_registry.py",
+      "runtime/scope_lease.py"
+    ],
+    "tests/test_operational_gap_ledger_delta_lifecycle.py": [],
+    "tests/test_personal_chat_context.py": [
+      "runtime/chat_context.py",
+      "runtime/data_subject_records.py",
+      "runtime/personal_record_store.py",
+      "tests/test_data_subject_records.py"
+    ],
+    "tests/test_plan_current_campaign.py": [],
+    "tests/test_plan_foundation_authority.py": [
+      "runtime/source_boundary.py",
+      "tests/test_plan_current_campaign.py"
+    ],
+    "tests/test_plan_registry.py": [
+      "runtime/plan_registry.py",
+      "runtime/source_freeze.py"
+    ],
+    "tests/test_plan_registry_integrity.py": [
+      "runtime/plan_registry.py"
+    ],
+    "tests/test_plan_status_authority.py": [
+      "runtime/plan_registry.py"
+    ],
+    "tests/test_plan_waves.py": [],
+    "tests/test_powershell_campaign_controls.py": [],
+    "tests/test_projection_gate.py": [
+      "runtime/context_generation.py",
+      "runtime/projection_gate.py"
+    ],
+    "tests/test_projection_process_custody.py": [
+      "runtime/gremlin/__init__.py",
+      "runtime/gremlin/host_configuration.py"
+    ],
+    "tests/test_provider_budget_custody.py": [],
+    "tests/test_provider_route_index_custody.py": [
+      "runtime/effect_intent.py",
+      "runtime/scope_lease.py",
+      "tests/test_studio_operation_mirror_custody.py"
+    ],
+    "tests/test_py_cert_adapters.py": [
+      "runtime/plan_registry.py"
+    ],
+    "tests/test_read_only_normalization_candidates.py": [
+      "runtime/cancellation_scope.py",
+      "runtime/semantic_normalize.py"
+    ],
+    "tests/test_refines_generation_lineage.py": [
+      "runtime/context_generation.py",
+      "runtime/model_execution_group.py",
+      "runtime/projection_gate.py"
+    ],
+    "tests/test_refines_mesh_integration.py": [
+      "runtime/deterministic_model_stub.py",
+      "runtime/generation_bound_verdict.py",
+      "runtime/governed_exception.py",
+      "runtime/model_convergence.py",
+      "runtime/model_execution_group.py"
+    ],
+    "tests/test_regenerate_projections_admission.py": [],
+    "tests/test_release_source_identity.py": [
+      "runtime/plan_registry.py",
+      "runtime/release_current_acceptance.py",
+      "runtime/release_source_identity.py",
+      "runtime/source_freeze.py",
+      "tests/test_plan_registry.py",
+      "tests/test_plan_status_authority.py"
+    ],
+    "tests/test_release_state_source_boundary.py": [
+      "runtime/source_boundary.py"
+    ],
+    "tests/test_remote_group_attachment.py": [
+      "runtime/group_provider_adapters.py",
+      "runtime/model_execution_group.py",
+      "runtime/model_group_preparation.py",
+      "runtime/remote_model_attachment.py",
+      "runtime/remote_provider_profiles.py",
+      "tests/test_model_group_preparation.py",
+      "tests/test_remote_model_bridge.py"
+    ],
+    "tests/test_remote_group_effect_owner.py": [
+      "runtime/group_provider_adapters.py",
+      "runtime/member_execution.py",
+      "runtime/model_execution_group.py",
+      "runtime/model_group_preparation.py",
+      "runtime/remote_model_attachment.py",
+      "runtime/remote_provider_adapters.py",
+      "runtime/remote_provider_placement.py",
+      "runtime/remote_provider_profiles.py",
+      "tests/test_model_group_preparation.py",
+      "tests/test_remote_group_attachment.py",
+      "tests/test_remote_model_bridge.py",
+      "tests/workflow_group_owner_fixture.py"
+    ],
+    "tests/test_remote_member_effect_owner.py": [
+      "runtime/effect_intent.py",
+      "runtime/remote_member_execution.py",
+      "runtime/remote_provider_profiles.py",
+      "tests/test_remote_group_effect_owner.py",
+      "tests/test_remote_model_bridge.py"
+    ],
+    "tests/test_remote_model_bridge.py": [
+      "runtime/execution_context.py",
+      "runtime/remote_model_bridge.py",
+      "runtime/remote_provider_adapters.py",
+      "runtime/remote_provider_profiles.py"
+    ],
+    "tests/test_remote_prepared_bridge.py": [
+      "runtime/remote_model_bridge.py",
+      "runtime/remote_provider_profiles.py",
+      "tests/test_remote_group_effect_owner.py",
+      "tests/test_remote_model_bridge.py"
+    ],
+    "tests/test_remote_profile_asset_layout.py": [
+      "runtime/remote_provider_profiles.py",
+      "tests/test_remote_model_bridge.py"
+    ],
+    "tests/test_remote_qualified_identity.py": [
+      "runtime/model_execution_group.py",
+      "runtime/model_group_preparation.py",
+      "runtime/remote_model_attachment.py",
+      "runtime/remote_provider_profiles.py",
+      "tests/test_model_group_preparation.py",
+      "tests/test_remote_group_effect_owner.py",
+      "tests/test_remote_member_effect_owner.py",
+      "tests/test_remote_model_bridge.py"
+    ],
+    "tests/test_remote_service_protocols.py": [
+      "runtime/remote_provider_adapters.py",
+      "runtime/remote_service_protocols.py"
+    ],
+    "tests/test_rollout_inventory.py": [
+      "scripts/rollout/compare_trees.py",
+      "scripts/rollout/integration_plan.py"
+    ],
+    "tests/test_sandbox_bridge.py": [
+      "runtime/isolated_sandbox.py"
+    ],
+    "tests/test_scope_quarantine.py": [
+      "runtime/effect_intent.py",
+      "runtime/execution_context.py",
+      "runtime/scope_lease.py"
+    ],
+    "tests/test_secure_publish.py": [
+      "runtime/effect_intent.py",
+      "runtime/mutation_queue.py",
+      "runtime/plan_registry.py",
+      "runtime/scope_lease.py",
+      "runtime/secure_publish.py",
+      "runtime/semantic_entity.py"
+    ],
+    "tests/test_semantic_authored_sources.py": [],
+    "tests/test_semantic_coverage.py": [
+      "runtime/semantic_coverage.py"
+    ],
+    "tests/test_semantic_entity.py": [
+      "runtime/semantic_entity.py"
+    ],
+    "tests/test_semantic_index_cli_custody.py": [
+      "runtime/effect_intent.py",
+      "runtime/scope_lease.py",
+      "tests/test_studio_operation_mirror_custody.py"
+    ],
+    "tests/test_semantic_locator.py": [
+      "runtime/semantic_entity.py",
+      "runtime/semantic_locator.py"
+    ],
+    "tests/test_semantic_powershell_source.py": [],
+    "tests/test_semantic_surfaces.py": [
+      "runtime/semantic_powershell_source.py",
+      "runtime/semantic_prefreeze_census.py",
+      "runtime/semantic_taxonomy_census.py"
+    ],
+    "tests/test_source_boundary.py": [
+      "runtime/engineering_os_paths.py",
+      "runtime/semantic_surfaces.py",
+      "runtime/source_boundary.py"
+    ],
+    "tests/test_source_boundary_conformance.py": [
+      "runtime/source_boundary.py"
+    ],
+    "tests/test_source_freeze.py": [
+      "runtime/source_freeze.py"
+    ],
+    "tests/test_studio_operation_mirror_custody.py": [
+      "runtime/effect_intent.py",
+      "runtime/guarded_registry_projection.py",
+      "runtime/scope_lease.py"
+    ],
+    "tests/test_tie_migration_receipt_custody.py": [
+      "runtime/effect_intent.py",
+      "runtime/scope_lease.py",
+      "runtime/tie_experience.py"
+    ],
+    "tests/test_usage_memory_custody.py": [
+      "runtime/effect_intent.py",
+      "runtime/scope_lease.py",
+      "runtime/tie_experience.py"
+    ],
+    "tests/test_workflow_group_effect_owner.py": [
+      "runtime/scope_lease.py",
+      "tests/test_workflow_group_transport.py",
+      "tests/workflow_group_owner_fixture.py"
+    ],
+    "tests/test_workflow_group_transport.py": [
+      "runtime/context_generation.py",
+      "runtime/model_execution_group.py",
+      "runtime/model_group_preparation.py",
+      "runtime/prepared_group_transport.py",
+      "runtime/workflow_group_config.py"
+    ],
+    "tests/test_workflow_worker.py": [
+      "runtime/effect_intent.py",
+      "runtime/execution_context.py",
+      "runtime/gremlin/host_configuration.py",
+      "runtime/scope_lease.py"
+    ],
+    "tests/test_yaml_subject_files.py": [
+      "runtime/yaml_subject_files.py"
+    ],
+    "tests/workflow_group_owner_fixture.py": [
+      "runtime/effect_intent.py",
+      "runtime/execution_context.py",
+      "runtime/model_group_preparation.py",
+      "runtime/scope_lease.py"
+    ]
+  }
+}

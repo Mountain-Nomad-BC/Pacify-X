@@ -37,6 +37,57 @@ REQUIRED_KINDS = frozenset(
 )
 
 
+def context_vector_for_dependencies(project_id: str, scope: str,
+        revisions: Mapping[str, str | None], component_dependencies: Mapping[str, Iterable[str]],
+        *, required_components: Iterable[str]):
+    """Bind consumer context to the existing dependency owner's exact revisions.
+
+    Missing observations remain None. This is a pure projection of supplied
+    owner observations, not a second dependency catalog or authority plane.
+    """
+    import hashlib
+    from .context_generation import COMPONENTS, context_vector
+    from .json_io import bounded_canonical_json_bytes
+
+    if not isinstance(revisions, Mapping) or len(revisions) > MAX_NODES:
+        raise ValueError("context revisions require a bounded dependency mapping")
+    normalized = {}
+    for node, revision in revisions.items():
+        node = dependency_identity(node)
+        from .dependency_identity import DependencyIdentity, read_dependency_identity
+        if type(revision) is dict:
+            revision = read_dependency_identity(revision)
+        if type(revision) is DependencyIdentity:
+            if revision.node_id != node or revision.project_id != project_id:
+                raise ValueError("dependency observation differs from consumer project/node")
+            revision = revision.revision
+        normalized[node] = dependency_identity(revision) if revision is not None else None
+    bounded_json_text(normalized, max_bytes=16*1024**2)
+    if (not isinstance(component_dependencies, Mapping)
+            or any(component not in COMPONENTS for component in component_dependencies)):
+        raise ValueError("unknown context component dependency binding")
+    components = {}
+    count = 0
+    for component, dependencies in component_dependencies.items():
+        if isinstance(dependencies, (str, bytes, Mapping)):
+            raise ValueError("component dependencies require a bounded sequence")
+        records = {}
+        for dependency in dependencies:
+            count += 1
+            if count > MAX_NODES:
+                raise ValueError("context dependency binding budget exceeded")
+            node = dependency_identity(dependency)
+            if node not in normalized or node in records:
+                raise ValueError("unknown or duplicate context dependency")
+            records[node] = normalized[node]
+        if not records:
+            raise ValueError("context component must declare at least one dependency")
+        components[component] = None if any(value is None for value in records.values()) else hashlib.sha256(
+            bounded_canonical_json_bytes(records, max_bytes=16*1024**2)).hexdigest()
+    return context_vector(project_id, scope, components, required_components=required_components)
+
+
+
 def load_dependency_authority(root: Path) -> dict[str, Any]:
     reject_path_links(root)
     path = root / "registry/dependency_authority.json"

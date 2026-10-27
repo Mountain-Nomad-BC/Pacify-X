@@ -26,6 +26,59 @@ class FileLockTimeout(RuntimeError):
     """Raised after a bounded lock-acquisition deadline expires."""
 
 
+_PROCESS_LOCKS_GUARD = threading.Lock()
+_PROCESS_LOCKS: dict[tuple[object, ...], dict[str, object]] = {}
+
+
+def _process_lock_key(path: Path, mode: str = "r+b") -> tuple[object, ...]:
+    """Key the exact mutual-exclusion unit: this file's exclusive byte-zero region.
+
+    Windows `msvcrt.locking` regions belong to the process, not the handle, so
+    the unit is the file identity rather than a path string and never a mode.
+    """
+    try:
+        stat = os.stat(path)
+        return (stat.st_dev, stat.st_ino)
+    except OSError:
+        try:
+            return ("path", os.path.normcase(str(path.resolve())))
+        except OSError:
+            return ("path", os.path.normcase(os.path.abspath(str(path))))
+
+
+def _process_closed_error(path: Path) -> OSError:
+    """Return the error a closed handle produces for this path on this host.
+
+    The in-process record never replaces the authoritative byte lock: it only
+    stops a second handle in this process from competing for a region the process
+    already owns. A caller probing a closed stream must still fail exactly as it
+    would without the record.
+    """
+    try:
+        with path.open("rb") as stream:
+            stream.seek(0)
+    except OSError as error:
+        return error
+    return ValueError(f"I/O operation on closed file: {path}")
+
+
+def _enter_process_entry(key: tuple[object, ...]) -> dict[str, object]:
+    with _PROCESS_LOCKS_GUARD:
+        entry = _PROCESS_LOCKS.get(key)
+        if entry is None:
+            entry = {"condition": threading.Condition(_PROCESS_LOCKS_GUARD), "owner": None, "users": 0}
+            _PROCESS_LOCKS[key] = entry
+        entry["users"] += 1
+        return entry
+
+
+def _retire_if_unused(key: tuple[object, ...], entry: dict[str, object]) -> None:
+    with _PROCESS_LOCKS_GUARD:
+        entry["users"] -= 1
+        if entry["users"] == 0 and entry.get("owner") is None and _PROCESS_LOCKS.get(key) is entry:
+            _PROCESS_LOCKS.pop(key, None)
+
+
 def _sha256_text(value: str) -> str:
     return hashlib.sha256(value.encode("utf-8")).hexdigest()
 
@@ -226,13 +279,15 @@ class FileLock:
         self.maximum_sleep_seconds = maximum_sleep_seconds
         self.heartbeat_interval_seconds = heartbeat_interval_seconds
         self._stream = None
+        self._byte_locked = False
         self._token: str | None = None
         self._lease: dict[str, object] | None = None
         self._heartbeat_stop: threading.Event | None = None
         self._heartbeat_thread: threading.Thread | None = None
         self._heartbeat_error: OSError | None = None
-        self._metadata_guard = threading.Lock()
+        self._metadata_guard = threading.RLock()
         self.recovery_receipt_path: Path | None = None
+        self._process_entry: tuple[tuple[object, ...], dict[str, object]] | None = None
         self.attempts = 0
         self.slept_seconds = 0.0
 
@@ -300,6 +355,8 @@ class FileLock:
         payload = json.dumps(
             dict(record), sort_keys=True, separators=(",", ":"), ensure_ascii=True
         ).encode("ascii")
+        # Callers that must freeze the exact image they persist (the heartbeat)
+        # wrap this call; the guard is re-entrant so that nesting is safe.
         with self._metadata_guard:
             self._stream.seek(1)
             self._stream.truncate()
@@ -351,7 +408,13 @@ class FileLock:
 
     def _lock_stream(self) -> None:
         assert self._stream is not None
-        self._stream.seek(0)
+        try:
+            self._stream.seek(0)
+        except (OSError, ValueError):
+            # This same process already owns the region, so a closed handle would
+            # otherwise pass here and only the shared read below would fail.
+            # Report the handle's own failure first to preserve prior semantics.
+            raise _process_closed_error(self.path)
         if os.name == "nt":
             import msvcrt
 
@@ -360,9 +423,10 @@ class FileLock:
             import fcntl
 
             fcntl.flock(self._stream.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+        self._byte_locked = True
 
     def _unlock_stream(self) -> None:
-        if self._stream is None:
+        if self._stream is None or not self._byte_locked:
             return
         self._stream.seek(0)
         if os.name == "nt":
@@ -373,6 +437,7 @@ class FileLock:
             import fcntl
 
             fcntl.flock(self._stream.fileno(), fcntl.LOCK_UN)
+        self._byte_locked = False
 
     def _abandon_attempt(self) -> None:
         if self._stream is None:
@@ -387,6 +452,11 @@ class FileLock:
     def _acquire_once(self) -> None:
         if self._stream is None:
             self._stream = self.path.open("r+b")
+        # Retrying after a lease read failure may reopen, but never silently
+        # switch the physical mutex identity selected by this acquisition.
+        stat = os.fstat(self._stream.fileno())
+        if self._process_entry is not None and (stat.st_dev, stat.st_ino) != self._process_entry[0]:
+            raise OSError("lock file identity changed during acquisition")
         self._lock_stream()
         try:
             previous = self._decode_record(self._stream.read())
@@ -421,14 +491,15 @@ class FileLock:
             raise
 
     def _heartbeat_once(self) -> None:
-        if self._lease is None or self._stream is None:
-            return
-        heartbeat_ns = time.time_ns()
-        self._lease["heartbeat_utc"] = datetime.fromtimestamp(
-            heartbeat_ns / 1_000_000_000, timezone.utc
-        ).isoformat()
-        self._lease["heartbeat_unix_ns"] = heartbeat_ns
-        self._write_record(self._lease)
+        with self._metadata_guard:
+            if self._lease is None or self._stream is None:
+                return
+            heartbeat_ns = time.time_ns()
+            self._lease["heartbeat_utc"] = datetime.fromtimestamp(
+                heartbeat_ns / 1_000_000_000, timezone.utc
+            ).isoformat()
+            self._lease["heartbeat_unix_ns"] = heartbeat_ns
+            self._write_record(self._lease)
 
     def _heartbeat_loop(self) -> None:
         assert self._heartbeat_stop is not None
@@ -441,6 +512,8 @@ class FileLock:
 
     def _start_heartbeat(self) -> None:
         self._heartbeat_stop = threading.Event()
+        # A heartbeat outlives its caller by at most one interval and must never
+        # keep a short-lived process (for example a `spawn`ed test child) alive.
         self._heartbeat_thread = threading.Thread(
             target=self._heartbeat_loop,
             name=f"file-lock-heartbeat-{self.path.name}",
@@ -449,23 +522,81 @@ class FileLock:
         self._heartbeat_thread.start()
 
     def __enter__(self) -> "FileLock":
+        if self._process_entry is not None or self._stream is not None:
+            raise RuntimeError("file lock is already entered")
         self.path.parent.mkdir(parents=True, exist_ok=True)
-        # Initialize exactly once. Writing through every contender races with
-        # an already-held Windows byte-range lock and can raise PermissionError.
+        deadline = time.monotonic() + self.timeout_seconds
+        self._lease = None
+        self._heartbeat_error = None
+        self._heartbeat_thread = None
+        # Create before keying: a path fallback before creation splits first and
+        # subsequent callers. Pin the opened physical file, including aliases.
         try:
             with self.path.open("xb") as initializer:
                 initializer.write(b"0")
                 initializer.flush()
                 os.fsync(initializer.fileno())
         except (FileExistsError, PermissionError):
-            self._stream = None
-        deadline = time.monotonic() + self.timeout_seconds
+            pass
+        self._stream = self.path.open("r+b")
+        try:
+            stat = os.fstat(self._stream.fileno())
+            key = (stat.st_dev, stat.st_ino)
+            entry = _enter_process_entry(key)
+            self._process_entry = (key, entry)
+        except BaseException:
+            try:
+                self._stream.close()
+            finally:
+                self._stream = None
+            raise
+        try:
+            with entry["condition"]:
+                while entry.get("owner") is not None:
+                    remaining = deadline - time.monotonic()
+                    if remaining <= 0:
+                        raise FileLockTimeout(
+                            f"control state is locked by another thread in this process: {self.path}"
+                        )
+                    entry["condition"].wait(min(remaining, self.maximum_sleep_seconds))
+                entry["owner"] = self
+            self._acquire_across_processes(deadline, entry)
+            self._start_heartbeat()
+            return self
+        except BaseException:
+            if self._lease is not None:
+                self.__exit__(*sys.exc_info())
+            else:
+                try:
+                    self._abandon_attempt()
+                finally:
+                    self._release_process_ownership()
+            raise
+
+    def _release_process_ownership(self) -> None:
+        record = self._process_entry
+        self._process_entry = None
+        if record is None:
+            return
+        key, entry = record
+        with entry["condition"]:
+            # A timed-out waiter must never clear another instance's owner.
+            if entry.get("owner") is self:
+                entry["owner"] = None
+                entry["condition"].notify_all()
+        # Each holder AND each waiting claimant reserves a reference. Retirement
+        # cannot orphan a waiter and create a second mutex for the same file.
+        _retire_if_unused(key, entry)
+
+    def _acquire_across_processes(
+        self, deadline: float, entry: dict[str, object]
+    ) -> None:
         delay = self.minimum_sleep_seconds
         while True:
             self.attempts += 1
             try:
                 self._acquire_once()
-                break
+                return
             except OSError as error:
                 now = time.monotonic()
                 if now >= deadline:
@@ -479,32 +610,45 @@ class FileLock:
                 time.sleep(sleep_for)
                 self.slept_seconds += sleep_for
                 delay = min(self.maximum_sleep_seconds, delay * 2)
-        self._start_heartbeat()
-        return self
 
     def __exit__(self, exc_type, exc, traceback) -> None:
-        if self._stream is None:
+        if self._stream is None or self._lease is None:
+            try:
+                if self._stream is not None:
+                    self._stream.close()
+            finally:
+                self._stream = None
+                self._release_process_ownership()
             return
         if self._heartbeat_stop is not None:
             self._heartbeat_stop.set()
-        if self._heartbeat_thread is not None:
+        if self._heartbeat_thread is not None and self._heartbeat_thread.is_alive():
             self._heartbeat_thread.join(timeout=1.0)
-        release_error: OSError | None = self._heartbeat_error
-        if self._lease is not None:
-            released_ns = time.time_ns()
-            self._lease["state"] = "released"
-            self._lease["released_utc"] = datetime.fromtimestamp(
-                released_ns / 1_000_000_000, timezone.utc
-            ).isoformat()
-            self._lease["released_unix_ns"] = released_ns
-            try:
-                self._write_record(self._lease)
-            except OSError as error:
-                release_error = release_error or error
+            if self._heartbeat_thread.is_alive():
+                # Never close a descriptor that a writer thread can still use.
+                # Retain the lease for explicit retry/recovery; not a closure.
+                raise RuntimeError("file-lock heartbeat unsettled; lease retained")
+        release_error: Exception | None = self._heartbeat_error
         try:
-            self._unlock_stream()
+            released_ns = time.time_ns()
+            with self._metadata_guard:
+                self._lease["state"] = "released"
+                self._lease["released_utc"] = datetime.fromtimestamp(
+                    released_ns / 1_000_000_000, timezone.utc
+                ).isoformat()
+                self._lease["released_unix_ns"] = released_ns
+                try:
+                    self._write_record(self._lease)
+                except Exception as error:
+                    release_error = release_error or error
         finally:
-            self._stream.close()
-            self._stream = None
+            try:
+                self._unlock_stream()
+            finally:
+                try:
+                    self._stream.close()
+                finally:
+                    self._stream = None
+                    self._release_process_ownership()
         if release_error is not None and exc_type is None:
             raise release_error

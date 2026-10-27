@@ -1,0 +1,69 @@
+{
+  "valid": false,
+  "required_count": 25,
+  "membership": {
+    "tests/test_certificate_input_contracts.py": [
+      "runtime-domain-contracts"
+    ],
+    "tests/test_contract_length_bounds.py": [
+      "runtime-domain-contracts",
+      "native-runtime-integration"
+    ],
+    "tests/test_project_revision_succession.py": [
+      "revision-lifecycle"
+    ],
+    "tests/test_revision_campaign_lifecycle.py": [
+      "revision-lifecycle"
+    ],
+    "tests/test_secure_publish.py": [
+      "secure-persistence"
+    ],
+    "tests/test_context_generation.py": [
+      "native-runtime-integration"
+    ],
+    "tests/test_projection_gate.py": [
+      "native-runtime-integration"
+    ],
+    "tests/test_execution_context.py": [
+      "native-runtime-integration"
+    ],
+    "tests/test_workflow_resume.py": [
+      "native-runtime-integration"
+    ],
+    "tests/test_host_enforcement_audit.py": [
+      "host-containment"
+    ],
+    "tests/test_gremlin_host_configuration.py": [
+      "host-containment"
+    ],
+    "tests/test_isolated_agent_sandbox.py": [
+      "host-containment"
+    ],
+    "tests/test_native_job_operating_probe.py": [
+      "native-job-operating"
+    ],
+    "tests/test_native_job_probe_verdict.py": [
+      "native-job-operating"
+    ]
+  },
+  "missing_membership": [
+    "tests/test_billing_budget_audit.py",
+    "tests/test_event_integrity_audit.py",
+    "tests/test_event_ledger_regression.py",
+    "tests/test_release_candidate_driver.py",
+    "tests/test_release_stage_owner.py",
+    "tests/test_run_installed_operational_owner.py",
+    "tests/test_certification_readiness.py",
+    "tests/test_rollout_inventory.py",
+    "tests/test_certification_pipeline_readiness.py",
+    "extension/tests/event-integrity-audit.test.js",
+    "extension/tests/billing-settlement-audit.test.js"
+  ],
+  "missing_files": [
+    "tests/test_billing_budget_audit.py",
+    "tests/test_rollout_inventory.py",
+    "extension/tests/event-integrity-audit.test.js",
+    "extension/tests/billing-settlement-audit.test.js"
+  ],
+  "duplicate_members": []
+}

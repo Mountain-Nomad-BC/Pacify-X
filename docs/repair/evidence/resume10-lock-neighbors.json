@@ -1,0 +1,23 @@
+{
+  "command": [
+    "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.venv-repair\\Scripts\\python.exe",
+    "-m",
+    "pytest",
+    "tests/test_file_lock_thread_custody.py",
+    "tests/test_file_lock_contention.py",
+    "tests/test_event_integrity_audit.py",
+    "tests/test_operational_event_bus.py",
+    "tests/test_event_ledger_regression.py",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "--basetemp=.tmp/pytest-resume10-lock-neighbors"
+  ],
+  "exit_code": 0,
+  "tree_closed": true,
+  "resource_inactive": true,
+  "receipt": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.tmp\\resume10\\owned\\cleanup-receipts\\process-0f7e2e6ed50347f7bf90a2d091ccd258.json",
+  "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.tmp\\resume10\\owned\\pacifyx-8fklz785",
+  "log": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\docs\\repair\\evidence\\resume10-lock-neighbors.log",
+  "log_sha256": "03cc3cfd3c30541ac4d03813bf96b87ed0f3e02014083c78f2ee98b728d6bc27"
+}

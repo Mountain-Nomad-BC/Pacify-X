@@ -2159,7 +2159,8 @@
         "policies/release-preflight.json",
         "tests/release_preflight_testkit.py",
         "tests/test_release_feedback_audit.py",
-        "tests/test_release_evidence_portability.py"
+        "tests/test_release_evidence_portability.py",
+        "tests/test_contract_length_bounds.py"
       ],
       "command": [
         "python",
@@ -2252,7 +2253,8 @@
         "tests/test_release_preflight_integration.py",
         "tests/test_release_feedback_audit.py",
         "tests/test_release_evidence_budget.py",
-        "tests/test_release_evidence_portability.py"
+        "tests/test_release_evidence_portability.py",
+        "tests/test_contract_length_bounds.py"
       ],
       "chunk_size": 8,
       "max_parallel_chunks": 1,
@@ -2277,7 +2279,8 @@
         "tests/test_structural_clone_isolation.py",
         "tests/test_python_surface_boundaries.py",
         "tests/test_repository_scope.py",
-        "tests/test_declared_suite_support.py"
+        "tests/test_declared_suite_support.py",
+        "tests/test_hash_adapter_review.py"
       ],
       "command": [
         "python",
@@ -2292,12 +2295,516 @@
         "tests/test_structural_clone_isolation.py",
         "tests/test_python_surface_boundaries.py",
         "tests/test_repository_scope.py",
-        "tests/test_declared_suite_support.py"
+        "tests/test_declared_suite_support.py",
+        "tests/test_hash_adapter_review.py"
       ],
       "chunk_size": 2,
       "max_parallel_chunks": 1,
       "chunk_timeout_seconds": 180,
       "timeout_seconds": 600
+    },
+    "revision-lifecycle": {
+      "description": "Native successor contracts and real revision WAL transitions, predecessor custody, stale-input/crash and authority failures.",
+      "source_patterns": [
+        "runtime/project_revision_succession.py",
+        "runtime/revision_campaign_lifecycle.py",
+        "runtime/test_profiles.py",
+        "runtime/release_signing.py",
+        "runtime/wal_transaction.py",
+        "runtime/contracts.py",
+        "scripts/build_contract_ownership_registry.py",
+        "contracts/project_revision_succession/*.json",
+        "tests/test_project_revision_succession.py",
+        "tests/test_revision_campaign_lifecycle.py",
+        "registry/test_profiles.json",
+        "tests/test_revision_activation_e2e.py"
+      ],
+      "command": [
+        "python",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "tests/test_project_revision_succession.py",
+        "tests/test_revision_campaign_lifecycle.py",
+        "tests/test_revision_activation_e2e.py"
+      ],
+      "chunk_size": 1,
+      "max_parallel_chunks": 1,
+      "chunk_timeout_seconds": 180,
+      "timeout_seconds": 600
+    },
+    "secure-persistence": {
+      "description": "Exclusive atomic persistence and Windows ancestor-handle custody; causal audit staging attacks, failure/retry and concurrency.",
+      "source_patterns": [
+        "runtime/secure_publish.py",
+        "runtime/vscode_model_bridge.py",
+        "runtime/nsai_knowledge.py",
+        "runtime/plan_registry.py",
+        "runtime/effect_intent.py",
+        "runtime/scope_lease.py",
+        "runtime/mutation_queue.py",
+        "runtime/tool_intake.py",
+        "runtime/source_freeze.py",
+        "runtime/source_boundary.py",
+        "runtime/semantic_entity.py",
+        "tests/test_secure_publish.py",
+        "registry/test_profiles.json",
+        "tests/test_secure_publish_operating.py"
+      ],
+      "command": [
+        "python",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "tests/test_secure_publish.py",
+        "tests/test_secure_publish_operating.py"
+      ],
+      "chunk_size": 0,
+      "max_parallel_chunks": 1,
+      "chunk_timeout_seconds": 120,
+      "timeout_seconds": 180
+    },
+    "native-runtime-integration": {
+      "description": "Native contract bounds, exact context and dependency binding, authenticated workflow checkpoint reuse; negative currentness/tamper cases.",
+      "source_patterns": [
+        "runtime/contracts.py",
+        "runtime/context_generation.py",
+        "runtime/dependency_identity.py",
+        "runtime/dependency_invalidation.py",
+        "runtime/projection_gate.py",
+        "runtime/execution_context.py",
+        "runtime/workflow_resume.py",
+        "runtime/studio_run_control.py",
+        "runtime/studio_authority.py",
+        "runtime/effect_intent.py",
+        "contracts/**",
+        "tests/test_contract_length_bounds.py",
+        "tests/test_context_generation.py",
+        "tests/test_projection_gate.py",
+        "tests/test_execution_context.py",
+        "tests/test_workflow_resume.py",
+        "registry/test_profiles.json"
+      ],
+      "command": [
+        "python",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "tests/test_contract_length_bounds.py",
+        "tests/test_context_generation.py",
+        "tests/test_projection_gate.py",
+        "tests/test_execution_context.py",
+        "tests/test_workflow_resume.py"
+      ],
+      "chunk_size": 2,
+      "max_parallel_chunks": 1,
+      "chunk_timeout_seconds": 180,
+      "timeout_seconds": 600
+    },
+    "host-containment": {
+      "description": "Native containment admission, protected identity/recovery replay, host configuration and sandbox policy; actual host proof has a separate mandatory section.",
+      "source_patterns": [
+        "runtime/gremlin/**",
+        "runtime/isolated_sandbox.py",
+        "runtime/engineering_os_paths.py",
+        "runtime/process_supervisor.py",
+        "runtime/resource_lifecycle.py",
+        "runtime/event_ledger.py",
+        "scripts/probe_native_job_containment.py",
+        "contracts/gremlin*.json",
+        "contracts/isolated-agent-sandbox.schema.json",
+        "tests/test_host_enforcement_audit.py",
+        "tests/test_gremlin_containment.py",
+        "tests/test_gremlin_runtime_identity.py",
+        "tests/test_gremlin_recovery_authority.py",
+        "tests/test_gremlin_host_configuration.py",
+        "tests/test_isolated_agent_sandbox.py",
+        "registry/test_profiles.json"
+      ],
+      "command": [
+        "python",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "tests/test_host_enforcement_audit.py",
+        "tests/test_gremlin_containment.py",
+        "tests/test_gremlin_runtime_identity.py",
+        "tests/test_gremlin_recovery_authority.py",
+        "tests/test_gremlin_host_configuration.py",
+        "tests/test_isolated_agent_sandbox.py"
+      ],
+      "chunk_size": 2,
+      "max_parallel_chunks": 1,
+      "chunk_timeout_seconds": 180,
+      "timeout_seconds": 600
+    },
+    "native-job-operating": {
+      "description": "Required Windows operating proof invoked inside the governed process:68 real native Job members,67 heartbeat children, exact source-bound retained evidence, outside-Job denial, freeze windows and settled termination. Unavailable required host fails closed.",
+      "source_patterns": [
+        "runtime/process_supervisor.py",
+        "runtime/resource_lifecycle.py",
+        "runtime/gremlin/host_enforcement_backend.py",
+        "runtime/file_lock.py",
+        "scripts/probe_native_job_containment.py",
+        "registry/test_profiles.json",
+        "tests/test_native_job_operating_probe.py",
+        "tests/test_native_job_probe_verdict.py"
+      ],
+      "command": [
+        "python",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "tests/test_native_job_operating_probe.py",
+        "tests/test_native_job_probe_verdict.py"
+      ],
+      "chunk_size": 0,
+      "max_parallel_chunks": 1,
+      "chunk_timeout_seconds": 180,
+      "timeout_seconds": 200
+    },
+    "event-integrity": {
+      "description": "Atomic event batches, immutable IDs, protected head recovery, finite JSON and transactional tool intake; dependent workspace regressions.",
+      "source_patterns": [
+        "runtime/event_ledger.py",
+        "runtime/operational_event_bus.py",
+        "runtime/tool_intake.py",
+        "registry/test_profiles.json",
+        "tests/test_event_integrity_audit.py",
+        "tests/test_event_ledger_regression.py",
+        "tests/test_event_ledger_integrity.py",
+        "tests/test_operational_event_bus.py",
+        "tests/test_tool_intake.py",
+        "tests/test_workspace_manager.py",
+        "runtime/file_lock.py",
+        "tests/test_file_lock_contention.py",
+        "tests/test_file_lock_thread_custody.py"
+      ],
+      "command": [
+        "python",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "tests/test_event_integrity_audit.py",
+        "tests/test_event_ledger_regression.py",
+        "tests/test_event_ledger_integrity.py",
+        "tests/test_operational_event_bus.py",
+        "tests/test_tool_intake.py",
+        "tests/test_workspace_manager.py",
+        "tests/test_file_lock_contention.py",
+        "tests/test_file_lock_thread_custody.py"
+      ],
+      "chunk_size": 1,
+      "max_parallel_chunks": 1,
+      "chunk_timeout_seconds": 360,
+      "timeout_seconds": 1200
+    },
+    "ui-event-integrity": {
+      "description": "Canonical event commit, immutable observer delivery, bounded cumulative buffering and redaction across live/snapshot console transport. Existing controller behavior is preserved.",
+      "source_patterns": [
+        "extension/src/agentHarness/eventBus.js",
+        "extension/src/agentHarness/agentConsoleProjection.js",
+        "extension/src/agentHarness/agentConsoleView.js",
+        "extension/src/agentHarness/agentConsoleMessages.js",
+        "extension/src/agentHarness/contracts.js",
+        "extension/tests/event-integrity-audit.test.js",
+        "extension/tests/agent-harness-core.test.js",
+        "extension/tests/agent-console-messages.test.js",
+        "registry/test_profiles.json"
+      ],
+      "command": [
+        "node",
+        "--test",
+        "tests/event-integrity-audit.test.js",
+        "tests/agent-harness-core.test.js",
+        "tests/agent-console-messages.test.js"
+      ],
+      "cwd": "extension",
+      "chunk_size": 1,
+      "max_parallel_chunks": 1,
+      "chunk_timeout_seconds": 120,
+      "timeout_seconds": 400
+    },
+    "agent-task-lifecycle": {
+      "description": "Task/run persistence acknowledgement, cancellation and owner binding; stale worker registration/health rejection; no model or installed-host certification from local controlled adapters.",
+      "source_patterns": [
+        "extension/src/agentHarness/**",
+        "extension/tests/task-state-custody.test.js",
+        "extension/tests/agent-harness-core.test.js",
+        "registry/test_profiles.json"
+      ],
+      "command": [
+        "node",
+        "--test",
+        "tests/task-state-custody.test.js",
+        "tests/agent-harness-core.test.js"
+      ],
+      "cwd": "extension",
+      "chunk_size": 1,
+      "max_parallel_chunks": 1,
+      "chunk_timeout_seconds": 120,
+      "timeout_seconds": 300
+    },
+    "billing-budget": {
+      "description": "Finite observe-only scheduler budgets and actual native Python to Node receipt compatibility.",
+      "source_patterns": [
+        "runtime/capability_scheduler.py",
+        "runtime/provider_gateway.py",
+        "runtime/provider_budget.py",
+        "extension/src/agentHarness/adapters/pxProviderGateway.js",
+        "tests/test_billing_budget_audit.py",
+        "tests/test_capability_scheduler.py",
+        "tests/test_provider_gateway_streaming.py",
+        "registry/test_profiles.json"
+      ],
+      "command": [
+        "python",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "tests/test_billing_budget_audit.py",
+        "tests/test_capability_scheduler.py",
+        "tests/test_provider_gateway_streaming.py"
+      ],
+      "chunk_size": 1,
+      "max_parallel_chunks": 1,
+      "chunk_timeout_seconds": 180,
+      "timeout_seconds": 600
+    },
+    "provider-settlement-contract": {
+      "description": "Reject non-native gateway settlements before output; exact Python-to-Node receipt compatibility and tamper/owner rejection execute in billing-budget. No credentialed paid-provider claim.",
+      "source_patterns": [
+        "extension/src/agentHarness/adapters/pxProviderGateway.js",
+        "extension/src/agentHarness/ids.js",
+        "extension/tests/provider-settlement-contract.test.js",
+        "tests/test_billing_budget_audit.py",
+        "registry/test_profiles.json"
+      ],
+      "command": [
+        "node",
+        "--test",
+        "tests/provider-settlement-contract.test.js"
+      ],
+      "cwd": "extension",
+      "chunk_size": 0,
+      "max_parallel_chunks": 1,
+      "chunk_timeout_seconds": 120,
+      "timeout_seconds": 180
+    },
+    "billing-settlement": {
+      "description": "Durable cumulative reservations, async host acknowledgment, settlement identity/restart, cancellation and unknown-charge holds; controlled host evidence, no credentialed billing claim.",
+      "source_patterns": [
+        "extension/src/agentHarness/budgetLedger.js",
+        "extension/src/agentHarness/harnessController.js",
+        "extension/src/agentHarness/registerAgentConsole.js",
+        "extension/src/agentHarness/pxProviderInvoker.js",
+        "extension/src/agentHarness/adapters/pxProviderGateway.js",
+        "extension/tests/billing-settlement-audit.test.js",
+        "registry/test_profiles.json"
+      ],
+      "command": [
+        "node",
+        "--test",
+        "tests/billing-settlement-audit.test.js"
+      ],
+      "cwd": "extension",
+      "chunk_size": 0,
+      "max_parallel_chunks": 1,
+      "chunk_timeout_seconds": 120,
+      "timeout_seconds": 180
+    },
+    "release-lifecycle": {
+      "description": "Current candidate/stage/installed owner contracts and mandatory coverage admission; focused fixtures do not execute a release.",
+      "source_patterns": [
+        "runtime/certification_contract.py",
+        "runtime/release_current_acceptance.py",
+        "scripts/run_release_candidate.py",
+        "scripts/run_release_stage_owner.py",
+        "scripts/run_installed_operational_owner.py",
+        "scripts/validate_certification_pipeline.py",
+        "tests/test_release_candidate_driver.py",
+        "tests/test_release_stage_owner.py",
+        "tests/test_run_installed_operational_owner.py",
+        "tests/test_certification_readiness.py",
+        "tests/test_certification_pipeline_readiness.py",
+        "registry/test_profiles.json",
+        "runtime/test_runner.py"
+      ],
+      "command": [
+        "python",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "tests/test_release_candidate_driver.py",
+        "tests/test_release_stage_owner.py",
+        "tests/test_run_installed_operational_owner.py",
+        "tests/test_certification_readiness.py",
+        "tests/test_certification_pipeline_readiness.py"
+      ],
+      "chunk_size": 1,
+      "max_parallel_chunks": 1,
+      "chunk_timeout_seconds": 240,
+      "timeout_seconds": 1200
+    },
+    "source-inventory": {
+      "description": "Review-bound non-deleting source plans, pinned bounded reads, Git/custody exclusion and hostile source intake; never generated refresh or release admission.",
+      "source_patterns": [
+        "scripts/rollout/**",
+        "runtime/secure_publish.py",
+        "runtime/source_boundary.py",
+        "tests/test_rollout_inventory.py",
+        "registry/test_profiles.json"
+      ],
+      "command": [
+        "python",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "tests/test_rollout_inventory.py"
+      ],
+      "chunk_size": 0,
+      "max_parallel_chunks": 1,
+      "chunk_timeout_seconds": 180,
+      "timeout_seconds": 240
+    },
+    "provider-stream-custody": {
+      "description": "Actual ReadableStream parsing, malformed-frame cleanup, abort/read settlement, UTF8/frame/response bounds; controlled transport only.",
+      "source_patterns": [
+        "extension/src/agentHarness/adapters/**",
+        "extension/tests/agent-harness-streaming.test.js",
+        "registry/test_profiles.json"
+      ],
+      "command": [
+        "node",
+        "--test",
+        "tests/agent-harness-streaming.test.js"
+      ],
+      "cwd": "extension",
+      "chunk_size": 0,
+      "max_parallel_chunks": 1,
+      "chunk_timeout_seconds": 120,
+      "timeout_seconds": 180
+    },
+    "native-provider-protocol": {
+      "description": "Native SSE UTF8/newline framing, exact text, provider status normalization and gateway failure/budget receipt causality.",
+      "source_patterns": [
+        "runtime/model_protocol.py",
+        "runtime/model_protocol_translate.py",
+        "runtime/provider_gateway.py",
+        "runtime/provider_budget.py",
+        "tests/test_provider_protocol_audit.py",
+        "tests/test_model_protocol.py",
+        "tests/test_model_protocol_translate.py",
+        "tests/test_provider_gateway_streaming.py",
+        "registry/test_profiles.json"
+      ],
+      "command": [
+        "python",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "tests/test_provider_protocol_audit.py",
+        "tests/test_model_protocol.py",
+        "tests/test_model_protocol_translate.py",
+        "tests/test_provider_gateway_streaming.py"
+      ],
+      "chunk_size": 1,
+      "max_parallel_chunks": 1,
+      "chunk_timeout_seconds": 180,
+      "timeout_seconds": 700
+    },
+    "context-provenance": {
+      "description": "Exact context digests, instruction-inclusive bounded admission, and lower-trust retrieval roles across actual provider message consumers; no live-model injection-proof claim.",
+      "source_patterns": [
+        "extension/src/agentHarness/contextCompiler.js",
+        "extension/src/agentHarness/pxProviderInvoker.js",
+        "extension/src/agentHarness/adapters/**",
+        "extension/tests/context-provenance-audit.test.js",
+        "extension/tests/agent-harness-core.test.js",
+        "registry/test_profiles.json"
+      ],
+      "command": [
+        "node",
+        "--test",
+        "tests/context-provenance-audit.test.js",
+        "tests/agent-harness-core.test.js"
+      ],
+      "cwd": "extension",
+      "chunk_size": 0,
+      "max_parallel_chunks": 1,
+      "chunk_timeout_seconds": 120,
+      "timeout_seconds": 180
+    },
+    "remote-profile-catalog": {
+      "description": "Existing native remote catalog dependency closure, signed profile integrity, conservative availability and current package asset declarations; no remote transport commissioning.",
+      "source_patterns": [
+        "runtime/remote_model_bridge.py",
+        "runtime/remote_provider_profiles.py",
+        "runtime/remote_service_protocols.py",
+        "runtime/remote_service_protocols.json",
+        "contracts/operations/remote-provider-profile.schema.json",
+        "scripts/build_contract_ownership_registry.py",
+        "pyproject.toml",
+        "tests/test_remote_profile_catalog.py",
+        "registry/test_profiles.json"
+      ],
+      "command": [
+        "python",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "tests/test_remote_profile_catalog.py"
+      ],
+      "chunk_size": 0,
+      "max_parallel_chunks": 1,
+      "chunk_timeout_seconds": 120,
+      "timeout_seconds": 180
+    },
+    "agent-gateway-integration": {
+      "description": "Actual registered console resolves native catalog identities; native bridge cancellation and terminal JSONL receipt handling. No live inference or native child containment certification claim.",
+      "source_patterns": [
+        "extension/src/extension.js",
+        "extension/src/registerAgentConsole.js",
+        "extension/src/mcpModelFabricBridge.js",
+        "extension/src/agentHarness/**",
+        "extension/tests/gateway-catalog-binding.test.js",
+        "extension/tests/mcp-client-protocol-audit.test.js",
+        "registry/test_profiles.json"
+      ],
+      "command": [
+        "node",
+        "--test",
+        "tests/gateway-catalog-binding.test.js",
+        "tests/mcp-client-protocol-audit.test.js",
+        "tests/mcp-model-fabric-bridge.test.js"
+      ],
+      "cwd": "extension",
+      "chunk_size": 0,
+      "max_parallel_chunks": 1,
+      "chunk_timeout_seconds": 120,
+      "timeout_seconds": 180
     }
   },
   "certification": {
@@ -2309,7 +2816,25 @@
       "execution-placement",
       "hardware-routing",
       "runtime-domain-contracts",
-      "source-authority"
+      "source-authority",
+      "revision-lifecycle",
+      "secure-persistence",
+      "native-runtime-integration",
+      "host-containment",
+      "native-job-operating",
+      "event-integrity",
+      "ui-event-integrity",
+      "agent-task-lifecycle",
+      "billing-budget",
+      "provider-settlement-contract",
+      "billing-settlement",
+      "release-lifecycle",
+      "source-inventory",
+      "provider-stream-custody",
+      "native-provider-protocol",
+      "context-provenance",
+      "remote-profile-catalog",
+      "agent-gateway-integration"
     ],
     "whole_suite_after_sections": true,
     "required_groups": [

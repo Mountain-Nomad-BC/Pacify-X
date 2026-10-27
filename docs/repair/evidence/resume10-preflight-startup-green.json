@@ -1,0 +1,24 @@
+{
+  "command": [
+    "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.venv-repair\\Scripts\\python.exe",
+    "-m",
+    "pytest",
+    "tests/test_certification_pipeline_readiness.py",
+    "tests/test_test_runner_controls.py",
+    "tests/test_release_candidate_driver.py",
+    "tests/test_release_stage_owner.py",
+    "tests/test_run_installed_operational_owner.py",
+    "tests/test_certification_readiness.py",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "--basetemp=.tmp/pytest-resume10-preflight-startup-green"
+  ],
+  "exit_code": 1,
+  "tree_closed": true,
+  "resource_inactive": true,
+  "receipt": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.tmp\\resume10\\owned\\cleanup-receipts\\process-7be6e88d67174c0bad322ea0b9304586.json",
+  "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.tmp\\resume10\\owned\\pacifyx-w6nt2awl",
+  "log": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\docs\\repair\\evidence\\resume10-preflight-startup-green.log",
+  "log_sha256": "4a02c16fc79fe5dbb7b7dac4c9abfbc83c886eb848041a6cd4eb91f9ef7febe7"
+}

@@ -1,0 +1,202 @@
+...................FFFFFFFFF                                             [100%]
+================================== FAILURES ===================================
+_ test_node_startup_injection_cannot_impersonate_required_execution[arguments0] _
+
+tmp_path = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.tmp/pytest-resume10-preflight-startup-red/test_node_startup_injection_ca0')
+arguments = ['--import=./exit-before-tests.js']
+
+    @pytest.mark.parametrize('arguments',[['--import=./exit-before-tests.js'],['--require','./exit-before-tests.js']])
+    def test_node_startup_injection_cannot_impersonate_required_execution(tmp_path,arguments):
+        path,value=fixture(tmp_path)
+        value['sections']['ui-event-integrity']['command'][2:2]=arguments
+        path.write_text(json.dumps(value),encoding='utf-8')
+>       with pytest.raises(ValidationBlocked,match='unfiltered node'):certification_coverage(tmp_path)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValidationBlocked
+
+tests\test_certification_pipeline_readiness.py:110: Failed
+_ test_node_startup_injection_cannot_impersonate_required_execution[arguments1] _
+
+tmp_path = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.tmp/pytest-resume10-preflight-startup-red/test_node_startup_injection_ca1')
+arguments = ['--require', './exit-before-tests.js']
+
+    @pytest.mark.parametrize('arguments',[['--import=./exit-before-tests.js'],['--require','./exit-before-tests.js']])
+    def test_node_startup_injection_cannot_impersonate_required_execution(tmp_path,arguments):
+        path,value=fixture(tmp_path)
+        value['sections']['ui-event-integrity']['command'][2:2]=arguments
+        path.write_text(json.dumps(value),encoding='utf-8')
+>       with pytest.raises(ValidationBlocked,match='unfiltered node'):certification_coverage(tmp_path)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValidationBlocked
+
+tests\test_certification_pipeline_readiness.py:110: Failed
+_ test_startup_environment_cannot_override_required_collection[NODE_OPTIONS] __
+
+tmp_path = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.tmp/pytest-resume10-preflight-startup-red/test_startup_environment_canno0')
+variable = 'NODE_OPTIONS'
+
+    @pytest.mark.parametrize('variable',['NODE_OPTIONS','NODE_PATH','PYTHONPATH'])
+    def test_startup_environment_cannot_override_required_collection(tmp_path,variable):
+        path,value=fixture(tmp_path);value['environment']={variable:'unreviewed startup override'}
+        path.write_text(json.dumps(value),encoding='utf-8')
+>       with pytest.raises(ValidationBlocked,match='environment'):certification_coverage(tmp_path)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValidationBlocked
+
+tests\test_certification_pipeline_readiness.py:117: Failed
+___ test_startup_environment_cannot_override_required_collection[NODE_PATH] ___
+
+tmp_path = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.tmp/pytest-resume10-preflight-startup-red/test_startup_environment_canno1')
+variable = 'NODE_PATH'
+
+    @pytest.mark.parametrize('variable',['NODE_OPTIONS','NODE_PATH','PYTHONPATH'])
+    def test_startup_environment_cannot_override_required_collection(tmp_path,variable):
+        path,value=fixture(tmp_path);value['environment']={variable:'unreviewed startup override'}
+        path.write_text(json.dumps(value),encoding='utf-8')
+>       with pytest.raises(ValidationBlocked,match='environment'):certification_coverage(tmp_path)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValidationBlocked
+
+tests\test_certification_pipeline_readiness.py:117: Failed
+__ test_startup_environment_cannot_override_required_collection[PYTHONPATH] ___
+
+tmp_path = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.tmp/pytest-resume10-preflight-startup-red/test_startup_environment_canno2')
+variable = 'PYTHONPATH'
+
+    @pytest.mark.parametrize('variable',['NODE_OPTIONS','NODE_PATH','PYTHONPATH'])
+    def test_startup_environment_cannot_override_required_collection(tmp_path,variable):
+        path,value=fixture(tmp_path);value['environment']={variable:'unreviewed startup override'}
+        path.write_text(json.dumps(value),encoding='utf-8')
+>       with pytest.raises(ValidationBlocked,match='environment'):certification_coverage(tmp_path)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValidationBlocked
+
+tests\test_certification_pipeline_readiness.py:117: Failed
+_ test_actual_test_owner_denies_override_before_workspace_or_child_creation[command0-NODE_OPTIONS] _
+
+tmp_path = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.tmp/pytest-resume10-preflight-startup-red/test_actual_test_owner_denies_0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000016E44043360>
+command = ['node', '--test', 'fixture.test.js'], variable = 'NODE_OPTIONS'
+
+    @pytest.mark.parametrize('command,variable',[(['node','--test','fixture.test.js'],'NODE_OPTIONS'),(['node','--test','fixture.test.js'],'NODE_PATH'),(['python','-m','pytest','fixture.py'],'PYTEST_ADDOPTS'),(['python','-m','pytest','fixture.py'],'PYTEST_PLUGINS')])
+    def test_actual_test_owner_denies_override_before_workspace_or_child_creation(tmp_path,monkeypatch,command,variable):
+        from runtime.test_runner import run_test_command
+        monkeypatch.setattr('runtime.test_runner.ResourceManager',lambda *a,**k:pytest.fail('must refuse before creating resources'))
+        with pytest.raises(ValueError,match='environment.*override'):
+>           run_test_command(command,cwd=tmp_path,environment={variable:'override'},timeout_seconds=5)
+
+tests\test_certification_pipeline_readiness.py:125: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+runtime\test_runner.py:388: in run_test_command
+    raise failure.with_traceback(failure.__traceback__)
+runtime\test_runner.py:165: in run_test_command
+    resource_manager = ResourceManager(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+a = (WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.tmp/pytest-resume10-preflight-startup-red/test_actual_test_owner_denies_0/.engineering-bootstrap/resource-lifecycle/ledger.json'),)
+k = {}
+
+>   monkeypatch.setattr('runtime.test_runner.ResourceManager',lambda *a,**k:pytest.fail('must refuse before creating resources'))
+                                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: must refuse before creating resources
+
+tests\test_certification_pipeline_readiness.py:123: Failed
+_ test_actual_test_owner_denies_override_before_workspace_or_child_creation[command1-NODE_PATH] _
+
+tmp_path = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.tmp/pytest-resume10-preflight-startup-red/test_actual_test_owner_denies_1')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000016E44043BB0>
+command = ['node', '--test', 'fixture.test.js'], variable = 'NODE_PATH'
+
+    @pytest.mark.parametrize('command,variable',[(['node','--test','fixture.test.js'],'NODE_OPTIONS'),(['node','--test','fixture.test.js'],'NODE_PATH'),(['python','-m','pytest','fixture.py'],'PYTEST_ADDOPTS'),(['python','-m','pytest','fixture.py'],'PYTEST_PLUGINS')])
+    def test_actual_test_owner_denies_override_before_workspace_or_child_creation(tmp_path,monkeypatch,command,variable):
+        from runtime.test_runner import run_test_command
+        monkeypatch.setattr('runtime.test_runner.ResourceManager',lambda *a,**k:pytest.fail('must refuse before creating resources'))
+        with pytest.raises(ValueError,match='environment.*override'):
+>           run_test_command(command,cwd=tmp_path,environment={variable:'override'},timeout_seconds=5)
+
+tests\test_certification_pipeline_readiness.py:125: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+runtime\test_runner.py:388: in run_test_command
+    raise failure.with_traceback(failure.__traceback__)
+runtime\test_runner.py:165: in run_test_command
+    resource_manager = ResourceManager(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+a = (WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.tmp/pytest-resume10-preflight-startup-red/test_actual_test_owner_denies_1/.engineering-bootstrap/resource-lifecycle/ledger.json'),)
+k = {}
+
+>   monkeypatch.setattr('runtime.test_runner.ResourceManager',lambda *a,**k:pytest.fail('must refuse before creating resources'))
+                                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: must refuse before creating resources
+
+tests\test_certification_pipeline_readiness.py:123: Failed
+_ test_actual_test_owner_denies_override_before_workspace_or_child_creation[command2-PYTEST_ADDOPTS] _
+
+tmp_path = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.tmp/pytest-resume10-preflight-startup-red/test_actual_test_owner_denies_2')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000016E44212210>
+command = ['python', '-m', 'pytest', 'fixture.py'], variable = 'PYTEST_ADDOPTS'
+
+    @pytest.mark.parametrize('command,variable',[(['node','--test','fixture.test.js'],'NODE_OPTIONS'),(['node','--test','fixture.test.js'],'NODE_PATH'),(['python','-m','pytest','fixture.py'],'PYTEST_ADDOPTS'),(['python','-m','pytest','fixture.py'],'PYTEST_PLUGINS')])
+    def test_actual_test_owner_denies_override_before_workspace_or_child_creation(tmp_path,monkeypatch,command,variable):
+        from runtime.test_runner import run_test_command
+        monkeypatch.setattr('runtime.test_runner.ResourceManager',lambda *a,**k:pytest.fail('must refuse before creating resources'))
+        with pytest.raises(ValueError,match='environment.*override'):
+>           run_test_command(command,cwd=tmp_path,environment={variable:'override'},timeout_seconds=5)
+
+tests\test_certification_pipeline_readiness.py:125: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+runtime\test_runner.py:388: in run_test_command
+    raise failure.with_traceback(failure.__traceback__)
+runtime\test_runner.py:165: in run_test_command
+    resource_manager = ResourceManager(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+a = (WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.tmp/pytest-resume10-preflight-startup-red/test_actual_test_owner_denies_2/.engineering-bootstrap/resource-lifecycle/ledger.json'),)
+k = {}
+
+>   monkeypatch.setattr('runtime.test_runner.ResourceManager',lambda *a,**k:pytest.fail('must refuse before creating resources'))
+                                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: must refuse before creating resources
+
+tests\test_certification_pipeline_readiness.py:123: Failed
+_ test_actual_test_owner_denies_override_before_workspace_or_child_creation[command3-PYTEST_PLUGINS] _
+
+tmp_path = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.tmp/pytest-resume10-preflight-startup-red/test_actual_test_owner_denies_3')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000016E44225150>
+command = ['python', '-m', 'pytest', 'fixture.py'], variable = 'PYTEST_PLUGINS'
+
+    @pytest.mark.parametrize('command,variable',[(['node','--test','fixture.test.js'],'NODE_OPTIONS'),(['node','--test','fixture.test.js'],'NODE_PATH'),(['python','-m','pytest','fixture.py'],'PYTEST_ADDOPTS'),(['python','-m','pytest','fixture.py'],'PYTEST_PLUGINS')])
+    def test_actual_test_owner_denies_override_before_workspace_or_child_creation(tmp_path,monkeypatch,command,variable):
+        from runtime.test_runner import run_test_command
+        monkeypatch.setattr('runtime.test_runner.ResourceManager',lambda *a,**k:pytest.fail('must refuse before creating resources'))
+        with pytest.raises(ValueError,match='environment.*override'):
+>           run_test_command(command,cwd=tmp_path,environment={variable:'override'},timeout_seconds=5)
+
+tests\test_certification_pipeline_readiness.py:125: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+runtime\test_runner.py:388: in run_test_command
+    raise failure.with_traceback(failure.__traceback__)
+runtime\test_runner.py:165: in run_test_command
+    resource_manager = ResourceManager(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+a = (WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.tmp/pytest-resume10-preflight-startup-red/test_actual_test_owner_denies_3/.engineering-bootstrap/resource-lifecycle/ledger.json'),)
+k = {}
+
+>   monkeypatch.setattr('runtime.test_runner.ResourceManager',lambda *a,**k:pytest.fail('must refuse before creating resources'))
+                                                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: must refuse before creating resources
+
+tests\test_certification_pipeline_readiness.py:123: Failed
+=========================== short test summary info ===========================
+FAILED tests/test_certification_pipeline_readiness.py::test_node_startup_injection_cannot_impersonate_required_execution[arguments0]
+FAILED tests/test_certification_pipeline_readiness.py::test_node_startup_injection_cannot_impersonate_required_execution[arguments1]
+FAILED tests/test_certification_pipeline_readiness.py::test_startup_environment_cannot_override_required_collection[NODE_OPTIONS]
+FAILED tests/test_certification_pipeline_readiness.py::test_startup_environment_cannot_override_required_collection[NODE_PATH]
+FAILED tests/test_certification_pipeline_readiness.py::test_startup_environment_cannot_override_required_collection[PYTHONPATH]
+FAILED tests/test_certification_pipeline_readiness.py::test_actual_test_owner_denies_override_before_workspace_or_child_creation[command0-NODE_OPTIONS]
+FAILED tests/test_certification_pipeline_readiness.py::test_actual_test_owner_denies_override_before_workspace_or_child_creation[command1-NODE_PATH]
+FAILED tests/test_certification_pipeline_readiness.py::test_actual_test_owner_denies_override_before_workspace_or_child_creation[command2-PYTEST_ADDOPTS]
+FAILED tests/test_certification_pipeline_readiness.py::test_actual_test_owner_denies_override_before_workspace_or_child_creation[command3-PYTEST_PLUGINS]
+9 failed, 19 passed in 0.89s
+

@@ -1,0 +1,45 @@
+.......FF                                                                [100%]
+================================== FAILURES ===================================
+___ test_close_failure_still_releases_process_registry_after_kernel_unlock ____
+
+tmp_path = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.tmp/pytest-resume10-lock-exception-red/test_close_failure_still_relea0')
+
+    def test_close_failure_still_releases_process_registry_after_kernel_unlock(tmp_path):
+        owner=locks.FileLock(tmp_path/'control.lock');owner.__enter__();record=owner._process_entry
+        original=owner._stream
+        class ClosingError:
+            def __getattr__(self,name):return getattr(original,name)
+            def close(self):original.close();raise OSError('controlled close failure')
+        owner._stream=ClosingError()
+        try:
+            with pytest.raises(OSError,match='controlled close'):owner.__exit__(None,None,None)
+>           assert owner._stream is None
+E           assert <tests.test_file_lock_thread_custody.test_close_failure_still_releases_process_registry_after_kernel_unlock.<locals>.ClosingError object at 0x00000211B9D7FB60> is None
+E            +  where <tests.test_file_lock_thread_custody.test_close_failure_still_releases_process_registry_after_kernel_unlock.<locals>.ClosingError object at 0x00000211B9D7FB60> = <runtime.file_lock.FileLock object at 0x00000211B9E47890>._stream
+
+tests\test_file_lock_thread_custody.py:141: AssertionError
+______ test_fstat_failure_closes_opened_handle_before_registry_admission ______
+
+tmp_path = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.tmp/pytest-resume10-lock-exception-red/test_fstat_failure_closes_open0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000211BA09C770>
+
+    def test_fstat_failure_closes_opened_handle_before_registry_admission(tmp_path,monkeypatch):
+        owner=locks.FileLock(tmp_path/'control.lock');actual=locks.os.fstat;failed=False
+        def fail(fd):
+            nonlocal failed
+            if not failed and owner._stream is not None and fd==owner._stream.fileno():
+                failed=True;raise OSError('controlled identity query failure')
+            return actual(fd)
+        monkeypatch.setattr(locks.os,'fstat',fail)
+        try:
+            with pytest.raises(OSError,match='identity query'):owner.__enter__()
+>           assert owner._stream is None and owner._process_entry is None
+E           AssertionError: assert (<_io.BufferedRandom name='C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.tmp\\pytest-resume10-lock-exception-red\\test_fstat_failure_closes_open0\\control.lock'> is None)
+E            +  where <_io.BufferedRandom name='C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.tmp\\pytest-resume10-lock-exception-red\\test_fstat_failure_closes_open0\\control.lock'> = <runtime.file_lock.FileLock object at 0x00000211BA0E8230>._stream
+
+tests\test_file_lock_thread_custody.py:158: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_file_lock_thread_custody.py::test_close_failure_still_releases_process_registry_after_kernel_unlock
+FAILED tests/test_file_lock_thread_custody.py::test_fstat_failure_closes_opened_handle_before_registry_admission
+2 failed, 7 passed in 1.41s
+

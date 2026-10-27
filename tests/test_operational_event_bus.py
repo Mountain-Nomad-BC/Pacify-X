@@ -3,6 +3,8 @@ from __future__ import annotations
 from concurrent.futures import ThreadPoolExecutor
 import io
 import json
+import tempfile
+import unittest
 from pathlib import Path
 
 from runtime.operational_event_bus import OperationalEventBus
@@ -178,3 +180,45 @@ def test_replay_rejects_cursor_ahead_of_head(tmp_path: Path) -> None:
     assert result["valid"] is False
     assert result["gap"] is True
     assert "ahead" in result["errors"][0]
+
+
+class PXAUD084_DuplicateEventId(unittest.TestCase):
+    """PX-AUD-084: duplicate event_id cannot overwrite earlier receipt."""
+
+    def setUp(self) -> None:
+        self.tmp = tempfile.mkdtemp(prefix="px-aud-084-")
+        self.bus = OperationalEventBus(ROOT, Path(self.tmp) / "bus", Path(self.tmp))
+
+    def test_same_event_id_always_rejected_after_first_publish(self) -> None:
+        first = self.bus.publish(_event("evt-dup", None))
+        # Same event_id, same content — but chain position differs, so it's a
+        # differing payload from the bus's perspective.
+        try:
+            self.bus.publish(_event("evt-dup", str(first["event_sha256"])))
+        except ValueError as error:
+            self.assertIn("duplicate event_id", str(error))
+        else:
+            raise AssertionError("duplicate event_id was admitted")
+        # Bus head unchanged — no new revision
+        head = self.bus.head()
+        self.assertEqual(head["revision"], 1)
+
+    def test_same_event_id_differing_content_is_rejected(self) -> None:
+        first = self.bus.publish(_event("evt-dup2", None))
+        different = _event("evt-dup2", str(first["event_sha256"]))
+        different["operation"]["name"] = "tampered"
+        with self.assertRaises(ValueError) as ctx:
+            self.bus.publish(different)
+        self.assertIn("duplicate event_id", str(ctx.exception))
+        head = self.bus.head()
+        self.assertEqual(head["revision"], 1)
+
+    def test_distinct_event_ids_both_admitted(self) -> None:
+        first = self.bus.publish(_event("evt-a", None))
+        second = self.bus.publish(_event("evt-b", str(first["event_sha256"])))
+        self.assertEqual(first["event_id"], "evt-a")
+        self.assertEqual(second["event_id"], "evt-b")
+        self.assertEqual(second["revision"], 2)
+        replay = self.bus.replay()
+        self.assertTrue(replay["valid"])
+        self.assertEqual(replay["revision"], 2)

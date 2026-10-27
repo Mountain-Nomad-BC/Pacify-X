@@ -252,7 +252,9 @@ class CanonicalModelEvent:
         if self.kind in {"text_delta", "reasoning_delta"}:
             if set(payload) != {"text"}:
                 raise ValueError(f"{self.kind} requires only text")
-            _text(payload["text"], f"{self.kind} text", limit=MAX_EVENT_BYTES, allow_empty=False)
+            value = _text(payload["text"], f"{self.kind} text", limit=MAX_EVENT_BYTES, allow_empty=True)
+            if not value:
+                raise ValueError(f"{self.kind} text must contain at least one character")
             return
         if self.kind == "tool_call_start":
             if set(payload) != {"call_id", "name"}:
@@ -285,7 +287,9 @@ class CanonicalModelEvent:
         if self.kind == "finish":
             if set(payload) != {"reason"}:
                 raise ValueError("finish requires only reason")
-            _text(payload["reason"], "finish reason", limit=128)
+            reason = _text(payload["reason"], "finish reason", limit=128)
+            if reason.strip().casefold() in {"failed", "failure", "error", "cancelled", "canceled", "incomplete", "in_progress", "queued"}:
+                raise ValueError("unsuccessful provider status cannot be a finish event")
             return
         if self.kind == "error":
             if set(payload) != {"code", "retryable"}:

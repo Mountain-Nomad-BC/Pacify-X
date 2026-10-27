@@ -1,0 +1,8 @@
+{
+  "path": "extension/src/agentHarness/adapters/pxProviderGateway.js",
+  "before_sha256": "27b163eff7d2f1810d037ec74cd32d090d10eb06442b4bc0dd7a816af18c328c",
+  "source_sha256": "498655ecae468e4f205fab4b365306c9b77c3ffd79bc67c9e91f00a326c9adb8",
+  "source_commit": "5ebc7368",
+  "review": "Complete adapter diff reviewed: exact native receipt schema/digest, owner and budget reference validation, finite integer usage, billing state and nonduplicated streaming; no routing/credential implementation copied. Native receipt shape must still be exercised across runtimes.",
+  "closed": false
+}

@@ -1,0 +1,29 @@
+{
+  "action_id": "operational-ledger",
+  "audit_record_hash": "7eeaf36519764c624567f0654fbe2691b6b4f09089186e5eccdc7a71f5d4ff82",
+  "duration_seconds": 4.025903900008416,
+  "ended_at": "2026-10-26T19:25:36.970Z",
+  "exit_code": 0,
+  "failure_type": null,
+  "receipt_id": "process-0843a38d57924f7fafa4b3bee573c4d3",
+  "resource_id": "process-8503eafb3cb74c9598bcb5ff72b09e6a",
+  "schema_version": "px.process-supervision-receipt/1.0",
+  "shutdown_mode": "natural",
+  "started_at": "2026-10-26T19:25:32.944Z",
+  "status": "exited",
+  "stderr": {
+    "decode_error_count": 0,
+    "dropped_bytes": 0,
+    "retained_bytes": 0,
+    "total_bytes": 0,
+    "truncated": false
+  },
+  "stdout": {
+    "decode_error_count": 0,
+    "dropped_bytes": 0,
+    "retained_bytes": 29399,
+    "total_bytes": 29399,
+    "truncated": false
+  },
+  "tree_closed": true
+}

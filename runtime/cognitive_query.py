@@ -251,7 +251,15 @@ def hydrate_selected(
         pressure = pressure_action(int(context_used_tokens), int(context_max_tokens), pressure_policy)
         if pressure in {"checkpoint-required-before-bulk-hydration", "hard-checkpoint-and-block-bulk-hydration"}:
             receipt = dict(checkpoint_publication_receipt or {})
-            if receipt.get("schema_version") != "px.context-checkpoint-publication/1.0" or receipt.get("compaction_permitted") is not True or not receipt.get("checkpoint_id") or not receipt.get("receipt_sha256"):
+            if receipt.get("schema_version") != "px.context-checkpoint-publication/1.0":
+                raise RuntimeError(f"context pressure blocks hydration until a published checkpoint exists: {pressure}")
+            if receipt.get("compaction_permitted") is not True:
+                raise RuntimeError(f"context pressure blocks hydration until a published checkpoint exists: {pressure}")
+            checkpoint_id = receipt.get("checkpoint_id")
+            if not isinstance(checkpoint_id, str) or not checkpoint_id.startswith("ctx-"):
+                raise RuntimeError(f"context pressure blocks hydration until a published checkpoint exists: {pressure}")
+            receipt_sha256 = receipt.get("receipt_sha256")
+            if not isinstance(receipt_sha256, str) or len(receipt_sha256) != 64 or any(c not in "0123456789abcdef" for c in receipt_sha256):
                 raise RuntimeError(f"context pressure blocks hydration until a published checkpoint exists: {pressure}")
     allowed = {category: {item.object_id: item for item in result.categories.get(category, ())} for category in CORE_CATEGORIES}
     hydrated: list[dict[str, object]] = []

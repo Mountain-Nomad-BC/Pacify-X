@@ -8,6 +8,7 @@ stream frames into validated canonical events.
 from __future__ import annotations
 
 from dataclasses import dataclass
+import codecs
 import json
 from typing import Iterable, Iterator, Mapping
 
@@ -148,16 +149,30 @@ def iter_sse_frames(chunks: Iterable[bytes | str]) -> Iterator[tuple[str | None,
         event_bytes = 0
         return result
 
-    for chunk in chunks:
-        if isinstance(chunk, bytes):
-            try:
-                text = chunk.decode("utf-8")
-            except UnicodeDecodeError as error:
-                raise ValueError("SSE stream contains invalid UTF-8") from error
-        elif isinstance(chunk, str):
-            text = chunk
-        else:
-            raise ValueError("SSE chunks must be bytes or text")
+    def decoded_chunks():
+        decoder = codecs.getincrementaldecoder("utf-8")("strict")
+        try:
+            for chunk in chunks:
+                if isinstance(chunk, bytes):
+                    yield decoder.decode(chunk, final=False)
+                elif isinstance(chunk, str):
+                    if decoder.getstate()[0]:
+                        raise ValueError("SSE text chunk interrupts a UTF-8 codepoint")
+                    yield chunk
+                else:
+                    raise ValueError("SSE chunks must be bytes or text")
+            yield decoder.decode(b"", final=True)
+        except UnicodeDecodeError as error:
+            raise ValueError("SSE stream contains invalid UTF-8") from error
+
+    skip_lf = False
+    for text in decoded_chunks():
+        if not text:
+            continue
+        if skip_lf and text.startswith("\n"):
+            text = text[1:]
+        skip_lf = text.endswith("\r")
+        text = text.replace("\r\n", "\n").replace("\r", "\n")
         buffer += text
         if len(buffer.encode("utf-8")) > MAX_SSE_BUFFER_BYTES:
             raise ValueError("SSE parser buffer exceeds its byte bound")
@@ -183,7 +198,7 @@ def iter_sse_frames(chunks: Iterable[bytes | str]) -> Iterator[tuple[str | None,
                     raise ValueError("SSE event name exceeds its bound")
                 event_name = value
             elif field == "data":
-                event_bytes += len(value.encode("utf-8"))
+                event_bytes += len(value.encode("utf-8")) + (1 if data_lines else 0)
                 if event_bytes > MAX_SSE_EVENT_BYTES:
                     raise ValueError("SSE event exceeds its byte bound")
                 data_lines.append(value)
@@ -193,7 +208,9 @@ def iter_sse_frames(chunks: Iterable[bytes | str]) -> Iterator[tuple[str | None,
             buffer = buffer[:-1]
         if buffer:
             if buffer.startswith("data:"):
-                value = buffer[5:].lstrip(" ")
+                value = buffer[5:]
+                if value.startswith(" "):
+                    value = value[1:]
                 data_lines.append(value)
             elif not buffer.startswith(":"):
                 raise ValueError("SSE stream ended with an incomplete frame")
@@ -326,16 +343,10 @@ class WireStreamTranslator:
         if type(delta) is not dict:
             raise ValueError("OpenAI chat delta must be an object")
         content = delta.get("content")
-        if isinstance(content, str) and content.strip():
+        if isinstance(content, str) and content:
             out.append(self._event("text_delta", {"text": content}))
-        elif isinstance(content, str) and content:
-            # Whitespace-only content is not a substantive delta. A thinking-mode model emits
-            # these between reasoning and answer; failing the stream on them would break a
-            # perfectly healthy generation, so they are carried as a text delta only when they
-            # are the literal payload the caller asked for. Here they are simply non-substantive.
-            pass
         reasoning = delta.get("reasoning_content") or delta.get("reasoning")
-        if isinstance(reasoning, str) and reasoning.strip():
+        if isinstance(reasoning, str) and reasoning:
             out.append(self._event("reasoning_delta", {"text": reasoning}))
         tool_calls = delta.get("tool_calls")
         if tool_calls is not None:
@@ -464,8 +475,17 @@ class WireStreamTranslator:
                 inp, outp = usage.get("input_tokens"), usage.get("output_tokens")
                 if type(inp) is int and inp >= 0 and type(outp) is int and outp >= 0:
                     self._input_tokens, self._output_tokens = inp, outp
-            status = response.get("status")
-            return self._terminal(str(status or "completed"))
+            # The completed event name is a compatibility signal only when the
+            # status is absent. An explicit contradictory status never wins.
+            status = response.get("status", "completed")
+            if status != "completed":
+                self.finished = True
+                out = self._usage_events()
+                code = {"failed": "provider_failed", "cancelled": "provider_cancelled",
+                        "incomplete": "provider_incomplete"}.get(status if isinstance(status, str) else "", "provider_status_invalid")
+                out.append(self._event("error", {"code": code, "retryable": False}))
+                return out
+            return self._terminal("completed")
         if kind in {"response.failed", "error"}:
             self.finished = True
             return [self._event("error", {"code": "provider_error", "retryable": False})]
@@ -548,11 +568,14 @@ class WireStreamTranslator:
                 self._output_tokens = int(usage["output_tokens"])
             delta = payload.get("delta")
             if isinstance(delta, Mapping) and isinstance(delta.get("stop_reason"), str):
-                # Do not terminalize until message_stop; usage can still update.
-                pass
+                reason = delta["stop_reason"]
+                mapping = {"max_tokens": "length", "tool_use": "tool_calls", "end_turn": "stop", "stop_sequence": "stop"}
+                if reason not in mapping:
+                    raise ValueError("Anthropic unsupported terminal stop reason")
+                self._pending_finish_reason = mapping[reason]
             return out
         if kind == "message_stop":
-            return self._terminal("stop")
+            return self._terminal(self._pending_finish_reason or "stop")
         if kind == "error":
             self.finished = True
             return [self._event("error", {"code": "provider_error", "retryable": False})]

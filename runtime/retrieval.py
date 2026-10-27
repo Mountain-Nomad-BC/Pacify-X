@@ -193,6 +193,7 @@ def retrieve(
             raise ValueError("query_plan must be a typed QueryPlan")
         if query_plan.authority_granted:
             raise ValueError("query plans may not grant authority")
+        QueryPlan.validate(query_plan)
         query_plan_sha256 = query_plan.plan_sha256
         exact.update(query_plan.exact_identifiers)
         effective_query = " ".join((query_plan.normalized_query, *query_plan.expansions)).strip() or query

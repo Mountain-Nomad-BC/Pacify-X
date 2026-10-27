@@ -6,6 +6,7 @@ from dataclasses import dataclass, field
 from datetime import datetime, timezone
 import hashlib
 import json
+import math
 from typing import Any, Mapping
 from pathlib import Path
 
@@ -45,9 +46,23 @@ class Resources:
     def from_mapping(cls, value: Mapping[str, Any] | None) -> "Resources":
         value = value or {}
         fields = cls.__dataclass_fields__
-        return cls(
-            **{name: value.get(name, field.default) for name, field in fields.items()}
-        )
+        numeric_fields = ("cpu_cores", "ram_gb", "gpu_count", "vram_gb", "disk_gb")
+        result: dict[str, Any] = {}
+        for name, field in fields.items():
+            val = value.get(name, field.default)
+            if name in numeric_fields:
+                if isinstance(val, bool):
+                    raise ValueError(f"{name} must be a non-negative number, not bool")
+                try:
+                    num = float(val)
+                except (TypeError, ValueError):
+                    raise ValueError(f"{name} must be a non-negative number")
+                if num < 0:
+                    raise ValueError(f"{name} must be non-negative")
+                result[name] = int(num) if name == "gpu_count" else num
+            else:
+                result[name] = val
+        return cls(**result)
 
     def fits(self, requested: "Resources") -> bool:
         return (
@@ -125,6 +140,7 @@ class Scheduler:
         self.failed: set[str] = set()
         self.events: list[dict[str, Any]] = []
         self._counter = 0
+        self._dependents: dict[str, set[str]] = {}
 
     def add(self, task: Task) -> None:
         if task.id in self.tasks:
@@ -136,27 +152,36 @@ class Scheduler:
         self._counter += 1
         task.created_index = self._counter
         self.tasks[task.id] = task
+        for dependency in task.dependencies:
+            self._dependents.setdefault(dependency, set()).add(task.id)
         self.events.append({"event": "task_added", "task_id": task.id})
 
     def validate_dag(self) -> None:
         visiting: set[str] = set()
         visited: set[str] = set()
 
-        def visit(task_id: str) -> None:
-            if task_id in visiting:
-                raise ValueError(f"dependency cycle at {task_id}")
-            if task_id in visited:
-                return
-            visiting.add(task_id)
-            for dependency in self.tasks[task_id].dependencies:
-                if dependency not in self.tasks:
-                    raise ValueError(f"missing dependency {dependency} for {task_id}")
-                visit(dependency)
-            visiting.remove(task_id)
-            visited.add(task_id)
-
-        for task_id in sorted(self.tasks):
-            visit(task_id)
+        for start in sorted(self.tasks):
+            if start in visited:
+                continue
+            stack = [(start, iter(sorted(self.tasks[start].dependencies)))]
+            visiting.add(start)
+            while stack:
+                node, deps_iter = stack[-1]
+                advanced = False
+                for dep in deps_iter:
+                    if dep not in self.tasks:
+                        raise ValueError(f"missing dependency {dep} for {node}")
+                    if dep in visiting:
+                        raise ValueError(f"dependency cycle at {dep}")
+                    if dep not in visited:
+                        visiting.add(dep)
+                        stack.append((dep, iter(sorted(self.tasks[dep].dependencies))))
+                        advanced = True
+                        break
+                if not advanced:
+                    visiting.discard(node)
+                    visited.add(node)
+                    stack.pop()
 
     def eligible(self, task: Task) -> tuple[bool, list[str]]:
         reasons: list[str] = []
@@ -182,12 +207,23 @@ class Scheduler:
             reasons.append("egress_policy_denied")
         maximum_cost = task.budget.get("maximum_cost")
         estimated_cost = task.budget.get("estimated_cost")
-        if (
-            maximum_cost is not None
-            and estimated_cost is not None
-            and float(estimated_cost) > float(maximum_cost)
-        ):
-            reasons.append("budget_exhausted")
+        if "maximum_cost" in task.budget or "estimated_cost" in task.budget:
+            try:
+                # A declared bound is complete, finite and nonnegative. Coercing
+                # strings/bools or treating an absent observation as unbounded
+                # can admit work with no usable cost evidence.
+                valid = (
+                    type(maximum_cost) in (int, float)
+                    and type(estimated_cost) in (int, float)
+                    and math.isfinite(maximum_cost)
+                    and math.isfinite(estimated_cost)
+                    and maximum_cost >= 0 and estimated_cost >= 0
+                    and estimated_cost <= maximum_cost
+                )
+            except OverflowError:
+                valid = False
+            if not valid:
+                reasons.append("budget_exhausted")
         if task.attempt > 1 and not task.idempotency_key and not task.compensation:
             reasons.append("retry_requires_idempotency_or_compensation")
         return not reasons, sorted(reasons)
@@ -195,9 +231,8 @@ class Scheduler:
     def score(self, task: Task) -> tuple[float, dict[str, float]]:
         downstream = sum(
             1
-            for candidate in self.tasks.values()
-            if task.id in candidate.dependencies
-            and candidate.state in {"pending", "ready"}
+            for candidate_id in self._dependents.get(task.id, ())
+            if self.tasks[candidate_id].state in {"pending", "ready"}
         )
         maximum_downstream = max(1, len(self.tasks) - 1)
         deadline_pressure = 0.0

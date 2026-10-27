@@ -1,0 +1,136 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:gremlin-recovery-authority",
+  "title": "Gremlin independent recovery authority",
+  "anyOf": [
+    {
+      "type": "object",
+      "required": [
+        "schema_version",
+        "challenge_id",
+        "requesting_authority_id",
+        "protected_execution_id",
+        "operation",
+        "reason_code",
+        "nonce",
+        "issued_at_utc",
+        "expires_at_utc"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": { "const": "px.gremlin-recovery-challenge/1.0" },
+        "challenge_id": { "$ref": "#/$defs/id" },
+        "requesting_authority_id": { "$ref": "#/$defs/id" },
+        "protected_execution_id": { "$ref": "#/$defs/id" },
+        "operation": { "$ref": "#/$defs/id" },
+        "reason_code": { "$ref": "#/$defs/id" },
+        "nonce": { "type": "string", "pattern": "^[A-Za-z0-9_-]{32,128}$" },
+        "issued_at_utc": { "type": "string", "format": "date-time" },
+        "expires_at_utc": { "type": "string", "format": "date-time" }
+      }
+    },
+    {
+      "type": "object",
+      "required": [
+        "schema_version",
+        "approval_id",
+        "challenge_sha256",
+        "principal_id",
+        "auth_factor",
+        "granted",
+        "issued_at_utc",
+        "expires_at_utc",
+        "signature"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": { "const": "px.gremlin-recovery-approval/1.0" },
+        "approval_id": { "$ref": "#/$defs/id" },
+        "challenge_sha256": { "$ref": "#/$defs/sha256" },
+        "principal_id": { "$ref": "#/$defs/id" },
+        "auth_factor": {
+          "enum": ["passkey", "mfa", "hardware_key", "offline_recovery_token"]
+        },
+        "granted": { "type": "boolean" },
+        "issued_at_utc": { "type": "string", "format": "date-time" },
+        "expires_at_utc": { "type": "string", "format": "date-time" },
+        "signature": { "type": "string", "minLength": 1, "maxLength": 4096 }
+      }
+    },
+    {
+      "type": "object",
+      "required": [
+        "schema_version",
+        "decision_id",
+        "challenge_id",
+        "approval_id",
+        "protected_execution_id",
+        "operation",
+        "decision",
+        "recovery_principal_id",
+        "expires_at_utc",
+        "reason_code"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": { "const": "px.gremlin-recovery-decision/1.0" },
+        "decision_id": { "$ref": "#/$defs/id" },
+        "challenge_id": { "$ref": "#/$defs/id" },
+        "approval_id": { "type": ["string", "null"], "maxLength": 256 },
+        "protected_execution_id": { "$ref": "#/$defs/id" },
+        "operation": { "$ref": "#/$defs/id" },
+        "decision": { "enum": ["approved", "denied"] },
+        "recovery_principal_id": {
+          "type": ["string", "null"],
+          "maxLength": 256
+        },
+        "expires_at_utc": { "type": "string", "format": "date-time" },
+        "reason_code": { "$ref": "#/$defs/id" }
+      }
+    },
+    {
+      "type": "object",
+      "required": [
+        "schema_version",
+        "event_type",
+        "recovery_authority_id",
+        "challenge_id",
+        "approval_id",
+        "revocation_id",
+        "protected_execution_id",
+        "operation",
+        "principal_id",
+        "result",
+        "occurred_at_utc"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": { "const": "px.gremlin-recovery-event/1.0" },
+        "event_type": {
+          "enum": [
+            "recovery_challenge_issued",
+            "recovery_authorization_decided",
+            "recovery_authorization_refused",
+            "recovery_approval_revoked"
+          ]
+        },
+        "recovery_authority_id": { "$ref": "#/$defs/id" },
+        "challenge_id": { "type": ["string", "null"], "maxLength": 256 },
+        "approval_id": { "type": ["string", "null"], "maxLength": 256 },
+        "revocation_id": { "type": ["string", "null"], "maxLength": 256 },
+        "protected_execution_id": { "$ref": "#/$defs/id" },
+        "operation": { "$ref": "#/$defs/id" },
+        "principal_id": { "type": ["string", "null"], "maxLength": 256 },
+        "result": { "$ref": "#/$defs/id" },
+        "occurred_at_utc": { "type": "string", "format": "date-time" }
+      }
+    }
+  ],
+  "$defs": {
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,255}$"
+    },
+    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" }
+  }
+}

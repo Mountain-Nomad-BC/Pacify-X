@@ -129,9 +129,13 @@ def persist_and_publish_checkpoint(
     storage_receipt = dict(persist(checkpoint))
     if not storage_receipt:
         raise RuntimeError("checkpoint persistence returned no receipt")
+    if storage_receipt.get("valid") is not True or storage_receipt.get("status") == "failed":
+        raise RuntimeError("checkpoint persistence receipt not valid")
     generation_receipt = dict(publish(checkpoint, storage_receipt))
     if not generation_receipt:
         raise RuntimeError("checkpoint publication returned no receipt")
+    if generation_receipt.get("valid") is not True or generation_receipt.get("status") == "failed":
+        raise RuntimeError("checkpoint publication receipt not valid")
     return {
         "schema_version": "px.context-checkpoint-publication/1.0",
         "checkpoint_id": checkpoint["checkpoint_id"],

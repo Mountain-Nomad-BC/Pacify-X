@@ -143,3 +143,33 @@ test('controller rejects a run belonging to another task before dispatch', async
   await assert.rejects(owner.sendTurn({ taskId: first.taskId, runId: run.runId, message: 'inspect' }), /owner-mismatch/);
   assert.equal(called, false);
 });
+
+test('returned task values cannot mutate persisted ownership or constraints', () => {
+  const store=new TaskStore();const task=store.createTask(input());
+  assert.throws(()=>{task.constraints.taskCostCeilingUsd=999;},TypeError);
+  assert.throws(()=>{task.taskId='rebound';},TypeError);
+  const run=store.createRun(task.taskId);assert.throws(()=>{run.taskId='other';},TypeError);
+});
+
+test('restart cannot redispatch a worker-selected run with unknown previous effects', async()=>{
+  let snapshot;const store=new TaskStore({persistence:{save:value=>{snapshot=JSON.parse(JSON.stringify(value));}}});
+  const task=store.createTask(input());const run=store.createRun(task.taskId);store.selectWorker(run.runId,'worker','selected before crash');
+  let called=false;const owner=harness({runTurn:async()=>{called=true;return {text:'unsafe replay'};}},{load:()=>snapshot,save:()=>{}});
+  await assert.rejects(owner.sendTurn({taskId:task.taskId,runId:run.runId,message:'resume',resume:true}),/recovery-required/);
+  assert.equal(called,false);
+});
+
+test('cancel request has a bound while unsettled adapter remains fenced from replacement', async()=>{
+  let finish,start;const entered=new Promise(resolve=>{start=resolve;});const pending=new Promise(resolve=>{finish=resolve;});
+  const owner=harness({runTurn:async()=>{start();return pending;},interrupt:()=>new Promise(()=>{})});
+  owner.cancelInterruptTimeoutMs=20;
+  const task=owner.createTask(input());const turn=owner.sendTurn({taskId:task.taskId,message:'inspect'});
+  const settled=assert.rejects(turn,/abort/);await entered;
+  const run=owner.taskStore.listRuns(task.taskId)[0];let timer;
+  try {
+    const response=await Promise.race([owner.cancelRun(run.runId),new Promise(resolve=>{timer=setTimeout(()=>resolve('unbounded'),150);})]);
+    assert.equal(response,true);
+    await assert.rejects(owner.sendTurn({taskId:task.taskId,message:'replacement'}),/task-already-executing/);
+    assert.equal(owner.eventBus.snapshot().some(e=>e.type==='worker.interrupt.unsettled'),true);
+  } finally {clearTimeout(timer);finish({text:'late'});await settled;owner.dispose();}
+});

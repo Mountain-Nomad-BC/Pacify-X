@@ -1612,15 +1612,24 @@ class WorkflowStudio:
             failure_correlation_id = hashlib.sha256(
                 f"{run_id}\0workflow.failure".encode("utf-8")
             ).hexdigest()[:24]
+            admission_expired = isinstance(error, ProcessAdmissionExpired)
+            settlement = getattr(error, "supervision_outcome", {}) or {}
+            settled = (
+                settlement.get("tree_closed") is True
+                and settlement.get("custody_retained") is False
+                and settlement.get("cleanup_errors") == []
+            )
+            failure_status = "total_timeout" if admission_expired and settled else "failed"
             receipt.update(
                 {
-                    "run_state": "failed",
-                    "status": "failed",
+                    "run_state": failure_status,
+                    "status": failure_status,
                     "completed_utc": _now(),
                     "failure_type": type(error).__name__,
                     "failure_message": str(error)[:500],
                     "failure_correlation_id": failure_correlation_id,
                     "node_count": len(completed_nodes),
+                    "supervision_outcome": settlement,
                 }
             )
             current = self.run_control.read(run_id)

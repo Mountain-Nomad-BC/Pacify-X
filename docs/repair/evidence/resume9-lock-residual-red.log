@@ -1,0 +1,80 @@
+cmd: tests/test_event_integrity_audit.py -k concurrent
+exit: 1
+elapsed_seconds: 41.82
+--- stdout ---
+F.                                                                       [100%]
+================================== FAILURES ===================================
+___________ test_concurrent_batch_and_single_publish_keep_one_chain ___________
+
+tmp_path = WindowsPath('C:/Users/Ben/AppData/Local/Temp/pytest-of-Ben/pytest-314/test_concurrent_batch_and_sing0')
+
+    def test_concurrent_batch_and_single_publish_keep_one_chain(tmp_path):
+        "Overlapping publications cannot interleave revisions or fork ancestry."
+        from concurrent.futures import ThreadPoolExecutor
+        bus = OperationalEventBus(ROOT, tmp_path / "bus", tmp_path)
+        bus.publish(_event("seed", None))
+    
+        def publish_batch(index):
+            return bus.publish_batch(
+                [_event(f"batch-{index}-a", None), _event(f"batch-{index}-b", None)],
+                link_current_head=True,
+            )
+    
+        with ThreadPoolExecutor(max_workers=4) as pool:
+            futures = [pool.submit(publish_batch, index) for index in range(4)]
+>           results = [future.result(timeout=120) for future in futures]
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_event_integrity_audit.py:176: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+..\..\..\AppData\Local\Temp\py3145t\Lib\concurrent\futures\_base.py:443: in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+..\..\..\AppData\Local\Temp\py3145t\Lib\concurrent\futures\_base.py:395: in __get_result
+    raise self._exception
+..\..\..\AppData\Local\Temp\py3145t\Lib\concurrent\futures\thread.py:86: in run
+    result = ctx.run(self.task)
+             ^^^^^^^^^^^^^^^^^^
+..\..\..\AppData\Local\Temp\py3145t\Lib\concurrent\futures\thread.py:73: in run
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+tests\test_event_integrity_audit.py:169: in publish_batch
+    return bus.publish_batch(
+runtime\operational_event_bus.py:331: in publish_batch
+    with FileLock(self.root / ".publish.lock", timeout_seconds=10):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <runtime.file_lock.FileLock object at 0x0000015F9F71F570>
+
+    def __enter__(self) -> "FileLock":
+        self.path.parent.mkdir(parents=True, exist_ok=True)
+        deadline = time.monotonic() + self.timeout_seconds
+        # Claim this process's exclusion for the exact byte-zero region before
+        # opening or testing the byte-range lock. On Windows a sibling thread
+        # already owns that region through its own handle and would otherwise
+        # busy-wait on itself until the bounded timeout.
+        key = _process_lock_key(self.path, "r+b")
+        entry = _enter_process_entry(key)
+        self._process_entry = (key, entry)
+        acquired = entry["condition"].acquire()
+        if not acquired:
+            self._process_entry = None
+            raise FileLockTimeout(f"control state could not be entered: {self.path}")
+        try:
+            while entry.get("owner") is not None:
+                remaining = deadline - time.monotonic()
+                if remaining <= 0:
+                    owner = self._owner_diagnostic()
+>                   raise FileLockTimeout(
+                        f"control state is locked by another thread in this process: {self.path}; {owner}"
+                    )
+E                   runtime.file_lock.FileLockTimeout: control state is locked by another thread in this process: C:\Users\Ben\AppData\Local\Temp\pytest-of-Ben\pytest-314\test_concurrent_batch_and_sing0\bus\.publish.lock; owner pid=11744 token=f01b9dcfb1de5178bdc83fd2b9232ef9 heartbeat_utc=2026-10-26T16:20:50.827973+00:00
+
+runtime\file_lock.py:528: FileLockTimeout
+=========================== short test summary info ===========================
+FAILED tests/test_event_integrity_audit.py::test_concurrent_batch_and_single_publish_keep_one_chain
+1 failed, 1 passed, 27 deselected in 36.65s
+
+--- stderr ---
+

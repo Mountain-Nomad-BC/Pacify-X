@@ -1,0 +1,41 @@
+....FF.................................................................. [ 53%]
+...............................................................          [100%]
+================================== FAILURES ===================================
+______________ test_structural_integrity_has_closed_denominators ______________
+
+    def test_structural_integrity_has_closed_denominators() -> None:
+        result = _root_audit()
+        non_document_errors = [
+            item
+            for item in result["errors"]
+            if not item.startswith("documentation: stale deployment claim")
+        ]
+>       assert not non_document_errors, non_document_errors
+E       AssertionError: ["dependencies: release lock mismatch: missing=[] extra=['attrs', 'jsonschema', 'jsonschema-specifications', 'referencing', 'rpds-py']"]
+E       assert not ["dependencies: release lock mismatch: missing=[] extra=['attrs', 'jsonschema', 'jsonschema-specifications', 'referencing', 'rpds-py']"]
+
+tests\test_structural_integrity.py:142: AssertionError
+______ test_hash_ledger_head_and_anchor_are_a_reviewed_exact_projection _______
+
+    def test_hash_ledger_head_and_anchor_are_a_reviewed_exact_projection() -> None:
+        result = _root_audit()
+        groups = [
+            item
+            for item in result["duplicate_file_groups"]
+            if item["classification"] == "ledger-authority-head-anchor"
+        ]
+        assert groups
+        assert all(any(path.endswith("/head.json") for path in group["paths"]) for group in groups)
+        assert all(any("/anchors/" in path for path in group["paths"]) for group in groups)
+        assert result["category_count"] == 15
+        assert result["reachability_records"] > 100
+        assert result["required_audit_item_count"] == 21
+>       assert all(item["passed"] for item in result["audit_items"].values())
+E       assert False
+E        +  where False = all(<generator object test_hash_ledger_head_and_anchor_are_a_reviewed_exact_projection.<locals>.<genexpr> at 0x00000213FD0A9220>)
+
+tests\test_structural_integrity.py:158: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_structural_integrity.py::test_structural_integrity_has_closed_denominators
+FAILED tests/test_structural_integrity.py::test_hash_ledger_head_and_anchor_are_a_reviewed_exact_projection
+2 failed, 133 passed in 1559.50s (0:25:59)

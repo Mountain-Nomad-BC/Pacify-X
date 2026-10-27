@@ -628,6 +628,14 @@ def test_section_status_refuses_missing_or_stale_receipts(monkeypatch):
         "hardware-routing",
         "runtime-domain-contracts",
         "source-authority",
+        "revision-lifecycle",
+        # Added by the resumed repair source as mandatory sections. They are
+        # genuinely required (secure publisher, native runtime integration, real
+        # Windows Job operating proof, host containment), so the governed set grows.
+        "secure-persistence",
+        "native-runtime-integration",
+        "native-job-operating",
+        "host-containment",
     }
 
 

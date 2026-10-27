@@ -1,0 +1,5153 @@
+{
+  "counts": {
+    "source_to_port": 311,
+    "python_files": 217,
+    "closure_complete": 121,
+    "closure_incomplete": 96
+  },
+  "rows": [
+    {
+      "path": "runtime/cancellation_scope.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "dataclasses",
+        "dataclasses.dataclass",
+        "datetime",
+        "datetime.datetime",
+        "datetime.timezone",
+        "types",
+        "types.MappingProxyType",
+        "typing",
+        "typing.Mapping"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "runtime/chat_context.py",
+      "imports": [
+        "datetime",
+        "datetime.datetime",
+        "datetime.timezone",
+        "hashlib",
+        "pathlib",
+        "pathlib.Path",
+        "re"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "runtime/compact_address.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "dataclasses",
+        "dataclasses.dataclass",
+        "hashlib",
+        "json",
+        "pathlib",
+        "pathlib.Path",
+        "re",
+        "typing",
+        "typing.Any",
+        "typing.Iterable",
+        "typing.Iterator",
+        "typing.Mapping"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "runtime/containment_invariants.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "pathlib",
+        "pathlib.Path",
+        "tempfile",
+        "typing",
+        "typing.Any"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "runtime/context_generation.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "collections.abc",
+        "collections.abc.Iterable",
+        "collections.abc.Mapping",
+        "dataclasses",
+        "dataclasses.dataclass",
+        "hashlib",
+        "types",
+        "types.MappingProxyType"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "runtime/data_controls.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "argparse",
+        "collections.abc",
+        "collections.abc.Mapping",
+        "hashlib",
+        "json",
+        "pathlib",
+        "pathlib.Path",
+        "sys"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "runtime/data_inventory.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "dataclasses",
+        "dataclasses.dataclass",
+        "datetime",
+        "datetime.datetime",
+        "datetime.timezone",
+        "hashlib",
+        "itertools",
+        "itertools.islice",
+        "json",
+        "pathlib",
+        "pathlib.Path",
+        "typing",
+        "typing.Iterable",
+        "typing.Mapping"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "runtime/data_subject_records.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "dataclasses",
+        "dataclasses.asdict",
+        "datetime",
+        "datetime.datetime",
+        "datetime.timezone",
+        "hashlib",
+        "json",
+        "pathlib",
+        "pathlib.Path"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "runtime/dependency_identity.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "dataclasses",
+        "dataclasses.dataclass",
+        "hashlib",
+        "re"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "runtime/deterministic_model_stub.py",
+      "imports": [],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "runtime/effect_intent.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "dataclasses",
+        "dataclasses.dataclass",
+        "hashlib",
+        "json",
+        "pathlib",
+        "pathlib.Path",
+        "typing",
+        "typing.Iterable",
+        "typing.Mapping"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "runtime/engineering_os_paths.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "os",
+        "pathlib",
+        "pathlib.Path",
+        "pathlib.PurePosixPath"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "runtime/execution_context.py",
+      "imports": [
+        "dataclasses",
+        "dataclasses.asdict",
+        "dataclasses.dataclass",
+        "dataclasses.replace",
+        "datetime",
+        "datetime.datetime",
+        "datetime.timezone",
+        "hashlib",
+        "pathlib",
+        "pathlib.Path",
+        "re"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "runtime/gemini_protocol.py",
+      "imports": [],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "runtime/generation_bound_verdict.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "collections.abc",
+        "collections.abc.Mapping",
+        "hashlib",
+        "pathlib",
+        "pathlib.Path"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "runtime/governed_exception.py",
+      "imports": [
+        "datetime",
+        "datetime.datetime",
+        "datetime.timezone"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "runtime/gremlin/__init__.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "runtime/gremlin/admin.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "dataclasses",
+        "dataclasses.asdict",
+        "dataclasses.dataclass",
+        "dataclasses.replace",
+        "datetime",
+        "datetime.datetime",
+        "datetime.timedelta",
+        "datetime.timezone",
+        "hashlib",
+        "hmac"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "runtime/gremlin/audit.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "datetime",
+        "datetime.datetime",
+        "pathlib",
+        "pathlib.Path",
+        "typing",
+        "typing.Mapping"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "runtime/gremlin/authorization.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "dataclasses",
+        "dataclasses.asdict",
+        "dataclasses.dataclass",
+        "datetime",
+        "datetime.datetime",
+        "datetime.timedelta",
+        "datetime.timezone",
+        "hashlib",
+        "typing",
+        "typing.Iterable",
+        "typing.Mapping"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "runtime/gremlin/commissioning.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "pathlib",
+        "pathlib.Path"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "runtime/gremlin/composition.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "dataclasses",
+        "dataclasses.dataclass",
+        "datetime",
+        "datetime.datetime",
+        "pathlib",
+        "pathlib.Path",
+        "sys"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "runtime/gremlin/containment.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "dataclasses",
+        "dataclasses.asdict",
+        "dataclasses.dataclass",
+        "datetime",
+        "datetime.datetime",
+        "datetime.timedelta",
+        "datetime.timezone",
+        "hashlib",
+        "pathlib",
+        "pathlib.Path",
+        "typing",
+        "typing.Any",
+        "typing.Iterable",
+        "typing.Mapping"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "runtime/gremlin/deviation.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "dataclasses",
+        "dataclasses.asdict",
+        "dataclasses.dataclass",
+        "dataclasses.field",
+        "hashlib",
+        "json",
+        "pathlib",
+        "pathlib.Path",
+        "typing",
+        "typing.Any",
+        "typing.Mapping"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "runtime/gremlin/enrollment.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "dataclasses",
+        "dataclasses.dataclass",
+        "datetime",
+        "datetime.datetime",
+        "datetime.timezone",
+        "typing",
+        "typing.Any",
+        "typing.Mapping"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "runtime/gremlin/events.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "dataclasses",
+        "dataclasses.asdict",
+        "dataclasses.dataclass",
+        "dataclasses.field",
+        "hashlib",
+        "itertools",
+        "re",
+        "typing",
+        "typing.Any",
+        "typing.Mapping"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "runtime/gremlin/health.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "dataclasses",
+        "dataclasses.asdict",
+        "dataclasses.dataclass"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "runtime/gremlin/host_configuration.py",
+      "imports": [
+        "importlib",
+        "os",
+        "pathlib",
+        "pathlib.Path",
+        "re"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "runtime/gremlin/host_process_observer.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "ctypes",
+        "ctypes.wintypes",
+        "os"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "runtime/gremlin/identity.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "dataclasses",
+        "dataclasses.asdict",
+        "dataclasses.dataclass",
+        "hashlib",
+        "re"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "runtime/gremlin/intervention.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "dataclasses",
+        "dataclasses.asdict",
+        "dataclasses.dataclass",
+        "dataclasses.field",
+        "datetime",
+        "datetime.datetime",
+        "datetime.timedelta",
+        "datetime.timezone",
+        "typing",
+        "typing.Callable"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "runtime/gremlin/observers.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "dataclasses",
+        "dataclasses.dataclass",
+        "dataclasses.field",
+        "typing",
+        "typing.Callable",
+        "typing.Protocol"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "runtime/gremlin/policy.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "dataclasses",
+        "dataclasses.asdict",
+        "dataclasses.dataclass",
+        "dataclasses.field",
+        "hashlib",
+        "typing",
+        "typing.Any",
+        "typing.Mapping"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "runtime/gremlin/receipts.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "dataclasses",
+        "dataclasses.asdict",
+        "dataclasses.dataclass",
+        "hashlib",
+        "hmac",
+        "re",
+        "typing",
+        "typing.Callable",
+        "typing.Mapping"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "runtime/gremlin/recovery_authority.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "dataclasses",
+        "dataclasses.asdict",
+        "dataclasses.dataclass",
+        "datetime",
+        "datetime.datetime",
+        "datetime.timedelta",
+        "datetime.timezone",
+        "hashlib",
+        "json",
+        "pathlib",
+        "pathlib.Path",
+        "re",
+        "secrets",
+        "typing",
+        "typing.Callable",
+        "typing.Mapping",
+        "typing.Protocol",
+        "uuid",
+        "uuid.uuid4"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "runtime/gremlin/recovery_verifier_console.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "hashlib",
+        "hmac",
+        "sys",
+        "typing",
+        "typing.Any"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "runtime/gremlin/registry.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "dataclasses",
+        "dataclasses.dataclass",
+        "hashlib"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "runtime/gremlin/runtime_identity.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "contextlib",
+        "contextlib.contextmanager",
+        "ctypes",
+        "ctypes.wintypes",
+        "dataclasses",
+        "dataclasses.dataclass",
+        "datetime",
+        "datetime.datetime",
+        "datetime.timezone",
+        "hashlib",
+        "json",
+        "os",
+        "re",
+        "secrets",
+        "typing",
+        "typing.Callable",
+        "typing.ContextManager",
+        "typing.Iterator",
+        "typing.Mapping",
+        "typing.Protocol",
+        "uuid",
+        "uuid.uuid4"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "runtime/gremlin/supervisor.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "dataclasses",
+        "dataclasses.asdict",
+        "dataclasses.dataclass",
+        "typing",
+        "typing.Callable",
+        "typing.Mapping",
+        "typing.Protocol"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "runtime/group_provider_adapters.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "dataclasses",
+        "dataclasses.dataclass",
+        "json",
+        "os",
+        "pathlib",
+        "pathlib.Path",
+        "typing",
+        "typing.Callable",
+        "typing.Mapping"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "runtime/guarded_registry_projection.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "datetime",
+        "datetime.datetime",
+        "datetime.timedelta",
+        "datetime.timezone",
+        "hashlib",
+        "json",
+        "os",
+        "pathlib",
+        "pathlib.Path",
+        "pathlib.PurePosixPath",
+        "typing",
+        "typing.Mapping",
+        "uuid",
+        "uuid.uuid4"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "runtime/hash_utils.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "hashlib",
+        "json",
+        "pathlib",
+        "pathlib.Path"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "runtime/isolated_sandbox.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "dataclasses",
+        "dataclasses.asdict",
+        "dataclasses.dataclass",
+        "dataclasses.field",
+        "datetime",
+        "datetime.datetime",
+        "datetime.timezone",
+        "hashlib",
+        "json",
+        "pathlib",
+        "pathlib.Path",
+        "stat",
+        "typing",
+        "typing.Any",
+        "typing.Iterable",
+        "typing.Mapping"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "runtime/iterative_subgraph.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "dataclasses",
+        "dataclasses.asdict",
+        "dataclasses.dataclass",
+        "datetime",
+        "datetime.datetime",
+        "datetime.timedelta",
+        "datetime.timezone",
+        "hashlib",
+        "json",
+        "re",
+        "time",
+        "typing",
+        "typing.Callable",
+        "typing.Mapping"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "runtime/member_execution.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "datetime",
+        "datetime.datetime",
+        "datetime.timezone",
+        "json",
+        "typing",
+        "typing.Callable",
+        "typing.Mapping"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "runtime/metacognitive_evolution/runner.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "dataclasses",
+        "dataclasses.dataclass",
+        "hashlib",
+        "itertools",
+        "itertools.islice",
+        "json",
+        "math",
+        "typing",
+        "typing.Any",
+        "typing.Callable",
+        "typing.Mapping"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "runtime/model_branch_artifacts.py",
+      "imports": [
+        "datetime",
+        "datetime.datetime",
+        "datetime.timedelta",
+        "datetime.timezone",
+        "hashlib",
+        "os",
+        "pathlib",
+        "pathlib.Path",
+        "uuid",
+        "uuid.uuid4"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "runtime/model_branch_contracts.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "dataclasses",
+        "dataclasses.dataclass",
+        "hashlib",
+        "typing",
+        "typing.Any",
+        "typing.Iterable",
+        "typing.Mapping",
+        "typing.Sequence"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "runtime/model_convergence.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "dataclasses",
+        "dataclasses.asdict",
+        "dataclasses.dataclass",
+        "hashlib",
+        "math",
+        "pathlib",
+        "pathlib.Path"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "runtime/model_execution_group.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "dataclasses",
+        "dataclasses.asdict",
+        "dataclasses.dataclass",
+        "hashlib",
+        "typing",
+        "typing.Any",
+        "typing.Sequence"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "runtime/model_group_preparation.py",
+      "imports": [
+        "dataclasses",
+        "dataclasses.dataclass",
+        "hashlib",
+        "pathlib",
+        "pathlib.Path"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "runtime/model_router_preset.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "dataclasses",
+        "dataclasses.asdict",
+        "dataclasses.dataclass",
+        "hashlib",
+        "json",
+        "pathlib",
+        "pathlib.Path",
+        "re",
+        "runtime.hash_utils",
+        "runtime.hash_utils.json_utf8_hash",
+        "typing",
+        "typing.Callable",
+        "typing.Mapping"
+      ],
+      "deps_missing_from_bootstrap": [
+        "runtime.hash_utils"
+      ],
+      "closure_complete": false
+    },
+    {
+      "path": "runtime/mutating_producer_custody_reviewed.py",
+      "imports": [],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "runtime/mutating_producer_registry.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "hashlib",
+        "json",
+        "pathlib",
+        "pathlib.Path",
+        "typing",
+        "typing.Any",
+        "typing.Mapping"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "runtime/mutation_queue.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "dataclasses",
+        "dataclasses.dataclass",
+        "json",
+        "pathlib",
+        "pathlib.Path",
+        "typing",
+        "typing.Iterable"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "runtime/personal_record_store.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "datetime",
+        "datetime.datetime",
+        "datetime.timedelta",
+        "datetime.timezone",
+        "hashlib",
+        "os",
+        "pathlib",
+        "pathlib.Path",
+        "re",
+        "uuid",
+        "uuid.uuid4"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "runtime/plan_registry.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "copy",
+        "copy.deepcopy",
+        "dataclasses",
+        "dataclasses.dataclass",
+        "dataclasses.field",
+        "datetime",
+        "datetime.datetime",
+        "datetime.timezone",
+        "hashlib",
+        "json",
+        "os",
+        "pathlib",
+        "pathlib.Path",
+        "re",
+        "tempfile",
+        "typing",
+        "typing.Any",
+        "typing.Callable",
+        "typing.Iterable",
+        "uuid",
+        "uuid.uuid4"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "runtime/prepared_group_transport.py",
+      "imports": [
+        "pathlib",
+        "pathlib.Path",
+        "re"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "runtime/projection_gate.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "collections.abc",
+        "collections.abc.Iterable",
+        "collections.abc.Mapping",
+        "dataclasses",
+        "dataclasses.dataclass"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "runtime/release_current_acceptance.py",
+      "imports": [
+        "pathlib",
+        "pathlib.Path"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "runtime/release_process_custody.py",
+      "imports": [
+        "datetime",
+        "datetime.datetime",
+        "datetime.timedelta",
+        "datetime.timezone",
+        "hashlib",
+        "os",
+        "pathlib",
+        "pathlib.Path",
+        "re"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "runtime/release_source_identity.py",
+      "imports": [
+        "hashlib",
+        "pathlib",
+        "pathlib.Path",
+        "re",
+        "zipfile"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "runtime/remote_member_execution.py",
+      "imports": [
+        "datetime",
+        "datetime.datetime",
+        "datetime.timezone",
+        "json",
+        "os",
+        "pathlib",
+        "pathlib.Path"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "runtime/remote_model_attachment.py",
+      "imports": [
+        "dataclasses",
+        "dataclasses.asdict",
+        "dataclasses.dataclass",
+        "hashlib",
+        "json",
+        "pathlib",
+        "pathlib.Path",
+        "re"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "runtime/remote_model_bridge.py",
+      "imports": [
+        "argparse",
+        "json",
+        "pathlib",
+        "pathlib.Path",
+        "sys"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "runtime/remote_provider_adapters.py",
+      "imports": [
+        "http.client",
+        "socket",
+        "ssl",
+        "urllib.error",
+        "urllib.error.HTTPError"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "runtime/remote_provider_placement.py",
+      "imports": [
+        "pathlib",
+        "pathlib.Path"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "runtime/remote_provider_profiles.py",
+      "imports": [
+        "datetime",
+        "datetime.datetime",
+        "datetime.timezone",
+        "hashlib",
+        "ipaddress",
+        "pathlib",
+        "pathlib.Path",
+        "re",
+        "urllib.parse",
+        "urllib.parse.urlsplit"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "runtime/remote_service_protocols.py",
+      "imports": [
+        "pathlib",
+        "pathlib.Path",
+        "re"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "runtime/scope_lease.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "dataclasses",
+        "dataclasses.dataclass",
+        "dataclasses.replace",
+        "datetime",
+        "datetime.datetime",
+        "datetime.timezone",
+        "json",
+        "pathlib",
+        "pathlib.Path",
+        "typing",
+        "typing.Iterable"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "runtime/secure_publish.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "contextlib",
+        "contextlib.contextmanager",
+        "ctypes",
+        "ctypes.wintypes",
+        "os",
+        "pathlib",
+        "pathlib.Path",
+        "stat",
+        "time",
+        "typing",
+        "typing.BinaryIO",
+        "typing.Callable",
+        "uuid",
+        "uuid.uuid4"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "runtime/semantic_address_vocabulary.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "dataclasses",
+        "dataclasses.dataclass",
+        "json",
+        "pathlib",
+        "pathlib.Path",
+        "typing",
+        "typing.Iterable",
+        "typing.Mapping"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "runtime/semantic_authored_sources.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "configparser",
+        "dataclasses",
+        "dataclasses.dataclass",
+        "hashlib",
+        "json",
+        "re",
+        "runtime.semantic_taxonomy",
+        "runtime.semantic_taxonomy.SurfaceEntity",
+        "runtime.semantic_taxonomy.tokenize",
+        "typing",
+        "typing.Callable",
+        "typing.Iterable"
+      ],
+      "deps_missing_from_bootstrap": [
+        "runtime.semantic_taxonomy"
+      ],
+      "closure_complete": false
+    },
+    {
+      "path": "runtime/semantic_census.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "ast",
+        "collections",
+        "collections.Counter",
+        "collections.defaultdict",
+        "dataclasses",
+        "dataclasses.dataclass",
+        "dataclasses.field",
+        "json",
+        "pathlib",
+        "pathlib.Path",
+        "re",
+        "typing",
+        "typing.Any",
+        "typing.Iterable"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "runtime/semantic_census_report.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "collections",
+        "collections.Counter",
+        "collections.defaultdict",
+        "json",
+        "pathlib",
+        "pathlib.Path",
+        "runtime.semantic_census",
+        "runtime.semantic_census.AMBIGUOUS",
+        "runtime.semantic_census.CENSUS_SCHEMA",
+        "runtime.semantic_census.Classification",
+        "runtime.semantic_census.NOVEL_TERM",
+        "runtime.semantic_census.ObservedEntity",
+        "runtime.semantic_census.Proposal",
+        "runtime.semantic_census.UNRESOLVED",
+        "runtime.semantic_census.census_corpus",
+        "runtime.semantic_census.classify",
+        "sklearn.cluster",
+        "sklearn.cluster.KMeans",
+        "sklearn.feature_extraction.text",
+        "sklearn.feature_extraction.text.TfidfVectorizer",
+        "sklearn.metrics",
+        "sklearn.metrics.adjusted_rand_score",
+        "typing",
+        "typing.Any"
+      ],
+      "deps_missing_from_bootstrap": [
+        "runtime.semantic_census"
+      ],
+      "closure_complete": false
+    },
+    {
+      "path": "runtime/semantic_census_v2.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "collections",
+        "collections.Counter",
+        "collections.defaultdict",
+        "json",
+        "math",
+        "pathlib",
+        "pathlib.Path",
+        "runtime.semantic_evidence",
+        "runtime.semantic_evidence.AMBIGUOUS",
+        "runtime.semantic_evidence.NOVEL_TERM",
+        "runtime.semantic_evidence.OUTCOMES",
+        "runtime.semantic_evidence.Observation",
+        "runtime.semantic_evidence.RESOLVED",
+        "runtime.semantic_evidence.UNRESOLVED",
+        "runtime.semantic_evidence.collect",
+        "runtime.semantic_hierarchy",
+        "runtime.semantic_hierarchy.Assignment",
+        "runtime.semantic_hierarchy.SEGMENT_CAPACITY",
+        "runtime.semantic_hierarchy.build",
+        "typing",
+        "typing.Any"
+      ],
+      "deps_missing_from_bootstrap": [
+        "runtime.semantic_evidence",
+        "runtime.semantic_hierarchy"
+      ],
+      "closure_complete": false
+    },
+    {
+      "path": "runtime/semantic_coverage.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "dataclasses",
+        "dataclasses.dataclass",
+        "dataclasses.field",
+        "typing",
+        "typing.Any",
+        "typing.Iterable",
+        "typing.Mapping"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "runtime/semantic_entity.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "dataclasses",
+        "dataclasses.dataclass",
+        "dataclasses.field",
+        "dataclasses.replace",
+        "hashlib",
+        "json",
+        "pathlib",
+        "pathlib.Path",
+        "runtime.contracts",
+        "runtime.contracts.validate_instance",
+        "runtime.file_lock",
+        "runtime.file_lock.FileLock",
+        "runtime.json_io",
+        "runtime.json_io.bounded_canonical_json_bytes",
+        "runtime.json_io.decode_json_object",
+        "runtime.json_io.read_bounded_bytes",
+        "types",
+        "types.MappingProxyType",
+        "typing",
+        "typing.Any",
+        "typing.Iterable",
+        "typing.Mapping"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "runtime/semantic_entity_worthiness.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "collections",
+        "collections.Counter",
+        "dataclasses",
+        "dataclasses.dataclass",
+        "json",
+        "pathlib",
+        "pathlib.Path",
+        "re",
+        "typing",
+        "typing.Iterable"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "runtime/semantic_evidence.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "ast",
+        "collections",
+        "collections.Counter",
+        "collections.defaultdict",
+        "dataclasses",
+        "dataclasses.dataclass",
+        "dataclasses.field",
+        "json",
+        "pathlib",
+        "pathlib.Path",
+        "re",
+        "typing",
+        "typing.Any",
+        "typing.Iterable"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "runtime/semantic_evidence_graph.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "ast",
+        "collections",
+        "collections.Counter",
+        "collections.defaultdict",
+        "dataclasses",
+        "dataclasses.dataclass",
+        "dataclasses.field",
+        "json",
+        "pathlib",
+        "pathlib.Path",
+        "re",
+        "typing",
+        "typing.Any",
+        "typing.Iterable"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "runtime/semantic_hierarchy.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "collections",
+        "collections.Counter",
+        "collections.defaultdict",
+        "dataclasses",
+        "dataclasses.dataclass",
+        "dataclasses.field",
+        "json",
+        "math",
+        "runtime.semantic_evidence",
+        "runtime.semantic_evidence.AMBIGUOUS",
+        "runtime.semantic_evidence.NOVEL_TERM",
+        "runtime.semantic_evidence.OUTCOMES",
+        "runtime.semantic_evidence.Observation",
+        "runtime.semantic_evidence.RESOLVED",
+        "runtime.semantic_evidence.UNRESOLVED",
+        "runtime.semantic_normalize",
+        "runtime.semantic_normalize.NormalizationLedger",
+        "runtime.semantic_normalize.canonicalize_tokens",
+        "runtime.semantic_normalize.split_identifier",
+        "typing",
+        "typing.Any",
+        "typing.Iterable"
+      ],
+      "deps_missing_from_bootstrap": [
+        "runtime.semantic_evidence",
+        "runtime.semantic_normalize"
+      ],
+      "closure_complete": false
+    },
+    {
+      "path": "runtime/semantic_locator.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "dataclasses",
+        "dataclasses.dataclass",
+        "dataclasses.replace",
+        "datetime",
+        "datetime.datetime",
+        "hashlib",
+        "json",
+        "math",
+        "pathlib",
+        "pathlib.Path",
+        "re",
+        "runtime.contracts",
+        "runtime.contracts.validate_instance",
+        "runtime.json_io",
+        "runtime.json_io.bounded_canonical_json_bytes",
+        "runtime.json_io.decode_json_object",
+        "runtime.semantic_entity",
+        "runtime.semantic_entity.ENTITY_ID_PREFIX",
+        "runtime.semantic_entity.EntityRegistry",
+        "runtime.semantic_entity.SemanticEntityError",
+        "typing",
+        "typing.Any",
+        "typing.Iterable",
+        "typing.Mapping",
+        "urllib.parse",
+        "urllib.parse.unquote",
+        "urllib.parse.urlsplit"
+      ],
+      "deps_missing_from_bootstrap": [
+        "runtime.semantic_entity"
+      ],
+      "closure_complete": false
+    },
+    {
+      "path": "runtime/semantic_migration.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "ast",
+        "hashlib",
+        "json",
+        "pathlib",
+        "pathlib.Path",
+        "re",
+        "typing",
+        "typing.Mapping"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "runtime/semantic_normalize.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "dataclasses",
+        "dataclasses.dataclass",
+        "dataclasses.field",
+        "re",
+        "typing",
+        "typing.Any",
+        "typing.Iterable"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "runtime/semantic_powershell_source.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "base64",
+        "hashlib",
+        "math",
+        "pathlib",
+        "pathlib.Path",
+        "shutil",
+        "subprocess",
+        "uuid",
+        "uuid.uuid4"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "runtime/semantic_prefreeze_census.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "collections",
+        "collections.Counter",
+        "collections.defaultdict",
+        "json",
+        "math",
+        "pathlib",
+        "pathlib.Path",
+        "random",
+        "runtime.semantic_entity_worthiness",
+        "runtime.semantic_entity_worthiness.assess_entity_worthiness",
+        "runtime.semantic_entity_worthiness.build_exclusion_ledger",
+        "runtime.semantic_evidence_graph",
+        "runtime.semantic_evidence_graph.DEFAULT_WEIGHTS",
+        "runtime.semantic_evidence_graph.EvidenceGraph",
+        "runtime.semantic_evidence_graph.build_evidence_graph",
+        "runtime.semantic_evidence_graph.measure_weights",
+        "runtime.semantic_surfaces",
+        "runtime.semantic_surfaces.collect_corpus_snapshot",
+        "runtime.semantic_taxonomy",
+        "runtime.semantic_taxonomy.AMBIGUOUS",
+        "runtime.semantic_taxonomy.KIND_VOCABULARY",
+        "runtime.semantic_taxonomy.NOVEL_TERM",
+        "runtime.semantic_taxonomy.OUTCOMES",
+        "runtime.semantic_taxonomy.RESOLVED",
+        "runtime.semantic_taxonomy.SUBJECT_CANDIDATES",
+        "runtime.semantic_taxonomy.SurfaceEntity",
+        "runtime.semantic_taxonomy.TAXONOMY_SCHEMA",
+        "runtime.semantic_taxonomy.UNRESOLVED",
+        "runtime.semantic_taxonomy.canonical_term",
+        "runtime.semantic_taxonomy.tokenize",
+        "typing",
+        "typing.Any"
+      ],
+      "deps_missing_from_bootstrap": [
+        "runtime.semantic_entity_worthiness",
+        "runtime.semantic_evidence_graph",
+        "runtime.semantic_surfaces",
+        "runtime.semantic_taxonomy"
+      ],
+      "closure_complete": false
+    },
+    {
+      "path": "runtime/semantic_remap_transaction.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "hashlib",
+        "os",
+        "pathlib",
+        "pathlib.Path"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "runtime/semantic_stability_diagnosis.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "collections",
+        "collections.Counter",
+        "collections.defaultdict",
+        "json",
+        "pathlib",
+        "pathlib.Path",
+        "random",
+        "runtime.semantic_prefreeze_census",
+        "runtime.semantic_prefreeze_census.AMBIGUOUS",
+        "runtime.semantic_prefreeze_census.DEFAULT_WEIGHTS",
+        "runtime.semantic_prefreeze_census.SUBJECT_CANDIDATES",
+        "runtime.semantic_prefreeze_census.UNRESOLVED",
+        "runtime.semantic_taxonomy",
+        "runtime.semantic_taxonomy.tokenize",
+        "typing",
+        "typing.Any",
+        "typing.Callable"
+      ],
+      "deps_missing_from_bootstrap": [
+        "runtime.semantic_prefreeze_census",
+        "runtime.semantic_taxonomy"
+      ],
+      "closure_complete": false
+    },
+    {
+      "path": "runtime/semantic_stability_repair.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "hashlib",
+        "json",
+        "random",
+        "sys",
+        "typing",
+        "typing.Any",
+        "typing.Iterable"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "runtime/semantic_surfaces.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "ast",
+        "copy",
+        "dataclasses",
+        "dataclasses.asdict",
+        "dataclasses.dataclass",
+        "fnmatch",
+        "functools",
+        "functools.lru_cache",
+        "hashlib",
+        "json",
+        "pathlib",
+        "pathlib.Path",
+        "re",
+        "runtime.bounded_walk",
+        "runtime.bounded_walk.WalkLimits",
+        "runtime.bounded_walk.bounded_walk",
+        "runtime.contracts",
+        "runtime.contracts.validate_instance",
+        "runtime.cybersecurity_provider",
+        "runtime.cybersecurity_provider.MAX_SECURITY_JSONL_RECORDS",
+        "runtime.cybersecurity_provider.decode_security_jsonl",
+        "runtime.hash_utils",
+        "runtime.hash_utils.json_utf8_hash",
+        "runtime.json_io",
+        "runtime.json_io.decode_json_value",
+        "runtime.json_io.read_bounded_bytes",
+        "runtime.semantic_authored_sources",
+        "runtime.semantic_authored_sources.AuthoredSourceParseError",
+        "runtime.semantic_authored_sources.AuthoredSourceStructureError",
+        "runtime.semantic_authored_sources.extract_owned",
+        "runtime.semantic_authored_sources.format_owner",
+        "runtime.semantic_authored_sources.policy_sha256",
+        "runtime.semantic_authored_sources.reviewed_non_entity",
+        "runtime.semantic_entity_worthiness",
+        "runtime.semantic_entity_worthiness.assess_entity_worthiness",
+        "runtime.semantic_powershell_source",
+        "runtime.semantic_powershell_source.PowerShellBudgetError",
+        "runtime.semantic_powershell_source.PowerShellSourceError",
+        "runtime.semantic_powershell_source.PowerShellSyntaxError",
+        "runtime.semantic_powershell_source.PowerShellUnavailable",
+        "runtime.semantic_powershell_source.parse_powershell_source",
+        "runtime.semantic_taxonomy",
+        "runtime.semantic_taxonomy.SurfaceEntity",
+        "runtime.semantic_taxonomy.tokenize",
+        "runtime.source_boundary",
+        "runtime.source_boundary.AUTHORED",
+        "runtime.source_boundary.agent_experience_directories",
+        "runtime.source_boundary.classify_path",
+        "tomllib",
+        "typing",
+        "typing.Iterable",
+        "yaml"
+      ],
+      "deps_missing_from_bootstrap": [
+        "runtime.hash_utils",
+        "runtime.semantic_authored_sources",
+        "runtime.semantic_entity_worthiness",
+        "runtime.semantic_powershell_source",
+        "runtime.semantic_taxonomy",
+        "runtime.source_boundary"
+      ],
+      "closure_complete": false
+    },
+    {
+      "path": "runtime/semantic_taxonomy.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "ast",
+        "collections",
+        "collections.Counter",
+        "collections.defaultdict",
+        "dataclasses",
+        "dataclasses.dataclass",
+        "dataclasses.field",
+        "json",
+        "pathlib",
+        "pathlib.Path",
+        "re",
+        "typing",
+        "typing.Any",
+        "typing.Iterable"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "runtime/semantic_taxonomy_census.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "collections",
+        "collections.Counter",
+        "collections.defaultdict",
+        "json",
+        "math",
+        "pathlib",
+        "pathlib.Path",
+        "runtime.semantic_surfaces",
+        "runtime.semantic_surfaces.collect_corpus_snapshot",
+        "runtime.semantic_taxonomy",
+        "runtime.semantic_taxonomy.AMBIGUOUS",
+        "runtime.semantic_taxonomy.KIND_VOCABULARY",
+        "runtime.semantic_taxonomy.NOVEL_TERM",
+        "runtime.semantic_taxonomy.OUTCOMES",
+        "runtime.semantic_taxonomy.RESOLVED",
+        "runtime.semantic_taxonomy.SUBJECT_CANDIDATES",
+        "runtime.semantic_taxonomy.SurfaceEntity",
+        "runtime.semantic_taxonomy.TAXONOMY_SCHEMA",
+        "runtime.semantic_taxonomy.UNRESOLVED",
+        "runtime.semantic_taxonomy.canonical_term",
+        "runtime.semantic_taxonomy.tokenize",
+        "typing",
+        "typing.Any"
+      ],
+      "deps_missing_from_bootstrap": [
+        "runtime.semantic_surfaces",
+        "runtime.semantic_taxonomy"
+      ],
+      "closure_complete": false
+    },
+    {
+      "path": "runtime/source_boundary.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "dataclasses",
+        "dataclasses.dataclass",
+        "dataclasses.field",
+        "hashlib",
+        "json",
+        "pathlib",
+        "pathlib.Path",
+        "re",
+        "runtime.engineering_os_paths",
+        "runtime.engineering_os_paths.CANONICAL_CONTROL_DIR",
+        "runtime.engineering_os_paths.LEGACY_CONTROL_DIR",
+        "runtime.repository_scope",
+        "runtime.repository_scope.is_external_environment_relative",
+        "typing",
+        "typing.Any",
+        "typing.Iterable"
+      ],
+      "deps_missing_from_bootstrap": [
+        "runtime.engineering_os_paths"
+      ],
+      "closure_complete": false
+    },
+    {
+      "path": "runtime/source_freeze.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "dataclasses",
+        "dataclasses.dataclass",
+        "hashlib",
+        "json",
+        "pathlib",
+        "pathlib.Path",
+        "platform",
+        "runtime.source_boundary",
+        "runtime.source_boundary.AUTHORED",
+        "runtime.source_boundary.authored_paths",
+        "sys",
+        "tomllib",
+        "typing",
+        "typing.Any",
+        "zipfile"
+      ],
+      "deps_missing_from_bootstrap": [
+        "runtime.source_boundary"
+      ],
+      "closure_complete": false
+    },
+    {
+      "path": "runtime/tie_experience.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "dataclasses",
+        "dataclasses.dataclass",
+        "datetime",
+        "datetime.datetime",
+        "datetime.timedelta",
+        "datetime.timezone",
+        "hashlib",
+        "json",
+        "os",
+        "pathlib",
+        "pathlib.Path",
+        "typing",
+        "typing.Any",
+        "typing.Mapping",
+        "uuid",
+        "uuid.uuid4"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "runtime/w1_exit_gate.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "json",
+        "pathlib",
+        "pathlib.Path",
+        "runtime.compact_address",
+        "runtime.compact_address.CompactAddressAllocator",
+        "runtime.compact_address.SUBJECT_BY_ENTITY_KIND",
+        "runtime.compact_address.concepts_for_entity_kind",
+        "runtime.librarian_semantic_map",
+        "runtime.librarian_semantic_map.load_semantic_map",
+        "runtime.semantic_coverage",
+        "runtime.semantic_coverage.ACCEPTED",
+        "runtime.semantic_coverage.UNEXPLAINED",
+        "runtime.semantic_entity",
+        "runtime.semantic_entity.EntityRegistry",
+        "runtime.semantic_entity.identity_basis_for",
+        "runtime.semantic_locator",
+        "runtime.semantic_locator.LocatorReferencePolicy",
+        "runtime.semantic_locator.LocatorRegistry",
+        "typing",
+        "typing.Callable",
+        "typing.Mapping",
+        "typing.Sequence"
+      ],
+      "deps_missing_from_bootstrap": [
+        "runtime.compact_address",
+        "runtime.semantic_coverage",
+        "runtime.semantic_entity",
+        "runtime.semantic_locator"
+      ],
+      "closure_complete": false
+    },
+    {
+      "path": "runtime/work_disposition.py",
+      "imports": [
+        "dataclasses",
+        "dataclasses.asdict",
+        "dataclasses.dataclass"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "runtime/workflow_group_config.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "collections.abc",
+        "collections.abc.Mapping",
+        "dataclasses",
+        "dataclasses.asdict",
+        "json",
+        "re"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "runtime/workflow_resume.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "collections.abc",
+        "collections.abc.Callable",
+        "collections.abc.Mapping",
+        "dataclasses",
+        "dataclasses.dataclass"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "runtime/yaml_subject_files.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "dataclasses",
+        "dataclasses.dataclass",
+        "datetime",
+        "datetime.datetime",
+        "datetime.timezone",
+        "hashlib",
+        "json",
+        "pathlib",
+        "pathlib.Path",
+        "typing",
+        "typing.Any",
+        "typing.Mapping",
+        "yaml"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "scripts/admit_semantic_ownership.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "json",
+        "pathlib",
+        "pathlib.Path"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "scripts/advance_open_gap_cards.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "argparse",
+        "json",
+        "pathlib",
+        "pathlib.Path",
+        "runtime.operational_gap_ledger",
+        "runtime.operational_gap_ledger.append_event",
+        "runtime.operational_gap_ledger.read_snapshot",
+        "sys"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "scripts/build_mutating_producer_registry.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "argparse",
+        "json",
+        "pathlib",
+        "pathlib.Path",
+        "runtime.mutating_producer_registry",
+        "runtime.mutating_producer_registry.MutatingProducerError",
+        "runtime.mutating_producer_registry.publish_registry",
+        "runtime.mutating_producer_registry.validate_registry",
+        "sys"
+      ],
+      "deps_missing_from_bootstrap": [
+        "runtime.mutating_producer_registry"
+      ],
+      "closure_complete": false
+    },
+    {
+      "path": "scripts/close_out_gap_dispositions.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "json",
+        "pathlib",
+        "pathlib.Path"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "scripts/declare_plan_corpus_count_owners.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "json",
+        "pathlib",
+        "pathlib.Path"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "scripts/diagnose_receipt_policy.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "json",
+        "pathlib",
+        "pathlib.Path",
+        "runtime.test_profiles",
+        "runtime.test_profiles.group_status",
+        "runtime.test_profiles.section_status",
+        "sys",
+        "traceback"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "scripts/fix_boundary_rule_matching.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "pathlib",
+        "pathlib.Path"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "scripts/measure_boundary_conformance.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "pathlib",
+        "pathlib.Path",
+        "runtime.repository_scope",
+        "runtime.source_boundary",
+        "sys"
+      ],
+      "deps_missing_from_bootstrap": [
+        "runtime.source_boundary"
+      ],
+      "closure_complete": false
+    },
+    {
+      "path": "scripts/measure_extension_bundle.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "pathlib",
+        "re"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "scripts/measure_source_boundary_coverage.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "json",
+        "pathlib",
+        "pathlib.Path",
+        "runtime.source_boundary",
+        "sys"
+      ],
+      "deps_missing_from_bootstrap": [
+        "runtime.source_boundary"
+      ],
+      "closure_complete": false
+    },
+    {
+      "path": "scripts/phase0_inventory.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "json",
+        "pathlib",
+        "pathlib.Path",
+        "re"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "scripts/prove_envelope_count_invariant.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "json",
+        "pathlib",
+        "pathlib.Path",
+        "runtime.registry_envelope",
+        "runtime.registry_envelope.validate_registry_envelopes",
+        "runtime.resource_lifecycle",
+        "runtime.resource_lifecycle.ResourceManager",
+        "shutil",
+        "sys",
+        "tempfile",
+        "uuid",
+        "uuid.uuid4"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "scripts/record_custody_correction.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "json",
+        "pathlib",
+        "pathlib.Path"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "scripts/record_gap_0008_provenance.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "json",
+        "pathlib",
+        "pathlib.Path"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "scripts/record_gap_completion_evidence.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "json",
+        "pathlib",
+        "pathlib.Path"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "scripts/record_gap_completion_evidence_2.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "json",
+        "pathlib",
+        "pathlib.Path"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "scripts/record_gap_dispositions.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "json",
+        "pathlib",
+        "pathlib.Path"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "scripts/record_recovery_round.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "datetime",
+        "datetime.datetime",
+        "datetime.timezone",
+        "json",
+        "pathlib",
+        "pathlib.Path"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "scripts/regenerate_projections.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "argparse",
+        "dataclasses",
+        "dataclasses.asdict",
+        "datetime",
+        "datetime.datetime",
+        "datetime.timedelta",
+        "datetime.timezone",
+        "hashlib",
+        "json",
+        "os",
+        "pathlib",
+        "pathlib.Path",
+        "runtime.archive_io",
+        "runtime.archive_io.reject_path_links",
+        "runtime.build_claims",
+        "runtime.build_claims.validate_build_claims",
+        "runtime.execution_context",
+        "runtime.execution_context.ExecutionContext",
+        "runtime.generated_artifacts",
+        "runtime.generated_artifacts.validate_generated_artifacts",
+        "runtime.gremlin.enrollment",
+        "runtime.gremlin.enrollment.enroll_supervised_process",
+        "runtime.gremlin.host_configuration",
+        "runtime.gremlin.host_configuration.CONFIGURATION_RELATIVE",
+        "runtime.gremlin.host_configuration.load_configured_gremlin_runtime",
+        "runtime.gremlin.host_configuration.resolve_recovery_verifier_from_environment",
+        "runtime.gremlin.host_enforcement_backend",
+        "runtime.gremlin.host_enforcement_backend.ProcessSupervisorEnforcementBackend",
+        "runtime.gremlin.host_process_observer",
+        "runtime.gremlin.host_process_observer.make_process_tree_poller",
+        "runtime.gremlin.observers",
+        "runtime.gremlin.observers.ObserverSet",
+        "runtime.guarded_registry_projection",
+        "runtime.guarded_registry_projection._admit_projection_write",
+        "runtime.isolated_sandbox",
+        "runtime.isolated_sandbox.load_sandbox_policy",
+        "runtime.json_io",
+        "runtime.json_io.read_bounded_bytes",
+        "runtime.operational_gap_ledger",
+        "runtime.operational_gap_ledger.guard_work_admission",
+        "runtime.operational_gap_ledger.read_snapshot",
+        "runtime.process_supervisor",
+        "runtime.process_supervisor.ProcessBudgets",
+        "runtime.process_supervisor.ProcessSupervisor",
+        "runtime.provider_gateway",
+        "runtime.provider_gateway.scan_direct_provider_routes",
+        "runtime.registry",
+        "runtime.registry.validate_registry",
+        "runtime.registry_envelope",
+        "runtime.registry_envelope.validate_registry_envelopes",
+        "runtime.resource_lifecycle",
+        "runtime.resource_lifecycle.ResourceManager",
+        "runtime.resource_lifecycle.ResourceStatus",
+        "runtime.resource_lifecycle.RunState",
+        "sys",
+        "threading",
+        "time",
+        "uuid",
+        "uuid.uuid4"
+      ],
+      "deps_missing_from_bootstrap": [
+        "runtime.execution_context",
+        "runtime.gremlin.enrollment",
+        "runtime.gremlin.host_configuration",
+        "runtime.gremlin.host_process_observer",
+        "runtime.gremlin.observers",
+        "runtime.guarded_registry_projection",
+        "runtime.isolated_sandbox"
+      ],
+      "closure_complete": false
+    },
+    {
+      "path": "scripts/report_packaged_evidence_presence.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "pathlib",
+        "pathlib.Path",
+        "re"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "scripts/rollout/compare_trees.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "argparse",
+        "hashlib",
+        "json",
+        "os",
+        "pathlib",
+        "pathlib.Path"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "scripts/rollout/integration_plan.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "argparse",
+        "hashlib",
+        "json",
+        "pathlib",
+        "pathlib.Path",
+        "runtime.source_boundary",
+        "runtime.source_boundary.classify_path",
+        "shutil",
+        "sys"
+      ],
+      "deps_missing_from_bootstrap": [
+        "runtime.source_boundary"
+      ],
+      "closure_complete": false
+    },
+    {
+      "path": "scripts/show_extension_build_scripts.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "json",
+        "pathlib",
+        "pathlib.Path"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "scripts/split_gap_0010.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "json",
+        "pathlib",
+        "pathlib.Path"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "scripts/verify_evidence_custody.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "fnmatch",
+        "json",
+        "pathlib",
+        "pathlib.Path",
+        "runtime.resource_lifecycle",
+        "runtime.resource_lifecycle.ResourceManager",
+        "scripts.clean_source_export",
+        "scripts.clean_source_export.included_files",
+        "shutil",
+        "sys",
+        "tempfile",
+        "tomllib",
+        "uuid",
+        "uuid.uuid4"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "scripts/verify_gap_reconciliation.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "json",
+        "pathlib",
+        "pathlib.Path"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "tests/foundry_publication_fixture.py",
+      "imports": [
+        "contextlib",
+        "contextlib.contextmanager",
+        "pathlib",
+        "pathlib.Path",
+        "runtime.operational_gap_ledger",
+        "runtime.operational_gap_ledger.append_event",
+        "runtime.studio_authority",
+        "runtime.studio_authority.StudioAuthorityStore",
+        "tests.test_operational_gap_ledger",
+        "tests.test_operational_gap_ledger.card",
+        "tests.test_operational_gap_ledger.evidence",
+        "tests.test_operational_gap_ledger.initialize",
+        "unittest.mock",
+        "unittest.mock.patch"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "tests/mixed_provider_fixture.py",
+      "imports": [
+        "dataclasses",
+        "dataclasses.replace",
+        "hashlib",
+        "io",
+        "json",
+        "pathlib",
+        "pathlib.Path",
+        "runtime",
+        "runtime.execution_placement",
+        "runtime.execution_placement._hash",
+        "runtime.group_provider_adapters",
+        "runtime.group_provider_adapters.GroupProviderBinding",
+        "runtime.model_attachment",
+        "runtime.model_attachment.build_model_attachment",
+        "runtime.model_attachment.model_attachment_from_dict",
+        "runtime.model_execution_group",
+        "runtime.model_execution_group.ModelExecutionGroup",
+        "runtime.model_group_preparation",
+        "runtime.model_group_preparation.prepare_model_group",
+        "runtime.model_profile",
+        "runtime.model_profile.load_runtime_profiles",
+        "runtime.model_profile.runtime_profile_from_mapping",
+        "runtime.provider_gateway",
+        "runtime.provider_gateway.LlamaCppStreamingHttpAdapter",
+        "runtime.provider_gateway.build_provider_execution_policy",
+        "runtime.semantic_integration_types",
+        "runtime.semantic_integration_types.FusedQueryResult",
+        "runtime.workflow_worker",
+        "tests.test_model_group_preparation",
+        "tests.test_model_group_preparation.plan_for",
+        "tests.test_model_group_preparation.prepared",
+        "tests.test_provider_gateway_streaming",
+        "tests.test_provider_gateway_streaming._QueueOpener",
+        "tests.test_provider_gateway_streaming._StreamHttpResponse",
+        "tests.test_remote_group_effect_owner",
+        "tests.test_remote_group_effect_owner.remote_group_fixture",
+        "tests.test_remote_model_bridge",
+        "tests.test_remote_model_bridge.RecordingTransport",
+        "tests.test_remote_qualified_identity",
+        "tests.test_remote_qualified_identity.prepare_qualified_fixture"
+      ],
+      "deps_missing_from_bootstrap": [
+        "runtime.group_provider_adapters",
+        "runtime.model_execution_group",
+        "runtime.model_group_preparation",
+        "tests.test_model_group_preparation",
+        "tests.test_remote_group_effect_owner",
+        "tests.test_remote_model_bridge",
+        "tests.test_remote_qualified_identity"
+      ],
+      "closure_complete": false
+    },
+    {
+      "path": "tests/test_anthropic_usage_components.py",
+      "imports": [
+        "json",
+        "pytest",
+        "runtime.model_protocol_translate",
+        "runtime.model_protocol_translate.WireStreamTranslator"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "tests/test_audit_regressions_rounds_1_5.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "dataclasses",
+        "dataclasses.replace",
+        "datetime",
+        "datetime.datetime",
+        "datetime.timedelta",
+        "datetime.timezone",
+        "pytest",
+        "runtime.agent_handoff",
+        "runtime.agent_handoff.acknowledge_handoff",
+        "runtime.agent_handoff.consume_handoff",
+        "runtime.agent_handoff.create_handoff_packet",
+        "runtime.agent_handoff.validate_handoff_packet",
+        "runtime.effect_intent",
+        "runtime.effect_intent.EffectIntentError",
+        "runtime.effect_intent.EffectIntentLedger",
+        "runtime.gremlin.admin",
+        "runtime.gremlin.admin.AdminAuthorization",
+        "runtime.gremlin.admin.AdminAuthorizationError",
+        "runtime.gremlin.admin.ProtectedAdminControl",
+        "runtime.gremlin.admin.sign_admin_authorization",
+        "runtime.gremlin.authorization",
+        "runtime.gremlin.authorization.CapabilityLease",
+        "runtime.gremlin.authorization.lease_denial_reason",
+        "runtime.gremlin.authorization.resolve_authorization",
+        "runtime.gremlin.containment",
+        "runtime.gremlin.containment.ContainmentError",
+        "runtime.gremlin.containment.EvaluationOutcome",
+        "runtime.gremlin.containment.GremlinNanny",
+        "runtime.gremlin.events",
+        "runtime.gremlin.events.EffectEvent",
+        "runtime.gremlin.identity",
+        "runtime.gremlin.identity.ProcessIdentity",
+        "runtime.gremlin.observers",
+        "runtime.gremlin.observers.ObserverSet",
+        "runtime.gremlin.policy",
+        "runtime.gremlin.policy.default_policy_bundle",
+        "runtime.gremlin.registry",
+        "runtime.gremlin.registry.ProtectedExecutionRegistry",
+        "runtime.gremlin.supervisor",
+        "runtime.gremlin.supervisor.DeterministicSupervisor",
+        "runtime.isolated_sandbox",
+        "runtime.isolated_sandbox.SandboxPolicyError",
+        "runtime.isolated_sandbox.establish_sandbox",
+        "runtime.isolated_sandbox.full_component_acknowledgments",
+        "runtime.memory_broker",
+        "runtime.memory_broker.build_memory_query_plan",
+        "runtime.memory_broker.materialize_memory_context",
+        "runtime.memory_fabric",
+        "runtime.memory_fabric.MemoryRecord"
+      ],
+      "deps_missing_from_bootstrap": [
+        "runtime.effect_intent",
+        "runtime.gremlin.admin",
+        "runtime.gremlin.authorization",
+        "runtime.gremlin.containment",
+        "runtime.gremlin.events",
+        "runtime.gremlin.identity",
+        "runtime.gremlin.observers",
+        "runtime.gremlin.policy",
+        "runtime.gremlin.registry",
+        "runtime.gremlin.supervisor",
+        "runtime.isolated_sandbox"
+      ],
+      "closure_complete": false
+    },
+    {
+      "path": "tests/test_billing_budget_audit.py",
+      "imports": [
+        "json",
+        "pathlib",
+        "pathlib.Path",
+        "pytest",
+        "runtime.capability_scheduler",
+        "runtime.capability_scheduler.Resources",
+        "runtime.capability_scheduler.Scheduler",
+        "runtime.capability_scheduler.Task",
+        "shutil",
+        "subprocess",
+        "tests.test_provider_gateway_streaming",
+        "tests.test_provider_gateway_streaming.FakeStreamAdapter",
+        "tests.test_provider_gateway_streaming._gateway",
+        "tests.test_provider_gateway_streaming._project",
+        "tests.test_provider_gateway_streaming._request"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "tests/test_boundary_conformance.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "pathlib",
+        "pathlib.Path",
+        "runtime.effect_surface",
+        "runtime.effect_surface.discover_effect_surfaces",
+        "runtime.repository_scope",
+        "runtime.source_boundary"
+      ],
+      "deps_missing_from_bootstrap": [
+        "runtime.source_boundary"
+      ],
+      "closure_complete": false
+    },
+    {
+      "path": "tests/test_certification_pipeline_readiness.py",
+      "imports": [
+        "json",
+        "pathlib",
+        "pathlib.Path",
+        "pytest",
+        "scripts.validate_certification_pipeline",
+        "scripts.validate_certification_pipeline.REQUIRED_LIFECYCLE_TESTS",
+        "scripts.validate_certification_pipeline.REQUIRED_NODE_TESTS",
+        "scripts.validate_certification_pipeline.ValidationBlocked",
+        "scripts.validate_certification_pipeline.certification_coverage"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "tests/test_cognitive_cli_custody.py",
+      "imports": [
+        "hashlib",
+        "json",
+        "pathlib",
+        "pathlib.Path",
+        "runtime.cognitive_core.index_builder",
+        "runtime.cognitive_core.index_builder.build_cognitive_index",
+        "runtime.effect_intent",
+        "runtime.effect_intent.EffectIntentLedger",
+        "runtime.scope_lease",
+        "runtime.scope_lease.ScopeLeaseStore",
+        "scripts.build_cognitive_index",
+        "scripts.build_cognitive_index.main",
+        "subprocess",
+        "sys",
+        "tests.test_studio_operation_mirror_custody",
+        "tests.test_studio_operation_mirror_custody.native"
+      ],
+      "deps_missing_from_bootstrap": [
+        "runtime.effect_intent",
+        "runtime.scope_lease",
+        "tests.test_studio_operation_mirror_custody"
+      ],
+      "closure_complete": false
+    },
+    {
+      "path": "tests/test_compact_address.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "json",
+        "pathlib",
+        "pathlib.Path",
+        "pytest",
+        "runtime.compact_address",
+        "runtime.compact_address.ALIAS_PREFIX",
+        "runtime.compact_address.COMPACT_ADDRESS_SCHEMA_VERSION",
+        "runtime.compact_address.CompactAddress",
+        "runtime.compact_address.CompactAddressAllocator",
+        "runtime.compact_address.CompactAddressError",
+        "runtime.compact_address.DIMENSION_SIBLING_CAPACITY",
+        "runtime.compact_address.MAX_SEGMENT",
+        "runtime.compact_address.MIN_SEGMENT",
+        "runtime.compact_address.RESERVED_VALUES",
+        "runtime.compact_address.SCHEMA_RELATIVE",
+        "runtime.compact_address.SEGMENTS",
+        "runtime.compact_address.TOMBSTONE",
+        "runtime.compact_address.UNALLOCATED",
+        "runtime.compact_address.concepts_for_entity_kind",
+        "runtime.compact_address.parse_alias",
+        "runtime.compact_address.validate_segments",
+        "runtime.semantic_address_vocabulary",
+        "runtime.semantic_address_vocabulary.DIMENSIONS",
+        "runtime.semantic_address_vocabulary.FROZEN_VOCABULARY",
+        "runtime.semantic_address_vocabulary.VOCABULARY_SCHEMA_VERSION",
+        "runtime.semantic_address_vocabulary.load_vocabulary",
+        "runtime.semantic_address_vocabulary.vocabulary_document",
+        "runtime.semantic_entity",
+        "runtime.semantic_entity.EntityRegistry",
+        "runtime.semantic_entity.identity_basis_for"
+      ],
+      "deps_missing_from_bootstrap": [
+        "runtime.compact_address",
+        "runtime.semantic_address_vocabulary",
+        "runtime.semantic_entity"
+      ],
+      "closure_complete": false
+    },
+    {
+      "path": "tests/test_containment_invariants.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "datetime",
+        "datetime.datetime",
+        "datetime.timezone",
+        "inspect",
+        "pathlib",
+        "pathlib.Path",
+        "pytest",
+        "runtime.containment_invariants",
+        "runtime.containment_invariants.INVARIANT_IDS",
+        "runtime.containment_invariants.verify_containment_invariants",
+        "runtime.gremlin.containment",
+        "runtime.gremlin.containment.GremlinNanny",
+        "runtime.gremlin.supervisor",
+        "runtime.gremlin.supervisor.DeterministicSupervisor",
+        "runtime.model_convergence",
+        "runtime.model_convergence.converge",
+        "runtime.source_boundary",
+        "runtime.source_boundary.AUTHORED",
+        "runtime.source_boundary.CONFORMANCE_CORPUS",
+        "runtime.source_boundary.GENERATED",
+        "runtime.source_boundary.PACKAGING_GENERATED",
+        "runtime.source_boundary.VENDORED",
+        "runtime.source_boundary.classify_path",
+        "runtime.source_boundary.conformance_report"
+      ],
+      "deps_missing_from_bootstrap": [
+        "runtime.containment_invariants",
+        "runtime.gremlin.containment",
+        "runtime.gremlin.supervisor",
+        "runtime.model_convergence",
+        "runtime.source_boundary"
+      ],
+      "closure_complete": false
+    },
+    {
+      "path": "tests/test_context_generation.py",
+      "imports": [
+        "hashlib",
+        "pytest",
+        "runtime.context_generation",
+        "runtime.context_generation.COMPONENTS",
+        "runtime.context_generation.context_vector",
+        "runtime.context_generation.read_context_vector",
+        "runtime.dependency_invalidation",
+        "runtime.dependency_invalidation.context_vector_for_dependencies"
+      ],
+      "deps_missing_from_bootstrap": [
+        "runtime.context_generation"
+      ],
+      "closure_complete": false
+    },
+    {
+      "path": "tests/test_data_inventory_controls.py",
+      "imports": [
+        "copy",
+        "pathlib",
+        "pathlib.Path",
+        "pytest",
+        "runtime.data_controls",
+        "runtime.data_controls.SCHEMA_VERSION",
+        "runtime.data_controls.data_control_request",
+        "runtime.data_inventory",
+        "runtime.data_inventory.DataInventoryError",
+        "runtime.data_inventory.build_inventory",
+        "runtime.data_inventory.erasure_plan"
+      ],
+      "deps_missing_from_bootstrap": [
+        "runtime.data_controls",
+        "runtime.data_inventory"
+      ],
+      "closure_complete": false
+    },
+    {
+      "path": "tests/test_data_inventory_retained_copies.py",
+      "imports": [
+        "runtime.data_inventory",
+        "runtime.data_inventory.build_inventory",
+        "runtime.data_inventory.erasure_plan"
+      ],
+      "deps_missing_from_bootstrap": [
+        "runtime.data_inventory"
+      ],
+      "closure_complete": false
+    },
+    {
+      "path": "tests/test_data_subject_records.py",
+      "imports": [
+        "concurrent.futures",
+        "concurrent.futures.ThreadPoolExecutor",
+        "dataclasses",
+        "dataclasses.asdict",
+        "datetime",
+        "datetime.datetime",
+        "datetime.timezone",
+        "hashlib",
+        "io",
+        "json",
+        "pytest",
+        "runtime.data_controls",
+        "runtime.data_controls.data_control_request",
+        "runtime.data_controls.describe_existing_approval",
+        "runtime.data_controls.main",
+        "runtime.data_controls.validate_control_descriptor",
+        "runtime.data_inventory",
+        "runtime.data_inventory.build_inventory",
+        "runtime.data_subject_records",
+        "runtime.data_subject_records.CONTROL_ROOT",
+        "runtime.data_subject_records._digest",
+        "runtime.effect_intent",
+        "runtime.effect_intent.EffectIntentLedger",
+        "runtime.memory_vault",
+        "runtime.memory_vault.MemoryVault",
+        "runtime.memory_vault._json_default",
+        "runtime.personal_record_store",
+        "runtime.personal_record_store.STORE",
+        "runtime.studio_authority",
+        "runtime.studio_authority.StudioAuthorityStore",
+        "runtime.studio_models",
+        "runtime.studio_models.EffectGrant",
+        "tests.studio_approval_testkit",
+        "tests.studio_approval_testkit.approval_proof",
+        "tests.test_memory_vault",
+        "tests.test_memory_vault.record"
+      ],
+      "deps_missing_from_bootstrap": [
+        "runtime.data_controls",
+        "runtime.data_inventory",
+        "runtime.data_subject_records",
+        "runtime.effect_intent",
+        "runtime.personal_record_store"
+      ],
+      "closure_complete": false
+    },
+    {
+      "path": "tests/test_effect_pure_string_discovery.py",
+      "imports": [
+        "pathlib",
+        "pathlib.Path",
+        "pytest",
+        "runtime.effect_surface",
+        "runtime.effect_surface.discover_effect_surfaces"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "tests/test_effect_stream_discovery.py",
+      "imports": [
+        "pytest",
+        "runtime.effect_surface",
+        "runtime.effect_surface.discover_effect_surfaces"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "tests/test_engineering_os_paths.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "pathlib",
+        "pathlib.Path",
+        "pytest",
+        "runtime.engineering_os_paths",
+        "runtime.engineering_os_paths.CANONICAL_CONTROL_DIR",
+        "runtime.engineering_os_paths.EngineeringOsPathError",
+        "runtime.engineering_os_paths.LEGACY_CONTROL_DIR",
+        "runtime.engineering_os_paths.control_root",
+        "runtime.engineering_os_paths.exists",
+        "runtime.engineering_os_paths.is_control_relative",
+        "runtime.engineering_os_paths.legacy_control_root",
+        "runtime.engineering_os_paths.legacy_references",
+        "runtime.engineering_os_paths.policy_snapshot",
+        "runtime.engineering_os_paths.resolve",
+        "runtime.engineering_os_paths.uses_canonical_name"
+      ],
+      "deps_missing_from_bootstrap": [
+        "runtime.engineering_os_paths"
+      ],
+      "closure_complete": false
+    },
+    {
+      "path": "tests/test_event_integrity_audit.py",
+      "imports": [
+        "copy",
+        "copy.deepcopy",
+        "json",
+        "pytest",
+        "runtime",
+        "runtime.event_ledger",
+        "runtime.event_ledger.append_chained_event",
+        "runtime.event_ledger.recover_event_ledger",
+        "runtime.operational_event_bus",
+        "runtime.operational_event_bus.OperationalEventBus",
+        "runtime.tool_intake",
+        "runtime.wal_transaction",
+        "runtime.wal_transaction.JsonWal",
+        "tests.test_operational_event_bus",
+        "tests.test_operational_event_bus.ROOT",
+        "tests.test_operational_event_bus._event"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "tests/test_evidence_revalidation.py",
+      "imports": [
+        "hashlib",
+        "json",
+        "pathlib",
+        "pathlib.Path",
+        "runtime.operational_gap_ledger",
+        "runtime.operational_gap_ledger.CHAIN_STAGES",
+        "runtime.operational_gap_ledger.REVALIDATION_MATCHING",
+        "runtime.operational_gap_ledger.REVALIDATION_MISSING",
+        "runtime.operational_gap_ledger.REVALIDATION_STALE",
+        "runtime.operational_gap_ledger.append_event",
+        "runtime.operational_gap_ledger.revalidate_evidence",
+        "tempfile",
+        "tempfile.TemporaryDirectory",
+        "unittest"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "tests/test_execution_context.py",
+      "imports": [
+        "dataclasses",
+        "dataclasses.replace",
+        "datetime",
+        "datetime.datetime",
+        "datetime.timedelta",
+        "datetime.timezone",
+        "pytest",
+        "runtime.execution_context",
+        "runtime.execution_context.ExecutionContext",
+        "runtime.execution_context.execution_context_from_dict"
+      ],
+      "deps_missing_from_bootstrap": [
+        "runtime.execution_context"
+      ],
+      "closure_complete": false
+    },
+    {
+      "path": "tests/test_execution_context_parity.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "json",
+        "pathlib",
+        "pathlib.Path",
+        "runtime.execution_context",
+        "runtime.execution_context.ExecutionContext",
+        "runtime.execution_context.execution_context_from_dict",
+        "shutil",
+        "subprocess"
+      ],
+      "deps_missing_from_bootstrap": [
+        "runtime.execution_context"
+      ],
+      "closure_complete": false
+    },
+    {
+      "path": "tests/test_execution_layers.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "datetime",
+        "datetime.datetime",
+        "datetime.timezone",
+        "pytest",
+        "runtime.generation_bound_verdict",
+        "runtime.generation_bound_verdict.create_verdict",
+        "runtime.generation_bound_verdict.verdict_is_current",
+        "runtime.gremlin.containment",
+        "runtime.gremlin.containment.GremlinNanny",
+        "runtime.gremlin.enrollment",
+        "runtime.gremlin.enrollment.ContainmentRequired",
+        "runtime.gremlin.enrollment.require_containment_proof",
+        "runtime.gremlin.identity",
+        "runtime.gremlin.identity.ProcessIdentity",
+        "runtime.gremlin.supervisor",
+        "runtime.gremlin.supervisor.DeterministicSupervisor",
+        "runtime.model_convergence",
+        "runtime.model_convergence.BranchObservation",
+        "runtime.model_convergence.EvidenceItem",
+        "runtime.model_convergence.converge",
+        "runtime.model_execution_group",
+        "runtime.model_execution_group.build_execution_group"
+      ],
+      "deps_missing_from_bootstrap": [
+        "runtime.generation_bound_verdict",
+        "runtime.gremlin.containment",
+        "runtime.gremlin.enrollment",
+        "runtime.gremlin.identity",
+        "runtime.gremlin.supervisor",
+        "runtime.model_convergence",
+        "runtime.model_execution_group"
+      ],
+      "closure_complete": false
+    },
+    {
+      "path": "tests/test_foundry_publication_custody.py",
+      "imports": [
+        "dataclasses",
+        "dataclasses.asdict",
+        "dataclasses.replace",
+        "datetime",
+        "datetime.datetime",
+        "datetime.timedelta",
+        "datetime.timezone",
+        "hashlib",
+        "json",
+        "pathlib",
+        "pathlib.Path",
+        "pytest",
+        "runtime.foundry_studio_bridge",
+        "runtime.foundry_studio_bridge.export_foundry_candidate",
+        "runtime.json_io",
+        "runtime.json_io.load_json_object",
+        "runtime.knowledge_foundry",
+        "runtime.knowledge_foundry.SourceArtifact",
+        "runtime.knowledge_foundry._stable",
+        "runtime.knowledge_foundry.compile_foundry_bundle",
+        "runtime.knowledge_foundry.materialize_candidate_bundle",
+        "runtime.knowledge_foundry.read_candidate_publication",
+        "runtime.operational_gap_ledger",
+        "runtime.operational_gap_ledger.append_event",
+        "runtime.scope_lease",
+        "runtime.scope_lease.ScopeLeaseStore",
+        "runtime.skill_studio",
+        "runtime.skill_studio.SkillStudio",
+        "runtime.studio_api",
+        "runtime.studio_api.studio_operation",
+        "runtime.studio_authority",
+        "runtime.studio_authority.StudioAuthorityStore",
+        "tests.foundry_publication_fixture",
+        "tests.foundry_publication_fixture.admit_publication_fixture",
+        "tests.studio_approval_testkit",
+        "tests.studio_approval_testkit.authorized_payload",
+        "tests.test_operational_gap_ledger",
+        "tests.test_operational_gap_ledger.card",
+        "tests.test_operational_gap_ledger.evidence",
+        "tests.test_operational_gap_ledger.initialize"
+      ],
+      "deps_missing_from_bootstrap": [
+        "runtime.scope_lease",
+        "tests.foundry_publication_fixture"
+      ],
+      "closure_complete": false
+    },
+    {
+      "path": "tests/test_gemini_protocol.py",
+      "imports": [
+        "io",
+        "json",
+        "pathlib",
+        "pathlib.Path",
+        "pytest",
+        "runtime.model_protocol_translate",
+        "runtime.model_protocol_translate.WireStreamTranslator",
+        "runtime.paths",
+        "runtime.paths.framework_root",
+        "runtime.provider_gateway",
+        "runtime.provider_gateway.load_provider_protocols",
+        "runtime.provider_gateway.load_provider_registry",
+        "runtime.remote_provider_profiles",
+        "runtime.remote_provider_profiles.CONFIG",
+        "runtime.remote_provider_profiles.ROOT",
+        "runtime.remote_service_protocols",
+        "runtime.remote_service_protocols.service_endpoint",
+        "runtime.remote_service_protocols.service_protocol",
+        "runtime.studio_models",
+        "runtime.studio_models.EffectGrant",
+        "tests.test_remote_group_effect_owner",
+        "tests.test_remote_member_effect_owner",
+        "tests.test_remote_member_effect_owner.run",
+        "tests.test_remote_model_bridge",
+        "tests.test_remote_model_bridge.configured"
+      ],
+      "deps_missing_from_bootstrap": [
+        "runtime.remote_provider_profiles",
+        "runtime.remote_service_protocols",
+        "tests.test_remote_group_effect_owner",
+        "tests.test_remote_member_effect_owner",
+        "tests.test_remote_model_bridge"
+      ],
+      "closure_complete": false
+    },
+    {
+      "path": "tests/test_gremlin_audit.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "datetime",
+        "datetime.datetime",
+        "datetime.timezone",
+        "pytest",
+        "runtime.event_ledger",
+        "runtime.event_ledger.validate_event_ledger",
+        "runtime.gremlin.audit",
+        "runtime.gremlin.audit.GremlinAuditLedger",
+        "runtime.gremlin.runtime_identity",
+        "runtime.gremlin.runtime_identity.RuntimeIdentityEvent"
+      ],
+      "deps_missing_from_bootstrap": [
+        "runtime.gremlin.audit",
+        "runtime.gremlin.runtime_identity"
+      ],
+      "closure_complete": false
+    },
+    {
+      "path": "tests/test_gremlin_composition.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "argparse",
+        "contextlib",
+        "contextlib.contextmanager",
+        "json",
+        "pytest",
+        "runtime.cli",
+        "runtime.cli._gremlin_command",
+        "runtime.gremlin.composition",
+        "runtime.gremlin.composition.compose_gremlin_runtime",
+        "runtime.gremlin.host_configuration",
+        "runtime.gremlin.host_configuration.CONFIGURATION_RELATIVE",
+        "runtime.gremlin.recovery_authority",
+        "runtime.gremlin.recovery_authority.RecoveryApproval",
+        "runtime.gremlin.recovery_authority.RecoveryChallenge",
+        "runtime.gremlin.runtime_identity",
+        "runtime.gremlin.runtime_identity.GremlinRuntimeIdentityStore",
+        "runtime.gremlin.runtime_identity.RuntimeIdentityMetadata",
+        "runtime.studio_authority",
+        "runtime.studio_authority.StudioAuthorityStore"
+      ],
+      "deps_missing_from_bootstrap": [
+        "runtime.gremlin.composition",
+        "runtime.gremlin.host_configuration",
+        "runtime.gremlin.recovery_authority",
+        "runtime.gremlin.runtime_identity"
+      ],
+      "closure_complete": false
+    },
+    {
+      "path": "tests/test_gremlin_containment.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "dataclasses",
+        "dataclasses.replace",
+        "datetime",
+        "datetime.datetime",
+        "datetime.timedelta",
+        "datetime.timezone",
+        "pathlib",
+        "pathlib.Path",
+        "pytest",
+        "runtime.contracts",
+        "runtime.contracts.validate_instance",
+        "runtime.gremlin.admin",
+        "runtime.gremlin.admin.AdminAuthorization",
+        "runtime.gremlin.admin.AdminAuthorizationError",
+        "runtime.gremlin.admin.ProtectedAdminControl",
+        "runtime.gremlin.admin.sign_admin_authorization",
+        "runtime.gremlin.authorization",
+        "runtime.gremlin.authorization.CapabilityLease",
+        "runtime.gremlin.containment",
+        "runtime.gremlin.containment.ContainmentError",
+        "runtime.gremlin.containment.GremlinNanny",
+        "runtime.gremlin.deviation",
+        "runtime.gremlin.deviation.DeviationManifest",
+        "runtime.gremlin.enrollment",
+        "runtime.gremlin.enrollment.ContainmentRequired",
+        "runtime.gremlin.enrollment.enroll_governed_member",
+        "runtime.gremlin.enrollment.require_containment_proof",
+        "runtime.gremlin.events",
+        "runtime.gremlin.events.EffectEvent",
+        "runtime.gremlin.health",
+        "runtime.gremlin.health.evaluate_health",
+        "runtime.gremlin.identity",
+        "runtime.gremlin.identity.ProcessIdentity",
+        "runtime.gremlin.observers",
+        "runtime.gremlin.observers.ObserverSet",
+        "runtime.gremlin.policy",
+        "runtime.gremlin.policy.OBSERVE_ONLY",
+        "runtime.gremlin.policy.default_policy_bundle",
+        "runtime.gremlin.receipts",
+        "runtime.gremlin.receipts.ContainmentAuthority",
+        "runtime.gremlin.receipts.ContainmentReceipt",
+        "runtime.gremlin.receipts.ReceiptForgeryError",
+        "runtime.gremlin.registry",
+        "runtime.gremlin.registry.EnrollmentError",
+        "runtime.gremlin.registry.ProtectedExecutionRegistry",
+        "runtime.gremlin.supervisor",
+        "runtime.gremlin.supervisor.DeterministicSupervisor",
+        "runtime.gremlin.supervisor.SupervisorUnavailable",
+        "runtime.isolated_sandbox",
+        "runtime.isolated_sandbox.establish_sandbox",
+        "runtime.isolated_sandbox.full_component_acknowledgments",
+        "runtime.resource_lifecycle",
+        "runtime.resource_lifecycle.VerifiedJobMembership"
+      ],
+      "deps_missing_from_bootstrap": [
+        "runtime.gremlin.admin",
+        "runtime.gremlin.authorization",
+        "runtime.gremlin.containment",
+        "runtime.gremlin.deviation",
+        "runtime.gremlin.enrollment",
+        "runtime.gremlin.events",
+        "runtime.gremlin.health",
+        "runtime.gremlin.identity",
+        "runtime.gremlin.observers",
+        "runtime.gremlin.policy",
+        "runtime.gremlin.receipts",
+        "runtime.gremlin.registry",
+        "runtime.gremlin.supervisor",
+        "runtime.isolated_sandbox"
+      ],
+      "closure_complete": false
+    },
+    {
+      "path": "tests/test_gremlin_recovery_authority.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "datetime",
+        "datetime.datetime",
+        "datetime.timezone",
+        "pytest",
+        "runtime.gremlin.recovery_authority",
+        "runtime.gremlin.recovery_authority.FileRecoveryReplayLedger",
+        "runtime.gremlin.recovery_authority.RecoveryApproval",
+        "runtime.gremlin.recovery_authority.RecoveryAuthority",
+        "runtime.gremlin.recovery_authority.RecoveryAuthorizationError",
+        "runtime.gremlin.recovery_authority.RecoveryChallenge"
+      ],
+      "deps_missing_from_bootstrap": [
+        "runtime.gremlin.recovery_authority"
+      ],
+      "closure_complete": false
+    },
+    {
+      "path": "tests/test_gremlin_runtime_identity.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "contextlib",
+        "contextlib.contextmanager",
+        "pytest",
+        "runtime.gremlin.audit",
+        "runtime.gremlin.audit.GremlinAuditLedger",
+        "runtime.gremlin.commissioning",
+        "runtime.gremlin.commissioning.create_local_runtime_identity",
+        "runtime.gremlin.receipts",
+        "runtime.gremlin.receipts.ContainmentAuthority",
+        "runtime.gremlin.receipts.ContainmentReceipt",
+        "runtime.gremlin.runtime_identity",
+        "runtime.gremlin.runtime_identity.GremlinRuntimeIdentityStore",
+        "runtime.gremlin.runtime_identity.RuntimeIdentityError",
+        "runtime.gremlin.runtime_identity.RuntimeIdentityRevoked"
+      ],
+      "deps_missing_from_bootstrap": [
+        "runtime.gremlin.audit",
+        "runtime.gremlin.commissioning",
+        "runtime.gremlin.receipts",
+        "runtime.gremlin.runtime_identity"
+      ],
+      "closure_complete": false
+    },
+    {
+      "path": "tests/test_guarded_projection_callers.py",
+      "imports": [
+        "importlib",
+        "pathlib",
+        "pathlib.Path",
+        "pytest",
+        "runtime.guarded_registry_projection",
+        "runtime.guarded_registry_projection.GuardedProjectionError"
+      ],
+      "deps_missing_from_bootstrap": [
+        "runtime.guarded_registry_projection"
+      ],
+      "closure_complete": false
+    },
+    {
+      "path": "tests/test_host_enforcement_audit.py",
+      "imports": [
+        "ctypes",
+        "os",
+        "pytest",
+        "runtime.gremlin",
+        "runtime.gremlin.host_enforcement_backend",
+        "runtime.gremlin.host_process_observer",
+        "types",
+        "types.SimpleNamespace"
+      ],
+      "deps_missing_from_bootstrap": [
+        "runtime.gremlin",
+        "runtime.gremlin.host_process_observer"
+      ],
+      "closure_complete": false
+    },
+    {
+      "path": "tests/test_host_model_currentness.py",
+      "imports": [
+        "dataclasses",
+        "dataclasses.asdict",
+        "dataclasses.replace",
+        "json",
+        "pytest",
+        "runtime.agent_runtime",
+        "runtime.agent_runtime.AgentRuntimeController",
+        "runtime.studio_api",
+        "runtime.studio_api.studio_operation",
+        "tests.test_agent_runtime",
+        "tests.test_agent_runtime.fixtures"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "tests/test_isolated_agent_sandbox.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "datetime",
+        "datetime.datetime",
+        "datetime.timezone",
+        "json",
+        "pathlib",
+        "pathlib.Path",
+        "pytest",
+        "runtime.gremlin.containment",
+        "runtime.gremlin.containment.GremlinNanny",
+        "runtime.gremlin.events",
+        "runtime.gremlin.events.EffectEvent",
+        "runtime.gremlin.identity",
+        "runtime.gremlin.identity.ProcessIdentity",
+        "runtime.gremlin.observers",
+        "runtime.gremlin.observers.ObserverSet",
+        "runtime.gremlin.supervisor",
+        "runtime.gremlin.supervisor.DeterministicSupervisor",
+        "runtime.isolated_sandbox",
+        "runtime.isolated_sandbox.EscalationBoundary",
+        "runtime.isolated_sandbox.EscalationRequest",
+        "runtime.isolated_sandbox.NetworkPolicy",
+        "runtime.isolated_sandbox.REQUIRED_COMPONENTS",
+        "runtime.isolated_sandbox.SANDBOX_POLICY_RELATIVE",
+        "runtime.isolated_sandbox.SandboxPolicy",
+        "runtime.isolated_sandbox.SandboxPolicyError",
+        "runtime.isolated_sandbox.control_plane_read_only_for_agents",
+        "runtime.isolated_sandbox.decide_connection",
+        "runtime.isolated_sandbox.establish_sandbox",
+        "runtime.isolated_sandbox.full_component_acknowledgments",
+        "runtime.isolated_sandbox.load_sandbox_policy",
+        "runtime.isolated_sandbox.orchestrator_context",
+        "runtime.isolated_sandbox.sandbox_off",
+        "runtime.isolated_sandbox.sandbox_policy_from_dict",
+        "runtime.isolated_sandbox.sandbox_provenance"
+      ],
+      "deps_missing_from_bootstrap": [
+        "runtime.gremlin.containment",
+        "runtime.gremlin.events",
+        "runtime.gremlin.identity",
+        "runtime.gremlin.observers",
+        "runtime.gremlin.supervisor",
+        "runtime.isolated_sandbox"
+      ],
+      "closure_complete": false
+    },
+    {
+      "path": "tests/test_librarian_semantic_map.py",
+      "imports": [
+        "hashlib",
+        "json",
+        "pathlib",
+        "pathlib.Path",
+        "pytest",
+        "runtime",
+        "runtime.librarian_semantic_map",
+        "runtime.librarian_semantic_map.describe_entity",
+        "runtime.librarian_semantic_map.load_semantic_map",
+        "runtime.semantic_entity",
+        "runtime.semantic_entity.EntityRegistry",
+        "runtime.semantic_entity.identity_basis_for",
+        "runtime.semantic_locator",
+        "runtime.semantic_locator.SemanticLocatorError",
+        "scripts.build_contract_ownership_registry",
+        "scripts.build_contract_ownership_registry.build"
+      ],
+      "deps_missing_from_bootstrap": [
+        "runtime.semantic_entity",
+        "runtime.semantic_locator"
+      ],
+      "closure_complete": false
+    },
+    {
+      "path": "tests/test_mixed_provider_custody.py",
+      "imports": [
+        "json",
+        "os",
+        "pathlib",
+        "pathlib.Path",
+        "pytest",
+        "runtime.remote_member_execution",
+        "runtime.remote_member_execution.verify_remote_workflow_effect_results",
+        "tests.mixed_provider_fixture",
+        "tests.mixed_provider_fixture.mixed_fixture",
+        "tests.test_remote_member_effect_owner",
+        "tests.test_remote_member_effect_owner.run",
+        "tests.test_remote_model_bridge",
+        "tests.test_remote_model_bridge.configured"
+      ],
+      "deps_missing_from_bootstrap": [
+        "runtime.remote_member_execution",
+        "tests.mixed_provider_fixture",
+        "tests.test_remote_member_effect_owner",
+        "tests.test_remote_model_bridge"
+      ],
+      "closure_complete": false
+    },
+    {
+      "path": "tests/test_model_branch_artifact_custody.py",
+      "imports": [
+        "hashlib",
+        "json",
+        "pathlib",
+        "pathlib.Path",
+        "pytest",
+        "runtime.effect_intent",
+        "runtime.effect_intent.EffectIntentLedger",
+        "runtime.model_branch_artifacts",
+        "runtime.model_branch_artifacts.commit_branch_artifact",
+        "runtime.model_branch_artifacts.read_branch_artifact",
+        "runtime.model_group_preparation",
+        "runtime.model_group_preparation.member_attachment",
+        "runtime.model_group_preparation.member_execution_input",
+        "runtime.resource_lifecycle",
+        "runtime.resource_lifecycle.ResourceLedger",
+        "runtime.scope_lease",
+        "runtime.scope_lease.ScopeLeaseStore",
+        "tests.test_model_group_preparation",
+        "tests.test_model_group_preparation.plan_for",
+        "tests.test_model_group_preparation.prepared"
+      ],
+      "deps_missing_from_bootstrap": [
+        "runtime.effect_intent",
+        "runtime.model_branch_artifacts",
+        "runtime.model_group_preparation",
+        "runtime.scope_lease",
+        "tests.test_model_group_preparation"
+      ],
+      "closure_complete": false
+    },
+    {
+      "path": "tests/test_model_execution_group.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "pytest",
+        "runtime.model_branch_contracts",
+        "runtime.model_branch_contracts.BranchContractError",
+        "runtime.model_branch_contracts.BranchResult",
+        "runtime.model_branch_contracts.COMPLETED",
+        "runtime.model_branch_contracts.FAILED",
+        "runtime.model_branch_contracts.MeshOutcome",
+        "runtime.model_branch_contracts.canonical_digest",
+        "runtime.model_branch_contracts.evaluate_mesh",
+        "runtime.model_execution_group",
+        "runtime.model_execution_group.ANCHOR",
+        "runtime.model_execution_group.BranchAssignment",
+        "runtime.model_execution_group.CALIBRATION",
+        "runtime.model_execution_group.CHALLENGER",
+        "runtime.model_execution_group.DISCOVERY",
+        "runtime.model_execution_group.EXECUTION",
+        "runtime.model_execution_group.MAX_MODEL_GROUP_MEMBERS",
+        "runtime.model_execution_group.ModelExecutionGroup",
+        "runtime.model_execution_group.ModelExecutionGroupError",
+        "runtime.model_execution_group.PROPOSAL",
+        "runtime.model_execution_group.build_execution_group"
+      ],
+      "deps_missing_from_bootstrap": [
+        "runtime.model_branch_contracts",
+        "runtime.model_execution_group"
+      ],
+      "closure_complete": false
+    },
+    {
+      "path": "tests/test_model_group_preparation.py",
+      "imports": [
+        "dataclasses",
+        "dataclasses.replace",
+        "datetime",
+        "datetime.datetime",
+        "datetime.timezone",
+        "pathlib",
+        "pathlib.Path",
+        "pytest",
+        "runtime.agent_runtime",
+        "runtime.agent_runtime.execute_agent_plan",
+        "runtime.capability_routing",
+        "runtime.capability_routing.compile_route_plan",
+        "runtime.capability_routing.route_task",
+        "runtime.context_generation",
+        "runtime.context_generation.ALL_COMPONENTS",
+        "runtime.context_generation.context_vector",
+        "runtime.contracts",
+        "runtime.contracts.validate_instance",
+        "runtime.execution_placement",
+        "runtime.execution_placement.PlacementCapacityLedger",
+        "runtime.execution_placement._hash",
+        "runtime.execution_placement.route_hardware",
+        "runtime.hardware_routing",
+        "runtime.hardware_routing.BenchmarkEvidence",
+        "runtime.hardware_routing.HardwareProfile",
+        "runtime.hardware_routing.WorkloadKind",
+        "runtime.hardware_routing.WorkloadProfile",
+        "runtime.model_attachment",
+        "runtime.model_attachment.build_model_attachment",
+        "runtime.model_execution_group",
+        "runtime.model_execution_group.BranchAssignment",
+        "runtime.model_execution_group.IndependenceContract",
+        "runtime.model_execution_group.ModelExecutionGroup",
+        "runtime.model_execution_group.RoleWorkContract",
+        "runtime.model_group_preparation",
+        "runtime.model_group_preparation.context_for_branch",
+        "runtime.model_group_preparation.context_sha256",
+        "runtime.model_group_preparation.member_attachment",
+        "runtime.model_group_preparation.prepare_model_group",
+        "runtime.model_group_preparation.read_group_preparation",
+        "runtime.semantic_integration_types",
+        "runtime.semantic_integration_types.FusedQueryResult",
+        "runtime.skill_navigator",
+        "runtime.skill_navigator.CapabilitySummary",
+        "runtime.task_execution_plan",
+        "runtime.task_execution_plan.task_execution_plan_from_dict",
+        "runtime.task_execution_plan.validate_task_execution_plan"
+      ],
+      "deps_missing_from_bootstrap": [
+        "runtime.context_generation",
+        "runtime.model_execution_group",
+        "runtime.model_group_preparation"
+      ],
+      "closure_complete": false
+    },
+    {
+      "path": "tests/test_mutating_producer_registry.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "pathlib",
+        "pathlib.Path",
+        "pytest",
+        "runtime.mutating_producer_registry",
+        "runtime.mutating_producer_registry.EXEMPTION_REASONS",
+        "runtime.mutating_producer_registry.MutatingProducerError",
+        "runtime.mutating_producer_registry.build_registry",
+        "runtime.mutating_producer_registry.discover_mutating_producers",
+        "runtime.mutating_producer_registry.publish_registry",
+        "runtime.mutating_producer_registry.validate_registry"
+      ],
+      "deps_missing_from_bootstrap": [
+        "runtime.mutating_producer_registry"
+      ],
+      "closure_complete": false
+    },
+    {
+      "path": "tests/test_mutating_producer_registry_hardening.py",
+      "imports": [
+        "json",
+        "pathlib",
+        "pathlib.Path",
+        "pytest",
+        "runtime.effect_intent",
+        "runtime.effect_intent.EffectIntentLedger",
+        "runtime.effect_surface",
+        "runtime.effect_surface.discover_effect_surfaces",
+        "runtime.guarded_registry_projection",
+        "runtime.mutating_producer_registry",
+        "runtime.mutating_producer_registry.MutatingProducerError",
+        "runtime.mutating_producer_registry.build_registry",
+        "runtime.mutating_producer_registry.default_classification",
+        "runtime.mutating_producer_registry.publish_registry",
+        "runtime.mutating_producer_registry.validate_registry",
+        "runtime.operational_gap_ledger",
+        "runtime.resource_lifecycle",
+        "runtime.resource_lifecycle.ResourceManager",
+        "runtime.scope_lease",
+        "runtime.scope_lease.ScopeLeaseStore",
+        "runtime.studio_models",
+        "shutil"
+      ],
+      "deps_missing_from_bootstrap": [
+        "runtime.effect_intent",
+        "runtime.guarded_registry_projection",
+        "runtime.mutating_producer_registry",
+        "runtime.scope_lease"
+      ],
+      "closure_complete": false
+    },
+    {
+      "path": "tests/test_operational_gap_ledger_delta_lifecycle.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "json",
+        "pathlib",
+        "pathlib.Path",
+        "pytest",
+        "runtime.operational_gap_ledger",
+        "runtime.operational_gap_ledger.DELTA_CHAIN_DEPTH_COMPACTION_THRESHOLD",
+        "runtime.operational_gap_ledger.DELTA_RETAINED_BYTES_COMPACTION_THRESHOLD",
+        "runtime.operational_gap_ledger.DELTA_SEMANTICS_INCREMENTAL",
+        "runtime.operational_gap_ledger.DELTA_SEMANTICS_LEGACY_CUMULATIVE",
+        "runtime.operational_gap_ledger._build_delta_head",
+        "runtime.operational_gap_ledger._digest",
+        "runtime.operational_gap_ledger._encoded_json",
+        "runtime.operational_gap_ledger._encoded_segment",
+        "runtime.operational_gap_ledger._incremental_segment",
+        "runtime.operational_gap_ledger.append_event",
+        "runtime.operational_gap_ledger.delta_reclaim_set",
+        "runtime.operational_gap_ledger.project_events",
+        "runtime.operational_gap_ledger.read_events",
+        "runtime.operational_gap_ledger.read_head",
+        "runtime.operational_gap_ledger.read_snapshot",
+        "runtime.operational_gap_ledger.reclaim_delta_checkpoints"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "tests/test_personal_chat_context.py",
+      "imports": [
+        "json",
+        "pytest",
+        "runtime.chat_context",
+        "runtime.chat_context.retrieve_chat_context",
+        "runtime.data_subject_records",
+        "runtime.data_subject_records.CONTROL_ROOT",
+        "runtime.personal_record_store",
+        "runtime.personal_record_store.personal_record_request",
+        "tests.studio_approval_testkit",
+        "tests.studio_approval_testkit.approval_proof",
+        "tests.test_data_subject_records",
+        "tests.test_data_subject_records.access",
+        "tests.test_data_subject_records.call",
+        "tests.test_data_subject_records.configured"
+      ],
+      "deps_missing_from_bootstrap": [
+        "runtime.chat_context",
+        "runtime.data_subject_records",
+        "runtime.personal_record_store",
+        "tests.test_data_subject_records"
+      ],
+      "closure_complete": false
+    },
+    {
+      "path": "tests/test_plan_current_campaign.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "json",
+        "pathlib",
+        "pathlib.Path",
+        "pytest",
+        "runtime",
+        "runtime.cli",
+        "runtime.cli.main",
+        "runtime.plan_registry"
+      ],
+      "deps_missing_from_bootstrap": [
+        "runtime.plan_registry"
+      ],
+      "closure_complete": false
+    },
+    {
+      "path": "tests/test_plan_foundation_authority.py",
+      "imports": [
+        "json",
+        "pathlib",
+        "pathlib.Path",
+        "pytest",
+        "runtime",
+        "runtime.engine_identity",
+        "runtime.engine_identity.build_engine_identity",
+        "runtime.plan_registry",
+        "runtime.source_boundary",
+        "runtime.source_boundary.AUTHORED",
+        "runtime.source_boundary.RUNTIME_STATE",
+        "runtime.source_boundary.classify_path",
+        "tests.test_plan_current_campaign",
+        "tests.test_plan_current_campaign.fixture"
+      ],
+      "deps_missing_from_bootstrap": [
+        "runtime.plan_registry",
+        "runtime.source_boundary",
+        "tests.test_plan_current_campaign"
+      ],
+      "closure_complete": false
+    },
+    {
+      "path": "tests/test_plan_registry.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "hashlib",
+        "json",
+        "pathlib",
+        "pathlib.Path",
+        "pytest",
+        "runtime",
+        "runtime.cli",
+        "runtime.cli.main",
+        "runtime.plan_registry",
+        "runtime.plan_registry.CORPUS_SCHEMA",
+        "runtime.plan_registry.EXPECTED_UNIQUE_PAYLOADS",
+        "runtime.plan_registry.LEDGER_SCHEMA",
+        "runtime.plan_registry.PlanRegistryError",
+        "runtime.plan_registry._canonical",
+        "runtime.plan_registry._digest",
+        "runtime.plan_registry._foundation_invariant_probe",
+        "runtime.plan_registry.admit_architecture_decision",
+        "runtime.plan_registry.admit_card_manifest",
+        "runtime.plan_registry.admit_corpus",
+        "runtime.plan_registry.admit_current_corpus",
+        "runtime.plan_registry.admit_current_requirement_trace",
+        "runtime.plan_registry.apply_status",
+        "runtime.plan_registry.build_card_ledger",
+        "runtime.plan_registry.fingerprint_archive",
+        "runtime.plan_registry.inventory_current_corpus",
+        "runtime.plan_registry.load_cards",
+        "runtime.plan_registry.ready_cards",
+        "runtime.plan_registry.requirement_report",
+        "runtime.plan_registry.validate_ledger",
+        "runtime.plan_registry.write_admitted_card_ledger",
+        "runtime.plan_registry.write_card_ledger",
+        "runtime.plan_registry.write_corpus",
+        "runtime.release_campaign",
+        "runtime.release_campaign.STAGES",
+        "runtime.release_campaign.STATE_PATH",
+        "runtime.release_campaign._sha",
+        "runtime.release_campaign.clear_release_identity",
+        "runtime.release_campaign.release_campaign_status",
+        "runtime.release_campaign.release_state_relative",
+        "runtime.release_repository_context",
+        "runtime.release_repository_context.validate_release_gate_repository_context",
+        "runtime.source_freeze",
+        "runtime.source_freeze.freeze_source"
+      ],
+      "deps_missing_from_bootstrap": [
+        "runtime.plan_registry",
+        "runtime.source_freeze"
+      ],
+      "closure_complete": false
+    },
+    {
+      "path": "tests/test_plan_registry_integrity.py",
+      "imports": [
+        "copy",
+        "json",
+        "pytest",
+        "runtime.plan_registry",
+        "runtime.plan_registry.CardLedgerEntry",
+        "runtime.plan_registry.PlanRegistryError",
+        "runtime.plan_registry.apply_status",
+        "runtime.plan_registry.build_card_ledger",
+        "runtime.plan_registry.ready_cards",
+        "runtime.plan_registry.validate_ledger",
+        "runtime.plan_registry.write_card_ledger"
+      ],
+      "deps_missing_from_bootstrap": [
+        "runtime.plan_registry"
+      ],
+      "closure_complete": false
+    },
+    {
+      "path": "tests/test_plan_status_authority.py",
+      "imports": [
+        "copy",
+        "dataclasses",
+        "dataclasses.replace",
+        "hashlib",
+        "json",
+        "pytest",
+        "runtime.cli",
+        "runtime.cli.main",
+        "runtime.plan_registry"
+      ],
+      "deps_missing_from_bootstrap": [
+        "runtime.plan_registry"
+      ],
+      "closure_complete": false
+    },
+    {
+      "path": "tests/test_plan_waves.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "dataclasses",
+        "dataclasses.replace",
+        "json",
+        "pathlib",
+        "pathlib.Path",
+        "pytest",
+        "runtime",
+        "runtime.cli",
+        "runtime.cli.main",
+        "runtime.plan_registry"
+      ],
+      "deps_missing_from_bootstrap": [
+        "runtime.plan_registry"
+      ],
+      "closure_complete": false
+    },
+    {
+      "path": "tests/test_powershell_campaign_controls.py",
+      "imports": [
+        "json",
+        "pathlib",
+        "pathlib.Path",
+        "pytest",
+        "re",
+        "runtime.resource_lifecycle",
+        "runtime.resource_lifecycle.ResourceManager",
+        "shutil",
+        "subprocess",
+        "uuid",
+        "uuid.uuid4"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "tests/test_projection_gate.py",
+      "imports": [
+        "pytest",
+        "runtime.context_generation",
+        "runtime.context_generation.context_vector",
+        "runtime.projection_gate",
+        "runtime.projection_gate.ProjectionReadPolicy",
+        "runtime.projection_gate.RegisteredProjection",
+        "runtime.projection_gate.assert_gate_complete",
+        "runtime.projection_gate.evaluate_projection",
+        "runtime.projection_gate.evaluate_registered_projections"
+      ],
+      "deps_missing_from_bootstrap": [
+        "runtime.context_generation",
+        "runtime.projection_gate"
+      ],
+      "closure_complete": false
+    },
+    {
+      "path": "tests/test_projection_process_custody.py",
+      "imports": [
+        "pytest",
+        "runtime",
+        "runtime.gremlin",
+        "runtime.gremlin.enrollment",
+        "runtime.gremlin.host_configuration",
+        "runtime.gremlin.host_configuration.CONFIGURATION_RELATIVE",
+        "runtime.gremlin.host_configuration.load_configured_gremlin_runtime",
+        "runtime.operational_gap_ledger",
+        "runtime.process_supervisor",
+        "runtime.resource_lifecycle",
+        "scripts",
+        "scripts.regenerate_projections",
+        "threading",
+        "types",
+        "types.SimpleNamespace"
+      ],
+      "deps_missing_from_bootstrap": [
+        "runtime.gremlin",
+        "runtime.gremlin.enrollment",
+        "runtime.gremlin.host_configuration",
+        "scripts.regenerate_projections"
+      ],
+      "closure_complete": false
+    },
+    {
+      "path": "tests/test_provider_budget_custody.py",
+      "imports": [
+        "pathlib",
+        "pathlib.Path",
+        "pytest",
+        "runtime.provider_budget",
+        "runtime.provider_budget.BudgetIntegrityError",
+        "runtime.provider_budget.ProviderBudgetLedger",
+        "runtime.provider_budget.ProviderUsage",
+        "tests.test_provider_budget",
+        "tests.test_provider_budget._ledger",
+        "tests.test_provider_budget._policy_row",
+        "tests.test_provider_budget._reserve",
+        "tests.test_provider_gateway",
+        "tests.test_provider_gateway.FakeAdapter",
+        "tests.test_provider_gateway._gateway",
+        "tests.test_provider_gateway._project",
+        "tests.test_provider_gateway._request"
+      ],
+      "deps_missing_from_bootstrap": [],
+      "closure_complete": true
+    },
+    {
+      "path": "tests/test_provider_route_index_custody.py",
+      "imports": [
+        "hashlib",
+        "json",
+        "runtime.effect_intent",
+        "runtime.effect_intent.EffectIntentLedger",
+        "runtime.provider_gateway",
+        "runtime.provider_gateway.build_provider_route_index",
+        "runtime.provider_gateway.scan_direct_provider_routes",
+        "runtime.scope_lease",
+        "runtime.scope_lease.ScopeLeaseStore",
+        "scripts",
+        "scripts.build_provider_route_index",
+        "tests.test_studio_operation_mirror_custody",
+        "tests.test_studio_operation_mirror_custody.native"
+      ],
+      "deps_missing_from_bootstrap": [
+        "runtime.effect_intent",
+        "runtime.scope_lease",
+        "tests.test_studio_operation_mirror_custody"
+      ],
+      "closure_complete": false
+    },
+    {
+      "path": "tests/test_py_cert_adapters.py",
+      "imports": [
+        "hashlib",
+        "importlib",
+        "json",
+        "pathlib",
+        "pathlib.Path",
+        "pytest",
+        "runpy",
+        "runtime.plan_registry",
+        "runtime.plan_registry.PlanRegistryError",
+        "subprocess",
+        "sys"
+      ],
+      "deps_missing_from_bootstrap": [
+        "runtime.plan_registry"
+      ],
+      "closure_complete": false
+    },
+    {
+      "path": "tests/test_read_only_normalization_candidates.py",
+      "imports": [
+        "copy",
+        "runtime.cancellation_scope",
+        "runtime.cancellation_scope.build_scope",
+        "runtime.cancellation_scope.resolve_control",
+        "runtime.capability_semantics",
+        "runtime.capability_semantics.build_capability_semantic_profile",
+        "runtime.semantic_code_paths",
+        "runtime.semantic_code_paths.resolve_project_path",
+        "runtime.semantic_normalize",
+        "runtime.semantic_normalize.NormalizationLedger",
+        "runtime.semantic_normalize.canonicalize_identifier"
+      ],
+      "deps_missing_from_bootstrap": [
+        "runtime.cancellation_scope",
+        "runtime.semantic_normalize"
+      ],
+      "closure_complete": false
+    },
+    {
+      "path": "tests/test_refines_generation_lineage.py",
+      "imports": [
+        "hashlib",
+        "pathlib",
+        "pathlib.Path",
+        "pytest",
+        "runtime.capability_routing",
+        "runtime.capability_routing.compile_route_plan",
+        "runtime.capability_routing.route_task",
+        "runtime.context_generation",
+        "runtime.context_generation.COMPONENTS",
+        "runtime.context_generation.context_vector",
+        "runtime.context_generation.read_context_vector",
+        "runtime.contracts",
+        "runtime.contracts.validate_instance",
+        "runtime.execution_contract",
+        "runtime.execution_contract.execution_request_from_plan",
+        "runtime.json_io",
+        "runtime.json_io.bounded_canonical_json_bytes",
+        "runtime.model_execution_group",
+        "runtime.model_execution_group.build_execution_group",
+        "runtime.projection_gate",
+        "runtime.projection_gate.evaluate_projection",
+        "runtime.skill_navigator",
+        "runtime.skill_navigator.CapabilitySummary",
+        "runtime.task_execution_plan",
+        "runtime.task_execution_plan.task_execution_plan_from_dict"
+      ],
+      "deps_missing_from_bootstrap": [
+        "runtime.context_generation",
+        "runtime.model_execution_group",
+        "runtime.projection_gate"
+      ],
+      "closure_complete": false
+    },
+    {
+      "path": "tests/test_refines_mesh_integration.py",
+      "imports": [
+        "collections",
+        "collections.Counter",
+        "pathlib",
+        "pathlib.Path",
+        "pytest",
+        "runtime.capability_routing",
+        "runtime.capability_routing.compile_route_plan",
+        "runtime.capability_routing.route_task",
+        "runtime.contracts",
+        "runtime.contracts.validate_instance",
+        "runtime.deterministic_model_stub",
+        "runtime.deterministic_model_stub.run_control_plane_scenario",
+        "runtime.generation_bound_verdict",
+        "runtime.generation_bound_verdict.create_verdict",
+        "runtime.generation_bound_verdict.verdict_is_current",
+        "runtime.governed_exception",
+        "runtime.governed_exception.create_exception",
+        "runtime.governed_exception.exception_is_active",
+        "runtime.model_convergence",
+        "runtime.model_convergence.BranchObservation",
+        "runtime.model_convergence.EvidenceItem",
+        "runtime.model_convergence.converge",
+        "runtime.model_convergence.critique_edges",
+        "runtime.model_execution_group",
+        "runtime.model_execution_group.BranchAssignment",
+        "runtime.model_execution_group.IndependenceContract",
+        "runtime.model_execution_group.ModelExecutionGroup",
+        "runtime.model_execution_group.RoleWorkContract",
+        "runtime.model_execution_group.build_execution_group",
+        "runtime.model_execution_group.read_execution_group",
+        "runtime.model_route_state",
+        "runtime.model_route_state.RouteCandidateRecord",
+        "runtime.model_route_state.build_route_decision",
+        "runtime.models",
+        "runtime.models.select_execution_portfolio",
+        "runtime.reasoning_controls",
+        "runtime.reasoning_controls.run_independent_hypothesis_panel",
+        "runtime.skill_navigator",
+        "runtime.skill_navigator.CapabilitySummary",
+        "runtime.task_execution_plan",
+        "runtime.task_execution_plan.task_execution_plan_from_dict",
+        "runtime.task_execution_plan.validate_task_execution_plan"
+      ],
+      "deps_missing_from_bootstrap": [
+        "runtime.deterministic_model_stub",
+        "runtime.generation_bound_verdict",
+        "runtime.governed_exception",
+        "runtime.model_convergence",
+        "runtime.model_execution_group"
+      ],
+      "closure_complete": false
+    },
+    {
+      "path": "tests/test_regenerate_projections_admission.py",
+      "imports": [
+        "pytest",
+        "scripts",
+        "scripts.regenerate_projections"
+      ],
+      "deps_missing_from_bootstrap": [
+        "scripts.regenerate_projections"
+      ],
+      "closure_complete": false
+    },
+    {
+      "path": "tests/test_release_source_identity.py",
+      "imports": [
+        "dataclasses",
+        "dataclasses.replace",
+        "hashlib",
+        "json",
+        "px.py_cert.runtime.pre_cert_contract",
+        "px.py_cert.runtime.pre_cert_contract.CERTIFICATION_STEP_ORDER",
+        "pytest",
+        "runtime",
+        "runtime.certification_contract",
+        "runtime.certification_contract.STEP_ORDER",
+        "runtime.plan_registry",
+        "runtime.plan_registry.LEDGER_RELATIVE",
+        "runtime.plan_registry.admit_current_requirement_trace",
+        "runtime.plan_registry.readiness_report",
+        "runtime.plan_registry.requirement_report",
+        "runtime.release_campaign",
+        "runtime.release_campaign.REPAIR_CAMPAIGN_PATH",
+        "runtime.release_campaign.apply_release_identity",
+        "runtime.release_campaign.clear_release_identity",
+        "runtime.release_campaign.release_state_relative",
+        "runtime.release_certification",
+        "runtime.release_certification._certificate_ledger_errors",
+        "runtime.release_certification._eligible_ledger",
+        "runtime.release_current_acceptance",
+        "runtime.release_current_acceptance.current_certification_acceptance",
+        "runtime.release_repository_context",
+        "runtime.release_repository_context.verify_source_anchor",
+        "runtime.release_source_identity",
+        "runtime.release_source_identity.release_configuration_relative",
+        "runtime.source_freeze",
+        "runtime.source_freeze.freeze_source",
+        "scripts",
+        "scripts.run_release_candidate",
+        "scripts.run_release_stage_owner",
+        "scripts.run_release_stage_owner.CURRENT_SCHEMA",
+        "scripts.run_release_stage_owner.Config",
+        "scripts.run_release_stage_owner.OwnerBlocked",
+        "scripts.run_release_stage_owner.check",
+        "scripts.validate_certification_pipeline",
+        "scripts.validate_certification_pipeline._current_source_snapshot",
+        "tests.release_preflight_testkit",
+        "tests.release_preflight_testkit.minimal_product",
+        "tests.test_plan_registry",
+        "tests.test_plan_registry._current_requirement_fixture",
+        "tests.test_plan_status_authority",
+        "tests.test_plan_status_authority.authority",
+        "tests.test_plan_status_authority.fixture",
+        "tests.test_release_candidate_driver",
+        "tests.test_release_candidate_driver.config",
+        "types",
+        "types.SimpleNamespace"
+      ],
+      "deps_missing_from_bootstrap": [
+        "runtime.plan_registry",
+        "runtime.release_current_acceptance",
+        "runtime.release_source_identity",
+        "runtime.source_freeze",
+        "tests.test_plan_registry",
+        "tests.test_plan_status_authority"
+      ],
+      "closure_complete": false
+    },
+    {
+      "path": "tests/test_release_state_source_boundary.py",
+      "imports": [
+        "pytest",
+        "runtime.source_boundary",
+        "runtime.source_boundary.AUTHORED",
+        "runtime.source_boundary.RUNTIME_STATE",
+        "runtime.source_boundary.classify_path"
+      ],
+      "deps_missing_from_bootstrap": [
+        "runtime.source_boundary"
+      ],
+      "closure_complete": false
+    },
+    {
+      "path": "tests/test_remote_group_attachment.py",
+      "imports": [
+        "dataclasses",
+        "dataclasses.replace",
+        "json",
+        "pathlib",
+        "pathlib.Path",
+        "pytest",
+        "runtime.contracts",
+        "runtime.contracts.validate_instance",
+        "runtime.group_provider_adapters",
+        "runtime.group_provider_adapters.RemoteGroupProviderBinding",
+        "runtime.group_provider_adapters.build_group_adapter_resolver",
+        "runtime.model_attachment",
+        "runtime.model_attachment.model_attachment_from_dict",
+        "runtime.model_attachment.validate_model_attachment",
+        "runtime.model_execution_group",
+        "runtime.model_execution_group.BranchAssignment",
+        "runtime.model_execution_group.IndependenceContract",
+        "runtime.model_execution_group.ModelExecutionGroup",
+        "runtime.model_execution_group.RoleWorkContract",
+        "runtime.model_group_preparation",
+        "runtime.model_group_preparation.context_for_branch",
+        "runtime.model_group_preparation.context_sha256",
+        "runtime.model_group_preparation.member_execution_input",
+        "runtime.model_group_preparation.prepare_model_group",
+        "runtime.provider_gateway",
+        "runtime.provider_gateway.build_provider_execution_policy",
+        "runtime.remote_model_attachment",
+        "runtime.remote_model_attachment.RemoteModelAttachment",
+        "runtime.remote_model_attachment.build_remote_model_attachment",
+        "runtime.remote_provider_profiles",
+        "runtime.remote_provider_profiles.CONFIG",
+        "runtime.semantic_integration_types",
+        "runtime.semantic_integration_types.FusedQueryResult",
+        "tests.test_model_group_preparation",
+        "tests.test_model_group_preparation.plan_for",
+        "tests.test_remote_model_bridge",
+        "tests.test_remote_model_bridge.configured"
+      ],
+      "deps_missing_from_bootstrap": [
+        "runtime.group_provider_adapters",
+        "runtime.model_execution_group",
+        "runtime.model_group_preparation",
+        "runtime.remote_model_attachment",
+        "runtime.remote_provider_profiles",
+        "tests.test_model_group_preparation",
+        "tests.test_remote_model_bridge"
+      ],
+      "closure_complete": false
+    },
+    {
+      "path": "tests/test_remote_group_effect_owner.py",
+      "imports": [
+        "dataclasses",
+        "dataclasses.replace",
+        "json",
+        "pytest",
+        "runtime.agent_runtime",
+        "runtime.agent_runtime.AgentRuntimeController",
+        "runtime.execution_placement",
+        "runtime.execution_placement._hash",
+        "runtime.group_provider_adapters",
+        "runtime.group_provider_adapters.build_group_adapter_resolver",
+        "runtime.member_execution",
+        "runtime.member_execution.build_provider_member_executor",
+        "runtime.model_attachment",
+        "runtime.model_attachment.model_attachment_from_dict",
+        "runtime.model_execution_group",
+        "runtime.model_execution_group.ModelExecutionGroup",
+        "runtime.model_group_preparation",
+        "runtime.model_group_preparation.prepare_model_group",
+        "runtime.provider_gateway",
+        "runtime.provider_gateway.build_provider_execution_policy",
+        "runtime.remote_model_attachment",
+        "runtime.remote_model_attachment.RemoteModelAttachment",
+        "runtime.remote_provider_adapters",
+        "runtime.remote_provider_adapters.remote_adapter_for",
+        "runtime.remote_provider_placement",
+        "runtime.remote_provider_placement.route_remote_provider",
+        "runtime.remote_provider_placement.validate_remote_provider_placement",
+        "runtime.remote_provider_profiles",
+        "runtime.remote_provider_profiles.ROOT",
+        "runtime.remote_provider_profiles.load_profiles",
+        "runtime.semantic_integration_types",
+        "runtime.semantic_integration_types.FusedQueryResult",
+        "runtime.task_execution_plan",
+        "runtime.task_execution_plan.persist_task_execution_plan",
+        "runtime.trusted_evidence",
+        "runtime.trusted_evidence.TrustedEvidenceResolver",
+        "runtime.workflow_worker",
+        "runtime.workflow_worker._group_remote_gateway",
+        "runtime.workflow_worker._run_model_group",
+        "runtime.workflow_worker._verify_group_workflow_effect_receipt",
+        "tests.test_model_group_preparation",
+        "tests.test_model_group_preparation.plan_for",
+        "tests.test_model_group_preparation.prepared",
+        "tests.test_remote_group_attachment",
+        "tests.test_remote_group_attachment.prepare_remote_fixture",
+        "tests.test_remote_model_bridge",
+        "tests.test_remote_model_bridge.RecordingTransport",
+        "tests.test_remote_model_bridge.configured",
+        "tests.workflow_group_owner_fixture",
+        "tests.workflow_group_owner_fixture.workflow_group_fixture"
+      ],
+      "deps_missing_from_bootstrap": [
+        "runtime.group_provider_adapters",
+        "runtime.member_execution",
+        "runtime.model_execution_group",
+        "runtime.model_group_preparation",
+        "runtime.remote_model_attachment",
+        "runtime.remote_provider_adapters",
+        "runtime.remote_provider_placement",
+        "runtime.remote_provider_profiles",
+        "tests.test_model_group_preparation",
+        "tests.test_remote_group_attachment",
+        "tests.test_remote_model_bridge",
+        "tests.workflow_group_owner_fixture"
+      ],
+      "closure_complete": false
+    },
+    {
+      "path": "tests/test_remote_member_effect_owner.py",
+      "imports": [
+        "dataclasses",
+        "dataclasses.replace",
+        "hashlib",
+        "json",
+        "pytest",
+        "runtime.effect_intent",
+        "runtime.effect_intent.EffectIntentLedger",
+        "runtime.remote_member_execution",
+        "runtime.remote_member_execution.verify_remote_workflow_effect_results",
+        "runtime.remote_provider_profiles",
+        "runtime.remote_provider_profiles.CONFIG",
+        "runtime.studio_authority",
+        "runtime.studio_authority.StudioAuthorityStore",
+        "tests.test_remote_group_effect_owner",
+        "tests.test_remote_group_effect_owner.remote_group_fixture",
+        "tests.test_remote_model_bridge",
+        "tests.test_remote_model_bridge.configured"
+      ],
+      "deps_missing_from_bootstrap": [
+        "runtime.effect_intent",
+        "runtime.remote_member_execution",
+        "runtime.remote_provider_profiles",
+        "tests.test_remote_group_effect_owner",
+        "tests.test_remote_model_bridge"
+      ],
+      "closure_complete": false
+    },
+    {
+      "path": "tests/test_remote_model_bridge.py",
+      "imports": [
+        "datetime",
+        "datetime.datetime",
+        "datetime.timedelta",
+        "datetime.timezone",
+        "io",
+        "json",
+        "pathlib",
+        "pathlib.Path",
+        "pytest",
+        "runtime",
+        "runtime.execution_context",
+        "runtime.execution_context.ExecutionContext",
+        "runtime.model_protocol",
+        "runtime.model_protocol.CanonicalModelRequest",
+        "runtime.provider_gateway",
+        "runtime.provider_gateway.ProviderStreamControl",
+        "runtime.provider_gateway.build_provider_execution_policy",
+        "runtime.remote_model_bridge",
+        "runtime.remote_model_bridge.chat",
+        "runtime.remote_model_bridge.list_models",
+        "runtime.remote_provider_adapters",
+        "runtime.remote_provider_adapters.CustomOpenAIChatAdapter",
+        "runtime.remote_provider_profiles",
+        "runtime.remote_provider_profiles.CONFIG",
+        "runtime.remote_provider_profiles.ROOT",
+        "runtime.remote_provider_profiles.digest",
+        "runtime.remote_provider_profiles.https_origin",
+        "runtime.studio_authority",
+        "runtime.studio_authority.StudioAuthorityStore",
+        "runtime.studio_models",
+        "runtime.studio_models.EffectGrant",
+        "runtime.vscode_model_bridge",
+        "tests.studio_approval_testkit",
+        "tests.studio_approval_testkit.approval_proof",
+        "tests.test_provider_gateway_streaming",
+        "tests.test_provider_gateway_streaming._project",
+        "urllib.error",
+        "urllib.error.HTTPError"
+      ],
+      "deps_missing_from_bootstrap": [
+        "runtime.execution_context",
+        "runtime.remote_model_bridge",
+        "runtime.remote_provider_adapters",
+        "runtime.remote_provider_profiles"
+      ],
+      "closure_complete": false
+    },
+    {
+      "path": "tests/test_remote_prepared_bridge.py",
+      "imports": [
+        "pytest",
+        "runtime",
+        "runtime.remote_model_bridge",
+        "runtime.remote_model_bridge.chat",
+        "runtime.remote_provider_profiles",
+        "runtime.remote_provider_profiles.digest",
+        "runtime.studio_models",
+        "runtime.studio_models.digest",
+        "runtime.task_execution_plan",
+        "runtime.task_execution_plan.persist_task_execution_plan",
+        "runtime.workflow_studio",
+        "tests.studio_approval_testkit",
+        "tests.studio_approval_testkit.approval_proof",
+        "tests.test_remote_group_effect_owner",
+        "tests.test_remote_group_effect_owner.remote_group_fixture",
+        "tests.test_remote_model_bridge",
+        "tests.test_remote_model_bridge.configured",
+        "types",
+        "types.SimpleNamespace"
+      ],
+      "deps_missing_from_bootstrap": [
+        "runtime.remote_model_bridge",
+        "runtime.remote_provider_profiles",
+        "tests.test_remote_group_effect_owner",
+        "tests.test_remote_model_bridge"
+      ],
+      "closure_complete": false
+    },
+    {
+      "path": "tests/test_remote_profile_asset_layout.py",
+      "imports": [
+        "pathlib",
+        "pathlib.Path",
+        "pytest",
+        "runtime",
+        "runtime.paths",
+        "runtime.remote_provider_profiles",
+        "runtime.remote_provider_profiles.load_profiles",
+        "tests.test_remote_model_bridge",
+        "tests.test_remote_model_bridge.configured"
+      ],
+      "deps_missing_from_bootstrap": [
+        "runtime.remote_provider_profiles",
+        "tests.test_remote_model_bridge"
+      ],
+      "closure_complete": false
+    },
+    {
+      "path": "tests/test_remote_qualified_identity.py",
+      "imports": [
+        "dataclasses",
+        "dataclasses.replace",
+        "json",
+        "pytest",
+        "runtime.model_attachment",
+        "runtime.model_attachment.model_attachment_from_dict",
+        "runtime.model_execution_group",
+        "runtime.model_execution_group.BranchAssignment",
+        "runtime.model_execution_group.IndependenceContract",
+        "runtime.model_execution_group.ModelExecutionGroup",
+        "runtime.model_execution_group.RoleWorkContract",
+        "runtime.model_group_preparation",
+        "runtime.model_group_preparation.context_for_branch",
+        "runtime.model_group_preparation.context_sha256",
+        "runtime.model_group_preparation.member_execution_input",
+        "runtime.model_group_preparation.prepare_model_group",
+        "runtime.paths",
+        "runtime.remote_model_attachment",
+        "runtime.remote_model_attachment.build_remote_model_attachment",
+        "runtime.remote_provider_profiles",
+        "runtime.remote_provider_profiles.CONFIG",
+        "runtime.remote_provider_profiles.ROOT",
+        "runtime.semantic_integration_types",
+        "runtime.semantic_integration_types.FusedQueryResult",
+        "runtime.studio_models",
+        "runtime.studio_models.EffectGrant",
+        "shutil",
+        "tests.test_model_group_preparation",
+        "tests.test_model_group_preparation.plan_for",
+        "tests.test_remote_group_effect_owner",
+        "tests.test_remote_group_effect_owner.remote_group_fixture",
+        "tests.test_remote_member_effect_owner",
+        "tests.test_remote_member_effect_owner.run",
+        "tests.test_remote_model_bridge",
+        "tests.test_remote_model_bridge.configured"
+      ],
+      "deps_missing_from_bootstrap": [
+        "runtime.model_execution_group",
+        "runtime.model_group_preparation",
+        "runtime.remote_model_attachment",
+        "runtime.remote_provider_profiles",
+        "tests.test_model_group_preparation",
+        "tests.test_remote_group_effect_owner",
+        "tests.test_remote_member_effect_owner",
+        "tests.test_remote_model_bridge"
+      ],
+      "closure_complete": false
+    },
+    {
+      "path": "tests/test_remote_service_protocols.py",
+      "imports": [
+        "io",
+        "json",
+        "pytest",
+        "runtime",
+        "runtime.model_protocol",
+        "runtime.model_protocol.CanonicalModelRequest",
+        "runtime.provider_gateway",
+        "runtime.provider_gateway.ProviderStreamControl",
+        "runtime.remote_provider_adapters",
+        "runtime.remote_provider_adapters.remote_adapter_for",
+        "runtime.remote_service_protocols",
+        "runtime.remote_service_protocols.service_protocol",
+        "types",
+        "types.SimpleNamespace"
+      ],
+      "deps_missing_from_bootstrap": [
+        "runtime.remote_provider_adapters",
+        "runtime.remote_service_protocols"
+      ],
+      "closure_complete": false
+    },
+    {
+      "path": "tests/test_rollout_inventory.py",
+      "imports": [
+        "pytest",
+        "scripts.rollout.compare_trees",
+        "scripts.rollout.compare_trees.compare",
+        "scripts.rollout.compare_trees.inventory",
+        "scripts.rollout.integration_plan",
+        "scripts.rollout.integration_plan.apply_plan",
+        "scripts.rollout.integration_plan.digest",
+        "scripts.rollout.integration_plan.eligible",
+        "tests",
+        "tests.test_release_certification"
+      ],
+      "deps_missing_from_bootstrap": [
+        "scripts.rollout.compare_trees",
+        "scripts.rollout.integration_plan"
+      ],
+      "closure_complete": false
+    },
+    {
+      "path": "tests/test_sandbox_bridge.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "json",
+        "pathlib",
+        "pathlib.Path",
+        "pytest",
+        "runtime.isolated_sandbox",
+        "runtime.isolated_sandbox.full_component_acknowledgments",
+        "subprocess",
+        "sys"
+      ],
+      "deps_missing_from_bootstrap": [
+        "runtime.isolated_sandbox"
+      ],
+      "closure_complete": false
+    },
+    {
+      "path": "tests/test_scope_quarantine.py",
+      "imports": [
+        "dataclasses",
+        "dataclasses.replace",
+        "datetime",
+        "datetime.datetime",
+        "datetime.timedelta",
+        "datetime.timezone",
+        "json",
+        "os",
+        "pytest",
+        "runtime.effect_intent",
+        "runtime.effect_intent.EffectIntentLedger",
+        "runtime.execution_context",
+        "runtime.execution_context.ExecutionContext",
+        "runtime.process_supervisor",
+        "runtime.process_supervisor.ProcessSupervisor",
+        "runtime.process_supervisor._WindowsJob",
+        "runtime.resource_lifecycle",
+        "runtime.resource_lifecycle.ResourceManager",
+        "runtime.resource_lifecycle.ResourceStatus",
+        "runtime.resource_lifecycle.RunState",
+        "runtime.scope_lease",
+        "runtime.scope_lease.ScopeLeaseError",
+        "runtime.scope_lease.ScopeLeaseStore",
+        "runtime.studio_models",
+        "runtime.studio_models.digest",
+        "runtime.studio_run_control",
+        "runtime.studio_run_control.DurableControlSignal",
+        "runtime.workflow_studio",
+        "runtime.workflow_studio.WorkflowStudio",
+        "runtime.workflow_studio._WorkflowEffectReconciliationRequired",
+        "sys",
+        "tests.test_workflow_studio",
+        "tests.test_workflow_studio._effect_fence_studio",
+        "tests.test_workflow_studio.fixture",
+        "types",
+        "types.SimpleNamespace"
+      ],
+      "deps_missing_from_bootstrap": [
+        "runtime.effect_intent",
+        "runtime.execution_context",
+        "runtime.scope_lease"
+      ],
+      "closure_complete": false
+    },
+    {
+      "path": "tests/test_secure_publish.py",
+      "imports": [
+        "concurrent.futures",
+        "concurrent.futures.ThreadPoolExecutor",
+        "hashlib",
+        "os",
+        "pytest",
+        "runtime",
+        "runtime.effect_intent",
+        "runtime.effect_intent.EffectIntentLedger",
+        "runtime.mutation_queue",
+        "runtime.mutation_queue.MutationQueue",
+        "runtime.nsai_knowledge",
+        "runtime.plan_registry",
+        "runtime.plan_registry._write_digest_bound",
+        "runtime.scope_lease",
+        "runtime.scope_lease.ScopeLeaseStore",
+        "runtime.secure_publish",
+        "runtime.secure_publish._windows_parent",
+        "runtime.secure_publish.atomic_write_bytes",
+        "runtime.secure_publish.atomic_write_stream",
+        "runtime.semantic_entity",
+        "runtime.semantic_entity.EntityRegistry",
+        "runtime.semantic_entity.publish_registry",
+        "runtime.semantic_entity.published_registry_path",
+        "runtime.source_boundary",
+        "runtime.source_freeze",
+        "runtime.tool_intake",
+        "runtime.vscode_model_bridge",
+        "runtime.vscode_model_bridge.set_sandbox_mode",
+        "subprocess"
+      ],
+      "deps_missing_from_bootstrap": [
+        "runtime.effect_intent",
+        "runtime.mutation_queue",
+        "runtime.plan_registry",
+        "runtime.scope_lease",
+        "runtime.secure_publish",
+        "runtime.semantic_entity",
+        "runtime.source_boundary",
+        "runtime.source_freeze"
+      ],
+      "closure_complete": false
+    },
+    {
+      "path": "tests/test_semantic_authored_sources.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "copy",
+        "copy.deepcopy",
+        "pathlib",
+        "pathlib.Path",
+        "pytest",
+        "runtime",
+        "runtime.contracts",
+        "runtime.contracts.ContractValidationError",
+        "runtime.contracts.validate_instance",
+        "runtime.semantic_authored_sources",
+        "runtime.semantic_surfaces"
+      ],
+      "deps_missing_from_bootstrap": [
+        "runtime.semantic_authored_sources",
+        "runtime.semantic_surfaces"
+      ],
+      "closure_complete": false
+    },
+    {
+      "path": "tests/test_semantic_coverage.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "json",
+        "pathlib",
+        "pathlib.Path",
+        "pytest",
+        "runtime.semantic_coverage",
+        "runtime.semantic_coverage.ACCEPTED",
+        "runtime.semantic_coverage.AMBIGUOUS",
+        "runtime.semantic_coverage.CONFLICTING",
+        "runtime.semantic_coverage.COVERAGE_EVIDENCE_RELATIVE",
+        "runtime.semantic_coverage.COVERAGE_SCHEMA_VERSION",
+        "runtime.semantic_coverage.CoverageError",
+        "runtime.semantic_coverage.CoverageLedger",
+        "runtime.semantic_coverage.DECIDED",
+        "runtime.semantic_coverage.DISPOSITIONS",
+        "runtime.semantic_coverage.ENTITY_INDEX_RELATIVE",
+        "runtime.semantic_coverage.EXCLUDED",
+        "runtime.semantic_coverage.EXTERNAL",
+        "runtime.semantic_coverage.HISTORICAL",
+        "runtime.semantic_coverage.INTENTIONALLY_UNCLASSIFIED",
+        "runtime.semantic_coverage.Observation",
+        "runtime.semantic_coverage.REMAPPABLE",
+        "runtime.semantic_coverage.UNEXPLAINED",
+        "runtime.semantic_coverage.UNRESOLVED",
+        "runtime.semantic_coverage.ledger_from_observations"
+      ],
+      "deps_missing_from_bootstrap": [
+        "runtime.semantic_coverage"
+      ],
+      "closure_complete": false
+    },
+    {
+      "path": "tests/test_semantic_entity.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "hashlib",
+        "inspect",
+        "json",
+        "pathlib",
+        "pathlib.Path",
+        "pytest",
+        "runtime.json_io",
+        "runtime.json_io.bounded_canonical_json_bytes",
+        "runtime.semantic_entity",
+        "runtime.semantic_entity.ENTITY_ID_PREFIX",
+        "runtime.semantic_entity.ENTITY_KINDS",
+        "runtime.semantic_entity.ENTITY_SCHEMA_VERSION",
+        "runtime.semantic_entity.EntityRegistry",
+        "runtime.semantic_entity.LIFECYCLE_STATES",
+        "runtime.semantic_entity.SCHEMA_RELATIVE",
+        "runtime.semantic_entity.SemanticEntityError",
+        "runtime.semantic_entity.derive_entity_id",
+        "runtime.semantic_entity.identity_basis_for"
+      ],
+      "deps_missing_from_bootstrap": [
+        "runtime.semantic_entity"
+      ],
+      "closure_complete": false
+    },
+    {
+      "path": "tests/test_semantic_index_cli_custody.py",
+      "imports": [
+        "hashlib",
+        "importlib",
+        "json",
+        "pathlib",
+        "pathlib.Path",
+        "pytest",
+        "runtime.agent_provider",
+        "runtime.agent_provider.build_agent_graph",
+        "runtime.effect_intent",
+        "runtime.effect_intent.EffectIntentLedger",
+        "runtime.scope_lease",
+        "runtime.scope_lease.ScopeLeaseStore",
+        "runtime.semantic_index",
+        "runtime.semantic_index.build_semantic_index",
+        "subprocess",
+        "sys",
+        "tests.test_studio_operation_mirror_custody",
+        "tests.test_studio_operation_mirror_custody.native"
+      ],
+      "deps_missing_from_bootstrap": [
+        "runtime.effect_intent",
+        "runtime.scope_lease",
+        "tests.test_studio_operation_mirror_custody"
+      ],
+      "closure_complete": false
+    },
+    {
+      "path": "tests/test_semantic_locator.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "hashlib",
+        "json",
+        "pathlib",
+        "pathlib.Path",
+        "pytest",
+        "runtime.contracts",
+        "runtime.contracts.ContractValidationError",
+        "runtime.contracts.validate_instance",
+        "runtime.json_io",
+        "runtime.json_io.bounded_canonical_json_bytes",
+        "runtime.semantic_entity",
+        "runtime.semantic_entity.EntityRegistry",
+        "runtime.semantic_entity.identity_basis_for",
+        "runtime.semantic_locator",
+        "runtime.semantic_locator.LOCATOR_ID_PREFIX",
+        "runtime.semantic_locator.LOCATOR_KINDS",
+        "runtime.semantic_locator.LocatorReferencePolicy",
+        "runtime.semantic_locator.LocatorRegistry",
+        "runtime.semantic_locator.RELATION_ID_PREFIX",
+        "runtime.semantic_locator.RELATION_KINDS",
+        "runtime.semantic_locator.RelationRegistry",
+        "runtime.semantic_locator.SCHEMA_LOCATOR",
+        "runtime.semantic_locator.SCHEMA_RELATION",
+        "runtime.semantic_locator.SemanticLocatorError",
+        "runtime.semantic_locator.derive_locator_id"
+      ],
+      "deps_missing_from_bootstrap": [
+        "runtime.semantic_entity",
+        "runtime.semantic_locator"
+      ],
+      "closure_complete": false
+    },
+    {
+      "path": "tests/test_semantic_powershell_source.py",
+      "imports": [
+        "dataclasses",
+        "dataclasses.replace",
+        "hashlib",
+        "pathlib",
+        "pathlib.Path",
+        "pytest",
+        "runtime",
+        "runtime.resource_lifecycle",
+        "runtime.resource_lifecycle.ResourceManager",
+        "runtime.semantic_powershell_source"
+      ],
+      "deps_missing_from_bootstrap": [
+        "runtime.semantic_powershell_source"
+      ],
+      "closure_complete": false
+    },
+    {
+      "path": "tests/test_semantic_surfaces.py",
+      "imports": [
+        "copy",
+        "copy.deepcopy",
+        "hashlib",
+        "json",
+        "os",
+        "pathlib",
+        "pathlib.Path",
+        "pytest",
+        "runtime",
+        "runtime.bounded_walk",
+        "runtime.contracts",
+        "runtime.contracts.ContractValidationError",
+        "runtime.contracts.validate_instance",
+        "runtime.cybersecurity_provider",
+        "runtime.cybersecurity_provider.MAX_SECURITY_JSONL_LINE_BYTES",
+        "runtime.cybersecurity_provider.MAX_SECURITY_JSONL_RECORDS",
+        "runtime.semantic_powershell_source",
+        "runtime.semantic_powershell_source.discover_parser",
+        "runtime.semantic_prefreeze_census",
+        "runtime.semantic_prefreeze_census.run_prefreeze_census",
+        "runtime.semantic_surfaces",
+        "runtime.semantic_taxonomy_census",
+        "runtime.semantic_taxonomy_census.run_full_census",
+        "scripts.build_contract_ownership_registry",
+        "scripts.build_contract_ownership_registry.build"
+      ],
+      "deps_missing_from_bootstrap": [
+        "runtime.semantic_powershell_source",
+        "runtime.semantic_prefreeze_census",
+        "runtime.semantic_surfaces",
+        "runtime.semantic_taxonomy_census"
+      ],
+      "closure_complete": false
+    },
+    {
+      "path": "tests/test_source_boundary.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "dataclasses",
+        "hashlib",
+        "json",
+        "pathlib",
+        "pathlib.Path",
+        "pytest",
+        "runtime.engine_identity",
+        "runtime.engine_identity.build_engine_identity",
+        "runtime.engineering_os_paths",
+        "runtime.engineering_os_paths.CANONICAL_CONTROL_DIR",
+        "runtime.engineering_os_paths.LEGACY_CONTROL_DIR",
+        "runtime.semantic_surfaces",
+        "runtime.semantic_surfaces.collect_corpus_snapshot",
+        "runtime.source_boundary",
+        "runtime.source_boundary.ARTIFACT_SCHEMA",
+        "runtime.source_boundary.AUTHORED",
+        "runtime.source_boundary.EVIDENCE",
+        "runtime.source_boundary.GENERATED",
+        "runtime.source_boundary.GENERATED_ARTIFACTS",
+        "runtime.source_boundary.PACKAGING_GENERATED",
+        "runtime.source_boundary.RUNTIME_STATE",
+        "runtime.source_boundary.SourceBoundaryError",
+        "runtime.source_boundary.VENDORED",
+        "runtime.source_boundary.agent_experience_directories",
+        "runtime.source_boundary.assert_generated_never_canonical_authority",
+        "runtime.source_boundary.authored_paths",
+        "runtime.source_boundary.census",
+        "runtime.source_boundary.classify_path",
+        "runtime.source_boundary.unbuilt_profile",
+        "runtime.source_boundary.validate_artifacts",
+        "runtime.source_boundary.write_boundary",
+        "runtime.usage_memory",
+        "runtime.usage_memory.read_stats",
+        "runtime.usage_memory.rebuild_stats",
+        "runtime.usage_memory.record_observation",
+        "shutil"
+      ],
+      "deps_missing_from_bootstrap": [
+        "runtime.engineering_os_paths",
+        "runtime.semantic_surfaces",
+        "runtime.source_boundary"
+      ],
+      "closure_complete": false
+    },
+    {
+      "path": "tests/test_source_boundary_conformance.py",
+      "imports": [
+        "runtime.repository_scope",
+        "runtime.repository_scope.is_external_environment_relative",
+        "runtime.source_boundary",
+        "runtime.source_boundary.AUTHORED",
+        "runtime.source_boundary.CONFORMANCE_CORPUS",
+        "runtime.source_boundary.classify_path",
+        "runtime.source_boundary.conformance_report",
+        "unittest"
+      ],
+      "deps_missing_from_bootstrap": [
+        "runtime.source_boundary"
+      ],
+      "closure_complete": false
+    },
+    {
+      "path": "tests/test_source_freeze.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "hashlib",
+        "json",
+        "pathlib",
+        "pathlib.Path",
+        "pytest",
+        "runtime.source_freeze",
+        "runtime.source_freeze.D001_DEVIATION_ADR",
+        "runtime.source_freeze.FREEZE_SCHEMA",
+        "runtime.source_freeze.SourceFreezeError",
+        "runtime.source_freeze._digest",
+        "runtime.source_freeze.freeze_source",
+        "runtime.source_freeze.read_freeze",
+        "runtime.source_freeze.restore_from_freeze",
+        "runtime.source_freeze.verify_freeze",
+        "zipfile"
+      ],
+      "deps_missing_from_bootstrap": [
+        "runtime.source_freeze"
+      ],
+      "closure_complete": false
+    },
+    {
+      "path": "tests/test_studio_operation_mirror_custody.py",
+      "imports": [
+        "datetime",
+        "datetime.datetime",
+        "datetime.timedelta",
+        "datetime.timezone",
+        "json",
+        "pathlib",
+        "pathlib.Path",
+        "pytest",
+        "runtime.effect_intent",
+        "runtime.effect_intent.EffectIntentLedger",
+        "runtime.guarded_registry_projection",
+        "runtime.guarded_registry_projection.GuardedProjectionError",
+        "runtime.guarded_registry_projection.publish_guarded_registry_projection",
+        "runtime.guarded_registry_projection.publish_guarded_studio_operation_mirror",
+        "runtime.operational_gap_ledger",
+        "runtime.operational_gap_ledger.append_event",
+        "runtime.scope_lease",
+        "runtime.scope_lease.ScopeLeaseStore",
+        "runtime.studio_models",
+        "scripts.reconcile_studio_operation_projections",
+        "scripts.reconcile_studio_operation_projections.reconcile",
+        "tests.test_operational_gap_ledger",
+        "tests.test_operational_gap_ledger.card",
+        "tests.test_operational_gap_ledger.evidence",
+        "tests.test_operational_gap_ledger.initialize"
+      ],
+      "deps_missing_from_bootstrap": [
+        "runtime.effect_intent",
+        "runtime.guarded_registry_projection",
+        "runtime.scope_lease"
+      ],
+      "closure_complete": false
+    },
+    {
+      "path": "tests/test_tie_migration_receipt_custody.py",
+      "imports": [
+        "hashlib",
+        "json",
+        "pathlib",
+        "pathlib.Path",
+        "pytest",
+        "runtime.effect_intent",
+        "runtime.effect_intent.EffectIntentLedger",
+        "runtime.resource_lifecycle",
+        "runtime.resource_lifecycle.ResourceManager",
+        "runtime.scope_lease",
+        "runtime.scope_lease.ScopeLeaseStore",
+        "runtime.studio_models",
+        "runtime.studio_models.AgentSpec",
+        "runtime.studio_models.write_versioned_record",
+        "runtime.tie_experience",
+        "runtime.usage_memory"
+      ],
+      "deps_missing_from_bootstrap": [
+        "runtime.effect_intent",
+        "runtime.scope_lease",
+        "runtime.tie_experience"
+      ],
+      "closure_complete": false
+    },
+    {
+      "path": "tests/test_usage_memory_custody.py",
+      "imports": [
+        "datetime",
+        "datetime.datetime",
+        "datetime.timedelta",
+        "datetime.timezone",
+        "hashlib",
+        "json",
+        "pathlib",
+        "pathlib.Path",
+        "pytest",
+        "runtime.effect_intent",
+        "runtime.effect_intent.EffectIntentLedger",
+        "runtime.resource_lifecycle",
+        "runtime.resource_lifecycle.ResourceManager",
+        "runtime.scope_lease",
+        "runtime.scope_lease.ScopeLeaseError",
+        "runtime.scope_lease.ScopeLeaseStore",
+        "runtime.studio_models",
+        "runtime.studio_models.AgentSpec",
+        "runtime.studio_models.write_versioned_record",
+        "runtime.tie_experience",
+        "runtime.tie_experience.migrate",
+        "runtime.usage_memory"
+      ],
+      "deps_missing_from_bootstrap": [
+        "runtime.effect_intent",
+        "runtime.scope_lease",
+        "runtime.tie_experience"
+      ],
+      "closure_complete": false
+    },
+    {
+      "path": "tests/test_workflow_group_effect_owner.py",
+      "imports": [
+        "json",
+        "pytest",
+        "runtime.scope_lease",
+        "runtime.scope_lease.ScopeLeaseStore",
+        "runtime.studio_authority",
+        "runtime.studio_authority.StudioAuthorityStore",
+        "runtime.studio_models",
+        "runtime.studio_models.CapabilityBinding",
+        "runtime.studio_models.EffectGrant",
+        "runtime.studio_models.digest",
+        "runtime.trusted_evidence",
+        "runtime.trusted_evidence.TrustedEvidenceResolver",
+        "tests.test_workflow_group_transport",
+        "tests.test_workflow_group_transport._prepared_plan",
+        "tests.workflow_group_owner_fixture",
+        "tests.workflow_group_owner_fixture.workflow_group_fixture"
+      ],
+      "deps_missing_from_bootstrap": [
+        "runtime.scope_lease",
+        "tests.test_workflow_group_transport",
+        "tests.workflow_group_owner_fixture"
+      ],
+      "closure_complete": false
+    },
+    {
+      "path": "tests/test_workflow_group_transport.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "dataclasses",
+        "dataclasses.replace",
+        "datetime",
+        "datetime.datetime",
+        "datetime.timedelta",
+        "datetime.timezone",
+        "json",
+        "pathlib",
+        "pathlib.Path",
+        "pytest",
+        "runtime.capability_routing",
+        "runtime.capability_routing.route_task",
+        "runtime.context_generation",
+        "runtime.context_generation.ALL_COMPONENTS",
+        "runtime.context_generation.context_vector",
+        "runtime.model_attachment",
+        "runtime.model_attachment.build_model_attachment",
+        "runtime.model_execution_group",
+        "runtime.model_execution_group.BranchAssignment",
+        "runtime.model_execution_group.IndependenceContract",
+        "runtime.model_execution_group.ModelExecutionGroup",
+        "runtime.model_execution_group.RoleWorkContract",
+        "runtime.model_group_preparation",
+        "runtime.model_group_preparation.context_for_branch",
+        "runtime.model_group_preparation.context_sha256",
+        "runtime.model_group_preparation.prepare_model_group",
+        "runtime.prepared_group_transport",
+        "runtime.prepared_group_transport.resolve_prepared_group",
+        "runtime.semantic_integration_types",
+        "runtime.semantic_integration_types.FusedQueryResult",
+        "runtime.skill_navigator",
+        "runtime.skill_navigator.CapabilitySummary",
+        "runtime.studio_models",
+        "runtime.studio_models.CapabilityBinding",
+        "runtime.studio_models.EffectGrant",
+        "runtime.studio_models.WorkflowDefinition",
+        "runtime.studio_models.WorkflowNode",
+        "runtime.studio_models.WorkflowPort",
+        "runtime.task_execution_plan",
+        "runtime.task_execution_plan.compile_task_execution_plan",
+        "runtime.task_execution_plan.persist_task_execution_plan",
+        "runtime.workflow_group_config",
+        "runtime.workflow_group_config.validate_prepared_group_node_config",
+        "runtime.workflow_studio",
+        "runtime.workflow_studio.WorkflowStudio",
+        "runtime.workflow_studio._definition_from_record",
+        "types",
+        "types.SimpleNamespace"
+      ],
+      "deps_missing_from_bootstrap": [
+        "runtime.context_generation",
+        "runtime.model_execution_group",
+        "runtime.model_group_preparation",
+        "runtime.prepared_group_transport",
+        "runtime.workflow_group_config"
+      ],
+      "closure_complete": false
+    },
+    {
+      "path": "tests/test_workflow_worker.py",
+      "imports": [
+        "dataclasses",
+        "dataclasses.replace",
+        "datetime",
+        "datetime.datetime",
+        "datetime.timedelta",
+        "datetime.timezone",
+        "hashlib",
+        "os",
+        "pathlib",
+        "pathlib.Path",
+        "pytest",
+        "runtime",
+        "runtime.effect_intent",
+        "runtime.effect_intent.EffectIntentLedger",
+        "runtime.execution_context",
+        "runtime.execution_context.ExecutionContext",
+        "runtime.execution_context.execution_context_from_dict",
+        "runtime.gremlin.host_configuration",
+        "runtime.gremlin.host_configuration.resolve_recovery_verifier_from_environment",
+        "runtime.scope_lease",
+        "runtime.scope_lease.ScopeLeaseStore",
+        "runtime.studio_models",
+        "runtime.studio_models.digest",
+        "runtime.studio_run_control",
+        "runtime.studio_run_control.DurableRunControl",
+        "runtime.workflow_worker",
+        "runtime.workflow_worker._GroupContainmentUnavailable",
+        "runtime.workflow_worker._group_approval",
+        "runtime.workflow_worker._host_custody_execution_id",
+        "runtime.workflow_worker._host_custody_parent_resource_id",
+        "runtime.workflow_worker._host_custody_state_path",
+        "runtime.workflow_worker._spec_for_group",
+        "runtime.workflow_worker._verify_prepared_effect_intents"
+      ],
+      "deps_missing_from_bootstrap": [
+        "runtime.effect_intent",
+        "runtime.execution_context",
+        "runtime.gremlin.host_configuration",
+        "runtime.scope_lease"
+      ],
+      "closure_complete": false
+    },
+    {
+      "path": "tests/test_yaml_subject_files.py",
+      "imports": [
+        "__future__",
+        "__future__.annotations",
+        "json",
+        "pathlib",
+        "pathlib.Path",
+        "runtime.yaml_subject_files",
+        "runtime.yaml_subject_files.canonical_yaml_subjects",
+        "runtime.yaml_subject_files.ensure_yaml_subject_files"
+      ],
+      "deps_missing_from_bootstrap": [
+        "runtime.yaml_subject_files"
+      ],
+      "closure_complete": false
+    },
+    {
+      "path": "tests/workflow_group_owner_fixture.py",
+      "imports": [
+        "dataclasses",
+        "dataclasses.asdict",
+        "dataclasses.replace",
+        "datetime",
+        "datetime.datetime",
+        "datetime.timedelta",
+        "datetime.timezone",
+        "hashlib",
+        "json",
+        "runtime.agent_runtime",
+        "runtime.agent_runtime.AgentRuntimeController",
+        "runtime.effect_intent",
+        "runtime.effect_intent.EffectIntentLedger",
+        "runtime.execution_context",
+        "runtime.execution_context.ExecutionContext",
+        "runtime.execution_placement",
+        "runtime.execution_placement._hash",
+        "runtime.model_group_preparation",
+        "runtime.model_group_preparation.member_attachment",
+        "runtime.scope_lease",
+        "runtime.scope_lease.ScopeLeaseStore",
+        "runtime.studio_authority",
+        "runtime.studio_authority.StudioAuthorityStore",
+        "runtime.studio_models",
+        "runtime.studio_models.CapabilityBinding",
+        "runtime.studio_models.EffectGrant",
+        "runtime.studio_models.digest",
+        "runtime.studio_run_control",
+        "runtime.studio_run_control.DurableRunControl",
+        "tests.test_agent_governed_integration",
+        "tests.test_agent_governed_integration._agent"
+      ],
+      "deps_missing_from_bootstrap": [
+        "runtime.effect_intent",
+        "runtime.execution_context",
+        "runtime.model_group_preparation",
+        "runtime.scope_lease"
+      ],
+      "closure_complete": false
+    }
+  ]
+}

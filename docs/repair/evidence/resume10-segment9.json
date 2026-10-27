@@ -1,0 +1,34 @@
+{
+  "timestamp_utc": "2026-10-27T01:18:54.519824+00:00",
+  "segment": "resume10-production-gateway-identity-and-native-client-protocol",
+  "source_sha256": {
+    "extension/src/extension.js": "d4449d5e31877650146372c21572774d85804ce882d596888290b340a9666afa",
+    "extension/src/agentHarness/registerAgentConsole.js": "5fc3ce2f42f4bfa7a7f2bf37070dd8e0c82d1db9dd35bd3207e9634ccbd66e32",
+    "extension/src/agentHarness/harnessController.js": "59190ed321b3c8bc442ee2b832ab28611ced9dd4da3b50b9a43dfe631031537e",
+    "extension/src/agentHarness/contracts.js": "628c7c78bd96502da4b78ebcf54c8c960a6ae18f26f2458239d40cd5d1e24250",
+    "extension/src/agentHarness/pxProviderInvoker.js": "8dc4e92d76d3a9f6b5b62b4ab573f0b065c83959985ed95690582958ad967429",
+    "extension/src/mcpModelFabricBridge.js": "e9f63b68210e2ec5c29e62d1d80d6948adf0674a604268b5c7d05227daa4b1e2",
+    "extension/tests/gateway-catalog-binding.test.js": "f896203bf94662be66565a2cf277121695bbe824bbc2157199279d27e4b37469",
+    "extension/tests/mcp-client-protocol-audit.test.js": "04be2de3e26a1f210b78c9edc64a8a071f5db2ee382d422861bfb05bbcca779b",
+    "scripts/validate_certification_pipeline.py": "7ed792b39610b3d3ff36e75d8310c0b6a0ce27feaf6235f3c7860d2c50d91dba",
+    "registry/test_profiles.json": "4ef311faacce25a60fcd827c99798d50f01e2ea6a469056efebaa6208edacace"
+  },
+  "evidence": [
+    "docs/repair/evidence/resume10-gateway-binding-green.json",
+    "docs/repair/evidence/resume10-client-protocol-red.json",
+    "docs/repair/evidence/resume10-client-protocol-green.json",
+    "docs/repair/evidence/resume10-actual-native-catalog.json",
+    "docs/repair/evidence/resume10-gateway-preflight.json",
+    "docs/repair/evidence/resume10-governed-agent-gateway.json"
+  ],
+  "observations": [
+    "Actual extension registration now resolves worker provider/model digest and output bounds from native catalog; stale, absent, ambiguous or unavailable profiles disable dispatch. Static display labels are not authority.",
+    "Native AbortSignal is adapted to cancellation token; trailing and newline JSONL share strict terminal receipt handling; asynchronous consumer failures reject the operation.",
+    "51 gateway/billing/context/task/native-bridge checks passed; 29 certification-preflight checks passed. All supervised trees closed.",
+    "Actual native list returned models empty, authority_granted false and remote unconfigured. No admitted model means live agent inference acceptance is unavailable.",
+    "26 mandatory section definitions and 35 required suite paths; governed agent-gateway attempt phaseblocked (historical installed_operational).",
+    "Native JS child process registration/Job custody and fully bounded cancel closure remain incomplete; controlled child framing tests do not certify real process containment."
+  ],
+  "closed": false,
+  "reviewer": "UNASSIGNED"
+}

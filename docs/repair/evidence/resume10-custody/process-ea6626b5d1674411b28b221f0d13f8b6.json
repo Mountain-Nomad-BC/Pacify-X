@@ -1,0 +1,29 @@
+{
+  "action_id": "remote-profile-red",
+  "audit_record_hash": "722d9895aa13ff1eccbbd172f6a45c564f76f517f980eb713c5fe1b23a9dbc81",
+  "duration_seconds": 0.8759349000029033,
+  "ended_at": "2026-10-26T19:50:29.055Z",
+  "exit_code": 1,
+  "failure_type": null,
+  "receipt_id": "process-ea6626b5d1674411b28b221f0d13f8b6",
+  "resource_id": "process-34e18f1cb01a4f94b5cd79846b9b5d26",
+  "schema_version": "px.process-supervision-receipt/1.0",
+  "shutdown_mode": "natural",
+  "started_at": "2026-10-26T19:50:28.179Z",
+  "status": "exited",
+  "stderr": {
+    "decode_error_count": 0,
+    "dropped_bytes": 0,
+    "retained_bytes": 0,
+    "total_bytes": 0,
+    "truncated": false
+  },
+  "stdout": {
+    "decode_error_count": 0,
+    "dropped_bytes": 0,
+    "retained_bytes": 4820,
+    "total_bytes": 4820,
+    "truncated": false
+  },
+  "tree_closed": true
+}

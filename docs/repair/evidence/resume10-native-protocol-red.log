@@ -1,0 +1,305 @@
+F.F...FFFFFFFF..FFFF                                                     [100%]
+================================== FAILURES ===================================
+____________ test_sse_utf8_codepoints_survive_every_byte_boundary _____________
+
+chunks = [b'data: caf\xc3', b'\xa9 \xf0\x9f\x9a\x80\n\n']
+
+    def iter_sse_frames(chunks: Iterable[bytes | str]) -> Iterator[tuple[str | None, str]]:
+        """Parse bounded SSE frames independent of transport chunk boundaries."""
+        buffer = ""
+        event_name: str | None = None
+        data_lines: list[str] = []
+        event_bytes = 0
+    
+        def emit() -> tuple[str | None, str] | None:
+            nonlocal event_name, data_lines, event_bytes
+            if not data_lines:
+                event_name = None
+                event_bytes = 0
+                return None
+            data = "\n".join(data_lines)
+            if len(data.encode("utf-8")) > MAX_SSE_EVENT_BYTES:
+                raise ValueError("SSE event exceeds its byte bound")
+            result = (event_name, data)
+            event_name = None
+            data_lines = []
+            event_bytes = 0
+            return result
+    
+        for chunk in chunks:
+            if isinstance(chunk, bytes):
+                try:
+>                   text = chunk.decode("utf-8")
+                           ^^^^^^^^^^^^^^^^^^^^^
+E                   UnicodeDecodeError: 'utf-8' codec can't decode byte 0xc3 in position 9: unexpected end of data
+
+runtime\model_protocol_translate.py:154: UnicodeDecodeError
+
+The above exception was the direct cause of the following exception:
+
+    def test_sse_utf8_codepoints_survive_every_byte_boundary():
+        raw='data: caf\u00e9 \U0001f680\n\n'.encode()
+        for cut in range(1,len(raw)):
+>           assert list(iter_sse_frames([raw[:cut],raw[cut:]]))==[(None,'caf\u00e9 \U0001f680')]
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_provider_protocol_audit.py:17: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+chunks = [b'data: caf\xc3', b'\xa9 \xf0\x9f\x9a\x80\n\n']
+
+    def iter_sse_frames(chunks: Iterable[bytes | str]) -> Iterator[tuple[str | None, str]]:
+        """Parse bounded SSE frames independent of transport chunk boundaries."""
+        buffer = ""
+        event_name: str | None = None
+        data_lines: list[str] = []
+        event_bytes = 0
+    
+        def emit() -> tuple[str | None, str] | None:
+            nonlocal event_name, data_lines, event_bytes
+            if not data_lines:
+                event_name = None
+                event_bytes = 0
+                return None
+            data = "\n".join(data_lines)
+            if len(data.encode("utf-8")) > MAX_SSE_EVENT_BYTES:
+                raise ValueError("SSE event exceeds its byte bound")
+            result = (event_name, data)
+            event_name = None
+            data_lines = []
+            event_bytes = 0
+            return result
+    
+        for chunk in chunks:
+            if isinstance(chunk, bytes):
+                try:
+                    text = chunk.decode("utf-8")
+                except UnicodeDecodeError as error:
+>                   raise ValueError("SSE stream contains invalid UTF-8") from error
+E                   ValueError: SSE stream contains invalid UTF-8
+
+runtime\model_protocol_translate.py:156: ValueError
+________ test_sse_line_endings_and_chunk_boundaries_are_equivalent[\r] ________
+
+newline = '\r'
+
+    @pytest.mark.parametrize('newline',['\n','\r','\r\n'])
+    def test_sse_line_endings_and_chunk_boundaries_are_equivalent(newline):
+        raw=(newline.join([': comment','event: update','id: ignored','data: one','data: two','','data: next','',''])).encode()
+        expected=[('update','one\ntwo'),(None,'next')]
+        for cut in range(len(raw)+1):
+>           assert list(iter_sse_frames([raw[:cut],raw[cut:]]))==expected
+E           AssertionError: assert [] == [('update', '...None, 'next')]
+E             
+E             Right contains 2 more items, first extra item: ('update', 'one\ntwo')
+E             Use -v to get more diff
+
+tests\test_provider_protocol_audit.py:25: AssertionError
+_______ test_chat_whitespace_is_retained_in_normalized_output_and_hash ________
+
+    def test_chat_whitespace_is_retained_in_normalized_output_and_hash():
+        owner=translator('openai_chat');state=CanonicalStreamState('r','a','m')
+        for value in ['hello',' ','world','\n']:
+            for event in owner.feed_sse(None,json.dumps({'choices':[{'delta':{'content':value}}]})):state.accept(event)
+        for event in owner.feed_sse(None,json.dumps({'choices':[],'usage':{'prompt_tokens':2,'completion_tokens':2}})):state.accept(event)
+        for event in owner.feed_sse(None,'[DONE]'):state.accept(event)
+>       assert state.normalized_output()['text']=='hello world\n'
+E       AssertionError: assert 'helloworld' == 'hello world\n'
+E         
+E         - hello world
+E         ?      -     -
+E         + helloworld
+
+tests\test_provider_protocol_audit.py:39: AssertionError
+___________ test_failed_responses_never_emit_success_finish[failed] ___________
+
+status = 'failed'
+
+    @pytest.mark.parametrize('status',['failed','cancelled','incomplete','in_progress','unknown'])
+    def test_failed_responses_never_emit_success_finish(status):
+        events=translator('openai_responses').feed_sse('response.completed',json.dumps({'type':'response.completed','response':{'status':status,'usage':{'input_tokens':3,'output_tokens':1}}}))
+>       assert events[-1].kind=='error'
+E       AssertionError: assert 'finish' == 'error'
+E         
+E         - error
+E         + finish
+
+tests\test_provider_protocol_audit.py:45: AssertionError
+_________ test_failed_responses_never_emit_success_finish[cancelled] __________
+
+status = 'cancelled'
+
+    @pytest.mark.parametrize('status',['failed','cancelled','incomplete','in_progress','unknown'])
+    def test_failed_responses_never_emit_success_finish(status):
+        events=translator('openai_responses').feed_sse('response.completed',json.dumps({'type':'response.completed','response':{'status':status,'usage':{'input_tokens':3,'output_tokens':1}}}))
+>       assert events[-1].kind=='error'
+E       AssertionError: assert 'finish' == 'error'
+E         
+E         - error
+E         + finish
+
+tests\test_provider_protocol_audit.py:45: AssertionError
+_________ test_failed_responses_never_emit_success_finish[incomplete] _________
+
+status = 'incomplete'
+
+    @pytest.mark.parametrize('status',['failed','cancelled','incomplete','in_progress','unknown'])
+    def test_failed_responses_never_emit_success_finish(status):
+        events=translator('openai_responses').feed_sse('response.completed',json.dumps({'type':'response.completed','response':{'status':status,'usage':{'input_tokens':3,'output_tokens':1}}}))
+>       assert events[-1].kind=='error'
+E       AssertionError: assert 'finish' == 'error'
+E         
+E         - error
+E         + finish
+
+tests\test_provider_protocol_audit.py:45: AssertionError
+________ test_failed_responses_never_emit_success_finish[in_progress] _________
+
+status = 'in_progress'
+
+    @pytest.mark.parametrize('status',['failed','cancelled','incomplete','in_progress','unknown'])
+    def test_failed_responses_never_emit_success_finish(status):
+        events=translator('openai_responses').feed_sse('response.completed',json.dumps({'type':'response.completed','response':{'status':status,'usage':{'input_tokens':3,'output_tokens':1}}}))
+>       assert events[-1].kind=='error'
+E       AssertionError: assert 'finish' == 'error'
+E         
+E         - error
+E         + finish
+
+tests\test_provider_protocol_audit.py:45: AssertionError
+__________ test_failed_responses_never_emit_success_finish[unknown] ___________
+
+status = 'unknown'
+
+    @pytest.mark.parametrize('status',['failed','cancelled','incomplete','in_progress','unknown'])
+    def test_failed_responses_never_emit_success_finish(status):
+        events=translator('openai_responses').feed_sse('response.completed',json.dumps({'type':'response.completed','response':{'status':status,'usage':{'input_tokens':3,'output_tokens':1}}}))
+>       assert events[-1].kind=='error'
+E       AssertionError: assert 'finish' == 'error'
+E         
+E         - error
+E         + finish
+
+tests\test_provider_protocol_audit.py:45: AssertionError
+___ test_anthropic_finish_reason_survives_terminal_usage[max_tokens-length] ___
+
+reason = 'max_tokens', expected = 'length'
+
+    @pytest.mark.parametrize('reason,expected',[('max_tokens','length'),('tool_use','tool_calls'),('end_turn','stop'),('stop_sequence','stop')])
+    def test_anthropic_finish_reason_survives_terminal_usage(reason,expected):
+        owner=translator('anthropic_messages')
+        owner.feed_sse('message_start',json.dumps({'type':'message_start','message':{'usage':{'input_tokens':3}}}))
+        owner.feed_sse('message_delta',json.dumps({'type':'message_delta','delta':{'stop_reason':reason},'usage':{'output_tokens':1}}))
+        events=owner.feed_sse('message_stop',json.dumps({'type':'message_stop'}))
+>       assert events[-1].payload['reason']==expected
+E       AssertionError: assert 'stop' == 'length'
+E         
+E         - length
+E         + stop
+
+tests\test_provider_protocol_audit.py:56: AssertionError
+__ test_anthropic_finish_reason_survives_terminal_usage[tool_use-tool_calls] __
+
+reason = 'tool_use', expected = 'tool_calls'
+
+    @pytest.mark.parametrize('reason,expected',[('max_tokens','length'),('tool_use','tool_calls'),('end_turn','stop'),('stop_sequence','stop')])
+    def test_anthropic_finish_reason_survives_terminal_usage(reason,expected):
+        owner=translator('anthropic_messages')
+        owner.feed_sse('message_start',json.dumps({'type':'message_start','message':{'usage':{'input_tokens':3}}}))
+        owner.feed_sse('message_delta',json.dumps({'type':'message_delta','delta':{'stop_reason':reason},'usage':{'output_tokens':1}}))
+        events=owner.feed_sse('message_stop',json.dumps({'type':'message_stop'}))
+>       assert events[-1].payload['reason']==expected
+E       AssertionError: assert 'stop' == 'tool_calls'
+E         
+E         - tool_calls
+E         + stop
+
+tests\test_provider_protocol_audit.py:56: AssertionError
+_ test_real_gateway_records_failure_not_completed_and_conservatively_settles[failed] _
+
+tmp_path = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.tmp/pytest-resume10-native-protocol-red/test_real_gateway_records_fail0')
+status = 'failed'
+
+    @pytest.mark.parametrize('status',['failed','cancelled','incomplete'])
+    def test_real_gateway_records_failure_not_completed_and_conservatively_settles(tmp_path,status):
+        root=_project(str(tmp_path));path=root/'models/provider-protocols.json'
+        policy=json.loads(path.read_text());policy['adapters'][0]['surfaces']=['openai_responses'];path.write_text(json.dumps(policy))
+        state=tmp_path/'state';state.mkdir();gateway=_gateway(root,state)
+        class Adapter(FakeStreamAdapter):
+            protocol_surface='openai_responses'
+            def stream(self,model,request,control):
+                owner=WireStreamTranslator(surface=self.protocol_surface,request_id=request.request_id,adapter_id=self.adapter_id,model_id=model)
+                yield from owner.feed_sse('response.completed',json.dumps({'type':'response.completed','response':{'id':'upstream','status':status,'usage':{'input_tokens':3,'output_tokens':1}}}))
+        seen=[]
+>       with pytest.raises(ProviderInvocationError):gateway.stream(_request(),Adapter(),seen.append)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ProviderInvocationError
+
+tests\test_provider_protocol_audit.py:71: Failed
+_ test_real_gateway_records_failure_not_completed_and_conservatively_settles[cancelled] _
+
+tmp_path = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.tmp/pytest-resume10-native-protocol-red/test_real_gateway_records_fail1')
+status = 'cancelled'
+
+    @pytest.mark.parametrize('status',['failed','cancelled','incomplete'])
+    def test_real_gateway_records_failure_not_completed_and_conservatively_settles(tmp_path,status):
+        root=_project(str(tmp_path));path=root/'models/provider-protocols.json'
+        policy=json.loads(path.read_text());policy['adapters'][0]['surfaces']=['openai_responses'];path.write_text(json.dumps(policy))
+        state=tmp_path/'state';state.mkdir();gateway=_gateway(root,state)
+        class Adapter(FakeStreamAdapter):
+            protocol_surface='openai_responses'
+            def stream(self,model,request,control):
+                owner=WireStreamTranslator(surface=self.protocol_surface,request_id=request.request_id,adapter_id=self.adapter_id,model_id=model)
+                yield from owner.feed_sse('response.completed',json.dumps({'type':'response.completed','response':{'id':'upstream','status':status,'usage':{'input_tokens':3,'output_tokens':1}}}))
+        seen=[]
+>       with pytest.raises(ProviderInvocationError):gateway.stream(_request(),Adapter(),seen.append)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ProviderInvocationError
+
+tests\test_provider_protocol_audit.py:71: Failed
+_ test_real_gateway_records_failure_not_completed_and_conservatively_settles[incomplete] _
+
+tmp_path = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.tmp/pytest-resume10-native-protocol-red/test_real_gateway_records_fail2')
+status = 'incomplete'
+
+    @pytest.mark.parametrize('status',['failed','cancelled','incomplete'])
+    def test_real_gateway_records_failure_not_completed_and_conservatively_settles(tmp_path,status):
+        root=_project(str(tmp_path));path=root/'models/provider-protocols.json'
+        policy=json.loads(path.read_text());policy['adapters'][0]['surfaces']=['openai_responses'];path.write_text(json.dumps(policy))
+        state=tmp_path/'state';state.mkdir();gateway=_gateway(root,state)
+        class Adapter(FakeStreamAdapter):
+            protocol_surface='openai_responses'
+            def stream(self,model,request,control):
+                owner=WireStreamTranslator(surface=self.protocol_surface,request_id=request.request_id,adapter_id=self.adapter_id,model_id=model)
+                yield from owner.feed_sse('response.completed',json.dumps({'type':'response.completed','response':{'id':'upstream','status':status,'usage':{'input_tokens':3,'output_tokens':1}}}))
+        seen=[]
+>       with pytest.raises(ProviderInvocationError):gateway.stream(_request(),Adapter(),seen.append)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ProviderInvocationError
+
+tests\test_provider_protocol_audit.py:71: Failed
+_____ test_canonical_finish_cannot_launder_explicit_failure_into_success ______
+
+    def test_canonical_finish_cannot_launder_explicit_failure_into_success():
+>       with pytest.raises(ValueError,match='unsuccessful'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests\test_provider_protocol_audit.py:81: Failed
+=========================== short test summary info ===========================
+FAILED tests/test_provider_protocol_audit.py::test_sse_utf8_codepoints_survive_every_byte_boundary
+FAILED tests/test_provider_protocol_audit.py::test_sse_line_endings_and_chunk_boundaries_are_equivalent[\r]
+FAILED tests/test_provider_protocol_audit.py::test_chat_whitespace_is_retained_in_normalized_output_and_hash
+FAILED tests/test_provider_protocol_audit.py::test_failed_responses_never_emit_success_finish[failed]
+FAILED tests/test_provider_protocol_audit.py::test_failed_responses_never_emit_success_finish[cancelled]
+FAILED tests/test_provider_protocol_audit.py::test_failed_responses_never_emit_success_finish[incomplete]
+FAILED tests/test_provider_protocol_audit.py::test_failed_responses_never_emit_success_finish[in_progress]
+FAILED tests/test_provider_protocol_audit.py::test_failed_responses_never_emit_success_finish[unknown]
+FAILED tests/test_provider_protocol_audit.py::test_anthropic_finish_reason_survives_terminal_usage[max_tokens-length]
+FAILED tests/test_provider_protocol_audit.py::test_anthropic_finish_reason_survives_terminal_usage[tool_use-tool_calls]
+FAILED tests/test_provider_protocol_audit.py::test_real_gateway_records_failure_not_completed_and_conservatively_settles[failed]
+FAILED tests/test_provider_protocol_audit.py::test_real_gateway_records_failure_not_completed_and_conservatively_settles[cancelled]
+FAILED tests/test_provider_protocol_audit.py::test_real_gateway_records_failure_not_completed_and_conservatively_settles[incomplete]
+FAILED tests/test_provider_protocol_audit.py::test_canonical_finish_cannot_launder_explicit_failure_into_success
+14 failed, 6 passed in 3.18s
+

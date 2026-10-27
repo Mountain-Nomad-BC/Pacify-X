@@ -1,0 +1,18 @@
+[
+  {
+    "path": "runtime/resource_lifecycle.py",
+    "before_sha256": "363bbe2b458ffbe0966a62df912b822770cde0895124cf80d943fe8c68090b53",
+    "source_sha256": "4b5fea7bf8fe9d5656d451a58bfbd7acb4929ef97c6c3d2567fcf6ae1b3989ea",
+    "after_sha256": "b55c3919ad2996ed8e37a404a1363925ee0b760c64aff7e481b4d6ea25bc7a14",
+    "review": "Reviewed complete diff: native same-handle Job membership, held-child enrollment, physical closure receipts, execution-context fences and failure receipts; bootstrap namespace retained.",
+    "status": "IMPLEMENTED_UNVERIFIED"
+  },
+  {
+    "path": "runtime/process_supervisor.py",
+    "before_sha256": "7f992f4a603224c06320ddc825a3e05a8717ee75986de7062eb8555fe3b21eb9",
+    "source_sha256": "990b30784fc2ae3a8deb0c09f0524c8ec426ad78b69da699b0fda89b378cf08f",
+    "after_sha256": "53bcabb997356f972db194edb7273157e4492036486f56c055f5dcb4965c0886",
+    "review": "Reviewed complete diff: native same-handle Job membership, held-child enrollment, physical closure receipts, execution-context fences and failure receipts; bootstrap namespace retained.",
+    "status": "IMPLEMENTED_UNVERIFIED"
+  }
+]

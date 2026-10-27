@@ -581,7 +581,7 @@ class RecoveryCoordinator:
             for index, callback in enumerate(callbacks):
                 try:
                     detail = dict(callback(apply))
-                    status = "healthy" if detail.get("valid", True) else "blocked"
+                    status = "healthy" if detail.get("valid") is True else "blocked"
                     components.append(
                         self._component(f"{label}[{index}]", status, detail=detail)
                     )
@@ -595,7 +595,7 @@ class RecoveryCoordinator:
         for index, callback in enumerate(self.configuration.resource_reconcilers):
             try:
                 detail = dict(callback(apply))
-                status = "healthy" if detail.get("valid", True) else "degraded"
+                status = "healthy" if detail.get("valid") is True else "degraded"
                 if int(detail.get("cleanup_failures", 0)):
                     status = "blocked"
                 components.append(

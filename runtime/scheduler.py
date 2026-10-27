@@ -6,6 +6,22 @@ from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
 from typing import Mapping
 
+import math
+
+
+def _finite_pressure_value(value, field_name):
+    if value is None:
+        raise ValueError(f"{field_name} is required")
+    if isinstance(value, bool):
+        raise ValueError(f"{field_name} must be a number, not bool")
+    try:
+        num = float(value)
+    except (TypeError, ValueError):
+        raise ValueError(f"{field_name} must be a finite number")
+    if not math.isfinite(num):
+        raise ValueError(f"{field_name} must be finite")
+    return num
+
 
 @dataclass(frozen=True, slots=True)
 class ResourcePolicy:
@@ -55,22 +71,39 @@ class ResourceScheduler:
             return Admission(False, "unknown lane")
         if work_id in self._lanes:
             return Admission(False, "work is already admitted")
-        if float(snapshot.get("memory_percent", 0)) >= self.policy.max_memory_percent:
+        memory_percent = _finite_pressure_value(snapshot.get("memory_percent"), "memory_percent")
+        gpu_percent = _finite_pressure_value(snapshot.get("gpu_percent"), "gpu_percent")
+        wsl_memory_percent = _finite_pressure_value(snapshot.get("wsl_memory_percent"), "wsl_memory_percent")
+        docker_memory_percent = _finite_pressure_value(snapshot.get("docker_memory_percent"), "docker_memory_percent")
+        _missing = object()
+        agents_raw = snapshot.get("agents", _missing)
+        if agents_raw is _missing:
+            agents = len(self._workers)
+        else:
+            agents = _finite_pressure_value(agents_raw, "agents")
+        if memory_percent >= self.policy.max_memory_percent:
             return Admission(False, "memory pressure threshold reached")
-        if float(snapshot.get("gpu_percent", 0)) >= self.policy.max_gpu_percent:
+        if gpu_percent >= self.policy.max_gpu_percent:
             return Admission(False, "GPU pressure threshold reached")
-        if (
-            float(snapshot.get("wsl_memory_percent", 0))
-            >= self.policy.max_wsl_memory_percent
-        ):
+        if wsl_memory_percent >= self.policy.max_wsl_memory_percent:
             return Admission(False, "WSL memory pressure threshold reached")
-        if (
-            float(snapshot.get("docker_memory_percent", 0))
-            >= self.policy.max_docker_memory_percent
-        ):
+        if docker_memory_percent >= self.policy.max_docker_memory_percent:
             return Admission(False, "Docker memory pressure threshold reached")
+        def _normalize_path(path: str) -> str:
+            parts = path.replace("\\", "/").split("/")
+            resolved = []
+            for part in parts:
+                if part == "" or part == ".":
+                    continue
+                if part == "..":
+                    if resolved and resolved[-1] != "..":
+                        resolved.pop()
+                    continue
+                resolved.append(part)
+            return "/".join(resolved).casefold().rstrip("/")
+
         normalized_paths = frozenset(
-            path.replace("\\", "/").casefold().rstrip("/") for path in owned_paths
+            _normalize_path(path) for path in owned_paths
         )
         for owner, existing in self._ownership.items():
             if any(
@@ -88,7 +121,7 @@ class ResourceScheduler:
         )
         if sum(value == lane for value in self._lanes.values()) >= limit:
             return Admission(False, f"{lane} lane is serialized")
-        if int(snapshot.get("agents", len(self._workers))) >= self.policy.max_agents:
+        if agents >= self.policy.max_agents:
             return Admission(False, "agent budget reached")
         self._lanes[work_id] = lane
         self._ownership[work_id] = normalized_paths
@@ -132,8 +165,9 @@ class ResourceScheduler:
             work_id = self._assignments.pop(worker, None)
             self._workers.pop(worker, None)
             if work_id is not None:
-                self.release(work_id)
-                recovered.append(work_id)
+                if not any(assigned == work_id for assigned in self._assignments.values()):
+                    self.release(work_id)
+                    recovered.append(work_id)
         return tuple(sorted(recovered))
 
     def snapshot(self, now: datetime | None = None) -> dict[str, object]:

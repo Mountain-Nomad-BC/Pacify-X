@@ -1,0 +1,24 @@
+....FF.................FFF.                                              [100%]
+================================== FAILURES ===================================
+E   AssertionError: ["duplicate_logic: unreviewed duplicate logic group: ['px/py_cert/scripts/build_release_successor_configs.py:76:_sha25...ntracts: contracts/cancellation-scope.schema.json: $/properties/project_id: unsupported schema keyword maxLength', ...]
+    assert not ["duplicate_logic: unreviewed duplicate logic group: ['px/py_cert/scripts/build_release_successor_configs.py:76:_sha25...ntracts: contracts/cancellation-scope.schema.json: $/properties/project_id: unsupported schema keyword maxLength', ...]
+C:\Users\Ben\Documents\bootstrap_project\Pacify-X\tests\test_structural_integrity.py:142: AssertionError: ["duplicate_logic: unreviewed duplicate logic group: ['px/py_cert/scripts/build_release_successor_configs.py:76:_sha25...ntracts: contracts/cancellation-scope.schema.json: $/properties/project_id: unsupported schema keyword maxLength', ...]
+E   assert False
+     +  where False = all(<generator object test_hash_ledger_head_and_anchor_are_a_reviewed_exact_projection.<locals>.<genexpr> at 0x0000024201EF7510>)
+C:\Users\Ben\Documents\bootstrap_project\Pacify-X\tests\test_structural_integrity.py:158: assert False
+E   AssertionError: assert 'unreviewed' == 'expanded-rel...gest-adapters'
+      
+      - expanded-release-digest-adapters
+      + unreviewed
+C:\Users\Ben\Documents\bootstrap_project\Pacify-X\tests\test_structural_integrity.py:420: AssertionError: assert 'unreviewed' == 'expanded-rel...gest-adapters'
+E   ValueError: contract has no ownership rule: contracts/cancellation-scope.schema.json
+C:\Users\Ben\Documents\bootstrap_project\Pacify-X\scripts\build_contract_ownership_registry.py:748: ValueError: contract has no ownership rule: contracts/cancellation-scope.schema.json
+E   ValueError: contract has no ownership rule: contracts/cancellation-scope.schema.json
+C:\Users\Ben\Documents\bootstrap_project\Pacify-X\scripts\build_contract_ownership_registry.py:748: ValueError: contract has no ownership rule: contracts/cancellation-scope.schema.json
+=========================== short test summary info ===========================
+FAILED tests/test_structural_integrity.py::test_structural_integrity_has_closed_denominators
+FAILED tests/test_structural_integrity.py::test_hash_ledger_head_and_anchor_are_a_reviewed_exact_projection
+FAILED tests/test_structural_integrity.py::test_release_owner_digest_and_json_helpers_are_reviewed
+FAILED tests/test_contract_ownership_registry_source.py::test_build_needs_no_published_registry
+FAILED tests/test_contract_ownership_registry_source.py::test_every_contract_has_an_explicit_rule
+5 failed, 22 passed in 1268.39s (0:21:08)

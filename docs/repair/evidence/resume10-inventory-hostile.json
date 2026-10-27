@@ -1,0 +1,22 @@
+{
+  "command": [
+    "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.venv-repair\\Scripts\\python.exe",
+    "-m",
+    "pytest",
+    "tests/test_rollout_inventory.py",
+    "tests/test_secure_publish.py",
+    "tests/test_secure_publish_operating.py",
+    "tests/test_certification_pipeline_readiness.py",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "--basetemp=.tmp/pytest-resume10-inventory-hostile"
+  ],
+  "exit_code": 0,
+  "tree_closed": true,
+  "resource_inactive": true,
+  "receipt": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.tmp\\resume10\\owned\\cleanup-receipts\\process-aa53221f1b0b492bae6e738719d8d5a3.json",
+  "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.tmp\\resume10\\owned\\pacifyx-fyct71_x",
+  "log": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\docs\\repair\\evidence\\resume10-inventory-hostile.log",
+  "log_sha256": "b84ff987109f0f15af5b7549d5b92b04af6d62c4572146b6206c8c935680ea7a"
+}

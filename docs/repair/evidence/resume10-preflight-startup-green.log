@@ -1,0 +1,98 @@
+...................................................F.................... [ 54%]
+............................................................             [100%]
+================================== FAILURES ===================================
+______ test_abrupt_outer_owner_death_kills_tree_and_reconciles_workspace ______
+
+tmp_path = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.tmp/pytest-resume10-preflight-startup-green/test_abrupt_outer_owner_death_0')
+
+    @pytest.mark.skipif(os.name != "nt", reason="Windows Job Object proof")
+    def test_abrupt_outer_owner_death_kills_tree_and_reconciles_workspace(
+        tmp_path: Path,
+    ) -> None:
+        ledger_path = tmp_path / "resource-ledger.json"
+        receipt_dir = tmp_path / "cleanup-receipts"
+        child_pid_path = tmp_path / "governed-child.pid"
+        nested_test = tmp_path / "test_abrupt_child.py"
+        nested_test.write_text(
+            "import os\n"
+            "from pathlib import Path\n"
+            "import time\n\n"
+            "def test_waits_for_abrupt_owner_death():\n"
+            "    target = Path(os.environ['PX_ABRUPT_CHILD_PID'])\n"
+            "    prepared = target.with_name(target.name + '.prepared')\n"
+            "    with prepared.open('x', encoding='utf-8') as stream:\n"
+            "        stream.write(str(os.getpid()))\n"
+            "        stream.flush()\n"
+            "        os.fsync(stream.fileno())\n"
+            "    os.replace(prepared, target)\n"
+            "    print('abrupt-child-ready', flush=True)\n"
+            "    time.sleep(120)\n",
+            encoding="utf-8",
+        )
+        outer_script = tmp_path / "abrupt_outer_owner.py"
+        outer_script.write_text(
+            "import os\n"
+            "from pathlib import Path\n"
+            "import sys\n"
+            "from runtime.resource_lifecycle import ResourceManager\n"
+            "from runtime.test_runner import run_test_command\n\n"
+            "manager = ResourceManager(Path(sys.argv[1]), receipt_dir=Path(sys.argv[2]))\n"
+            "run_test_command(\n"
+            "    [sys.executable, '-m', 'pytest', '-q', sys.argv[3]],\n"
+            "    cwd=Path(sys.argv[4]),\n"
+            "    environment=os.environ,\n"
+            "    timeout_seconds=120,\n"
+            "    resource_manager=manager,\n"
+            "    run_id='abrupt-owner-drill',\n"
+            "    lane_id='governed-section-chunk',\n"
+            ")\n",
+            encoding="utf-8",
+        )
+        outer = subprocess.Popen(
+            [
+                sys.executable,
+                str(outer_script),
+                str(ledger_path),
+                str(receipt_dir),
+                str(nested_test),
+                str(ROOT),
+            ],
+            cwd=ROOT,
+            env={
+                **os.environ,
+                "PYTHONPATH": os.pathsep.join(
+                    filter(None, (str(ROOT), os.environ.get("PYTHONPATH", "")))
+                ),
+                "PX_ABRUPT_CHILD_PID": str(child_pid_path),
+            },
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+            shell=False,
+        )
+        try:
+            deadline = time.monotonic() + 30
+            while time.monotonic() < deadline and not child_pid_path.exists():
+                if outer.poll() is not None:
+                    stdout, stderr = outer.communicate()
+>                   pytest.fail(f"outer owner exited before child readiness: {stdout} {stderr}")
+E                   Failed: outer owner exited before child readiness:  Traceback (most recent call last):
+E                     File "C:\Users\Ben\Documents\bootstrap_project\Pacify-X\.tmp\pytest-resume10-preflight-startup-green\test_abrupt_outer_owner_death_0\abrupt_outer_owner.py", line 8, in <module>
+E                       run_test_command(
+E                       ~~~~~~~~~~~~~~~~^
+E                           [sys.executable, '-m', 'pytest', '-q', sys.argv[3]],
+E                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E                       ...<5 lines>...
+E                           lane_id='governed-section-chunk',
+E                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E                       )
+E                       ^
+E                     File "C:\Users\Ben\Documents\bootstrap_project\Pacify-X\runtime\test_runner.py", line 152, in run_test_command
+E                       raise ValueError("test environment cannot override collection or startup")
+E                   ValueError: test environment cannot override collection or startup
+
+tests\test_test_runner_controls.py:462: Failed
+=========================== short test summary info ===========================
+FAILED tests/test_test_runner_controls.py::test_abrupt_outer_owner_death_kills_tree_and_reconciles_workspace
+1 failed, 131 passed in 44.08s
+

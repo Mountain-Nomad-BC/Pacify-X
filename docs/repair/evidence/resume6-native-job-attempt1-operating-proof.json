@@ -1,0 +1,45 @@
+{
+  "schema_version": "px.native-job-operating-proof/1.0",
+  "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.tmp\\owned-host-probes\\pacifyx-152v647c",
+  "certification": false,
+  "passed": false,
+  "observations": {},
+  "source_sha256": {
+    "runtime/process_supervisor.py": "53bcabb997356f972db194edb7273157e4492036486f56c055f5dcb4965c0886",
+    "runtime/resource_lifecycle.py": "b55c3919ad2996ed8e37a404a1363925ee0b760c64aff7e481b4d6ea25bc7a14",
+    "runtime/gremlin/host_enforcement_backend.py": "a8d82b5d5dc5563fd694ee4ffbcd6b1cc43783a447d4b74517f9548b753ee68c",
+    "scripts/probe_native_job_containment.py": "bf2e93ad44e984616e38c7c717bb65d3f7dbd72d372a485394bc62ab66b1f25b"
+  },
+  "error": "Traceback (most recent call last):\n  File \"C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\scripts\\probe_native_job_containment.py\", line 86, in main\n    raise AssertionError(f\"kernel membership mismatch {actual ^ expected}\")\nAssertionError: kernel membership mismatch {22016, 22020, 20996, 25092, 24836, 24328, 21000, 23312, 23568, 5652, 4128, 24608, 25120, 13092, 24868, 22312, 15660, 18232, 21048, 20796, 22588, 24640, 5188, 24900, 25160, 23628, 21580, 16460, 22608, 24404, 24676, 4964, 10596, 24932, 21876, 25204, 23928, 22648, 21372, 13444, 24196, 24708, 12164, 15240, 19332, 24964, 21904, 23960, 23456, 24740, 24996, 24496, 10160, 24772, 22468, 22220, 22988, 25036, 6616, 21720, 20700, 21728, 15592, 16364, 24812, 22260, 21748, 13044}\n",
+  "supervisor_thread_closed": true,
+  "process_result": {
+    "action_id": "resume6-native-job-proof",
+    "resource_id": "process-1632608cbab64300812c8c2e01b46ee3",
+    "status": "cancelled",
+    "exit_code": 137,
+    "started_at": "2026-10-26T03:03:04.238Z",
+    "ended_at": "2026-10-26T03:03:12.655Z",
+    "duration_seconds": 8.416711000005307,
+    "stdout": {
+      "text": "ready\r\n",
+      "total_bytes": 7,
+      "retained_bytes": 7,
+      "dropped_bytes": 0,
+      "decode_error_count": 0,
+      "truncated": false
+    },
+    "stderr": {
+      "text": "",
+      "total_bytes": 0,
+      "retained_bytes": 0,
+      "dropped_bytes": 0,
+      "decode_error_count": 0,
+      "truncated": false
+    },
+    "shutdown_mode": "graceful",
+    "tree_closed": true,
+    "failure_type": null,
+    "audit_record_hash": "1dc1da3bc391d849c4326c75372110dcd74f61c345bb4598c009deb01a118627",
+    "receipt_path": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.tmp\\owned-host-probes\\cleanup-receipts\\process-942bfa4fd4bd4e83ac50996fc01e3df8.json"
+  }
+}

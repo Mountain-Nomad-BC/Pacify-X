@@ -176,10 +176,10 @@
       "violations": []
     },
     {
-      "bytes": 12032,
+      "bytes": 12769,
       "path": "runtime/bounded_walk.py",
       "scan_state": "verified",
-      "sha256": "fea8afc12aaac4dda6ff6210b24a33b352b3679b23abbddca751db0175f54863",
+      "sha256": "98090f9580a55f315d99231cd35dfb3fd1185bcfc115bbd911855d3f224be9d6",
       "violations": []
     },
     {
@@ -187,6 +187,13 @@
       "path": "runtime/build_claims.py",
       "scan_state": "verified",
       "sha256": "2ed92159a71a4c15c2a0581c6b975f37c7bbd19103ff000a58b9901273cadad2",
+      "violations": []
+    },
+    {
+      "bytes": 6700,
+      "path": "runtime/cancellation_scope.py",
+      "scan_state": "verified",
+      "sha256": "83674bcdb52d0eb4dc632ac2f2aed53bc9380536eab1013dd12e67d7aa17d958",
       "violations": []
     },
     {
@@ -243,6 +250,13 @@
       "path": "runtime/change_classification.py",
       "scan_state": "verified",
       "sha256": "84ef96f7b4b13ff144b2db4b4a965d6a6cb28104f7287a3dd3263bdeae9b1d46",
+      "violations": []
+    },
+    {
+      "bytes": 8307,
+      "path": "runtime/chat_context.py",
+      "scan_state": "verified",
+      "sha256": "53b8ccd4efada85eccb715f9b0c4ab2ac09a8cb13749c7e0141a8bbbd1464d50",
       "violations": []
     },
     {
@@ -414,6 +428,13 @@
       "violations": []
     },
     {
+      "bytes": 14126,
+      "path": "runtime/containment_invariants.py",
+      "scan_state": "verified",
+      "sha256": "f7892bac556d16f21c811ee4b5bf17476e1033116667f5832943c122a195be08",
+      "violations": []
+    },
+    {
       "bytes": 7185,
       "path": "runtime/context_checkpoint.py",
       "scan_state": "verified",
@@ -421,10 +442,17 @@
       "violations": []
     },
     {
-      "bytes": 38215,
+      "bytes": 5473,
+      "path": "runtime/context_generation.py",
+      "scan_state": "verified",
+      "sha256": "60cd507495427c935b130339e9b5bee00332cd4092b5f981ee38e7b42b72d443",
+      "violations": []
+    },
+    {
+      "bytes": 39734,
       "path": "runtime/contracts.py",
       "scan_state": "verified",
-      "sha256": "71dce33cb6dd899fc0ee1033ce36f1f8afb2bfdfe007ae3f9862504cd0649770",
+      "sha256": "ce1661e0ea992a404f648fd9716bf07b27ac89a519f9decda2e244667608a76a",
       "violations": []
     },
     {
@@ -477,10 +505,17 @@
       "violations": []
     },
     {
-      "bytes": 16090,
+      "bytes": 3053,
+      "path": "runtime/dependency_identity.py",
+      "scan_state": "verified",
+      "sha256": "80cfe724119d7ede36653a4aa736ade4a26e3a17d6b952d5bc58d2a78faec38f",
+      "violations": []
+    },
+    {
+      "bytes": 18826,
       "path": "runtime/dependency_invalidation.py",
       "scan_state": "verified",
-      "sha256": "9eda4329c175795226f480d7b6b697c9cc0750c93563daffa09204ac0aa05cbc",
+      "sha256": "1ae5134922f9afda950b472bf4bc4150613c4d0a8bfd5dd8f170d3554bcfe483",
       "violations": []
     },
     {
@@ -512,6 +547,13 @@
       "violations": []
     },
     {
+      "bytes": 14683,
+      "path": "runtime/effect_intent.py",
+      "scan_state": "verified",
+      "sha256": "b4654b46403a5c8758aa899b171b515584100f42c90443d819e166d778fd2fa8",
+      "violations": []
+    },
+    {
       "bytes": 11259,
       "path": "runtime/effect_surface.py",
       "scan_state": "verified",
@@ -540,10 +582,17 @@
       "violations": []
     },
     {
-      "bytes": 14576,
+      "bytes": 10461,
+      "path": "runtime/engineering_os_paths.py",
+      "scan_state": "verified",
+      "sha256": "7d50d633fa7c4fe34a59e06bea191e02674b469cb22b8cbef785748dba6d803c",
+      "violations": []
+    },
+    {
+      "bytes": 17367,
       "path": "runtime/event_ledger.py",
       "scan_state": "verified",
-      "sha256": "233fa1f3723ec9163113d9592401017d95faa1530d0b9297ead755eb6889acf4",
+      "sha256": "f6232a09035947f18bf8e3b5b1bb0c74c1b857eff56e1c5fb90d2fdb1aaceabe",
       "violations": []
     },
     {
@@ -600,6 +649,13 @@
       "path": "runtime/exact_tool_certification.py",
       "scan_state": "verified",
       "sha256": "817f21bae2f254a406db8f0d094bfe400a0e79d9c618540a8100092bb699afe1",
+      "violations": []
+    },
+    {
+      "bytes": 7058,
+      "path": "runtime/execution_context.py",
+      "scan_state": "verified",
+      "sha256": "977df7db44776bb0c2858cbf6d98577778fdfc909b3a0703c2fc4c7283893a28",
       "violations": []
     },
     {
@@ -715,10 +771,178 @@
       "violations": []
     },
     {
-      "bytes": 4600,
+      "bytes": 1452,
+      "path": "runtime/gremlin/__init__.py",
+      "scan_state": "verified",
+      "sha256": "930aea6c417536ee79aefa832b50389ee51268d5dc9b8f1a89cc697137602ed6",
+      "violations": []
+    },
+    {
+      "bytes": 9956,
+      "path": "runtime/gremlin/admin.py",
+      "scan_state": "verified",
+      "sha256": "4792f40c2f1e64af47f599848156ce40f9c1c263b812e893095ddfb74ed5d4ed",
+      "violations": []
+    },
+    {
+      "bytes": 4661,
+      "path": "runtime/gremlin/audit.py",
+      "scan_state": "verified",
+      "sha256": "38d493c650b74f2858eb194866b2f0fa75651c8d353ae920cc2b85819eaa8bfb",
+      "violations": []
+    },
+    {
+      "bytes": 10035,
+      "path": "runtime/gremlin/authorization.py",
+      "scan_state": "verified",
+      "sha256": "d33a0f8420a74dc67de2ab0ce3f6f4b3bbf91f126e6e6efce5985962cbb82689",
+      "violations": []
+    },
+    {
+      "bytes": 1189,
+      "path": "runtime/gremlin/commissioning.py",
+      "scan_state": "verified",
+      "sha256": "7cd7ff622f056044962c57b52ff2d13140e8bacddfa1d9792de0e1df9d871609",
+      "violations": []
+    },
+    {
+      "bytes": 7019,
+      "path": "runtime/gremlin/composition.py",
+      "scan_state": "verified",
+      "sha256": "13669bc0acb5d46bb4ca6b683a291d8a03d68cd7345ff04b76bb49952d6776a8",
+      "violations": []
+    },
+    {
+      "bytes": 36995,
+      "path": "runtime/gremlin/containment.py",
+      "scan_state": "verified",
+      "sha256": "67759c8d8a24b17c3917da3fd2451ed43f3c53ff75a489d6ef8a968a90fe5aab",
+      "violations": []
+    },
+    {
+      "bytes": 4923,
+      "path": "runtime/gremlin/deviation.py",
+      "scan_state": "verified",
+      "sha256": "f8b6c6353af4417cc9415c26366160e24594a8f7184a7ddc34be9ca5c03f790c",
+      "violations": []
+    },
+    {
+      "bytes": 13293,
+      "path": "runtime/gremlin/enrollment.py",
+      "scan_state": "verified",
+      "sha256": "ff93c1bc498653cc50a3d41f8ec9944e96e9f7caff5a7c9e05e50bb562a398ed",
+      "violations": []
+    },
+    {
+      "bytes": 4875,
+      "path": "runtime/gremlin/events.py",
+      "scan_state": "verified",
+      "sha256": "15301d12ff6252dc27ae5a58cd35d9a2d67e24191093e2b30010633030d62f2a",
+      "violations": []
+    },
+    {
+      "bytes": 3905,
+      "path": "runtime/gremlin/health.py",
+      "scan_state": "verified",
+      "sha256": "6037d63fa737ed1b7567009320bfd947eed039b4c6e874b6448086b319d7db22",
+      "violations": []
+    },
+    {
+      "bytes": 5002,
+      "path": "runtime/gremlin/host_configuration.py",
+      "scan_state": "verified",
+      "sha256": "69033e480a930e47b3e9a02538c96adae71b506b6b36d2e476904684719c6cc0",
+      "violations": []
+    },
+    {
+      "bytes": 8325,
       "path": "runtime/gremlin/host_enforcement_backend.py",
       "scan_state": "verified",
-      "sha256": "2d7058287ad3ec9ef81acd81565d38cc1e4b61cba48426b961d3ec26aea42dd4",
+      "sha256": "a8d82b5d5dc5563fd694ee4ffbcd6b1cc43783a447d4b74517f9548b753ee68c",
+      "violations": []
+    },
+    {
+      "bytes": 3839,
+      "path": "runtime/gremlin/host_process_observer.py",
+      "scan_state": "verified",
+      "sha256": "8336430a4394f0b7986e4639b1e8e14699a878759a372dc99719fd25a16c62b8",
+      "violations": []
+    },
+    {
+      "bytes": 3859,
+      "path": "runtime/gremlin/identity.py",
+      "scan_state": "verified",
+      "sha256": "85ad2da05b0b27d80eb42890e652d5bceea1f7c33940f8c3f110823258bb1080",
+      "violations": []
+    },
+    {
+      "bytes": 4090,
+      "path": "runtime/gremlin/intervention.py",
+      "scan_state": "verified",
+      "sha256": "636b78f232f6785f1e4f8589692dfa6da2c428b6e6b22d46fccd9669c24ce379",
+      "violations": []
+    },
+    {
+      "bytes": 3231,
+      "path": "runtime/gremlin/observers.py",
+      "scan_state": "verified",
+      "sha256": "6e39c187b0f2a86e8630df45ebeeeb9d54c183e3908839bdd550df652c3760d6",
+      "violations": []
+    },
+    {
+      "bytes": 9469,
+      "path": "runtime/gremlin/policy.py",
+      "scan_state": "verified",
+      "sha256": "dc7ff798d03ce30bc554055d443680dcfff9c8b8cf209b01ecea1afad4f0420b",
+      "violations": []
+    },
+    {
+      "bytes": 6564,
+      "path": "runtime/gremlin/receipts.py",
+      "scan_state": "verified",
+      "sha256": "d6888986459cff818b1a803d2ca535b9493405f5b0dc3f5eac0f51695049f55f",
+      "violations": []
+    },
+    {
+      "bytes": 23161,
+      "path": "runtime/gremlin/recovery_authority.py",
+      "scan_state": "verified",
+      "sha256": "e68b313a45f8ed69f70529d6f85d22b820f8d1b111bd505e39c5e8acddf92985",
+      "violations": []
+    },
+    {
+      "bytes": 2970,
+      "path": "runtime/gremlin/recovery_verifier_console.py",
+      "scan_state": "verified",
+      "sha256": "1cc1ee659d1d9f330c3d2b0d1a0b8657082a933f8022e4215c95991e0112ddf4",
+      "violations": []
+    },
+    {
+      "bytes": 9072,
+      "path": "runtime/gremlin/registry.py",
+      "scan_state": "verified",
+      "sha256": "23c5cfd1d5e719584736cff225172849aa0436871246bf99e3196f979bb2ee2f",
+      "violations": []
+    },
+    {
+      "bytes": 20199,
+      "path": "runtime/gremlin/runtime_identity.py",
+      "scan_state": "verified",
+      "sha256": "2b1488da37399785667b73a632f32c958b343e70b481db31e4ffd8e3984e8541",
+      "violations": []
+    },
+    {
+      "bytes": 4899,
+      "path": "runtime/gremlin/supervisor.py",
+      "scan_state": "verified",
+      "sha256": "8d0c001ac5464cc7ea195e64b92346a080a309e37016952278646ca13441f4ad",
+      "violations": []
+    },
+    {
+      "bytes": 11683,
+      "path": "runtime/guarded_registry_projection.py",
+      "scan_state": "verified",
+      "sha256": "98e24c3655f91648cd9e058263e980a4c45db6315d56eec2e35e93112943182c",
       "violations": []
     },
     {
@@ -726,6 +950,13 @@
       "path": "runtime/hardware_routing.py",
       "scan_state": "verified",
       "sha256": "791ecc2ced6e8dfb90237ea5495c870c190e40bb7c6fcf23a98910e6c5c9ad6e",
+      "violations": []
+    },
+    {
+      "bytes": 1014,
+      "path": "runtime/hash_utils.py",
+      "scan_state": "verified",
+      "sha256": "a86b6416c06b38061b3df01ae9f52175c20468cac57e05af9445e2269400bcc4",
       "violations": []
     },
     {
@@ -782,6 +1013,13 @@
       "path": "runtime/integration_registry.py",
       "scan_state": "verified",
       "sha256": "45a759a3dc029ff7d8219b3e173b5bfa68265efe8dffb845b08718e1594e379f",
+      "violations": []
+    },
+    {
+      "bytes": 20014,
+      "path": "runtime/isolated_sandbox.py",
+      "scan_state": "verified",
+      "sha256": "60a800f7470a11de0952b58104325bafb52d6291013c3e5723a1919aba2a816c",
       "violations": []
     },
     {
@@ -1184,6 +1422,27 @@
       "violations": []
     },
     {
+      "bytes": 80371,
+      "path": "runtime/mutating_producer_custody_reviewed.py",
+      "scan_state": "verified",
+      "sha256": "b18c1a319984c63f4b9bbc20b6e0e5c1ce05528d52616332a916eb2cf20c9cf7",
+      "violations": []
+    },
+    {
+      "bytes": 19640,
+      "path": "runtime/mutating_producer_registry.py",
+      "scan_state": "verified",
+      "sha256": "2a1382dcdac258c09f677e8e40cabdb923f830ad97d9291a678a149563a8b782",
+      "violations": []
+    },
+    {
+      "bytes": 9929,
+      "path": "runtime/mutation_queue.py",
+      "scan_state": "verified",
+      "sha256": "85814ffe5f9e5224046bbc5ffc1f00d6873c06a8008335b9cc2601c42ade28d3",
+      "violations": []
+    },
+    {
       "bytes": 33257,
       "path": "runtime/native_skills.py",
       "scan_state": "verified",
@@ -1191,10 +1450,10 @@
       "violations": []
     },
     {
-      "bytes": 19996,
+      "bytes": 19964,
       "path": "runtime/nsai_knowledge.py",
       "scan_state": "verified",
-      "sha256": "5c8453a73dfab036e9b77ac6df79fb32a9f6ef2fb1d6fd43684c32072f90e274",
+      "sha256": "3193e22d59e748cad88a0d2925290cca82c436bdd60b365ffa7578f69c236dca",
       "violations": []
     },
     {
@@ -1233,10 +1492,10 @@
       "violations": []
     },
     {
-      "bytes": 20898,
+      "bytes": 22632,
       "path": "runtime/operational_event_bus.py",
       "scan_state": "verified",
-      "sha256": "c62e41dbbfb1b3c8c12ed7d679b1cd92b64be41f991092bb6974af3d2e44a6bf",
+      "sha256": "f750f4d7b45c2de284b53a01c833f633a76a60105a96bcc25583265b9e05d3d5",
       "violations": []
     },
     {
@@ -1303,6 +1562,13 @@
       "violations": []
     },
     {
+      "bytes": 97514,
+      "path": "runtime/plan_registry.py",
+      "scan_state": "verified",
+      "sha256": "30ad5e5275e11b2a8633065b92bcc304bfde19a1af24a5ef1bf03b8d0afd2bd3",
+      "violations": []
+    },
+    {
       "bytes": 3836,
       "path": "runtime/planner.py",
       "scan_state": "verified",
@@ -1321,6 +1587,13 @@
       "path": "runtime/portable_audit_bundle.py",
       "scan_state": "verified",
       "sha256": "8d87a79e763ee82471785045564f0f4c3332abc283ced8c82c78cbef99240a64",
+      "violations": []
+    },
+    {
+      "bytes": 3104,
+      "path": "runtime/prepared_group_transport.py",
+      "scan_state": "verified",
+      "sha256": "6a88c677fecbaa86d5d175fbb7fa403e8638f84111ef039ca2eddceae45a1320",
       "violations": []
     },
     {
@@ -1345,10 +1618,10 @@
       "violations": []
     },
     {
-      "bytes": 69672,
+      "bytes": 82040,
       "path": "runtime/process_supervisor.py",
       "scan_state": "verified",
-      "sha256": "7f992f4a603224c06320ddc825a3e05a8717ee75986de7062eb8555fe3b21eb9",
+      "sha256": "53bcabb997356f972db194edb7273157e4492036486f56c055f5dcb4965c0886",
       "violations": []
     },
     {
@@ -1447,6 +1720,13 @@
       "path": "runtime/projection_dependencies.py",
       "scan_state": "verified",
       "sha256": "39e9af73b09cab2496b3a597cc6240e5927a3c59af037cbf2399fd428ecdfc38",
+      "violations": []
+    },
+    {
+      "bytes": 8920,
+      "path": "runtime/projection_gate.py",
+      "scan_state": "verified",
+      "sha256": "b4648220bdf1c7f31242fa8bb735c630a62ca2ccd4b32b10bdbfcf01cb45948b",
       "violations": []
     },
     {
@@ -1562,6 +1842,13 @@
       "violations": []
     },
     {
+      "bytes": 2850,
+      "path": "runtime/release_current_acceptance.py",
+      "scan_state": "verified",
+      "sha256": "7dbe453e39bc60f85b82cc37a622aef745b9edf41b6911c4e54321bfffaac6ec",
+      "violations": []
+    },
+    {
       "bytes": 68912,
       "path": "runtime/release_distribution.py",
       "scan_state": "verified",
@@ -1597,6 +1884,13 @@
       "violations": []
     },
     {
+      "bytes": 10396,
+      "path": "runtime/release_process_custody.py",
+      "scan_state": "verified",
+      "sha256": "ee603c7c1245ce2196e96bf6eb3b42bf4c2815e57d2d7b37259e55b0a4e5c493",
+      "violations": []
+    },
+    {
       "bytes": 1424,
       "path": "runtime/release_repository_context.py",
       "scan_state": "verified",
@@ -1615,6 +1909,20 @@
       "path": "runtime/release_skip_policy.py",
       "scan_state": "verified",
       "sha256": "53009b4afc494d3dd8fe285ddcecdd4dd46de01a79f50567b6c18283ec75ec7c",
+      "violations": []
+    },
+    {
+      "bytes": 6985,
+      "path": "runtime/release_source_identity.py",
+      "scan_state": "verified",
+      "sha256": "c481ec51069da35f5eeae20dd523f599282131a8c2e99293a04186c70912421b",
+      "violations": []
+    },
+    {
+      "bytes": 9956,
+      "path": "runtime/remote_model_bridge.py",
+      "scan_state": "verified",
+      "sha256": "1555ed7ecf959c925e69d1ba9c01409196a47bb8a3051af635e426fc3cf468e8",
       "violations": []
     },
     {
@@ -1639,10 +1947,10 @@
       "violations": []
     },
     {
-      "bytes": 103968,
+      "bytes": 120288,
       "path": "runtime/resource_lifecycle.py",
       "scan_state": "verified",
-      "sha256": "363bbe2b458ffbe0966a62df912b822770cde0895124cf80d943fe8c68090b53",
+      "sha256": "b55c3919ad2996ed8e37a404a1363925ee0b760c64aff7e481b4d6ea25bc7a14",
       "violations": []
     },
     {
@@ -1702,6 +2010,13 @@
       "violations": []
     },
     {
+      "bytes": 18554,
+      "path": "runtime/scope_lease.py",
+      "scan_state": "verified",
+      "sha256": "61337e6e272f5fe7b7576305ee11dbb66b69d93ee885dba340bad77b253bd746",
+      "violations": []
+    },
+    {
       "bytes": 18754,
       "path": "runtime/secret_scanning.py",
       "scan_state": "verified",
@@ -1713,6 +2028,13 @@
       "path": "runtime/section_scheduler.py",
       "scan_state": "verified",
       "sha256": "110d519a248e4e30b44126dbce7cb6d0fb7d39f2874b4b1f34bff7566e428342",
+      "violations": []
+    },
+    {
+      "bytes": 6841,
+      "path": "runtime/secure_publish.py",
+      "scan_state": "verified",
+      "sha256": "cbb1efd6cfdcc4c63c47dd6e5c535c9ddb91bc960ca01c21d0c039356e0e3a4e",
       "violations": []
     },
     {
@@ -1902,6 +2224,13 @@
       "path": "runtime/semantic_cross_project.py",
       "scan_state": "verified",
       "sha256": "626ba801fcc6262d4b9eb48e8220b68dc84596f4101d41d540345063105416c4",
+      "violations": []
+    },
+    {
+      "bytes": 26136,
+      "path": "runtime/semantic_entity.py",
+      "scan_state": "verified",
+      "sha256": "8b467d15b4533329d64c83b1719fe5c1d5b8a418a6f3aad8b72282bf6de4d4bb",
       "violations": []
     },
     {
@@ -2283,10 +2612,24 @@
       "violations": []
     },
     {
+      "bytes": 49271,
+      "path": "runtime/source_boundary.py",
+      "scan_state": "verified",
+      "sha256": "f3120eff553f5b04f5e78de8252aabd7628d104e24c5c49a8e5d40860250ce15",
+      "violations": []
+    },
+    {
       "bytes": 2157,
       "path": "runtime/source_coverage.py",
       "scan_state": "verified",
       "sha256": "fb008f450b4df3ae99897b1b81f7fd5aeffa9e97c34dae4b1630be3ef0bc29f9",
+      "violations": []
+    },
+    {
+      "bytes": 14971,
+      "path": "runtime/source_freeze.py",
+      "scan_state": "verified",
+      "sha256": "5c70b4dee5c49e7032256ba58ea623b498c8be5195e74e316145f09db15c9b09",
       "violations": []
     },
     {
@@ -2304,10 +2647,10 @@
       "violations": []
     },
     {
-      "bytes": 49786,
+      "bytes": 49842,
       "path": "runtime/structural_integrity.py",
       "scan_state": "verified",
-      "sha256": "c556413aa51349789f485d61c898fab870b5adb00f7383ab3c6d94217978fece",
+      "sha256": "1933386833c80a357ef9f707c157d2ae955a023a3b3bdb0156a24fe6a9e96196",
       "violations": []
     },
     {
@@ -2437,10 +2780,10 @@
       "violations": []
     },
     {
-      "bytes": 15208,
+      "bytes": 16745,
       "path": "runtime/tool_intake.py",
       "scan_state": "verified",
-      "sha256": "8ec36e5cdf95c34251701c547464d6aeeda80e85a5bb478419e35cb58df0f02d",
+      "sha256": "b45edbeca367876f876af4a1e49f58bc82979d7938201da60a9580c6c293949d",
       "violations": []
     },
     {
@@ -2514,10 +2857,10 @@
       "violations": []
     },
     {
-      "bytes": 13728,
+      "bytes": 21732,
       "path": "runtime/vscode_model_bridge.py",
       "scan_state": "verified",
-      "sha256": "b8c1a98994159e2bdac59ccf8b96679d8b09843bde2f1d6cb06a4d8f15a15bb8",
+      "sha256": "1768cea5da9c3f005420ae5f33caf9a33a23c33eba7699bccb9f60918d85030f",
       "violations": []
     },
     {
@@ -2560,6 +2903,13 @@
       "path": "runtime/workflow_inputs.py",
       "scan_state": "verified",
       "sha256": "30feefa315fa0e7801d69e1bcaa77af1560260a17c466494872e76867d390051",
+      "violations": []
+    },
+    {
+      "bytes": 12142,
+      "path": "runtime/workflow_resume.py",
+      "scan_state": "verified",
+      "sha256": "64b4ce6fbff83530b0b748e7e7da0857a711c7b17ea9afcd7e3e5fd4a317d1ba",
       "violations": []
     },
     {
@@ -2752,10 +3102,10 @@
       "violations": []
     },
     {
-      "bytes": 32183,
+      "bytes": 34316,
       "path": "scripts/build_contract_ownership_registry.py",
       "scan_state": "verified",
-      "sha256": "d265d2a36cc34057b8f13950529f2b71a41a3b313aa2dba6aeb80428ac466fff",
+      "sha256": "878db4ea5d36756d921d80c29ba9b4b1b0fec9723ecad552f5ed56d8012a7e99",
       "violations": []
     },
     {
@@ -3214,6 +3564,13 @@
       "violations": []
     },
     {
+      "bytes": 7711,
+      "path": "scripts/probe_native_job_containment.py",
+      "scan_state": "verified",
+      "sha256": "600aeb590309e4d7cbe65e9c68653c718c9b83491bfa06a249fa09cbc5f569f8",
+      "violations": []
+    },
+    {
       "bytes": 18663,
       "path": "scripts/px_install.py",
       "scan_state": "verified",
@@ -3466,10 +3823,10 @@
       "violations": []
     },
     {
-      "bytes": 17636,
+      "bytes": 22409,
       "path": "scripts/validate_certification_pipeline.py",
       "scan_state": "verified",
-      "sha256": "f3272a9ebfbc0b1e24150fcee36cd4a08d5f04814ceb41c46068abf1c04d161e",
+      "sha256": "c9428f544a3d41171b223b1cdefe0cdee717604a2b44c3e359eb22b64f59a883",
       "violations": []
     },
     {
@@ -3534,5 +3891,5 @@
     "violations": []
   },
   "schema_version": "px.provider-route-index/1.3",
-  "verified_file_count": 503
+  "verified_file_count": 554
 }

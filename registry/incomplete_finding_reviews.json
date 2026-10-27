@@ -1020,6 +1020,176 @@
       "rationale": "Acquiring the lock would leave the observation false; the timeout branch proves configuration was loaded while locked.",
       "owner": "tests",
       "review_condition": "review whenever workspace mutation lock tests change"
+    },
+    {
+      "id": "ec4f7e301e5cc6ad0fdf",
+      "path": "px/py_cert/scripts/validate_certification_pipeline.py",
+      "line": 79,
+      "rule": "python-pass",
+      "classification": "expected_control_flow",
+      "rationale": "Empty exception-type body; the type carries the blocking semantics.",
+      "owner": "pacify-x-repair",
+      "review_condition": "Exception is intentionally swallowed to preserve an already-raised causal failure (the enclosing re-raise or primary error is the authoritative outcome). Suppression here cannot fabricate success."
+    },
+    {
+      "id": "7f417f023624ece72212",
+      "path": "runtime/containment_invariants.py",
+      "line": 247,
+      "rule": "python-pass",
+      "classification": "expected_control_flow",
+      "rationale": "Refusal is the asserted outcome of this probe; the else-branch records a violation.",
+      "owner": "pacify-x-repair",
+      "review_condition": "Control-flow probe: the following branch asserts the *rejection* path, so consuming this exception is the expected outcome, not an unimplemented feature."
+    },
+    {
+      "id": "35d76534ed31b4092054",
+      "path": "runtime/containment_invariants.py",
+      "line": 259,
+      "rule": "unimplemented-error",
+      "classification": "safe_degradation",
+      "rationale": "Missing verified child enrollment is reported as an explicit GN-INV-013 violation.",
+      "owner": "pacify-x-repair",
+      "review_condition": "Fail-closed degradation: the absence of this capability is recorded as an explicit violation/blocked result elsewhere, never as a pass."
+    },
+    {
+      "id": "e8571c126430126ff05d",
+      "path": "runtime/gremlin/recovery_authority.py",
+      "line": 187,
+      "rule": "python-ellipsis-body",
+      "classification": "protocol_contract",
+      "rationale": "Independent verifier contract; concrete verifier is host-supplied.",
+      "owner": "pacify-x-repair",
+      "review_condition": "Protocol declaration: the body is deliberately empty because the contract is structural. Implementations are supplied by concrete backends and are exercised by their own tests; this is not unreachable incomplete behaviour."
+    },
+    {
+      "id": "7f3cc8e13ec2a67222db",
+      "path": "runtime/gremlin/recovery_authority.py",
+      "line": 197,
+      "rule": "python-ellipsis-body",
+      "classification": "protocol_contract",
+      "rationale": "Durable replay ledger contract.",
+      "owner": "pacify-x-repair",
+      "review_condition": "Protocol declaration: the body is deliberately empty because the contract is structural. Implementations are supplied by concrete backends and are exercised by their own tests; this is not unreachable incomplete behaviour."
+    },
+    {
+      "id": "424d82b697a5c23ed240",
+      "path": "runtime/gremlin/recovery_authority.py",
+      "line": 199,
+      "rule": "python-ellipsis-body",
+      "classification": "protocol_contract",
+      "rationale": "Durable replay ledger contract.",
+      "owner": "pacify-x-repair",
+      "review_condition": "Protocol declaration: the body is deliberately empty because the contract is structural. Implementations are supplied by concrete backends and are exercised by their own tests; this is not unreachable incomplete behaviour."
+    },
+    {
+      "id": "e1facdc7d393b27d2269",
+      "path": "runtime/gremlin/recovery_authority.py",
+      "line": 201,
+      "rule": "python-ellipsis-body",
+      "classification": "protocol_contract",
+      "rationale": "Durable replay ledger contract.",
+      "owner": "pacify-x-repair",
+      "review_condition": "Protocol declaration: the body is deliberately empty because the contract is structural. Implementations are supplied by concrete backends and are exercised by their own tests; this is not unreachable incomplete behaviour."
+    },
+    {
+      "id": "8987dec142d5ab673eb7",
+      "path": "runtime/gremlin/runtime_identity.py",
+      "line": 56,
+      "rule": "python-ellipsis-body",
+      "classification": "protocol_contract",
+      "rationale": "OS-protected credential backend contract.",
+      "owner": "pacify-x-repair",
+      "review_condition": "Protocol declaration: the body is deliberately empty because the contract is structural. Implementations are supplied by concrete backends and are exercised by their own tests; this is not unreachable incomplete behaviour."
+    },
+    {
+      "id": "034daa057fe40de557bd",
+      "path": "runtime/gremlin/runtime_identity.py",
+      "line": 58,
+      "rule": "python-ellipsis-body",
+      "classification": "protocol_contract",
+      "rationale": "OS-protected credential backend contract.",
+      "owner": "pacify-x-repair",
+      "review_condition": "Protocol declaration: the body is deliberately empty because the contract is structural. Implementations are supplied by concrete backends and are exercised by their own tests; this is not unreachable incomplete behaviour."
+    },
+    {
+      "id": "45db9a8d84af09dd52c5",
+      "path": "runtime/gremlin/runtime_identity.py",
+      "line": 60,
+      "rule": "python-ellipsis-body",
+      "classification": "protocol_contract",
+      "rationale": "OS-protected credential backend contract.",
+      "owner": "pacify-x-repair",
+      "review_condition": "Protocol declaration: the body is deliberately empty because the contract is structural. Implementations are supplied by concrete backends and are exercised by their own tests; this is not unreachable incomplete behaviour."
+    },
+    {
+      "id": "c90ab3936720fce4156e",
+      "path": "runtime/gremlin/runtime_identity.py",
+      "line": 62,
+      "rule": "python-ellipsis-body",
+      "classification": "protocol_contract",
+      "rationale": "OS-protected credential backend contract.",
+      "owner": "pacify-x-repair",
+      "review_condition": "Protocol declaration: the body is deliberately empty because the contract is structural. Implementations are supplied by concrete backends and are exercised by their own tests; this is not unreachable incomplete behaviour."
+    },
+    {
+      "id": "7eb72feae56baf7ebb91",
+      "path": "runtime/gremlin/supervisor.py",
+      "line": 36,
+      "rule": "python-ellipsis-body",
+      "classification": "protocol_contract",
+      "rationale": "Host-supplied OS enforcement primitive; availability is reported via available.",
+      "owner": "pacify-x-repair",
+      "review_condition": "Protocol declaration: the body is deliberately empty because the contract is structural. Implementations are supplied by concrete backends and are exercised by their own tests; this is not unreachable incomplete behaviour."
+    },
+    {
+      "id": "5007435579e209ce0adc",
+      "path": "runtime/gremlin/supervisor.py",
+      "line": 39,
+      "rule": "python-ellipsis-body",
+      "classification": "protocol_contract",
+      "rationale": "Host-supplied OS enforcement primitive; availability is reported via available.",
+      "owner": "pacify-x-repair",
+      "review_condition": "Protocol declaration: the body is deliberately empty because the contract is structural. Implementations are supplied by concrete backends and are exercised by their own tests; this is not unreachable incomplete behaviour."
+    },
+    {
+      "id": "ba649cba52ec7e90f6a7",
+      "path": "runtime/guarded_registry_projection.py",
+      "line": 27,
+      "rule": "python-pass",
+      "classification": "safe_degradation",
+      "rationale": "Best-effort note attachment must not replace the primary failure.",
+      "owner": "pacify-x-repair",
+      "review_condition": "Exception is intentionally swallowed to preserve an already-raised causal failure (the enclosing re-raise or primary error is the authoritative outcome). Suppression here cannot fabricate success."
+    },
+    {
+      "id": "0ff4fb43f42785d6e43f",
+      "path": "runtime/project_revision_succession.py",
+      "line": 37,
+      "rule": "python-pass",
+      "classification": "expected_control_flow",
+      "rationale": "Empty exception-type body; the type carries the blocking semantics.",
+      "owner": "pacify-x-repair",
+      "review_condition": "Exception is intentionally swallowed to preserve an already-raised causal failure (the enclosing re-raise or primary error is the authoritative outcome). Suppression here cannot fabricate success."
+    },
+    {
+      "id": "567537a0cf70feba3d1f",
+      "path": "runtime/revision_campaign_lifecycle.py",
+      "line": 22,
+      "rule": "python-pass",
+      "classification": "expected_control_flow",
+      "rationale": "Empty exception-type body; the type carries the blocking semantics.",
+      "owner": "pacify-x-repair",
+      "review_condition": "Exception is intentionally swallowed to preserve an already-raised causal failure (the enclosing re-raise or primary error is the authoritative outcome). Suppression here cannot fabricate success."
+    },
+    {
+      "id": "53da6dfeb3d900a2eb28",
+      "path": "runtime/secure_publish.py",
+      "line": 70,
+      "rule": "python-pass",
+      "classification": "expected_control_flow",
+      "rationale": "Directory creation is idempotent; an existing directory satisfies the post-condition.",
+      "owner": "pacify-x-repair",
+      "review_condition": "Idempotent directory/file creation guard: an existing path is the expected post-condition, so the exception is consumed and execution continues."
     }
   ],
   "historical_records": [

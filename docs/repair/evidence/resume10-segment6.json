@@ -1,0 +1,29 @@
+{
+  "timestamp_utc": "2026-10-27T01:02:51.770123+00:00",
+  "segment": "preflight and actual owner startup enforcement",
+  "findings": [
+    "PX-AUD-016"
+  ],
+  "source_sha256": {
+    "runtime/test_runner.py": "d6addd5a6be27e76984e84ea866b6a6df5aebe52f8b38505e5adc0c90f861a6f",
+    "scripts/validate_certification_pipeline.py": "13b45e2a1e1deca1daa950ec62a40d507999d236cae125a0c39fc24c014689ea",
+    "tests/test_certification_pipeline_readiness.py": "9a798f998e7532e40ff46774f2b75eaf9c6909f260d340e9d997770a398bfbc2"
+  },
+  "evidence": [
+    "docs/repair/evidence/resume10-preflight-startup-red.json",
+    "docs/repair/evidence/resume10-preflight-startup-green.json",
+    "docs/repair/evidence/resume10-preflight-owner-verified.json"
+  ],
+  "observations": [
+    "9startup/collection bypass causal failures reproduced.",
+    "Actual test owner now refuses collection/startup overrides before workspace/child creation; native exact engine-root PYTHONPATH remains supported for legitimate workflow/owner imports, foreign/appended paths denied.",
+    "Mandatory Node commands deny import/require hooks and filters. Config environment cannot override collection.",
+    "133preflight/release/process-owner checks pass including actual Windows abrupt owner-death Job cleanup; initial overbroad engine-root rejection corrected without weakening the existing drill."
+  ],
+  "remaining": [
+    "all governed section receipts remain blocked by historical campaign phase",
+    "structural coverage is not execution, installed acceptance or certification"
+  ],
+  "reviewer": "UNASSIGNED",
+  "closed": false
+}

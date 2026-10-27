@@ -1,0 +1,29 @@
+{
+  "action_id": "lock-exception-red",
+  "audit_record_hash": "f75ec85280993f15957b18259231ca4851f141d837850903421cbba4ea173fd5",
+  "duration_seconds": 2.0217931999941356,
+  "ended_at": "2026-10-27T01:04:15.722Z",
+  "exit_code": 1,
+  "failure_type": null,
+  "receipt_id": "process-f58171a22c8544e8be765708f06d6618",
+  "resource_id": "process-d85991cfd7ba42e3bae31417a5fabfa5",
+  "schema_version": "px.process-supervision-receipt/1.0",
+  "shutdown_mode": "natural",
+  "started_at": "2026-10-27T01:04:13.700Z",
+  "status": "exited",
+  "stderr": {
+    "decode_error_count": 0,
+    "dropped_bytes": 0,
+    "retained_bytes": 0,
+    "total_bytes": 0,
+    "truncated": false
+  },
+  "stdout": {
+    "decode_error_count": 0,
+    "dropped_bytes": 0,
+    "retained_bytes": 3360,
+    "total_bytes": 3360,
+    "truncated": false
+  },
+  "tree_closed": true
+}

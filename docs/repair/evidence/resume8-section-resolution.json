@@ -1,0 +1,197 @@
+{
+  "sections": [
+    {
+      "name": "testing-governance",
+      "resolved": true,
+      "input_sha256": "bc06a8dcd52ff60b6f04f378a53a3e2940eae763fc671e5faca4199d44de4c05",
+      "chunk_count": 6
+    },
+    {
+      "name": "dashboard-extension",
+      "resolved": true,
+      "input_sha256": "9497467a74a463e2b63fa270a9c3a7e646d820c897cef580dff4dc8d7d2c2e50",
+      "chunk_count": 21
+    },
+    {
+      "name": "studio-memory-graph",
+      "resolved": true,
+      "input_sha256": "a234af63eb2079aad05e1c8b8ca9c24ed3c4e46e5bf4579bedb172837bc6343f",
+      "chunk_count": 11
+    },
+    {
+      "name": "learning-promotion",
+      "resolved": true,
+      "input_sha256": "d73756ef2e881820916dc44072b9bde68b1f125a639712efec68ef829dadbe9a",
+      "chunk_count": 0
+    },
+    {
+      "name": "execution-placement",
+      "resolved": true,
+      "input_sha256": "380c5596ea16fae31171c54103bd2dd20351f92bd1e97cd612880b4906242675",
+      "chunk_count": 0
+    },
+    {
+      "name": "hardware-routing",
+      "resolved": true,
+      "input_sha256": "e27b2d7d277cafd1f0883355ef02511b0ee873fd23c0cec798e1a3e1a28e4447",
+      "chunk_count": 0
+    },
+    {
+      "name": "runtime-domain-contracts",
+      "resolved": true,
+      "input_sha256": "e48fa6eb69ac23e658eea178148d873485fb03ff7991248cd3e2633acaea2a4f",
+      "chunk_count": 11
+    },
+    {
+      "name": "source-authority",
+      "resolved": true,
+      "input_sha256": "c3efa4828e713fcc312f563e53cd4751d19f1a4bc3492eb6ef9a389b92ac10c9",
+      "chunk_count": 4
+    },
+    {
+      "name": "revision-lifecycle",
+      "resolved": true,
+      "input_sha256": "3a7b481db275e168d403812b4094d564ac2644dda6ce528086f3fe6a8cf98de2",
+      "chunk_count": 3
+    },
+    {
+      "name": "secure-persistence",
+      "resolved": true,
+      "input_sha256": "3da5b1450017c89e0e0a7b96b926c979ac7a5f8fe8df1fe773821f4af6aa0bd8",
+      "chunk_count": 0
+    },
+    {
+      "name": "native-runtime-integration",
+      "resolved": true,
+      "input_sha256": "2d74295903e2b5d5a88da8a2f33f2a17609e2274d5d44c8da0575e5738229120",
+      "chunk_count": 3
+    },
+    {
+      "name": "host-containment",
+      "resolved": true,
+      "input_sha256": "e576aa4b23160e6a3e27e3d472e37f4a2c7a85c909b3a3cb138f715b3f15c9ed",
+      "chunk_count": 3
+    },
+    {
+      "name": "native-job-operating",
+      "resolved": true,
+      "input_sha256": "791ee9f84a626fef23282b1eaa15e81fa2cdf977625c5ee3b26b80e41c9ce34d",
+      "chunk_count": 0
+    },
+    {
+      "name": "event-integrity",
+      "resolved": true,
+      "input_sha256": "7c8376a4cc723b1e3dfee73b1701aa9efd0d699131f57835aeed71eefe52ae83",
+      "chunk_count": 6
+    },
+    {
+      "name": "ui-event-integrity",
+      "resolved": true,
+      "input_sha256": "74d710abc4a4e7313dfb193031ff5fa2546cb823dde9b5b306d86c9a3cd64e2c",
+      "chunk_count": 3
+    },
+    {
+      "name": "agent-task-lifecycle",
+      "resolved": true,
+      "input_sha256": "f20073eaeec846d9c202da4f057fbd8adb78c773e2093312c83511eba3338f41",
+      "chunk_count": 2
+    },
+    {
+      "name": "billing-budget",
+      "resolved": true,
+      "input_sha256": "ce48b95d449719a4b98e2335baba72167f9c7b2581e1be63d5b2df5565a0b31c",
+      "chunk_count": 3
+    },
+    {
+      "name": "provider-settlement-contract",
+      "resolved": true,
+      "input_sha256": "58e850f24bd19b59d93da2e7ff1a769727e974b53332af3a32933dc1d115b991",
+      "chunk_count": 0
+    }
+  ],
+  "coverage": {
+    "valid": false,
+    "required_count": 28,
+    "membership": {
+      "tests/test_certificate_input_contracts.py": [
+        "runtime-domain-contracts"
+      ],
+      "tests/test_contract_length_bounds.py": [
+        "runtime-domain-contracts",
+        "native-runtime-integration"
+      ],
+      "tests/test_project_revision_succession.py": [
+        "revision-lifecycle"
+      ],
+      "tests/test_revision_campaign_lifecycle.py": [
+        "revision-lifecycle"
+      ],
+      "tests/test_secure_publish.py": [
+        "secure-persistence"
+      ],
+      "tests/test_secure_publish_operating.py": [
+        "secure-persistence"
+      ],
+      "tests/test_context_generation.py": [
+        "native-runtime-integration"
+      ],
+      "tests/test_projection_gate.py": [
+        "native-runtime-integration"
+      ],
+      "tests/test_execution_context.py": [
+        "native-runtime-integration"
+      ],
+      "tests/test_workflow_resume.py": [
+        "native-runtime-integration"
+      ],
+      "tests/test_host_enforcement_audit.py": [
+        "host-containment"
+      ],
+      "tests/test_gremlin_host_configuration.py": [
+        "host-containment"
+      ],
+      "tests/test_isolated_agent_sandbox.py": [
+        "host-containment"
+      ],
+      "tests/test_native_job_operating_probe.py": [
+        "native-job-operating"
+      ],
+      "tests/test_native_job_probe_verdict.py": [
+        "native-job-operating"
+      ],
+      "tests/test_event_integrity_audit.py": [
+        "event-integrity"
+      ],
+      "tests/test_event_ledger_regression.py": [
+        "event-integrity"
+      ],
+      "extension/tests/event-integrity-audit.test.js": [
+        "ui-event-integrity"
+      ],
+      "extension/tests/task-state-custody.test.js": [
+        "agent-task-lifecycle"
+      ],
+      "tests/test_billing_budget_audit.py": [
+        "billing-budget"
+      ],
+      "extension/tests/provider-settlement-contract.test.js": [
+        "provider-settlement-contract"
+      ]
+    },
+    "missing_membership": [
+      "tests/test_release_candidate_driver.py",
+      "tests/test_release_stage_owner.py",
+      "tests/test_run_installed_operational_owner.py",
+      "tests/test_certification_readiness.py",
+      "tests/test_rollout_inventory.py",
+      "tests/test_certification_pipeline_readiness.py",
+      "extension/tests/billing-settlement-audit.test.js"
+    ],
+    "missing_files": [
+      "tests/test_rollout_inventory.py",
+      "extension/tests/billing-settlement-audit.test.js"
+    ],
+    "duplicate_members": []
+  },
+  "executed": false
+}

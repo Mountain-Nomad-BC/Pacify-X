@@ -1,0 +1,115 @@
+✖ trailing receipt uses the same handler as newline framing "" (2.9531ms)
+✔ trailing receipt uses the same handler as newline framing "\n" (0.5047ms)
+✖ unsupported final envelope never becomes successful chat "" (1.1515ms)
+✔ unsupported final envelope never becomes successful chat "\n" (0.5437ms)
+✖ data after receipt and missing receipt cannot claim completed chat (0.483ms)
+✖ consumer exception becomes a rejected owned operation rather than uncaught callback (0.5081ms)
+✖ harness AbortSignal is adapted to the native bridge cancellation-token interface (163.6714ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 2
+ℹ fail 5
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 280.2673
+
+✖ failing tests:
+
+test at extension\tests\mcp-client-protocol-audit.test.js:12:31
+✖ trailing receipt uses the same handler as newline framing "" (2.9531ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    [
+      {
+  +     receipt: {
+  -     kind: 'px_receipt',
+  -     payload: {
+          fixture: true
+        },
+  +     type: 'receipt'
+      }
+    ]
+  
+      at TestContext.<anonymous> (C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\tests\mcp-client-protocol-audit.test.js:14:43)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ { type: 'receipt', receipt: [Object] } ],
+    expected: [ { kind: 'px_receipt', payload: [Object] } ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at extension\tests\mcp-client-protocol-audit.test.js:16:31
+✖ unsupported final envelope never becomes successful chat "" (1.1515ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\tests\mcp-client-protocol-audit.test.js:18:2)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /unsupported|protocol/i,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at extension\tests\mcp-client-protocol-audit.test.js:21:1
+✖ data after receipt and missing receipt cannot claim completed chat (0.483ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\tests\mcp-client-protocol-audit.test.js:23:2)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /receipt|protocol|terminal/i,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at extension\tests\mcp-client-protocol-audit.test.js:26:1
+✖ consumer exception becomes a rejected owned operation rather than uncaught callback (0.5081ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /consumer|protocol/i. Input:
+  
+  'ModelFabricBridgeError: Pacify-X model client ended with malformed output.'
+  
+      at async TestContext.<anonymous> (C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\tests\mcp-client-protocol-audit.test.js:28:2)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: ModelFabricBridgeError: Pacify-X model client ended with malformed output.
+        at EventEmitter.<anonymous> (C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\src\mcpModelFabricBridge.js:60:123)
+        at EventEmitter.emit (node:events:509:28)
+        at C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\tests\mcp-client-protocol-audit.test.js:8:191
+        at node:internal/process/task_queues:151:7
+        at AsyncResource.runInAsyncScope (node:async_hooks:227:14)
+        at AsyncResource.runMicrotask (node:internal/process/task_queues:148:8),
+    expected: /consumer|protocol/i,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at extension\tests\mcp-client-protocol-audit.test.js:31:1
+✖ harness AbortSignal is adapted to the native bridge cancellation-token interface (163.6714ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'unbounded'
+  - 'AbortError'
+  
+      at TestContext.<anonymous> (C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\tests\mcp-client-protocol-audit.test.js:40:13)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'unbounded',
+    expected: 'AbortError',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+

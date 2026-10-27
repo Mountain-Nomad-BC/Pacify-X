@@ -1,0 +1,29 @@
+{
+  "action_id": "billing-checkpoint",
+  "audit_record_hash": "9abe8967b0329864532322dc06d9ffe2ba4d3670b525020d49377110a73fba7f",
+  "duration_seconds": 0.5349138000019593,
+  "ended_at": "2026-10-26T19:27:48.899Z",
+  "exit_code": 0,
+  "failure_type": null,
+  "receipt_id": "process-549383610cac469ca0a469b7f0650f29",
+  "resource_id": "process-59865fdb1d0a4b6b999d7d302a3f4ce7",
+  "schema_version": "px.process-supervision-receipt/1.0",
+  "shutdown_mode": "natural",
+  "started_at": "2026-10-26T19:27:48.364Z",
+  "status": "exited",
+  "stderr": {
+    "decode_error_count": 0,
+    "dropped_bytes": 0,
+    "retained_bytes": 0,
+    "total_bytes": 0,
+    "truncated": false
+  },
+  "stdout": {
+    "decode_error_count": 0,
+    "dropped_bytes": 0,
+    "retained_bytes": 3075,
+    "total_bytes": 3075,
+    "truncated": false
+  },
+  "tree_closed": true
+}

@@ -1,0 +1,93 @@
+✔ PX-AUD-052 openai CRLF frame separator is parsed across chunks (16.5989ms)
+✔ PX-AUD-053 openai truncated stream without terminal throws (0.5693ms)
+✔ PX-AUD-053 openai data after terminal throws (0.3516ms)
+✔ PX-AUD-054 ollama trailing record without newline is consumed (0.5112ms)
+✔ PX-AUD-055 ollama early EOF without done:true throws (0.3923ms)
+✔ PX-AUD-055 ollama explicit done:true is accepted (0.3699ms)
+✖ openai malformed frame cancels actual stream source and releases reader custody (0.959ms)
+✖ openai abort settles a pending stream read and releases transport (154.7944ms)
+✖ ollama malformed frame cancels actual stream source and releases reader custody (0.7989ms)
+✖ ollama abort settles a pending stream read and releases transport (164.0606ms)
+ℹ tests 10
+ℹ suites 0
+ℹ pass 6
+ℹ fail 4
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 449.0614
+
+✖ failing tests:
+
+test at extension\tests\agent-harness-streaming.test.js:108:2
+✖ openai malformed frame cancels actual stream source and releases reader custody (0.959ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  false !== true
+  
+      at TestContext.<anonymous> (C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\tests\agent-harness-streaming.test.js:114:11)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at extension\tests\agent-harness-streaming.test.js:116:2
+✖ openai abort settles a pending stream read and releases transport (154.7944ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'unbounded'
+  - 'AbortError'
+  
+      at TestContext.<anonymous> (C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\tests\agent-harness-streaming.test.js:125:15)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'unbounded',
+    expected: 'AbortError',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at extension\tests\agent-harness-streaming.test.js:108:2
+✖ ollama malformed frame cancels actual stream source and releases reader custody (0.7989ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  false !== true
+  
+      at TestContext.<anonymous> (C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\tests\agent-harness-streaming.test.js:114:11)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at extension\tests\agent-harness-streaming.test.js:116:2
+✖ ollama abort settles a pending stream read and releases transport (164.0606ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'unbounded'
+  - 'AbortError'
+  
+      at TestContext.<anonymous> (C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\tests\agent-harness-streaming.test.js:125:15)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'unbounded',
+    expected: 'AbortError',
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+

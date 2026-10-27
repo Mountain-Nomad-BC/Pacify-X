@@ -1,0 +1,299 @@
+{
+  "batch": "g03",
+  "timestamp": "2026-10-25T23:41:44.852996+00:00",
+  "files": [
+    {
+      "path": "contracts/gremlin-containment-proof.schema.json",
+      "bootstrap_sha_before": null,
+      "rollout_sha": "9df85b32a7f3d407b4169e58ebfb2a00c9cbb0bb215a14e0c1f235a94942ae4c",
+      "present_before": false,
+      "bootstrap_sha_after": "9df85b32a7f3d407b4169e58ebfb2a00c9cbb0bb215a14e0c1f235a94942ae4c",
+      "copied_ok": true
+    },
+    {
+      "path": "contracts/gremlin-host-configuration.schema.json",
+      "bootstrap_sha_before": null,
+      "rollout_sha": "69ad33fb1b358fe7bdbabf9ebe307e2da01342071214b4e69480ac465b4ef157",
+      "present_before": false,
+      "bootstrap_sha_after": "69ad33fb1b358fe7bdbabf9ebe307e2da01342071214b4e69480ac465b4ef157",
+      "copied_ok": true
+    },
+    {
+      "path": "contracts/gremlin-recovery-authority.schema.json",
+      "bootstrap_sha_before": null,
+      "rollout_sha": "961d16bc883390d7120fd6f312cdd98a56dbea0196ab7abf6583d441b5ecb964",
+      "present_before": false,
+      "bootstrap_sha_after": "961d16bc883390d7120fd6f312cdd98a56dbea0196ab7abf6583d441b5ecb964",
+      "copied_ok": true
+    },
+    {
+      "path": "contracts/gremlin-recovery-replay-ledger.schema.json",
+      "bootstrap_sha_before": null,
+      "rollout_sha": "1ff65697b71016566a6b146a1d6a38d0d053cd71bf14c3dfc231ecf8dc0fcba2",
+      "present_before": false,
+      "bootstrap_sha_after": "1ff65697b71016566a6b146a1d6a38d0d053cd71bf14c3dfc231ecf8dc0fcba2",
+      "copied_ok": true
+    },
+    {
+      "path": "contracts/gremlin-runtime-identity.schema.json",
+      "bootstrap_sha_before": null,
+      "rollout_sha": "877b9b709201a9745d3a58c9d35b2cd5251dd24a3a4a38389d233b7fdbe1faf2",
+      "present_before": false,
+      "bootstrap_sha_after": "877b9b709201a9745d3a58c9d35b2cd5251dd24a3a4a38389d233b7fdbe1faf2",
+      "copied_ok": true
+    },
+    {
+      "path": "contracts/isolated-agent-sandbox.schema.json",
+      "bootstrap_sha_before": null,
+      "rollout_sha": "c737ca07ca6e0dce6196efa90c9c62455af0963b0ac1f37d622594accd107262",
+      "present_before": false,
+      "bootstrap_sha_after": "c737ca07ca6e0dce6196efa90c9c62455af0963b0ac1f37d622594accd107262",
+      "copied_ok": true
+    },
+    {
+      "path": "contracts/cancellation-scope.schema.json",
+      "bootstrap_sha_before": null,
+      "rollout_sha": "cb9e2a3410b6a086f1c8ebe5d457053c82cda34a458468223d4e6a042d08dd01",
+      "present_before": false,
+      "bootstrap_sha_after": "cb9e2a3410b6a086f1c8ebe5d457053c82cda34a458468223d4e6a042d08dd01",
+      "copied_ok": true
+    },
+    {
+      "path": "contracts/dependency-identity.schema.json",
+      "bootstrap_sha_before": null,
+      "rollout_sha": "c495f4ff0584066a1556d61091c158a87978fb74f46270838fc4c2974079706b",
+      "present_before": false,
+      "bootstrap_sha_after": "c495f4ff0584066a1556d61091c158a87978fb74f46270838fc4c2974079706b",
+      "copied_ok": true
+    },
+    {
+      "path": "contracts/execution-context.schema.json",
+      "bootstrap_sha_before": null,
+      "rollout_sha": "2a6b00b675ba7397fef399518966b39c468faae6c60e608375837c89047dddd6",
+      "present_before": false,
+      "bootstrap_sha_after": "2a6b00b675ba7397fef399518966b39c468faae6c60e608375837c89047dddd6",
+      "copied_ok": true
+    },
+    {
+      "path": "contracts/context-generation-vector.schema.json",
+      "bootstrap_sha_before": null,
+      "rollout_sha": "74fec00365a2fb6ae6ea8f0d882a0a3ccf801bf5aa6d007e8db7694f95f4bdd7",
+      "present_before": false,
+      "bootstrap_sha_after": "74fec00365a2fb6ae6ea8f0d882a0a3ccf801bf5aa6d007e8db7694f95f4bdd7",
+      "copied_ok": true
+    },
+    {
+      "path": "contracts/projection-status.schema.json",
+      "bootstrap_sha_before": null,
+      "rollout_sha": "240b2996831c07e2bb39d3ddbed659842e5c2d41cc5626406366f748b6a5c958",
+      "present_before": false,
+      "bootstrap_sha_after": "240b2996831c07e2bb39d3ddbed659842e5c2d41cc5626406366f748b6a5c958",
+      "copied_ok": true
+    },
+    {
+      "path": "contracts/workflow-resume-decision.schema.json",
+      "bootstrap_sha_before": null,
+      "rollout_sha": "4a54c8907ce7b36102b7819feccb6b16779bb3454b05b7d2759a29d5b9dc2294",
+      "present_before": false,
+      "bootstrap_sha_after": "4a54c8907ce7b36102b7819feccb6b16779bb3454b05b7d2759a29d5b9dc2294",
+      "copied_ok": true
+    },
+    {
+      "path": "runtime/gremlin/__init__.py",
+      "bootstrap_sha_before": null,
+      "rollout_sha": "930aea6c417536ee79aefa832b50389ee51268d5dc9b8f1a89cc697137602ed6",
+      "present_before": false,
+      "bootstrap_sha_after": "930aea6c417536ee79aefa832b50389ee51268d5dc9b8f1a89cc697137602ed6",
+      "copied_ok": true
+    },
+    {
+      "path": "runtime/gremlin/admin.py",
+      "bootstrap_sha_before": null,
+      "rollout_sha": "4792f40c2f1e64af47f599848156ce40f9c1c263b812e893095ddfb74ed5d4ed",
+      "present_before": false,
+      "bootstrap_sha_after": "4792f40c2f1e64af47f599848156ce40f9c1c263b812e893095ddfb74ed5d4ed",
+      "copied_ok": true
+    },
+    {
+      "path": "runtime/gremlin/audit.py",
+      "bootstrap_sha_before": null,
+      "rollout_sha": "38d493c650b74f2858eb194866b2f0fa75651c8d353ae920cc2b85819eaa8bfb",
+      "present_before": false,
+      "bootstrap_sha_after": "38d493c650b74f2858eb194866b2f0fa75651c8d353ae920cc2b85819eaa8bfb",
+      "copied_ok": true
+    },
+    {
+      "path": "runtime/gremlin/authorization.py",
+      "bootstrap_sha_before": null,
+      "rollout_sha": "d33a0f8420a74dc67de2ab0ce3f6f4b3bbf91f126e6e6efce5985962cbb82689",
+      "present_before": false,
+      "bootstrap_sha_after": "d33a0f8420a74dc67de2ab0ce3f6f4b3bbf91f126e6e6efce5985962cbb82689",
+      "copied_ok": true
+    },
+    {
+      "path": "runtime/gremlin/commissioning.py",
+      "bootstrap_sha_before": null,
+      "rollout_sha": "7cd7ff622f056044962c57b52ff2d13140e8bacddfa1d9792de0e1df9d871609",
+      "present_before": false,
+      "bootstrap_sha_after": "7cd7ff622f056044962c57b52ff2d13140e8bacddfa1d9792de0e1df9d871609",
+      "copied_ok": true
+    },
+    {
+      "path": "runtime/gremlin/composition.py",
+      "bootstrap_sha_before": null,
+      "rollout_sha": "13669bc0acb5d46bb4ca6b683a291d8a03d68cd7345ff04b76bb49952d6776a8",
+      "present_before": false,
+      "bootstrap_sha_after": "13669bc0acb5d46bb4ca6b683a291d8a03d68cd7345ff04b76bb49952d6776a8",
+      "copied_ok": true
+    },
+    {
+      "path": "runtime/gremlin/containment.py",
+      "bootstrap_sha_before": null,
+      "rollout_sha": "67759c8d8a24b17c3917da3fd2451ed43f3c53ff75a489d6ef8a968a90fe5aab",
+      "present_before": false,
+      "bootstrap_sha_after": "67759c8d8a24b17c3917da3fd2451ed43f3c53ff75a489d6ef8a968a90fe5aab",
+      "copied_ok": true
+    },
+    {
+      "path": "runtime/gremlin/deviation.py",
+      "bootstrap_sha_before": null,
+      "rollout_sha": "f8b6c6353af4417cc9415c26366160e24594a8f7184a7ddc34be9ca5c03f790c",
+      "present_before": false,
+      "bootstrap_sha_after": "f8b6c6353af4417cc9415c26366160e24594a8f7184a7ddc34be9ca5c03f790c",
+      "copied_ok": true
+    },
+    {
+      "path": "runtime/gremlin/enrollment.py",
+      "bootstrap_sha_before": null,
+      "rollout_sha": "ff93c1bc498653cc50a3d41f8ec9944e96e9f7caff5a7c9e05e50bb562a398ed",
+      "present_before": false,
+      "bootstrap_sha_after": "ff93c1bc498653cc50a3d41f8ec9944e96e9f7caff5a7c9e05e50bb562a398ed",
+      "copied_ok": true
+    },
+    {
+      "path": "runtime/gremlin/events.py",
+      "bootstrap_sha_before": null,
+      "rollout_sha": "15301d12ff6252dc27ae5a58cd35d9a2d67e24191093e2b30010633030d62f2a",
+      "present_before": false,
+      "bootstrap_sha_after": "15301d12ff6252dc27ae5a58cd35d9a2d67e24191093e2b30010633030d62f2a",
+      "copied_ok": true
+    },
+    {
+      "path": "runtime/gremlin/health.py",
+      "bootstrap_sha_before": null,
+      "rollout_sha": "6037d63fa737ed1b7567009320bfd947eed039b4c6e874b6448086b319d7db22",
+      "present_before": false,
+      "bootstrap_sha_after": "6037d63fa737ed1b7567009320bfd947eed039b4c6e874b6448086b319d7db22",
+      "copied_ok": true
+    },
+    {
+      "path": "runtime/gremlin/host_configuration.py",
+      "bootstrap_sha_before": null,
+      "rollout_sha": "d33285dc66cb0b6c174c7744bcef5d1b7b1ee42a24488663b9dcd14a5d888cfb",
+      "present_before": false,
+      "bootstrap_sha_after": "d33285dc66cb0b6c174c7744bcef5d1b7b1ee42a24488663b9dcd14a5d888cfb",
+      "copied_ok": true
+    },
+    {
+      "path": "runtime/gremlin/host_enforcement_backend.py",
+      "bootstrap_sha_before": "2d7058287ad3ec9ef81acd81565d38cc1e4b61cba48426b961d3ec26aea42dd4",
+      "rollout_sha": "a8d82b5d5dc5563fd694ee4ffbcd6b1cc43783a447d4b74517f9548b753ee68c",
+      "present_before": true,
+      "bootstrap_sha_after": "a8d82b5d5dc5563fd694ee4ffbcd6b1cc43783a447d4b74517f9548b753ee68c",
+      "copied_ok": true
+    },
+    {
+      "path": "runtime/gremlin/host_process_observer.py",
+      "bootstrap_sha_before": null,
+      "rollout_sha": "8336430a4394f0b7986e4639b1e8e14699a878759a372dc99719fd25a16c62b8",
+      "present_before": false,
+      "bootstrap_sha_after": "8336430a4394f0b7986e4639b1e8e14699a878759a372dc99719fd25a16c62b8",
+      "copied_ok": true
+    },
+    {
+      "path": "runtime/gremlin/identity.py",
+      "bootstrap_sha_before": null,
+      "rollout_sha": "85ad2da05b0b27d80eb42890e652d5bceea1f7c33940f8c3f110823258bb1080",
+      "present_before": false,
+      "bootstrap_sha_after": "85ad2da05b0b27d80eb42890e652d5bceea1f7c33940f8c3f110823258bb1080",
+      "copied_ok": true
+    },
+    {
+      "path": "runtime/gremlin/intervention.py",
+      "bootstrap_sha_before": null,
+      "rollout_sha": "636b78f232f6785f1e4f8589692dfa6da2c428b6e6b22d46fccd9669c24ce379",
+      "present_before": false,
+      "bootstrap_sha_after": "636b78f232f6785f1e4f8589692dfa6da2c428b6e6b22d46fccd9669c24ce379",
+      "copied_ok": true
+    },
+    {
+      "path": "runtime/gremlin/observers.py",
+      "bootstrap_sha_before": null,
+      "rollout_sha": "6e39c187b0f2a86e8630df45ebeeeb9d54c183e3908839bdd550df652c3760d6",
+      "present_before": false,
+      "bootstrap_sha_after": "6e39c187b0f2a86e8630df45ebeeeb9d54c183e3908839bdd550df652c3760d6",
+      "copied_ok": true
+    },
+    {
+      "path": "runtime/gremlin/policy.py",
+      "bootstrap_sha_before": null,
+      "rollout_sha": "dc7ff798d03ce30bc554055d443680dcfff9c8b8cf209b01ecea1afad4f0420b",
+      "present_before": false,
+      "bootstrap_sha_after": "dc7ff798d03ce30bc554055d443680dcfff9c8b8cf209b01ecea1afad4f0420b",
+      "copied_ok": true
+    },
+    {
+      "path": "runtime/gremlin/receipts.py",
+      "bootstrap_sha_before": null,
+      "rollout_sha": "d6888986459cff818b1a803d2ca535b9493405f5b0dc3f5eac0f51695049f55f",
+      "present_before": false,
+      "bootstrap_sha_after": "d6888986459cff818b1a803d2ca535b9493405f5b0dc3f5eac0f51695049f55f",
+      "copied_ok": true
+    },
+    {
+      "path": "runtime/gremlin/recovery_authority.py",
+      "bootstrap_sha_before": null,
+      "rollout_sha": "e68b313a45f8ed69f70529d6f85d22b820f8d1b111bd505e39c5e8acddf92985",
+      "present_before": false,
+      "bootstrap_sha_after": "e68b313a45f8ed69f70529d6f85d22b820f8d1b111bd505e39c5e8acddf92985",
+      "copied_ok": true
+    },
+    {
+      "path": "runtime/gremlin/recovery_verifier_console.py",
+      "bootstrap_sha_before": null,
+      "rollout_sha": "1cc1ee659d1d9f330c3d2b0d1a0b8657082a933f8022e4215c95991e0112ddf4",
+      "present_before": false,
+      "bootstrap_sha_after": "1cc1ee659d1d9f330c3d2b0d1a0b8657082a933f8022e4215c95991e0112ddf4",
+      "copied_ok": true
+    },
+    {
+      "path": "runtime/gremlin/registry.py",
+      "bootstrap_sha_before": null,
+      "rollout_sha": "23c5cfd1d5e719584736cff225172849aa0436871246bf99e3196f979bb2ee2f",
+      "present_before": false,
+      "bootstrap_sha_after": "23c5cfd1d5e719584736cff225172849aa0436871246bf99e3196f979bb2ee2f",
+      "copied_ok": true
+    },
+    {
+      "path": "runtime/gremlin/runtime_identity.py",
+      "bootstrap_sha_before": null,
+      "rollout_sha": "2b1488da37399785667b73a632f32c958b343e70b481db31e4ffd8e3984e8541",
+      "present_before": false,
+      "bootstrap_sha_after": "2b1488da37399785667b73a632f32c958b343e70b481db31e4ffd8e3984e8541",
+      "copied_ok": true
+    },
+    {
+      "path": "runtime/gremlin/supervisor.py",
+      "bootstrap_sha_before": null,
+      "rollout_sha": "8d0c001ac5464cc7ea195e64b92346a080a309e37016952278646ca13441f4ad",
+      "present_before": false,
+      "bootstrap_sha_after": "8d0c001ac5464cc7ea195e64b92346a080a309e37016952278646ca13441f4ad",
+      "copied_ok": true
+    }
+  ],
+  "count": 36,
+  "overwrote_existing": [
+    "runtime/gremlin/host_enforcement_backend.py"
+  ],
+  "verify_failures": []
+}

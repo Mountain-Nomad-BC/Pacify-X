@@ -1,0 +1,23 @@
+{
+  "command": [
+    "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.venv-repair\\Scripts\\python.exe",
+    "-m",
+    "pytest",
+    "tests/test_file_lock_thread_custody.py",
+    "tests/test_file_lock_contention.py",
+    "tests/test_event_integrity_audit.py",
+    "tests/test_operational_event_bus.py",
+    "tests/test_event_ledger_regression.py",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "--basetemp=.tmp/pytest-resume10-lock-final-custody"
+  ],
+  "exit_code": 0,
+  "tree_closed": true,
+  "resource_inactive": true,
+  "receipt": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.tmp\\resume10\\owned\\cleanup-receipts\\process-ebbca5c93a6241d5a72b0a6d04ff1b19.json",
+  "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.tmp\\resume10\\owned\\pacifyx-hy0wciwd",
+  "log": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\docs\\repair\\evidence\\resume10-lock-final-custody.log",
+  "log_sha256": "6feab270be7be81ff44d870c94aab86c246cc46a46e8bb792687ef228d7fa8d4"
+}

@@ -1,0 +1,1038 @@
+{
+  "schema_version": "1.0",
+  "scan_complete": true,
+  "review_complete": false,
+  "complete": false,
+  "files_scanned": 1376,
+  "finding_count": 129,
+  "reviewed_count": 112,
+  "unreviewed_count": 17,
+  "findings": [
+    {
+      "id": "19a447161ece9d566843",
+      "path": ".px/skills/audit-incomplete-implementations/scripts/audit_incomplete.py",
+      "line": 47,
+      "rule": "todo-comment",
+      "classification": "detector_literal",
+      "review_owner": "audit-incomplete-implementations"
+    },
+    {
+      "id": "fe075cefe4df1d3ab731",
+      "path": ".px/skills/audit-incomplete-implementations/scripts/audit_incomplete.py",
+      "line": 48,
+      "rule": "unimplemented-error",
+      "classification": "detector_literal",
+      "review_owner": "audit-incomplete-implementations"
+    },
+    {
+      "id": "6d685fce8c0895bfeb03",
+      "path": ".px/skills/audit-incomplete-implementations/scripts/audit_incomplete.py",
+      "line": 85,
+      "rule": "unimplemented-error",
+      "classification": "detector_literal",
+      "review_owner": "audit-incomplete-implementations"
+    },
+    {
+      "id": "ff8696c58aa96848e2ee",
+      "path": "px/py_cert/scripts/build_release_successor_configs.py",
+      "line": 708,
+      "rule": "python-pass",
+      "classification": "safe_degradation",
+      "review_owner": "release-successor-config",
+      "review_inherited_from": "scripts/build_release_successor_configs.py"
+    },
+    {
+      "id": "91deae5b41398116ac83",
+      "path": "px/py_cert/scripts/reconcile_cohesion_cards.py",
+      "line": 244,
+      "rule": "python-pass",
+      "classification": "safe_degradation",
+      "review_owner": "cohesion-reconciliation",
+      "review_inherited_from": "scripts/reconcile_cohesion_cards.py"
+    },
+    {
+      "id": "5dbadbb982395336654e",
+      "path": "px/py_cert/scripts/run_installed_operational_owner.py",
+      "line": 154,
+      "rule": "python-ellipsis-body",
+      "classification": "protocol_contract",
+      "review_owner": "installed-operational-owner",
+      "review_inherited_from": "scripts/run_installed_operational_owner.py"
+    },
+    {
+      "id": "0288593e0b160998cf7b",
+      "path": "px/py_cert/scripts/run_installed_operational_owner.py",
+      "line": 158,
+      "rule": "python-ellipsis-body",
+      "classification": "protocol_contract",
+      "review_owner": "installed-operational-owner",
+      "review_inherited_from": "scripts/run_installed_operational_owner.py"
+    },
+    {
+      "id": "12254b88a445e09addc7",
+      "path": "px/py_cert/scripts/run_installed_operational_owner.py",
+      "line": 159,
+      "rule": "python-ellipsis-body",
+      "classification": "protocol_contract",
+      "review_owner": "installed-operational-owner",
+      "review_inherited_from": "scripts/run_installed_operational_owner.py"
+    },
+    {
+      "id": "5c93b44ce32bd1490693",
+      "path": "px/py_cert/scripts/run_installed_operational_owner.py",
+      "line": 160,
+      "rule": "python-ellipsis-body",
+      "classification": "protocol_contract",
+      "review_owner": "installed-operational-owner",
+      "review_inherited_from": "scripts/run_installed_operational_owner.py"
+    },
+    {
+      "id": "a70b31c77f5859bdeead",
+      "path": "px/py_cert/scripts/run_installed_operational_owner.py",
+      "line": 161,
+      "rule": "python-ellipsis-body",
+      "classification": "protocol_contract",
+      "review_owner": "installed-operational-owner",
+      "review_inherited_from": "scripts/run_installed_operational_owner.py"
+    },
+    {
+      "id": "1372fbfedc7bcba00346",
+      "path": "px/py_cert/scripts/run_pre_cert_repository_convergence.py",
+      "line": 140,
+      "rule": "python-pass",
+      "classification": "expected_control_flow",
+      "review_owner": "pre-cert-convergence"
+    },
+    {
+      "id": "d91d00d3a29ee497e701",
+      "path": "px/py_cert/scripts/run_release_candidate.py",
+      "line": 678,
+      "rule": "python-ellipsis-body",
+      "classification": "protocol_contract",
+      "review_owner": "release-candidate-owner",
+      "review_inherited_from": "scripts/run_release_candidate.py"
+    },
+    {
+      "id": "caf1286e6b177c42ac58",
+      "path": "px/py_cert/scripts/run_release_candidate.py",
+      "line": 680,
+      "rule": "python-ellipsis-body",
+      "classification": "protocol_contract",
+      "review_owner": "release-candidate-owner",
+      "review_inherited_from": "scripts/run_release_candidate.py"
+    },
+    {
+      "id": "8d51001e7fb188a71f61",
+      "path": "px/py_cert/scripts/run_release_stage_owner.py",
+      "line": 485,
+      "rule": "python-ellipsis-body",
+      "classification": "protocol_contract",
+      "review_owner": "release-stage-owner"
+    },
+    {
+      "id": "e356fa8e9a2aeb263e98",
+      "path": "px/py_cert/scripts/run_release_stage_owner.py",
+      "line": 486,
+      "rule": "python-ellipsis-body",
+      "classification": "protocol_contract",
+      "review_owner": "release-stage-owner"
+    },
+    {
+      "id": "6ab059c47ec859a87ce6",
+      "path": "px/py_cert/scripts/run_release_stage_owner.py",
+      "line": 1225,
+      "rule": "python-pass",
+      "classification": "safe_degradation",
+      "review_owner": "release-stage-owner"
+    },
+    {
+      "id": "ec4f7e301e5cc6ad0fdf",
+      "path": "px/py_cert/scripts/validate_certification_pipeline.py",
+      "line": 79,
+      "rule": "python-pass",
+      "classification": "protocol_contract",
+      "review_owner": "certification-pipeline",
+      "review_inherited_from": "scripts/validate_certification_pipeline.py"
+    },
+    {
+      "id": "21788835f75ce060af7f",
+      "path": "runtime/agent_runtime.py",
+      "line": 2070,
+      "rule": "python-pass",
+      "classification": "expected_control_flow",
+      "review_owner": "agent-runtime"
+    },
+    {
+      "id": "7101eeddce6480e7165a",
+      "path": "runtime/authoritative_json.py",
+      "line": 279,
+      "rule": "python-pass",
+      "classification": "safe_degradation",
+      "review_owner": "authoritative-json"
+    },
+    {
+      "id": "3d5d378d35c05a62bebe",
+      "path": "runtime/cli.py",
+      "line": 3482,
+      "rule": "python-pass",
+      "classification": "safe_degradation",
+      "review_owner": "runtime-cli"
+    },
+    {
+      "id": "3588b0d9af5788d0fa38",
+      "path": "runtime/commissioning.py",
+      "line": 792,
+      "rule": "todo-comment",
+      "classification": "validation_literal",
+      "review_owner": "commission-project"
+    },
+    {
+      "id": "7f417f023624ece72212",
+      "path": "runtime/containment_invariants.py",
+      "line": 247,
+      "rule": "python-pass",
+      "classification": "unreviewed"
+    },
+    {
+      "id": "35d76534ed31b4092054",
+      "path": "runtime/containment_invariants.py",
+      "line": 259,
+      "rule": "unimplemented-error",
+      "classification": "unreviewed"
+    },
+    {
+      "id": "d7768ec131a2200f487d",
+      "path": "runtime/evidence_portability.py",
+      "line": 115,
+      "rule": "python-pass",
+      "classification": "expected_control_flow",
+      "review_owner": "runtime"
+    },
+    {
+      "id": "2c7131ae941a502957f3",
+      "path": "runtime/file_lock.py",
+      "line": 173,
+      "rule": "python-pass",
+      "classification": "expected_control_flow",
+      "review_owner": "runtime"
+    },
+    {
+      "id": "e8571c126430126ff05d",
+      "path": "runtime/gremlin/recovery_authority.py",
+      "line": 187,
+      "rule": "python-ellipsis-body",
+      "classification": "unreviewed"
+    },
+    {
+      "id": "7f3cc8e13ec2a67222db",
+      "path": "runtime/gremlin/recovery_authority.py",
+      "line": 197,
+      "rule": "python-ellipsis-body",
+      "classification": "unreviewed"
+    },
+    {
+      "id": "424d82b697a5c23ed240",
+      "path": "runtime/gremlin/recovery_authority.py",
+      "line": 199,
+      "rule": "python-ellipsis-body",
+      "classification": "unreviewed"
+    },
+    {
+      "id": "e1facdc7d393b27d2269",
+      "path": "runtime/gremlin/recovery_authority.py",
+      "line": 201,
+      "rule": "python-ellipsis-body",
+      "classification": "unreviewed"
+    },
+    {
+      "id": "8987dec142d5ab673eb7",
+      "path": "runtime/gremlin/runtime_identity.py",
+      "line": 56,
+      "rule": "python-ellipsis-body",
+      "classification": "unreviewed"
+    },
+    {
+      "id": "034daa057fe40de557bd",
+      "path": "runtime/gremlin/runtime_identity.py",
+      "line": 58,
+      "rule": "python-ellipsis-body",
+      "classification": "unreviewed"
+    },
+    {
+      "id": "45db9a8d84af09dd52c5",
+      "path": "runtime/gremlin/runtime_identity.py",
+      "line": 60,
+      "rule": "python-ellipsis-body",
+      "classification": "unreviewed"
+    },
+    {
+      "id": "c90ab3936720fce4156e",
+      "path": "runtime/gremlin/runtime_identity.py",
+      "line": 62,
+      "rule": "python-ellipsis-body",
+      "classification": "unreviewed"
+    },
+    {
+      "id": "7eb72feae56baf7ebb91",
+      "path": "runtime/gremlin/supervisor.py",
+      "line": 36,
+      "rule": "python-ellipsis-body",
+      "classification": "unreviewed"
+    },
+    {
+      "id": "5007435579e209ce0adc",
+      "path": "runtime/gremlin/supervisor.py",
+      "line": 39,
+      "rule": "python-ellipsis-body",
+      "classification": "unreviewed"
+    },
+    {
+      "id": "ba649cba52ec7e90f6a7",
+      "path": "runtime/guarded_registry_projection.py",
+      "line": 27,
+      "rule": "python-pass",
+      "classification": "unreviewed"
+    },
+    {
+      "id": "8977048be67e52991b6a",
+      "path": "runtime/hardware_routing.py",
+      "line": 264,
+      "rule": "python-pass",
+      "classification": "safe_degradation",
+      "review_owner": "hardware-aware-execution-routing"
+    },
+    {
+      "id": "fd71945296653a8e21ae",
+      "path": "runtime/lifecycle.py",
+      "line": 23,
+      "rule": "python-ellipsis-body",
+      "classification": "protocol_contract",
+      "review_owner": "runtime"
+    },
+    {
+      "id": "6f12652da28305cf3d12",
+      "path": "runtime/model_protocol_translate.py",
+      "line": 552,
+      "rule": "python-pass",
+      "classification": "expected_control_flow",
+      "review_owner": "model-protocol-translate"
+    },
+    {
+      "id": "fb5c212ecd8e2d3a33cf",
+      "path": "runtime/operational_event_bus.py",
+      "line": 295,
+      "rule": "python-pass",
+      "classification": "unreviewed"
+    },
+    {
+      "id": "c5269a7488812df5bb3a",
+      "path": "runtime/operational_observers.py",
+      "line": 342,
+      "rule": "python-ellipsis-body",
+      "classification": "protocol_contract",
+      "review_owner": "operational-observers"
+    },
+    {
+      "id": "9028a9c80cc00d95dd99",
+      "path": "runtime/operational_observers.py",
+      "line": 344,
+      "rule": "python-ellipsis-body",
+      "classification": "protocol_contract",
+      "review_owner": "operational-observers"
+    },
+    {
+      "id": "c7f184905d5812ce74f2",
+      "path": "runtime/operational_observers.py",
+      "line": 346,
+      "rule": "python-ellipsis-body",
+      "classification": "protocol_contract",
+      "review_owner": "operational-observers"
+    },
+    {
+      "id": "6b8a818e58b750e8c3ce",
+      "path": "runtime/operational_observers.py",
+      "line": 348,
+      "rule": "python-ellipsis-body",
+      "classification": "protocol_contract",
+      "review_owner": "operational-observers"
+    },
+    {
+      "id": "51c539d4f8438f02b7d5",
+      "path": "runtime/operational_observers.py",
+      "line": 350,
+      "rule": "python-ellipsis-body",
+      "classification": "protocol_contract",
+      "review_owner": "operational-observers"
+    },
+    {
+      "id": "8b09f792047d90cb27f0",
+      "path": "runtime/operational_observers.py",
+      "line": 354,
+      "rule": "python-ellipsis-body",
+      "classification": "protocol_contract",
+      "review_owner": "operational-observers"
+    },
+    {
+      "id": "424507ca699be4f17d14",
+      "path": "runtime/orchestrator.py",
+      "line": 68,
+      "rule": "python-ellipsis-body",
+      "classification": "protocol_contract",
+      "review_owner": "runtime"
+    },
+    {
+      "id": "36963e3adadb0d9d475a",
+      "path": "runtime/process_supervisor.py",
+      "line": 1244,
+      "rule": "python-pass",
+      "classification": "safe_degradation",
+      "review_owner": "process-supervisor"
+    },
+    {
+      "id": "b74ccc3e4e94ad7237bb",
+      "path": "runtime/project_intelligence.py",
+      "line": 3303,
+      "rule": "python-pass",
+      "classification": "expected_control_flow",
+      "review_owner": "map-project-intelligence"
+    },
+    {
+      "id": "0ff4fb43f42785d6e43f",
+      "path": "runtime/project_revision_succession.py",
+      "line": 37,
+      "rule": "python-pass",
+      "classification": "unreviewed"
+    },
+    {
+      "id": "900ddf0c1211163bc141",
+      "path": "runtime/provider_certification.py",
+      "line": 16,
+      "rule": "python-ellipsis-body",
+      "classification": "protocol_contract",
+      "review_owner": "runtime"
+    },
+    {
+      "id": "8ec10e4e790ff92d7d6c",
+      "path": "runtime/provider_certification.py",
+      "line": 17,
+      "rule": "python-ellipsis-body",
+      "classification": "protocol_contract",
+      "review_owner": "runtime"
+    },
+    {
+      "id": "288b2df4e05b25ba0cd5",
+      "path": "runtime/provider_certification.py",
+      "line": 18,
+      "rule": "python-ellipsis-body",
+      "classification": "protocol_contract",
+      "review_owner": "runtime"
+    },
+    {
+      "id": "79c04733be5907023ea5",
+      "path": "runtime/provider_certification.py",
+      "line": 19,
+      "rule": "python-ellipsis-body",
+      "classification": "protocol_contract",
+      "review_owner": "runtime"
+    },
+    {
+      "id": "096feb39c58082bf0b3f",
+      "path": "runtime/provider_certification.py",
+      "line": 20,
+      "rule": "python-ellipsis-body",
+      "classification": "protocol_contract",
+      "review_owner": "runtime"
+    },
+    {
+      "id": "ba19c0e291e3028ca090",
+      "path": "runtime/provider_certification.py",
+      "line": 21,
+      "rule": "python-ellipsis-body",
+      "classification": "protocol_contract",
+      "review_owner": "runtime"
+    },
+    {
+      "id": "84035f89bba6867f980a",
+      "path": "runtime/provider_gateway.py",
+      "line": 75,
+      "rule": "python-ellipsis-body",
+      "classification": "protocol_contract",
+      "review_owner": "provider-gateway"
+    },
+    {
+      "id": "a95d6bc5afe8ab652710",
+      "path": "runtime/provider_gateway.py",
+      "line": 149,
+      "rule": "python-ellipsis-body",
+      "classification": "protocol_contract",
+      "review_owner": "provider-gateway"
+    },
+    {
+      "id": "be9ec79e2a580a9b3827",
+      "path": "runtime/provider_gateway.py",
+      "line": 156,
+      "rule": "python-ellipsis-body",
+      "classification": "protocol_contract",
+      "review_owner": "provider-gateway"
+    },
+    {
+      "id": "4a0884fad438b7f4a126",
+      "path": "runtime/provider_gateway.py",
+      "line": 158,
+      "rule": "python-ellipsis-body",
+      "classification": "protocol_contract",
+      "review_owner": "provider-gateway"
+    },
+    {
+      "id": "782d0d6b25dbb50dd27c",
+      "path": "runtime/provider_gateway.py",
+      "line": 1508,
+      "rule": "unimplemented-error",
+      "classification": "validation_literal",
+      "review_owner": "provider-gateway"
+    },
+    {
+      "id": "8f5865fbf5cca2eaf5c9",
+      "path": "runtime/provider_gateway.py",
+      "line": 1665,
+      "rule": "python-pass",
+      "classification": "safe_degradation",
+      "review_owner": "provider-gateway"
+    },
+    {
+      "id": "f667de56c475f65a698e",
+      "path": "runtime/release_artifacts.py",
+      "line": 682,
+      "rule": "python-pass",
+      "classification": "expected_control_flow",
+      "review_owner": "release-artifacts"
+    },
+    {
+      "id": "266d8a3d998a21653f2a",
+      "path": "runtime/release_boundary.py",
+      "line": 45,
+      "rule": "python-pass",
+      "classification": "safe_degradation",
+      "review_owner": "release-boundary"
+    },
+    {
+      "id": "b3661d78263ea2692140",
+      "path": "runtime/release_certification.py",
+      "line": 1253,
+      "rule": "python-pass",
+      "classification": "expected_control_flow",
+      "review_owner": "release-certification"
+    },
+    {
+      "id": "3e1db89cf32604034b0b",
+      "path": "runtime/resource_lifecycle.py",
+      "line": 1297,
+      "rule": "python-pass",
+      "classification": "safe_degradation",
+      "review_owner": "manage-resource-lifecycle"
+    },
+    {
+      "id": "567537a0cf70feba3d1f",
+      "path": "runtime/revision_campaign_lifecycle.py",
+      "line": 22,
+      "rule": "python-pass",
+      "classification": "unreviewed"
+    },
+    {
+      "id": "53da6dfeb3d900a2eb28",
+      "path": "runtime/secure_publish.py",
+      "line": 70,
+      "rule": "python-pass",
+      "classification": "unreviewed"
+    },
+    {
+      "id": "17bba5e5587b4062f259",
+      "path": "runtime/semantic_code_backend.py",
+      "line": 24,
+      "rule": "unimplemented-error",
+      "classification": "protocol_contract",
+      "review_owner": "semantic-code"
+    },
+    {
+      "id": "db5fb78b7128f65c16bd",
+      "path": "runtime/semantic_code_document.py",
+      "line": 15,
+      "rule": "python-pass",
+      "classification": "protocol_contract",
+      "review_owner": "semantic-code"
+    },
+    {
+      "id": "b0d2de0fa043a0f0d4d9",
+      "path": "runtime/semantic_code_paths.py",
+      "line": 9,
+      "rule": "python-pass",
+      "classification": "protocol_contract",
+      "review_owner": "semantic-code"
+    },
+    {
+      "id": "56affebc7ef6259bb41c",
+      "path": "runtime/semantic_code_registry.py",
+      "line": 13,
+      "rule": "python-pass",
+      "classification": "protocol_contract",
+      "review_owner": "semantic-code"
+    },
+    {
+      "id": "a18aed395032fc7e464a",
+      "path": "runtime/semantic_lsp_adapters.py",
+      "line": 22,
+      "rule": "python-ellipsis-body",
+      "classification": "protocol_contract",
+      "review_owner": "semantic-lsp"
+    },
+    {
+      "id": "030f47c44c1ee94d0af3",
+      "path": "runtime/semantic_lsp_adapters.py",
+      "line": 23,
+      "rule": "python-ellipsis-body",
+      "classification": "protocol_contract",
+      "review_owner": "semantic-lsp"
+    },
+    {
+      "id": "96f9c97e238aa93d830d",
+      "path": "runtime/semantic_lsp_client.py",
+      "line": 195,
+      "rule": "python-pass",
+      "classification": "safe_degradation",
+      "review_owner": "semantic-lsp"
+    },
+    {
+      "id": "cda619b5ebaa1266cb2a",
+      "path": "runtime/semantic_lsp_documents.py",
+      "line": 30,
+      "rule": "python-pass",
+      "classification": "protocol_contract",
+      "review_owner": "semantic-lsp"
+    },
+    {
+      "id": "5ff7e8d14d33d21828b9",
+      "path": "runtime/semantic_lsp_encoding.py",
+      "line": 8,
+      "rule": "python-pass",
+      "classification": "protocol_contract",
+      "review_owner": "semantic-lsp"
+    },
+    {
+      "id": "496386b329dbc730d3e7",
+      "path": "runtime/semantic_lsp_framing.py",
+      "line": 9,
+      "rule": "python-pass",
+      "classification": "protocol_contract",
+      "review_owner": "semantic-lsp"
+    },
+    {
+      "id": "e3841d35e08a75a2c598",
+      "path": "runtime/semantic_lsp_health.py",
+      "line": 13,
+      "rule": "python-pass",
+      "classification": "protocol_contract",
+      "review_owner": "semantic-lsp"
+    },
+    {
+      "id": "dee382489f5edeaf0bce",
+      "path": "runtime/semantic_lsp_manager.py",
+      "line": 20,
+      "rule": "python-pass",
+      "classification": "protocol_contract",
+      "review_owner": "semantic-lsp"
+    },
+    {
+      "id": "fe2b15cf01524dbce58f",
+      "path": "runtime/semantic_lsp_process.py",
+      "line": 174,
+      "rule": "python-pass",
+      "classification": "safe_degradation",
+      "review_owner": "semantic-lsp"
+    },
+    {
+      "id": "6416fe33cfd700c76447",
+      "path": "runtime/semantic_lsp_protocol.py",
+      "line": 15,
+      "rule": "python-pass",
+      "classification": "protocol_contract",
+      "review_owner": "semantic-lsp"
+    },
+    {
+      "id": "ed205504aebdb34ab4d5",
+      "path": "runtime/semantic_lsp_queries.py",
+      "line": 18,
+      "rule": "python-pass",
+      "classification": "protocol_contract",
+      "review_owner": "semantic-lsp"
+    },
+    {
+      "id": "818f4a9967805ef3633e",
+      "path": "runtime/semantic_lsp_transaction.py",
+      "line": 62,
+      "rule": "python-pass",
+      "classification": "safe_degradation",
+      "review_owner": "semantic-lsp"
+    },
+    {
+      "id": "20fec4ac73039ab9657c",
+      "path": "runtime/semantic_lsp_transport.py",
+      "line": 192,
+      "rule": "python-pass",
+      "classification": "safe_degradation",
+      "review_owner": "semantic-lsp"
+    },
+    {
+      "id": "c4b1496648c1d15686f0",
+      "path": "runtime/semantic_lsp_uri.py",
+      "line": 12,
+      "rule": "python-pass",
+      "classification": "protocol_contract",
+      "review_owner": "semantic-lsp"
+    },
+    {
+      "id": "9cfafcaba2e930a3d1e2",
+      "path": "runtime/semantic_lsp_workspace.py",
+      "line": 17,
+      "rule": "python-pass",
+      "classification": "protocol_contract",
+      "review_owner": "semantic-lsp"
+    },
+    {
+      "id": "f01b14e46717f526dbdc",
+      "path": "runtime/studio_authority.py",
+      "line": 185,
+      "rule": "python-pass",
+      "classification": "safe_degradation",
+      "review_owner": "studio-authority"
+    },
+    {
+      "id": "15bb7b5aee04a3fe1fa4",
+      "path": "runtime/studio_models.py",
+      "line": 1215,
+      "rule": "python-pass",
+      "classification": "safe_degradation",
+      "review_owner": "studio-models"
+    },
+    {
+      "id": "6ebefb620af1f712f118",
+      "path": "runtime/studio_terminal_observer.py",
+      "line": 246,
+      "rule": "python-pass",
+      "classification": "safe_degradation",
+      "review_owner": "studio-runtime"
+    },
+    {
+      "id": "f3be69afadccf2203b79",
+      "path": "runtime/studio_worker_launch.py",
+      "line": 354,
+      "rule": "python-pass",
+      "classification": "safe_degradation",
+      "review_owner": "studio-worker-launch"
+    },
+    {
+      "id": "5b72f07be31ccf6ee19a",
+      "path": "runtime/test_runner.py",
+      "line": 384,
+      "rule": "python-pass",
+      "classification": "safe_degradation",
+      "review_owner": "test-runner"
+    },
+    {
+      "id": "66b551efc7c87fdb379d",
+      "path": "runtime/verification_receipts.py",
+      "line": 88,
+      "rule": "python-pass",
+      "classification": "validation_literal",
+      "review_owner": "verification-receipts"
+    },
+    {
+      "id": "443b59404392413586fb",
+      "path": "runtime/wal_transaction.py",
+      "line": 171,
+      "rule": "python-pass",
+      "classification": "safe_degradation",
+      "review_owner": "wal-transaction"
+    },
+    {
+      "id": "f00c1195316dba51ef68",
+      "path": "runtime/work_admission.py",
+      "line": 39,
+      "rule": "python-pass",
+      "classification": "expected_control_flow",
+      "review_owner": "work-admission"
+    },
+    {
+      "id": "b7848e542482bf21a1a2",
+      "path": "scripts/benchmark_local_models.py",
+      "line": 65,
+      "rule": "python-pass",
+      "classification": "safe_degradation",
+      "review_owner": "local-model-benchmark"
+    },
+    {
+      "id": "6020305c151c060ccd7f",
+      "path": "scripts/benchmark_model_routes.py",
+      "line": 114,
+      "rule": "python-pass",
+      "classification": "safe_degradation",
+      "review_owner": "model-route-benchmark"
+    },
+    {
+      "id": "2d60299a88c0fdaf3efa",
+      "path": "scripts/benchmark_operational_gap_ledger.py",
+      "line": 161,
+      "rule": "python-pass",
+      "classification": "expected_control_flow",
+      "review_owner": "operational-gap-ledger-benchmark"
+    },
+    {
+      "id": "f0cab86683b39fd985ee",
+      "path": "scripts/build_release_successor_configs.py",
+      "line": 708,
+      "rule": "python-pass",
+      "classification": "safe_degradation",
+      "review_owner": "release-successor-config"
+    },
+    {
+      "id": "3cf905571dbe8a83b65f",
+      "path": "scripts/certify_local_model_profiles.py",
+      "line": 59,
+      "rule": "python-pass",
+      "classification": "safe_degradation",
+      "review_owner": "local-model-certification"
+    },
+    {
+      "id": "b7e361acbb4a80837ce4",
+      "path": "scripts/clean_source_export.py",
+      "line": 922,
+      "rule": "python-pass",
+      "classification": "safe_degradation",
+      "review_owner": "release-export"
+    },
+    {
+      "id": "9b129c0ce6a1c078ffd2",
+      "path": "scripts/reconcile_cohesion_cards.py",
+      "line": 244,
+      "rule": "python-pass",
+      "classification": "safe_degradation",
+      "review_owner": "cohesion-reconciliation"
+    },
+    {
+      "id": "87b9982cccbe116e5092",
+      "path": "scripts/run_installed_operational_owner.py",
+      "line": 154,
+      "rule": "python-ellipsis-body",
+      "classification": "protocol_contract",
+      "review_owner": "installed-operational-owner"
+    },
+    {
+      "id": "e1496fd26676cfa404e5",
+      "path": "scripts/run_installed_operational_owner.py",
+      "line": 158,
+      "rule": "python-ellipsis-body",
+      "classification": "protocol_contract",
+      "review_owner": "installed-operational-owner"
+    },
+    {
+      "id": "24ef9bb53dd52bd74f07",
+      "path": "scripts/run_installed_operational_owner.py",
+      "line": 159,
+      "rule": "python-ellipsis-body",
+      "classification": "protocol_contract",
+      "review_owner": "installed-operational-owner"
+    },
+    {
+      "id": "49a973e8c29e63132c34",
+      "path": "scripts/run_installed_operational_owner.py",
+      "line": 160,
+      "rule": "python-ellipsis-body",
+      "classification": "protocol_contract",
+      "review_owner": "installed-operational-owner"
+    },
+    {
+      "id": "8f9eb5bbcb281c2ec668",
+      "path": "scripts/run_installed_operational_owner.py",
+      "line": 161,
+      "rule": "python-ellipsis-body",
+      "classification": "protocol_contract",
+      "review_owner": "installed-operational-owner"
+    },
+    {
+      "id": "d683b20a048a102914ca",
+      "path": "scripts/run_release_candidate.py",
+      "line": 678,
+      "rule": "python-ellipsis-body",
+      "classification": "protocol_contract",
+      "review_owner": "release-candidate-owner"
+    },
+    {
+      "id": "4e934dccb06c9987e3d5",
+      "path": "scripts/run_release_candidate.py",
+      "line": 680,
+      "rule": "python-ellipsis-body",
+      "classification": "protocol_contract",
+      "review_owner": "release-candidate-owner"
+    },
+    {
+      "id": "34437d5abc5c546a28d8",
+      "path": "scripts/run_release_stage_owner.py",
+      "line": 485,
+      "rule": "python-ellipsis-body",
+      "classification": "protocol_contract",
+      "review_owner": "release-stage-owner"
+    },
+    {
+      "id": "61a6dcabee30435a6105",
+      "path": "scripts/run_release_stage_owner.py",
+      "line": 486,
+      "rule": "python-ellipsis-body",
+      "classification": "protocol_contract",
+      "review_owner": "release-stage-owner"
+    },
+    {
+      "id": "f7a3b2024643aeb8cf4c",
+      "path": "scripts/run_release_stage_owner.py",
+      "line": 1225,
+      "rule": "python-pass",
+      "classification": "safe_degradation",
+      "review_owner": "release-stage-owner"
+    },
+    {
+      "id": "c13cf351e6861188280b",
+      "path": "scripts/validate_certification_pipeline.py",
+      "line": 79,
+      "rule": "python-pass",
+      "classification": "protocol_contract",
+      "review_owner": "certification-pipeline"
+    },
+    {
+      "id": "b7a8c136928798e723d9",
+      "path": "tests/test_archive_io.py",
+      "line": 645,
+      "rule": "python-pass",
+      "classification": "test_fixture",
+      "review_owner": "archive-tests"
+    },
+    {
+      "id": "d837b4d671d2d5b70ea1",
+      "path": "tests/test_bounded_walk.py",
+      "line": 146,
+      "rule": "unimplemented-error",
+      "classification": "test_fixture",
+      "review_owner": "tests"
+    },
+    {
+      "id": "8c2c283a843b1f63e15f",
+      "path": "tests/test_capability_mining_skills.py",
+      "line": 296,
+      "rule": "unimplemented-error",
+      "classification": "test_fixture",
+      "review_owner": "tests"
+    },
+    {
+      "id": "30dfa8c217e2136a82b9",
+      "path": "tests/test_file_lock_contention.py",
+      "line": 52,
+      "rule": "python-pass",
+      "classification": "test_fixture",
+      "review_owner": "tests"
+    },
+    {
+      "id": "f153254c3c14f9ef64aa",
+      "path": "tests/test_instrumentation_sdk.py",
+      "line": 52,
+      "rule": "python-pass",
+      "classification": "test_fixture",
+      "review_owner": "tests"
+    },
+    {
+      "id": "726280b1cf380def79de",
+      "path": "tests/test_native_skills.py",
+      "line": 312,
+      "rule": "todo-comment",
+      "classification": "test_fixture",
+      "review_owner": "tests"
+    },
+    {
+      "id": "decc9967515d914b2f0b",
+      "path": "tests/test_observer_input_contracts.py",
+      "line": 398,
+      "rule": "python-pass",
+      "classification": "test_fixture",
+      "review_owner": "observer-tests"
+    },
+    {
+      "id": "cafab297a717168b2161",
+      "path": "tests/test_process_lifecycle_retained_custody_recovery.py",
+      "line": 225,
+      "rule": "python-pass",
+      "classification": "test_fixture",
+      "review_owner": "lifecycle-tests"
+    },
+    {
+      "id": "72e1b3b7ec04ab394185",
+      "path": "tests/test_provider_gateway_streaming.py",
+      "line": 322,
+      "rule": "unimplemented-error",
+      "classification": "test_fixture",
+      "review_owner": "provider-gateway-tests"
+    },
+    {
+      "id": "3dc10f33748a6f56be85",
+      "path": "tests/test_semantic_code_lifecycle.py",
+      "line": 27,
+      "rule": "python-pass",
+      "classification": "test_fixture",
+      "review_owner": "semantic-code-tests"
+    },
+    {
+      "id": "232ea857d71364a58f78",
+      "path": "tests/test_semantic_code_paths.py",
+      "line": 27,
+      "rule": "unimplemented-error",
+      "classification": "test_fixture",
+      "review_owner": "semantic-code-tests"
+    },
+    {
+      "id": "e27aa1c2cd53d7e09e8a",
+      "path": "tests/test_semantic_code_types.py",
+      "line": 21,
+      "rule": "python-pass",
+      "classification": "test_fixture",
+      "review_owner": "semantic-code-tests"
+    },
+    {
+      "id": "2c07bb454ecead4b2f6c",
+      "path": "tests/test_skill_library.py",
+      "line": 111,
+      "rule": "todo-comment",
+      "classification": "test_fixture",
+      "review_owner": "tests"
+    },
+    {
+      "id": "95a75f6134707ccf131c",
+      "path": "tests/test_studio_api.py",
+      "line": 490,
+      "rule": "python-pass",
+      "classification": "test_fixture",
+      "review_owner": "studio-api"
+    },
+    {
+      "id": "e22e9edda7b7cff27bab",
+      "path": "tests/test_wal_transaction.py",
+      "line": 30,
+      "rule": "unimplemented-error",
+      "classification": "test_fixture",
+      "review_owner": "wal-transaction-tests"
+    },
+    {
+      "id": "f5b85bfe72fdc7dcdbc2",
+      "path": "tests/test_workspace_manager.py",
+      "line": 973,
+      "rule": "python-pass",
+      "classification": "test_fixture",
+      "review_owner": "tests"
+    }
+  ],
+  "errors": []
+}

@@ -1,0 +1,23 @@
+{
+  "command": [
+    "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.venv-repair\\Scripts\\python.exe",
+    "-m",
+    "pytest",
+    "tests/test_release_candidate_driver.py",
+    "tests/test_release_stage_owner.py",
+    "tests/test_run_installed_operational_owner.py",
+    "tests/test_certification_readiness.py",
+    "tests/test_certification_pipeline_readiness.py",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "--basetemp=.tmp/pytest-resume10-release-owners"
+  ],
+  "exit_code": 0,
+  "tree_closed": true,
+  "resource_inactive": true,
+  "receipt": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.tmp\\resume10\\owned\\cleanup-receipts\\process-ae5cf6f366454602aa59be00e2d7f170.json",
+  "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.tmp\\resume10\\owned\\pacifyx-ejf7umdd",
+  "log": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\docs\\repair\\evidence\\resume10-release-lifecycle-neighbors.log",
+  "log_sha256": "b024e0a6bfbc5b25c7fd3b9460bd362be318596ae12195211794b0a8e329a83d"
+}

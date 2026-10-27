@@ -36,20 +36,22 @@ def test_file_lock_exponential_backoff() -> None:
             sleeps.append(value)
             clock[0] += value
 
-        with FileLock(path):
-            with (
-                patch("runtime.file_lock.time.monotonic", side_effect=lambda: clock[0]),
-                patch("runtime.file_lock.time.sleep", side_effect=sleep),
-                patch("runtime.file_lock.random.uniform", return_value=1.0),
-            ):
-                with pytest.raises(FileLockTimeout):
-                    with FileLock(
-                        path,
-                        timeout_seconds=0.04,
-                        minimum_sleep_seconds=0.005,
-                        maximum_sleep_seconds=0.02,
-                    ):
-                        pass
+        # Model cross-process byte-lock denial, which owns exponential backoff.
+        # Same-process contention now waits on a condition, not time.sleep.
+        with (
+            patch("runtime.file_lock.time.monotonic", side_effect=lambda: clock[0]),
+            patch("runtime.file_lock.time.sleep", side_effect=sleep),
+            patch("runtime.file_lock.random.uniform", return_value=1.0),
+            patch.object(FileLock, "_lock_stream", side_effect=BlockingIOError("other process")),
+        ):
+            with pytest.raises(FileLockTimeout):
+                with FileLock(
+                    path,
+                    timeout_seconds=0.04,
+                    minimum_sleep_seconds=0.005,
+                    maximum_sleep_seconds=0.02,
+                ):
+                    pass
         assert sleeps[:3] == [0.005, 0.01, 0.02]
         assert max(sleeps) <= 0.02
 
@@ -70,7 +72,7 @@ def test_file_lock_times_out_without_busy_spin() -> None:
         # On a loaded host the first filesystem/lease inspection can itself
         # consume the 50 ms budget.  One bounded attempt is not a busy spin;
         # repeated attempts must demonstrate backoff sleep.
-        assert contender.attempts == 1 or contender.slept_seconds > 0
+        assert contender.attempts <= 1 or contender.slept_seconds > 0
 
 
 def test_file_lock_high_contention_processes() -> None:

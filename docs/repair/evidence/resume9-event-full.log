@@ -1,0 +1,9 @@
+cmd: C:\Users\Ben\Documents\bootstrap_project\Pacify-X\.venv-repair\Scripts\python.exe -m pytest -q --no-header -p no:cacheprovider tests/test_event_integrity_audit.py tests/test_operational_event_bus.py
+exit: 0
+elapsed_seconds: 105.83
+--- stdout ---
+..........................................                               [100%]
+42 passed in 101.20s (0:01:41)
+
+--- stderr ---
+

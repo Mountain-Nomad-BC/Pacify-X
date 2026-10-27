@@ -64,11 +64,29 @@ class QueryPlan:
     facets: Mapping[str, tuple[str, ...]]
     direct_blockers: tuple[str, ...]
     plan_sha256: str
+    lexicon_sha256: str = ""
     authority_granted: bool = False
 
     @property
     def plan_hash(self) -> str:  # compatibility with source material terminology
         return self.plan_sha256
+
+    @staticmethod
+    def validate(plan: "QueryPlan") -> None:
+        """Recompute the plan digest and confirm it matches the claimed plan_sha256."""
+        payload = {
+            "normalized_query": plan.normalized_query,
+            "exact_identifiers": sorted(plan.exact_identifiers),
+            "exact_keys": sorted(plan.exact_keys),
+            "aliases_resolved": [list(item) for item in sorted(plan.aliases_resolved)],
+            "expansions": sorted(plan.expansions),
+            "facets": {key: sorted(values) for key, values in sorted(plan.facets.items())},
+            "direct_blockers": sorted(plan.direct_blockers),
+            "lexicon_sha256": plan.lexicon_sha256,
+        }
+        expected = _sha(payload)
+        if plan.plan_sha256 != expected:
+            raise ValueError("query plan digest does not match claimed plan_sha256")
 
 
 class QueryPlanner:
@@ -167,6 +185,7 @@ class QueryPlanner:
             facets={key: tuple(values) for key, values in payload["facets"].items()},
             direct_blockers=tuple(blockers),
             plan_sha256=_sha(payload),
+            lexicon_sha256=self.lexicon_sha256,
             authority_granted=False,
         )
 

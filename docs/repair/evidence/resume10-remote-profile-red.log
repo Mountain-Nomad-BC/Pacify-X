@@ -1,0 +1,86 @@
+FEEEEF                                                                   [100%]
+=================================== ERRORS ====================================
+___ ERROR at setup of test_signed_config_does_not_grant_model_availability ____
+
+tmp_path = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.tmp/pytest-resume10-remote-profile-red/test_signed_config_does_not_gr0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000174656808A0>
+
+    @pytest.fixture
+    def profile_config(tmp_path,monkeypatch):
+>       from runtime.remote_provider_profiles import ROOT,CONFIG
+E       ModuleNotFoundError: No module named 'runtime.remote_provider_profiles'
+
+tests\test_remote_profile_catalog.py:17: ModuleNotFoundError
+_ ERROR at setup of test_tampered_profile_or_unapproved_private_origin_is_rejected _
+
+tmp_path = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.tmp/pytest-resume10-remote-profile-red/test_tampered_profile_or_unapp0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000017465680D60>
+
+    @pytest.fixture
+    def profile_config(tmp_path,monkeypatch):
+>       from runtime.remote_provider_profiles import ROOT,CONFIG
+E       ModuleNotFoundError: No module named 'runtime.remote_provider_profiles'
+
+tests\test_remote_profile_catalog.py:17: ModuleNotFoundError
+_ ERROR at setup of test_schema_resolves_from_current_framework_layout[False] _
+
+tmp_path = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.tmp/pytest-resume10-remote-profile-red/test_schema_resolves_from_curr0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000174655D9D90>
+
+    @pytest.fixture
+    def profile_config(tmp_path,monkeypatch):
+>       from runtime.remote_provider_profiles import ROOT,CONFIG
+E       ModuleNotFoundError: No module named 'runtime.remote_provider_profiles'
+
+tests\test_remote_profile_catalog.py:17: ModuleNotFoundError
+_ ERROR at setup of test_schema_resolves_from_current_framework_layout[True] __
+
+tmp_path = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.tmp/pytest-resume10-remote-profile-red/test_schema_resolves_from_curr1')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000017465778270>
+
+    @pytest.fixture
+    def profile_config(tmp_path,monkeypatch):
+>       from runtime.remote_provider_profiles import ROOT,CONFIG
+E       ModuleNotFoundError: No module named 'runtime.remote_provider_profiles'
+
+tests\test_remote_profile_catalog.py:17: ModuleNotFoundError
+================================== FAILURES ===================================
+_ test_catalog_import_and_empty_profiles_do_not_require_missing_group_runtime _
+
+tmp_path = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.tmp/pytest-resume10-remote-profile-red/test_catalog_import_and_empty_0')
+
+    def test_catalog_import_and_empty_profiles_do_not_require_missing_group_runtime(tmp_path):
+>       from runtime.remote_model_bridge import list_models
+
+tests\test_remote_profile_catalog.py:8: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    """Existing-host remote profile/catalog/dispatch; production admission stays explicit."""
+    import argparse
+    import json
+    from pathlib import Path
+    import sys
+    
+    from .json_io import bounded_canonical_json_bytes
+    from .provider_gateway import load_provider_registry, load_provider_protocols
+>   from .remote_provider_profiles import load_profiles, digest
+E   ModuleNotFoundError: No module named 'runtime.remote_provider_profiles'
+
+runtime\remote_model_bridge.py:9: ModuleNotFoundError
+___ test_protocol_mapping_resource_is_declared_for_actual_installed_package ___
+
+    def test_protocol_mapping_resource_is_declared_for_actual_installed_package():
+        import tomllib
+>       from runtime.remote_service_protocols import service_protocol
+E       ModuleNotFoundError: No module named 'runtime.remote_service_protocols'
+
+tests\test_remote_profile_catalog.py:73: ModuleNotFoundError
+=========================== short test summary info ===========================
+FAILED tests/test_remote_profile_catalog.py::test_catalog_import_and_empty_profiles_do_not_require_missing_group_runtime
+FAILED tests/test_remote_profile_catalog.py::test_protocol_mapping_resource_is_declared_for_actual_installed_package
+ERROR tests/test_remote_profile_catalog.py::test_signed_config_does_not_grant_model_availability
+ERROR tests/test_remote_profile_catalog.py::test_tampered_profile_or_unapproved_private_origin_is_rejected
+ERROR tests/test_remote_profile_catalog.py::test_schema_resolves_from_current_framework_layout[False]
+ERROR tests/test_remote_profile_catalog.py::test_schema_resolves_from_current_framework_layout[True]
+2 failed, 4 errors in 0.30s
+

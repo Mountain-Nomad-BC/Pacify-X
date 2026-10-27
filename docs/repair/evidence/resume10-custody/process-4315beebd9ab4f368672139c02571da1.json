@@ -1,0 +1,29 @@
+{
+  "action_id": "client-protocol-green",
+  "audit_record_hash": "a9a5340c599b0d44156cd05c4a1a3f89dfae76fc53ad3501135d8449c6a6f7da",
+  "duration_seconds": 0.4637955999933183,
+  "ended_at": "2026-10-27T01:16:14.963Z",
+  "exit_code": 0,
+  "failure_type": null,
+  "receipt_id": "process-4315beebd9ab4f368672139c02571da1",
+  "resource_id": "process-d3dfe88ae0b3467ea7fa28d0f15edc6f",
+  "schema_version": "px.process-supervision-receipt/1.0",
+  "shutdown_mode": "natural",
+  "started_at": "2026-10-27T01:16:14.499Z",
+  "status": "exited",
+  "stderr": {
+    "decode_error_count": 0,
+    "dropped_bytes": 0,
+    "retained_bytes": 0,
+    "total_bytes": 0,
+    "truncated": false
+  },
+  "stdout": {
+    "decode_error_count": 0,
+    "dropped_bytes": 0,
+    "retained_bytes": 4477,
+    "total_bytes": 4477,
+    "truncated": false
+  },
+  "tree_closed": true
+}

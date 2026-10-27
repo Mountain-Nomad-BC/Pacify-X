@@ -695,6 +695,8 @@ class MemoryVault:
     def search(
         self, query: str, *, actor_id: str, limit: int = 5
     ) -> tuple[MemoryRecord, ...]:
+        if type(limit) is not int or not 0 <= limit <= 10_000:
+            raise ValueError("memory search limit must be an integer between zero and 10000")
         records = self.retrieval_records(actor_id=actor_id)
         ids = candidate_memories(
             query, records, project_id=self.project_id, actor_id=actor_id

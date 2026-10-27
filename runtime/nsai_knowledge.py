@@ -7,6 +7,8 @@ artifacts; ``knowledge/nsai/index.json`` is a disposable derived projection.
 
 from __future__ import annotations
 
+from .secure_publish import atomic_write_bytes
+
 from dataclasses import dataclass
 import hashlib
 import json
@@ -359,9 +361,7 @@ def write_nsai_index(
     target = library / "index.json"
     reject_path_links(target)
     raw = pretty_json_bytes(payload)
-    temporary = target.with_name(target.name + ".tmp")
-    temporary.write_bytes(raw)
-    temporary.replace(target)
+    atomic_write_bytes(target, raw)
     return payload
 
 

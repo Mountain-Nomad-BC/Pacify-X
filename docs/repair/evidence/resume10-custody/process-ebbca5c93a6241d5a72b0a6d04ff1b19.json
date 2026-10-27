@@ -1,0 +1,29 @@
+{
+  "action_id": "lock-final-custody",
+  "audit_record_hash": "42a2a9f680daec3fddebf8cbd49c56340cc641ff63e5e9981577d92bc3ea123d",
+  "duration_seconds": 19.507993000006536,
+  "ended_at": "2026-10-27T01:05:08.141Z",
+  "exit_code": 0,
+  "failure_type": null,
+  "receipt_id": "process-ebbca5c93a6241d5a72b0a6d04ff1b19",
+  "resource_id": "process-24cd6ceafafb4ce2b507fff798d8907b",
+  "schema_version": "px.process-supervision-receipt/1.0",
+  "shutdown_mode": "natural",
+  "started_at": "2026-10-27T01:04:48.633Z",
+  "status": "exited",
+  "stderr": {
+    "decode_error_count": 0,
+    "dropped_bytes": 0,
+    "retained_bytes": 0,
+    "total_bytes": 0,
+    "truncated": false
+  },
+  "stdout": {
+    "decode_error_count": 0,
+    "dropped_bytes": 0,
+    "retained_bytes": 102,
+    "total_bytes": 102,
+    "truncated": false
+  },
+  "tree_closed": true
+}

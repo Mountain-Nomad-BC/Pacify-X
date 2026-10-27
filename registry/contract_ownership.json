@@ -1,7 +1,7 @@
 {
   "schema_version": "2.0",
   "policy": "Every shipped schema has one explicit owner and an honest enforcement classification.",
-  "contract_count": 184,
+  "contract_count": 196,
   "records": [
     {
       "path": "contracts/agent_handoff_packet.schema.json",
@@ -378,6 +378,25 @@
       ]
     },
     {
+      "path": "contracts/cancellation-scope.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:cancellation-scope",
+      "contract_version": "1.0.0",
+      "title": "Cancellation scope membership and propagation decision",
+      "owner": "runtime/cancellation_scope.py",
+      "producers": [
+        "runtime/cancellation_scope.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "runtime_enforced",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_agent_governed_integration.py"
+      ]
+    },
+    {
       "path": "contracts/candidate-admission-request.schema.json",
       "contract_id": "urn:engineering-loop-bootstrap:contract:candidate-admission-request",
       "contract_version": "1.0.0",
@@ -665,6 +684,27 @@
       ]
     },
     {
+      "path": "contracts/context-generation-vector.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:context-generation-vector",
+      "contract_version": "1.0.0",
+      "title": "PX Context Generation Vector",
+      "owner": "runtime/context_generation.py",
+      "producers": [
+        "runtime/context_generation.py",
+        "runtime/dependency_invalidation.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "typed_scoped_archivist_metadata_boundary",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_context_generation.py",
+        "tests/test_contract_ownership_registry.py"
+      ]
+    },
+    {
       "path": "contracts/coverage-frontier-event.schema.json",
       "contract_id": "urn:engineering-loop-bootstrap:contract:coverage-frontier-event",
       "contract_version": "1.0.0",
@@ -700,6 +740,27 @@
       "tests": [
         "tests/test_contract_runtime.py",
         "tests/test_declared_suite_support.py"
+      ]
+    },
+    {
+      "path": "contracts/dependency-identity.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:dependency-identity",
+      "contract_version": "1.0.0",
+      "title": "PX owner-bound dependency identity",
+      "owner": "runtime/dependency_identity.py",
+      "producers": [
+        "runtime/dependency_identity.py",
+        "runtime/dependency_invalidation.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "canonical_dependency_observation_boundary",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_dependency_invalidation.py",
+        "tests/test_dependency_contracts.py"
       ]
     },
     {
@@ -814,6 +875,27 @@
       "tests": [
         "tests/test_contract_runtime.py",
         "tests/test_external_evidence.py"
+      ]
+    },
+    {
+      "path": "contracts/execution-context.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:execution-context",
+      "contract_version": "1.0.0",
+      "title": "Execution identity and currentness envelope",
+      "owner": "runtime/execution_context.py",
+      "producers": [
+        "runtime/execution_context.py",
+        "runtime/vscode_model_bridge.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "execution_identity_and_currentness_boundary",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_execution_context.py",
+        "tests/test_agent_governed_integration.py"
       ]
     },
     {
@@ -1034,6 +1116,101 @@
       ]
     },
     {
+      "path": "contracts/gremlin-containment-proof.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:gremlin-containment-proof",
+      "contract_version": "1.0.0",
+      "title": "Gremlin Nanny containment proof",
+      "owner": "runtime/gremlin/containment.py",
+      "producers": [
+        "runtime/gremlin/containment.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "runtime_enforced",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_gremlin_containment.py"
+      ]
+    },
+    {
+      "path": "contracts/gremlin-host-configuration.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:gremlin-host-configuration",
+      "contract_version": "1.0.0",
+      "title": "Commissioned Gremlin host configuration payload",
+      "owner": "runtime/gremlin/host_configuration.py",
+      "producers": [
+        "runtime/gremlin/host_configuration.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "runtime_enforced",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_gremlin_host_configuration.py"
+      ]
+    },
+    {
+      "path": "contracts/gremlin-recovery-authority.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:gremlin-recovery-authority",
+      "contract_version": "1.0.0",
+      "title": "Gremlin independent recovery authority",
+      "owner": "runtime/gremlin/recovery_authority.py",
+      "producers": [
+        "runtime/gremlin/recovery_authority.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "runtime_enforced",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_gremlin_recovery_authority.py"
+      ]
+    },
+    {
+      "path": "contracts/gremlin-recovery-replay-ledger.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:gremlin-recovery-replay-ledger",
+      "contract_version": "1.0.0",
+      "title": "Gremlin durable recovery replay ledger event",
+      "owner": "runtime/gremlin/recovery_authority.py",
+      "producers": [
+        "runtime/gremlin/recovery_authority.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "runtime_enforced",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_gremlin_recovery_authority.py"
+      ]
+    },
+    {
+      "path": "contracts/gremlin-runtime-identity.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:gremlin-runtime-identity",
+      "contract_version": "1.0.0",
+      "title": "Gremlin local runtime identity lifecycle record",
+      "owner": "runtime/gremlin/runtime_identity.py",
+      "producers": [
+        "runtime/gremlin/runtime_identity.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "runtime_enforced",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_gremlin_runtime_identity.py"
+      ]
+    },
+    {
       "path": "contracts/hardware-equivalence.schema.json",
       "contract_id": "urn:engineering-loop-bootstrap:contract:hardware-equivalence",
       "contract_version": "1.0.0",
@@ -1108,6 +1285,25 @@
       "tests": [
         "tests/test_contract_runtime.py",
         "tests/test_retrieval_and_models.py"
+      ]
+    },
+    {
+      "path": "contracts/isolated-agent-sandbox.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:isolated-agent-sandbox",
+      "contract_version": "1.0.0",
+      "title": "Isolated Agent Sandbox mode",
+      "owner": "runtime/isolated_sandbox.py",
+      "producers": [
+        "runtime/isolated_sandbox.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "runtime_enforced",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_isolated_agent_sandbox.py"
       ]
     },
     {
@@ -2571,6 +2767,26 @@
       ]
     },
     {
+      "path": "contracts/projection-status.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:projection-status",
+      "contract_version": "1.0.0",
+      "title": "PX Observed Projection Status",
+      "owner": "runtime/projection_gate.py",
+      "producers": [
+        "runtime/projection_gate.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "typed_scoped_archivist_metadata_boundary",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_projection_gate.py",
+        "tests/test_contract_ownership_registry.py"
+      ]
+    },
+    {
       "path": "contracts/provider_execution_policy.schema.json",
       "contract_id": "urn:engineering-loop-bootstrap:contract:provider_execution_policy",
       "contract_version": "1.0.0",
@@ -3609,6 +3825,25 @@
       "tests": [
         "tests/test_contract_runtime.py",
         "tests/test_outcome_verifier.py"
+      ]
+    },
+    {
+      "path": "contracts/workflow-resume-decision.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:workflow-resume-decision",
+      "contract_version": "1.0.0",
+      "title": "Native workflow checkpoint reuse decision",
+      "owner": "runtime/workflow_resume.py",
+      "producers": [
+        "runtime/workflow_resume.py"
+      ],
+      "consumers": [
+        "runtime/contracts.py"
+      ],
+      "enforcement": "runtime_enforced",
+      "packaged": true,
+      "tests": [
+        "tests/test_contract_runtime.py",
+        "tests/test_workflow_resume.py"
       ]
     }
   ]

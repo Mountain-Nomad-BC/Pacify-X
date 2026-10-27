@@ -18,6 +18,11 @@ from .process_supervisor import (
 from .resource_lifecycle import ResourceManager, ResourceStatus, RunState
 
 
+TEST_COLLECTION_OVERRIDE_ENV = frozenset({
+    "PYTEST_ADDOPTS", "PYTEST_PLUGINS", "PYTHONPATH", "NODE_OPTIONS", "NODE_PATH",
+})
+
+
 TEST_DISK_CONSUMPTION_LIMIT_BYTES = 8 * 1024 * 1024 * 1024
 
 
@@ -140,6 +145,22 @@ def run_test_command(
 
     started = monotonic()
     timeout = validate_timeout(timeout_seconds)
+    is_node_test = bool(command) and Path(str(command[0])).name.lower() in {"node", "node.exe"} and "--test" in command
+    if _is_pytest_command(command) or is_node_test:
+        for key, value in environment.items():
+            name = str(key).upper()
+            if name not in TEST_COLLECTION_OVERRIDE_ENV:
+                continue
+            # Native workflow/owner launches explicitly carry this exact engine
+            # root for imports. Preserve that binding, never an appended search
+            # path, empty path, alternate project or startup-hook location.
+            if name == "PYTHONPATH" and str(value) and os.pathsep not in str(value):
+                try:
+                    if Path(str(value)).resolve(strict=True) == Path(__file__).resolve().parents[1]:
+                        continue
+                except OSError:
+                    pass
+            raise ValueError("test environment cannot override collection or startup")
     if deadline is not None and (type(deadline) not in (int, float) or not math.isfinite(deadline) or deadline <= 0):
         raise ValueError("test deadline must be finite and positive")
     if cancel_event is not None and not isinstance(cancel_event, Event):

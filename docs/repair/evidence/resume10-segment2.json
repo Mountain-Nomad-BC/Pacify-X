@@ -1,0 +1,32 @@
+{
+  "timestamp_utc": "2026-10-26T19:30:40.215658+00:00",
+  "segment": "resume10-billing-host-integration",
+  "source_sha256": {
+    "extension/src/agentHarness/budgetLedger.js": "c151f4cd6f234c1c84a204f9e0be04b2373b80d72e5d7215cd814ef8b820fd6f",
+    "extension/src/agentHarness/harnessController.js": "d56945d5198bf8ded602b52eca510d140022ffcf99cb6b3954d4fa628dd897e4",
+    "extension/src/agentHarness/registerAgentConsole.js": "3421cb4ea05c91db4564a4d7b4711040df3cc0e6f277e45b8bbf1b818b4efb5f",
+    "extension/src/agentHarness/pxProviderInvoker.js": "810991c034693a8dca4b95addc80be84899d3daff960a5566857a745da23cf96",
+    "extension/tests/billing-settlement-audit.test.js": "f4caff2c582be17a24166810a66dfd45cae2ea2dc3f0a664e758417266e1694f"
+  },
+  "evidence": [
+    "docs/repair/evidence/resume10-billing-red.log",
+    "docs/repair/evidence/resume10-billing-host-final.json",
+    "docs/repair/evidence/resume10-billing-native-neighbors.json",
+    "docs/repair/evidence/resume10-governed-billing.json"
+  ],
+  "observations": [
+    "51Node tests passed incl actual registerAgentConsole async reservation acknowledgment, typed settlement, cancel-before-return usage persistence, legacy-spend block and disk-backed owner restart",
+    "27Python neighbors passed incl real native receipt crossing owned Node verifier",
+    "reference synchronous-only storage was adapted to actual async VSCode workspaceState; no unsafe raw filesystem durable owner imported",
+    "finite bounds, cumulative reserved+settled budget, immutable financial rows, native invocation owner propagation, settlement deduplication and unknown-charge holds implemented",
+    "governed billing phase-blocked; no live paid provider or installed-host claim"
+  ],
+  "remaining": [
+    "cross-host/competing workspaceState writers need native durable CAS authority; no such claim from in-host async acknowledgment",
+    "thrown provider/cancellation without returned native settlement retains reservation; explicit authoritative reconciliation still pending",
+    "actual view has no native projected-cost estimation input; unknown estimates remain denied",
+    "mesh/recovery/generation integration and independent card reviews remain open"
+  ],
+  "reviewer": "UNASSIGNED",
+  "closed": false
+}

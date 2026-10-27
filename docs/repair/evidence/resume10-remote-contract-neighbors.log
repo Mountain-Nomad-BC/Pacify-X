@@ -1,0 +1,16 @@
+...................F.........................................................                 [100%]
+================================== FAILURES ===================================
+_ ContractRuntimeTests.test_every_shipped_contract_is_valid_owned_and_resolvable _
+
+self = <tests.test_contract_runtime.ContractRuntimeTests testMethod=test_every_shipped_contract_is_valid_owned_and_resolvable>
+
+    def test_every_shipped_contract_is_valid_owned_and_resolvable(self) -> None:
+        result = validate_contract_corpus(ROOT)
+>       self.assertTrue(result["valid"], result["errors"])
+E       AssertionError: False is not true : ['contracts/operations/remote-provider-profile.schema.json: missing explicit ownership record', 'contract ownership count does not match corpus']
+
+tests\test_contract_runtime.py:95: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_contract_runtime.py::ContractRuntimeTests::test_every_shipped_contract_is_valid_owned_and_resolvable
+1 failed, 76 passed, 411 subtests passed in 3.10s
+

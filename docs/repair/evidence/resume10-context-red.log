@@ -1,0 +1,100 @@
+✖ claimed reference digest must match exact content, including empty and Unicode data (3.4672ms)
+✖ declared token estimates cannot shrink reference admission below its payload (0.8237ms)
+✖ task instruction and selected metadata fit the same context budget (0.1719ms)
+✖ legacy and structured retrieval remain user-role evidence instead of provider policy (2.4926ms)
+✖ provider message boundary independently rejects a reference digest mismatch (0.1593ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 0
+ℹ fail 5
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 146.1173
+
+✖ failing tests:
+
+test at extension\tests\context-provenance-audit.test.js:8:1
+✖ claimed reference digest must match exact content, including empty and Unicode data (3.4672ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\tests\context-provenance-audit.test.js:10:2)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /digest/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at extension\tests\context-provenance-audit.test.js:16:1
+✖ declared token estimates cannot shrink reference admission below its payload (0.8237ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\tests\context-provenance-audit.test.js:18:9)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at extension\tests\context-provenance-audit.test.js:21:1
+✖ task instruction and selected metadata fit the same context budget (0.1719ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\tests\context-provenance-audit.test.js:22:2)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /instruction.*budget/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at extension\tests\context-provenance-audit.test.js:25:1
+✖ legacy and structured retrieval remain user-role evidence instead of provider policy (2.4926ms)
+  AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:
+  
+    assert.ok(messages.some(row=>row.role==='user' && row.content.includes(attack)))
+  
+      at TestContext.<anonymous> (C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\tests\context-provenance-audit.test.js:28:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: false,
+    expected: true,
+    operator: '==',
+    diff: 'simple'
+  }
+
+test at extension\tests\context-provenance-audit.test.js:33:1
+✖ provider message boundary independently rejects a reference digest mismatch (0.1593ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at TestContext.<anonymous> (C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\tests\context-provenance-audit.test.js:34:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /digest/,
+    operator: 'throws',
+    diff: 'simple'
+  }
+

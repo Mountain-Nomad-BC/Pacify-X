@@ -20,7 +20,7 @@ ZERO_SHA256 = "0" * 64
 
 def _canonical(value: object) -> bytes:
     return json.dumps(
-        value, sort_keys=True, separators=(",", ":"), ensure_ascii=False
+        value, sort_keys=True, separators=(",", ":"), ensure_ascii=False, allow_nan=False
     ).encode("utf-8")
 
 
@@ -54,6 +54,11 @@ class OperationalEventBus:
 
     def _state(self) -> dict[str, object]:
         if not self._state_path.is_file():
+            if (self._head_path.exists()
+                    or any((self.root / "events").glob("*.json"))
+                    or any((self.root / "receipts").glob("*.json"))
+                    or any((self.root / ".authority/anchors").glob("*.json"))):
+                raise ValueError("operational event bus state is missing despite durable history")
             return {
                 "schema_version": "px.operation-bus-state/1.0",
                 "revision": 0,
@@ -69,10 +74,14 @@ class OperationalEventBus:
             not isinstance(value, dict)
             or set(value) != expected
             or value.get("schema_version") != "px.operation-bus-state/1.0"
-            or not isinstance(value.get("revision"), int)
+            or type(value.get("revision")) is not int
             or value.get("revision", -1) < 0
             or value.get("event_count") != value.get("revision")
+            or type(value.get("event_count")) is not int
             or not isinstance(value.get("head_sha256"), str)
+            or len(value["head_sha256"]) != 64
+            or any(ch not in "0123456789abcdef" for ch in value["head_sha256"])
+            or (value["revision"] == 0 and value["head_sha256"] != ZERO_SHA256)
         ):
             raise ValueError("operational event bus state is invalid")
         return value
@@ -123,8 +132,11 @@ class OperationalEventBus:
         state = self._state()
         revision = int(state["revision"])
         if revision == 0:
-            if self._head_path.exists():
-                errors.append("protected head exists for an empty event bus")
+            if (self._head_path.exists()
+                    or any((self.root / "events").glob("*.json"))
+                    or any((self.root / "receipts").glob("*.json"))
+                    or any((self.root / ".authority/anchors").glob("*.json"))):
+                errors.append("durable history exists for an empty event bus")
             return {
                 "schema_version": "px.operation-head-read/1.0",
                 "valid": not errors,
@@ -221,69 +233,10 @@ class OperationalEventBus:
                 from .wal_transaction import WalConflictError
                 raise WalConflictError("consumer generation changed before event publication")
             state = self._state()
-            operation = deepcopy(dict(event))
-            source = operation.get("source")
-            integrity = operation.get("integrity")
-            if not isinstance(source, dict) or not isinstance(integrity, dict):
-                raise ValueError("operation source and integrity must be objects")
-            tier = self._route_tier(str(source.get("route_id", "")))
-            if source.get("coverage_tier") != tier:
-                raise ValueError("operation event coverage tier differs from registry")
-            expected_previous = (
-                None if state["event_count"] == 0 else state["head_sha256"]
-            )
-            if link_current_head:
-                integrity["previous_event_sha256"] = expected_previous
-            if integrity.get("previous_event_sha256") != expected_previous:
-                raise ValueError("operation event previous digest differs from bus head")
-            validation = validate_operation_event(self.engine_root, operation)
-            if not validation["valid"]:
-                raise ValueError("invalid operation event: " + "; ".join(validation["errors"]))
-            revision = int(state["revision"]) + 1
-            event_sha256 = _sha(operation)
-            envelope = {
-                "schema_version": "px.operation-envelope/1.0",
-                "revision": revision,
-                "event_sha256": event_sha256,
-                "event": operation,
-            }
-            next_state = {
-                "schema_version": "px.operation-bus-state/1.0",
-                "revision": revision,
-                "event_count": revision,
-                "head_sha256": event_sha256,
-            }
-            head = {
-                "schema_version": "px.operation-bus-head/1.0",
-                "revision": revision,
-                "event_sha256": event_sha256,
-            }
-            receipt = {
-                "schema_version": "px.operation-receipt/1.0",
-                "event_id": operation["event_id"],
-                "correlation_id": operation["correlation_id"],
-                "revision": revision,
-                "event_sha256": event_sha256,
-                "transaction_recovery": recovery,
-            }
-            projection = {
-                "schema_version": "px.operation-revision/1.0",
-                "revision": revision,
-                "event_id": operation["event_id"],
-                "lifecycle": operation["operation"]["lifecycle"],
-                "result": operation["operation"]["result"],
-                "event_sha256": event_sha256,
-            }
-            suffix = hashlib.sha256(str(operation["event_id"]).encode()).hexdigest()[:12]
-            transaction_id = f"operation-{revision:08d}-{suffix}"
-            artifacts = (
-                JsonArtifact("event", self.root / "events" / f"{revision:08d}.json", envelope),
-                JsonArtifact("receipt", self.root / "receipts" / f"{operation['event_id']}.json", receipt),
-                JsonArtifact("state", self._state_path, next_state),
-                JsonArtifact("state", self._head_path, head),
-                JsonArtifact("state", self.root / ".authority" / "anchors" / f"{revision:08d}-{event_sha256}.json", head),
-                JsonArtifact("projection", self.root / "projections" / "revision.json", projection),
-            )
+            if not self._head_locked()["valid"]:
+                raise ValueError("operational event bus head is not trusted")
+            receipt, _, artifacts, transaction_id = self._prepare_event(
+                event, state, recovery, link_current_head=link_current_head)
             if projection_builder is not None:
                 artifacts += tuple(projection_builder(deepcopy(receipt)))
             transaction = self.wal.commit(
@@ -294,15 +247,113 @@ class OperationalEventBus:
             self._condition.notify_all()
         return {**receipt, "transaction": transaction}
 
+    def _prepare_event(self, event, state, recovery, *, link_current_head=False):
+        """Pure validation/image preparation; caller owns the publication lock."""
+        operation = deepcopy(dict(event))
+        source = operation.get("source")
+        integrity = operation.get("integrity")
+        if not isinstance(source, dict) or not isinstance(integrity, dict):
+            raise ValueError("operation source and integrity must be objects")
+        tier = self._route_tier(str(source.get("route_id", "")))
+        if source.get("coverage_tier") != tier:
+            raise ValueError("operation event coverage tier differs from registry")
+        expected_previous = (
+            None if state["event_count"] == 0 else state["head_sha256"]
+        )
+        if link_current_head:
+            integrity["previous_event_sha256"] = expected_previous
+        if integrity.get("previous_event_sha256") != expected_previous:
+            raise ValueError("operation event previous digest differs from bus head")
+        validation = validate_operation_event(self.engine_root, operation)
+        if not validation["valid"]:
+            raise ValueError("invalid operation event: " + "; ".join(validation["errors"]))
+        receipt_path = self.root / "receipts" / f"{operation['event_id']}.json"
+        if receipt_path.exists() or receipt_path.is_symlink():
+            raise ValueError("duplicate event_id: " + str(operation["event_id"]))
+        revision = int(state["revision"]) + 1
+        event_sha256 = _sha(operation)
+        envelope = {
+            "schema_version": "px.operation-envelope/1.0",
+            "revision": revision,
+            "event_sha256": event_sha256,
+            "event": operation,
+        }
+        next_state = {
+            "schema_version": "px.operation-bus-state/1.0",
+            "revision": revision,
+            "event_count": revision,
+            "head_sha256": event_sha256,
+        }
+        head = {
+            "schema_version": "px.operation-bus-head/1.0",
+            "revision": revision,
+            "event_sha256": event_sha256,
+        }
+        receipt = {
+            "schema_version": "px.operation-receipt/1.0",
+            "event_id": operation["event_id"],
+            "correlation_id": operation["correlation_id"],
+            "revision": revision,
+            "event_sha256": event_sha256,
+            "transaction_recovery": recovery,
+        }
+        projection = {
+            "schema_version": "px.operation-revision/1.0",
+            "revision": revision,
+            "event_id": operation["event_id"],
+            "lifecycle": operation["operation"]["lifecycle"],
+            "result": operation["operation"]["result"],
+            "event_sha256": event_sha256,
+        }
+        suffix = hashlib.sha256(str(operation["event_id"]).encode()).hexdigest()[:12]
+        transaction_id = f"operation-{revision:08d}-{suffix}"
+        artifacts = (
+            JsonArtifact("event", self.root / "events" / f"{revision:08d}.json", envelope),
+            JsonArtifact("receipt", self.root / "receipts" / f"{operation['event_id']}.json", receipt),
+            JsonArtifact("state", self._state_path, next_state),
+            JsonArtifact("state", self._head_path, head),
+            JsonArtifact("state", self.root / ".authority" / "anchors" / f"{revision:08d}-{event_sha256}.json", head),
+            JsonArtifact("projection", self.root / "projections" / "revision.json", projection),
+        )
+        return receipt, next_state, artifacts, transaction_id
+
     def publish_batch(
         self, events: list[Mapping[str, object]], *, link_current_head: bool = False
     ) -> list[dict[str, object]]:
-        """Publish a bounded ingress batch while linking each event under the lock."""
-        if len(events) > 1_000:
-            raise ValueError("operational event batch exceeds 1000 events")
-        return [
-            self.publish(event, link_current_head=link_current_head) for event in events
-        ]
+        """Validate the entire batch, then commit all events in one WAL transaction."""
+        from .wal_transaction import MAX_ARTIFACTS
+        maximum = (MAX_ARTIFACTS - 3) // 3
+        if type(events) is not list or len(events) > maximum:
+            raise ValueError(f"atomic operational event batch exceeds {maximum} events")
+        if not events:
+            return []
+        self.root.mkdir(parents=True, exist_ok=True)
+        with FileLock(self.root / ".publish.lock", timeout_seconds=10):
+            recovery = self.wal.recover()
+            generation = self.wal.capture_generation()
+            state = self._state()
+            if not self._head_locked()["valid"]:
+                raise ValueError("operational event bus head is not trusted")
+            images = {}
+            receipts = []
+            seen = set()
+            for event in events:
+                receipt, state, artifacts, _ = self._prepare_event(
+                    event, state, recovery, link_current_head=link_current_head)
+                key = str(receipt["event_id"]).casefold()
+                if key in seen:
+                    raise ValueError("duplicate operation event_id in batch")
+                seen.add(key)
+                receipts.append(receipt)
+                for artifact in artifacts:
+                    images[artifact.path] = artifact
+            transaction_id = (f"operation-batch-{receipts[0]['revision']:08d}-"
+                              f"{str(receipts[-1]['event_sha256'])[:12]}")
+            transaction = self.wal.commit(tuple(images.values()),
+                transaction_id=transaction_id, expected_generation=generation)
+        with self._condition:
+            self._condition.notify_all()
+        return [{**receipt, "transaction": transaction} for receipt in receipts]
 
     def replay(self, *, after_revision: int = 0, limit: int = 1000) -> dict[str, Any]:
         """Replay the next bounded page from an anchored cursor."""

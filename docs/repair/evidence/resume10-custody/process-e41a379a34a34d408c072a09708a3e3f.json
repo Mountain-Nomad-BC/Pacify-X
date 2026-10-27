@@ -1,0 +1,29 @@
+{
+  "action_id": "lifecycle-red",
+  "audit_record_hash": "a611085689bc15cd8f910db1f345febc78cb76b587864e69f722dc47a7a23ef8",
+  "duration_seconds": 0.6321257000090554,
+  "ended_at": "2026-10-26T19:36:11.204Z",
+  "exit_code": 1,
+  "failure_type": null,
+  "receipt_id": "process-e41a379a34a34d408c072a09708a3e3f",
+  "resource_id": "process-dc9e8784d8db4b3f8e5d899e2cc9f82d",
+  "schema_version": "px.process-supervision-receipt/1.0",
+  "shutdown_mode": "natural",
+  "started_at": "2026-10-26T19:36:10.571Z",
+  "status": "exited",
+  "stderr": {
+    "decode_error_count": 0,
+    "dropped_bytes": 0,
+    "retained_bytes": 0,
+    "total_bytes": 0,
+    "truncated": false
+  },
+  "stdout": {
+    "decode_error_count": 0,
+    "dropped_bytes": 0,
+    "retained_bytes": 3527,
+    "total_bytes": 3527,
+    "truncated": false
+  },
+  "tree_closed": true
+}

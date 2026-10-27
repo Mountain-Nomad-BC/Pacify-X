@@ -1,0 +1,57 @@
+{
+  "schema_version": "px.remote-service-protocols/1.0",
+  "adapters": {
+    "custom-openai-chat": {
+      "provider_id": "custom",
+      "surface": "openai_chat",
+      "origin": null,
+      "endpoint": "/v1/chat/completions",
+      "auth_header": "Authorization",
+      "auth_prefix": "Bearer ",
+      "headers": {},
+      "omit_stream_options": false
+    },
+    "openai-responses": {
+      "provider_id": "openai",
+      "surface": "openai_responses",
+      "origin": "https://api.openai.com",
+      "endpoint": "/v1/responses",
+      "auth_header": "Authorization",
+      "auth_prefix": "Bearer ",
+      "headers": {},
+      "omit_stream_options": false
+    },
+    "mistral-chat": {
+      "provider_id": "mistral",
+      "surface": "openai_chat",
+      "origin": "https://api.mistral.ai",
+      "endpoint": "/v1/chat/completions",
+      "auth_header": "Authorization",
+      "auth_prefix": "Bearer ",
+      "headers": {},
+      "omit_stream_options": true
+    },
+    "claude-anthropic-messages": {
+      "provider_id": "claude",
+      "surface": "anthropic_messages",
+      "origin": "https://api.anthropic.com",
+      "endpoint": "/v1/messages",
+      "auth_header": "X-Api-Key",
+      "auth_prefix": "",
+      "headers": {
+        "anthropic-version": "2023-06-01"
+      },
+      "omit_stream_options": false
+    },
+    "gemini-generate-content": {
+      "provider_id": "gemini",
+      "surface": "gemini_generate_content",
+      "origin": "https://generativelanguage.googleapis.com",
+      "endpoint": "/v1beta/models/{model}:streamGenerateContent?alt=sse",
+      "auth_header": "X-Goog-Api-Key",
+      "auth_prefix": "",
+      "headers": {},
+      "omit_stream_options": false
+    }
+  }
+}

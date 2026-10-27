@@ -1,0 +1,41 @@
+{
+  "timestamp_utc": "2026-10-27T01:02:51.770123+00:00",
+  "segment": "native protocol truth and context provenance",
+  "findings": [
+    "PX-AUD-090",
+    "PX-AUD-091",
+    "PX-AUD-092",
+    "PX-AUD-093",
+    "PX-AUD-094",
+    "PX-AUD-027",
+    "PX-AUD-028"
+  ],
+  "source_sha256": {
+    "runtime/model_protocol.py": "d22160c7a91bdcd16eaafffa6db9de05b931f036fe802591640019e6fea05423",
+    "runtime/model_protocol_translate.py": "e07072903cf5fe2e1f7ad39b86e3620612f0c37136db1aae367ddd112f94af1f",
+    "tests/test_provider_protocol_audit.py": "0d041374b38baa74f3bd6247017ab12f7ba65da9df5157c47b339da0a9a2926e",
+    "extension/src/agentHarness/contextCompiler.js": "8669b7ec07535f3ce1b257910efbc5f46546da2f33b4917b3331231069321077",
+    "extension/src/agentHarness/pxProviderInvoker.js": "29f9455bc4bc159570469bbdd10a2f2046003bc2dbd951913ef5d2b5d9694bb9",
+    "extension/tests/context-provenance-audit.test.js": "b9877c1d0a47a23b51b9f1097929e021d43b831100214f540b9946156ac812e7"
+  },
+  "evidence": [
+    "docs/repair/evidence/resume10-native-protocol-red.json",
+    "docs/repair/evidence/resume10-native-protocol-verified.json",
+    "docs/repair/evidence/resume10-context-red.json",
+    "docs/repair/evidence/resume10-context-green.json"
+  ],
+  "observations": [
+    "14native protocol causal failures reproduced;57protocol/gateway/budget checks pass.",
+    "Explicit unsuccessful Responses status produces error, never success finish; actual gateway lifecycle failed with conservative reservation-burn receipt.",
+    "SSE incremental UTF8 and LF/CR/CRLF work across every tested cut; whitespace output retained; Anthropic max_tokens/tool_use map to length/tool_calls.",
+    "Five context causal failures reproduced;55combined Node checks pass. Exact content digest and metadata/instruction-inclusive budget enforced; real message consumers keep retrieval in user-role context.",
+    "An accidental cp1252 Unicode conversion introduced during this session was identified by an unchanged neighbor and reverted to original source bytes; failed attempts retained."
+  ],
+  "remaining": [
+    "live-model adversarial response and credentialed route acceptance unavailable",
+    "conservative failure burn remains explicit; no claim of actual paid failure reconciliation",
+    "namespace adjudication corrected:188exact+2JSONequal+1stronger authorization retained;2namespace paths require migration/caller review and21dependency reviews at that checkpoint; no schema rewrite merely to match reference"
+  ],
+  "reviewer": "UNASSIGNED",
+  "closed": false
+}

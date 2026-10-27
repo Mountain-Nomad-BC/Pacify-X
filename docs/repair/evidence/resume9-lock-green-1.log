@@ -1,0 +1,9 @@
+cmd: tests/test_event_integrity_audit.py -k concurrent or oversized
+exit: 0
+elapsed_seconds: 24.84
+--- stdout ---
+...                                                                      [100%]
+3 passed, 26 deselected in 19.90s
+
+--- stderr ---
+

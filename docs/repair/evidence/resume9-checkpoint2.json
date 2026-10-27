@@ -1,0 +1,22 @@
+{
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000036208",
+  "learned": "Two real event-bus defects reproduced and repaired (Windows process-wide byte-range lock treated as per-handle; non-reentrant metadata guard self-deadlock in heartbeat). Certification preflight is false for two unported rollout suites plus two present-but-unrequired suites; both unported suites need real feature ports (rollout scripts and DurableBudgetState), not copies.",
+  "unresolved_branch_gap_ids": [],
+  "active_gap_id": "PX-OS-1067",
+  "next_action": "Run the single revision/generated-projection reconciliation, make every governed section current, then execute exactly one full profile, validation, package, install, installed-system operational test, and certification in registered order.",
+  "evidence": [
+    {
+      "reference": "docs/repair/evidence/resume9-event-full.log",
+      "claim": "Event integrity + event bus suites: 42 passed after the in-process lock exclusion and re-entrant heartbeat guard fix; before the fix the same pair failed with FileLockTimeout.",
+      "artifact_size": 388,
+      "artifact_sha256": "a69b1fd00e73ae07250fd828d34fb2db637d2f5e4342c945cc202a0907640d79"
+    },
+    {
+      "reference": "docs/repair/evidence/resume9-contract-roundtrip.log",
+      "claim": "195 contract schemas build a native minimal instance that validates: 0 failures, covering maxLength, uuid and generated pattern examples.",
+      "artifact_size": 70,
+      "artifact_sha256": "9abc873f0b15e2b2f92b84a7180a1003444a157222aa18c4bd27a6a6c39a0bb1"
+    }
+  ],
+  "newly_discovered_gap_ids": []
+}

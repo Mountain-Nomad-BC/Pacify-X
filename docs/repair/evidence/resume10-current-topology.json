@@ -1,0 +1,240 @@
+{
+  "sections": [
+    {
+      "name": "testing-governance",
+      "resolved": true,
+      "input_sha256": "88d6b129a65bde304c39852f7710b7af9eea267794253580cfdc749275afb527"
+    },
+    {
+      "name": "dashboard-extension",
+      "resolved": true,
+      "input_sha256": "4a4f04c72b76c9517440876cddfae6b0857bc008691d7619628d6f8c04ef6756"
+    },
+    {
+      "name": "studio-memory-graph",
+      "resolved": true,
+      "input_sha256": "5b9a0087548f583811f36ce2d75a8565aef87f768d50f7b29b7d44cf571515bf"
+    },
+    {
+      "name": "learning-promotion",
+      "resolved": true,
+      "input_sha256": "c4406d35cf9bf4462304561b0b7eee32fbebe04bbcc6c59635dfd19efeb0e6d1"
+    },
+    {
+      "name": "execution-placement",
+      "resolved": true,
+      "input_sha256": "dc78d3028b2d6a27231977fad172ae086eade994a4feccc3448411a9111c480a"
+    },
+    {
+      "name": "hardware-routing",
+      "resolved": true,
+      "input_sha256": "bcd79c684a8f810ec474e1ac0cb6903102c8595820164b08bb8821064b8fc70f"
+    },
+    {
+      "name": "runtime-domain-contracts",
+      "resolved": true,
+      "input_sha256": "7ba35c63f8da9bb65f92a00185fec4bc680b441f8e75c5d47275bab44569ab56"
+    },
+    {
+      "name": "source-authority",
+      "resolved": true,
+      "input_sha256": "e98fdf80ec72386ad8c2ad5434a969f4ce636468e919da24e1969628449e6a7c"
+    },
+    {
+      "name": "revision-lifecycle",
+      "resolved": true,
+      "input_sha256": "46ef9d24896cde2ad52c0ebaf3f73957abfb7807bbd1543fe0e1b5cfff561784"
+    },
+    {
+      "name": "secure-persistence",
+      "resolved": true,
+      "input_sha256": "8e5dfe6e98fe9dcd3776a8ed4019f88408076f655cbf8af655b100ca67feec81"
+    },
+    {
+      "name": "native-runtime-integration",
+      "resolved": true,
+      "input_sha256": "f2e861c66675c03dc7301f9d25746c2485f6be788fa198988e0ad64c3f07b2cb"
+    },
+    {
+      "name": "host-containment",
+      "resolved": true,
+      "input_sha256": "02f2492cbaf9b882bef590a0ed3355c147c331c0f7ad3f572b145c9a32ae5445"
+    },
+    {
+      "name": "native-job-operating",
+      "resolved": true,
+      "input_sha256": "7712e53e02efc4ff3f2a161354d8be50da9100ddcec6324f7d9be336e14cdca5"
+    },
+    {
+      "name": "event-integrity",
+      "resolved": true,
+      "input_sha256": "89e2c89734efa41374d2cf42f9079e6a812a766526afab285ee0058f5f2f1ad2"
+    },
+    {
+      "name": "ui-event-integrity",
+      "resolved": true,
+      "input_sha256": "0ac6bd4c9edcb6990f0b9300dfe99a32f31a2de13b6ef397366ba09d53fd3e25"
+    },
+    {
+      "name": "agent-task-lifecycle",
+      "resolved": true,
+      "input_sha256": "69f1935d11224b3000f65cfd3f35b114a34431631a03cf514391481352ec6675"
+    },
+    {
+      "name": "billing-budget",
+      "resolved": true,
+      "input_sha256": "a9b1825370919d28cd189a4ffb5aa03f61edd482f6b35305babf5d965b9399f7"
+    },
+    {
+      "name": "provider-settlement-contract",
+      "resolved": true,
+      "input_sha256": "d8f6e4ee1323832c28da4efda3d3aed5c83abeb16116397358f07b963483511f"
+    },
+    {
+      "name": "billing-settlement",
+      "resolved": true,
+      "input_sha256": "84832ca70b0329b31fba7c4b400a9c1399e016971200293c2dbd180c5f8528ee"
+    },
+    {
+      "name": "release-lifecycle",
+      "resolved": true,
+      "input_sha256": "1181050b4b8ea80e2918b5d1c8b4289be0135c67839f8b051e51fbfdf4c81e57"
+    },
+    {
+      "name": "source-inventory",
+      "resolved": true,
+      "input_sha256": "f1c9522ab8df078f0b095e798e008c7ca79f07732d038262793db73d903f1ee1"
+    },
+    {
+      "name": "provider-stream-custody",
+      "resolved": true,
+      "input_sha256": "d6629222f6a3ef8e7884296b221b53afeae36e7e4a072b28c39ad7ae1fd1552c"
+    },
+    {
+      "name": "native-provider-protocol",
+      "resolved": true,
+      "input_sha256": "e25596387d171e9b4be6aa2f58857cf469b5c810b5b876334b175d4afccfdae2"
+    },
+    {
+      "name": "context-provenance",
+      "resolved": true,
+      "input_sha256": "6013c0192905361edc2c0246891cf5e186557de1a002f8f37a5188123470f2f3"
+    },
+    {
+      "name": "remote-profile-catalog",
+      "resolved": true,
+      "input_sha256": "927ca839163716dbdba890163eec69a044d83e8bd5a1cdd1311b600bc6faad33"
+    }
+  ],
+  "coverage": {
+    "valid": true,
+    "required_count": 33,
+    "membership": {
+      "tests/test_certificate_input_contracts.py": [
+        "runtime-domain-contracts"
+      ],
+      "tests/test_contract_length_bounds.py": [
+        "runtime-domain-contracts",
+        "native-runtime-integration"
+      ],
+      "tests/test_project_revision_succession.py": [
+        "revision-lifecycle"
+      ],
+      "tests/test_revision_campaign_lifecycle.py": [
+        "revision-lifecycle"
+      ],
+      "tests/test_secure_publish.py": [
+        "secure-persistence"
+      ],
+      "tests/test_secure_publish_operating.py": [
+        "secure-persistence"
+      ],
+      "tests/test_context_generation.py": [
+        "native-runtime-integration"
+      ],
+      "tests/test_projection_gate.py": [
+        "native-runtime-integration"
+      ],
+      "tests/test_execution_context.py": [
+        "native-runtime-integration"
+      ],
+      "tests/test_workflow_resume.py": [
+        "native-runtime-integration"
+      ],
+      "tests/test_host_enforcement_audit.py": [
+        "host-containment"
+      ],
+      "tests/test_gremlin_host_configuration.py": [
+        "host-containment"
+      ],
+      "tests/test_isolated_agent_sandbox.py": [
+        "host-containment"
+      ],
+      "tests/test_native_job_operating_probe.py": [
+        "native-job-operating"
+      ],
+      "tests/test_native_job_probe_verdict.py": [
+        "native-job-operating"
+      ],
+      "tests/test_event_integrity_audit.py": [
+        "event-integrity"
+      ],
+      "tests/test_event_ledger_regression.py": [
+        "event-integrity"
+      ],
+      "tests/test_file_lock_thread_custody.py": [
+        "event-integrity"
+      ],
+      "extension/tests/event-integrity-audit.test.js": [
+        "ui-event-integrity"
+      ],
+      "extension/tests/task-state-custody.test.js": [
+        "agent-task-lifecycle"
+      ],
+      "tests/test_billing_budget_audit.py": [
+        "billing-budget"
+      ],
+      "extension/tests/provider-settlement-contract.test.js": [
+        "provider-settlement-contract"
+      ],
+      "extension/tests/billing-settlement-audit.test.js": [
+        "billing-settlement"
+      ],
+      "tests/test_release_candidate_driver.py": [
+        "release-lifecycle"
+      ],
+      "tests/test_release_stage_owner.py": [
+        "release-lifecycle"
+      ],
+      "tests/test_run_installed_operational_owner.py": [
+        "release-lifecycle"
+      ],
+      "tests/test_certification_readiness.py": [
+        "release-lifecycle"
+      ],
+      "tests/test_certification_pipeline_readiness.py": [
+        "release-lifecycle"
+      ],
+      "tests/test_rollout_inventory.py": [
+        "source-inventory"
+      ],
+      "extension/tests/agent-harness-streaming.test.js": [
+        "provider-stream-custody"
+      ],
+      "tests/test_provider_protocol_audit.py": [
+        "native-provider-protocol"
+      ],
+      "extension/tests/context-provenance-audit.test.js": [
+        "context-provenance"
+      ],
+      "tests/test_remote_profile_catalog.py": [
+        "remote-profile-catalog"
+      ]
+    },
+    "missing_membership": [],
+    "missing_files": [],
+    "duplicate_members": []
+  },
+  "executed": false,
+  "generated_refresh": false
+}

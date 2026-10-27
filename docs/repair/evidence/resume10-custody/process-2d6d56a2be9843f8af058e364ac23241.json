@@ -1,0 +1,29 @@
+{
+  "action_id": "stream-custody-red",
+  "audit_record_hash": "96309ed6de7588df3ef17ac02ec59568128e4779f352304da72d67ff3f53f2c3",
+  "duration_seconds": 0.7117798999970546,
+  "ended_at": "2026-10-26T19:37:02.289Z",
+  "exit_code": 1,
+  "failure_type": null,
+  "receipt_id": "process-2d6d56a2be9843f8af058e364ac23241",
+  "resource_id": "process-c9bfc9af671d4a48a27805b0e39eea44",
+  "schema_version": "px.process-supervision-receipt/1.0",
+  "shutdown_mode": "natural",
+  "started_at": "2026-10-26T19:37:01.577Z",
+  "status": "exited",
+  "stderr": {
+    "decode_error_count": 0,
+    "dropped_bytes": 0,
+    "retained_bytes": 0,
+    "total_bytes": 0,
+    "truncated": false
+  },
+  "stdout": {
+    "decode_error_count": 0,
+    "dropped_bytes": 0,
+    "retained_bytes": 3738,
+    "total_bytes": 3738,
+    "truncated": false
+  },
+  "tree_closed": true
+}

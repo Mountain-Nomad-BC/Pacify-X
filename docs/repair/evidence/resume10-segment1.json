@@ -1,0 +1,32 @@
+{
+  "timestamp_utc": "2026-10-26T19:25:32.696046+00:00",
+  "segment": "resume10-lock-lifecycle",
+  "admission": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000036214",
+  "findings": [
+    "PX-AUD-084",
+    "PX-AUD-085"
+  ],
+  "state": "FOCUSED_TESTED_NOT_CLOSED",
+  "source_sha256": {
+    "runtime/file_lock.py": "d1a1835806d8a6d58c653479028af8eab34bccb187605f75ba1a193d61b0272a",
+    "tests/test_file_lock_contention.py": "ac605ee9d2cb0be9dd9a05808680216f900208e1848bba73d2970d0392aed132",
+    "tests/test_file_lock_thread_custody.py": "735f940f66d8e13ce62d9e41d94299ca6d8163eee3f284540d79a0ccda3d6646",
+    "registry/test_profiles.json": "7fc8af2638e9dbca713dfbf50707b114b6e5e94403595c95fafe9812a1109512",
+    "scripts/validate_certification_pipeline.py": "9fdc5eb7de52c09333948a268eecad6f6dfa41780bf4100b5481318828bb8eb5"
+  },
+  "evidence": [
+    "docs/repair/evidence/resume10-lock-red.log",
+    "docs/repair/evidence/resume10-lock-neighbors.json",
+    "docs/repair/evidence/resume10-governed-event.json"
+  ],
+  "observations": [
+    "4 inherited lifecycle failures reproduced; five initial causal checks green after repair",
+    "65 focused lock/event neighbors pass with actual exit0 and closed owned process tree",
+    "registry references retain waiting claimants; first-creation key pinned to fstat; timeout cannot release other owner; same-instance reentry and heartbeat-start failure settle safely",
+    "byte-unlock attempted only after actual acquisition; hardlink and72handoff checks pass",
+    "governed event section blocked by historical campaign; no generated refresh or release claim"
+  ],
+  "reviewer": "UNASSIGNED",
+  "closed": false,
+  "next": "Review missing rollout inventory and durable billing owners semantically; keep repair intake open"
+}

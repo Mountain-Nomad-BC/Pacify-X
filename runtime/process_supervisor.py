@@ -8,6 +8,7 @@ from __future__ import annotations
 
 from dataclasses import asdict, dataclass
 from datetime import datetime, timezone
+import hashlib
 import json
 import os
 from pathlib import Path
@@ -22,8 +23,14 @@ from typing import Callable, Mapping, Sequence
 from uuid import uuid4
 
 from .assurance_controls import supervise_action
+from .execution_context import ExecutionContext
 from .file_lock import _process_exists, _process_start_fingerprint
-from .resource_lifecycle import ResourceManager, ResourceStatus, RunState
+from .resource_lifecycle import (
+    ResourceManager,
+    ResourceStatus,
+    RunState,
+    VerifiedJobMembership,
+)
 
 
 class ProcessAdmissionExpired(TimeoutError):
@@ -410,8 +417,29 @@ class _WindowsJob:
         kernel32.TerminateJobObject.restype = wintypes.BOOL
         kernel32.QueryInformationJobObject.argtypes = [wintypes.HANDLE, ctypes.c_int, ctypes.c_void_p, wintypes.DWORD, ctypes.c_void_p]
         kernel32.QueryInformationJobObject.restype = wintypes.BOOL
+        kernel32.GetProcessId.argtypes = [wintypes.HANDLE]
+        kernel32.GetProcessId.restype = wintypes.DWORD
+        kernel32.OpenProcess.argtypes = [wintypes.DWORD, wintypes.BOOL, wintypes.DWORD]
+        kernel32.OpenProcess.restype = wintypes.HANDLE
+        kernel32.GetProcessTimes.argtypes = [
+            wintypes.HANDLE,
+            ctypes.POINTER(wintypes.FILETIME),
+            ctypes.POINTER(wintypes.FILETIME),
+            ctypes.POINTER(wintypes.FILETIME),
+            ctypes.POINTER(wintypes.FILETIME),
+        ]
+        kernel32.GetProcessTimes.restype = wintypes.BOOL
+        kernel32.GetExitCodeProcess.argtypes = [wintypes.HANDLE, ctypes.POINTER(wintypes.DWORD)]
+        kernel32.GetExitCodeProcess.restype = wintypes.BOOL
+        kernel32.IsProcessInJob.argtypes = [
+            wintypes.HANDLE,
+            wintypes.HANDLE,
+            ctypes.POINTER(wintypes.BOOL),
+        ]
+        kernel32.IsProcessInJob.restype = wintypes.BOOL
         self._ctypes = ctypes
         self._kernel32 = kernel32
+        self.custody_id = uuid4().hex
         self.handle = None
         self._creation_lock = threading.Lock()
         self._creation_claimed = process is not None
@@ -439,6 +467,21 @@ class _WindowsJob:
                 except BaseException:
                     pass
             raise
+
+    def attach_suspended_owned_process(self, process) -> None:
+        """Join an unreleased native supervised child to this retained parent Job.
+
+        Windows must accept and re-prove the nested membership. An unsupported
+        Job hierarchy is an enrollment failure; the caller must never resume it.
+        The child's own Job remains separately owned for child-only cleanup.
+        """
+        if (type(process) is not _WindowsContainedPopen or not self.handle
+                or not process._px_initial_thread or process._px_resume_attempted
+                or process.poll() is not None):
+            raise ValueError("parent Job attachment requires an unreleased native child")
+        if not self._kernel32.AssignProcessToJobObject(self.handle, int(process._handle)):
+            raise OSError("suspended child could not join the retained parent Job")
+        self.verify_owned_process(process)
 
     def claim_creation(self) -> None:
         """One Job owns exactly one creation attempt, including failed attempts."""
@@ -474,6 +517,66 @@ class _WindowsJob:
         ):
             raise OSError("QueryInformationJobObject failed")
         return int(value.ActiveProcesses)
+
+    def verify_process_handle(self, process_handle: int, expected_pid: int) -> str:
+        """Return the start identity only for a live process proven in this Job."""
+        from ctypes import wintypes
+
+        if not self.handle:
+            raise OSError("retained Windows Job handle is unavailable")
+        actual_pid = int(self._kernel32.GetProcessId(process_handle))
+        if actual_pid != expected_pid:
+            raise ValueError("process handle PID does not match the expected identity")
+        created = wintypes.FILETIME()
+        exited = wintypes.FILETIME()
+        kernel = wintypes.FILETIME()
+        user = wintypes.FILETIME()
+        if not self._kernel32.GetProcessTimes(
+            process_handle,
+            self._ctypes.byref(created),
+            self._ctypes.byref(exited),
+            self._ctypes.byref(kernel),
+            self._ctypes.byref(user),
+        ):
+            raise OSError("GetProcessTimes failed for supervised process")
+        ticks = (int(created.dwHighDateTime) << 32) | int(created.dwLowDateTime)
+        start = hashlib.sha256(f"windows-filetime:{ticks}".encode("ascii")).hexdigest()
+        in_job = wintypes.BOOL()
+        if not self._kernel32.IsProcessInJob(
+            process_handle, self.handle, self._ctypes.byref(in_job)
+        ):
+            raise OSError("IsProcessInJob failed")
+        if not in_job.value:
+            raise ValueError("process is not a member of the retained supervisor Job")
+        exit_code = wintypes.DWORD()
+        if not self._kernel32.GetExitCodeProcess(
+            process_handle, self._ctypes.byref(exit_code)
+        ):
+            raise OSError("GetExitCodeProcess failed")
+        if exit_code.value != 259:
+            raise ValueError("process is no longer active in the supervisor Job")
+        return f"process-start:{start}"
+
+    def verify_owned_process(self, process: object) -> str:
+        """Verify the exact Popen handle retained by this supervisor's Job."""
+        process_handle = getattr(process, "_handle", None)
+        pid = getattr(process, "pid", None)
+        if (not isinstance(process_handle, int) or isinstance(process_handle, bool)
+                or process_handle <= 0 or type(pid) is not int or pid <= 0):
+            raise OSError("supervisor-owned Windows process handle is unavailable")
+        return self.verify_process_handle(process_handle, pid)
+
+    def verify_pid(self, pid: int) -> str:
+        """Open one candidate PID and verify identity/membership through that handle."""
+        if type(pid) is not int or pid <= 0:
+            raise ValueError("candidate PID must be a positive integer")
+        process_handle = self._kernel32.OpenProcess(0x0400, False, pid)
+        if not process_handle:
+            raise OSError("OpenProcess failed for candidate Job member")
+        try:
+            return self.verify_process_handle(int(process_handle), pid)
+        finally:
+            self._kernel32.CloseHandle(process_handle)
 
     def wait_closed(self, timeout: float, poll_interval: float) -> bool:
         deadline = time.monotonic() + timeout
@@ -555,6 +658,7 @@ class _WindowsContainedPopen(_BASE_POPEN):
         self._px_creation_hook = creation_hook
         self._px_created = False
         self._px_initial_thread = None
+        self._px_resume_attempted = False
         self._px_unclosed_process_handle = False
         self._px_tree_closed = False
         try:
@@ -631,8 +735,9 @@ class _WindowsContainedPopen(_BASE_POPEN):
     def resume_owned(self):
         """Resume only the exact initial thread retained at native creation."""
         from ctypes import wintypes
-        if not self._px_initial_thread:
-            raise ValueError('no owned suspended initial thread')
+        if not self._px_initial_thread or self._px_resume_attempted:
+            raise ValueError('no owned suspended initial thread available for release')
+        self._px_resume_attempted = True
         resume = self._px_job._kernel32.ResumeThread
         resume.argtypes = [wintypes.HANDLE]
         resume.restype = wintypes.DWORD
@@ -880,11 +985,22 @@ class ProcessSupervisor:
                 raise PermissionError(f"process budget exceeds limit: {field}")
         return budget, str(decision.outputs["audit_record_hash"]), disk_paths
 
-    def _receipt(self, result: ProcessResult) -> str:
+    def _receipt(self, result: ProcessResult | None, *, execution_context: ExecutionContext | None = None,
+                 failure: Mapping[str, object] | None = None) -> str:
         receipt_id = f"process-{uuid4().hex}"
         path = self.manager.receipt_dir / f"{receipt_id}.json"
         path.parent.mkdir(parents=True, exist_ok=True)
-        payload = {
+        if result is None:
+            if failure is None:
+                raise ValueError("failed supervision receipt requires actual failure metadata")
+            if set(failure) != {"action_id", "resource_id", "status", "failure_type", "started_at", "ended_at",
+                               "duration_seconds", "tree_closed", "custody_retained", "cleanup_errors", "audit_record_hash"}:
+                raise ValueError("failed supervision receipt cannot retain arbitrary command or environment fields")
+            payload = {"schema_version": "px.process-supervision-receipt/1.1",
+                       "receipt_id": receipt_id, **dict(failure),
+                       "capture_counts_available": False, "stdout": None, "stderr": None}
+        else:
+            payload = {
             "schema_version": "px.process-supervision-receipt/1.0",
             "receipt_id": receipt_id,
             "action_id": result.action_id,
@@ -908,7 +1024,15 @@ class ProcessSupervisor:
             "tree_closed": result.tree_closed,
             "failure_type": result.failure_type,
             "audit_record_hash": result.audit_record_hash,
-        }
+            }
+        if execution_context is not None:
+            payload["schema_version"] = "px.process-supervision-receipt/1.1"
+            payload["execution_context"] = {
+                "context_sha256": execution_context.context_sha256,
+                "execution_id": execution_context.execution_id,
+                "root_execution_id": execution_context.root_execution_id,
+                "epoch": execution_context.epoch, "revision": execution_context.revision,
+            }
         temporary = path.with_suffix(f".{uuid4().hex}.tmp")
         with temporary.open("x", encoding="utf-8", newline="\n") as stream:
             json.dump(payload, stream, sort_keys=True, indent=2)
@@ -1079,6 +1203,9 @@ class ProcessSupervisor:
         cancel_event: threading.Event | None = None,
         deadline: float | None = None,
         parent_resource_id: str | None = None,
+        before_release: Callable[[VerifiedJobMembership], object] | None = None,
+        execution_context: ExecutionContext | None = None,
+        assert_execution_current: Callable[[ExecutionContext], None] | None = None,
     ) -> ProcessResult:
         custody = {"id": uuid4().hex, "started": time.monotonic(), "threads": [],
                    "project_id": project_id, "run_id": run_id, "lane_id": lane_id}
@@ -1086,9 +1213,41 @@ class ProcessSupervisor:
             return self._run_with_custody(
                 command, cwd=cwd, action=action, project_id=project_id, run_id=run_id,
                 lane_id=lane_id, creator=creator, environment=environment,
-                cancel_event=cancel_event, deadline=deadline, parent_resource_id=parent_resource_id, _custody=custody)
+                cancel_event=cancel_event, deadline=deadline, parent_resource_id=parent_resource_id,
+                before_release=before_release, execution_context=execution_context,
+                assert_execution_current=assert_execution_current, _custody=custody)
         except BaseException as error:
             self._settle_failed_supervision(custody, error)
+            # Failed authorization/currentness/creation/callback paths previously
+            # had no process receipt. Retain only actual custody/closure metadata;
+            # output counters are unknown here, rather than invented zeroes.
+            try:
+                record = custody.get("record")
+                settlement = custody.get("settlement", {})
+                receipt = self._receipt(None, execution_context=custody.get("execution_context"), failure={
+                    "action_id": action.get("action_id"),
+                    "resource_id": getattr(record, "resource_id", None),
+                    "status": "supervision_failed", "failure_type": type(error).__name__,
+                    "started_at": custody.get("started_at"), "ended_at": _now(),
+                    "duration_seconds": time.monotonic() - custody["started"],
+                    "tree_closed": settlement.get("tree_closed"),
+                    "custody_retained": settlement.get("custody_retained"),
+                    "cleanup_errors": settlement.get("cleanup_errors"),
+                    "audit_record_hash": custody.get("audit_record_hash"),
+                })
+            except BaseException as receipt_error:
+                # Diagnostic enrichment must never replace the primary failure:
+                # exception subclasses may reject both attributes and add_note.
+                try:
+                    error.add_note("Failed supervision receipt could not publish: " + type(receipt_error).__name__)
+                except BaseException:
+                    pass
+            else:
+                custody["process_receipt_path"] = receipt
+                try:
+                    error.process_receipt_path = receipt
+                except BaseException:
+                    pass
             raise
         finally:
             liveness = custody.get("liveness")
@@ -1190,11 +1349,54 @@ class ProcessSupervisor:
         cancel_event: threading.Event | None = None,
         deadline: float | None = None,
         parent_resource_id: str | None = None,
+        before_release: Callable[[VerifiedJobMembership], object] | None = None,
+        execution_context: ExecutionContext | None = None,
+        assert_execution_current: Callable[[ExecutionContext], None] | None = None,
         _custody: dict,
     ) -> ProcessResult:
         import math
         if deadline is not None and (type(deadline) not in (int, float) or not math.isfinite(deadline) or deadline <= 0):
             raise ValueError("process deadline must be finite and positive")
+        if execution_context is not None:
+            if type(execution_context) is not ExecutionContext or not callable(assert_execution_current):
+                raise ValueError("process execution context requires an actual native currentness consumer")
+            if execution_context.project_id != project_id:
+                raise PermissionError("process execution context belongs to a different project")
+            _custody["execution_context"] = execution_context
+            context_deadline = datetime.fromisoformat(execution_context.deadline_utc.replace("Z", "+00:00"))
+            seconds_remaining = (context_deadline - datetime.now(timezone.utc)).total_seconds()
+            if seconds_remaining <= 0:
+                raise ProcessAdmissionExpired("process execution context expired before authorization")
+            deadline = min(deadline if deadline is not None else float("inf"),
+                           time.monotonic() + seconds_remaining)
+        elif assert_execution_current is not None:
+            raise ValueError("process currentness consumer requires its exact execution context")
+
+        def execution_fence() -> None:
+            if execution_context is None:
+                return
+            if datetime.now(timezone.utc) >= context_deadline:
+                if not _custody.get("spawn_attempted"):
+                    raise ProcessAdmissionExpired("process execution context deadline expired before spawn")
+                raise TimeoutError("process execution context deadline expired after spawn admission")
+            if cancel_event is not None and cancel_event.is_set():
+                if not _custody.get("spawn_attempted"):
+                    raise ProcessAdmissionExpired("process execution was cancelled before spawn")
+                raise PermissionError("process execution was cancelled after spawn admission")
+            try:
+                observation = assert_execution_current(execution_context)
+            except Exception as rejected:
+                # In particular, never forward an admission-expired retry hint
+                # once this supervisor has called its process creation owner.
+                raise PermissionError("process currentness owner rejected " + type(rejected).__name__) from None
+            if observation is not None:
+                raise PermissionError("process currentness consumer must consult the native owner or raise")
+
+        execution_fence()
+        if before_release is not None and os.name != "nt":
+            raise OSError("pre-release Job custody callbacks require Windows")
+        if before_release is not None and not callable(before_release):
+            raise TypeError("pre-release custody callback must be callable")
         def parent_expired():
             return deadline is not None and time.monotonic() >= deadline
         if parent_expired() or cancel_event is not None and cancel_event.is_set():
@@ -1202,6 +1404,7 @@ class ProcessSupervisor:
         self.command_plan(command)
         budget, audit_hash, disk_paths = self._authorize(action, cwd)
         _custody["budget"] = budget
+        _custody["audit_record_hash"] = audit_hash
         deadline = min(deadline if deadline is not None else float("inf"),
                        _custody["started"] + budget.total_timeout_seconds)
         # ``run`` executes in the process that owns and supervises the child.
@@ -1210,6 +1413,7 @@ class ProcessSupervisor:
         # durable Studio workers and therefore creates false owner-loss kills.
         if parent_expired() or cancel_event is not None and cancel_event.is_set():
             raise ProcessAdmissionExpired("process admission expired after authorization")
+        execution_fence()
         owner_pid = os.getpid()
         owner_fingerprint = _process_start_fingerprint(owner_pid)
         owner_liveness = _open_owner_liveness(owner_pid)
@@ -1223,12 +1427,15 @@ class ProcessSupervisor:
         )
         if parent_expired() or cancel_event is not None and cancel_event.is_set():
             raise ProcessAdmissionExpired("process admission expired before spawn")
+        execution_fence()
         action_id = str(action["action_id"])
         started_at = _now()
+        _custody["started_at"] = started_at
         started = time.monotonic()
         empty = CaptureResult("", 0, 0, 0, 0, False)
         _custody['creation'] = {}
         try:
+            _custody["spawn_attempted"] = True
             record, process = self.manager.spawn_owned_process(
                 command,
                 cwd=cwd.resolve(strict=True),
@@ -1264,7 +1471,7 @@ class ProcessSupervisor:
                 audit_hash,
                 None,
             )
-            receipt = self._receipt(preliminary)
+            receipt = self._receipt(preliminary, execution_context=execution_context)
             return ProcessResult(
                 **{
                     **asdict(preliminary),
@@ -1317,7 +1524,14 @@ class ProcessSupervisor:
             else "total_timeout" if parent_expired() else None
         )
         if os.name == "nt" and setup_status is None:
-            process.resume_owned()
+            execution_fence()
+            if before_release is not None:
+                before_release(self.manager.verify_owned_job(record.resource_id))
+            execution_fence()
+            resume_owned = getattr(process, "resume_owned", None)
+            if not callable(resume_owned):
+                raise RuntimeError("supervised Windows process has no retained resume owner")
+            resume_owned()
 
         status = setup_status or "exited"
         shutdown_mode = "natural"
@@ -1357,6 +1571,7 @@ class ProcessSupervisor:
 
         try:
             while status == "exited" and process.poll() is None:
+                execution_fence()
                 if drain_failures:
                     raise drain_failures[0]
                 now = time.monotonic()
@@ -1399,6 +1614,7 @@ class ProcessSupervisor:
             # otherwise an over-budget or cancelled process can be published as
             # a successful natural exit under host contention.
             if status == "exited":
+                execution_fence()
                 # A final unconditional disk measurement preserves the hard
                 # ceiling for fast-exit commands while avoiding a recursive
                 # full-tree walk on every 20 ms supervision poll.
@@ -1489,7 +1705,9 @@ class ProcessSupervisor:
             audit_record_hash=audit_hash,
             receipt_path=None,
         )
-        receipt = self._receipt(preliminary)
+        execution_fence()
+        receipt = self._receipt(preliminary, execution_context=execution_context)
+        execution_fence()
         return ProcessResult(
             **{
                 **asdict(preliminary),

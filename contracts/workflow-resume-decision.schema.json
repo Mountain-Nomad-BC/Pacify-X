@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:workflow-resume-decision",
+  "title": "Native workflow checkpoint reuse decision",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "run_id", "control_sequence", "completed_nodes", "ready_nodes", "checkpoint_sha256", "authority_hashes", "authority_granted"],
+  "properties": {
+    "schema_version": {"const": "px.workflow-resume-decision/1.0"},
+    "run_id": {"type": "string", "minLength": 5, "maxLength": 128},
+    "control_sequence": {"type": "integer", "minimum": 1},
+    "completed_nodes": {"type": "array", "maxItems": 512, "uniqueItems": true, "items": {"type": "string", "minLength": 1, "maxLength": 128}},
+    "ready_nodes": {"type": "array", "maxItems": 512, "uniqueItems": true, "items": {"type": "string", "minLength": 1, "maxLength": 128}},
+    "checkpoint_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "authority_hashes": {"type": "object", "additionalProperties": {"type": "string", "pattern": "^[0-9a-f]{64}$"}},
+    "authority_granted": {"const": false}
+  }
+}

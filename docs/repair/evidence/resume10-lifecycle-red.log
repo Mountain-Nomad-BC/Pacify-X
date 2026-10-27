@@ -1,0 +1,75 @@
+✔ failed synchronous save cannot publish a task mutation (3.5591ms)
+✔ cancelled task cannot return to implementation or start a run (0.2677ms)
+✔ only one live run can own a task (0.9359ms)
+✔ task and run identities cannot be rebound by an update (0.246ms)
+✔ corrupt persisted state is refused rather than silently replaced with empty state (0.1128ms)
+✔ persistence rejection prevents further dispatch-facing reads (0.2935ms)
+✔ stale disposable cannot delete a replacement worker registration (0.8401ms)
+✔ late health response cannot overwrite replacement worker health (0.2616ms)
+✔ controller does not dispatch before worker selection is durably acknowledged (11.3998ms)
+✔ cancellation settles usage but cannot publish completion or late deltas (1.784ms)
+✔ controller rejects a run belonging to another task before dispatch (0.3329ms)
+✖ returned task values cannot mutate persisted ownership or constraints (0.5609ms)
+✖ restart cannot redispatch a worker-selected run with unknown previous effects (0.7614ms)
+✖ cancel request has a bound while unsettled adapter remains fenced from replacement (164.7502ms)
+ℹ tests 14
+ℹ suites 0
+ℹ pass 11
+ℹ fail 3
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 357.5059
+
+✖ failing tests:
+
+test at extension\tests\task-state-custody.test.js:147:1
+✖ returned task values cannot mutate persisted ownership or constraints (0.5609ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception (TypeError).
+      at TestContext.<anonymous> (C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\tests\task-state-custody.test.js:149:10)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at extension\tests\task-state-custody.test.js:154:1
+✖ restart cannot redispatch a worker-selected run with unknown previous effects (0.7614ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\tests\task-state-custody.test.js:158:3)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /recovery-required/,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at extension\tests\task-state-custody.test.js:162:1
+✖ cancel request has a bound while unsettled adapter remains fenced from replacement (164.7502ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'unbounded'
+  - true
+  
+      at TestContext.<anonymous> (C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\tests\task-state-custody.test.js:171:12)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'unbounded',
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+

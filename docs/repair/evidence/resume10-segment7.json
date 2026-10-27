@@ -1,0 +1,36 @@
+{
+  "timestamp_utc": "2026-10-27T01:02:51.770123+00:00",
+  "segment": "remote catalog dependency and asset closure",
+  "findings": [
+    "PX-AUD-005",
+    "PX-AUD-009"
+  ],
+  "source_sha256": {
+    "runtime/remote_provider_profiles.py": "00be2492426c6f5ce249fe6d1b53e7bfc8a1567143a2b40ebf78b873ba704b23",
+    "runtime/remote_service_protocols.py": "7e00d913d198450db65368d3ac00bc8e94f4ad30e9674ed3695fbab1671ae682",
+    "runtime/remote_service_protocols.json": "935061a0f20c32a5b3fa829ffc6f87f7c21b92efb70e3982b68cce7ec81ebf00",
+    "contracts/operations/remote-provider-profile.schema.json": "88b2ab1d8908cd0e4e743f0fc1ff178367a29a6bbd4624b66aecf2c6120ef35d",
+    "tests/test_remote_profile_catalog.py": "4da9d6bb4c5322fc7d37512f74f397b06e6411bab8979fbd4986ef97672ab6c9",
+    "scripts/build_contract_ownership_registry.py": "fd98a320494bbd4df69b39c93522bd69291f53b255d24116c245203c81da7d84",
+    "pyproject.toml": "3fe9b57c30d49d9b73f5a018419b2a5d8540f74cb5cdcaf371f8288130d3262a"
+  },
+  "evidence": [
+    "docs/repair/evidence/resume10-remote-profile-red.json",
+    "docs/repair/evidence/resume10-remote-profile-green.json",
+    "docs/repair/evidence/resume10-remote-contract-neighbors.json"
+  ],
+  "observations": [
+    "Real catalog import failed from2missing owners; four reviewed candidate files ported plus current consumer/schema/package declarations.",
+    "Native signed profile integrity, public address pins, exact service identity and conservative unavailable catalog verified;6functional checks passed before added source-ownership check.",
+    "Combined remote/schema/preflight run:76passed,411subtests passed,1expected stale published ownership assertion failed (published196 vssource197). No generated registry refresh during open intake.",
+    "Schema uses current framework asset resolver in both source and simulated installed layout. This is not a package/install run."
+  ],
+  "remaining": [
+    "full prepared remote group effect owners remain missing; no chat/transport commissioning or live credentials",
+    "Gemini protocol remains unsupported by the current native surface owner; no false ready claim from a mapping row",
+    "source-derived197ownership map remains unpublished until legitimate freeze/reconciliation",
+    "canonical namespace and distribution migration remain separate caller/packaging work"
+  ],
+  "reviewer": "UNASSIGNED",
+  "closed": false
+}
