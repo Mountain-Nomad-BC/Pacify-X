@@ -1,0 +1,20 @@
+{
+  "command": [
+    "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.venv-repair\\Scripts\\python.exe",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "tests/test_contract_ownership_registry_source.py",
+    "tests/test_certification_pipeline_readiness.py",
+    "tests/test_contract_length_bounds.py"
+  ],
+  "exit_code": 1,
+  "tree_closed": true,
+  "resource_inactive": true,
+  "receipt": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.tmp\\resume10\\owned\\cleanup-receipts\\process-98c6a9915e494f8eb1a64b999cbfc5a3.json",
+  "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.tmp\\resume10\\owned\\pacifyx-njq9ese3",
+  "log": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\docs\\repair\\evidence\\resume10-group-ownership-preflight.log",
+  "log_sha256": "98b8be5fa4eb14b8f50d88df3eb49a2da1e279a2d6b9c86db185e037ed2b54b4"
+}

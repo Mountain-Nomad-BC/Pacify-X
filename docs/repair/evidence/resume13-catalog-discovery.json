@@ -1,0 +1,26 @@
+{
+  "timestamp_utc": "2026-10-27T11:02:52.050162+00:00",
+  "segment": "resume13-native-catalog-discovery",
+  "source_sha256": {
+    "runtime/vscode_model_bridge.py": "7b3282a8d564adc3dd997116c0ec71c83587bafd12ff00feaed0a72caebd24ad",
+    "tests/test_model_catalog_namespace.py": "29c9516ee29d035184794d8f367f5644c34c49d1c9daee94610f95453883992d",
+    "tests/test_bridge_stream_regressions.py": "e93ded0c9d50f579b640dbf2e429cf5aed6d5dd6690a700f2e582498551f4654",
+    "registry/test_profiles.json": "a257b4d971effb861e986c232a14df797f0e717476958900ff3e3b4a9379f225",
+    "scripts/validate_certification_pipeline.py": "b21c5e299781badd60c0eefe00c7d6845cad95eefa3963246fe9ff8f87c30314"
+  },
+  "observations": [
+    "Actual LocalModelRuntime writes legacy event log while bridge only read canonical name.2causal failures reproduced: native-owner event invisible and canonical tamper accepted. Bridge now resolves declared file compatibility, canonical file wins, never merges/falls back from invalid current history, pinned bounded read and exact native chain digest enforced.",
+    "98native discovery/runtime/profile/protocol/preflight neighbors pass.8old bridge tests expected whitespace discarded, contradicting intentional existing wire-exact protocol repair; updated to assert exact preserved nonterminal reasoning/text deltas. Production protocol behavior unchanged; original failure retained.",
+    "Actual ignored model store contains Qwen3.5-4B-Q6_K.gguf for certified control-qwen35-4b-cpu-q6 and Qwen3-30B-A3B-Q5_K_M.gguf. Historical0.8B file is absent. Earlier model-path request was premature; existing profile/local asset can be used for future native commissioning without asking user to locate it.",
+    "Finding files/discovery is not fresh GGUF admission, current router health, provider operation, service or installed acceptance. No service started and no live model request. Private signing keys remain repository-external by trust policy; real successor evidence/authorization still not found in admitted roots. Historical succession report is not new owner authorization.",
+    "43mandatory suites structurally covered;28sections. Changed native governed attempt phaseblocked; no speculative generated reconciliation, full profile, package, install, VSIX, merge or certification."
+  ],
+  "evidence": [
+    "docs/repair/evidence/resume10-model-catalog-namespace-red.json",
+    "docs/repair/evidence/resume10-model-catalog-namespace-green.json",
+    "docs/repair/evidence/resume10-model-catalog-discovery-neighbors.json",
+    "docs/repair/evidence/resume10-governed-native-discovery.json"
+  ],
+  "closed": false,
+  "reviewer": "UNASSIGNED"
+}

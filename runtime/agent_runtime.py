@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import asdict
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 import hashlib
 import json
 import os
@@ -14,6 +14,7 @@ from typing import Mapping, Sequence
 from uuid import uuid4
 
 from .file_lock import FileLock
+from .remote_model_attachment import SCHEMA as REMOTE_ATTACHMENT_SCHEMA
 from .agent_builder import (
     AgentBuilderGraph,
     agent_builder_artifacts,
@@ -2129,6 +2130,46 @@ def submit_agency_selection_to_studio(controller, request):
     return submit_studio_agent_request(controller, request)
 
 
+def _validate_execution_generation(task_plan, current_context_generation):
+    """Check current lineage before runtime state, resource claims or callbacks."""
+    if "model_execution_group" not in task_plan and "context_generation" not in task_plan:
+        return
+    from .execution_contract import execution_request_from_plan
+    from .task_execution_plan import task_execution_plan_from_dict
+
+    plan = task_execution_plan_from_dict(task_plan)
+    if not plan.selected_capabilities:
+        raise ValueError("generation-bound execution needs a selected capability")
+    execution_request_from_plan(
+        plan,
+        capability_id=plan.selected_capabilities[0],
+        idempotency_key=plan.plan_sha256,
+        current_context_generation=current_context_generation,
+    )
+
+
+def _plan_execution_context(task_plan, *, run_id, actor_id, revision, epoch, parent=None, provider_id=None):
+    from .execution_context import ExecutionContext
+    from .json_io import bounded_canonical_json_bytes
+    vector = task_plan.get("context_generation")
+    generation = vector.get("vector_sha256") if isinstance(vector, Mapping) else None
+    deadline = (datetime.now(timezone.utc) + timedelta(minutes=5)).isoformat()
+    if parent is not None:
+        if type(parent) is not ExecutionContext or parent.project_id != task_plan["project_id"] or parent.generation_vector_sha256 != generation:
+            raise ValueError("execution parent differs from canonical project or generation")
+        if datetime.fromisoformat(parent.deadline_utc.replace("Z", "+00:00")) < datetime.fromisoformat(deadline):
+            deadline = parent.deadline_utc
+    return ExecutionContext(execution_id=run_id, parent_execution_id=None if parent is None else parent.execution_id,
+        root_execution_id=run_id if parent is None else parent.root_execution_id,
+        project_id=task_plan["project_id"], session_id=run_id if parent is None else parent.session_id,
+        revision=revision, epoch=epoch, generation_vector_sha256=generation,
+        authority_reference_sha256=task_plan["plan_sha256"],
+        effect_budget_sha256=hashlib.sha256(bounded_canonical_json_bytes(task_plan["effect_budget"], max_bytes=16384)).hexdigest(),
+        cancellation_scope_id=run_id if parent is None else parent.cancellation_scope_id,
+        deadline_utc=deadline, actor_id=actor_id, provider_id=provider_id,
+        trace_root_id=run_id if parent is None else parent.trace_root_id)
+
+
 def execute_agent_plan(
     root,
     task_plan,
@@ -2138,11 +2179,28 @@ def execute_agent_plan(
     gpu_fn,
     cpu_fn,
     oom_retry_count=2,
+    current_context_generation=None,
+    member_executor=None,
+    execution_context=None,
+    cancellation_token=None,
 ):
     """Execute one plan through its exact placement and always release capacity."""
     from .execution_placement import PlacementCapacityLedger, _hash
     from .hardware_routing import Device, RoutingDecision, execute_with_fallback
     from .task_execution_plan import validate_task_execution_plan
+
+    _validate_execution_generation(task_plan, current_context_generation)
+    from .execution_context import ExecutionContext, execution_context_from_dict
+    if execution_context is None:
+        execution_context = _plan_execution_context(task_plan, run_id=str(run_id), actor_id="runtime.agent_runtime", revision=1, epoch=1)
+    if type(execution_context) is not ExecutionContext:
+        execution_context = execution_context_from_dict(execution_context)
+    vector = task_plan.get("context_generation")
+    expected_vector = vector.get("vector_sha256") if isinstance(vector, Mapping) else None
+    execution_context.assert_current(project_id=task_plan["project_id"], session_id=execution_context.session_id,
+        epoch=execution_context.epoch, generation_vector_sha256=expected_vector)
+    if execution_context.execution_id != str(run_id):
+        raise ValueError("execution context is attributed to another run")
 
     report = validate_task_execution_plan(task_plan)
     if not report["valid"] or placement.get("task_plan_sha256") != task_plan.get(
@@ -2154,12 +2212,51 @@ def execute_agent_plan(
     }
     if placement.get("placement_sha256") != _hash(unsigned):
         raise ValueError("agent execution placement is invalid")
-    attachment = task_plan.get("model_attachment")
+    from .model_group_preparation import member_attachment
+    attachment, member = member_attachment(task_plan, placement.get("model_id"))
+    if member is not None and placement.get("context_sha256") != member["context_sha256"]:
+        raise ValueError("agent placement context differs from exact member")
+    if member is not None:
+        if not callable(member_executor):
+            raise ValueError("group execution requires an explicit context-aware member executor")
+        from .model_group_preparation import member_execution_input
+        invocation = member_execution_input(task_plan, member)
+        cpu_fn = lambda: member_executor(invocation, device="cpu", batch_size=None, execution_context=execution_context, cancellation_token=cancellation_token)
+        gpu_fn = lambda batch: member_executor(invocation, device="cuda", batch_size=batch, execution_context=execution_context, cancellation_token=cancellation_token)
+    elif member_executor is not None:
+        raise ValueError("member executor requires a prepared execution group")
     if not isinstance(attachment, Mapping) or placement.get(
         "model_attachment_sha256"
     ) != attachment.get("attachment_sha256"):
         raise ValueError("agent execution placement does not match its model")
 
+    if cancellation_token is not None and (not callable(cancellation_token) or cancellation_token()):
+        raise RuntimeError("execution cancellation requested before admission")
+    if attachment.get("schema_version") == REMOTE_ATTACHMENT_SCHEMA:
+        from .remote_provider_placement import validate_remote_provider_placement
+        from .remote_member_execution import verify_remote_member_outcome
+        from .model_branch_artifacts import commit_branch_artifact
+        validate_remote_provider_placement(placement, task_plan, project_root=Path(root))
+        if member is None:
+            raise PermissionError("remote execution requires its exact prepared group member")
+        envelope = member_executor(invocation, device="remote_provider", batch_size=None,
+            execution_context=execution_context, cancellation_token=cancellation_token)
+        evidence = verify_remote_member_outcome(root, task_plan, invocation, execution_context, envelope)
+        execution_context.assert_current(project_id=task_plan["project_id"], session_id=execution_context.session_id,
+            epoch=execution_context.epoch, generation_vector_sha256=expected_vector)
+        if cancellation_token is not None and cancellation_token():
+            raise RuntimeError("execution cancellation requested before remote output commitment")
+        value = envelope["value"]
+        outcome = {"schema_version": "px.governed-agent-placement-outcome/1.0", "run_id": str(run_id),
+            "task_plan_sha256": task_plan["plan_sha256"], "placement_sha256": placement["placement_sha256"],
+            "status": "succeeded", "execution_context": execution_context.as_dict(),
+            "model_id": member["model_id"], "context_sha256": member["context_sha256"],
+            "model_execution_group_sha256": task_plan["projection_revisions"]["model_execution_group"],
+            "remote_provider_execution": evidence,
+            "branch_artifact": commit_branch_artifact(Path(root), task_plan, invocation, value, run_id=str(run_id)),
+            "telemetry": {"selected_backend": "remote_provider"}}
+        outcome["outcome_sha256"] = _hash(outcome)
+        return value, outcome
     ledger = PlacementCapacityLedger(Path(root))
     reservation = ledger.reserve(placement, run_id=str(run_id))
     outcome = {
@@ -2169,7 +2266,12 @@ def execute_agent_plan(
         "placement_sha256": placement["placement_sha256"],
         "reservation_sha256": reservation["reservation_sha256"],
         "status": "failed",
+        "execution_context": execution_context.as_dict(),
     }
+    if member is not None:
+        outcome["model_id"] = member["model_id"]
+        outcome["context_sha256"] = member["context_sha256"]
+        outcome["model_execution_group_sha256"] = task_plan["projection_revisions"]["model_execution_group"]
     try:
         decision = RoutingDecision(
             Device(str(placement["selected_device"])),
@@ -2186,6 +2288,20 @@ def execute_agent_plan(
             cpu_fn=cpu_fn,
             oom_retry_count=oom_retry_count,
         )
+        execution_context.assert_current(project_id=task_plan["project_id"], session_id=execution_context.session_id,
+            epoch=execution_context.epoch, generation_vector_sha256=expected_vector)
+        if cancellation_token is not None and cancellation_token():
+            raise RuntimeError("execution cancellation requested before output commitment")
+        if member is not None and any(row['attachment'].get('schema_version') == REMOTE_ATTACHMENT_SCHEMA
+                for row in task_plan['model_group_preparation']['members']):
+            from .remote_member_execution import verify_remote_member_outcome
+            envelope = value
+            outcome['local_provider_execution'] = verify_remote_member_outcome(root,task_plan,invocation,execution_context,envelope)
+            value = envelope['value']
+        if member is not None:
+            from .model_branch_artifacts import commit_branch_artifact
+            outcome["branch_artifact"] = commit_branch_artifact(
+                Path(root), task_plan, invocation, value, run_id=str(run_id))
         outcome.update({"status": "succeeded", "telemetry": telemetry})
         return value, outcome
     except Exception as error:

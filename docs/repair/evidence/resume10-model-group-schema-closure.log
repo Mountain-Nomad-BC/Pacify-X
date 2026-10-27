@@ -1,0 +1,66 @@
+........................FF.............                                  [100%]
+================================== FAILURES ===================================
+______ test_live_member_execution_selects_exact_attachment_and_releases _______
+
+tmp_path = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.tmp/resume10/owned/pacifyx-91qn31bx/pytest-of-Ben/pytest-0/test_live_member_execution_sel0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000014F9B0FF950>
+
+    def test_live_member_execution_selects_exact_attachment_and_releases(tmp_path, monkeypatch):
+        from runtime.agent_runtime import execute_agent_plan
+        from runtime.execution_placement import PlacementCapacityLedger, _hash
+        group, _, _, preparation = prepared(3, tmp_path)
+        plan = plan_for(group, preparation)
+        attachment, member = member_attachment(plan.as_dict(), "model-2")
+        placement = {"task_plan_sha256": plan.plan_sha256, "model_id": "model-2",
+            "model_attachment_sha256": attachment["attachment_sha256"], "context_sha256": member["context_sha256"],
+            "selected_device": "cpu", "fallback": {"device": "cpu"}, "reason": "fixture"}
+        placement["placement_sha256"] = _hash(placement)
+        calls = []
+        monkeypatch.setattr(PlacementCapacityLedger, "reserve", lambda self, p, run_id: (
+            calls.append(p["model_id"]) or {"reservation_sha256": "e" * 64}))
+        monkeypatch.setattr(PlacementCapacityLedger, "release", lambda self, r, outcome_sha256: (
+            calls.append("release") or {"released": True}))
+        kwargs = dict(run_id="run", cpu_fn=lambda: calls.append("execute"), gpu_fn=lambda batch: None,
+                      member_executor=lambda invocation, **placement: calls.append("execute"),
+                      current_context_generation=plan.context_generation)
+>       _, outcome = execute_agent_plan(tmp_path, plan.as_dict(), placement, **kwargs)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       TypeError: execute_agent_plan() got an unexpected keyword argument 'member_executor'
+
+tests\test_model_group_preparation.py:100: TypeError
+____________ test_native_member_hardware_route_and_durable_cleanup ____________
+
+tmp_path = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.tmp/resume10/owned/pacifyx-91qn31bx/pytest-of-Ben/pytest-0/test_native_member_hardware_ro0')
+
+    def test_native_member_hardware_route_and_durable_cleanup(tmp_path):
+        from datetime import datetime, timezone
+        from runtime.agent_runtime import execute_agent_plan
+        from runtime.execution_placement import route_hardware, PlacementCapacityLedger
+        from runtime.hardware_routing import WorkloadProfile, WorkloadKind, HardwareProfile, BenchmarkEvidence
+        group, attachments, retrievals, _ = prepared(3, tmp_path)
+        workload = WorkloadProfile(WorkloadKind.TEXT_ANALYSIS, 5, 1024, False, operation_id="member-fixture")
+        hardware = HardwareProfile(False, None, None, None, 0, 0, 16 * 1024**3, "windows", 8, 4,
+            False, (), (), cuda_executor_available=False)
+        benchmark = BenchmarkEvidence(workload.operation_id, hardware.fingerprint, 2.0, 1.0, True, 0,
+            datetime.now(timezone.utc).isoformat(), workload_fingerprint=workload.fingerprint)
+        original = attachments["model-2"]
+        attachments["model-2"] = build_model_attachment(tmp_path, model_id=original.model_id,
+            model_revision=original.model_revision, artifact_sha256=original.artifact_sha256,
+            runtime=original.runtime, context_tokens=original.context_tokens, modalities=original.modalities,
+            supports_tools=False, privacy=original.privacy, authority_class=original.authority_class,
+            benchmark_revision=benchmark.revision, hardware_requirements=dict(original.hardware_requirements))
+        preparation = prepare_model_group(group, attachments, retrievals, root=tmp_path)
+        plan = plan_for(group, preparation)
+        kwargs = dict(workload=workload, hardware=hardware, benchmark=benchmark, project_root=tmp_path)
+>       with pytest.raises(ValueError, match="explicit member"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: Regex pattern did not match.
+E         Expected regex: 'explicit member'
+E         Actual message: 'hardware routing requires one exact model attachment'
+
+tests\test_model_group_preparation.py:131: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_model_group_preparation.py::test_live_member_execution_selects_exact_attachment_and_releases
+FAILED tests/test_model_group_preparation.py::test_native_member_hardware_route_and_durable_cleanup
+2 failed, 37 passed in 1.85s
+

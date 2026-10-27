@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:models:model-branch-artifact",
+  "title": "Model Branch Artifact",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "project_id",
+    "run_id",
+    "task_plan_id",
+    "task_plan_sha256",
+    "group_sha256",
+    "model_id",
+    "agent_generation_id",
+    "attachment_sha256",
+    "context_sha256",
+    "output_sha256",
+    "output_bytes",
+    "output_path",
+    "resource_id",
+    "authority_granted",
+    "artifact_sha256"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "px.model-branch-artifact/1.0"
+    },
+    "project_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512
+    },
+    "run_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "task_plan_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512
+    },
+    "task_plan_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "group_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "model_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512
+    },
+    "agent_generation_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512
+    },
+    "attachment_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "context_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "output_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "output_bytes": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 524288
+    },
+    "output_path": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 1024
+    },
+    "resource_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512
+    },
+    "authority_granted": {
+      "const": false
+    },
+    "artifact_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  }
+}

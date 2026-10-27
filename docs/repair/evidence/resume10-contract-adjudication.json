@@ -1,18 +1,18 @@
 {
   "schema_version": "px.contract-source-adjudication/1",
-  "timestamp_utc": "2026-10-26T19:33:42.290328+00:00",
+  "timestamp_utc": "2026-10-27T10:57:36.250912+00:00",
   "target": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X",
   "reference": "C:\\Users\\Ben\\Music\\Pacify-X-rollout-20261024",
   "candidate_contract_json_count": 214,
   "candidate_schema_count": 213,
-  "target_contract_json_count": 197,
+  "target_contract_json_count": 203,
   "counts": {
-    "DEPENDENCY_REVIEW_REQUIRED": 20,
+    "DEPENDENCY_REVIEW_REQUIRED": 12,
     "EXACT_EQUAL": 188,
-    "JSON_EQUAL": 2,
+    "PORTED_COMPONENT_TESTED_GENERATED_PENDING": 9,
     "NAMESPACE_MIGRATION_REVIEW_REQUIRED": 2,
-    "PORTED_COMPONENT_TESTED_GENERATED_PENDING": 1,
-    "TARGET_STRONGER_OR_CANONICAL": 1
+    "TARGET_STRONGER_OR_CANONICAL": 1,
+    "JSON_EQUAL": 2
   },
   "reference_registry_count": 210,
   "unregistered_reference_contracts": [
@@ -2977,11 +2977,11 @@
     },
     {
       "path": "contracts/model_attachment.schema.json",
-      "target_sha256": "3f70eff85cefd18753ed44427c3f11fe24efbc69f587490c802f1aa1e75ff7fd",
+      "target_sha256": "125111f58ce0c3243a144c438af87fb8d64bc8fec81549f2e8848c77f57bc44d",
       "reference_sha256": "594fd725ed00f28eeca930eae96d1dd6d7ec5df3274270f9c655f1f65eec4e94",
       "disposition": "merge",
-      "state": "DEPENDENCY_REVIEW_REQUIRED",
-      "reason": "Not approved for copy: owner/caller dependency and causal acceptance integration remains required.",
+      "state": "PORTED_COMPONENT_TESTED_GENERATED_PENDING",
+      "reason": "Source producer/consumer component integration and focused tests in resume13; full workflow/remote/TIE commissioning and generated reconciliation remain pending.",
       "ownership": {
         "target": {
           "declared_owner": "runtime/model_attachment.py",
@@ -3004,7 +3004,8 @@
           "missing_declared_tests": []
         }
       },
-      "independent_review": "UNASSIGNED"
+      "independent_review": "UNASSIGNED",
+      "evidence": "docs/repair/evidence/resume13-model-group-segment.json"
     },
     {
       "path": "contracts/models/execution-generation-vector.schema.json",
@@ -3029,11 +3030,11 @@
     },
     {
       "path": "contracts/models/generation-bound-verdict.schema.json",
-      "target_sha256": null,
+      "target_sha256": "c957466a49260915c1eadc9e2ea062e353a319fed8d6ee59ec626af9bbdebb6e",
       "reference_sha256": "c957466a49260915c1eadc9e2ea062e353a319fed8d6ee59ec626af9bbdebb6e",
       "disposition": "port",
-      "state": "DEPENDENCY_REVIEW_REQUIRED",
-      "reason": "Not approved for copy: owner/caller dependency and causal acceptance integration remains required.",
+      "state": "PORTED_COMPONENT_TESTED_GENERATED_PENDING",
+      "reason": "Source producer/consumer component integration and focused tests in resume13; full workflow/remote/TIE commissioning and generated reconciliation remain pending.",
       "ownership": {
         "target": null,
         "reference": {
@@ -3046,7 +3047,8 @@
           "missing_declared_tests": []
         }
       },
-      "independent_review": "UNASSIGNED"
+      "independent_review": "UNASSIGNED",
+      "evidence": "docs/repair/evidence/resume13-model-group-segment.json"
     },
     {
       "path": "contracts/models/governed-exception.schema.json",
@@ -3071,11 +3073,11 @@
     },
     {
       "path": "contracts/models/member-execution-input.schema.json",
-      "target_sha256": null,
+      "target_sha256": "6b0d5a44f16e58c689be331e10f6b336ac1d8db8b1769e7e50eb819ef49946e1",
       "reference_sha256": "6b0d5a44f16e58c689be331e10f6b336ac1d8db8b1769e7e50eb819ef49946e1",
       "disposition": "port",
-      "state": "DEPENDENCY_REVIEW_REQUIRED",
-      "reason": "Not approved for copy: owner/caller dependency and causal acceptance integration remains required.",
+      "state": "PORTED_COMPONENT_TESTED_GENERATED_PENDING",
+      "reason": "Source producer/consumer component integration and focused tests in resume13; full workflow/remote/TIE commissioning and generated reconciliation remain pending.",
       "ownership": {
         "target": null,
         "reference": {
@@ -3088,15 +3090,16 @@
           "missing_declared_tests": []
         }
       },
-      "independent_review": "UNASSIGNED"
+      "independent_review": "UNASSIGNED",
+      "evidence": "docs/repair/evidence/resume13-model-group-segment.json"
     },
     {
       "path": "contracts/models/model-branch-artifact.schema.json",
-      "target_sha256": null,
+      "target_sha256": "a6a21935d5bd43e6b03d8d83deda72ee9be0c6c68879825c83ae90e212261bc5",
       "reference_sha256": "a6a21935d5bd43e6b03d8d83deda72ee9be0c6c68879825c83ae90e212261bc5",
       "disposition": "port",
-      "state": "DEPENDENCY_REVIEW_REQUIRED",
-      "reason": "Not approved for copy: owner/caller dependency and causal acceptance integration remains required.",
+      "state": "PORTED_COMPONENT_TESTED_GENERATED_PENDING",
+      "reason": "Source producer/consumer component integration and focused tests in resume13; full workflow/remote/TIE commissioning and generated reconciliation remain pending.",
       "ownership": {
         "target": null,
         "reference": {
@@ -3109,15 +3112,16 @@
           "missing_declared_tests": []
         }
       },
-      "independent_review": "UNASSIGNED"
+      "independent_review": "UNASSIGNED",
+      "evidence": "docs/repair/evidence/resume13-model-group-segment.json"
     },
     {
       "path": "contracts/models/model-execution-group.schema.json",
-      "target_sha256": null,
+      "target_sha256": "870f46339b6ee53d57a2c63ae3260ee767edeac2c69cf467e7ff0d6a6e94ff5a",
       "reference_sha256": "870f46339b6ee53d57a2c63ae3260ee767edeac2c69cf467e7ff0d6a6e94ff5a",
       "disposition": "port",
-      "state": "DEPENDENCY_REVIEW_REQUIRED",
-      "reason": "Not approved for copy: owner/caller dependency and causal acceptance integration remains required.",
+      "state": "PORTED_COMPONENT_TESTED_GENERATED_PENDING",
+      "reason": "Source producer/consumer component integration and focused tests in resume13; full workflow/remote/TIE commissioning and generated reconciliation remain pending.",
       "ownership": {
         "target": null,
         "reference": {
@@ -3130,15 +3134,16 @@
           "missing_declared_tests": []
         }
       },
-      "independent_review": "UNASSIGNED"
+      "independent_review": "UNASSIGNED",
+      "evidence": "docs/repair/evidence/resume13-model-group-segment.json"
     },
     {
       "path": "contracts/models/model-group-preparation.schema.json",
-      "target_sha256": null,
+      "target_sha256": "067d9ee3941b7fa5b6d50f7b4154b1e9b9565aca7dbbf281e72d80dcc8038169",
       "reference_sha256": "067d9ee3941b7fa5b6d50f7b4154b1e9b9565aca7dbbf281e72d80dcc8038169",
       "disposition": "port",
-      "state": "DEPENDENCY_REVIEW_REQUIRED",
-      "reason": "Not approved for copy: owner/caller dependency and causal acceptance integration remains required.",
+      "state": "PORTED_COMPONENT_TESTED_GENERATED_PENDING",
+      "reason": "Source producer/consumer component integration and focused tests in resume13; full workflow/remote/TIE commissioning and generated reconciliation remain pending.",
       "ownership": {
         "target": null,
         "reference": {
@@ -3151,7 +3156,8 @@
           "missing_declared_tests": []
         }
       },
-      "independent_review": "UNASSIGNED"
+      "independent_review": "UNASSIGNED",
+      "evidence": "docs/repair/evidence/resume13-model-group-segment.json"
     },
     {
       "path": "contracts/models/model-router-preset-format.schema.json",
@@ -4650,11 +4656,11 @@
     },
     {
       "path": "contracts/remote_model_attachment.schema.json",
-      "target_sha256": null,
+      "target_sha256": "e5f04bc088f4958c052c81f0948e8d838314a89d7121e2860a610726bc4e0ad2",
       "reference_sha256": "e5f04bc088f4958c052c81f0948e8d838314a89d7121e2860a610726bc4e0ad2",
       "disposition": "port",
-      "state": "DEPENDENCY_REVIEW_REQUIRED",
-      "reason": "Not approved for copy: owner/caller dependency and causal acceptance integration remains required.",
+      "state": "PORTED_COMPONENT_TESTED_GENERATED_PENDING",
+      "reason": "Source producer/consumer component integration and focused tests in resume13; full workflow/remote/TIE commissioning and generated reconciliation remain pending.",
       "ownership": {
         "target": null,
         "reference": {
@@ -4667,7 +4673,8 @@
           "missing_declared_tests": []
         }
       },
-      "independent_review": "UNASSIGNED"
+      "independent_review": "UNASSIGNED",
+      "evidence": "docs/repair/evidence/resume13-model-group-segment.json"
     },
     {
       "path": "contracts/research_ops/bootstrap-status.schema.json",
@@ -5798,11 +5805,11 @@
     },
     {
       "path": "contracts/task_execution_plan.schema.json",
-      "target_sha256": "1fc4208b37b109ec267c66aa20883e34c1b088997e67b69851eedb4fad900ff4",
+      "target_sha256": "aadd1ad931e661a7219ef758deaf3bfccd4080ffa54c828c99421efdb88b03ee",
       "reference_sha256": "aadd1ad931e661a7219ef758deaf3bfccd4080ffa54c828c99421efdb88b03ee",
       "disposition": "merge",
-      "state": "DEPENDENCY_REVIEW_REQUIRED",
-      "reason": "Not approved for copy: owner/caller dependency and causal acceptance integration remains required.",
+      "state": "PORTED_COMPONENT_TESTED_GENERATED_PENDING",
+      "reason": "Source producer/consumer component integration and focused tests in resume13; full workflow/remote/TIE commissioning and generated reconciliation remain pending.",
       "ownership": {
         "target": {
           "declared_owner": "runtime/task_execution_plan.py",
@@ -5823,7 +5830,8 @@
           "missing_declared_tests": []
         }
       },
-      "independent_review": "UNASSIGNED"
+      "independent_review": "UNASSIGNED",
+      "evidence": "docs/repair/evidence/resume13-model-group-segment.json"
     },
     {
       "path": "contracts/tool-contract.schema.json",

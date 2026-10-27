@@ -61,9 +61,12 @@ class TaskExecutionPlan:
     model_attachment: Mapping[str, object] | None
     model_ranking_receipt: Mapping[str, object] | None
     plan_sha256: str
+    model_execution_group: object | None = None
+    context_generation: object | None = None
+    model_group_preparation: object | None = None
 
     def as_dict(self) -> dict[str, object]:
-        return {
+        body = {
             "schema_version": self.schema_version,
             "plan_id": self.plan_id,
             "project_id": self.project_id,
@@ -82,6 +85,13 @@ class TaskExecutionPlan:
             "model_ranking_receipt": dict(self.model_ranking_receipt) if self.model_ranking_receipt else None,
             "plan_sha256": self.plan_sha256,
         }
+        if self.model_execution_group is not None:
+            body["model_execution_group"] = self.model_execution_group.as_mapping()
+        if self.context_generation is not None:
+            body["context_generation"] = self.context_generation.as_mapping()
+        if self.model_group_preparation is not None:
+            body["model_group_preparation"] = self.model_group_preparation.as_dict()
+        return body
 
 
 def _unsigned(plan: TaskExecutionPlan | Mapping[str, object]) -> dict[str, object]:
@@ -101,6 +111,9 @@ def compile_task_execution_plan(
     attachments: Mapping[str, object] | None = None,
     model_attachment: Mapping[str, object] | None = None,
     model_ranking_receipt: Mapping[str, object] | None = None,
+    model_execution_group=None,
+    context_generation=None,
+    model_group_preparation=None,
     created_utc: str | None = None,
 ) -> TaskExecutionPlan:
     """Compile router output into a hash-bound description without executing it."""
@@ -127,6 +140,28 @@ def compile_task_execution_plan(
         "model_ranking_receipt": dict(model_ranking_receipt) if model_ranking_receipt else None,
     }
     content_sha256 = _digest(base)
+    if model_execution_group is not None:
+        from .model_execution_group import ModelExecutionGroup
+        if type(model_execution_group) is not ModelExecutionGroup:
+            raise ValueError("canonical typed model execution group required")
+        base["model_execution_group"] = model_execution_group.as_mapping()
+        base["projection_revisions"]["model_execution_group"] = model_execution_group.group_sha256
+        content_sha256 = _digest(base)
+    if context_generation is not None:
+        from .context_generation import ContextGenerationVector
+        if type(context_generation) is not ContextGenerationVector:
+            raise ValueError("typed context generation required")
+        base["context_generation"] = context_generation.as_mapping()
+        base["projection_revisions"]["context_generation"] = context_generation.vector_sha256
+        content_sha256 = _digest(base)
+    if model_group_preparation is not None:
+        from .model_group_preparation import ModelGroupPreparation, read_group_preparation
+        if type(model_group_preparation) is not ModelGroupPreparation or model_execution_group is None:
+            raise ValueError("typed member preparation requires canonical group")
+        prepared = read_group_preparation(model_group_preparation.as_dict(), model_execution_group)
+        base["model_group_preparation"] = prepared.as_dict()
+        base["projection_revisions"]["model_group_preparation"] = prepared.preparation_sha256
+        content_sha256 = _digest(base)
     base["plan_id"] = f"task-plan-{content_sha256[:24]}"
     base["plan_sha256"] = _digest(base)
     plan = task_execution_plan_from_dict(base)
@@ -137,6 +172,11 @@ def compile_task_execution_plan(
 
 
 def task_execution_plan_from_dict(payload: Mapping[str, object]) -> TaskExecutionPlan:
+    from .model_execution_group import read_execution_group
+    from .context_generation import read_context_vector
+    from .model_group_preparation import read_group_preparation
+    if "model_group_preparation" in payload and "model_execution_group" not in payload:
+        raise ValueError("member preparation requires canonical group")
     def strings(key: str) -> tuple[str, ...]:
         value = payload.get(key, ())
         return tuple(map(str, value)) if isinstance(value, (list, tuple)) else ()
@@ -171,6 +211,9 @@ def task_execution_plan_from_dict(payload: Mapping[str, object]) -> TaskExecutio
             else None
         ),
         plan_sha256=str(payload.get("plan_sha256", "")),
+        model_execution_group=read_execution_group(payload["model_execution_group"]) if "model_execution_group" in payload else None,
+        context_generation=read_context_vector(payload["context_generation"]) if "context_generation" in payload else None,
+        model_group_preparation=read_group_preparation(payload["model_group_preparation"], read_execution_group(payload["model_execution_group"])) if "model_group_preparation" in payload else None,
     )
 
 
@@ -206,6 +249,36 @@ def validate_task_execution_plan(
         errors.append("effect budget is required")
     if not candidate.authority_bindings:
         errors.append("authority binding is required")
+    if candidate.model_execution_group is not None:
+        group = candidate.model_execution_group
+        if dict(candidate.projection_revisions).get("model_execution_group") != group.group_sha256:
+            errors.append("model execution group projection is stale")
+        if candidate.model_attachment and candidate.model_attachment.get("model_id") != group.model_ids[0]:
+            errors.append("legacy primary attachment differs from canonical group")
+    if candidate.context_generation is not None:
+        context = candidate.context_generation
+        if dict(candidate.projection_revisions).get("context_generation") != context.vector_sha256:
+            errors.append("context generation projection is stale")
+        if context.project_id != candidate.project_id or context.components["source_revision"] != candidate.source_revision:
+            errors.append("context generation project/source differs from task plan")
+        if candidate.model_execution_group is not None:
+            group = candidate.model_execution_group
+            if (context.components.get("model_execution_group_revision") != group.group_sha256
+                    or context.components.get("model_contract_set_revision") != group.contract_set_sha256):
+                errors.append("context generation differs from exact model group/contracts")
+    if candidate.model_group_preparation is not None:
+        from .model_group_preparation import read_group_preparation
+        try:
+            prepared = read_group_preparation(candidate.model_group_preparation.as_dict(), candidate.model_execution_group)
+            if dict(candidate.projection_revisions).get("model_group_preparation") != prepared.preparation_sha256:
+                errors.append("member preparation projection differs")
+            primary = prepared.as_dict()["members"][0]["attachment"]
+            if any(row["context"]["project_id"] != candidate.project_id for row in prepared.as_dict()["members"]):
+                errors.append("member context project differs from task plan")
+            if candidate.model_attachment and dict(candidate.model_attachment) != primary:
+                errors.append("legacy attachment differs from prepared primary")
+        except (ValueError, TypeError, AttributeError, KeyError) as error:
+            errors.append("invalid member preparation: " + str(error))
     if bool(candidate.model_attachment) != bool(candidate.model_ranking_receipt):
         errors.append("model attachment and ranking receipt must be bound together")
     if candidate.model_attachment and candidate.model_ranking_receipt:

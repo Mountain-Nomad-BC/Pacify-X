@@ -251,6 +251,11 @@ def _verify_local_model(root: Path, relative: str, expected_hash: str) -> None:
 
 def model_attachment_from_dict(payload: Mapping[str, object]) -> ModelAttachment:
     """Decode an attachment without weakening its content validation."""
+    if isinstance(payload, dict) and str(payload.get('schema_version', '')).startswith('px.remote-model-attachment/'):
+        from .remote_model_attachment import remote_model_attachment_from_dict, SCHEMA
+        if payload.get('schema_version') != SCHEMA:
+            raise ValueError('stale remote attachment requires fresh qualified preparation')
+        return remote_model_attachment_from_dict(payload)
     _validate_attachment_payload(payload)
     fallbacks = tuple(
         ModelFallback(
@@ -431,6 +436,10 @@ def validate_model_attachment(
     root: Path | None = None,
     expected_attachment_sha256: str | None = None,
 ) -> dict[str, object]:
+    from .remote_model_attachment import RemoteModelAttachment, validate_remote_model_attachment
+    if type(attachment) is RemoteModelAttachment:
+        return validate_remote_model_attachment(attachment, root=root,
+            expected_attachment_sha256=expected_attachment_sha256)
     try:
         if type(attachment) is not ModelAttachment:
             raise ValueError("typed model attachment is required")

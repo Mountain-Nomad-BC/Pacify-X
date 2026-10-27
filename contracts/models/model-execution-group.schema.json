@@ -1,0 +1,167 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:models:model-execution-group",
+  "title": "PX model-execution-group",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "px.model-execution-group/2.0"
+    },
+    "group_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "purpose": {
+      "enum": [
+        "discovery",
+        "calibration",
+        "execution"
+      ]
+    },
+    "authority_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "branch_count": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 12
+    },
+    "max_branches": {
+      "const": 12
+    },
+    "branches": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "model_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "role": {
+            "enum": [
+              "proposal",
+              "challenger",
+              "anchor"
+            ]
+          },
+          "weight": {
+            "type": "number",
+            "minimum": 0
+          },
+          "work_contract": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "deliverable": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 256
+              },
+              "context_sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              "max_output_bytes": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 524288
+              }
+            },
+            "required": [
+              "deliverable",
+              "context_sha256",
+              "max_output_bytes"
+            ]
+          },
+          "independence_contract": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "commit_before_peer_visibility": {
+                "const": true
+              },
+              "peer_input_allowed": {
+                "const": false
+              }
+            },
+            "required": [
+              "commit_before_peer_visibility",
+              "peer_input_allowed"
+            ]
+          },
+          "agent_generation_id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          }
+        },
+        "required": [
+          "model_id",
+          "role",
+          "weight"
+        ],
+        "if": {
+          "required": [
+            "work_contract"
+          ]
+        },
+        "then": {
+          "required": [
+            "independence_contract",
+            "agent_generation_id"
+          ]
+        }
+      },
+      "minItems": 1,
+      "maxItems": 12
+    },
+    "quorum": {
+      "enum": [
+        "any",
+        "all",
+        "majority"
+      ]
+    },
+    "quorum_size": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 12
+    },
+    "produces_outputs": {
+      "type": "boolean"
+    },
+    "determinism_seed": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 0,
+      "maximum": 4294967295
+    },
+    "minimum_quorum": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 12
+    }
+  },
+  "required": [
+    "schema_version",
+    "group_id",
+    "purpose",
+    "authority_id",
+    "branch_count",
+    "max_branches",
+    "branches",
+    "quorum",
+    "quorum_size",
+    "produces_outputs",
+    "determinism_seed"
+  ]
+}

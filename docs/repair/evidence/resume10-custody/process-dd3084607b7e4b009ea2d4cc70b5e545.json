@@ -1,0 +1,29 @@
+{
+  "action_id": "model-group-red",
+  "audit_record_hash": "2b82266834dc5c43ad91eeee463d8a5d5af4e32c7aef8c24a7387b7a8634b91d",
+  "duration_seconds": 1.0946052999997846,
+  "ended_at": "2026-10-27T10:49:25.452Z",
+  "exit_code": 2,
+  "failure_type": null,
+  "receipt_id": "process-dd3084607b7e4b009ea2d4cc70b5e545",
+  "resource_id": "process-e401a060ca1d49b28eb9eed7b521811b",
+  "schema_version": "px.process-supervision-receipt/1.0",
+  "shutdown_mode": "natural",
+  "started_at": "2026-10-27T10:49:24.357Z",
+  "status": "exited",
+  "stderr": {
+    "decode_error_count": 0,
+    "dropped_bytes": 0,
+    "retained_bytes": 0,
+    "total_bytes": 0,
+    "truncated": false
+  },
+  "stdout": {
+    "decode_error_count": 0,
+    "dropped_bytes": 0,
+    "retained_bytes": 1797,
+    "total_bytes": 1797,
+    "truncated": false
+  },
+  "tree_closed": true
+}

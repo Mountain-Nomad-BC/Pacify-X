@@ -1,0 +1,49 @@
+........F                                                                [100%]
+================================== FAILURES ===================================
+_ test_branch_artifact_registers_before_directory_creation_and_settles_exact_resource _
+
+tmp_path = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.tmp/resume10/owned/pacifyx-w39w_pa7/pytest-of-Ben/pytest-0/test_branch_artifact_registers0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000248C2FB9940>
+
+    def test_branch_artifact_registers_before_directory_creation_and_settles_exact_resource(tmp_path, monkeypatch):
+        from runtime.model_group_preparation import member_execution_input
+        from runtime.model_branch_artifacts import commit_branch_artifact, read_branch_artifact
+        from runtime.resource_lifecycle import ResourceManager
+        group, _, _, preparation = prepared(1, tmp_path)
+        plan = plan_for(group, preparation)
+        invocation = member_execution_input(plan.as_dict(), preparation.as_dict()["members"][0])
+        original = ResourceManager.register_path
+        observed = []
+        def registration(self, path, **kwargs):
+            if kwargs.get("creator") == "runtime.model_branch_artifacts":
+                observed.append(path)
+                assert not path.exists(), "artifact custody must precede creation"
+            return original(self, path, **kwargs)
+        monkeypatch.setattr(ResourceManager, "register_path", registration)
+>       artifact = commit_branch_artifact(tmp_path, plan.as_dict(), invocation, {"answer": "controlled"}, run_id="artifact-run")
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_model_group_preparation.py:162: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+runtime\model_branch_artifacts.py:127: in commit_branch_artifact
+    resource = matches[0] if matches else manager.register_path(directory,
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <runtime.resource_lifecycle.ResourceManager object at 0x00000248C31AB9D0>
+path = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.tmp/resume10/owned/pacifyx-w39w_pa7/pytest-of-Ben/pyte...cd21e28cc793c3742b31b0e528d06350f011131c1489feb435aa/db81642bf6d41f87a8dc8506c429097de3fdd3d6413e93f6b16329d21f059023')
+kwargs = {'allowed_cleanup_root': WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.tmp/resume10/owned/pacifyx-w3...x/runtime-core/model-artifacts'), 'project_id': 'px', 'run_id': 'artifact-run', 'lane_id': 'model-branch:model-0', ...}
+
+    def registration(self, path, **kwargs):
+        if kwargs.get("creator") == "runtime.model_branch_artifacts":
+            observed.append(path)
+>           assert not path.exists(), "artifact custody must precede creation"
+E           AssertionError: artifact custody must precede creation
+E           assert not True
+E            +  where True = exists()
+E            +    where exists = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.tmp/resume10/owned/pacifyx-w39w_pa7/pytest-of-Ben/pyte...cd21e28cc793c3742b31b0e528d06350f011131c1489feb435aa/db81642bf6d41f87a8dc8506c429097de3fdd3d6413e93f6b16329d21f059023').exists
+
+tests\test_model_group_preparation.py:159: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_model_group_preparation.py::test_branch_artifact_registers_before_directory_creation_and_settles_exact_resource
+1 failed, 8 passed in 2.39s
+

@@ -43,15 +43,17 @@ def test_whitespace_only_reasoning_delta_does_not_terminate_the_stream() -> None
     frame = _frame({"choices": [{"finish_reason": None, "index": 0,
                                  "delta": {"reasoning_content": "\n\n"}}]})
     events = translator.feed_sse("", frame)
-    assert events == []  # non-substantive, skipped rather than fatal
+    assert [(event.kind, event.payload["text"]) for event in events] == [("reasoning_delta", "\n\n")]
+    assert not any(event.kind in {"finish", "error"} for event in events)
 
 
 @pytest.mark.parametrize("blank", ["\n", "\n\n", " ", "   ", "\t", "\r\n  "])
-def test_all_whitespace_variants_are_non_substantive(blank: str) -> None:
+def test_all_whitespace_variants_preserve_reasoning_without_finishing(blank: str) -> None:
     translator = _translator()
     frame = _frame({"choices": [{"finish_reason": None, "index": 0,
                                  "delta": {"reasoning_content": blank}}]})
-    assert translator.feed_sse("", frame) == []
+    events = translator.feed_sse("", frame)
+    assert [(event.kind, event.payload["text"]) for event in events] == [("reasoning_delta", blank)]
 
 
 def test_substantive_reasoning_delta_is_still_emitted() -> None:
@@ -63,11 +65,12 @@ def test_substantive_reasoning_delta_is_still_emitted() -> None:
     assert events[0].kind == "reasoning_delta"
 
 
-def test_whitespace_only_content_delta_is_non_substantive() -> None:
+def test_whitespace_only_content_delta_is_preserved() -> None:
     translator = _translator()
     frame = _frame({"choices": [{"finish_reason": None, "index": 0,
                                  "delta": {"content": "\n"}}]})
-    assert translator.feed_sse("", frame) == []
+    events = translator.feed_sse("", frame)
+    assert [(event.kind, event.payload["text"]) for event in events] == [("text_delta", "\n")]
 
 
 def test_substantive_content_delta_is_still_emitted() -> None:

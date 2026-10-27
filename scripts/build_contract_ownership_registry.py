@@ -8,6 +8,12 @@ from pathlib import Path
 
 
 ROOT_OWNERS = {
+    'remote_model_attachment.schema.json': ('runtime/remote_model_attachment.py', ['runtime/remote_model_attachment.py', 'runtime/model_attachment.py'], 'typed_remote_service_identity_boundary', ['tests/test_model_attachment.py', 'tests/test_model_group_preparation.py', 'tests/test_remote_attachment_identity.py']),
+    'model-execution-group.schema.json': ('runtime/model_execution_group.py', ['runtime/model_execution_group.py', 'runtime/task_execution_plan.py'], 'bounded_group_declaration_boundary', ['tests/test_model_execution_group.py', 'tests/test_model_group_preparation.py']),
+    'generation-bound-verdict.schema.json': ('runtime/generation_bound_verdict.py', ['runtime/generation_bound_verdict.py'], 'exact_candidate_dependency_verdict_boundary', ['tests/test_generation_bound_verdict.py']),
+    'model-group-preparation.schema.json': ('runtime/model_group_preparation.py', ['runtime/model_group_preparation.py', 'runtime/task_execution_plan.py'], 'exact_member_preparation_boundary', ['tests/test_model_group_preparation.py']),
+    'member-execution-input.schema.json': ('runtime/model_group_preparation.py', ['runtime/model_group_preparation.py', 'runtime/agent_runtime.py'], 'exact_member_input_boundary', ['tests/test_model_group_preparation.py']),
+    'model-branch-artifact.schema.json': ('runtime/model_branch_artifacts.py', ['runtime/model_branch_artifacts.py', 'runtime/agent_runtime.py'], 'committed_member_evidence_boundary', ['tests/test_model_group_preparation.py']),
     'cancellation-scope.schema.json': ('runtime/cancellation_scope.py', ['runtime/cancellation_scope.py'], 'runtime_enforced', ['tests/test_contract_runtime.py', 'tests/test_agent_governed_integration.py']),
     'context-generation-vector.schema.json': ('runtime/context_generation.py', ['runtime/context_generation.py', 'runtime/dependency_invalidation.py'], 'typed_scoped_archivist_metadata_boundary', ['tests/test_contract_runtime.py', 'tests/test_context_generation.py', 'tests/test_contract_ownership_registry.py']),
     'dependency-identity.schema.json': ('runtime/dependency_identity.py', ['runtime/dependency_identity.py', 'runtime/dependency_invalidation.py'], 'canonical_dependency_observation_boundary', ['tests/test_contract_runtime.py', 'tests/test_dependency_invalidation.py', 'tests/test_dependency_contracts.py']),

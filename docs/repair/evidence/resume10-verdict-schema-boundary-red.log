@@ -1,0 +1,31 @@
+........F                                                                [100%]
+================================== FAILURES ===================================
+______________ test_schema_name_cannot_escape_the_contract_owner ______________
+
+    def test_schema_name_cannot_escape_the_contract_owner():
+        with pytest.raises(ValueError, match="schema name"):
+>           owner.validate_record({}, "../../outside")
+
+tests\test_generation_bound_verdict.py:48: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+runtime\generation_bound_verdict.py:14: in validate_record
+    validate_instance(record, framework_root() / "contracts/models" / (name + ".schema.json"))
+runtime\contracts.py:463: in validate_instance
+    schema_path = schema_path.resolve(strict=True)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\..\AppData\Local\Temp\py3145t\Lib\pathlib\__init__.py:938: in resolve
+    return self.with_segments(os.path.realpath(self, strict=strict))
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+path = 'C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\outside.schema.json'
+strict = True
+
+>   ???
+E   FileNotFoundError: [WinError 2] The system cannot find the file specified: 'C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\outside.schema.json'
+
+<frozen ntpath>:694: FileNotFoundError
+=========================== short test summary info ===========================
+FAILED tests/test_generation_bound_verdict.py::test_schema_name_cannot_escape_the_contract_owner
+1 failed, 8 passed in 0.22s
+

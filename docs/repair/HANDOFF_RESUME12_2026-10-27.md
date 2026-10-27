@@ -1,3 +1,5 @@
+> Latest implementation: [HANDOFF_RESUME13_2026-10-27.md](HANDOFF_RESUME13_2026-10-27.md). Its group/discovery updates supersede the missing-owner/model-path observations below.
+
 # Pacify-X continuation — Resume12, 2026-10-27
 
 The requested full rollout is unfinished. Continue the complete R01–R14 plan in `ROLLOUT_COMPLETION_PLAN.md` and the prior `HANDOFF_RESUME11_2026-10-26.md`, with the corrections below. No finding is independently closed and no certification or merge occurred. This is a bounded repair checkpoint, not user-requested cancellation.

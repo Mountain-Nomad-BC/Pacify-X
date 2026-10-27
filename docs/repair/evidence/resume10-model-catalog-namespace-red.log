@@ -1,0 +1,35 @@
+F.F                                                                      [100%]
+================================== FAILURES ===================================
+____ test_bridge_discovers_events_written_by_actual_current_runtime_owner _____
+
+tmp_path = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.tmp/resume10/owned/pacifyx-eqip0yqx/pytest-of-Ben/pytest-0/test_bridge_discovers_events_w0')
+
+    def test_bridge_discovers_events_written_by_actual_current_runtime_owner(tmp_path):
+        event = native_event(tmp_path)
+        before = sorted(p.relative_to(tmp_path).as_posix() for p in tmp_path.rglob('*'))
+>       assert _event_rows(tmp_path) == [event]
+E       AssertionError: assert [] == [{'schema_ver...covery', ...}]
+E         
+E         Right contains one more item: {'schema_version': 'px.local-model-lifecycle-event/1.0', 'sequence': 1, 'event_id': 'local-model-event-584f8ef35f774a98915d5d6f2c62bfb6', 'event_type': 'controlled-discovery', ...}
+E         Use -v to get more diff
+
+tests\test_model_catalog_namespace.py:17: AssertionError
+_______ test_invalid_canonical_history_is_not_replaced_with_old_history _______
+
+tmp_path = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.tmp/resume10/owned/pacifyx-eqip0yqx/pytest-of-Ben/pytest-0/test_invalid_canonical_history0')
+
+    def test_invalid_canonical_history_is_not_replaced_with_old_history(tmp_path):
+        event = native_event(tmp_path)
+        target = tmp_path / '.agentic_engineering_os_px/local-model-runtime/events.jsonl'
+        target.parent.mkdir(parents=True)
+        target.write_text(json.dumps({**event, 'payload': {'rebound': True}}), encoding='utf-8')
+>       with pytest.raises(ValueError, match='chain'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests\test_model_catalog_namespace.py:36: Failed
+=========================== short test summary info ===========================
+FAILED tests/test_model_catalog_namespace.py::test_bridge_discovers_events_written_by_actual_current_runtime_owner
+FAILED tests/test_model_catalog_namespace.py::test_invalid_canonical_history_is_not_replaced_with_old_history
+2 failed, 1 passed in 0.51s
+

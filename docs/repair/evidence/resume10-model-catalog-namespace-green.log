@@ -1,0 +1,138 @@
+..................FFFFFFF.F.........................................     [100%]
+================================== FAILURES ===================================
+_____ test_whitespace_only_reasoning_delta_does_not_terminate_the_stream ______
+
+    def test_whitespace_only_reasoning_delta_does_not_terminate_the_stream() -> None:
+        translator = _translator()
+        # This is the exact frame captured from the live router that killed the stream.
+        frame = _frame({"choices": [{"finish_reason": None, "index": 0,
+                                     "delta": {"reasoning_content": "\n\n"}}]})
+        events = translator.feed_sse("", frame)
+>       assert events == []  # non-substantive, skipped rather than fatal
+        ^^^^^^^^^^^^^^^^^^^
+E       AssertionError: assert [CanonicalMod...xt': '\n\n'})] == []
+E         
+E         Left contains one more item: CanonicalModelEvent(request_id='r', adapter_id='llama-cpp-stream', model_id='m', seq=0, kind='reasoning_delta', payload={'text': '\n\n'})
+E         Use -v to get more diff
+
+tests\test_bridge_stream_regressions.py:46: AssertionError
+____________ test_all_whitespace_variants_are_non_substantive[\n] _____________
+
+blank = '\n'
+
+    @pytest.mark.parametrize("blank", ["\n", "\n\n", " ", "   ", "\t", "\r\n  "])
+    def test_all_whitespace_variants_are_non_substantive(blank: str) -> None:
+        translator = _translator()
+        frame = _frame({"choices": [{"finish_reason": None, "index": 0,
+                                     "delta": {"reasoning_content": blank}}]})
+>       assert translator.feed_sse("", frame) == []
+E       AssertionError: assert [CanonicalMod...text': '\n'})] == []
+E         
+E         Left contains one more item: CanonicalModelEvent(request_id='r', adapter_id='llama-cpp-stream', model_id='m', seq=0, kind='reasoning_delta', payload={'text': '\n'})
+E         Use -v to get more diff
+
+tests\test_bridge_stream_regressions.py:54: AssertionError
+___________ test_all_whitespace_variants_are_non_substantive[\n\n] ____________
+
+blank = '\n\n'
+
+    @pytest.mark.parametrize("blank", ["\n", "\n\n", " ", "   ", "\t", "\r\n  "])
+    def test_all_whitespace_variants_are_non_substantive(blank: str) -> None:
+        translator = _translator()
+        frame = _frame({"choices": [{"finish_reason": None, "index": 0,
+                                     "delta": {"reasoning_content": blank}}]})
+>       assert translator.feed_sse("", frame) == []
+E       AssertionError: assert [CanonicalMod...xt': '\n\n'})] == []
+E         
+E         Left contains one more item: CanonicalModelEvent(request_id='r', adapter_id='llama-cpp-stream', model_id='m', seq=0, kind='reasoning_delta', payload={'text': '\n\n'})
+E         Use -v to get more diff
+
+tests\test_bridge_stream_regressions.py:54: AssertionError
+_____________ test_all_whitespace_variants_are_non_substantive[ ] _____________
+
+blank = ' '
+
+    @pytest.mark.parametrize("blank", ["\n", "\n\n", " ", "   ", "\t", "\r\n  "])
+    def test_all_whitespace_variants_are_non_substantive(blank: str) -> None:
+        translator = _translator()
+        frame = _frame({"choices": [{"finish_reason": None, "index": 0,
+                                     "delta": {"reasoning_content": blank}}]})
+>       assert translator.feed_sse("", frame) == []
+E       AssertionError: assert [CanonicalMod...'text': ' '})] == []
+E         
+E         Left contains one more item: CanonicalModelEvent(request_id='r', adapter_id='llama-cpp-stream', model_id='m', seq=0, kind='reasoning_delta', payload={'text': ' '})
+E         Use -v to get more diff
+
+tests\test_bridge_stream_regressions.py:54: AssertionError
+____________ test_all_whitespace_variants_are_non_substantive[   ] ____________
+
+blank = '   '
+
+    @pytest.mark.parametrize("blank", ["\n", "\n\n", " ", "   ", "\t", "\r\n  "])
+    def test_all_whitespace_variants_are_non_substantive(blank: str) -> None:
+        translator = _translator()
+        frame = _frame({"choices": [{"finish_reason": None, "index": 0,
+                                     "delta": {"reasoning_content": blank}}]})
+>       assert translator.feed_sse("", frame) == []
+E       AssertionError: assert [CanonicalMod...ext': '   '})] == []
+E         
+E         Left contains one more item: CanonicalModelEvent(request_id='r', adapter_id='llama-cpp-stream', model_id='m', seq=0, kind='reasoning_delta', payload={'text': '   '})
+E         Use -v to get more diff
+
+tests\test_bridge_stream_regressions.py:54: AssertionError
+____________ test_all_whitespace_variants_are_non_substantive[\t] _____________
+
+blank = '\t'
+
+    @pytest.mark.parametrize("blank", ["\n", "\n\n", " ", "   ", "\t", "\r\n  "])
+    def test_all_whitespace_variants_are_non_substantive(blank: str) -> None:
+        translator = _translator()
+        frame = _frame({"choices": [{"finish_reason": None, "index": 0,
+                                     "delta": {"reasoning_content": blank}}]})
+>       assert translator.feed_sse("", frame) == []
+E       AssertionError: assert [CanonicalMod...text': '\t'})] == []
+E         
+E         Left contains one more item: CanonicalModelEvent(request_id='r', adapter_id='llama-cpp-stream', model_id='m', seq=0, kind='reasoning_delta', payload={'text': '\t'})
+E         Use -v to get more diff
+
+tests\test_bridge_stream_regressions.py:54: AssertionError
+__________ test_all_whitespace_variants_are_non_substantive[\r\n  ] ___________
+
+blank = '\r\n  '
+
+    @pytest.mark.parametrize("blank", ["\n", "\n\n", " ", "   ", "\t", "\r\n  "])
+    def test_all_whitespace_variants_are_non_substantive(blank: str) -> None:
+        translator = _translator()
+        frame = _frame({"choices": [{"finish_reason": None, "index": 0,
+                                     "delta": {"reasoning_content": blank}}]})
+>       assert translator.feed_sse("", frame) == []
+E       AssertionError: assert [CanonicalMod...': '\r\n  '})] == []
+E         
+E         Left contains one more item: CanonicalModelEvent(request_id='r', adapter_id='llama-cpp-stream', model_id='m', seq=0, kind='reasoning_delta', payload={'text': '\r\n  '})
+E         Use -v to get more diff
+
+tests\test_bridge_stream_regressions.py:54: AssertionError
+____________ test_whitespace_only_content_delta_is_non_substantive ____________
+
+    def test_whitespace_only_content_delta_is_non_substantive() -> None:
+        translator = _translator()
+        frame = _frame({"choices": [{"finish_reason": None, "index": 0,
+                                     "delta": {"content": "\n"}}]})
+>       assert translator.feed_sse("", frame) == []
+E       AssertionError: assert [CanonicalMod...text': '\n'})] == []
+E         
+E         Left contains one more item: CanonicalModelEvent(request_id='r', adapter_id='llama-cpp-stream', model_id='m', seq=0, kind='text_delta', payload={'text': '\n'})
+E         Use -v to get more diff
+
+tests\test_bridge_stream_regressions.py:70: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_bridge_stream_regressions.py::test_whitespace_only_reasoning_delta_does_not_terminate_the_stream
+FAILED tests/test_bridge_stream_regressions.py::test_all_whitespace_variants_are_non_substantive[\n]
+FAILED tests/test_bridge_stream_regressions.py::test_all_whitespace_variants_are_non_substantive[\n\n]
+FAILED tests/test_bridge_stream_regressions.py::test_all_whitespace_variants_are_non_substantive[ ]
+FAILED tests/test_bridge_stream_regressions.py::test_all_whitespace_variants_are_non_substantive[   ]
+FAILED tests/test_bridge_stream_regressions.py::test_all_whitespace_variants_are_non_substantive[\t]
+FAILED tests/test_bridge_stream_regressions.py::test_all_whitespace_variants_are_non_substantive[\r\n  ]
+FAILED tests/test_bridge_stream_regressions.py::test_whitespace_only_content_delta_is_non_substantive
+8 failed, 60 passed in 6.03s
+

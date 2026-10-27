@@ -2387,7 +2387,8 @@
         "tests/test_projection_gate.py",
         "tests/test_execution_context.py",
         "tests/test_workflow_resume.py",
-        "registry/test_profiles.json"
+        "registry/test_profiles.json",
+        "tests/test_model_catalog_namespace.py"
       ],
       "command": [
         "python",
@@ -2400,7 +2401,8 @@
         "tests/test_context_generation.py",
         "tests/test_projection_gate.py",
         "tests/test_execution_context.py",
-        "tests/test_workflow_resume.py"
+        "tests/test_workflow_resume.py",
+        "tests/test_model_catalog_namespace.py"
       ],
       "chunk_size": 2,
       "max_parallel_chunks": 1,
@@ -2834,6 +2836,48 @@
       "max_parallel_chunks": 1,
       "chunk_timeout_seconds": 120,
       "timeout_seconds": 180
+    },
+    "model-group-execution": {
+      "description": "Exact bounded group preparation, plan/member routing, local execution and retained branch custody. Credentialed remote and installed-host acceptance are separate.",
+      "source_patterns": [
+        "runtime/model_execution_group.py",
+        "runtime/model_branch_contracts.py",
+        "runtime/generation_bound_verdict.py",
+        "runtime/model_group_preparation.py",
+        "runtime/remote_model_attachment.py",
+        "runtime/model_branch_artifacts.py",
+        "runtime/task_execution_plan.py",
+        "runtime/capability_routing.py",
+        "runtime/model_attachment.py",
+        "runtime/execution_contract.py",
+        "runtime/execution_placement.py",
+        "runtime/agent_runtime.py",
+        "contracts/models/**",
+        "contracts/model_attachment.schema.json",
+        "contracts/remote_model_attachment.schema.json",
+        "contracts/task_execution_plan.schema.json",
+        "tests/test_model_execution_group.py",
+        "tests/test_model_group_preparation.py",
+        "tests/test_generation_bound_verdict.py",
+        "registry/test_profiles.json",
+        "tests/test_remote_attachment_identity.py"
+      ],
+      "command": [
+        "python",
+        "-m",
+        "pytest",
+        "-q",
+        "-p",
+        "no:cacheprovider",
+        "tests/test_model_execution_group.py",
+        "tests/test_model_group_preparation.py",
+        "tests/test_generation_bound_verdict.py",
+        "tests/test_remote_attachment_identity.py"
+      ],
+      "chunk_size": 0,
+      "max_parallel_chunks": 1,
+      "chunk_timeout_seconds": 180,
+      "timeout_seconds": 300
     }
   },
   "certification": {
@@ -2864,7 +2908,8 @@
       "context-provenance",
       "remote-profile-catalog",
       "agent-gateway-integration",
-      "agent-tool-authority"
+      "agent-tool-authority",
+      "model-group-execution"
     ],
     "whole_suite_after_sections": true,
     "required_groups": [

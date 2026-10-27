@@ -7,7 +7,7 @@ accepts an arbitrary localhost endpoint from a caller.
 """
 from __future__ import annotations
 
-from .secure_publish import atomic_write_bytes
+from .secure_publish import atomic_write_bytes, read_physical_bytes
 
 import argparse
 import json
@@ -16,7 +16,8 @@ import sys
 from typing import Iterable, Mapping
 from uuid import uuid4
 
-from .local_model_runtime import LocalModelRuntime
+from .local_model_runtime import LocalModelRuntime, _sha as lifecycle_event_digest
+from .engineering_os_paths import resolve as resolve_control_path
 from .model_profile import ModelRuntimeProfile, load_runtime_profiles
 from .model_protocol import CanonicalModelRequest, CanonicalTool
 from .operational_event_bus import OperationalEventBus
@@ -49,16 +50,21 @@ def _bounded_json_stdin() -> dict[str, object]:
 
 
 def _event_rows(project_root: Path) -> list[dict[str, object]]:
-    path = project_root / ".agentic_engineering_os_px" / "local-model-runtime" / "events.jsonl"
+    path = resolve_control_path(project_root, "local-model-runtime", "events.jsonl")
     if not path.is_file() or path.stat().st_size > MAX_EVENT_LOG_BYTES:
         return []
     rows: list[dict[str, object]] = []
-    for line in path.read_text(encoding="utf-8").splitlines():
+    previous = None
+    for line in read_physical_bytes(path, max_bytes=MAX_EVENT_LOG_BYTES).decode("utf-8").splitlines():
         if not line.strip():
             continue
         value = json.loads(line)
         if type(value) is not dict:
             raise ValueError("local-model runtime event log contains a non-object")
+        body = {key: item for key, item in value.items() if key != "event_sha256"}
+        if value.get("previous_event_sha256") != previous or value.get("event_sha256") != lifecycle_event_digest(body):
+            raise ValueError("local-model lifecycle event chain is invalid")
+        previous = value["event_sha256"]
         rows.append(value)
     return rows
 

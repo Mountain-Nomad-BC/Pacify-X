@@ -1,0 +1,29 @@
+{
+  "action_id": "model-catalog-namespace-red",
+  "audit_record_hash": "6d20b62d9f2b5948a78817e6e7465e9b68253c9ad808cfedf451c86ba9c9cd4c",
+  "duration_seconds": 1.1291571000001568,
+  "ended_at": "2026-10-27T11:00:40.876Z",
+  "exit_code": 1,
+  "failure_type": null,
+  "receipt_id": "process-eb86bd0f91254db1ab6b3ea6fa84b71a",
+  "resource_id": "process-8f818b1ac2414b35a762829f2ff48e00",
+  "schema_version": "px.process-supervision-receipt/1.0",
+  "shutdown_mode": "natural",
+  "started_at": "2026-10-27T11:00:39.747Z",
+  "status": "exited",
+  "stderr": {
+    "decode_error_count": 0,
+    "dropped_bytes": 0,
+    "retained_bytes": 0,
+    "total_bytes": 0,
+    "truncated": false
+  },
+  "stdout": {
+    "decode_error_count": 0,
+    "dropped_bytes": 0,
+    "retained_bytes": 2234,
+    "total_bytes": 2234,
+    "truncated": false
+  },
+  "tree_closed": true
+}

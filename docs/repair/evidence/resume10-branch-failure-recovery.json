@@ -1,0 +1,20 @@
+{
+  "command": [
+    "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.venv-repair\\Scripts\\python.exe",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "tests/test_model_group_preparation.py",
+    "tests/test_generation_bound_verdict.py",
+    "tests/test_remote_attachment_identity.py"
+  ],
+  "exit_code": 1,
+  "tree_closed": true,
+  "resource_inactive": true,
+  "receipt": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.tmp\\resume10\\owned\\cleanup-receipts\\process-3ff2a8c8044d4c3bab4c89599b800075.json",
+  "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.tmp\\resume10\\owned\\pacifyx-1lq9ac6s",
+  "log": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\docs\\repair\\evidence\\resume10-branch-failure-recovery.log",
+  "log_sha256": "cde15fec391a762ccfa9b2ddcdd02afab9d631a2ea0ab80d04add3a4a2a2653e"
+}

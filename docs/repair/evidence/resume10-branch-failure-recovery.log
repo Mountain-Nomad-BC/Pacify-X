@@ -1,0 +1,35 @@
+.........F.............                                                  [100%]
+================================== FAILURES ===================================
+_ test_interrupted_branch_publication_retains_recoverable_custody_and_denies_retry _
+
+tmp_path = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.tmp/resume10/owned/pacifyx-1lq9ac6s/pytest-of-Ben/pytest-0/test_interrupted_branch_public0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001B3F710B1D0>
+
+    def test_interrupted_branch_publication_retains_recoverable_custody_and_denies_retry(tmp_path, monkeypatch):
+        import runtime.model_branch_artifacts as owner
+        from runtime.model_group_preparation import member_execution_input
+        from runtime.resource_lifecycle import ResourceManager
+        from runtime.effect_intent import EffectIntentLedger
+        from runtime.scope_lease import ScopeLeaseStore
+        group, _, _, preparation = prepared(1, tmp_path)
+        plan = plan_for(group, preparation)
+        invocation = member_execution_input(plan.as_dict(), preparation.as_dict()["members"][0])
+        original = owner._publish_exact
+        def interrupted(path, raw):
+            if path.name == "commitment.json":
+                raise OSError("controlled manifest interruption")
+            return original(path, raw)
+        monkeypatch.setattr(owner, "_publish_exact", interrupted)
+        with pytest.raises(OSError, match="manifest interruption"):
+            owner.commit_branch_artifact(tmp_path, plan.as_dict(), invocation, {"partial": True}, run_id="partial-run")
+        record = next(row for row in ResourceManager(tmp_path / ".agentic_engineering_os_px/studios/agents/resources.json").ledger.observe() if row.creator == "runtime.model_branch_artifacts")
+        assert not record.active and record.run_state == "recoverable" and record.retention_required
+>       assert (Path(record.path) / "output.json").is_file()
+                ^^^^
+E       NameError: name 'Path' is not defined
+
+tests\test_model_group_preparation.py:189: NameError
+=========================== short test summary info ===========================
+FAILED tests/test_model_group_preparation.py::test_interrupted_branch_publication_retains_recoverable_custody_and_denies_retry
+1 failed, 22 passed in 3.37s
+

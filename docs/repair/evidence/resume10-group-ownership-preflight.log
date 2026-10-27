@@ -1,0 +1,33 @@
+F............................................                            [100%]
+================================== FAILURES ===================================
+___________________ test_build_needs_no_published_registry ____________________
+
+tmp_path = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.tmp/resume10/owned/pacifyx-njq9ese3/pytest-of-Ben/pytest-0/test_build_needs_no_published_0')
+
+    def test_build_needs_no_published_registry(tmp_path: Path) -> None:
+        committed = ROOT / REGISTRY
+        assert committed.is_file(), "published registry is missing; cannot compare"
+        isolated = tmp_path / "root"
+        shutil.copytree(ROOT / "contracts", isolated / "contracts")
+        assert not (isolated / REGISTRY).exists()
+    
+        rebuilt = build(isolated)
+        committed_text = committed.read_text(encoding="utf-8")
+    
+>       assert dump_result(rebuilt) == committed_text
+E       assert '{\n  "schema...  }\n  ]\n}\n' == '{\n  "schema...  }\n  ]\n}\n'
+E         
+E         Skipping 140 identical leading characters in diff, use -v to show
+E         - t_count": 196,
+E         ?           ^^^
+E         + t_count": 203,
+E         ?           ^^^
+E             "records": [...
+E         
+E         ...Full output truncated (3988 lines hidden), use '-vv' to show
+
+tests\test_contract_ownership_registry_source.py:35: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_contract_ownership_registry_source.py::test_build_needs_no_published_registry
+1 failed, 44 passed in 6.38s
+

@@ -33,6 +33,8 @@ class ExecutionRequest:
     timeout_seconds: int
     max_tool_calls: int
     idempotency_key: str | None = None
+    context_generation_sha256: str | None = None
+    model_execution_group_sha256: str | None = None
 
 
 @dataclass(frozen=True)
@@ -56,11 +58,21 @@ def execution_request_from_plan(
     timeout_seconds: int = 30,
     max_tool_calls: int = 0,
     idempotency_key: str | None = None,
+    current_context_generation=None,
 ) -> ExecutionRequest:
     """Adapt one validated plan without changing capability or effect decisions."""
     report = validate_task_execution_plan(plan)
     if not report["valid"]:
         raise ValueError("invalid task execution plan: " + "; ".join(report["errors"]))
+    if plan.model_execution_group is not None and plan.context_generation is None:
+        raise ValueError("model-group execution requires generation lineage")
+    if plan.context_generation is not None:
+        from .projection_gate import evaluate_projection
+        if current_context_generation is None:
+            raise ValueError("current observed context generation required for execution")
+        status = evaluate_projection(plan.plan_id, plan.context_generation, current_context_generation, purpose="execute")
+        if not status.serve_allowed:
+            raise ValueError("execution generation is blocked: " + "; ".join(status.reasons))
     selected = tuple(plan.selected_capabilities)
     chosen = capability_id or (selected[0] if len(selected) == 1 else None)
     if chosen is None or chosen not in selected:
@@ -75,6 +87,8 @@ def execution_request_from_plan(
         timeout_seconds,
         max_tool_calls,
         idempotency_key,
+        plan.context_generation.vector_sha256 if plan.context_generation is not None else None,
+        plan.model_execution_group.group_sha256 if plan.model_execution_group is not None else None,
     )
 
 

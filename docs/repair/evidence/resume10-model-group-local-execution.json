@@ -1,0 +1,24 @@
+{
+  "command": [
+    "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.venv-repair\\Scripts\\python.exe",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "tests/test_model_execution_group.py",
+    "tests/test_model_group_preparation.py",
+    "tests/test_task_execution_plan.py",
+    "tests/test_model_attachment.py",
+    "tests/test_execution_placement.py",
+    "tests/test_agent_runtime.py",
+    "tests/test_execution_contract.py"
+  ],
+  "exit_code": 0,
+  "tree_closed": true,
+  "resource_inactive": true,
+  "receipt": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.tmp\\resume10\\owned\\cleanup-receipts\\process-4f6037b7b8944c4eb78ba78300dd9af5.json",
+  "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.tmp\\resume10\\owned\\pacifyx-l6ajl4th",
+  "log": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\docs\\repair\\evidence\\resume10-model-group-local-execution.log",
+  "log_sha256": "7b43397131a126b07214e1585d8f2aa488b2ef3b37ef3739841d7a894caedd2b"
+}

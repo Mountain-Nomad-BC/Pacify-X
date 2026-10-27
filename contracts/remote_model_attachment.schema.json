@@ -1,0 +1,136 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:remote_model_attachment",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "attachment_id",
+    "model_id",
+    "model_revision",
+    "provider_id",
+    "profile_id",
+    "profile_sha256",
+    "origin",
+    "approved_addresses",
+    "context_tokens",
+    "max_output_tokens",
+    "privacy",
+    "authority_class",
+    "requester_id",
+    "grant_id",
+    "grant_revision",
+    "policy_locator",
+    "budget_id",
+    "revision_evidence_sha256",
+    "attachment_sha256",
+    "adapter_id",
+    "provider_model_id"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "px.remote-model-attachment/2.0"
+    },
+    "attachment_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512
+    },
+    "model_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512
+    },
+    "model_revision": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512
+    },
+    "provider_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512
+    },
+    "profile_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512
+    },
+    "profile_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "origin": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512
+    },
+    "approved_addresses": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 8,
+      "uniqueItems": true,
+      "items": {
+        "type": "string"
+      }
+    },
+    "context_tokens": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 10000000
+    },
+    "max_output_tokens": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 10000000
+    },
+    "privacy": {
+      "const": "policy_gated"
+    },
+    "authority_class": {
+      "const": "external_authority"
+    },
+    "requester_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512
+    },
+    "grant_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512
+    },
+    "grant_revision": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "policy_locator": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512
+    },
+    "budget_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512
+    },
+    "revision_evidence_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "attachment_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "adapter_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512
+    },
+    "provider_model_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512
+    }
+  }
+}

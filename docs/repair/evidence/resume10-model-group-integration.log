@@ -1,0 +1,940 @@
+..................FFFFFFFF.............                                  [100%]
+================================== FAILURES ===================================
+_____________ test_exact_members_normal_compiler_and_recovery[1] ______________
+
+ref_path = 'remote_model_attachment.schema.json'
+schema_path = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/contracts/model_attachment.schema.json')
+contract_root = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/contracts')
+
+    def _resolve_external_path(
+        ref_path: str, schema_path: Path, contract_root: Path
+    ) -> Path:
+        decoded = unquote(ref_path)
+        if not decoded:
+            raise ValueError(f"external reference has no path in {schema_path}")
+        if (
+            Path(decoded).is_absolute()
+            or PurePosixPath(decoded).is_absolute()
+            or PureWindowsPath(decoded).is_absolute()
+        ):
+            raise ValueError(f"absolute schema reference is not allowed: {ref_path!r}")
+        if Path(decoded).suffix.lower() != ".json":
+            raise ValueError(f"referenced schema must be a JSON file: {ref_path!r}")
+    
+        lexical_root = Path(os.path.abspath(str(contract_root)))
+        lexical_target = Path(os.path.abspath(str(schema_path.parent / decoded)))
+        try:
+            lexical_root = lexical_root.resolve(strict=True)
+>           lexical_target.stat()
+
+runtime\contracts.py:121: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/contracts/remote_model_attachment.schema.json')
+follow_symlinks = True
+
+    def stat(self, *, follow_symlinks=True):
+        """
+        Return the result of the stat() system call on this path, like
+        os.stat() does.
+        """
+>       return os.stat(self, follow_symlinks=follow_symlinks)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [WinError 2] The system cannot find the file specified: 'C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\contracts\\remote_model_attachment.schema.json'
+
+..\..\..\AppData\Local\Temp\py3145t\Lib\pathlib\__init__.py:654: FileNotFoundError
+
+The above exception was the direct cause of the following exception:
+
+count = 1
+tmp_path = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.tmp/resume10/owned/pacifyx-xwvptemu/pytest-of-Ben/pytest-0/test_exact_members_normal_comp0')
+
+    @pytest.mark.parametrize("count", [1, 3, 5, 7, 12])
+    def test_exact_members_normal_compiler_and_recovery(count, tmp_path):
+        from runtime.task_execution_plan import task_execution_plan_from_dict, validate_task_execution_plan
+>       group, _, _, preparation = prepared(count, tmp_path)
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_model_group_preparation.py:47: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_model_group_preparation.py:27: in prepared
+    return group, attachments, retrievals, prepare_model_group(group, attachments, retrievals, root=root)
+                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+runtime\model_group_preparation.py:143: in prepare_model_group
+    return read_group_preparation({**body, "preparation_sha256": hashlib.sha256(
+runtime\model_group_preparation.py:129: in read_group_preparation
+    validate_instance(record, framework_root() / "contracts/models/model-group-preparation.schema.json")
+runtime\contracts.py:466: in validate_instance
+    _admit_schema(schema, schema_path, resolved_contract_root)
+runtime\contracts.py:903: in _admit_schema
+    walk(schema, schema, schema_path, ())
+runtime\contracts.py:899: in walk
+    walk(child, document, document_path, ref_stack)
+runtime\contracts.py:899: in walk
+    walk(child, document, document_path, ref_stack)
+runtime\contracts.py:899: in walk
+    walk(child, document, document_path, ref_stack)
+runtime\contracts.py:897: in walk
+    walk(resolved, resolved_document, resolved_path, ref_stack + (key,))
+runtime\contracts.py:899: in walk
+    walk(child, document, document_path, ref_stack)
+runtime\contracts.py:887: in walk
+    resolved, resolved_document, resolved_path, key = _resolve_ref(
+runtime\contracts.py:180: in _resolve_ref
+    target_path = _resolve_external_path(ref_path, schema_path, contract_root)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ref_path = 'remote_model_attachment.schema.json'
+schema_path = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/contracts/model_attachment.schema.json')
+contract_root = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/contracts')
+
+    def _resolve_external_path(
+        ref_path: str, schema_path: Path, contract_root: Path
+    ) -> Path:
+        decoded = unquote(ref_path)
+        if not decoded:
+            raise ValueError(f"external reference has no path in {schema_path}")
+        if (
+            Path(decoded).is_absolute()
+            or PurePosixPath(decoded).is_absolute()
+            or PureWindowsPath(decoded).is_absolute()
+        ):
+            raise ValueError(f"absolute schema reference is not allowed: {ref_path!r}")
+        if Path(decoded).suffix.lower() != ".json":
+            raise ValueError(f"referenced schema must be a JSON file: {ref_path!r}")
+    
+        lexical_root = Path(os.path.abspath(str(contract_root)))
+        lexical_target = Path(os.path.abspath(str(schema_path.parent / decoded)))
+        try:
+            lexical_root = lexical_root.resolve(strict=True)
+            lexical_target.stat()
+        except OSError as exc:
+>           raise ValueError(
+                f"unresolved external schema reference {ref_path!r} in {schema_path}"
+            ) from exc
+E           ValueError: unresolved external schema reference 'remote_model_attachment.schema.json' in C:\Users\Ben\Documents\bootstrap_project\Pacify-X\contracts\model_attachment.schema.json
+
+runtime\contracts.py:123: ValueError
+_____________ test_exact_members_normal_compiler_and_recovery[3] ______________
+
+ref_path = 'remote_model_attachment.schema.json'
+schema_path = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/contracts/model_attachment.schema.json')
+contract_root = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/contracts')
+
+    def _resolve_external_path(
+        ref_path: str, schema_path: Path, contract_root: Path
+    ) -> Path:
+        decoded = unquote(ref_path)
+        if not decoded:
+            raise ValueError(f"external reference has no path in {schema_path}")
+        if (
+            Path(decoded).is_absolute()
+            or PurePosixPath(decoded).is_absolute()
+            or PureWindowsPath(decoded).is_absolute()
+        ):
+            raise ValueError(f"absolute schema reference is not allowed: {ref_path!r}")
+        if Path(decoded).suffix.lower() != ".json":
+            raise ValueError(f"referenced schema must be a JSON file: {ref_path!r}")
+    
+        lexical_root = Path(os.path.abspath(str(contract_root)))
+        lexical_target = Path(os.path.abspath(str(schema_path.parent / decoded)))
+        try:
+            lexical_root = lexical_root.resolve(strict=True)
+>           lexical_target.stat()
+
+runtime\contracts.py:121: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/contracts/remote_model_attachment.schema.json')
+follow_symlinks = True
+
+    def stat(self, *, follow_symlinks=True):
+        """
+        Return the result of the stat() system call on this path, like
+        os.stat() does.
+        """
+>       return os.stat(self, follow_symlinks=follow_symlinks)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [WinError 2] The system cannot find the file specified: 'C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\contracts\\remote_model_attachment.schema.json'
+
+..\..\..\AppData\Local\Temp\py3145t\Lib\pathlib\__init__.py:654: FileNotFoundError
+
+The above exception was the direct cause of the following exception:
+
+count = 3
+tmp_path = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.tmp/resume10/owned/pacifyx-xwvptemu/pytest-of-Ben/pytest-0/test_exact_members_normal_comp1')
+
+    @pytest.mark.parametrize("count", [1, 3, 5, 7, 12])
+    def test_exact_members_normal_compiler_and_recovery(count, tmp_path):
+        from runtime.task_execution_plan import task_execution_plan_from_dict, validate_task_execution_plan
+>       group, _, _, preparation = prepared(count, tmp_path)
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_model_group_preparation.py:47: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_model_group_preparation.py:27: in prepared
+    return group, attachments, retrievals, prepare_model_group(group, attachments, retrievals, root=root)
+                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+runtime\model_group_preparation.py:143: in prepare_model_group
+    return read_group_preparation({**body, "preparation_sha256": hashlib.sha256(
+runtime\model_group_preparation.py:129: in read_group_preparation
+    validate_instance(record, framework_root() / "contracts/models/model-group-preparation.schema.json")
+runtime\contracts.py:466: in validate_instance
+    _admit_schema(schema, schema_path, resolved_contract_root)
+runtime\contracts.py:903: in _admit_schema
+    walk(schema, schema, schema_path, ())
+runtime\contracts.py:899: in walk
+    walk(child, document, document_path, ref_stack)
+runtime\contracts.py:899: in walk
+    walk(child, document, document_path, ref_stack)
+runtime\contracts.py:899: in walk
+    walk(child, document, document_path, ref_stack)
+runtime\contracts.py:897: in walk
+    walk(resolved, resolved_document, resolved_path, ref_stack + (key,))
+runtime\contracts.py:899: in walk
+    walk(child, document, document_path, ref_stack)
+runtime\contracts.py:887: in walk
+    resolved, resolved_document, resolved_path, key = _resolve_ref(
+runtime\contracts.py:180: in _resolve_ref
+    target_path = _resolve_external_path(ref_path, schema_path, contract_root)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ref_path = 'remote_model_attachment.schema.json'
+schema_path = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/contracts/model_attachment.schema.json')
+contract_root = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/contracts')
+
+    def _resolve_external_path(
+        ref_path: str, schema_path: Path, contract_root: Path
+    ) -> Path:
+        decoded = unquote(ref_path)
+        if not decoded:
+            raise ValueError(f"external reference has no path in {schema_path}")
+        if (
+            Path(decoded).is_absolute()
+            or PurePosixPath(decoded).is_absolute()
+            or PureWindowsPath(decoded).is_absolute()
+        ):
+            raise ValueError(f"absolute schema reference is not allowed: {ref_path!r}")
+        if Path(decoded).suffix.lower() != ".json":
+            raise ValueError(f"referenced schema must be a JSON file: {ref_path!r}")
+    
+        lexical_root = Path(os.path.abspath(str(contract_root)))
+        lexical_target = Path(os.path.abspath(str(schema_path.parent / decoded)))
+        try:
+            lexical_root = lexical_root.resolve(strict=True)
+            lexical_target.stat()
+        except OSError as exc:
+>           raise ValueError(
+                f"unresolved external schema reference {ref_path!r} in {schema_path}"
+            ) from exc
+E           ValueError: unresolved external schema reference 'remote_model_attachment.schema.json' in C:\Users\Ben\Documents\bootstrap_project\Pacify-X\contracts\model_attachment.schema.json
+
+runtime\contracts.py:123: ValueError
+_____________ test_exact_members_normal_compiler_and_recovery[5] ______________
+
+ref_path = 'remote_model_attachment.schema.json'
+schema_path = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/contracts/model_attachment.schema.json')
+contract_root = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/contracts')
+
+    def _resolve_external_path(
+        ref_path: str, schema_path: Path, contract_root: Path
+    ) -> Path:
+        decoded = unquote(ref_path)
+        if not decoded:
+            raise ValueError(f"external reference has no path in {schema_path}")
+        if (
+            Path(decoded).is_absolute()
+            or PurePosixPath(decoded).is_absolute()
+            or PureWindowsPath(decoded).is_absolute()
+        ):
+            raise ValueError(f"absolute schema reference is not allowed: {ref_path!r}")
+        if Path(decoded).suffix.lower() != ".json":
+            raise ValueError(f"referenced schema must be a JSON file: {ref_path!r}")
+    
+        lexical_root = Path(os.path.abspath(str(contract_root)))
+        lexical_target = Path(os.path.abspath(str(schema_path.parent / decoded)))
+        try:
+            lexical_root = lexical_root.resolve(strict=True)
+>           lexical_target.stat()
+
+runtime\contracts.py:121: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/contracts/remote_model_attachment.schema.json')
+follow_symlinks = True
+
+    def stat(self, *, follow_symlinks=True):
+        """
+        Return the result of the stat() system call on this path, like
+        os.stat() does.
+        """
+>       return os.stat(self, follow_symlinks=follow_symlinks)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [WinError 2] The system cannot find the file specified: 'C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\contracts\\remote_model_attachment.schema.json'
+
+..\..\..\AppData\Local\Temp\py3145t\Lib\pathlib\__init__.py:654: FileNotFoundError
+
+The above exception was the direct cause of the following exception:
+
+count = 5
+tmp_path = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.tmp/resume10/owned/pacifyx-xwvptemu/pytest-of-Ben/pytest-0/test_exact_members_normal_comp2')
+
+    @pytest.mark.parametrize("count", [1, 3, 5, 7, 12])
+    def test_exact_members_normal_compiler_and_recovery(count, tmp_path):
+        from runtime.task_execution_plan import task_execution_plan_from_dict, validate_task_execution_plan
+>       group, _, _, preparation = prepared(count, tmp_path)
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_model_group_preparation.py:47: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_model_group_preparation.py:27: in prepared
+    return group, attachments, retrievals, prepare_model_group(group, attachments, retrievals, root=root)
+                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+runtime\model_group_preparation.py:143: in prepare_model_group
+    return read_group_preparation({**body, "preparation_sha256": hashlib.sha256(
+runtime\model_group_preparation.py:129: in read_group_preparation
+    validate_instance(record, framework_root() / "contracts/models/model-group-preparation.schema.json")
+runtime\contracts.py:466: in validate_instance
+    _admit_schema(schema, schema_path, resolved_contract_root)
+runtime\contracts.py:903: in _admit_schema
+    walk(schema, schema, schema_path, ())
+runtime\contracts.py:899: in walk
+    walk(child, document, document_path, ref_stack)
+runtime\contracts.py:899: in walk
+    walk(child, document, document_path, ref_stack)
+runtime\contracts.py:899: in walk
+    walk(child, document, document_path, ref_stack)
+runtime\contracts.py:897: in walk
+    walk(resolved, resolved_document, resolved_path, ref_stack + (key,))
+runtime\contracts.py:899: in walk
+    walk(child, document, document_path, ref_stack)
+runtime\contracts.py:887: in walk
+    resolved, resolved_document, resolved_path, key = _resolve_ref(
+runtime\contracts.py:180: in _resolve_ref
+    target_path = _resolve_external_path(ref_path, schema_path, contract_root)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ref_path = 'remote_model_attachment.schema.json'
+schema_path = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/contracts/model_attachment.schema.json')
+contract_root = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/contracts')
+
+    def _resolve_external_path(
+        ref_path: str, schema_path: Path, contract_root: Path
+    ) -> Path:
+        decoded = unquote(ref_path)
+        if not decoded:
+            raise ValueError(f"external reference has no path in {schema_path}")
+        if (
+            Path(decoded).is_absolute()
+            or PurePosixPath(decoded).is_absolute()
+            or PureWindowsPath(decoded).is_absolute()
+        ):
+            raise ValueError(f"absolute schema reference is not allowed: {ref_path!r}")
+        if Path(decoded).suffix.lower() != ".json":
+            raise ValueError(f"referenced schema must be a JSON file: {ref_path!r}")
+    
+        lexical_root = Path(os.path.abspath(str(contract_root)))
+        lexical_target = Path(os.path.abspath(str(schema_path.parent / decoded)))
+        try:
+            lexical_root = lexical_root.resolve(strict=True)
+            lexical_target.stat()
+        except OSError as exc:
+>           raise ValueError(
+                f"unresolved external schema reference {ref_path!r} in {schema_path}"
+            ) from exc
+E           ValueError: unresolved external schema reference 'remote_model_attachment.schema.json' in C:\Users\Ben\Documents\bootstrap_project\Pacify-X\contracts\model_attachment.schema.json
+
+runtime\contracts.py:123: ValueError
+_____________ test_exact_members_normal_compiler_and_recovery[7] ______________
+
+ref_path = 'remote_model_attachment.schema.json'
+schema_path = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/contracts/model_attachment.schema.json')
+contract_root = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/contracts')
+
+    def _resolve_external_path(
+        ref_path: str, schema_path: Path, contract_root: Path
+    ) -> Path:
+        decoded = unquote(ref_path)
+        if not decoded:
+            raise ValueError(f"external reference has no path in {schema_path}")
+        if (
+            Path(decoded).is_absolute()
+            or PurePosixPath(decoded).is_absolute()
+            or PureWindowsPath(decoded).is_absolute()
+        ):
+            raise ValueError(f"absolute schema reference is not allowed: {ref_path!r}")
+        if Path(decoded).suffix.lower() != ".json":
+            raise ValueError(f"referenced schema must be a JSON file: {ref_path!r}")
+    
+        lexical_root = Path(os.path.abspath(str(contract_root)))
+        lexical_target = Path(os.path.abspath(str(schema_path.parent / decoded)))
+        try:
+            lexical_root = lexical_root.resolve(strict=True)
+>           lexical_target.stat()
+
+runtime\contracts.py:121: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/contracts/remote_model_attachment.schema.json')
+follow_symlinks = True
+
+    def stat(self, *, follow_symlinks=True):
+        """
+        Return the result of the stat() system call on this path, like
+        os.stat() does.
+        """
+>       return os.stat(self, follow_symlinks=follow_symlinks)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [WinError 2] The system cannot find the file specified: 'C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\contracts\\remote_model_attachment.schema.json'
+
+..\..\..\AppData\Local\Temp\py3145t\Lib\pathlib\__init__.py:654: FileNotFoundError
+
+The above exception was the direct cause of the following exception:
+
+count = 7
+tmp_path = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.tmp/resume10/owned/pacifyx-xwvptemu/pytest-of-Ben/pytest-0/test_exact_members_normal_comp3')
+
+    @pytest.mark.parametrize("count", [1, 3, 5, 7, 12])
+    def test_exact_members_normal_compiler_and_recovery(count, tmp_path):
+        from runtime.task_execution_plan import task_execution_plan_from_dict, validate_task_execution_plan
+>       group, _, _, preparation = prepared(count, tmp_path)
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_model_group_preparation.py:47: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_model_group_preparation.py:27: in prepared
+    return group, attachments, retrievals, prepare_model_group(group, attachments, retrievals, root=root)
+                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+runtime\model_group_preparation.py:143: in prepare_model_group
+    return read_group_preparation({**body, "preparation_sha256": hashlib.sha256(
+runtime\model_group_preparation.py:129: in read_group_preparation
+    validate_instance(record, framework_root() / "contracts/models/model-group-preparation.schema.json")
+runtime\contracts.py:466: in validate_instance
+    _admit_schema(schema, schema_path, resolved_contract_root)
+runtime\contracts.py:903: in _admit_schema
+    walk(schema, schema, schema_path, ())
+runtime\contracts.py:899: in walk
+    walk(child, document, document_path, ref_stack)
+runtime\contracts.py:899: in walk
+    walk(child, document, document_path, ref_stack)
+runtime\contracts.py:899: in walk
+    walk(child, document, document_path, ref_stack)
+runtime\contracts.py:897: in walk
+    walk(resolved, resolved_document, resolved_path, ref_stack + (key,))
+runtime\contracts.py:899: in walk
+    walk(child, document, document_path, ref_stack)
+runtime\contracts.py:887: in walk
+    resolved, resolved_document, resolved_path, key = _resolve_ref(
+runtime\contracts.py:180: in _resolve_ref
+    target_path = _resolve_external_path(ref_path, schema_path, contract_root)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ref_path = 'remote_model_attachment.schema.json'
+schema_path = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/contracts/model_attachment.schema.json')
+contract_root = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/contracts')
+
+    def _resolve_external_path(
+        ref_path: str, schema_path: Path, contract_root: Path
+    ) -> Path:
+        decoded = unquote(ref_path)
+        if not decoded:
+            raise ValueError(f"external reference has no path in {schema_path}")
+        if (
+            Path(decoded).is_absolute()
+            or PurePosixPath(decoded).is_absolute()
+            or PureWindowsPath(decoded).is_absolute()
+        ):
+            raise ValueError(f"absolute schema reference is not allowed: {ref_path!r}")
+        if Path(decoded).suffix.lower() != ".json":
+            raise ValueError(f"referenced schema must be a JSON file: {ref_path!r}")
+    
+        lexical_root = Path(os.path.abspath(str(contract_root)))
+        lexical_target = Path(os.path.abspath(str(schema_path.parent / decoded)))
+        try:
+            lexical_root = lexical_root.resolve(strict=True)
+            lexical_target.stat()
+        except OSError as exc:
+>           raise ValueError(
+                f"unresolved external schema reference {ref_path!r} in {schema_path}"
+            ) from exc
+E           ValueError: unresolved external schema reference 'remote_model_attachment.schema.json' in C:\Users\Ben\Documents\bootstrap_project\Pacify-X\contracts\model_attachment.schema.json
+
+runtime\contracts.py:123: ValueError
+_____________ test_exact_members_normal_compiler_and_recovery[12] _____________
+
+ref_path = 'remote_model_attachment.schema.json'
+schema_path = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/contracts/model_attachment.schema.json')
+contract_root = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/contracts')
+
+    def _resolve_external_path(
+        ref_path: str, schema_path: Path, contract_root: Path
+    ) -> Path:
+        decoded = unquote(ref_path)
+        if not decoded:
+            raise ValueError(f"external reference has no path in {schema_path}")
+        if (
+            Path(decoded).is_absolute()
+            or PurePosixPath(decoded).is_absolute()
+            or PureWindowsPath(decoded).is_absolute()
+        ):
+            raise ValueError(f"absolute schema reference is not allowed: {ref_path!r}")
+        if Path(decoded).suffix.lower() != ".json":
+            raise ValueError(f"referenced schema must be a JSON file: {ref_path!r}")
+    
+        lexical_root = Path(os.path.abspath(str(contract_root)))
+        lexical_target = Path(os.path.abspath(str(schema_path.parent / decoded)))
+        try:
+            lexical_root = lexical_root.resolve(strict=True)
+>           lexical_target.stat()
+
+runtime\contracts.py:121: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/contracts/remote_model_attachment.schema.json')
+follow_symlinks = True
+
+    def stat(self, *, follow_symlinks=True):
+        """
+        Return the result of the stat() system call on this path, like
+        os.stat() does.
+        """
+>       return os.stat(self, follow_symlinks=follow_symlinks)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [WinError 2] The system cannot find the file specified: 'C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\contracts\\remote_model_attachment.schema.json'
+
+..\..\..\AppData\Local\Temp\py3145t\Lib\pathlib\__init__.py:654: FileNotFoundError
+
+The above exception was the direct cause of the following exception:
+
+count = 12
+tmp_path = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.tmp/resume10/owned/pacifyx-xwvptemu/pytest-of-Ben/pytest-0/test_exact_members_normal_comp4')
+
+    @pytest.mark.parametrize("count", [1, 3, 5, 7, 12])
+    def test_exact_members_normal_compiler_and_recovery(count, tmp_path):
+        from runtime.task_execution_plan import task_execution_plan_from_dict, validate_task_execution_plan
+>       group, _, _, preparation = prepared(count, tmp_path)
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_model_group_preparation.py:47: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_model_group_preparation.py:27: in prepared
+    return group, attachments, retrievals, prepare_model_group(group, attachments, retrievals, root=root)
+                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+runtime\model_group_preparation.py:143: in prepare_model_group
+    return read_group_preparation({**body, "preparation_sha256": hashlib.sha256(
+runtime\model_group_preparation.py:129: in read_group_preparation
+    validate_instance(record, framework_root() / "contracts/models/model-group-preparation.schema.json")
+runtime\contracts.py:466: in validate_instance
+    _admit_schema(schema, schema_path, resolved_contract_root)
+runtime\contracts.py:903: in _admit_schema
+    walk(schema, schema, schema_path, ())
+runtime\contracts.py:899: in walk
+    walk(child, document, document_path, ref_stack)
+runtime\contracts.py:899: in walk
+    walk(child, document, document_path, ref_stack)
+runtime\contracts.py:899: in walk
+    walk(child, document, document_path, ref_stack)
+runtime\contracts.py:897: in walk
+    walk(resolved, resolved_document, resolved_path, ref_stack + (key,))
+runtime\contracts.py:899: in walk
+    walk(child, document, document_path, ref_stack)
+runtime\contracts.py:887: in walk
+    resolved, resolved_document, resolved_path, key = _resolve_ref(
+runtime\contracts.py:180: in _resolve_ref
+    target_path = _resolve_external_path(ref_path, schema_path, contract_root)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ref_path = 'remote_model_attachment.schema.json'
+schema_path = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/contracts/model_attachment.schema.json')
+contract_root = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/contracts')
+
+    def _resolve_external_path(
+        ref_path: str, schema_path: Path, contract_root: Path
+    ) -> Path:
+        decoded = unquote(ref_path)
+        if not decoded:
+            raise ValueError(f"external reference has no path in {schema_path}")
+        if (
+            Path(decoded).is_absolute()
+            or PurePosixPath(decoded).is_absolute()
+            or PureWindowsPath(decoded).is_absolute()
+        ):
+            raise ValueError(f"absolute schema reference is not allowed: {ref_path!r}")
+        if Path(decoded).suffix.lower() != ".json":
+            raise ValueError(f"referenced schema must be a JSON file: {ref_path!r}")
+    
+        lexical_root = Path(os.path.abspath(str(contract_root)))
+        lexical_target = Path(os.path.abspath(str(schema_path.parent / decoded)))
+        try:
+            lexical_root = lexical_root.resolve(strict=True)
+            lexical_target.stat()
+        except OSError as exc:
+>           raise ValueError(
+                f"unresolved external schema reference {ref_path!r} in {schema_path}"
+            ) from exc
+E           ValueError: unresolved external schema reference 'remote_model_attachment.schema.json' in C:\Users\Ben\Documents\bootstrap_project\Pacify-X\contracts\model_attachment.schema.json
+
+runtime\contracts.py:123: ValueError
+_______________ test_missing_swapped_and_context_drift_refused ________________
+
+ref_path = 'remote_model_attachment.schema.json'
+schema_path = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/contracts/model_attachment.schema.json')
+contract_root = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/contracts')
+
+    def _resolve_external_path(
+        ref_path: str, schema_path: Path, contract_root: Path
+    ) -> Path:
+        decoded = unquote(ref_path)
+        if not decoded:
+            raise ValueError(f"external reference has no path in {schema_path}")
+        if (
+            Path(decoded).is_absolute()
+            or PurePosixPath(decoded).is_absolute()
+            or PureWindowsPath(decoded).is_absolute()
+        ):
+            raise ValueError(f"absolute schema reference is not allowed: {ref_path!r}")
+        if Path(decoded).suffix.lower() != ".json":
+            raise ValueError(f"referenced schema must be a JSON file: {ref_path!r}")
+    
+        lexical_root = Path(os.path.abspath(str(contract_root)))
+        lexical_target = Path(os.path.abspath(str(schema_path.parent / decoded)))
+        try:
+            lexical_root = lexical_root.resolve(strict=True)
+>           lexical_target.stat()
+
+runtime\contracts.py:121: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/contracts/remote_model_attachment.schema.json')
+follow_symlinks = True
+
+    def stat(self, *, follow_symlinks=True):
+        """
+        Return the result of the stat() system call on this path, like
+        os.stat() does.
+        """
+>       return os.stat(self, follow_symlinks=follow_symlinks)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [WinError 2] The system cannot find the file specified: 'C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\contracts\\remote_model_attachment.schema.json'
+
+..\..\..\AppData\Local\Temp\py3145t\Lib\pathlib\__init__.py:654: FileNotFoundError
+
+The above exception was the direct cause of the following exception:
+
+tmp_path = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.tmp/resume10/owned/pacifyx-xwvptemu/pytest-of-Ben/pytest-0/test_missing_swapped_and_conte0')
+
+    def test_missing_swapped_and_context_drift_refused(tmp_path):
+        from runtime.model_group_preparation import read_group_preparation
+>       group, attachments, retrievals, preparation = prepared(3, tmp_path)
+                                                      ^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_model_group_preparation.py:64: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_model_group_preparation.py:27: in prepared
+    return group, attachments, retrievals, prepare_model_group(group, attachments, retrievals, root=root)
+                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+runtime\model_group_preparation.py:143: in prepare_model_group
+    return read_group_preparation({**body, "preparation_sha256": hashlib.sha256(
+runtime\model_group_preparation.py:129: in read_group_preparation
+    validate_instance(record, framework_root() / "contracts/models/model-group-preparation.schema.json")
+runtime\contracts.py:466: in validate_instance
+    _admit_schema(schema, schema_path, resolved_contract_root)
+runtime\contracts.py:903: in _admit_schema
+    walk(schema, schema, schema_path, ())
+runtime\contracts.py:899: in walk
+    walk(child, document, document_path, ref_stack)
+runtime\contracts.py:899: in walk
+    walk(child, document, document_path, ref_stack)
+runtime\contracts.py:899: in walk
+    walk(child, document, document_path, ref_stack)
+runtime\contracts.py:897: in walk
+    walk(resolved, resolved_document, resolved_path, ref_stack + (key,))
+runtime\contracts.py:899: in walk
+    walk(child, document, document_path, ref_stack)
+runtime\contracts.py:887: in walk
+    resolved, resolved_document, resolved_path, key = _resolve_ref(
+runtime\contracts.py:180: in _resolve_ref
+    target_path = _resolve_external_path(ref_path, schema_path, contract_root)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ref_path = 'remote_model_attachment.schema.json'
+schema_path = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/contracts/model_attachment.schema.json')
+contract_root = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/contracts')
+
+    def _resolve_external_path(
+        ref_path: str, schema_path: Path, contract_root: Path
+    ) -> Path:
+        decoded = unquote(ref_path)
+        if not decoded:
+            raise ValueError(f"external reference has no path in {schema_path}")
+        if (
+            Path(decoded).is_absolute()
+            or PurePosixPath(decoded).is_absolute()
+            or PureWindowsPath(decoded).is_absolute()
+        ):
+            raise ValueError(f"absolute schema reference is not allowed: {ref_path!r}")
+        if Path(decoded).suffix.lower() != ".json":
+            raise ValueError(f"referenced schema must be a JSON file: {ref_path!r}")
+    
+        lexical_root = Path(os.path.abspath(str(contract_root)))
+        lexical_target = Path(os.path.abspath(str(schema_path.parent / decoded)))
+        try:
+            lexical_root = lexical_root.resolve(strict=True)
+            lexical_target.stat()
+        except OSError as exc:
+>           raise ValueError(
+                f"unresolved external schema reference {ref_path!r} in {schema_path}"
+            ) from exc
+E           ValueError: unresolved external schema reference 'remote_model_attachment.schema.json' in C:\Users\Ben\Documents\bootstrap_project\Pacify-X\contracts\model_attachment.schema.json
+
+runtime\contracts.py:123: ValueError
+______ test_live_member_execution_selects_exact_attachment_and_releases _______
+
+ref_path = 'remote_model_attachment.schema.json'
+schema_path = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/contracts/model_attachment.schema.json')
+contract_root = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/contracts')
+
+    def _resolve_external_path(
+        ref_path: str, schema_path: Path, contract_root: Path
+    ) -> Path:
+        decoded = unquote(ref_path)
+        if not decoded:
+            raise ValueError(f"external reference has no path in {schema_path}")
+        if (
+            Path(decoded).is_absolute()
+            or PurePosixPath(decoded).is_absolute()
+            or PureWindowsPath(decoded).is_absolute()
+        ):
+            raise ValueError(f"absolute schema reference is not allowed: {ref_path!r}")
+        if Path(decoded).suffix.lower() != ".json":
+            raise ValueError(f"referenced schema must be a JSON file: {ref_path!r}")
+    
+        lexical_root = Path(os.path.abspath(str(contract_root)))
+        lexical_target = Path(os.path.abspath(str(schema_path.parent / decoded)))
+        try:
+            lexical_root = lexical_root.resolve(strict=True)
+>           lexical_target.stat()
+
+runtime\contracts.py:121: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/contracts/remote_model_attachment.schema.json')
+follow_symlinks = True
+
+    def stat(self, *, follow_symlinks=True):
+        """
+        Return the result of the stat() system call on this path, like
+        os.stat() does.
+        """
+>       return os.stat(self, follow_symlinks=follow_symlinks)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [WinError 2] The system cannot find the file specified: 'C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\contracts\\remote_model_attachment.schema.json'
+
+..\..\..\AppData\Local\Temp\py3145t\Lib\pathlib\__init__.py:654: FileNotFoundError
+
+The above exception was the direct cause of the following exception:
+
+tmp_path = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.tmp/resume10/owned/pacifyx-xwvptemu/pytest-of-Ben/pytest-0/test_live_member_execution_sel0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000026A5E9CB360>
+
+    def test_live_member_execution_selects_exact_attachment_and_releases(tmp_path, monkeypatch):
+        from runtime.agent_runtime import execute_agent_plan
+        from runtime.execution_placement import PlacementCapacityLedger, _hash
+>       group, _, _, preparation = prepared(3, tmp_path)
+                                   ^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_model_group_preparation.py:85: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_model_group_preparation.py:27: in prepared
+    return group, attachments, retrievals, prepare_model_group(group, attachments, retrievals, root=root)
+                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+runtime\model_group_preparation.py:143: in prepare_model_group
+    return read_group_preparation({**body, "preparation_sha256": hashlib.sha256(
+runtime\model_group_preparation.py:129: in read_group_preparation
+    validate_instance(record, framework_root() / "contracts/models/model-group-preparation.schema.json")
+runtime\contracts.py:466: in validate_instance
+    _admit_schema(schema, schema_path, resolved_contract_root)
+runtime\contracts.py:903: in _admit_schema
+    walk(schema, schema, schema_path, ())
+runtime\contracts.py:899: in walk
+    walk(child, document, document_path, ref_stack)
+runtime\contracts.py:899: in walk
+    walk(child, document, document_path, ref_stack)
+runtime\contracts.py:899: in walk
+    walk(child, document, document_path, ref_stack)
+runtime\contracts.py:897: in walk
+    walk(resolved, resolved_document, resolved_path, ref_stack + (key,))
+runtime\contracts.py:899: in walk
+    walk(child, document, document_path, ref_stack)
+runtime\contracts.py:887: in walk
+    resolved, resolved_document, resolved_path, key = _resolve_ref(
+runtime\contracts.py:180: in _resolve_ref
+    target_path = _resolve_external_path(ref_path, schema_path, contract_root)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ref_path = 'remote_model_attachment.schema.json'
+schema_path = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/contracts/model_attachment.schema.json')
+contract_root = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/contracts')
+
+    def _resolve_external_path(
+        ref_path: str, schema_path: Path, contract_root: Path
+    ) -> Path:
+        decoded = unquote(ref_path)
+        if not decoded:
+            raise ValueError(f"external reference has no path in {schema_path}")
+        if (
+            Path(decoded).is_absolute()
+            or PurePosixPath(decoded).is_absolute()
+            or PureWindowsPath(decoded).is_absolute()
+        ):
+            raise ValueError(f"absolute schema reference is not allowed: {ref_path!r}")
+        if Path(decoded).suffix.lower() != ".json":
+            raise ValueError(f"referenced schema must be a JSON file: {ref_path!r}")
+    
+        lexical_root = Path(os.path.abspath(str(contract_root)))
+        lexical_target = Path(os.path.abspath(str(schema_path.parent / decoded)))
+        try:
+            lexical_root = lexical_root.resolve(strict=True)
+            lexical_target.stat()
+        except OSError as exc:
+>           raise ValueError(
+                f"unresolved external schema reference {ref_path!r} in {schema_path}"
+            ) from exc
+E           ValueError: unresolved external schema reference 'remote_model_attachment.schema.json' in C:\Users\Ben\Documents\bootstrap_project\Pacify-X\contracts\model_attachment.schema.json
+
+runtime\contracts.py:123: ValueError
+____________ test_native_member_hardware_route_and_durable_cleanup ____________
+
+ref_path = 'remote_model_attachment.schema.json'
+schema_path = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/contracts/model_attachment.schema.json')
+contract_root = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/contracts')
+
+    def _resolve_external_path(
+        ref_path: str, schema_path: Path, contract_root: Path
+    ) -> Path:
+        decoded = unquote(ref_path)
+        if not decoded:
+            raise ValueError(f"external reference has no path in {schema_path}")
+        if (
+            Path(decoded).is_absolute()
+            or PurePosixPath(decoded).is_absolute()
+            or PureWindowsPath(decoded).is_absolute()
+        ):
+            raise ValueError(f"absolute schema reference is not allowed: {ref_path!r}")
+        if Path(decoded).suffix.lower() != ".json":
+            raise ValueError(f"referenced schema must be a JSON file: {ref_path!r}")
+    
+        lexical_root = Path(os.path.abspath(str(contract_root)))
+        lexical_target = Path(os.path.abspath(str(schema_path.parent / decoded)))
+        try:
+            lexical_root = lexical_root.resolve(strict=True)
+>           lexical_target.stat()
+
+runtime\contracts.py:121: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/contracts/remote_model_attachment.schema.json')
+follow_symlinks = True
+
+    def stat(self, *, follow_symlinks=True):
+        """
+        Return the result of the stat() system call on this path, like
+        os.stat() does.
+        """
+>       return os.stat(self, follow_symlinks=follow_symlinks)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       FileNotFoundError: [WinError 2] The system cannot find the file specified: 'C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\contracts\\remote_model_attachment.schema.json'
+
+..\..\..\AppData\Local\Temp\py3145t\Lib\pathlib\__init__.py:654: FileNotFoundError
+
+The above exception was the direct cause of the following exception:
+
+tmp_path = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.tmp/resume10/owned/pacifyx-xwvptemu/pytest-of-Ben/pytest-0/test_native_member_hardware_ro0')
+
+    def test_native_member_hardware_route_and_durable_cleanup(tmp_path):
+        from datetime import datetime, timezone
+        from runtime.agent_runtime import execute_agent_plan
+        from runtime.execution_placement import route_hardware, PlacementCapacityLedger
+        from runtime.hardware_routing import WorkloadProfile, WorkloadKind, HardwareProfile, BenchmarkEvidence
+>       group, attachments, retrievals, _ = prepared(3, tmp_path)
+                                            ^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_model_group_preparation.py:116: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_model_group_preparation.py:27: in prepared
+    return group, attachments, retrievals, prepare_model_group(group, attachments, retrievals, root=root)
+                                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+runtime\model_group_preparation.py:143: in prepare_model_group
+    return read_group_preparation({**body, "preparation_sha256": hashlib.sha256(
+runtime\model_group_preparation.py:129: in read_group_preparation
+    validate_instance(record, framework_root() / "contracts/models/model-group-preparation.schema.json")
+runtime\contracts.py:466: in validate_instance
+    _admit_schema(schema, schema_path, resolved_contract_root)
+runtime\contracts.py:903: in _admit_schema
+    walk(schema, schema, schema_path, ())
+runtime\contracts.py:899: in walk
+    walk(child, document, document_path, ref_stack)
+runtime\contracts.py:899: in walk
+    walk(child, document, document_path, ref_stack)
+runtime\contracts.py:899: in walk
+    walk(child, document, document_path, ref_stack)
+runtime\contracts.py:897: in walk
+    walk(resolved, resolved_document, resolved_path, ref_stack + (key,))
+runtime\contracts.py:899: in walk
+    walk(child, document, document_path, ref_stack)
+runtime\contracts.py:887: in walk
+    resolved, resolved_document, resolved_path, key = _resolve_ref(
+runtime\contracts.py:180: in _resolve_ref
+    target_path = _resolve_external_path(ref_path, schema_path, contract_root)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+ref_path = 'remote_model_attachment.schema.json'
+schema_path = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/contracts/model_attachment.schema.json')
+contract_root = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/contracts')
+
+    def _resolve_external_path(
+        ref_path: str, schema_path: Path, contract_root: Path
+    ) -> Path:
+        decoded = unquote(ref_path)
+        if not decoded:
+            raise ValueError(f"external reference has no path in {schema_path}")
+        if (
+            Path(decoded).is_absolute()
+            or PurePosixPath(decoded).is_absolute()
+            or PureWindowsPath(decoded).is_absolute()
+        ):
+            raise ValueError(f"absolute schema reference is not allowed: {ref_path!r}")
+        if Path(decoded).suffix.lower() != ".json":
+            raise ValueError(f"referenced schema must be a JSON file: {ref_path!r}")
+    
+        lexical_root = Path(os.path.abspath(str(contract_root)))
+        lexical_target = Path(os.path.abspath(str(schema_path.parent / decoded)))
+        try:
+            lexical_root = lexical_root.resolve(strict=True)
+            lexical_target.stat()
+        except OSError as exc:
+>           raise ValueError(
+                f"unresolved external schema reference {ref_path!r} in {schema_path}"
+            ) from exc
+E           ValueError: unresolved external schema reference 'remote_model_attachment.schema.json' in C:\Users\Ben\Documents\bootstrap_project\Pacify-X\contracts\model_attachment.schema.json
+
+runtime\contracts.py:123: ValueError
+=========================== short test summary info ===========================
+FAILED tests/test_model_group_preparation.py::test_exact_members_normal_compiler_and_recovery[1]
+FAILED tests/test_model_group_preparation.py::test_exact_members_normal_compiler_and_recovery[3]
+FAILED tests/test_model_group_preparation.py::test_exact_members_normal_compiler_and_recovery[5]
+FAILED tests/test_model_group_preparation.py::test_exact_members_normal_compiler_and_recovery[7]
+FAILED tests/test_model_group_preparation.py::test_exact_members_normal_compiler_and_recovery[12]
+FAILED tests/test_model_group_preparation.py::test_missing_swapped_and_context_drift_refused
+FAILED tests/test_model_group_preparation.py::test_live_member_execution_selects_exact_attachment_and_releases
+FAILED tests/test_model_group_preparation.py::test_native_member_hardware_route_and_durable_cleanup
+8 failed, 31 passed in 2.47s
+

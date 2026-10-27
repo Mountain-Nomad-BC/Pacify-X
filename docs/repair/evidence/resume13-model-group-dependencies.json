@@ -1,0 +1,40 @@
+[
+  {
+    "module": "model_execution_group",
+    "target_exists": false,
+    "bytes": 14886,
+    "missing_imports": [
+      "generation_bound_verdict"
+    ]
+  },
+  {
+    "module": "generation_bound_verdict",
+    "target_exists": false,
+    "bytes": 2861,
+    "missing_imports": []
+  },
+  {
+    "module": "model_group_preparation",
+    "target_exists": false,
+    "bytes": 13878,
+    "missing_imports": [
+      "generation_bound_verdict",
+      "model_execution_group",
+      "remote_model_attachment"
+    ]
+  },
+  {
+    "module": "remote_model_attachment",
+    "target_exists": false,
+    "bytes": 7860,
+    "missing_imports": []
+  },
+  {
+    "module": "model_branch_artifacts",
+    "target_exists": false,
+    "bytes": 13016,
+    "missing_imports": [
+      "model_group_preparation"
+    ]
+  }
+]

@@ -1,0 +1,29 @@
+{
+  "action_id": "branch-creation-custody-red",
+  "audit_record_hash": "d1f819ee7e9a52a8827b63090f38a69c19552e4162000679ac970461e7348aa5",
+  "duration_seconds": 3.0242339999999786,
+  "ended_at": "2026-10-27T10:53:36.774Z",
+  "exit_code": 1,
+  "failure_type": null,
+  "receipt_id": "process-4dcf43917064431190214f31f34bc583",
+  "resource_id": "process-0c116c431afc431b889afeed9157ef16",
+  "schema_version": "px.process-supervision-receipt/1.0",
+  "shutdown_mode": "natural",
+  "started_at": "2026-10-27T10:53:33.749Z",
+  "status": "exited",
+  "stderr": {
+    "decode_error_count": 0,
+    "dropped_bytes": 0,
+    "retained_bytes": 0,
+    "total_bytes": 0,
+    "truncated": false
+  },
+  "stdout": {
+    "decode_error_count": 0,
+    "dropped_bytes": 0,
+    "retained_bytes": 3653,
+    "total_bytes": 3653,
+    "truncated": false
+  },
+  "tree_closed": true
+}

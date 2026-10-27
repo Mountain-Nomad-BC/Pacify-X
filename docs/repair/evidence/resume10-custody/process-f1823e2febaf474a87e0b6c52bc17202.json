@@ -1,0 +1,29 @@
+{
+  "action_id": "model-group-integration",
+  "audit_record_hash": "3b9bb4b125091abca95b72ce6b81987352fd004ededfc991a923d877b5d9871d",
+  "duration_seconds": 3.1135729000002357,
+  "ended_at": "2026-10-27T10:50:29.489Z",
+  "exit_code": 1,
+  "failure_type": null,
+  "receipt_id": "process-f1823e2febaf474a87e0b6c52bc17202",
+  "resource_id": "process-efc7e27d189f4e3088c28782f71320c0",
+  "schema_version": "px.process-supervision-receipt/1.0",
+  "shutdown_mode": "natural",
+  "started_at": "2026-10-27T10:50:26.375Z",
+  "status": "exited",
+  "stderr": {
+    "decode_error_count": 0,
+    "dropped_bytes": 0,
+    "retained_bytes": 0,
+    "total_bytes": 0,
+    "truncated": false
+  },
+  "stdout": {
+    "decode_error_count": 0,
+    "dropped_bytes": 0,
+    "retained_bytes": 49828,
+    "total_bytes": 49828,
+    "truncated": false
+  },
+  "tree_closed": true
+}

@@ -1,0 +1,29 @@
+{
+  "action_id": "governed-model-group",
+  "audit_record_hash": "566ab1fca574c6adbf363d71996a1113d9002edbbca3d8fe5218d6564386b601",
+  "duration_seconds": 1.4926500000001397,
+  "ended_at": "2026-10-27T10:54:45.963Z",
+  "exit_code": 1,
+  "failure_type": null,
+  "receipt_id": "process-00be759205fd4c5cbbfbbc13e32cb957",
+  "resource_id": "process-45412153dbb343adb37c899a943010dd",
+  "schema_version": "px.process-supervision-receipt/1.0",
+  "shutdown_mode": "natural",
+  "started_at": "2026-10-27T10:54:44.471Z",
+  "status": "exited",
+  "stderr": {
+    "decode_error_count": 0,
+    "dropped_bytes": 0,
+    "retained_bytes": 0,
+    "total_bytes": 0,
+    "truncated": false
+  },
+  "stdout": {
+    "decode_error_count": 0,
+    "dropped_bytes": 0,
+    "retained_bytes": 231,
+    "total_bytes": 231,
+    "truncated": false
+  },
+  "tree_closed": true
+}

@@ -1,0 +1,48 @@
+{
+  "timestamp_utc": "2026-10-27T10:57:36.250912+00:00",
+  "segment": "resume13-model-group-preparation-and-local-execution",
+  "source_sha256": {
+    "runtime/model_execution_group.py": "932128e84aac82fafeaaaa42a7435606a4e63be633577d28136c4e7cec7464d1",
+    "runtime/model_branch_contracts.py": "32a0e1c1569e5678dc9a4e33082b15bdea0b13b4271c901eab6acc7be145e2b3",
+    "runtime/generation_bound_verdict.py": "fa4e1600c48ab136c84774955c1f79cdd91d593e420d0451f09717045119de67",
+    "runtime/model_group_preparation.py": "ee2aeafff2cc329007f1452f313a2e50eeac6f2f8670bb53e0a7935b6eec6c3c",
+    "runtime/remote_model_attachment.py": "86d88546aecdaff229818799bae221f8df75186e3714aa02b6f01db62b0660b8",
+    "runtime/model_branch_artifacts.py": "fa347b86b7615fa2cc963aef6917348f975916feca2f11e069354b9f9bf51f73",
+    "runtime/task_execution_plan.py": "0b9bea12910ca1b5ce49f848698989b56cd957e88d240e1bdf6373e2b23a5f0c",
+    "runtime/model_attachment.py": "81e3c9762843dc755c96d8e0f9b30738cb33a9ca8e45ac473efae76558dc0614",
+    "runtime/capability_routing.py": "1651e6b532ce785ea3982dc9648b675162fca2700902a90beb34c107ed1d61d3",
+    "runtime/execution_contract.py": "9ce166cf0fee0bee22fe5bce66331f2b719f8e1e8772984473c8779b11493b99",
+    "runtime/execution_placement.py": "efe523bf5288e32050112881380c18e3b69ceb7013f4b86065de22df25dcbef5",
+    "runtime/agent_runtime.py": "fa67c664baa7dbba8997e4ed0abcade1518c4a7f823506713efae2c6f7758104",
+    "scripts/build_contract_ownership_registry.py": "4a0e8de1e87352ce496a9af1b8529b566f9abf438faa949acd823fbfc556dedf",
+    "scripts/validate_certification_pipeline.py": "b21c5e299781badd60c0eefe00c7d6845cad95eefa3963246fe9ff8f87c30314",
+    "pyproject.toml": "303761c9109e70e83a0d4de419ca0341408089cf538732a2064f2b7ebd55208b",
+    "registry/test_profiles.json": "a257b4d971effb861e986c232a14df797f0e717476958900ff3e3b4a9379f225"
+  },
+  "observations": [
+    "Reviewed6new owners and actual plan/compiler/hardware/member-execution consumers; optional prepared group/context fields now bind to exact plan/generation; legacy task-plan/placement namespaces preserved pending full caller migration. No blind shared AgentRuntimeController/WorkflowStudio replacement.",
+    "Initial2collection failures retained; first integration31passed/8failed from missing remote schema; schema closure37passed/2failed exposed actual routing/execution missing inputs. After actual consumer integration96neighbors passed including agent runtime and placement.",
+    "Reference branch artifact registered after directory creation and left resource active. Causal failure retained; repaired pre-creation registration, bound physical identity, exact-resource completed/retained settlement and recoverable failure custody. No run-wide settling of unrelated child resources.",
+    "New verdict schema-name escape causal failure repaired; schema assets resolve through framework_root, with lean-layout simulation test. Added models schema package data and explicit source ownership rules.",
+    "65group/verdict/preflight checks passed;36remote signed-fixture attachment/catalog/local/group neighbors passed. Final23failure/custody/attachment/verdict checks passed; one preceding test-only missing Path import failure retained and corrected. Tests overlap; no invented aggregate count.",
+    "Source ownership check44passed/1FAILED because published196 vs source203; full failure preserved and no generated refresh during intake.42mandatory suites structurally covered after4new required owners;28required section definitions. Governed model-group attempt phaseblocked.",
+    "Full WorkflowStudio group effects/transport, AgentRuntimeController mesh orchestration, optional TIE usage-memory fusion and remote placement/member-outcome owners remain unintegrated; no live remote/local model execution or installed rollout claim. Existing model catalog empty and signed successor inputs unresolved. No reviewer/card closure, VSIX/package/install/full profile/certification/merge."
+  ],
+  "evidence": [
+    "docs/repair/evidence/resume10-model-group-red.json",
+    "docs/repair/evidence/resume10-model-group-integration.json",
+    "docs/repair/evidence/resume10-model-group-schema-closure.json",
+    "docs/repair/evidence/resume10-model-group-local-execution.json",
+    "docs/repair/evidence/resume10-branch-creation-custody-red.json",
+    "docs/repair/evidence/resume10-branch-creation-custody-green.json",
+    "docs/repair/evidence/resume10-verdict-schema-boundary-red.json",
+    "docs/repair/evidence/resume10-model-group-owner-green.json",
+    "docs/repair/evidence/resume10-remote-attachment-green.json",
+    "docs/repair/evidence/resume10-group-ownership-preflight.json",
+    "docs/repair/evidence/resume10-branch-failure-recovery.json",
+    "docs/repair/evidence/resume10-branch-failure-recovery-green.json",
+    "docs/repair/evidence/resume10-governed-model-group.json"
+  ],
+  "closed": false,
+  "reviewer": "UNASSIGNED"
+}

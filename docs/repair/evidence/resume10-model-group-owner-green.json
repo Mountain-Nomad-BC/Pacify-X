@@ -1,0 +1,21 @@
+{
+  "command": [
+    "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.venv-repair\\Scripts\\python.exe",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "tests/test_model_execution_group.py",
+    "tests/test_model_group_preparation.py",
+    "tests/test_generation_bound_verdict.py",
+    "tests/test_certification_pipeline_readiness.py"
+  ],
+  "exit_code": 0,
+  "tree_closed": true,
+  "resource_inactive": true,
+  "receipt": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.tmp\\resume10\\owned\\cleanup-receipts\\process-8eb4f29e0546487f8985f704f958fdd4.json",
+  "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.tmp\\resume10\\owned\\pacifyx-kuhiiien",
+  "log": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\docs\\repair\\evidence\\resume10-model-group-owner-green.log",
+  "log_sha256": "0926d6ca5fc6ea5e9bdad87a13cfae8dbc7b0d626596ecf3f9520da174b3d7ea"
+}

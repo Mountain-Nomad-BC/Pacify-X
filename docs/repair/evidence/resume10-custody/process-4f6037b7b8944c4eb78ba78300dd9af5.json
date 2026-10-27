@@ -1,0 +1,29 @@
+{
+  "action_id": "model-group-local-execution",
+  "audit_record_hash": "737224103e9f3723e202c92c6fd83dd4739b7957f1f27ebcec0cc37348c68de9",
+  "duration_seconds": 40.430323800000224,
+  "ended_at": "2026-10-27T10:52:12.219Z",
+  "exit_code": 0,
+  "failure_type": null,
+  "receipt_id": "process-4f6037b7b8944c4eb78ba78300dd9af5",
+  "resource_id": "process-0a0502d6d3284fb18f119dd78ce9c86a",
+  "schema_version": "px.process-supervision-receipt/1.0",
+  "shutdown_mode": "natural",
+  "started_at": "2026-10-27T10:51:31.789Z",
+  "status": "exited",
+  "stderr": {
+    "decode_error_count": 0,
+    "dropped_bytes": 0,
+    "retained_bytes": 0,
+    "total_bytes": 0,
+    "truncated": false
+  },
+  "stdout": {
+    "decode_error_count": 0,
+    "dropped_bytes": 0,
+    "retained_bytes": 183,
+    "total_bytes": 183,
+    "truncated": false
+  },
+  "tree_closed": true
+}

@@ -5,30 +5,627 @@
   "type": "object",
   "additionalProperties": false,
   "required": [
-    "schema_version", "plan_id", "project_id", "source_revision", "created_utc",
-    "task_envelope_sha256", "route_receipt_sha256", "package_id",
-    "package_receipt_sha256", "projection_revisions", "selected_capabilities",
-    "effect_budget", "authority_bindings", "attachments", "model_attachment",
-    "model_ranking_receipt", "plan_sha256"
+    "schema_version",
+    "plan_id",
+    "project_id",
+    "source_revision",
+    "created_utc",
+    "task_envelope_sha256",
+    "route_receipt_sha256",
+    "package_id",
+    "package_receipt_sha256",
+    "projection_revisions",
+    "selected_capabilities",
+    "effect_budget",
+    "authority_bindings",
+    "attachments",
+    "model_attachment",
+    "model_ranking_receipt",
+    "plan_sha256"
   ],
   "properties": {
-    "schema_version": {"const": "px.task-execution-plan/1.0"},
-    "plan_id": {"type": "string", "pattern": "^task-plan-[0-9a-f]{24}$"},
-    "project_id": {"type": "string", "minLength": 1},
-    "source_revision": {"type": "string", "minLength": 1},
-    "created_utc": {"type": "string", "format": "date-time"},
-    "task_envelope_sha256": {"$ref": "#/$defs/sha256"},
-    "route_receipt_sha256": {"$ref": "#/$defs/sha256"},
-    "package_id": {"type": "string", "minLength": 1},
-    "package_receipt_sha256": {"$ref": "#/$defs/sha256"},
-    "projection_revisions": {"type": "object", "additionalProperties": {"type": "string", "minLength": 1}},
-    "selected_capabilities": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
-    "effect_budget": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
-    "authority_bindings": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "minLength": 1}},
-    "attachments": {"type": "object", "additionalProperties": {"type": "string", "minLength": 1}},
-    "model_attachment": {"type": ["object", "null"]},
-    "model_ranking_receipt": {"type": ["object", "null"]},
-    "plan_sha256": {"$ref": "#/$defs/sha256"}
+    "schema_version": {
+      "const": "px.task-execution-plan/1.0"
+    },
+    "plan_id": {
+      "type": "string",
+      "pattern": "^task-plan-[0-9a-f]{24}$"
+    },
+    "project_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_revision": {
+      "type": "string",
+      "minLength": 1
+    },
+    "created_utc": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "task_envelope_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "route_receipt_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "package_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "package_receipt_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "projection_revisions": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "selected_capabilities": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "effect_budget": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "authority_bindings": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "attachments": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "model_attachment": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "model_ranking_receipt": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "plan_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "model_execution_group": {
+      "$schema": "https://json-schema.org/draft/2020-12/schema",
+      "$id": "urn:engineering-loop-bootstrap:contract:models:model-execution-group",
+      "title": "PX model-execution-group",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "schema_version": {
+          "const": "px.model-execution-group/2.0"
+        },
+        "group_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "purpose": {
+          "enum": [
+            "discovery",
+            "calibration",
+            "execution"
+          ]
+        },
+        "authority_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "branch_count": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 12
+        },
+        "max_branches": {
+          "const": 12
+        },
+        "branches": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "model_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 256
+              },
+              "role": {
+                "enum": [
+                  "proposal",
+                  "challenger",
+                  "anchor"
+                ]
+              },
+              "weight": {
+                "type": "number",
+                "minimum": 0
+              },
+              "work_contract": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "deliverable": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 256
+                  },
+                  "context_sha256": {
+                    "type": "string",
+                    "pattern": "^[0-9a-f]{64}$"
+                  },
+                  "max_output_bytes": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 524288
+                  }
+                },
+                "required": [
+                  "deliverable",
+                  "context_sha256",
+                  "max_output_bytes"
+                ]
+              },
+              "independence_contract": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "commit_before_peer_visibility": {
+                    "const": true
+                  },
+                  "peer_input_allowed": {
+                    "const": false
+                  }
+                },
+                "required": [
+                  "commit_before_peer_visibility",
+                  "peer_input_allowed"
+                ]
+              },
+              "agent_generation_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 256
+              }
+            },
+            "required": [
+              "model_id",
+              "role",
+              "weight"
+            ],
+            "if": {
+              "required": [
+                "work_contract"
+              ]
+            },
+            "then": {
+              "required": [
+                "independence_contract",
+                "agent_generation_id"
+              ]
+            }
+          },
+          "minItems": 1,
+          "maxItems": 12
+        },
+        "quorum": {
+          "enum": [
+            "any",
+            "all",
+            "majority"
+          ]
+        },
+        "quorum_size": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 12
+        },
+        "produces_outputs": {
+          "type": "boolean"
+        },
+        "determinism_seed": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 4294967295
+        },
+        "minimum_quorum": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 12
+        }
+      },
+      "required": [
+        "schema_version",
+        "group_id",
+        "purpose",
+        "authority_id",
+        "branch_count",
+        "max_branches",
+        "branches",
+        "quorum",
+        "quorum_size",
+        "produces_outputs",
+        "determinism_seed"
+      ]
+    },
+    "context_generation": {
+      "anyOf": [
+        {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "$id": "urn:engineering-loop-bootstrap:contract:context-generation-vector",
+          "title": "PX Context Generation Vector",
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "schema_version",
+            "project_id",
+            "scope",
+            "vector",
+            "required_components",
+            "vector_sha256"
+          ],
+          "properties": {
+            "schema_version": {
+              "const": "px.context-generation-vector/1.0"
+            },
+            "project_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 512
+            },
+            "scope": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 512
+            },
+            "vector": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "source_revision",
+                "semantic_generation",
+                "projection_generation",
+                "runtime_epoch",
+                "model_fabric_generation",
+                "retrieval_generation",
+                "authority_revision",
+                "policy_revision",
+                "execution_graph_revision"
+              ],
+              "properties": {
+                "source_revision": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1,
+                  "maxLength": 512
+                },
+                "semantic_generation": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1,
+                  "maxLength": 512
+                },
+                "projection_generation": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1,
+                  "maxLength": 512
+                },
+                "runtime_epoch": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1,
+                  "maxLength": 512
+                },
+                "model_fabric_generation": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1,
+                  "maxLength": 512
+                },
+                "retrieval_generation": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1,
+                  "maxLength": 512
+                },
+                "authority_revision": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1,
+                  "maxLength": 512
+                },
+                "policy_revision": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1,
+                  "maxLength": 512
+                },
+                "execution_graph_revision": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1,
+                  "maxLength": 512
+                }
+              }
+            },
+            "required_components": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 9,
+              "uniqueItems": true,
+              "items": {
+                "enum": [
+                  "source_revision",
+                  "semantic_generation",
+                  "projection_generation",
+                  "runtime_epoch",
+                  "model_fabric_generation",
+                  "retrieval_generation",
+                  "authority_revision",
+                  "policy_revision",
+                  "execution_graph_revision"
+                ]
+              }
+            },
+            "vector_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            }
+          },
+          "description": "Complete shared component vocabulary, explicit unavailable revisions, required dependency contract and project/scope binding. A valid digest is not proof of live freshness."
+        },
+        {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "$id": "urn:engineering-loop-bootstrap:contract:models:execution-generation-vector",
+          "title": "PX Execution Generation Vector",
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "schema_version",
+            "project_id",
+            "scope",
+            "vector",
+            "required_components",
+            "vector_sha256"
+          ],
+          "properties": {
+            "schema_version": {
+              "const": "px.context-generation-vector/2.0"
+            },
+            "project_id": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 512
+            },
+            "scope": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 512
+            },
+            "vector": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "source_revision",
+                "semantic_generation",
+                "projection_generation",
+                "runtime_epoch",
+                "model_fabric_generation",
+                "retrieval_generation",
+                "authority_revision",
+                "policy_revision",
+                "execution_graph_revision",
+                "model_execution_group_revision",
+                "model_contract_set_revision",
+                "gremlin_revision",
+                "network_policy_revision",
+                "workflow_adapter_revision"
+              ],
+              "properties": {
+                "source_revision": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1,
+                  "maxLength": 512
+                },
+                "semantic_generation": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1,
+                  "maxLength": 512
+                },
+                "projection_generation": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1,
+                  "maxLength": 512
+                },
+                "runtime_epoch": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1,
+                  "maxLength": 512
+                },
+                "model_fabric_generation": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1,
+                  "maxLength": 512
+                },
+                "retrieval_generation": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1,
+                  "maxLength": 512
+                },
+                "authority_revision": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1,
+                  "maxLength": 512
+                },
+                "policy_revision": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1,
+                  "maxLength": 512
+                },
+                "execution_graph_revision": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1,
+                  "maxLength": 512
+                },
+                "model_execution_group_revision": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1,
+                  "maxLength": 512
+                },
+                "model_contract_set_revision": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1,
+                  "maxLength": 512
+                },
+                "gremlin_revision": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1,
+                  "maxLength": 512
+                },
+                "network_policy_revision": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1,
+                  "maxLength": 512
+                },
+                "workflow_adapter_revision": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "minLength": 1,
+                  "maxLength": 512
+                }
+              }
+            },
+            "required_components": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 14,
+              "uniqueItems": true,
+              "items": {
+                "enum": [
+                  "source_revision",
+                  "semantic_generation",
+                  "projection_generation",
+                  "runtime_epoch",
+                  "model_fabric_generation",
+                  "retrieval_generation",
+                  "authority_revision",
+                  "policy_revision",
+                  "execution_graph_revision",
+                  "model_execution_group_revision",
+                  "model_contract_set_revision",
+                  "gremlin_revision",
+                  "network_policy_revision",
+                  "workflow_adapter_revision"
+                ]
+              }
+            },
+            "vector_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            }
+          },
+          "description": "Complete shared component vocabulary, explicit unavailable revisions, required dependency contract and project/scope binding. A valid digest is not proof of live freshness."
+        }
+      ]
+    },
+    "model_group_preparation": {
+      "$ref": "models/model-group-preparation.schema.json"
+    }
   },
-  "$defs": {"sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}}
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  }
 }

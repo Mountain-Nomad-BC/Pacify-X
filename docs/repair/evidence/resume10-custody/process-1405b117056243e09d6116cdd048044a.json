@@ -1,0 +1,29 @@
+{
+  "action_id": "remote-attachment-green",
+  "audit_record_hash": "8fcfb239e0dafd02da709171f8ba3eed364d6131fcc96a072c0629443a6dc059",
+  "duration_seconds": 7.4677693999997246,
+  "ended_at": "2026-10-27T10:55:57.314Z",
+  "exit_code": 0,
+  "failure_type": null,
+  "receipt_id": "process-1405b117056243e09d6116cdd048044a",
+  "resource_id": "process-8c7dbd6105ea44dabd7f5f7a6a41724a",
+  "schema_version": "px.process-supervision-receipt/1.0",
+  "shutdown_mode": "natural",
+  "started_at": "2026-10-27T10:55:49.847Z",
+  "status": "exited",
+  "stderr": {
+    "decode_error_count": 0,
+    "dropped_bytes": 0,
+    "retained_bytes": 0,
+    "total_bytes": 0,
+    "truncated": false
+  },
+  "stdout": {
+    "decode_error_count": 0,
+    "dropped_bytes": 0,
+    "retained_bytes": 101,
+    "total_bytes": 101,
+    "truncated": false
+  },
+  "tree_closed": true
+}

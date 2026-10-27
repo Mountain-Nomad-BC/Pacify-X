@@ -1,0 +1,22 @@
+{
+  "command": [
+    "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.venv-repair\\Scripts\\python.exe",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "tests/test_model_catalog_namespace.py",
+    "tests/test_local_model_runtime.py",
+    "tests/test_remote_profile_catalog.py",
+    "tests/test_bridge_stream_regressions.py",
+    "tests/test_certification_pipeline_readiness.py"
+  ],
+  "exit_code": 1,
+  "tree_closed": true,
+  "resource_inactive": true,
+  "receipt": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.tmp\\resume10\\owned\\cleanup-receipts\\process-a6d09648d4a344438ee055d90bc6cced.json",
+  "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.tmp\\resume10\\owned\\pacifyx-kfi5l152",
+  "log": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\docs\\repair\\evidence\\resume10-model-catalog-namespace-green.log",
+  "log_sha256": "7d24245961472a46f59ff95f1ebada24e52481f4533b57c0ace6acf0961c1bc6"
+}

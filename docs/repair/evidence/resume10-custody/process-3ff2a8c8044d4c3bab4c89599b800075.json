@@ -1,0 +1,29 @@
+{
+  "action_id": "branch-failure-recovery",
+  "audit_record_hash": "d2b8fefd398db63e899e4e870aa4d3f410468da76d1a6d037f06739c8c8e8f57",
+  "duration_seconds": 4.024692300000424,
+  "ended_at": "2026-10-27T10:56:51.011Z",
+  "exit_code": 1,
+  "failure_type": null,
+  "receipt_id": "process-3ff2a8c8044d4c3bab4c89599b800075",
+  "resource_id": "process-c1cb5ce763a64884b2771f436354e90c",
+  "schema_version": "px.process-supervision-receipt/1.0",
+  "shutdown_mode": "natural",
+  "started_at": "2026-10-27T10:56:46.986Z",
+  "status": "exited",
+  "stderr": {
+    "decode_error_count": 0,
+    "dropped_bytes": 0,
+    "retained_bytes": 0,
+    "total_bytes": 0,
+    "truncated": false
+  },
+  "stdout": {
+    "decode_error_count": 0,
+    "dropped_bytes": 0,
+    "retained_bytes": 2341,
+    "total_bytes": 2341,
+    "truncated": false
+  },
+  "tree_closed": true
+}

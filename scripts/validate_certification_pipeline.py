@@ -36,6 +36,11 @@ from runtime.test_runner import TEST_COLLECTION_OVERRIDE_ENV
 SCHEMA = "px.certification-pipeline-validation/1.0"
 
 REQUIRED_LIFECYCLE_TESTS = (
+    "tests/test_model_catalog_namespace.py",
+    "tests/test_remote_attachment_identity.py",
+    "tests/test_model_execution_group.py",
+    "tests/test_model_group_preparation.py",
+    "tests/test_generation_bound_verdict.py",
     "tests/test_remote_profile_catalog.py",
     "tests/test_provider_protocol_audit.py",
     "tests/test_file_lock_thread_custody.py",

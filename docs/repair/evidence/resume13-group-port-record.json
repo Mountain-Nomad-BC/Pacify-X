@@ -1,0 +1,79 @@
+{
+  "records": [
+    {
+      "path": "runtime/model_execution_group.py",
+      "source": "reference reviewed owner",
+      "installed_asset_resolver_corrected": false
+    },
+    {
+      "path": "runtime/generation_bound_verdict.py",
+      "source": "reference reviewed owner",
+      "installed_asset_resolver_corrected": true
+    },
+    {
+      "path": "runtime/model_group_preparation.py",
+      "source": "reference reviewed owner",
+      "installed_asset_resolver_corrected": false
+    },
+    {
+      "path": "runtime/remote_model_attachment.py",
+      "source": "reference reviewed owner",
+      "installed_asset_resolver_corrected": false
+    },
+    {
+      "path": "runtime/model_branch_artifacts.py",
+      "source": "reference reviewed owner",
+      "installed_asset_resolver_corrected": true
+    },
+    {
+      "path": "runtime/model_branch_contracts.py",
+      "source": "reference reviewed owner",
+      "installed_asset_resolver_corrected": false
+    },
+    {
+      "path": "runtime/task_execution_plan.py",
+      "before_sha256": "18367d844da7fc52cf5243182951734273c268341dd90a80f7a66f165b5550fc",
+      "source": "reviewed additions only; legacy plan namespace retained pending migration"
+    },
+    {
+      "path": "runtime/model_attachment.py",
+      "before_sha256": "6725ef45e5fcbf8859a02bb183389ec3c7dc324b6b44746ea6eaea4ea4c4fe3e",
+      "source": "reviewed additions only; legacy plan namespace retained pending migration"
+    },
+    {
+      "path": "runtime/capability_routing.py",
+      "before_sha256": "162582a116a38fb16fa8aafce3dc380ccf7f0f6c155ffac5c10839399c0ccc29",
+      "source": "reviewed additions only; legacy plan namespace retained pending migration"
+    },
+    {
+      "path": "contracts/models/model-execution-group.schema.json",
+      "source": "reference new producer/consumer schema"
+    },
+    {
+      "path": "contracts/models/generation-bound-verdict.schema.json",
+      "source": "reference new producer/consumer schema"
+    },
+    {
+      "path": "contracts/models/model-group-preparation.schema.json",
+      "source": "reference new producer/consumer schema"
+    },
+    {
+      "path": "contracts/models/member-execution-input.schema.json",
+      "source": "reference new producer/consumer schema"
+    },
+    {
+      "path": "contracts/models/model-branch-artifact.schema.json",
+      "source": "reference new producer/consumer schema"
+    },
+    {
+      "path": "contracts/model_attachment.schema.json",
+      "source": "preserved old local schema verbatim as local union branch; added exact remote branch"
+    },
+    {
+      "path": "contracts/task_execution_plan.schema.json",
+      "source": "only optional group/context/preparation properties added; existing constraints retained"
+    }
+  ],
+  "generated_refresh": false,
+  "certified": false
+}

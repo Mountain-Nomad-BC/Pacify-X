@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:models:generation-bound-verdict",
+  "title": "PX generation-bound-verdict",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "px.generation-bound-verdict/1.0"
+    },
+    "candidate_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "dependencies": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string",
+        "pattern": "^[0-9a-f]{64}$"
+      },
+      "description": "Runtime owner enforces1..32dependency entries before schema validation."
+    },
+    "verifier_revision": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "evidence_sha256": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[0-9a-f]{64}$"
+      },
+      "minItems": 1,
+      "maxItems": 256,
+      "uniqueItems": true
+    },
+    "status": {
+      "enum": [
+        "PASS",
+        "FAIL",
+        "INDETERMINATE"
+      ]
+    },
+    "authority_granted": {
+      "const": false
+    },
+    "verdict_sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  },
+  "required": [
+    "schema_version",
+    "candidate_sha256",
+    "dependencies",
+    "verifier_revision",
+    "evidence_sha256",
+    "status",
+    "authority_granted",
+    "verdict_sha256"
+  ]
+}
