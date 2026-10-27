@@ -2815,13 +2815,19 @@
         "extension/src/agentHarness/registerAgentConsole.js",
         "extension/src/agentHarness/taskStore.js",
         "extension/tests/tool-authority-audit.test.js",
-        "registry/test_profiles.json"
+        "registry/test_profiles.json",
+        "extension/src/agentHarness/vscodeTools.js",
+        "extension/tests/vscode-tool-workspace-audit.test.js",
+        "extension/src/agentHarness/agentConsoleView.js",
+        "extension/tests/agent-console-messages.test.js"
       ],
       "command": [
         "node",
         "--test",
         "tests/tool-authority-audit.test.js",
-        "tests/agent-tool-broker.test.js"
+        "tests/agent-tool-broker.test.js",
+        "tests/vscode-tool-workspace-audit.test.js",
+        "tests/agent-console-messages.test.js"
       ],
       "cwd": "extension",
       "chunk_size": 0,

@@ -1,0 +1,29 @@
+{
+  "action_id": "workspace-scope-green",
+  "audit_record_hash": "5fccc32f0461b91a90ad1c63a57c33b87a8960955fbee625000bb13740fddad5",
+  "duration_seconds": 3.497658299995237,
+  "ended_at": "2026-10-27T03:32:47.306Z",
+  "exit_code": 0,
+  "failure_type": null,
+  "receipt_id": "process-ccfc28a5513d467c8afa993fe154c8d1",
+  "resource_id": "process-1d3c03cae75b439bb40320a2e068b05b",
+  "schema_version": "px.process-supervision-receipt/1.0",
+  "shutdown_mode": "natural",
+  "started_at": "2026-10-27T03:32:43.808Z",
+  "status": "exited",
+  "stderr": {
+    "decode_error_count": 0,
+    "dropped_bytes": 0,
+    "retained_bytes": 0,
+    "total_bytes": 0,
+    "truncated": false
+  },
+  "stdout": {
+    "decode_error_count": 0,
+    "dropped_bytes": 0,
+    "retained_bytes": 3710,
+    "total_bytes": 3710,
+    "truncated": false
+  },
+  "tree_closed": true
+}

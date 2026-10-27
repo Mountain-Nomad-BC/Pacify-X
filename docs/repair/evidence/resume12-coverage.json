@@ -1,0 +1,124 @@
+{
+  "valid": true,
+  "required_count": 38,
+  "membership": {
+    "tests/test_certificate_input_contracts.py": [
+      "runtime-domain-contracts"
+    ],
+    "tests/test_contract_length_bounds.py": [
+      "runtime-domain-contracts",
+      "native-runtime-integration"
+    ],
+    "tests/test_project_revision_succession.py": [
+      "revision-lifecycle"
+    ],
+    "tests/test_revision_campaign_lifecycle.py": [
+      "revision-lifecycle"
+    ],
+    "tests/test_secure_publish.py": [
+      "secure-persistence"
+    ],
+    "tests/test_secure_publish_operating.py": [
+      "secure-persistence"
+    ],
+    "tests/test_context_generation.py": [
+      "native-runtime-integration"
+    ],
+    "tests/test_projection_gate.py": [
+      "native-runtime-integration"
+    ],
+    "tests/test_execution_context.py": [
+      "native-runtime-integration"
+    ],
+    "tests/test_workflow_resume.py": [
+      "native-runtime-integration"
+    ],
+    "tests/test_host_enforcement_audit.py": [
+      "host-containment"
+    ],
+    "tests/test_gremlin_host_configuration.py": [
+      "host-containment"
+    ],
+    "tests/test_isolated_agent_sandbox.py": [
+      "host-containment"
+    ],
+    "tests/test_native_job_operating_probe.py": [
+      "native-job-operating"
+    ],
+    "tests/test_native_job_probe_verdict.py": [
+      "native-job-operating"
+    ],
+    "tests/test_event_integrity_audit.py": [
+      "event-integrity"
+    ],
+    "tests/test_event_ledger_regression.py": [
+      "event-integrity"
+    ],
+    "tests/test_file_lock_thread_custody.py": [
+      "event-integrity"
+    ],
+    "extension/tests/event-integrity-audit.test.js": [
+      "ui-event-integrity"
+    ],
+    "extension/tests/task-state-custody.test.js": [
+      "agent-task-lifecycle"
+    ],
+    "extension/tests/completion-ownership-audit.test.js": [
+      "agent-task-lifecycle"
+    ],
+    "tests/test_billing_budget_audit.py": [
+      "billing-budget"
+    ],
+    "extension/tests/provider-settlement-contract.test.js": [
+      "provider-settlement-contract"
+    ],
+    "extension/tests/billing-settlement-audit.test.js": [
+      "billing-settlement"
+    ],
+    "tests/test_release_candidate_driver.py": [
+      "release-lifecycle"
+    ],
+    "tests/test_release_stage_owner.py": [
+      "release-lifecycle"
+    ],
+    "tests/test_run_installed_operational_owner.py": [
+      "release-lifecycle"
+    ],
+    "tests/test_certification_readiness.py": [
+      "release-lifecycle"
+    ],
+    "tests/test_certification_pipeline_readiness.py": [
+      "release-lifecycle"
+    ],
+    "tests/test_rollout_inventory.py": [
+      "source-inventory"
+    ],
+    "extension/tests/agent-harness-streaming.test.js": [
+      "provider-stream-custody"
+    ],
+    "tests/test_provider_protocol_audit.py": [
+      "native-provider-protocol"
+    ],
+    "extension/tests/context-provenance-audit.test.js": [
+      "context-provenance"
+    ],
+    "tests/test_remote_profile_catalog.py": [
+      "remote-profile-catalog"
+    ],
+    "extension/tests/gateway-catalog-binding.test.js": [
+      "agent-gateway-integration"
+    ],
+    "extension/tests/mcp-client-protocol-audit.test.js": [
+      "agent-gateway-integration"
+    ],
+    "extension/tests/tool-authority-audit.test.js": [
+      "agent-tool-authority"
+    ],
+    "extension/tests/vscode-tool-workspace-audit.test.js": [
+      "agent-tool-authority"
+    ]
+  },
+  "missing_membership": [],
+  "missing_files": [],
+  "duplicate_members": []
+}

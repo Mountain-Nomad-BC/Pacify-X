@@ -1,0 +1,26 @@
+{
+  "timestamp_utc": "2026-10-27T10:27:22.849503+00:00",
+  "segment": "resume12-automatic-editor-context",
+  "source_sha256": {
+    "extension/src/agentHarness/vscodeTools.js": "a852d380cc51136fe3a4a10f98f4ef242ef7dad78110b3c859334d20ed473698",
+    "extension/src/agentHarness/agentConsoleView.js": "52c270d86d31a77271aafa67ccd1a058471b758c9b6b688ac88d1366097c5458",
+    "extension/src/agentHarness/registerAgentConsole.js": "430088fe5acd389544c52a0bcdd8362a4ec039ad54d94387e6ce83373cbd33bb",
+    "extension/tests/vscode-tool-workspace-audit.test.js": "6cf1cac24f9781d5a3b8a2ded4ffd382b914b849298aca4021b3aa301afaa561",
+    "extension/tests/agent-console-messages.test.js": "20763a396811d22489437f97460293fb6a6ca37025fca0aad217eff255c4e3da",
+    "registry/test_profiles.json": "af8db866903ea4d1be9fe443518882a8a98446f9beb77c91c782d541c651afd0"
+  },
+  "evidence": [
+    "docs/repair/evidence/resume10-editor-context-scope-red.json",
+    "docs/repair/evidence/resume10-editor-context-scope-green.json",
+    "docs/repair/evidence/resume10-governed-editor-context.json",
+    "docs/repair/evidence/resume10-governed-editor-provenance.json"
+  ],
+  "observations": [
+    "Actual registered AgentConsoleView automatic editor context used first VSCode workspace rather than selected host project. Two real registration-path causal failures reproduced: foreign selected root and absent selected root still read content.",
+    "Shared readScopedEditor now owns both tool selection and automatic editor context. Actual registerAgentConsole passes current workspaceRootProvider. Absent/foreign roots never read editor text; selected physical root still works.",
+    "52combined actual registration, scope, event, native gateway, context and billing checks pass. Existing context test now supplies explicit selected project owner; its temporary fixture retained inside governed owned TMP instead of raw recursive removal.",
+    "Governed tool/context attempts remain phaseblocked. This is source/controlled-host operation, not installed VSCode acceptance or native directory-handle pinning. No independent card closure."
+  ],
+  "closed": false,
+  "reviewer": "UNASSIGNED"
+}

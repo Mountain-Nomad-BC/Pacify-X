@@ -1,0 +1,70 @@
+✔ vscode.active-editor.selection refuses absent selected workspace (5.4007ms)
+✔ vscode.diagnostics.active-file refuses absent selected workspace (2.1942ms)
+✔ vscode.workspace.find-files refuses absent selected workspace (1.3737ms)
+✔ vscode.active-editor.selection refuses another workspace before content access (1.8848ms)
+✔ vscode.diagnostics.active-file refuses another workspace before content access (1.6162ms)
+✔ selected physical editor remains readable (3.1329ms)
+✔ file discovery restricts query and output to selected workspace (4.3901ms)
+✔ actual junction cannot expose an external editor (2.4876ms)
+✔ workspace switch during asynchronous discovery invalidates result (1.7959ms)
+✔ non-finite discovery limit is rejected before query (1.4321ms)
+✔ actual hardlink cannot expose another workspace file (1.7187ms)
+✔ selected workspace junction is refused before diagnostics (1.4346ms)
+✔ file identity replacement during editor access invalidates result (5.4591ms)
+✔ ordinary filename beginning with two dots is inside workspace (2.5233ms)
+✖ actual registered console editor context uses other selected root (4820.6463ms)
+✖ actual registered console editor context uses absent selected root (1.4095ms)
+✔ actual registered console editor context uses current selected root (11.1709ms)
+ℹ tests 17
+ℹ suites 0
+ℹ pass 15
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 5011.4406
+
+✖ failing tests:
+
+test at extension\tests\vscode-tool-workspace-audit.test.js:43:56
+✖ actual registered console editor context uses other selected root (4820.6463ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\tests\vscode-tool-workspace-audit.test.js:50:45)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at extension\tests\vscode-tool-workspace-audit.test.js:43:56
+✖ actual registered console editor context uses absent selected root (1.4095ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\tests\vscode-tool-workspace-audit.test.js:50:45)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+

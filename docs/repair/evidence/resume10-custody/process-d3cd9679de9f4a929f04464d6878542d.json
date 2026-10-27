@@ -1,0 +1,29 @@
+{
+  "action_id": "workspace-operating-red",
+  "audit_record_hash": "56f85365a7458dbc2e289d3c8b04c6224bb47b197f5cb9407fe7834bf3c49cbe",
+  "duration_seconds": 0.4682467000000088,
+  "ended_at": "2026-10-27T10:23:51.264Z",
+  "exit_code": 1,
+  "failure_type": null,
+  "receipt_id": "process-d3cd9679de9f4a929f04464d6878542d",
+  "resource_id": "process-4fc7060988314312a61e76afff29b6d9",
+  "schema_version": "px.process-supervision-receipt/1.0",
+  "shutdown_mode": "natural",
+  "started_at": "2026-10-27T10:23:50.795Z",
+  "status": "exited",
+  "stderr": {
+    "decode_error_count": 0,
+    "dropped_bytes": 0,
+    "retained_bytes": 0,
+    "total_bytes": 0,
+    "truncated": false
+  },
+  "stdout": {
+    "decode_error_count": 0,
+    "dropped_bytes": 0,
+    "retained_bytes": 2293,
+    "total_bytes": 2293,
+    "truncated": false
+  },
+  "tree_closed": true
+}

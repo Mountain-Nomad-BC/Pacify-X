@@ -1,3 +1,5 @@
+> Latest continuation: [HANDOFF_RESUME12_2026-10-27.md](HANDOFF_RESUME12_2026-10-27.md). Its updates supersede the workspace/tool observations here.
+
 # Pacify-X continuation handoff — Resume11
 
 This is an unfinished repair checkpoint following Resume10 segments 1–10. The user requested continued completion and logging. No new user stop was requested. Do not interpret this document, component tests, the checkpoint commit, or the historic installed phase as rollout approval.

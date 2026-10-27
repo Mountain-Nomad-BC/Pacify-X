@@ -1,0 +1,28 @@
+{
+  "timestamp_utc": "2026-10-27T10:24:30.299402+00:00",
+  "segment": "resume12-workspace-boundary",
+  "source_sha256": {
+    "extension/src/agentHarness/vscodeTools.js": "bab146aa6aff4276d9b395a57ef46567657a498946a78ae8e67ff6f8ed6b2eaf",
+    "extension/tests/vscode-tool-workspace-audit.test.js": "3d229f5eefc06140a0e4f1b86fb6afcba2d9bb513b08bf4b0d19b442ebbc3e09",
+    "registry/test_profiles.json": "e3397ac7032fadbeca0cefaff6392c5531f45ada928ec901eee9f9963ab6f2fb",
+    "scripts/validate_certification_pipeline.py": "97886fe733f5e3851f1be75c69c4187a4e1a9b05a1b65a19a7650ae06936df79",
+    "docs/repair/evidence/resume12-owned-runner.py": "8fd5643a48ece1aff5b8732c8ec56b593897662b4624c97035777f64a3796e76"
+  },
+  "observations": [
+    "8 initial scope failures reproduced, then ordinary two-dot filename false denial reproduced separately. Editor/diagnostics require selected physical workspace; file discovery uses rooted RelativePattern and filters physical results to that root.",
+    "Actual Windows junction, hardlink, selected-root junction, file replacement and workspace-switch checks pass; external canary unchanged.62combined Node checks passed and29preflight checks passed.",
+    "Selected root/path identity rechecked around reads/awaits; bounded patterns/results; legitimate ..notes.txt accepted. Conservative observed link/rebind rejection is not native directory-handle pinning against OS adversary.",
+    "Focused runner now binds TMP/TEMP/TMPDIR to its registered retained workspace before launch, so actual Node filesystem fixtures stay in owned retained custody. Updated helper source archived; original older helper remains in historical evidence.",
+    "Mandatory suite count38; changed governed tool section remains phaseblocked. No native profile admission, package/install, broad refresh, merge, certification or finding closure.",
+    "User model/provider and real signed successor policy/authorization document paths requested asynchronously; no credentials requested. Independent source work continues while awaiting required actual operating configuration."
+  ],
+  "evidence": [
+    "docs/repair/evidence/resume10-workspace-scope-red.json",
+    "docs/repair/evidence/resume10-workspace-operating-red.json",
+    "docs/repair/evidence/resume10-workspace-operating-green.json",
+    "docs/repair/evidence/resume10-workspace-preflight.json",
+    "docs/repair/evidence/resume10-governed-workspace.json"
+  ],
+  "closed": false,
+  "reviewer": "UNASSIGNED"
+}

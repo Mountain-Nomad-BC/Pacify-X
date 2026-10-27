@@ -1,0 +1,29 @@
+{
+  "action_id": "governed-editor-provenance",
+  "audit_record_hash": "a1b5908df5c290b451c3b785ad979a75addca00733b6395447a0ac40d279e72e",
+  "duration_seconds": 0.7615246000000297,
+  "ended_at": "2026-10-27T10:26:52.022Z",
+  "exit_code": 1,
+  "failure_type": null,
+  "receipt_id": "process-98ffc0cfa8594b97b56d356368a83360",
+  "resource_id": "process-0788b0d96d82497287ae72aee2939f01",
+  "schema_version": "px.process-supervision-receipt/1.0",
+  "shutdown_mode": "natural",
+  "started_at": "2026-10-27T10:26:51.260Z",
+  "status": "exited",
+  "stderr": {
+    "decode_error_count": 0,
+    "dropped_bytes": 0,
+    "retained_bytes": 0,
+    "total_bytes": 0,
+    "truncated": false
+  },
+  "stdout": {
+    "decode_error_count": 0,
+    "dropped_bytes": 0,
+    "retained_bytes": 231,
+    "total_bytes": 231,
+    "truncated": false
+  },
+  "tree_closed": true
+}

@@ -1,0 +1,39 @@
+✔ vscode.active-editor.selection refuses absent selected workspace (5.8314ms)
+✔ vscode.diagnostics.active-file refuses absent selected workspace (5.1799ms)
+✔ vscode.workspace.find-files refuses absent selected workspace (2.4481ms)
+✔ vscode.active-editor.selection refuses another workspace before content access (3.0753ms)
+✔ vscode.diagnostics.active-file refuses another workspace before content access (2.1569ms)
+✔ selected physical editor remains readable (3.9256ms)
+✔ file discovery restricts query and output to selected workspace (6.1432ms)
+✔ actual junction cannot expose an external editor (3.91ms)
+✔ workspace switch during asynchronous discovery invalidates result (2.8846ms)
+✔ non-finite discovery limit is rejected before query (2.5489ms)
+✔ actual hardlink cannot expose another workspace file (2.553ms)
+✔ selected workspace junction is refused before diagnostics (2.9879ms)
+✔ file identity replacement during editor access invalidates result (6.1469ms)
+✖ ordinary filename beginning with two dots is inside workspace (2.5615ms)
+ℹ tests 14
+ℹ suites 0
+ℹ pass 13
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 178.3363
+
+✖ failing tests:
+
+test at extension\tests\vscode-tool-workspace-audit.test.js:41:1
+✖ ordinary filename beginning with two dots is inside workspace (2.5615ms)
+  Error: file-outside-workspace
+      at scopedFile (C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\src\agentHarness\vscodeTools.js:85:93)
+      at Object.execute (C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\src\agentHarness\vscodeTools.js:14:63)
+      at Object.run (C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\tests\vscode-tool-workspace-audit.test.js:21:45)
+      at TestContext.<anonymous> (C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\tests\vscode-tool-workspace-audit.test.js:41:240)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7)
+

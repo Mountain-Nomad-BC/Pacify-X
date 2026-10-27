@@ -1,0 +1,29 @@
+{
+  "action_id": "workspace-operating-green",
+  "audit_record_hash": "c75687594c70e89ecb86df6c9bb093ae359d698a400d05cd1ff372aba7377210",
+  "duration_seconds": 1.483723599999962,
+  "ended_at": "2026-10-27T10:24:06.168Z",
+  "exit_code": 0,
+  "failure_type": null,
+  "receipt_id": "process-497914bca4ab4d8d84b3914ad3b45da4",
+  "resource_id": "process-b235e98292e14e9fbdf55590d338e5f7",
+  "schema_version": "px.process-supervision-receipt/1.0",
+  "shutdown_mode": "natural",
+  "started_at": "2026-10-27T10:24:04.684Z",
+  "status": "exited",
+  "stderr": {
+    "decode_error_count": 0,
+    "dropped_bytes": 0,
+    "retained_bytes": 0,
+    "total_bytes": 0,
+    "truncated": false
+  },
+  "stdout": {
+    "decode_error_count": 0,
+    "dropped_bytes": 0,
+    "retained_bytes": 4990,
+    "total_bytes": 4990,
+    "truncated": false
+  },
+  "tree_closed": true
+}

@@ -1,6 +1,6 @@
 {
   "schema_version": "px.repair-resume/1.0",
-  "timestamp_utc": "2026-10-27T03:26:26.133102+00:00",
+  "timestamp_utc": "2026-10-27T10:27:22.849503+00:00",
   "reviewed_closed": 0,
   "cards": [
     {
@@ -1583,6 +1583,28 @@
         "Changed governed agent-task-lifecycle attempt remains historical-phase blocked; no current section receipt, broad validation, source projection refresh, package/install or certificate.",
         "This is ownership/currentness validation, not evidence authenticity. Governed persistent receipt ingestion, digest/custody verification and atomic task terminal policy remain open under PX-AUD-060/061. No real provider or installed-host acceptance claim.",
         "User reports branch committed/updated and says merge after certification. No new network attempt or merge performed; local branch pre-segment7480b32d verified. Earlier SSH failure remains historical; current remote state not independently queried."
+      ]
+    },
+    {
+      "evidence": "docs/repair/evidence/resume12-workspace-boundary.json",
+      "status": "component_operating_verified_not_closed",
+      "observations": [
+        "8 initial scope failures reproduced, then ordinary two-dot filename false denial reproduced separately. Editor/diagnostics require selected physical workspace; file discovery uses rooted RelativePattern and filters physical results to that root.",
+        "Actual Windows junction, hardlink, selected-root junction, file replacement and workspace-switch checks pass; external canary unchanged.62combined Node checks passed and29preflight checks passed.",
+        "Selected root/path identity rechecked around reads/awaits; bounded patterns/results; legitimate ..notes.txt accepted. Conservative observed link/rebind rejection is not native directory-handle pinning against OS adversary.",
+        "Focused runner now binds TMP/TEMP/TMPDIR to its registered retained workspace before launch, so actual Node filesystem fixtures stay in owned retained custody. Updated helper source archived; original older helper remains in historical evidence.",
+        "Mandatory suite count38; changed governed tool section remains phaseblocked. No native profile admission, package/install, broad refresh, merge, certification or finding closure.",
+        "User model/provider and real signed successor policy/authorization document paths requested asynchronously; no credentials requested. Independent source work continues while awaiting required actual operating configuration."
+      ]
+    },
+    {
+      "evidence": "docs/repair/evidence/resume12-editor-context.json",
+      "status": "actual_consumer_verified_not_closed",
+      "observations": [
+        "Actual registered AgentConsoleView automatic editor context used first VSCode workspace rather than selected host project. Two real registration-path causal failures reproduced: foreign selected root and absent selected root still read content.",
+        "Shared readScopedEditor now owns both tool selection and automatic editor context. Actual registerAgentConsole passes current workspaceRootProvider. Absent/foreign roots never read editor text; selected physical root still works.",
+        "52combined actual registration, scope, event, native gateway, context and billing checks pass. Existing context test now supplies explicit selected project owner; its temporary fixture retained inside governed owned TMP instead of raw recursive removal.",
+        "Governed tool/context attempts remain phaseblocked. This is source/controlled-host operation, not installed VSCode acceptance or native directory-handle pinning. No independent card closure."
       ]
     }
   ]

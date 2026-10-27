@@ -3,11 +3,12 @@
 const path = require('node:path');
 const crypto = require('node:crypto');
 const fs = require('node:fs');
+const { readScopedEditor } = require('./vscodeTools');
 const { MESSAGE_VERSION, ASSET_PROTOCOL, validateInbound, validateOutbound } = require('./agentConsoleMessages');
 const { buildAgentConsoleProjection, redactEventPayload } = require('./agentConsoleProjection');
 
 class AgentConsoleViewProvider {
-  constructor(vscode, context, options) { this.vscode = vscode; this.context = context; this.harness = options.harness; this.openControlPlane = options.openControlPlane; this.onDiagnostic = options.onDiagnostic || (() => {}); this.view = null; this.disposables = [];
+  constructor(vscode, context, options) { this.vscode = vscode; this.context = context; this.harness = options.harness; this.workspaceRootProvider = options.workspaceRootProvider; this.openControlPlane = options.openControlPlane; this.onDiagnostic = options.onDiagnostic || (() => {}); this.view = null; this.disposables = [];
     this.disposables.push(this.harness.eventBus.subscribe(event => Promise.all([this._post({ schemaVersion: MESSAGE_VERSION, type: 'event', event: { ...event, payload: redactEventPayload(event) } }), this.publish()]))); }
 
   resolveWebviewView(view) {
@@ -35,14 +36,12 @@ class AgentConsoleViewProvider {
 
   _defaults() { const s = this.harness.hostSettings?.() || {}; return { contextBudgetTokens: s.contextInjectionCapTokens || 12000, taskCostCeilingUsd: s.executionPolicy?.max_cost_per_task_usd ?? null, localFirst: s.executionPolicy?.local_first !== false, requireApprovalBeforeBillable: s.executionPolicy?.require_approval_before_billable_execution !== false }; }
   _editorRefs() {
-    const refs = []; const editor = this.vscode.window.activeTextEditor;
-    if (editor?.document?.uri?.scheme === 'file') {
-      const projectRoot = this.vscode.workspace.workspaceFolders?.[0]?.uri?.fsPath;
-      if (!withinProject(editor.document.uri.fsPath, projectRoot)) return refs;
-      const selected = editor.document.getText(editor.selection); if (selected) refs.push({ refId: 'active-selection', kind: 'editor-selection', label: `Selection: ${path.basename(editor.document.uri.fsPath)}`, source: editor.document.uri.fsPath, content: selected.slice(0, 50000), authority: 'active-editor' });
-      else refs.push({ refId: 'active-file-ref', kind: 'editor-file', label: `Active file: ${path.basename(editor.document.uri.fsPath)}`, source: editor.document.uri.fsPath, content: null, authority: 'active-editor' });
-    }
-    return refs;
+    let selected;
+    try { selected = readScopedEditor(this.vscode, this.workspaceRootProvider); }
+    catch { return []; }
+    if (!selected) return [];
+    if (selected.selection) return [{ refId: 'active-selection', kind: 'editor-selection', label: `Selection: ${path.basename(selected.file)}`, source: selected.file, content: selected.selection, authority: 'active-editor' }];
+    return [{ refId: 'active-file-ref', kind: 'editor-file', label: `Active file: ${path.basename(selected.file)}`, source: selected.file, content: null, authority: 'active-editor' }];
   }
 
   async publish() { return this._post({ schemaVersion: MESSAGE_VERSION, type: 'snapshot', assetProtocol: ASSET_PROTOCOL, state: buildAgentConsoleProjection(this.harness.project()) }); }

@@ -57,3 +57,6 @@ Native console routing and client framing/cancellation interface defects are rep
 
 
 Resume11 follow-on: completion evaluator/current controller now reject foreign/stale/conflicting evidence;46neighbor and29preflight checks passed. Mandatory suite count37. This completes the bounded verdict-ownership repair only; R06 governed evidence ingestion and task terminal reconciliation remain open. User reports branch updated; merge remains deferred until certification. See evidence/resume11-completion-boundary.json and updated Resume11 handoff.
+
+
+Resume12 continuation checkpoint: HANDOFF_RESUME12_2026-10-27.md records actual workspace and automatic-editor scope repairs,38mandatory suites,52latestcombinedchecks and prior62scopechecks/29preflight. Model-group dependency chain inspected but not ported. Real model/provider and signed successor document paths requested; no answer yet. Current source remains uncertified,0independentclosures. No merge/network/install/generated refresh.

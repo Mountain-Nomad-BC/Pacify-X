@@ -1,0 +1,140 @@
+✖ vscode.active-editor.selection refuses absent selected workspace (10.1429ms)
+✖ vscode.diagnostics.active-file refuses absent selected workspace (17.3101ms)
+✖ vscode.workspace.find-files refuses absent selected workspace (9.5431ms)
+✔ vscode.active-editor.selection refuses another workspace before content access (9.3883ms)
+✖ vscode.diagnostics.active-file refuses another workspace before content access (6.205ms)
+✔ selected physical editor remains readable (6.6078ms)
+✖ file discovery restricts query and output to selected workspace (10.3898ms)
+✖ actual junction cannot expose an external editor (7.1826ms)
+✖ workspace switch during asynchronous discovery invalidates result (7.3001ms)
+✖ non-finite discovery limit is rejected before query (9.5981ms)
+ℹ tests 10
+ℹ suites 0
+ℹ pass 2
+ℹ fail 8
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 752.5827
+
+✖ failing tests:
+
+test at extension\tests\vscode-tool-workspace-audit.test.js:23:119
+✖ vscode.active-editor.selection refuses absent selected workspace (10.1429ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\tests\vscode-tool-workspace-audit.test.js:24:38)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /workspace|scope/i,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at extension\tests\vscode-tool-workspace-audit.test.js:23:119
+✖ vscode.diagnostics.active-file refuses absent selected workspace (17.3101ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\tests\vscode-tool-workspace-audit.test.js:24:38)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /workspace|scope/i,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at extension\tests\vscode-tool-workspace-audit.test.js:23:119
+✖ vscode.workspace.find-files refuses absent selected workspace (9.5431ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\tests\vscode-tool-workspace-audit.test.js:24:38)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /workspace|scope/i,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at extension\tests\vscode-tool-workspace-audit.test.js:26:88
+✖ vscode.diagnostics.active-file refuses another workspace before content access (6.205ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\tests\vscode-tool-workspace-audit.test.js:27:63)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /workspace|scope/i,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at extension\tests\vscode-tool-workspace-audit.test.js:30:1
+✖ file discovery restricts query and output to selected workspace (10.3898ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    [
+      'owned.txt',
+  +   'private.txt'
+    ]
+  
+      at TestContext.<anonymous> (C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\tests\vscode-tool-workspace-audit.test.js:30:165)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ 'owned.txt', 'private.txt' ],
+    expected: [ 'owned.txt' ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+
+test at extension\tests\vscode-tool-workspace-audit.test.js:31:1
+✖ actual junction cannot expose an external editor (7.1826ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\tests\vscode-tool-workspace-audit.test.js:33:3)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /workspace|scope|link/i,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at extension\tests\vscode-tool-workspace-audit.test.js:35:1
+✖ workspace switch during asynchronous discovery invalidates result (7.3001ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\tests\vscode-tool-workspace-audit.test.js:35:207)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /workspace|scope/i,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+
+test at extension\tests\vscode-tool-workspace-audit.test.js:36:1
+✖ non-finite discovery limit is rejected before query (9.5981ms)
+  AssertionError [ERR_ASSERTION]: Missing expected rejection.
+      at async TestContext.<anonymous> (C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\tests\vscode-tool-workspace-audit.test.js:36:94)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    expected: /limit|argument/i,
+    operator: 'rejects',
+    diff: 'simple'
+  }
+

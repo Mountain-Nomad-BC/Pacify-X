@@ -94,7 +94,7 @@ function registerAgentConsole(vscode, context, options = {}) {
   }
 
   disposables.push(registerVsCodeReadOnlyTools(vscode, toolBroker, options.workspaceRootProvider));
-  const view = new AgentConsoleViewProvider(vscode, context, { harness, openControlPlane: options.openControlPlane, onDiagnostic: options.onDiagnostic });
+  const view = new AgentConsoleViewProvider(vscode, context, { harness, workspaceRootProvider: options.workspaceRootProvider, openControlPlane: options.openControlPlane, onDiagnostic: options.onDiagnostic });
   disposables.push(vscode.window.registerWebviewViewProvider('pacifyX.agentConsole', view, { webviewOptions: { retainContextWhenHidden: true } }), view);
   disposables.push(vscode.commands.registerCommand('pacifyX.openAgentConsole', () => vscode.commands.executeCommand('pacifyX.agentConsole.focus')));
   disposables.push(vscode.commands.registerCommand('pacifyX.newAgentTask', async () => { const goal = await vscode.window.showInputBox({ title: 'New PX Agent Task', prompt: 'Task goal' }); if (goal) { harness.createTask({ goal, mode: 'ASK', maxEffectClass: 'READ_ONLY', contextBudgetTokens: settings.contextInjectionCapTokens || 12000, taskCostCeilingUsd: settings.executionPolicy?.max_cost_per_task_usd ?? null, localFirst: settings.executionPolicy?.local_first !== false, requireApprovalBeforeBillable: settings.executionPolicy?.require_approval_before_billable_execution !== false }); await vscode.commands.executeCommand('pacifyX.agentConsole.focus'); } }));

@@ -1,0 +1,29 @@
+{
+  "action_id": "editor-context-scope-green",
+  "audit_record_hash": "364406d62d67e11890efd3cf03acdacfaaf9eef89948287007532589f190ac47",
+  "duration_seconds": 0.5779468000000634,
+  "ended_at": "2026-10-27T10:26:35.308Z",
+  "exit_code": 0,
+  "failure_type": null,
+  "receipt_id": "process-be1ceecc553c4b5e9363e628214ac3d6",
+  "resource_id": "process-f02f2eba1d094455834a96fc953ca3ba",
+  "schema_version": "px.process-supervision-receipt/1.0",
+  "shutdown_mode": "natural",
+  "started_at": "2026-10-27T10:26:34.730Z",
+  "status": "exited",
+  "stderr": {
+    "decode_error_count": 0,
+    "dropped_bytes": 0,
+    "retained_bytes": 0,
+    "total_bytes": 0,
+    "truncated": false
+  },
+  "stdout": {
+    "decode_error_count": 0,
+    "dropped_bytes": 0,
+    "retained_bytes": 4494,
+    "total_bytes": 4494,
+    "truncated": false
+  },
+  "tree_closed": true
+}

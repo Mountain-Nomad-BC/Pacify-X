@@ -1,0 +1,29 @@
+{
+  "action_id": "governed-editor-context",
+  "audit_record_hash": "a39cb1856e4150670f2bd7157adaa0191680f6e48d59dfa6224c0691b906cc6c",
+  "duration_seconds": 1.0149959000000308,
+  "ended_at": "2026-10-27T10:26:50.797Z",
+  "exit_code": 1,
+  "failure_type": null,
+  "receipt_id": "process-e97ff02a20c549fdb5ec16de970bee9f",
+  "resource_id": "process-1e551b2b77d44eecb5e5c5d9039fa584",
+  "schema_version": "px.process-supervision-receipt/1.0",
+  "shutdown_mode": "natural",
+  "started_at": "2026-10-27T10:26:49.782Z",
+  "status": "exited",
+  "stderr": {
+    "decode_error_count": 0,
+    "dropped_bytes": 0,
+    "retained_bytes": 0,
+    "total_bytes": 0,
+    "truncated": false
+  },
+  "stdout": {
+    "decode_error_count": 0,
+    "dropped_bytes": 0,
+    "retained_bytes": 231,
+    "total_bytes": 231,
+    "truncated": false
+  },
+  "tree_closed": true
+}
