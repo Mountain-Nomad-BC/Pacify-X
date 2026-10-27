@@ -47,3 +47,10 @@ Before each bounded repair session use the active PX-OS-1067 checkpoint and exac
 ## Resume6 bounded evidence
 
 See `evidence/resume6-*`: native contract causal failures; generated corpus checks; previously hidden missing owners; reviewed native Job/resource and event-ledger port; signed workflow resume tests; real Windows68-member operating probe, including two failed attempts retained. These are repair evidence, not final certification. The current source repairs are in bootstrap; rollout remains the newer source reference. No resume6 push, package, install, full profile or certification has occurred.
+
+
+## Resume10 checkpoint update
+
+Continue from `HANDOFF_RESUME11_2026-10-26.md`. Segments1-10 and original red/green evidence are retained; no finding independently closed. Required certification membership now covers36suites and27section definitions, all structurally resolved. Actual native catalog is empty; governed execution remains blocked by historical installed_operational campaign state. Remote catalog component port introduces source ownership197 versus published196; reconciliation remains deferred. Twenty contract dependency reviews and two namespace/caller migrations remain, followed by the outstanding R01-R14 requirements above.
+
+Native console routing and client framing/cancellation interface defects are repaired; actual tool broker now checks current durable task/run/worker authority before dispatch. These do not establish per-invocation native containment, durable effect replay, completion-evidence ingestion, live provider acceptance, or installed rollout operation. Local repair checkpoint f7e8fd940215a1f61b72e47d2ddcadf933d2e10b exists; normal SSH push was rejected by GitHub publickey authentication and remote status remains unverified. Preserve local source and evidence while fixing host authentication; do not force or change remote identity to evade it.

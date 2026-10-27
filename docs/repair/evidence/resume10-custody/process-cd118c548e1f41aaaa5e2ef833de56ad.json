@@ -1,0 +1,29 @@
+{
+  "action_id": "tool-authority-green",
+  "audit_record_hash": "31a631700464f10387cd84e0154a8ac1cf7685ad77384a4913da51bb2475268d",
+  "duration_seconds": 0.44765110001026187,
+  "ended_at": "2026-10-27T01:21:17.329Z",
+  "exit_code": 0,
+  "failure_type": null,
+  "receipt_id": "process-cd118c548e1f41aaaa5e2ef833de56ad",
+  "resource_id": "process-e217451091a949aeb5ccfd59770ae155",
+  "schema_version": "px.process-supervision-receipt/1.0",
+  "shutdown_mode": "natural",
+  "started_at": "2026-10-27T01:21:16.881Z",
+  "status": "exited",
+  "stderr": {
+    "decode_error_count": 0,
+    "dropped_bytes": 0,
+    "retained_bytes": 0,
+    "total_bytes": 0,
+    "truncated": false
+  },
+  "stdout": {
+    "decode_error_count": 0,
+    "dropped_bytes": 0,
+    "retained_bytes": 4481,
+    "total_bytes": 4481,
+    "truncated": false
+  },
+  "tree_closed": true
+}

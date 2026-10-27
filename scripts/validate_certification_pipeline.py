@@ -64,7 +64,7 @@ REQUIRED_LIFECYCLE_TESTS = (
     "tests/test_rollout_inventory.py",
     "tests/test_certification_pipeline_readiness.py",
 )
-REQUIRED_NODE_TESTS = ("extension/tests/gateway-catalog-binding.test.js", "extension/tests/mcp-client-protocol-audit.test.js", "extension/tests/context-provenance-audit.test.js", "extension/tests/agent-harness-streaming.test.js", "extension/tests/event-integrity-audit.test.js", "extension/tests/billing-settlement-audit.test.js", "extension/tests/task-state-custody.test.js", "extension/tests/provider-settlement-contract.test.js")
+REQUIRED_NODE_TESTS = ("extension/tests/tool-authority-audit.test.js", "extension/tests/gateway-catalog-binding.test.js", "extension/tests/mcp-client-protocol-audit.test.js", "extension/tests/context-provenance-audit.test.js", "extension/tests/agent-harness-streaming.test.js", "extension/tests/event-integrity-audit.test.js", "extension/tests/billing-settlement-audit.test.js", "extension/tests/task-state-custody.test.js", "extension/tests/provider-settlement-contract.test.js")
 
 
 def _unfiltered_pytest(command: list[str]) -> bool:

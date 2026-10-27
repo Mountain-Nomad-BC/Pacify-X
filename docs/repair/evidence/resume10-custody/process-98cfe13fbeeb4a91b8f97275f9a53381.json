@@ -1,0 +1,29 @@
+{
+  "action_id": "governed-tool-authority",
+  "audit_record_hash": "bf9e18868d32a4ba09cc9310fc3617e9f3ad259922d681c6c30839413759d6da",
+  "duration_seconds": 0.5373929000052158,
+  "ended_at": "2026-10-27T01:21:33.699Z",
+  "exit_code": 1,
+  "failure_type": null,
+  "receipt_id": "process-98cfe13fbeeb4a91b8f97275f9a53381",
+  "resource_id": "process-a424b4a1331b479aa71b4b746beee0ea",
+  "schema_version": "px.process-supervision-receipt/1.0",
+  "shutdown_mode": "natural",
+  "started_at": "2026-10-27T01:21:33.162Z",
+  "status": "exited",
+  "stderr": {
+    "decode_error_count": 0,
+    "dropped_bytes": 0,
+    "retained_bytes": 0,
+    "total_bytes": 0,
+    "truncated": false
+  },
+  "stdout": {
+    "decode_error_count": 0,
+    "dropped_bytes": 0,
+    "retained_bytes": 231,
+    "total_bytes": 231,
+    "truncated": false
+  },
+  "tree_closed": true
+}

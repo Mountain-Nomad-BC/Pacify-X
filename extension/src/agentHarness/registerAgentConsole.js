@@ -29,7 +29,7 @@ function registerAgentConsole(vscode, context, options = {}) {
   });
   const workerRegistry = new WorkerRegistry();
   const contextCompiler = new ContextCompiler({ retrievalProvider: options.retrievalProvider || null }); const tinyLibrarian = new TinyLibrarian({ modelRunner: options.tinyModelRunner || null });
-  const toolBroker = new ToolBroker({ eventBus, approvalProvider: options.approvalProvider || null });
+  const toolBroker = new ToolBroker({ taskStore, eventBus, approvalProvider: options.approvalProvider || null });
   const harness = new HarnessController({ eventBus, taskStore, budgetLedger, workerRegistry, contextCompiler, tinyLibrarian, toolBroker, hostSettings });
 
   if (typeof options.activityObserver === 'function') disposables.push(eventBus.subscribe(event => {

@@ -2805,6 +2805,27 @@
       "max_parallel_chunks": 1,
       "chunk_timeout_seconds": 120,
       "timeout_seconds": 180
+    },
+    "agent-tool-authority": {
+      "description": "Current durable host task/run/selected-worker authority and explicit approval at actual tool dispatch; rejects foreign evidence. No durable effect replay or installed sandbox claim.",
+      "source_patterns": [
+        "extension/src/agentHarness/toolBroker.js",
+        "extension/src/agentHarness/registerAgentConsole.js",
+        "extension/src/agentHarness/taskStore.js",
+        "extension/tests/tool-authority-audit.test.js",
+        "registry/test_profiles.json"
+      ],
+      "command": [
+        "node",
+        "--test",
+        "tests/tool-authority-audit.test.js",
+        "tests/agent-tool-broker.test.js"
+      ],
+      "cwd": "extension",
+      "chunk_size": 0,
+      "max_parallel_chunks": 1,
+      "chunk_timeout_seconds": 120,
+      "timeout_seconds": 180
     }
   },
   "certification": {
@@ -2834,7 +2855,8 @@
       "native-provider-protocol",
       "context-provenance",
       "remote-profile-catalog",
-      "agent-gateway-integration"
+      "agent-gateway-integration",
+      "agent-tool-authority"
     ],
     "whole_suite_after_sections": true,
     "required_groups": [

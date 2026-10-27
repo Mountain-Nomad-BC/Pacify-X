@@ -1,0 +1,29 @@
+{
+  "action_id": "governed-final-event",
+  "audit_record_hash": "47481592d318564322c068cd8b5bc904a2692000184dc4494c1fe5ab067731b0",
+  "duration_seconds": 1.8120817000017269,
+  "ended_at": "2026-10-27T01:22:02.078Z",
+  "exit_code": 1,
+  "failure_type": null,
+  "receipt_id": "process-d473674848c6443084b97c426dc1e333",
+  "resource_id": "process-451ca949a2324b89a7eb0ee51355f5fe",
+  "schema_version": "px.process-supervision-receipt/1.0",
+  "shutdown_mode": "natural",
+  "started_at": "2026-10-27T01:22:00.266Z",
+  "status": "exited",
+  "stderr": {
+    "decode_error_count": 0,
+    "dropped_bytes": 0,
+    "retained_bytes": 0,
+    "total_bytes": 0,
+    "truncated": false
+  },
+  "stdout": {
+    "decode_error_count": 0,
+    "dropped_bytes": 0,
+    "retained_bytes": 231,
+    "total_bytes": 231,
+    "truncated": false
+  },
+  "tree_closed": true
+}

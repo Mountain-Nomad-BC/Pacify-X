@@ -1,0 +1,28 @@
+{
+  "timestamp_utc": "2026-10-27T01:21:59.885239+00:00",
+  "segment": "resume10-current-tool-authority-and-git-checkpoint",
+  "source_sha256": {
+    "extension/src/agentHarness/toolBroker.js": "9d5e5f7566bfccebd9fc3f36858b875f34d9499a7e54d41332f8e4eb200be61d",
+    "extension/src/agentHarness/registerAgentConsole.js": "dda1cd402d6ef3cb940fd5c59fa679fef493a6a12deb37fd4886711162e945fa",
+    "extension/tests/tool-authority-audit.test.js": "de839486eb40a5ae78076fabf61e87b753c80beacd0ed02dc50c2bfa179dbb67",
+    "scripts/validate_certification_pipeline.py": "70ba0e9c33b0ff886c16d76ec9d10468e7085ee1cd2db5cbeeedf04f6e6a5ed0",
+    "registry/test_profiles.json": "11e77e38b8ac8fd3de6abaae1ad059026c6950c2c303bf2e0a56b6f42cec3d53"
+  },
+  "evidence": [
+    "docs/repair/evidence/resume10-tool-authority-red.json",
+    "docs/repair/evidence/resume10-tool-durable-red.json",
+    "docs/repair/evidence/resume10-tool-final-green.json",
+    "docs/repair/evidence/resume10-tool-preflight.json",
+    "docs/repair/evidence/resume10-governed-tool-authority.json"
+  ],
+  "observations": [
+    "Tool authority now resolved from current native host TaskStore, exact task/run/selected worker, active state and recovery fence. Caller-supplied policy cannot widen stored ceiling.",
+    "Approval must be boolean true; request is frozen bounded JSON; authority and registration rechecked after approval. Pending policy persistence acknowledged before effects. Returned evidence must match task/run, otherwise operation fails without publishing successful evidence.",
+    "8 initial tool-authority causal failures and one later durable-ack failure retained. Final56 combined Node checks passed;29 preflight checks passed. Governed tool authority attempt blocked by installed_operational historical campaign phase.",
+    "Read-only tool normal path verified; mutating tool authority only controlled test callbacks, no actual filesystem mutation. No durable request dedup/effect-intent replay, native cancellation closure or independently verified evidence ingestion claim.",
+    "Local checkpoint f7e8fd940215a1f61b72e47d2ddcadf933d2e10b preserves inherited and segments1-9 source/evidence. SSH ls-remote, normal push and verification each failed Permission denied (publickey); remote status unknown. Shell aggregate exit0 came from final local rev-parse and is not push success. No force/reset/credential alteration.",
+    "Network admission36217 required closing prior local session36214 (superseded36216); first concurrent network admission was rejected before any network effect. Network attempt closed36218; current local session36219 binds checkpoint36215."
+  ],
+  "closed": false,
+  "reviewer": "UNASSIGNED"
+}

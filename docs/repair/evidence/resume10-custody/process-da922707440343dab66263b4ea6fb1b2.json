@@ -1,0 +1,29 @@
+{
+  "action_id": "tool-authority-red",
+  "audit_record_hash": "0d6810156a4e411f4a2bc15e05e888d898dbbe41ccbec132f66f123fed3b51ee",
+  "duration_seconds": 0.5553429999999935,
+  "ended_at": "2026-10-27T01:21:02.271Z",
+  "exit_code": 1,
+  "failure_type": null,
+  "receipt_id": "process-da922707440343dab66263b4ea6fb1b2",
+  "resource_id": "process-9c65cf1417e0404587ff544ab9f4c976",
+  "schema_version": "px.process-supervision-receipt/1.0",
+  "shutdown_mode": "natural",
+  "started_at": "2026-10-27T01:21:01.716Z",
+  "status": "exited",
+  "stderr": {
+    "decode_error_count": 0,
+    "dropped_bytes": 0,
+    "retained_bytes": 0,
+    "total_bytes": 0,
+    "truncated": false
+  },
+  "stdout": {
+    "decode_error_count": 0,
+    "dropped_bytes": 0,
+    "retained_bytes": 6313,
+    "total_bytes": 6313,
+    "truncated": false
+  },
+  "tree_closed": true
+}
