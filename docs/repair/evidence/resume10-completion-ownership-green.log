@@ -1,0 +1,52 @@
+✔ worker registry accepts an explicit provider profile and only declared latency classes (32.3241ms)
+✔ canonical event bus is bounded and monotonic (43.0856ms)
+✔ router never selects a deterministically rejected worker (22.3426ms)
+✔ context compiler dedupes and honors budget (16.0234ms)
+✔ tiny librarian fallback produces visible structured classification (8.6289ms)
+✔ completion requires execution evidence and ignores prose (16.5947ms)
+✔ valid current-run evidence satisfies the declared requirement (53.267ms)
+✔ foreign taskId cannot satisfy completion (3.8542ms)
+✔ foreign runId cannot satisfy completion (2.7893ms)
+✔ missing current run fails closed for required evidence (9.4965ms)
+✔ foreign current-run owner fails closed (4.2807ms)
+✔ out-of-run timestamp 2000-01-01T00:00:00.000Z cannot satisfy completion (4.8468ms)
+✔ out-of-run timestamp 2099-01-01T00:00:00.000Z cannot satisfy completion (2.6944ms)
+✔ out-of-run timestamp invalid cannot satisfy completion (3.5854ms)
+✔ conflicting duplicate identity invalidates both records regardless of order (4.3324ms)
+✔ identical retransmission contributes one evidence ID (9.4451ms)
+✔ malformed evidence does not masquerade as a typed pass (4.162ms)
+✔ PX-AUD-038 conclusionSha256 binds full text not just first 4096 chars (115.4509ms)
+✔ failed synchronous save cannot publish a task mutation (38.9128ms)
+✔ cancelled task cannot return to implementation or start a run (3.6619ms)
+✔ only one live run can own a task (13.7633ms)
+✔ task and run identities cannot be rebound by an update (3.4778ms)
+✔ corrupt persisted state is refused rather than silently replaced with empty state (1.328ms)
+✔ persistence rejection prevents further dispatch-facing reads (3.6783ms)
+✔ stale disposable cannot delete a replacement worker registration (10.6822ms)
+✔ late health response cannot overwrite replacement worker health (3.771ms)
+✔ controller does not dispatch before worker selection is durably acknowledged (151.7015ms)
+✔ cancellation settles usage but cannot publish completion or late deltas (24.0891ms)
+✔ controller rejects a run belonging to another task before dispatch (4.5906ms)
+✔ returned task values cannot mutate persisted ownership or constraints (2.617ms)
+✔ restart cannot redispatch a worker-selected run with unknown previous effects (4.7641ms)
+✔ cancel request has a bound while unsettled adapter remains fenced from replacement (36.986ms)
+✔ actual task/run/selected worker may execute read-only tool (62.788ms)
+✔ tool rejects foreign taskId before side effect (4.4477ms)
+✔ tool rejects foreign runId before side effect (3.3751ms)
+✔ tool rejects foreign workerId before side effect (4.6965ms)
+✔ caller cannot raise stored effect ceiling by forging task snapshot (5.1872ms)
+✔ truthy approval object is not explicit approval (3.7601ms)
+✔ cancellation while approval awaits fences dispatch (6.1717ms)
+✔ foreign tool evidence cannot publish successful receipt (9.02ms)
+✔ missing current store authority fails closed (4.477ms)
+✔ tool dispatch waits for current task policy persistence acknowledgement (55.153ms)
+✔ approval receives immutable request arguments and cannot substitute authority (4.0378ms)
+ℹ tests 43
+ℹ suites 0
+ℹ pass 43
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1559.3396
+

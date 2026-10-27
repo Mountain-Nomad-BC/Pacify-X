@@ -1,0 +1,32 @@
+{
+  "timestamp_utc": "2026-10-27T03:26:26.133102+00:00",
+  "segment": "resume11-completion-evidence-ownership",
+  "findings": [
+    "PX-AUD-060",
+    "PX-AUD-061"
+  ],
+  "source_sha256": {
+    "extension/src/agentHarness/completionEvaluator.js": "f177ba74f0086f2df6a4654ee4be5f3f09c5fd3dca98d16ab9087266c7df1da4",
+    "extension/src/agentHarness/harnessController.js": "8091362c3f5d74d22d71aa7406f3d6689692aac6ae4abc6978a28295bc7f7864",
+    "extension/tests/completion-ownership-audit.test.js": "cb991eccdc673acc237d1dc23813e8c59e6bb2d23e900730cc351b1339c02bb5",
+    "extension/tests/agent-harness-core.test.js": "bff650cec584479acd0f0cd20a9d59dd5e330bea18ba16a12912a8aa0611f111",
+    "registry/test_profiles.json": "d334dd7c8dcd78b260883a296c523870c39656448ee3255d1bdb1b4ac5238a29",
+    "scripts/validate_certification_pipeline.py": "7cf6f14010adb1e0c972045c8ff00c602beb7ec295d9b510b31e826053a06241"
+  },
+  "evidence": [
+    "docs/repair/evidence/resume10-completion-ownership-red.json",
+    "docs/repair/evidence/resume10-completion-controller-green.json",
+    "docs/repair/evidence/resume10-completion-preflight.json",
+    "docs/repair/evidence/resume10-governed-completion-lifecycle.json"
+  ],
+  "observations": [
+    "10 causal completion failures reproduced before repair: foreign task/run, absent or foreign run owner, stale/future/malformed time, conflicting duplicate evidence and malformed records could satisfy requirements; identical retransmission duplicated IDs.",
+    "Evaluator now uses typed Evidence and current PxRun, exact task/run ownership, current-run capture interval, bounded record count and conflict rejection. Identical retransmission contributes one ID. Actual controller passes its current run.",
+    "46 focused neighboring checks passed including 3 actual-controller cases with controlled adapter: current evidence passes, foreign task and previous-run evidence fail. 29 certification preflight checks passed. Native supervised children tree_closed/resource_inactive true.",
+    "Changed governed agent-task-lifecycle attempt remains historical-phase blocked; no current section receipt, broad validation, source projection refresh, package/install or certificate.",
+    "This is ownership/currentness validation, not evidence authenticity. Governed persistent receipt ingestion, digest/custody verification and atomic task terminal policy remain open under PX-AUD-060/061. No real provider or installed-host acceptance claim.",
+    "User reports branch committed/updated and says merge after certification. No new network attempt or merge performed; local branch pre-segment7480b32d verified. Earlier SSH failure remains historical; current remote state not independently queried."
+  ],
+  "closed": false,
+  "reviewer": "UNASSIGNED"
+}

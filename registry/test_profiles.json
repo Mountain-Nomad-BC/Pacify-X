@@ -2543,13 +2543,15 @@
         "extension/src/agentHarness/**",
         "extension/tests/task-state-custody.test.js",
         "extension/tests/agent-harness-core.test.js",
-        "registry/test_profiles.json"
+        "registry/test_profiles.json",
+        "extension/tests/completion-ownership-audit.test.js"
       ],
       "command": [
         "node",
         "--test",
         "tests/task-state-custody.test.js",
-        "tests/agent-harness-core.test.js"
+        "tests/agent-harness-core.test.js",
+        "tests/completion-ownership-audit.test.js"
       ],
       "cwd": "extension",
       "chunk_size": 1,

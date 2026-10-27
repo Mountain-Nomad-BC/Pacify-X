@@ -1,0 +1,29 @@
+{
+  "action_id": "governed-completion-lifecycle",
+  "audit_record_hash": "4db72e73c662b0305caccfc573c0dab8b26ab7e3dc9f82c64426a785d0afa005",
+  "duration_seconds": 4.819330300000729,
+  "ended_at": "2026-10-27T03:25:37.298Z",
+  "exit_code": 1,
+  "failure_type": null,
+  "receipt_id": "process-5bc7f80141294801a3e52031101ca29b",
+  "resource_id": "process-f72e7ba4401b45e187b3509f45a6d0ea",
+  "schema_version": "px.process-supervision-receipt/1.0",
+  "shutdown_mode": "natural",
+  "started_at": "2026-10-27T03:25:32.479Z",
+  "status": "exited",
+  "stderr": {
+    "decode_error_count": 0,
+    "dropped_bytes": 0,
+    "retained_bytes": 0,
+    "total_bytes": 0,
+    "truncated": false
+  },
+  "stdout": {
+    "decode_error_count": 0,
+    "dropped_bytes": 0,
+    "retained_bytes": 231,
+    "total_bytes": 231,
+    "truncated": false
+  },
+  "tree_closed": true
+}

@@ -1,0 +1,29 @@
+{
+  "action_id": "completion-preflight",
+  "audit_record_hash": "ae2eab6e852492501635d70b78dca66852eeb93649bb3dc444bc41c3ed95ed9a",
+  "duration_seconds": 14.384418100002222,
+  "ended_at": "2026-10-27T03:25:29.121Z",
+  "exit_code": 0,
+  "failure_type": null,
+  "receipt_id": "process-eefb42b6c32d4a14b24758ab759c8555",
+  "resource_id": "process-d8d8e33577d64b2191f612f2fc2f839c",
+  "schema_version": "px.process-supervision-receipt/1.0",
+  "shutdown_mode": "natural",
+  "started_at": "2026-10-27T03:25:14.737Z",
+  "status": "exited",
+  "stderr": {
+    "decode_error_count": 0,
+    "dropped_bytes": 0,
+    "retained_bytes": 0,
+    "total_bytes": 0,
+    "truncated": false
+  },
+  "stdout": {
+    "decode_error_count": 0,
+    "dropped_bytes": 0,
+    "retained_bytes": 101,
+    "total_bytes": 101,
+    "truncated": false
+  },
+  "tree_closed": true
+}

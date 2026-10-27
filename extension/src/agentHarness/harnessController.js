@@ -65,7 +65,7 @@ class HarnessController {
       this.eventBus.emit('worker.completed', { taskId: task.taskId, runId: run.runId, turnId, roundId, workerId: route.selected.workerId, status: 'succeeded', summary: 'Worker turn completed.', payload: { text: String(result?.text || '').slice(0, 120000) } });
       run = this.taskStore.updateRun(run.runId, { status: 'complete', round: run.round + 1 });
       await this.taskStore.flush();
-      const verdict = evaluateCompletion(this.taskStore.requireTask(task.taskId), this.evidence.get(task.taskId) || []);
+      const verdict = evaluateCompletion(this.taskStore.requireTask(task.taskId), this.evidence.get(task.taskId) || [], run);
       this.eventBus.emit('verification.completed', { taskId: task.taskId, runId: run.runId, turnId, roundId, status: verdict.complete ? 'succeeded' : 'info', summary: verdict.complete ? 'Completion contract satisfied.' : 'Worker turn finished; completion contract still has open requirements.', payload: verdict });
       return { task: this.taskStore.requireTask(task.taskId), run, text: result?.text || '', conclusionSha256: sha256(String(result?.text || '')), librarian, contextPack, route, verdict };
     } catch (error) {

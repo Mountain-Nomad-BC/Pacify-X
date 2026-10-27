@@ -1,0 +1,29 @@
+{
+  "action_id": "completion-controller-green",
+  "audit_record_hash": "3965b0356028f2d317fb88f035cd6e9b478e8e4b9e9659aa4b053b051e79f925",
+  "duration_seconds": 3.4982651000027545,
+  "ended_at": "2026-10-27T03:24:55.631Z",
+  "exit_code": 0,
+  "failure_type": null,
+  "receipt_id": "process-8d68591ca8884786b212b9303663c063",
+  "resource_id": "process-e09a39d89e974b4da5f95c6954a4f2d9",
+  "schema_version": "px.process-supervision-receipt/1.0",
+  "shutdown_mode": "natural",
+  "started_at": "2026-10-27T03:24:52.133Z",
+  "status": "exited",
+  "stderr": {
+    "decode_error_count": 0,
+    "dropped_bytes": 0,
+    "retained_bytes": 0,
+    "total_bytes": 0,
+    "truncated": false
+  },
+  "stdout": {
+    "decode_error_count": 0,
+    "dropped_bytes": 0,
+    "retained_bytes": 3585,
+    "total_bytes": 3585,
+    "truncated": false
+  },
+  "tree_closed": true
+}

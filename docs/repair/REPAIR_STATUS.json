@@ -1,6 +1,6 @@
 {
   "schema_version": "px.repair-resume/1.0",
-  "timestamp_utc": "2026-10-27T01:21:59.885239+00:00",
+  "timestamp_utc": "2026-10-27T03:26:26.133102+00:00",
   "reviewed_closed": 0,
   "cards": [
     {
@@ -842,10 +842,13 @@
       "kit_state": "UNVERIFIED_CURRENT_REPO",
       "inherited_state_unverified": "UNVERIFIED_CURRENT_REPO",
       "current_source": "bootstrap checkout",
-      "evidence": [],
+      "evidence": [
+        "docs/repair/evidence/resume11-completion-boundary.json"
+      ],
       "reviewer": "UNASSIGNED",
       "closed": false,
-      "next_action": "Match card acceptance to current bootstrap source; port verified rollout implementations semantically where needed."
+      "next_action": "Match card acceptance to current bootstrap source; port verified rollout implementations semantically where needed.",
+      "latest_segment": "Completion ownership/currentness repaired with actual controller tests; trusted persistent ingestion and task terminal reconciliation remain open. Not independently reviewed/closed."
     },
     {
       "id": "PX-AUD-061",
@@ -855,10 +858,13 @@
       "kit_state": "UNVERIFIED_CURRENT_REPO",
       "inherited_state_unverified": "UNVERIFIED_CURRENT_REPO",
       "current_source": "bootstrap checkout",
-      "evidence": [],
+      "evidence": [
+        "docs/repair/evidence/resume11-completion-boundary.json"
+      ],
       "reviewer": "UNASSIGNED",
       "closed": false,
-      "next_action": "Match card acceptance to current bootstrap source; port verified rollout implementations semantically where needed."
+      "next_action": "Match card acceptance to current bootstrap source; port verified rollout implementations semantically where needed.",
+      "latest_segment": "Completion ownership/currentness repaired with actual controller tests; trusted persistent ingestion and task terminal reconciliation remain open. Not independently reviewed/closed."
     },
     {
       "id": "PX-AUD-062",
@@ -1565,6 +1571,18 @@
         "Read-only tool normal path verified; mutating tool authority only controlled test callbacks, no actual filesystem mutation. No durable request dedup/effect-intent replay, native cancellation closure or independently verified evidence ingestion claim.",
         "Local checkpoint f7e8fd940215a1f61b72e47d2ddcadf933d2e10b preserves inherited and segments1-9 source/evidence. SSH ls-remote, normal push and verification each failed Permission denied (publickey); remote status unknown. Shell aggregate exit0 came from final local rev-parse and is not push success. No force/reset/credential alteration.",
         "Network admission36217 required closing prior local session36214 (superseded36216); first concurrent network admission was rejected before any network effect. Network attempt closed36218; current local session36219 binds checkpoint36215."
+      ]
+    },
+    {
+      "evidence": "docs/repair/evidence/resume11-completion-boundary.json",
+      "status": "component_verified_not_closed",
+      "observations": [
+        "10 causal completion failures reproduced before repair: foreign task/run, absent or foreign run owner, stale/future/malformed time, conflicting duplicate evidence and malformed records could satisfy requirements; identical retransmission duplicated IDs.",
+        "Evaluator now uses typed Evidence and current PxRun, exact task/run ownership, current-run capture interval, bounded record count and conflict rejection. Identical retransmission contributes one ID. Actual controller passes its current run.",
+        "46 focused neighboring checks passed including 3 actual-controller cases with controlled adapter: current evidence passes, foreign task and previous-run evidence fail. 29 certification preflight checks passed. Native supervised children tree_closed/resource_inactive true.",
+        "Changed governed agent-task-lifecycle attempt remains historical-phase blocked; no current section receipt, broad validation, source projection refresh, package/install or certificate.",
+        "This is ownership/currentness validation, not evidence authenticity. Governed persistent receipt ingestion, digest/custody verification and atomic task terminal policy remain open under PX-AUD-060/061. No real provider or installed-host acceptance claim.",
+        "User reports branch committed/updated and says merge after certification. No new network attempt or merge performed; local branch pre-segment7480b32d verified. Earlier SSH failure remains historical; current remote state not independently queried."
       ]
     }
   ]

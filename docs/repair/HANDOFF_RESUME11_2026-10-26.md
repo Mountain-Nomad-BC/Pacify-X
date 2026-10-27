@@ -2,6 +2,16 @@
 
 This is an unfinished repair checkpoint following Resume10 segments 1–10. The user requested continued completion and logging. No new user stop was requested. Do not interpret this document, component tests, the checkpoint commit, or the historic installed phase as rollout approval.
 
+## Latest bounded follow-on ? supersedes the evaluator observation below
+
+User requested another bounded repair segment and reports the Git branch is updated; merge only after certification. No new remote operation or merge was performed. Source before this segment was7480b32d. Resolve the final follow-on commit from Git log.
+
+Completion verdict ownership is now repaired: typed records must match the exact task/current run, capture time must lie in that run, conflicting duplicate IDs are excluded, identical retransmissions deduplicate and malformed evidence cannot count. Controller passes its actual current run.10 causal failures retained;46 focused tests passed including actual-controller current/foreign/previous-run cases;29 preflight tests passed. Evidence: `evidence/resume11-completion-boundary.json`. Filenames of supervised test receipts retain the existing `resume10-` runner prefix; they are not historical receipts reused to claim this repair.
+
+The required lifecycle section now includes the completion suite; mandatory suite count is37 (previous36 superseded), with27section definitions. Governed lifecycle attempt is still phase blocked. No schema ownership generation or certification performed. Trusted persistent receipt ingestion, provenance/digest verification and atomic task terminal reconciliation remain open. The paragraph below stating the evaluator checks only type/pass is historical and superseded by this follow-on; the rest of its remaining lifecycle plan still applies. No card independently closed.
+
+Session `repair-resume11-completion-boundary`, admission36222, binds checkpoint36220. Consult ledger for its final checkpoint/closure; a successor must admit fresh scopes after closure.
+
 ## Source and Git custody
 
 - Work in `C:/Users/Ben/Documents/bootstrap_project/Pacify-X`, branch `codex/repair-reconcile-20261025`.
