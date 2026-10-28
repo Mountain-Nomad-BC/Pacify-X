@@ -1,0 +1,31 @@
+{
+  "date": "2026-10-28",
+  "scope": "Git reconciliation and source checkpoint; certification remains separate",
+  "original_head": "e4c6806f55c612b25133040edbb316531c78d708",
+  "incoming_rollout": "5ebc7368e466eebba981cd6e986113b09ee357f1",
+  "original_main": "67827f97b9d101befb4007e8ad19757ceeb74455",
+  "repair_commits_since_main": 9,
+  "rollout_commits_since_main": 8,
+  "unmerged_entries": [],
+  "recovery_refs": [
+    "backup/pre-unify-repair-20261028",
+    "backup/pre-unify-rollout-20261028",
+    "backup/pre-unify-main-20261028"
+  ],
+  "local_snapshots": ".audit-handoff/git-unify-20261028",
+  "generated_registry_decision": "Retain repair branch projections without refresh while intake remains open. Both branch conflict preimages retained under docs/repair/evidence/merge-2026-10-28.",
+  "historical_branches": "Preserve backup/*, pxos-backup-*, recovery/* and stale worktree registrations; no destructive pruning or history rewrite.",
+  "verification": {
+    "node_focused": "60 passed, zero failed",
+    "syntax_evidence": "git-unify-syntax.json",
+    "billing_gate_evidence": "git-unify-billing-gate.json",
+    "ledger_regression": "14 passed in 118.10 seconds; verbose rerun exit 0, process tree closed and resource inactive. Initial bounded run retained as stopped, not success.",
+    "git_diff_check": "passed"
+  },
+  "open_product_work": [
+    "Generated projection reconciliation at approved repair freeze",
+    "Protected model-group/provider/host operating evidence",
+    "Independent repair review and ordered release certification"
+  ],
+  "remote": "Not yet checked in this checkpoint; final remote verification follows local integration."
+}

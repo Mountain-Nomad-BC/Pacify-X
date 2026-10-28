@@ -72,7 +72,7 @@ class ProcessMemoryTests(unittest.TestCase):
             commission(project, "new", apply=True, source_root=ROOT)
             record_process_candidate(ROOT, project, record(), apply=False)
             self.assertFalse(
-                (project / ".engineering-bootstrap/project-management/process").exists()
+                (project / ".agentic_engineering_os_px/project-management/process").exists()
             )
             applied = record_process_candidate(ROOT, project, record(), apply=True)
             self.assertTrue((project / applied["receipt"]).is_file())

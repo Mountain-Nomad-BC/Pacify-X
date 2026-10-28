@@ -21,8 +21,8 @@
     "registry/completion_status.json": ["registry/current_evidence_index.json", "registry/test_group_index.json"]
   },
   "post_certification_writes": [
-    ".engineering-bootstrap/release-transaction.json",
-    ".engineering-bootstrap/runtime-core/completion_status.json",
+    ".agentic_engineering_os_px/release-transaction.json",
+    ".agentic_engineering_os_px/runtime-core/completion_status.json",
     "evidence/releases/<release>/certificate.json",
     "evidence/releases/<release>/certificate.json.sig",
     "evidence/releases/<release>/<run-id>"

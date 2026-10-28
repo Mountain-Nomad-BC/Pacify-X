@@ -11,6 +11,9 @@ _RISK = {"R0": 0, "R1": 1, "R2": 2, "R3": 3, "R4": 4}
 # Wave-4 entries are declared here so installation of those modules automatically extends
 # the projection without Wave 3 importing them or pretending they are currently usable.
 _OPTIONAL_MODULES = {
+    "semantic.tie.retrieve": "runtime.usage_memory",
+    "semantic.remap.plan": "runtime.semantic_migration",
+    "semantic.remap.compile": "runtime.semantic_migration",
     "semantic.knowledge.fuse": "runtime.semantic_retrieval_fusion",
     "semantic.memory.integrity": "runtime.semantic_memory_integrity",
     "semantic.memory.plan_relocation": "runtime.semantic_memory_relocation",
@@ -19,6 +22,9 @@ _OPTIONAL_MODULES = {
 }
 
 OPERATIONS: tuple[IntegrationOperation, ...] = (
+    IntegrationOperation("semantic.tie.retrieve", (IntegrationEffect.READ,), "R0", "rev1xx-tie", cross_project_allowed=True),
+    IntegrationOperation("semantic.remap.plan", (IntegrationEffect.READ, IntegrationEffect.PLAN), "R1", "rev1xx-w2"),
+    IntegrationOperation("semantic.remap.compile", (IntegrationEffect.READ, IntegrationEffect.PLAN), "R1", "rev1xx-w2"),
     IntegrationOperation("semantic.project.summary", (IntegrationEffect.READ,), "R0", "wave1", cross_project_allowed=True),
     IntegrationOperation("semantic.symbol.find", (IntegrationEffect.READ,), "R0", "wave1", cross_project_allowed=True),
     IntegrationOperation("semantic.symbol.overview", (IntegrationEffect.READ,), "R0", "wave1", cross_project_allowed=True),

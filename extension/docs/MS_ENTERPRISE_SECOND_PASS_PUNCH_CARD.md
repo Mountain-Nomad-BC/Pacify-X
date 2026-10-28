@@ -25,7 +25,7 @@ Raw receipts are retained in `evidence/ms-enterprise-master-source-audit.raw.jso
 | E06 | Agent behavior maturity and versioning were missing | Added maturity/versioning skill and staged-release orchestration | Implemented as offline knowledge/control metadata |
 | E07 | Request-based versus message-driven communication was not a first-class decision | Added message-mode selection skill | Implemented as offline knowledge metadata |
 | E08 | Enterprise FinOps was only a general cost note | Added a cost guard with explicit billing namespace, budget ceiling, rate controls, and no implicit paid fallback | Implemented |
-| E09 | Cloud connector state could have leaked into local state | Created `px.ms-enterprise.state/1.0` under `.engineering-bootstrap/enterprise` with a distinct event/evidence ledger | Implemented and tested |
+| E09 | Cloud connector state could have leaked into local state | Created `px.ms-enterprise.state/1.0` under `.agentic_engineering_os_px/enterprise` with a distinct event/evidence ledger | Implemented and tested |
 | E10 | UI exposure was described as filters only | Added MS+Enterprise tabs to Skills, Agents, and Workflows plus controls in Diagnostics, Assurance, Runtime, and Control Center | Implemented and tested |
 | E11 | Cross-IDE access was missing | Added four enterprise MCP controls, guardrail evaluation, environment discovery tools, and enterprise catalog kinds | Implemented; expanded to 31 total MCP tools in 0.4.1 |
 | E12 | Cost controls were descriptive rather than operator-configurable | Added a default-off master plus per-task/session/day cost, token, routing, provider, hardware, confidence, reuse, and approval gates | Implemented and tested |

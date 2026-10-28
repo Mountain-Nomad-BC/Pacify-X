@@ -74,7 +74,7 @@ class CanonicalEventPublisher {
 
   _send(events) {
     return new Promise(resolve => {
-      const busRoot = path.join(this.workspaceRoot, '.engineering-bootstrap', 'operation-bus');
+      const busRoot = path.join(this.workspaceRoot, '.agentic_engineering_os_px', 'operation-bus');
       const args = ['-m', 'runtime.cli', '--root', this.engineRoot, 'visibility', 'publish', '--bus-root', busRoot];
       let child;
       try {

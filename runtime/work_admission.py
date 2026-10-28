@@ -81,7 +81,7 @@ class RuntimeWorkPlane:
                 )
             self.plane = candidate
         else:
-            self.plane = self.root / ".engineering-bootstrap" / "runtime-core"
+            self.plane = self.root / ".agentic_engineering_os_px" / "runtime-core"
         self.locks = self.plane / "locks"
         self.pools = self.plane / "pools"
         self.cache = self.plane / "cache"

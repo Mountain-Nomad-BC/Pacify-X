@@ -14,7 +14,7 @@ function vscodeHarness() {
 function token(){ return { isCancellationRequested:false, onCancellationRequested(){ return {dispose(){}}; } }; }
 
 test('provider advertises only bridge-admitted model metadata', async () => {
-  const bridge={ listModels: async()=>({models:[{profile_id:'deep',model_id:'qwen3-30b',lane:'deep',profile_sha256:'a'.repeat(64),context_tokens:8192,max_output_tokens:2048,tool_calling:true,image_input:false}]}) };
+  const bridge={ listModels: async()=>({models:[{profile_id:'deep',available:true,bridge_kind:'local',model_id:'qwen3-30b',lane:'deep',profile_sha256:'a'.repeat(64),context_tokens:8192,max_output_tokens:2048,tool_calling:true,image_input:false}]}) };
   const provider=new PxLanguageModelProvider(vscodeHarness(),bridge);
   const rows=await provider.provideLanguageModelChatInformation({},token());
   assert.equal(rows.length,1); assert.equal(rows[0].id,'deep'); assert.equal(rows[0].capabilities.toolCalling,true);
@@ -46,4 +46,16 @@ test('provider forwards the VS Code cancellation token to the PX bridge', async 
   const provider=new PxLanguageModelProvider(vscode,bridge);
   await provider.provideLanguageModelChatResponse({id:'control',maxOutputTokens:32},[{role:1,content:[{value:'x'}]}],{}, {report(){}}, marker);
   assert.equal(seen,marker);
+});
+
+
+test('provider hides unavailable, unqualified and remote catalog declarations from local dispatch', async () => {
+  const model = {profile_id:'local',model_id:'qwen',lane:'deep',profile_sha256:'a'.repeat(64),context_tokens:8192,max_output_tokens:2048,available:true,bridge_kind:'local'};
+  const models = [model, {...model,profile_id:'offline',available:false},
+    {...model,profile_id:'remote',bridge_kind:'remote',lane:'remote',available:false},
+    {...model,profile_id:'remote-ready',bridge_kind:'remote',lane:'remote'},
+    {...model,profile_id:'unknown',available:undefined},
+    {...model,profile_id:'unknown-bridge',bridge_kind:undefined}];
+  const provider = new PxLanguageModelProvider(vscodeHarness(), {listModels:async()=>({models})});
+  assert.deepEqual((await provider.provideLanguageModelChatInformation({},token())).map(row=>row.id), ['local']);
 });

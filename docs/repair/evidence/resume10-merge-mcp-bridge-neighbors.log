@@ -1,0 +1,18 @@
+✔ bridge delegates only named PX model-client operations with explicit roots (1.6161ms)
+✔ bridge fails before spawning when PX roots are unavailable (0.2772ms)
+✔ bridge rejects an OFF sandbox request carrying an unused allowlist (0.1203ms)
+✔ bridge rejects a sandbox request scoped to a different project root (0.1943ms)
+✔ provider advertises only bridge-admitted model metadata (0.783ms)
+✔ mixed VS Code history is reduced to bounded canonical text without granting tool authority (0.2401ms)
+✔ provider streams text and tool calls while suppressing reasoning deltas (0.9938ms)
+✔ provider forwards the VS Code cancellation token to the PX bridge (0.1467ms)
+✔ provider hides unavailable, unqualified and remote catalog declarations from local dispatch (0.172ms)
+ℹ tests 9
+ℹ suites 0
+ℹ pass 9
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 262.9134
+

@@ -1634,7 +1634,8 @@ test('current-source host identity requires the typed runtime contract and exact
   assert.match(current.package_sha256, /^[a-f0-9]{64}$/);
   assert.ok(current.asset_file_count > 0);
   const repositoryRoot = path.resolve(__dirname, '..', '..');
-  const python = String(process.env.PYTHON || process.env.PYTHON_EXECUTABLE || 'python');
+  const { resolveOwnedPython } = require('../scripts/run-isolated-current-source-walk.js');
+  const python = resolveOwnedPython(path.resolve(__dirname, '..', '..'), { requested: process.env.PYTHON || process.env.PYTHON_EXECUTABLE || process.env.PX_PYTHON_PATH || '' });
   const pythonIdentity = spawnSync(python, ['-c', 'import json; from pathlib import Path; from runtime.dashboard_api import _extension_source_identity; print(json.dumps(_extension_source_identity(Path.cwd())))'], {
     cwd: repositoryRoot, encoding: 'utf8', windowsHide: true, timeout: 30_000
   });
@@ -2205,8 +2206,8 @@ test('owned installed Studio lifecycle accepts only operation-exact typed receip
   assert.equal(validStudioLifecycleResult('workflow', 'start', { schema_version: 'px.workflow-session-start/1.1', accepted: true, run_id: 'run:two' }), true);
   assert.equal(validStudioLifecycleResult('skill', 'validate', { schema_version: 'px.skill-validation-receipt/1.1', passed: true }), true);
   assert.equal(validStudioLifecycleResult('skill', 'admit', { schema_version: 'px.skill-admission-receipt/1.1', decision: 'admitted' }), true);
-  assert.equal(validStudioLifecycleResult('skill', 'promote', { schema_version: 'px.skill-promotion-receipt/1.4', state: 'promoted', promotion_receipt_relative: '.engineering-bootstrap/studios/skills/demo/promotion-receipt.json' }), true);
-  assert.equal(validStudioLifecycleResult('skill', 'promote', { schema_version: 'px.skill-promotion-receipt/1.3', state: 'promoted', promotion_receipt_relative: '.engineering-bootstrap/studios/skills/demo/promotion-receipt.json' }), false);
+  assert.equal(validStudioLifecycleResult('skill', 'promote', { schema_version: 'px.skill-promotion-receipt/1.4', state: 'promoted', promotion_receipt_relative: '.agentic_engineering_os_px/studios/skills/demo/promotion-receipt.json' }), true);
+  assert.equal(validStudioLifecycleResult('skill', 'promote', { schema_version: 'px.skill-promotion-receipt/1.3', state: 'promoted', promotion_receipt_relative: '.agentic_engineering_os_px/studios/skills/demo/promotion-receipt.json' }), false);
   assert.equal(validStudioLifecycleResult('agent', 'status', { schema_version: 'px.studio-durable-run/1.0', run_id: 'run:one' }), true);
   assert.equal(validStudioLifecycleResult('agent', 'pause', { schema_version: 'px.studio-durable-run/1.0', run_id: 'run:one', state: 'pause_requested' }), true);
   assert.equal(validStudioLifecycleResult('workflow', 'cancel', { schema_version: 'px.studio-durable-run/1.0', run_id: 'run:two', state: 'cancel_requested' }), true);
@@ -2848,7 +2849,7 @@ test('owned Projects profile binds an exact authoritative map identity across re
 });
 
 test('owned Knowledge Graph profile binds saved-view actions and authoritative graph identity across restart', () => {
-  const graph = { available: true, view: 'repository', mode: 'full', source: 'C:/owned/.engineering-bootstrap/project-map/architecture-graph.json', cluster: null, requested_query: '', requested_relation: '', direction: 'both', depth: 1, total_nodes: 2, total_edges: 1, nodes: [{ key: 'file:a' }, { key: 'file:b' }], edges: [{ source: 'file:a', relation: 'imports', target: 'file:b' }] };
+  const graph = { available: true, view: 'repository', mode: 'full', source: 'C:/owned/.agentic_engineering_os_px/project-map/architecture-graph.json', cluster: null, requested_query: '', requested_relation: '', direction: 'both', depth: 1, total_nodes: 2, total_edges: 1, nodes: [{ key: 'file:a' }, { key: 'file:b' }], edges: [{ source: 'file:a', relation: 'imports', target: 'file:b' }] };
   const identity = graphProjectionIdentity(graph);
   assert.match(identity.content_sha256, /^[0-9a-f]{64}$/);
   assert.equal(graphProjectionIdentity({ ...graph, available: false }), null);
@@ -3666,7 +3667,7 @@ test('installed filesystem identity compares Windows paths semantically and keep
   const fakeRealpath = value => value;
   assert.equal(installedFilesystemPathsMatch('C:/PX/Workspace', 'c:\\px\\workspace', { platform: 'win32', realpath: fakeRealpath }), true);
   assert.equal(installedFilesystemPathsMatch('C:/PX/Workspace', 'C:/PX/Substitute', { platform: 'win32', realpath: fakeRealpath }), false);
-  assert.equal(installedFilesystemPathWithin('C:/PX/Workspace', 'c:\\px\\workspace\\.engineering-bootstrap\\receipt.json', { platform: 'win32', realpath: fakeRealpath }), true);
+  assert.equal(installedFilesystemPathWithin('C:/PX/Workspace', 'c:\\px\\workspace\\.agentic_engineering_os_px\\receipt.json', { platform: 'win32', realpath: fakeRealpath }), true);
   assert.equal(installedFilesystemPathWithin('C:/PX/Workspace', 'C:/PX/Workspace', { platform: 'win32', realpath: fakeRealpath }), false);
   assert.equal(installedFilesystemPathWithin('C:/PX/Workspace', 'C:/PX/Substitute/receipt.json', { platform: 'win32', realpath: fakeRealpath }), false);
 });
@@ -4279,15 +4280,17 @@ test('installed control probe reports rendered, absent, and errored controls tru
 test('installed lifecycle crash harness force-terminates and reconciles promotion and rollback', { timeout: 30_000 }, () => {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'px-installed-lifecycle-crash-'));
   const harness = path.join(__dirname, 'installed-harness', 'studio_lifecycle_crash_worker.py');
+  const { resolveOwnedPython } = require('../scripts/run-isolated-current-source-walk.js');
+  const python = resolveOwnedPython(path.resolve(__dirname, '..', '..'), { requested: process.env.PYTHON || process.env.PYTHON_EXECUTABLE || process.env.PX_PYTHON_PATH || '' });
   try {
     for (const operation of ['promotion', 'rollback']) {
       const operationRoot = path.join(root, operation);
-      const crashed = spawnSync('python', [harness, '--root', operationRoot, '--operation', operation], {
+      const crashed = spawnSync(python, [harness, '--root', operationRoot, '--operation', operation], {
         cwd: path.resolve(__dirname, '..', '..'), encoding: 'utf8', windowsHide: true, timeout: 15_000
       });
       assert.equal(crashed.status, 91, `${operation} did not terminate at the durable projection boundary: ${crashed.stderr}`);
       assert.equal(crashed.signal, null);
-      const recovered = spawnSync('python', [harness, '--root', operationRoot, '--operation', operation, '--recover'], {
+      const recovered = spawnSync(python, [harness, '--root', operationRoot, '--operation', operation, '--recover'], {
         cwd: path.resolve(__dirname, '..', '..'), encoding: 'utf8', windowsHide: true, timeout: 15_000
       });
       assert.equal(recovered.status, 0, recovered.stderr);
@@ -4307,8 +4310,10 @@ test('installed lifecycle crash harness force-terminates and reconciles promotio
 test('installed late-card worker proves physical allocation and authenticated skill projection boundaries', { timeout: 60_000 }, () => {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'px-installed-late-card-'));
   const harness = path.join(__dirname, 'installed-harness', 'studio_late_card_worker.py');
+  const { resolveOwnedPython: resolveLateCardPython } = require('../scripts/run-isolated-current-source-walk.js');
+  const lateCardPython = resolveLateCardPython(path.resolve(__dirname, '..', '..'), { requested: process.env.PYTHON || process.env.PYTHON_EXECUTABLE || process.env.PX_PYTHON_PATH || '' });
   try {
-    const completed = spawnSync('python', [harness, '--root', root], {
+    const completed = spawnSync(lateCardPython, [harness, '--root', root], {
       cwd: path.resolve(__dirname, '..', '..'), encoding: 'utf8', windowsHide: true, timeout: 45_000,
       env: { ...process.env, PX_OWNED_ENGINE_ROOT: path.resolve(__dirname, '..', '..') }
     });

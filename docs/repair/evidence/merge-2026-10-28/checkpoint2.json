@@ -1,0 +1,32 @@
+{
+  "schema_version": "px.operational-gap-ledger-event/1.0",
+  "sequence": 36254,
+  "event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000036254",
+  "event_type": "work_checkpoint",
+  "timestamp": "2026-10-28T10:27:53.253741Z",
+  "actor": "codex",
+  "previous_event_sha256": "81b1b5baa90e317d3a3fc4f4cefe5a587f32c2ff08db7396dfb9e3c97bb12480",
+  "payload": {
+    "active_gap_id": "PX-OS-1067",
+    "evidence": [
+      {
+        "artifact_sha256": "94ed31724040ca59b49542967a70b30b364480a7825ae0732f2b400c1a01f654",
+        "artifact_size": 1026,
+        "claim": "Focused current source evidence, no rollout acceptance.",
+        "reference": "docs/repair/evidence/resume10-merge-native-workflow-operating2.json"
+      },
+      {
+        "artifact_sha256": "e7bf8e36de58e77422410c0ade87946a433ee97103edec77e8776d68f0ed1914",
+        "artifact_size": 818,
+        "claim": "Focused current source evidence, no rollout acceptance.",
+        "reference": "docs/repair/evidence/resume10-merge-mcp-default-parser.json"
+      }
+    ],
+    "learned": "### Native merge integration and operating checks (2026-10-28)\n\nNow 35 of the original78 conflicted paths are reconciled/staged; 43 remain. No merge commit/push/package/certification. Per-file decisions and all conflicted preimages are retained under evidence/merge-2026-10-28. Incoming changes outside conflict hunks are retained and inspected where they touch the repaired owner.\n\nCorrection to the earlier namespace decision: whole-tree inspection found incoming auto-merged StudioAuthorityStore, AgentRuntimeController and WorkflowStudio producers already use canonical .agentic_engineering_os_px paths. Keeping only their worker/custody/policy consumers on legacy paths would split ownership. Those fresh-state consumers now match the canonical producers; original historical state/receipts were not moved or rewritten. Legacy evidence reads retain the existing resolver. This is source reconciliation, NOT completed host-state migration or commissioned canonical host proof. Canonical package namespace is reconciled while retaining repaired release dependencies, incoming remote model contracts and all models/semantic/succession schemas. TOML now parses; no artifact built.\n\nFound automatic merge damage beyond explicit conflict markers: incoming StudioAuthorityStore enabled model-group before protected operating acceptance, duplicate native worker guard would override pure-adapter effect handling, duplicate typed decoder/pre-release hooks/dispatch keywords, and result settlement moved before lifecycle control. Reclosed registry, removed duplicates, kept native custody/intent/approval/current-generation checks, preserved incoming execution-context adapter revision binding. Signed production group execution additionally requires its actual bound provider resolver. Incoming native TIE owner retained (effect intents, leases, exact immutable Studio revision); superseded second fusion function and unowned memory initialization removed.\n\nActual native workflow/receipt/approval/declaration and hostile-project-runtime scenario: 56 passed in20.20s, tree closed/resource inactive (resume10-merge-native-workflow-operating2.json). This is focused operating evidence, not a commissioned model-group/provider proof. Initial duplicate-keyword collection failure is retained. Protocol/artifact/physical-publication neighbors: 46 passed, one failed because group executor intentionally remains outside closed registry (resume10-merge-protocol-custody-neighbors.json). Prior missing historical receipt failure remains open: engineering_os_paths test expects rev1xx-w1-project-map-bridge-identity/receipt.json that is absent in resolved evidence tree; do not fabricate it or remove the assertion.\n\nCausal VSCode catalog reproduction advertised offline, unqualified and remote rows as available local models. Native local catalog now emits explicit available=true/bridge_kind=local only after its existing checks; local provider filters on both. Remote declarations remain visible to diagnostic catalog, excluded from local dispatch. Red/green receipts retained. MCP bridge reconciles AbortSignal/prelaunch cancellation, exact single terminal envelopes, awaited async consumers and typed native provider errors including an unterminated final failure line. Native parser with controlled child transport plus bridge/provider neighbors:14 passed (resume10-merge-mcp-default-parser.json). This is parser/consumer evidence, not a live provider connection. Minimal focused pytest config was used while packaging config conflicted; future runs can now use native pytest config.\n\nNext: continue remaining merge plan, especially extension harness custody/billing/context, source revision succession, dependency-event subscription and certification ownership/required suites. Revalidate merged source with actual lifecycle/worker tests and governed section attempts after source closure. W1/W2 operating acceptance, W3/W4, 0/105 independent review and ordered rollout remain open.",
+    "newly_discovered_gap_ids": [],
+    "next_action": "Run the single revision/generated-projection reconciliation, make every governed section current, then execute exactly one full profile, validation, package, install, installed-system operational test, and certification in registered order.",
+    "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000036253",
+    "unresolved_branch_gap_ids": []
+  },
+  "event_sha256": "62172b999887fe435518a4ff3498bebe5ea9865a5e0128c9222ad6c3990c3cb0"
+}

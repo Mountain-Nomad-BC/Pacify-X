@@ -1,0 +1,24 @@
+============================= test session starts =============================
+platform win32 -- Python 3.14.7, pytest-9.1.1, pluggy-1.6.0 -- C:\Users\Ben\Documents\bootstrap_project\Pacify-X\Python\pythoncore-3.14-64\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\Ben\Documents\bootstrap_project\Pacify-X
+configfile: docs\repair\evidence\merge-2026-10-28\focused.ini
+collecting ... collected 14 items
+
+tests/test_operational_gap_ledger_delta_lifecycle.py::test_incremental_segment_contains_only_its_own_events_and_is_parent_bound PASSED [  7%]
+tests/test_operational_gap_ledger_delta_lifecycle.py::test_incremental_segment_rejects_a_parentage_break PASSED [ 14%]
+tests/test_operational_gap_ledger_delta_lifecycle.py::test_delta_chain_grows_linearly_not_quadratically_across_repeated_checkpointing PASSED [ 21%]
+tests/test_operational_gap_ledger_delta_lifecycle.py::test_compaction_is_driven_by_chain_depth_not_by_single_delta_size PASSED [ 28%]
+tests/test_operational_gap_ledger_delta_lifecycle.py::test_compaction_threshold_constants_are_documented_and_chain_bounded PASSED [ 35%]
+tests/test_operational_gap_ledger_delta_lifecycle.py::test_delta_replay_equals_snapshot_reconstruction PASSED [ 42%]
+tests/test_operational_gap_ledger_delta_lifecycle.py::test_reclamation_never_removes_a_live_reference_and_retains_a_receipt PASSED [ 50%]
+tests/test_operational_gap_ledger_delta_lifecycle.py::test_legacy_cumulative_deltas_are_preserved_and_never_reinterpreted[True] PASSED [ 57%]
+tests/test_operational_gap_ledger_delta_lifecycle.py::test_legacy_cumulative_deltas_are_preserved_and_never_reinterpreted[False] PASSED [ 64%]
+tests/test_operational_gap_ledger_delta_lifecycle.py::test_mixed_delta_shapes_are_rejected_with_a_migration_message PASSED [ 71%]
+tests/test_operational_gap_ledger_scaling.py::test_segment_migration_preserves_exact_legacy_order_and_identity PASSED [ 78%]
+tests/test_operational_gap_ledger_scaling.py::test_segment_corruption_fails_closed_without_touching_legacy PASSED [ 85%]
+tests/test_operational_gap_ledger_scaling.py::test_large_snapshot_append_uses_content_addressed_delta_without_rewrite PASSED [ 92%]
+tests/test_operational_gap_ledger_scaling.py::test_delta_checkpoint_concurrent_writers_serialize_without_fork PASSED [100%]
+
+============================= 14 passed in 13.83s =============================
+

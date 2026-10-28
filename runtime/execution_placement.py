@@ -155,7 +155,7 @@ class PlacementCapacityLedger:
 
     def __init__(self, root: Path) -> None:
         self.root = root.resolve()
-        self.directory = self.root / ".engineering-bootstrap/runtime-core/placement"
+        self.directory = self.root / ".agentic_engineering_os_px/runtime-core/placement"
         self.state_path = self.directory / "capacity-reservations.json"
         self.lock_path = self.directory / ".capacity-reservations.lock"
 
@@ -615,7 +615,7 @@ def publish_placement_artifact(root: Path, artifact: Mapping[str, Any]) -> dict[
         ),
         _hash(artifact),
     )
-    target = root.resolve() / ".engineering-bootstrap" / "runtime-core" / "placement" / f"{artifact_hash}.json"
+    target = root.resolve() / ".agentic_engineering_os_px" / "runtime-core" / "placement" / f"{artifact_hash}.json"
 
     def publish() -> dict[str, Any]:
         rendered = json.dumps(dict(artifact), indent=2, sort_keys=True) + "\n"
@@ -640,3 +640,9 @@ def publish_placement_artifact(root: Path, artifact: Mapping[str, Any]) -> dict[
         authoritative=True,
     )
     return {**envelope["result"], "runtime_admission": envelope["admission"]}
+
+
+def route_remote_provider(task_plan, *, project_root, model_id=None):
+    """Route native remote services without inventing hardware or benchmarks."""
+    from .remote_provider_placement import route_remote_provider as native_route
+    return native_route(task_plan, project_root=project_root, model_id=model_id)

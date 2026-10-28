@@ -7,7 +7,7 @@ description: Convert papers, standards, benchmarks, and sourced technical resear
 
 1. Record the exact source, citation, version/date, license, and access boundary.
 2. Extract claim, method, assumptions, prerequisites, evaluation setting, limitations, and unsupported extrapolations.
-3. Read [candidate-contract.md](references/candidate-contract.md), select the matching contract under `contracts/research_ops`, and run `engineering-bootstrap research validate --kind <kind> --record <record.json>`.
+3. Read [candidate-contract.md](references/candidate-contract.md), select the matching contract under `contracts/research_ops`, and run `agentic-engineering-os-px research validate --kind <kind> --record <record.json>`.
 4. Map operational value to an existing capability gap only after the typed record passes.
 5. Prefer a proposal or experiment; never activate paper-derived behavior directly.
 6. Add positive, negative, failure-boundary, and reproduction tests.

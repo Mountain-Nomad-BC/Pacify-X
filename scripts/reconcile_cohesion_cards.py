@@ -40,7 +40,7 @@ from runtime.json_io import decode_json_object  # noqa: E402
 from runtime.certification_contract import RELEASE_STAGES, STEP_ORDER  # noqa: E402
 
 CARD_DIRECTORY = Path(
-    ".engineering-bootstrap/punch-cards/cohesion-closure-20260904"
+    ".agentic_engineering_os_px/punch-cards/cohesion-closure-20260904"
 )
 AUDIT_CARD_IDS = {
     "PX-COMM-001",
@@ -148,7 +148,7 @@ KNOWN_AFFECTED_SECTIONS = {
 }
 PRIOR_AUTOMATION_STEPS = STEP_ORDER[: STEP_ORDER.index("card_reconcile")]
 RECOVERY_JOURNAL = Path(
-    ".engineering-bootstrap/wal/cohesion-card-reconciliation"
+    ".agentic_engineering_os_px/wal/cohesion-card-reconciliation"
 )
 
 
@@ -530,7 +530,7 @@ def _validate_evidence(
     )
     if require_final99_identity:
         release_identity = _load_json(
-            root / ".engineering-bootstrap/processing-order/release-identity.json"
+            root / ".agentic_engineering_os_px/processing-order/release-identity.json"
         )
         kernel = release_identity.get("identity")
         stages = release_identity.get("stages")
@@ -933,8 +933,8 @@ def _validate_close_control_plane(
     *,
     allow_completed: bool,
 ) -> None:
-    identity_path = root / ".engineering-bootstrap/processing-order/release-identity.json"
-    repair_path = root / ".engineering-bootstrap/processing-order/repair-campaign.json"
+    identity_path = root / ".agentic_engineering_os_px/processing-order/release-identity.json"
+    repair_path = root / ".agentic_engineering_os_px/processing-order/repair-campaign.json"
     identity = _load_json(identity_path)
     repair = _load_json(repair_path)
     if identity.get("schema_version") != "px.release-campaign/1.0":
@@ -1194,7 +1194,7 @@ def _validate_close_control_plane(
 
     try:
         status = _resource_status(
-            root / ".engineering-bootstrap/resource-lifecycle/ledger.json"
+            root / ".agentic_engineering_os_px/resource-lifecycle/ledger.json"
         )
     except (OSError, ValueError, TypeError) as error:
         raise ReconciliationError(f"resource status is unreadable: {error}") from error
@@ -1454,7 +1454,7 @@ def _validate_transaction_set(
         directory / "dag.json",
         directory / "README.md",
         directory / "SHA256SUMS",
-        root / ".engineering-bootstrap/project-management/state.json",
+        root / ".agentic_engineering_os_px/project-management/state.json",
     }
     by_path = {transition.path: transition.after for transition in transitions}
     if set(by_path) != {path.resolve() for path in expected}:
@@ -1475,7 +1475,7 @@ def _validate_transaction_set(
     readme = by_path[(directory / "README.md").resolve()]
     manifest = by_path[(directory / "SHA256SUMS").resolve()]
     state = by_path[
-        (root / ".engineering-bootstrap/project-management/state.json").resolve()
+        (root / ".agentic_engineering_os_px/project-management/state.json").resolve()
     ]
     if not isinstance(readme, str) or not isinstance(manifest, str):
         raise ReconciliationError("WAL text projection is not UTF-8 text")
@@ -1607,7 +1607,7 @@ def reconcile(
         for card_id in sorted(cards)
     }
     projected_dag = _project_dag(dag, projected_cards)
-    state_path = root / ".engineering-bootstrap/project-management/state.json"
+    state_path = root / ".agentic_engineering_os_px/project-management/state.json"
     state = _load_json(state_path)
     head = observed_head or _current_head(root)
     if observed_head is None:
@@ -1648,7 +1648,7 @@ def reconcile(
         "projected_progress": projected_dag["progress"],
         "changed_files": [
             *[str((CARD_DIRECTORY / name).as_posix()) for name in changed],
-            *([".engineering-bootstrap/project-management/state.json"] if state_changed else []),
+            *([".agentic_engineering_os_px/project-management/state.json"] if state_changed else []),
         ],
         "changed_file_count": len(changed) + int(state_changed),
         "applied": apply,

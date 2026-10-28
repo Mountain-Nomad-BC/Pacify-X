@@ -9,9 +9,9 @@ const root = path.resolve(__dirname, '..');
 const pkg = JSON.parse(fs.readFileSync(path.join(root, 'package.json'), 'utf8'));
 
 test('all package commands are registered in the extension host', () => {
-  // The extension host is no longer a single file: nested harness modules under
-  // src/ also register commands. Read the host source recursively, matching the
-  // extension source-identity expansion used by the packaging contract.
+  // The extension host is modular: command registrations live in top-level and
+  // nested src modules. Read all authored host JavaScript, matching the source
+  // identity expansion used by the packaging contract.
   const collectSource = directory => {
     const parts = [];
     for (const entry of fs.readdirSync(directory, { withFileTypes: true })) {
@@ -22,7 +22,7 @@ test('all package commands are registered in the extension host', () => {
     }
     return parts;
   };
-  const extension = [fs.readFileSync(path.join(root, 'src', 'extension.js'), 'utf8'), ...collectSource(path.join(root, 'src', 'agentHarness'))].join('\n');
+  const extension = [fs.readFileSync(path.join(root, 'src', 'extension.js'), 'utf8'), ...collectSource(path.join(root, 'src'))].join('\n');
   for (const item of pkg.contributes.commands) assert.match(extension, new RegExp(item.command.replaceAll('.', '\\.')));
 });
 

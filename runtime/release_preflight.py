@@ -31,13 +31,13 @@ from .release_repository_context import validate_release_gate_repository_context
 
 
 PREFLIGHT_POLICY = Path("policies/release-preflight.json")
-RECEIPT_ROOT = Path(".engineering-bootstrap/runtime-core/release-preflight")
-CACHE_ROOT = Path(".engineering-bootstrap/runtime-core/release-preflight-cache")
+RECEIPT_ROOT = Path(".agentic_engineering_os_px/runtime-core/release-preflight")
+CACHE_ROOT = Path(".agentic_engineering_os_px/runtime-core/release-preflight-cache")
 RESOURCE_REGISTRY = Path(
-    ".engineering-bootstrap/runtime-core/release-preflight-resources.json"
+    ".agentic_engineering_os_px/runtime-core/release-preflight-resources.json"
 )
 COVERAGE_GAP_ROOT = Path(
-    ".engineering-bootstrap/runtime-core/release-preflight-coverage-gaps"
+    ".agentic_engineering_os_px/runtime-core/release-preflight-coverage-gaps"
 )
 
 
@@ -548,9 +548,9 @@ class _ReleasePreflightInputs:
                 kind = "generated_product"
             elif concrete.startswith("evidence/"):
                 kind = "release_transaction_evidence"
-            elif concrete.startswith(".engineering-bootstrap/runtime-core/"):
+            elif concrete.startswith(".agentic_engineering_os_px/runtime-core/"):
                 kind = "post_cert_runtime_state"
-            elif concrete.startswith(".engineering-bootstrap/"):
+            elif concrete.startswith(".agentic_engineering_os_px/"):
                 kind = "temporary_workspace"
             else:
                 kind = "unknown"
@@ -679,7 +679,7 @@ def mutation_probe(
             or "/__pycache__/" in path
         ):
             kind = "cache/temp pollution"
-        elif path.startswith(".engineering-bootstrap/"):
+        elif path.startswith(".agentic_engineering_os_px/"):
             kind = "derived runtime state incorrectly inside product"
         elif path.startswith("registry/"):
             kind = "generated projection pollution"
@@ -1112,12 +1112,13 @@ def _binding(root: Path, release: str, artifact: Path | None) -> dict[str, Any]:
             artifact_path = None
     product = classify_tree(root)
     engine = validate_engine_identity(root)
-    git = capture_git_identity(root, version=release)
+    from .release_source_identity import capture_release_source_identity,current_campaign
+    git = capture_release_source_identity(root, version=release) if current_campaign(root) else capture_git_identity(root,version=release)
     policy_path = root / PREFLIGHT_POLICY
     topology = root / "registry/test_group_index.json"
     return {
         "release": release,
-        "source_revision": git.get("commit_sha"),
+        "source_revision": git.get("release_identity_sha256",git.get("commit_sha")),
         "source_identity_valid": git.get("valid") is True,
         "product_digest": product.get("product_digest"),
         "product_valid": product.get("product_valid", product.get("valid")) is True,

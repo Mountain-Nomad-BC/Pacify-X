@@ -72,10 +72,7 @@ SKILL_FAMILIES = {
 ALL_OPERATIONAL_SKILLS = tuple(sorted((*DELEGATED_HANDLERS, *SKILL_FAMILIES)))
 
 
-def _stable(value: object) -> str:
-    return hashlib.sha256(
-        json.dumps(value, sort_keys=True, separators=(",", ":"), default=str).encode()
-    ).hexdigest()
+from runtime.hash_utils import json_ascii_string_hash as _stable
 
 
 def _tuple(values: Iterable[object]) -> tuple[str, ...]:

@@ -1,0 +1,173 @@
+{
+  "decision": "Restore complete repair-branch published snapshots from stage2; retain complete incoming stage3 and conflicted images. These are explicitly stale historical baselines. Recompute once only after repair freeze through native owners; source/test-profile denominator reconciliation remains separate. No currentness or passing certification manufactured.",
+  "records": [
+    {
+      "path": "registry/artifact_reachability.json",
+      "baseline_current": false,
+      "generator_executed": false,
+      "stages": {
+        "2": {
+          "archive": "docs/repair/evidence/merge-2026-10-28/artifact_reachability.json.stage2.json.txt",
+          "sha256": "6e0247c94d501162506a135307a0293b72ed2cdb8ed954ff3c76e845b2c43f7f",
+          "receipt": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.tmp\\resume10\\owned\\pacifyx-7z71ya2e\\cleanup-receipts\\process-5fba5900a1f64b4d986525a39ee9bc6e.json",
+          "tree_closed": true,
+          "resource_inactive": true
+        },
+        "3": {
+          "archive": "docs/repair/evidence/merge-2026-10-28/artifact_reachability.json.stage3.json.txt",
+          "sha256": "b6984a86a5bf655ab3dbbedbaf94972787e527470b4166d7590266a8a41deafc",
+          "receipt": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.tmp\\resume10\\owned\\pacifyx-7z71ya2e\\cleanup-receipts\\process-47ed06cec2fc4876ae03b68357df9c60.json",
+          "tree_closed": true,
+          "resource_inactive": true
+        }
+      }
+    },
+    {
+      "path": "registry/build_claims.json",
+      "baseline_current": false,
+      "generator_executed": false,
+      "stages": {
+        "2": {
+          "archive": "docs/repair/evidence/merge-2026-10-28/build_claims.json.stage2.json.txt",
+          "sha256": "6c36627dd94aab1b9c670652634c4c78d88915f7abb2f16c64f31ccc2c33caa5",
+          "receipt": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.tmp\\resume10\\owned\\pacifyx-7z71ya2e\\cleanup-receipts\\process-952ffff5a7f34c6795e1009d7c109a55.json",
+          "tree_closed": true,
+          "resource_inactive": true
+        },
+        "3": {
+          "archive": "docs/repair/evidence/merge-2026-10-28/build_claims.json.stage3.json.txt",
+          "sha256": "6a7f091be93a108b76b895753565dcb633f2b73f164f684232bb3dbf6276642f",
+          "receipt": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.tmp\\resume10\\owned\\pacifyx-7z71ya2e\\cleanup-receipts\\process-6cdf00778051463cb773d07af855ae9d.json",
+          "tree_closed": true,
+          "resource_inactive": true
+        }
+      }
+    },
+    {
+      "path": "registry/contract_ownership.json",
+      "baseline_current": false,
+      "generator_executed": false,
+      "stages": {
+        "2": {
+          "archive": "docs/repair/evidence/merge-2026-10-28/contract_ownership.json.stage2.json.txt",
+          "sha256": "d5b47fcf25877e3fd09be584cc6d0eda15466e21b65669fe2b7b972261f6d155",
+          "receipt": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.tmp\\resume10\\owned\\pacifyx-7z71ya2e\\cleanup-receipts\\process-2a26220174a34af499a12d4f82b5a248.json",
+          "tree_closed": true,
+          "resource_inactive": true
+        },
+        "3": {
+          "archive": "docs/repair/evidence/merge-2026-10-28/contract_ownership.json.stage3.json.txt",
+          "sha256": "13b51062fd9156784e0b188b5b56bdc8bff8e04495a35d1ae1198371275a58b7",
+          "receipt": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.tmp\\resume10\\owned\\pacifyx-7z71ya2e\\cleanup-receipts\\process-560b2d9c94d8419f9dc96141d36602d2.json",
+          "tree_closed": true,
+          "resource_inactive": true
+        }
+      }
+    },
+    {
+      "path": "registry/effect_surface_ownership.json",
+      "baseline_current": false,
+      "generator_executed": false,
+      "stages": {
+        "2": {
+          "archive": "docs/repair/evidence/merge-2026-10-28/effect_surface_ownership.json.stage2.json.txt",
+          "sha256": "ec081c32062acb0649538a4025357a5558408b6fd8d96fca26f4c2ac991efb25",
+          "receipt": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.tmp\\resume10\\owned\\pacifyx-7z71ya2e\\cleanup-receipts\\process-f6e573a67846484585b687b000d4ea3d.json",
+          "tree_closed": true,
+          "resource_inactive": true
+        },
+        "3": {
+          "archive": "docs/repair/evidence/merge-2026-10-28/effect_surface_ownership.json.stage3.json.txt",
+          "sha256": "d1540808ed21bcae266fb45a3189080d61ebe9d6d44b73fe2fd2d0a512c7e9fc",
+          "receipt": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.tmp\\resume10\\owned\\pacifyx-7z71ya2e\\cleanup-receipts\\process-c6730733bac74e4084e1f1257873ce03.json",
+          "tree_closed": true,
+          "resource_inactive": true
+        }
+      }
+    },
+    {
+      "path": "registry/provider_route_scan.json",
+      "baseline_current": false,
+      "generator_executed": false,
+      "stages": {
+        "2": {
+          "archive": "docs/repair/evidence/merge-2026-10-28/provider_route_scan.json.stage2.json.txt",
+          "sha256": "912dae6dc1a2075d581a29b24cc14657421b1c3ac31b1a2b3ce78127a80437ce",
+          "receipt": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.tmp\\resume10\\owned\\pacifyx-7z71ya2e\\cleanup-receipts\\process-42cb6497083148d9a4da867dd54ebdbf.json",
+          "tree_closed": true,
+          "resource_inactive": true
+        },
+        "3": {
+          "archive": "docs/repair/evidence/merge-2026-10-28/provider_route_scan.json.stage3.json.txt",
+          "sha256": "92c6020b119a1e07aac091abea2f3bde27e9d11fbe0e3cce1a1805f23e926043",
+          "receipt": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.tmp\\resume10\\owned\\pacifyx-7z71ya2e\\cleanup-receipts\\process-1475416087b343bf9760d1459938c8eb.json",
+          "tree_closed": true,
+          "resource_inactive": true
+        }
+      }
+    },
+    {
+      "path": "registry/python_dependency_ownership.json",
+      "baseline_current": false,
+      "generator_executed": false,
+      "stages": {
+        "2": {
+          "archive": "docs/repair/evidence/merge-2026-10-28/python_dependency_ownership.json.stage2.json.txt",
+          "sha256": "e9bca3b20b61959183fb2aa79ecf3e7a4cc5b22186d847df93542136c75d8259",
+          "receipt": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.tmp\\resume10\\owned\\pacifyx-7z71ya2e\\cleanup-receipts\\process-37277c44fd864dbdb2b1f4e35cdd3591.json",
+          "tree_closed": true,
+          "resource_inactive": true
+        },
+        "3": {
+          "archive": "docs/repair/evidence/merge-2026-10-28/python_dependency_ownership.json.stage3.json.txt",
+          "sha256": "024a78843f74bfc11ca723499281b747293fa2393c9076f91a9cb605119e3f78",
+          "receipt": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.tmp\\resume10\\owned\\pacifyx-7z71ya2e\\cleanup-receipts\\process-ae2cd1837b3748e58d53495603718279.json",
+          "tree_closed": true,
+          "resource_inactive": true
+        }
+      }
+    },
+    {
+      "path": "registry/python_surface_ownership.json",
+      "baseline_current": false,
+      "generator_executed": false,
+      "stages": {
+        "2": {
+          "archive": "docs/repair/evidence/merge-2026-10-28/python_surface_ownership.json.stage2.json.txt",
+          "sha256": "63555ae3f51094cfaabd1b8e13548a1582960e08fdadefd74d1359473ebd53f6",
+          "receipt": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.tmp\\resume10\\owned\\pacifyx-7z71ya2e\\cleanup-receipts\\process-7d54c71cc8a4451baec5f697229bd57e.json",
+          "tree_closed": true,
+          "resource_inactive": true
+        },
+        "3": {
+          "archive": "docs/repair/evidence/merge-2026-10-28/python_surface_ownership.json.stage3.json.txt",
+          "sha256": "d5c9f086e390a8d84ca3185ea1dd20ef5e3e8c14c154cfebeb8701a81cd8541e",
+          "receipt": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.tmp\\resume10\\owned\\pacifyx-7z71ya2e\\cleanup-receipts\\process-3bdef49dc0e44f928b02cdcd536e5977.json",
+          "tree_closed": true,
+          "resource_inactive": true
+        }
+      }
+    },
+    {
+      "path": "registry/test_group_index.json",
+      "baseline_current": false,
+      "generator_executed": false,
+      "stages": {
+        "2": {
+          "archive": "docs/repair/evidence/merge-2026-10-28/test_group_index.json.stage2.json.txt",
+          "sha256": "49fb7c069bc575a37aa8b5715526f4f3591fca3e21d08eb285e83132002d03c3",
+          "receipt": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.tmp\\resume10\\owned\\pacifyx-7z71ya2e\\cleanup-receipts\\process-79f48b8e11a845aeb767aba764485b60.json",
+          "tree_closed": true,
+          "resource_inactive": true
+        },
+        "3": {
+          "archive": "docs/repair/evidence/merge-2026-10-28/test_group_index.json.stage3.json.txt",
+          "sha256": "20319f282ba66e00d6b381620c2a2bc65bf232b868ab3f861285b4b0f16cc593",
+          "receipt": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.tmp\\resume10\\owned\\pacifyx-7z71ya2e\\cleanup-receipts\\process-efe84543b70e45eda2ad843bc06e6402.json",
+          "tree_closed": true,
+          "resource_inactive": true
+        }
+      }
+    }
+  ]
+}

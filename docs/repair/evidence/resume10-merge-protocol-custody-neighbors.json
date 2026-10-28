@@ -1,0 +1,24 @@
+{
+  "command": [
+    "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\Python\\pythoncore-3.14-64\\python.exe",
+    "-m",
+    "pytest",
+    "-c",
+    "docs/repair/evidence/merge-2026-10-28/focused.ini",
+    "--rootdir",
+    ".",
+    "tests/test_gemini_protocol.py",
+    "tests/test_model_protocol_translate.py",
+    "tests/test_model_protocol.py",
+    "tests/test_model_group_preparation.py",
+    "tests/test_secure_publish_operating.py",
+    "-vv"
+  ],
+  "exit_code": 1,
+  "tree_closed": true,
+  "resource_inactive": true,
+  "receipt": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.tmp\\resume10\\owned\\cleanup-receipts\\process-67e8434f9aef4a2b9f992c612c334e2e.json",
+  "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.tmp\\resume10\\owned\\pacifyx-twd85lbo",
+  "log": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\docs\\repair\\evidence\\resume10-merge-protocol-custody-neighbors.log",
+  "log_sha256": "9a53d7e5508f0b3d0cf2f63621708fda8a1d08ec5200714f3bc18a3fd0313425"
+}

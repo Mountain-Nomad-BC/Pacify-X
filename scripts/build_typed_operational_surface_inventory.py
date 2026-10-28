@@ -102,6 +102,7 @@ CURRENT_ACTION_SURFACE_BINDINGS: dict[str, dict[str, list[str]]] = {
     },
     "openProjectModuleMap": {"projects": ["openProjectModuleMap"]},
     "disconnectCanonicalMemory": {"memory": ["disconnectCanonicalMemory"]},
+    "sandboxControl": {"settings": ["sandboxControl"]},
     "graphLoadAll": {"knowledge-graph": ["graphLoadAll"]},
     "graphFilterEdgeBundle": {"knowledge-graph": ["graphFilterEdgeBundle"]},
     "graphClearEdgeBundle": {"knowledge-graph": ["graphClearEdgeBundle"]},

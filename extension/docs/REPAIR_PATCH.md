@@ -21,7 +21,7 @@ This is the historical patch record for the handoff build. The canonical extensi
 - Hardened Codex child environments by case-insensitively stripping common billable provider keys. Workspace-write requests require an active project task claim.
 - Fixed package/installer version drift: package, VSIX name, checksum generation, install, and installed-version verification derive from `package.json` version `0.4.0`.
 - Added `registry/ms_enterprise_catalog.json` to the Pacify-X source and exposed its separately paged skills, agents, workflows, connectors, and models through `runtime.dashboard_api`.
-- Added `src/enterpriseManager.js`. It stores only enterprise pack state, non-secret target aliases, receipts, and explicit auth/billing namespace labels under `.engineering-bootstrap/enterprise/`; it never stores credentials or writes to canonical memory.
+- Added `src/enterpriseManager.js`. It stores only enterprise pack state, non-secret target aliases, receipts, and explicit auth/billing namespace labels under `.agentic_engineering_os_px/enterprise/`; it never stores credentials or writes to canonical memory.
 - Added MS+Enterprise tabs and working offline pack, target, and readiness controls. No connector or paid service was enabled.
 - Added the requested Settings master switch and hard billable-execution guardrails. The switch defaults off and never stores credentials, connects, or authorizes an execution by itself.
 - Added read-only startup/change/manual environment discovery with a compact index, separate hash-verified JSON shards, per-extension capability contracts, and the ontology `resource → capabilities → interface → requirements → effects → conflicts → policy → state`.
@@ -31,7 +31,7 @@ This is the historical patch record for the handoff build. The canonical extensi
 The extension creates these only inside the opened project:
 
 ```text
-.engineering-bootstrap/coordination/
+.agentic_engineering_os_px/coordination/
   state.json
   events.jsonl
   handoff.json
@@ -43,7 +43,7 @@ The extension creates these only inside the opened project:
   memory/project/
   memory/state/
   memory/system-candidates/
-.engineering-bootstrap/enterprise/
+.agentic_engineering_os_px/enterprise/
   state.json
   events.jsonl
   evidence/

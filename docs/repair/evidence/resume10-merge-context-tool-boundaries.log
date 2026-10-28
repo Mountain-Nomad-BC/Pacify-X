@@ -1,0 +1,163 @@
+✔ claimed reference digest must match exact content, including empty and Unicode data (3.3342ms)
+✔ declared token estimates cannot shrink reference admission below its payload (0.3094ms)
+✔ task instruction and selected metadata fit the same context budget (0.1214ms)
+✔ legacy and structured retrieval remain user-role evidence instead of provider policy (0.2676ms)
+✔ provider message boundary independently rejects a reference digest mismatch (0.1239ms)
+✖ actual task/run/selected worker may execute read-only tool (4.5574ms)
+✖ tool rejects foreign taskId before side effect (0.3531ms)
+✖ tool rejects foreign runId before side effect (0.2639ms)
+✖ tool rejects foreign workerId before side effect (0.2156ms)
+✖ caller cannot raise stored effect ceiling by forging task snapshot (0.3206ms)
+✖ truthy approval object is not explicit approval (0.2543ms)
+✖ cancellation while approval awaits fences dispatch (4.9215ms)
+✖ foreign tool evidence cannot publish successful receipt (0.4289ms)
+✖ missing current store authority fails closed (0.3263ms)
+✖ tool dispatch waits for current task policy persistence acknowledgement (1.5993ms)
+✖ approval receives immutable request arguments and cannot substitute authority (0.378ms)
+(node:8804) PromiseRejectionHandledWarning: Promise rejection was handled asynchronously (rejection id: 10)
+(Use `node.EXE --trace-warnings ...` to show where the warning was created)
+ℹ tests 16
+ℹ suites 0
+ℹ pass 5
+ℹ fail 11
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 238.9734
+
+✖ failing tests:
+
+test at extension\tests\tool-authority-audit.test.js:13:1
+✖ actual task/run/selected worker may execute read-only tool (4.5574ms)
+  Error: execution-context-required
+      at ToolBroker.execute (C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\src\agentHarness\toolBroker.js:65:41)
+      at TestContext.<anonymous> (C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\tests\tool-authority-audit.test.js:13:124)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.start (node:internal/test_runner/test:1177:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:385:17)
+
+test at extension\tests\tool-authority-audit.test.js:14:50
+✖ tool rejects foreign taskId before side effect (0.3531ms)
+  Error: execution-context-required
+      at ToolBroker.execute (C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\src\agentHarness\toolBroker.js:65:41)
+      at TestContext.<anonymous> (C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\tests\tool-authority-audit.test.js:14:162)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3)
+
+test at extension\tests\tool-authority-audit.test.js:14:50
+✖ tool rejects foreign runId before side effect (0.2639ms)
+  Error: execution-context-required
+      at ToolBroker.execute (C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\src\agentHarness\toolBroker.js:65:41)
+      at TestContext.<anonymous> (C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\tests\tool-authority-audit.test.js:14:162)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7)
+
+test at extension\tests\tool-authority-audit.test.js:14:50
+✖ tool rejects foreign workerId before side effect (0.2156ms)
+  Error: execution-context-required
+      at ToolBroker.execute (C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\src\agentHarness\toolBroker.js:65:41)
+      at TestContext.<anonymous> (C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\tests\tool-authority-audit.test.js:14:162)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7)
+
+test at extension\tests\tool-authority-audit.test.js:15:1
+✖ caller cannot raise stored effect ceiling by forging task snapshot (0.3206ms)
+  Error: execution-context-required
+      at ToolBroker.execute (C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\src\agentHarness\toolBroker.js:65:41)
+      at TestContext.<anonymous> (C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\tests\tool-authority-audit.test.js:15:275)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7)
+
+test at extension\tests\tool-authority-audit.test.js:16:1
+✖ truthy approval object is not explicit approval (0.2543ms)
+  Error: execution-context-required
+      at ToolBroker.execute (C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\src\agentHarness\toolBroker.js:65:41)
+      at TestContext.<anonymous> (C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\tests\tool-authority-audit.test.js:16:208)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7)
+
+test at extension\tests\tool-authority-audit.test.js:17:1
+✖ cancellation while approval awaits fences dispatch (4.9215ms)
+  Error: execution-context-required
+      at ToolBroker.execute (C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\src\agentHarness\toolBroker.js:65:41)
+      at TestContext.<anonymous> (C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\tests\tool-authority-audit.test.js:17:315)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7)
+
+test at extension\tests\tool-authority-audit.test.js:18:1
+✖ foreign tool evidence cannot publish successful receipt (0.4289ms)
+  Error: execution-context-required
+      at ToolBroker.execute (C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\src\agentHarness\toolBroker.js:65:41)
+      at TestContext.<anonymous> (C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\tests\tool-authority-audit.test.js:18:285)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7)
+
+test at extension\tests\tool-authority-audit.test.js:19:1
+✖ missing current store authority fails closed (0.3263ms)
+  Error: execution-context-required
+      at ToolBroker.execute (C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\src\agentHarness\toolBroker.js:65:41)
+      at TestContext.<anonymous> (C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\tests\tool-authority-audit.test.js:19:251)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7)
+
+test at extension\tests\tool-authority-audit.test.js:21:1
+✖ tool dispatch waits for current task policy persistence acknowledgement (1.5993ms)
+  Error: execution-context-required
+      at ToolBroker.execute (C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\src\agentHarness\toolBroker.js:65:41)
+      at TestContext.<anonymous> (C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\tests\tool-authority-audit.test.js:21:271)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7)
+
+test at extension\tests\tool-authority-audit.test.js:22:1
+✖ approval receives immutable request arguments and cannot substitute authority (0.378ms)
+  Error: execution-context-required
+      at ToolBroker.execute (C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\src\agentHarness\toolBroker.js:65:41)
+      at TestContext.<anonymous> (C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\tests\tool-authority-audit.test.js:22:329)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12)
+      at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7)
+

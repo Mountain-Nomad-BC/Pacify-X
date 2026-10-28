@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "status": "active",
   "body": ".px/skills/map-project-intelligence/SKILL.md",
-  "body_sha256": "be4d0fdd32ead5ac6917a465045f44359ee63b518b5ce3f3960352e1c3b0e06a",
+  "body_sha256": "20ad5e92d004f038c77af2debacff174780cdc2fe8487541dc22a96dc17fce53",
   "references": [
     ".px/skills/map-project-intelligence/references/project-map-contract.md"
   ],
@@ -11,8 +11,17 @@
     ".px/skills/map-project-intelligence/scripts/build_project_map.py",
     ".px/skills/map-project-intelligence/scripts/validate_project_map.py"
   ],
-  "capability_tags": ["architecture", "inventory", "project-map", "repository", "retrieval"],
-  "effects": ["read_local", "write_workspace"],
+  "capability_tags": [
+    "architecture",
+    "inventory",
+    "project-map",
+    "repository",
+    "retrieval"
+  ],
+  "effects": [
+    "read_local",
+    "write_workspace"
+  ],
   "provenance": {
     "type": "admitted_user_supplied_clean_room_pack",
     "basis": [

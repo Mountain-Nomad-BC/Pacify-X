@@ -56,7 +56,7 @@ The existing repository must already be directly under `<WORKSPACE_DIR>/projects
 
 ### Framework maintenance
 
-The active project is this repository. Read `PROJECT_MANAGEMENT.md` and `.engineering-bootstrap/project-management/state.json` before changing control-plane behavior. Treat the current release certificate as revocable: material runtime, contract, registry, policy, model, integration, workflow, package, or evidence changes require proportional validation and recertification.
+The active project is this repository. Read `PROJECT_MANAGEMENT.md` and `.agentic_engineering_os_px/project-management/state.json` before changing control-plane behavior. Treat the current release certificate as revocable: material runtime, contract, registry, policy, model, integration, workflow, package, or evidence changes require proportional validation and recertification.
 
 ### Inspection or explanation only
 
@@ -67,10 +67,10 @@ Remain read-only. Gather current evidence and answer the question. A request to 
 Run:
 
 ```powershell
-engineering-bootstrap doctor
-engineering-bootstrap validate
-engineering-bootstrap startup --project <PROJECT_DIR>
-engineering-bootstrap tooling assess --project <PROJECT_DIR>
+agentic-engineering-os-px doctor
+agentic-engineering-os-px validate
+agentic-engineering-os-px startup --project <PROJECT_DIR>
+agentic-engineering-os-px tooling assess --project <PROJECT_DIR>
 ```
 
 From an uninstalled source checkout, use:
@@ -106,7 +106,7 @@ If the map is absent or stale, rebuild it before impact analysis. Sensitive sour
 
 ## Assistant and IDE integration
 
-The framework root provides model-neutral instructions plus adapters for common assistants and IDEs: `AGENTS.md`, `AI_ASSISTANT.md`, `.ai/assistant.toml`, `.github/copilot-instructions.md`, `.cursor/rules/`, `.windsurf/rules/`, `.codex/`, and `.vscode/`. Commissioning writes managed copies under the project's `.engineering-bootstrap/` directory and installs owner-visible files only when there is no collision. Existing owner files are preserved and reported in the commissioning receipt.
+The framework root provides model-neutral instructions plus adapters for common assistants and IDEs: `AGENTS.md`, `AI_ASSISTANT.md`, `.ai/assistant.toml`, `.github/copilot-instructions.md`, `.cursor/rules/`, `.windsurf/rules/`, `.codex/`, and `.vscode/`. Commissioning writes managed copies under the project's `.agentic_engineering_os_px/` directory and installs owner-visible files only when there is no collision. Existing owner files are preserved and reported in the commissioning receipt.
 
 Do not paste every skill or policy into an IDE instruction field. Point the assistant at this file and the applicable owner adapter, keep `bootstrap/startup.toml` metadata-only, and preserve the maximum three-candidate working set. The active project management state, plan, punch cards, approvals, and evidence remain project-local.
 
@@ -141,10 +141,10 @@ For each approved goal:
 Typical commands:
 
 ```powershell
-engineering-bootstrap classify --task "<TASK>"
-engineering-bootstrap working-set --goal "<GOAL>"
-engineering-bootstrap hydrate --skill <SKILL_ID>
-engineering-bootstrap plan --goal "<GOAL>"
+agentic-engineering-os-px classify --task "<TASK>"
+agentic-engineering-os-px working-set --goal "<GOAL>"
+agentic-engineering-os-px hydrate --skill <SKILL_ID>
+agentic-engineering-os-px plan --goal "<GOAL>"
 ```
 
 Never hydrate the full skill library. Never treat a declared capability, research note, builder output, or inert candidate as an admitted runtime skill.
@@ -179,9 +179,9 @@ A successful process exit is not proof of completion. Require postconditions, cu
 Use registered workflows instead of inventing an execution path:
 
 ```powershell
-engineering-bootstrap workflow list
-engineering-bootstrap workflow run --workspace <WORKSPACE_DIR> --request <REQUEST_JSON>
-engineering-bootstrap workflow run --workspace <WORKSPACE_DIR> --request <REQUEST_JSON> --apply
+agentic-engineering-os-px workflow list
+agentic-engineering-os-px workflow run --workspace <WORKSPACE_DIR> --request <REQUEST_JSON>
+agentic-engineering-os-px workflow run --workspace <WORKSPACE_DIR> --request <REQUEST_JSON> --apply
 ```
 
 Preview first. An applied request must have a valid active lease, schema-valid input, complete effect approval, a unique idempotency key, bounded resources, and a timeout that fits within the remaining lease. Keep untrusted or force-cancellable work behind a subprocess/service boundary.

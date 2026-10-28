@@ -6,16 +6,41 @@ import json
 import math
 from pathlib import Path
 import re
+import hashlib
+import pytest
+from docs.architecture.tools import build_atlas
 
 
 ROOT = Path(__file__).resolve().parents[1]
-ATLAS = ROOT / "docs/architecture"
-BASELINE = json.loads(
-    (ATLAS / "reference/graph_baseline_architecture.json").read_text(encoding="utf-8")
-)
-SHARD_MANIFEST = json.loads(
-    (ATLAS / "data/node_shards_manifest.json").read_text(encoding="utf-8")
-)
+@pytest.fixture(scope="module", autouse=True)
+def current_atlas(tmp_path_factory):
+    """Build from admitted declarations and measured bytes, without old graphs."""
+    global ATLAS, BASELINE, SHARD_MANIFEST, NODES, EDGES, SYSTEMS, RELATIONSHIPS, METRICS
+    workspace = tmp_path_factory.mktemp("current-atlas")
+    repo = workspace / "source"
+    repo.mkdir()
+    for relative in ("policies/rev1xx-validation.json", "policies/release-artifact-policy.json", "tests/test_architecture_atlas.py", "runtime/cli.py"):
+        target = repo / relative
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_bytes((ROOT / relative).read_bytes())
+    for source in (ROOT / "registry/planning/rev1xx").glob("*.json"):
+        if re.fullmatch(r"[0-9a-f]{64}\.json", source.name):
+            value = json.loads(source.read_bytes())
+            if value.get("schema_version") == "px.rev1xx-punch-cards/1.0":
+                target = repo / "registry/planning/rev1xx" / source.name
+                target.parent.mkdir(parents=True, exist_ok=True)
+                target.write_bytes(source.read_bytes())
+    rows, _, _ = build_atlas.inventory(repo, 100000, 2 * 1024**3)
+    BASELINE, _ = build_atlas.current_declaration_model(repo, rows)
+    ATLAS = workspace / "atlas"
+    build_atlas.build(repo, ATLAS, workspace / "absent-historical-reference")
+    SHARD_MANIFEST = _json("data/node_shards_manifest.json")
+    NODES = [node for shard in SHARD_MANIFEST["shards"] for node in _jsonl(shard["path"])]
+    EDGES = _jsonl("data/edges.jsonl")
+    SYSTEMS = _json("data/canonical_systems.json")
+    RELATIONSHIPS = _json("data/canonical_relationships.json")
+    METRICS = _json("data/metrics.json")
+    yield repo
 
 
 def _json(path: str):
@@ -27,13 +52,6 @@ def _jsonl(path: str):
         json.loads(line)
         for line in (ATLAS / path).read_text(encoding="utf-8").splitlines()
     ]
-
-
-NODES = [node for shard in SHARD_MANIFEST["shards"] for node in _jsonl(shard["path"])]
-EDGES = _jsonl("data/edges.jsonl")
-SYSTEMS = _json("data/canonical_systems.json")
-RELATIONSHIPS = _json("data/canonical_relationships.json")
-METRICS = _json("data/metrics.json")
 
 
 def test_preserves_every_canonical_system_id() -> None:
@@ -121,7 +139,7 @@ def test_all_flow_steps_exist() -> None:
 def test_exact_views_cameras_and_journeys() -> None:
     assert len(_json("data/views.json")) == 11
     assert len(_json("data/cameras.json")) == 11
-    assert len(_json("data/journeys.json")) == 5
+    assert len(_json("data/journeys.json")) == 12
 
 
 def test_no_fabricated_runtime_or_certification() -> None:
@@ -175,3 +193,38 @@ def test_all_generated_wiki_links_resolve() -> None:
             if not (ATLAS / "vault" / (target + ".md")).is_file():
                 unresolved.append((str(note), target))
     assert unresolved == []
+
+
+def test_current_source_hashes_are_independently_bound(current_atlas):
+    for row in _json("data/source_inventory.json"):
+        assert hashlib.sha256((current_atlas / row["path"]).read_bytes()).hexdigest() == row["sha256"]
+    assert len(SYSTEMS) == 60
+    assert all(node["implementation_verified"] is False for node in SYSTEMS)
+    assert BASELINE["metadata"]["historical_prerequisites"] is False
+
+
+def test_current_declarations_reject_post_capture_change(current_atlas):
+    rows, _, _ = build_atlas.inventory(current_atlas, 100000, 2 * 1024**3)
+    policy = current_atlas / "policies/rev1xx-validation.json"
+    original = policy.read_bytes()
+    try:
+        policy.write_bytes(original + b"\n")
+        with pytest.raises(ValueError, match="policy changed"):
+            build_atlas.current_declaration_model(current_atlas, rows)
+    finally:
+        policy.write_bytes(original)
+
+
+def test_current_atlas_rejects_ambiguous_declarations(current_atlas):
+    source = next((current_atlas / "registry/planning/rev1xx").glob("*.json"))
+    value = json.loads(source.read_bytes())
+    value["cards"][0]["title"] += " competing input"
+    payload = json.dumps(value, sort_keys=True).encode()
+    competitor = source.parent / (hashlib.sha256(payload).hexdigest() + ".json")
+    try:
+        competitor.write_bytes(payload)
+        rows, _, _ = build_atlas.inventory(current_atlas, 100000, 2 * 1024**3)
+        with pytest.raises(ValueError, match="unambiguous"):
+            build_atlas.current_declaration_model(current_atlas, rows)
+    finally:
+        competitor.unlink()

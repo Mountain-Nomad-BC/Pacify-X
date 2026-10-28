@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 import hashlib
 import json
 from pathlib import Path
@@ -15,11 +15,13 @@ PACKET_SCHEMA = "px.agent-handoff-packet/1.0"
 ACK_SCHEMA = "px.agent-handoff-acknowledgment/1.0"
 SHA256 = re.compile(r"^[a-f0-9]{64}$")
 
+#: Bounded skew tolerated when comparing handoff instants to the trusted clock
+#: (H01): a packet created or acknowledged further in the future than this is
+#: temporally inconsistent and rejected.
+HANDOFF_TIME_SKEW = timedelta(minutes=5)
 
-def _digest(value: object) -> str:
-    return hashlib.sha256(
-        json.dumps(value, sort_keys=True, separators=(",", ":"), default=str).encode()
-    ).hexdigest()
+
+from runtime.hash_utils import json_ascii_string_hash as _digest
 
 
 def _utc(value: str) -> datetime:
@@ -51,6 +53,10 @@ class AgentHandoffPacket:
     expires_utc: str
     recovery_of: str | None
     packet_sha256: str
+    sender_agent_generation_id: str | None = None
+    receiver_agent_generation_id: str | None = None
+    context_generation_sha256: str | None = None
+    model_execution_group_id: str | None = None
 
 
 @dataclass(frozen=True, slots=True)
@@ -69,6 +75,9 @@ class HandoffAcknowledgment:
 def _packet_payload(packet: AgentHandoffPacket) -> dict[str, object]:
     payload = asdict(packet)
     payload.pop("packet_sha256", None)
+    for name in ("sender_agent_generation_id", "receiver_agent_generation_id", "context_generation_sha256", "model_execution_group_id"):
+        if payload[name] is None:
+            payload.pop(name)
     return payload
 
 
@@ -92,7 +101,25 @@ def create_handoff_packet(
     created_utc: str,
     expires_utc: str,
     recovery_of: str | None = None,
+    sender_agent_generation_id: str | None = None,
+    receiver_agent_generation_id: str | None = None,
+    context_generation_sha256: str | None = None,
+    model_execution_group_id: str | None = None,
 ) -> AgentHandoffPacket:
+    if (sender_agent_generation_id is None) != (receiver_agent_generation_id is None):
+        raise ValueError("both sender and receiver generations required")
+    if sender_agent_generation_id is not None:
+        for value in (sender_agent_generation_id, receiver_agent_generation_id):
+            if type(value) is not str or not value.strip() or len(value) > 256 or any(ord(c) < 32 for c in value):
+                raise ValueError("bounded agent generation identity required")
+        if sender_agent_generation_id == receiver_agent_generation_id:
+            raise ValueError("handoff receiver requires a new generation")
+    if context_generation_sha256 is not None and not SHA256.fullmatch(context_generation_sha256):
+        raise ValueError("context generation identity must be SHA256")
+    if model_execution_group_id is not None and (type(model_execution_group_id) is not str or not model_execution_group_id.strip() or len(model_execution_group_id) > 256):
+        raise ValueError("invalid model execution group identity")
+    if (context_generation_sha256 is not None or model_execution_group_id is not None) and sender_agent_generation_id is None:
+        raise ValueError("lineage handoff requires generation binding")
     requested = tuple(sorted(set(map(str, authority))))
     if not requested or not set(requested) <= set(map(str, sender_authority)):
         raise PermissionError("handoff authority exceeds sender authority")
@@ -141,6 +168,10 @@ def create_handoff_packet(
         "expires_utc": expires_utc,
         "recovery_of": recovery_of,
     }
+    extensions = dict(sender_agent_generation_id=sender_agent_generation_id,
+                      receiver_agent_generation_id=receiver_agent_generation_id,
+                      context_generation_sha256=context_generation_sha256, model_execution_group_id=model_execution_group_id)
+    base.update({key: value for key, value in extensions.items() if value is not None})
     packet_id = "handoff-" + _digest(base)[:24]
     payload = {"packet_id": packet_id, **base}
     return AgentHandoffPacket(**payload, packet_sha256=_digest(payload))
@@ -154,6 +185,8 @@ def validate_handoff_packet(
     receiver_revision: str,
     current_evidence_revisions: Mapping[str, object],
     now_utc: str,
+    expected_receiver_generation_id: str | None = None,
+    current_context_generation_sha256: str | None = None,
 ) -> dict[str, object]:
     errors: list[str] = []
     if packet.schema_version != PACKET_SCHEMA:
@@ -166,8 +199,16 @@ def validate_handoff_packet(
         errors.append("receiver_mismatch")
     if packet.receiver_revision != receiver_revision:
         errors.append("receiver_revision_mismatch")
+    if packet.receiver_agent_generation_id is not None and packet.receiver_agent_generation_id != expected_receiver_generation_id:
+        errors.append("receiver_generation_mismatch")
+    if packet.context_generation_sha256 is not None and packet.context_generation_sha256 != current_context_generation_sha256:
+        errors.append("context_generation_mismatch")
     if _utc(packet.expires_utc) <= _utc(now_utc):
         errors.append("packet_expired")
+    if _utc(packet.created_utc) - _utc(now_utc) > HANDOFF_TIME_SKEW:
+        errors.append("packet_created_in_future")
+    if _utc(packet.expires_utc) <= _utc(packet.created_utc):
+        errors.append("packet_interval_invalid")
     for item in packet.evidence:
         ref = str(item["ref"])
         if str(current_evidence_revisions.get(ref, "")) != str(item["revision"]):
@@ -183,6 +224,7 @@ def acknowledge_handoff(
     receiver_agent_id: str,
     receiver_revision: str,
     acknowledged_utc: str,
+    now_utc: str | None = None,
 ) -> HandoffAcknowledgment:
     normalized = decision.casefold().strip()
     if normalized not in {"accept", "reject"} or not reason.strip():
@@ -192,6 +234,14 @@ def acknowledge_handoff(
         or receiver_revision != packet.receiver_revision
     ):
         raise PermissionError("handoff acknowledgment receiver revision mismatch")
+    acknowledged = _utc(acknowledged_utc)
+    created = _utc(packet.created_utc)
+    # H01: the acknowledgment time must be temporally consistent — not before
+    # the packet existed, and not in the future relative to the trusted clock.
+    if acknowledged + HANDOFF_TIME_SKEW < created:
+        raise ValueError("handoff acknowledgment predates the packet (fail closed)")
+    if now_utc is not None and _utc(now_utc) + HANDOFF_TIME_SKEW < acknowledged:
+        raise ValueError("handoff acknowledgment is dated in the future (fail closed)")
     payload = {
         "schema_version": ACK_SCHEMA,
         "packet_id": packet.packet_id,
@@ -224,7 +274,7 @@ def consume_handoff(
     validation = validate_handoff_packet(packet, **validation_context)
     if not validation["valid"]:
         raise PermissionError("invalid handoff packet: " + ",".join(validation["errors"]))
-    return {
+    body = {
         "packet_id": packet.packet_id,
         "packet_sha256": packet.packet_sha256,
         "consumable": True,
@@ -242,12 +292,19 @@ def consume_handoff(
         "memory_query_plan_sha256": packet.memory_query_plan_sha256,
         "recovery_of": packet.recovery_of,
     }
+    if packet.receiver_agent_generation_id is not None:
+        body.update(sender_agent_generation_id=packet.sender_agent_generation_id,
+                    receiver_agent_generation_id=packet.receiver_agent_generation_id,
+                    context_generation_sha256=packet.context_generation_sha256,
+                    model_execution_group_id=packet.model_execution_group_id,
+                    runtime_activation_allowed=False)
+    return body
 
 
 def persist_handoff_packet(packet: AgentHandoffPacket, path: Path) -> Path:
     """Persist once; immutable identity collisions never overwrite history."""
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("x", encoding="utf-8", newline="\n") as stream:
-        json.dump(asdict(packet), stream, indent=2, sort_keys=True)
+        json.dump({**_packet_payload(packet), "packet_sha256": packet.packet_sha256}, stream, indent=2, sort_keys=True)
         stream.write("\n")
     return path

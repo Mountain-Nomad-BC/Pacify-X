@@ -1,0 +1,99 @@
+"""Resolve a commissioned Gremlin host without creating identity or authentication.
+
+The signed native Studio configuration pins existing protected identity metadata.
+A real independent recovery verifier is supplied by the host, never by JSON.
+"""
+from pathlib import Path
+import re
+
+from ..archive_io import reject_path_links
+from ..json_io import load_json_object
+from ..studio_authority import StudioAuthorityStore
+from .audit import GremlinAuditLedger
+from .composition import compose_gremlin_runtime
+from .runtime_identity import GremlinRuntimeIdentityStore, WindowsCredentialManagerBackend
+
+<<<<<<< HEAD
+CONFIGURATION_RELATIVE = Path(".engineering-bootstrap/runtime-core/gremlin/host.json")
+=======
+CONFIGURATION_RELATIVE = Path(".agentic_engineering_os_px/runtime-core/gremlin/host.json")
+>>>>>>> codex/rollout-day1-20261024
+RECOVERY_VERIFIER_ENVIRONMENT = "PX_GREMLIN_RECOVERY_VERIFIER"
+
+
+def resolve_recovery_verifier_from_environment():
+    """Resolve the host-supplied independent recovery verifier adapter.
+
+    Gremlin composition refuses to sign containment without an independent
+    recovery verifier. The host supplies the concrete adapter module through an
+    admitted environment binding (``module:attribute``); a local token, a JSON
+    blob, or a synthetic callable is never an independent human authenticator.
+    An absent binding is an explicit unavailable state, not a substituted one.
+    """
+    import importlib
+    import os as _os
+    specification = _os.environ.get(RECOVERY_VERIFIER_ENVIRONMENT, "")
+    if not specification.strip():
+        return None
+    module_name, separator, attribute = specification.partition(":")
+    if (
+        not separator
+        or not module_name.strip()
+        or not attribute.strip()
+    ):
+        raise ValueError(
+            RECOVERY_VERIFIER_ENVIRONMENT + " must bind 'module:attribute'"
+        )
+    adapter = getattr(
+        importlib.import_module(module_name.strip()), attribute.strip(), None
+    )
+    if adapter is None or not callable(getattr(adapter, "verify", None)):
+        raise ValueError(
+            "the bound recovery verifier has no concrete verify operation"
+        )
+    return adapter
+
+
+def load_configured_gremlin_runtime(project_root: Path, *, recovery_verifier, observers=None, supervisor_backend=None):
+    if not callable(getattr(recovery_verifier, "verify", None)):
+        raise ValueError("real independent recovery verifier must be supplied by the host")
+    root = Path(project_root)
+    reject_path_links(root)
+    root = root.resolve(strict=True)
+    if root == Path(root.anchor):
+        raise ValueError("Gremlin configuration requires a bounded project root")
+    path = root / CONFIGURATION_RELATIVE
+    reject_path_links(path)
+    signed = load_json_object(path, max_bytes=64 * 1024)
+    config = StudioAuthorityStore.open_existing(root).verify_receipt(signed)
+    from ..contracts import validate_instance
+    validate_instance(config, Path(__file__).resolve().parents[2] / "contracts/gremlin-host-configuration.schema.json")
+    fields = {"schema_version", "project_root", "backend_id", "nanny_authority_id",
+              "recovery_authority_id", "identity_id", "identity_generation", "signing_key_sha256"}
+    if (type(config) is not dict or set(config) != fields
+            or config["schema_version"] != "px.gremlin-host-configuration/1.0"
+            or config["project_root"] != root.as_posix()
+            or config["backend_id"] != "windows-credential-manager"
+            or type(config["identity_generation"]) is not int
+            or config["identity_generation"] < 1
+            or type(config["signing_key_sha256"]) is not str
+            or re.fullmatch(r"[0-9a-f]{64}", config["signing_key_sha256"]) is None):
+        raise ValueError("exact signed commissioned Gremlin configuration required")
+    for field in ("nanny_authority_id", "recovery_authority_id", "identity_id"):
+        value = config[field]
+        if type(value) is not str or not value.strip() or len(value) > 512 or any(ord(c) < 32 for c in value):
+            raise ValueError("Gremlin authority identities must be bounded nonempty text")
+    if config["nanny_authority_id"] == config["recovery_authority_id"]:
+        raise ValueError("recovery authority must be independent")
+    store = GremlinRuntimeIdentityStore(WindowsCredentialManagerBackend(), audit_sink=GremlinAuditLedger(root))
+    identity = store.inspect(config["nanny_authority_id"])
+    if (identity.identity_id != config["identity_id"]
+            or identity.generation != config["identity_generation"]
+            or identity.signing_key_sha256 != config["signing_key_sha256"]
+            or identity.backend_id != config["backend_id"]):
+        raise PermissionError("commissioned runtime identity differs from signed host configuration")
+    return compose_gremlin_runtime(project_root=root,
+        nanny_authority_id=config["nanny_authority_id"],
+        recovery_authority_id=config["recovery_authority_id"],
+        identity_store=store, runtime_identity=identity, recovery_verifier=recovery_verifier,
+        observers=observers, supervisor_backend=supervisor_backend)

@@ -10,6 +10,7 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
+from runtime.guarded_registry_projection import publish_guarded_registry_projection
 
 from runtime.exact_tool_certification import certify_exact_tools  # noqa: E402
 from runtime.python_surface_certification import certify_python_surfaces  # noqa: E402
@@ -19,6 +20,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--root", type=Path, default=ROOT)
     parser.add_argument("--output", type=Path)
+    parser.add_argument("--admission-event-id", required=True)
     args = parser.parse_args()
     root = args.root.resolve()
     output = (
@@ -29,12 +31,8 @@ def main() -> int:
     # The bytes being written are the current map. Persist that authority fact,
     # not whether the prior on-disk projection happened to match.
     result["map_current"] = True
-    output.parent.mkdir(parents=True, exist_ok=True)
-    output.write_text(
-        json.dumps(result, indent=2, sort_keys=True) + "\n",
-        encoding="utf-8",
-        newline="\n",
-    )
+    publish_guarded_registry_projection(root, output.relative_to(root).as_posix(), result,
+        admission_event_id=args.admission_event_id)
     print(
         json.dumps(
             {

@@ -34,7 +34,7 @@
       "source_revisions": [
         {
           "path": "builders/declared_suite_support_builder.py",
-          "revision": "56f1081ffc74fff176ba1925ac00c5263be6783fd7cf6ea9e162ee9bda2d6d8f"
+          "revision": "d5ac8b7345f8b0d72ea17e9f201d4a97ce795dd21beae558c5a0aaf38c815442"
         }
       ]
     },
@@ -91,7 +91,7 @@
       "source_revisions": [
         {
           "path": "builders/last_round_assimilation_builder.py",
-          "revision": "fbe5b843326ef4670dcfc60842363469452e336ef9375dfaa5ffa024c26e2e44"
+          "revision": "7dad1c3c367fafcce7f24e07d1a691d2dde6dd4b2fbce769aeea1e6cccf02c95"
         }
       ]
     },
@@ -102,7 +102,7 @@
         "runtime.registry"
       ],
       "graph_id": "capability",
-      "graph_revision": "ffe1e0fab7109dbd7e3295c4b05cbb3603b25f59f90e4b029ab89888078476f7",
+      "graph_revision": "cab1fa93fd144f936a906a8eec977f2c5b3e173321f6cc1aca10a5f3dbdce365",
       "invalidation_rule": "graph manifest source drift",
       "path": "registry/graphs/capability_graph.json",
       "purpose": "canonical capability membership relationships",
@@ -110,7 +110,7 @@
       "source_revisions": [
         {
           "path": "runtime/graph_registry.py",
-          "revision": "11c2b8d85214530e82f37f919b21eed065646557966f9d2cc75764162a047497"
+          "revision": "0c10605880cbb8bc8cf4c3606a043b1180e843acc3b8a18fa789dbf6995caeef"
         }
       ]
     },
@@ -121,7 +121,7 @@
         "runtime.graphs"
       ],
       "graph_id": "dependency-effect",
-      "graph_revision": "647b4e3b3130e7f41e34a9352df912a637482529aeb0a9e8de1880f98db1eaa8",
+      "graph_revision": "460234d1f16e717af3228bfb4d72e3c2c683eb99e4197234de7c4fec62586890",
       "invalidation_rule": "graph manifest source drift",
       "path": "registry/graphs/dependency_effect_graph.json",
       "purpose": "capability dependency and effect relationships",
@@ -129,7 +129,7 @@
       "source_revisions": [
         {
           "path": "runtime/graph_registry.py",
-          "revision": "11c2b8d85214530e82f37f919b21eed065646557966f9d2cc75764162a047497"
+          "revision": "0c10605880cbb8bc8cf4c3606a043b1180e843acc3b8a18fa789dbf6995caeef"
         }
       ]
     },
@@ -140,7 +140,7 @@
         "runtime.graphs"
       ],
       "graph_id": "io",
-      "graph_revision": "78a4dfddf79802f5c3a6606a301745631674a058579fe4ab61eef6d38298f816",
+      "graph_revision": "a98d60f93fc8ef082075d41974947f5445dc9ccee1c7ba1a9d44b36487ac893e",
       "invalidation_rule": "graph manifest source drift",
       "path": "registry/graphs/io_graph.json",
       "purpose": "capability input and output compatibility relationships",
@@ -148,7 +148,7 @@
       "source_revisions": [
         {
           "path": "runtime/graph_registry.py",
-          "revision": "11c2b8d85214530e82f37f919b21eed065646557966f9d2cc75764162a047497"
+          "revision": "0c10605880cbb8bc8cf4c3606a043b1180e843acc3b8a18fa789dbf6995caeef"
         }
       ]
     },
@@ -159,7 +159,7 @@
         "runtime.project_stream_orchestrator"
       ],
       "graph_id": "project-stream-dependency",
-      "graph_revision": "a0276b85653ac57747b7685c691f02a0352c852b0f55cb0ddb1c26962c3b4a85",
+      "graph_revision": "76641e8ed0cc64665d75b96d18bafab1a6087661d52bd876f7c43cd60fa1cb7b",
       "invalidation_rule": "graph manifest source drift",
       "path": "registry/graphs/project_stream_dependency_graph.json",
       "purpose": "project stream orchestration execution order",
@@ -167,7 +167,7 @@
       "source_revisions": [
         {
           "path": "runtime/graph_registry.py",
-          "revision": "11c2b8d85214530e82f37f919b21eed065646557966f9d2cc75764162a047497"
+          "revision": "0c10605880cbb8bc8cf4c3606a043b1180e843acc3b8a18fa789dbf6995caeef"
         }
       ]
     },
@@ -178,7 +178,7 @@
         "runtime.system_graph"
       ],
       "graph_id": "system-asset",
-      "graph_revision": "04f41bcab0b4fb9ebf2cadea2cd1d90abbc8bc41fa0015bcde959336a9f6f6a1",
+      "graph_revision": "16705c099ecda0f51eb3523f7cdde04233a0d80e06ef9770e76bb8b098f72418",
       "invalidation_rule": "graph manifest source drift",
       "path": "registry/graphs/system_asset_graph.json",
       "purpose": "system asset ownership and integration topology",
@@ -186,7 +186,7 @@
       "source_revisions": [
         {
           "path": "runtime/graph_registry.py",
-          "revision": "11c2b8d85214530e82f37f919b21eed065646557966f9d2cc75764162a047497"
+          "revision": "0c10605880cbb8bc8cf4c3606a043b1180e843acc3b8a18fa789dbf6995caeef"
         }
       ]
     }

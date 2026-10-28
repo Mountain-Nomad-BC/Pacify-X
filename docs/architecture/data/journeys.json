@@ -1,280 +1,469 @@
 [
   {
-    "name": "Normal Work",
-    "flow_id": "F01",
+    "name": "W0",
+    "flow_id": "planned-wave:W0",
     "steps": [
-      "host",
-      "startup",
-      "catalog",
-      "orchestrator",
-      "effects",
-      "evidence",
-      "verify",
-      "recovery"
+      "requirement:BASE-001",
+      "requirement:BASE-002",
+      "requirement:BASE-003",
+      "requirement:BASE-004"
     ],
-    "description": "The bounded single-capability path validates registry and inputs, checks authority, activates one handler, assembles support and evaluates postconditions. Each stage records a checkpoint.",
-    "limit": "This path is currently constrained for non-read effects because its enforce call omits signed grant bindings; its verify call is the compatibility evaluator.",
+    "description": "Locked planning membership; not an executed workflow",
+    "limit": null,
     "segments": [
       {
-        "source": "host",
-        "target": "startup",
+        "source": "requirement:BASE-001",
+        "target": "requirement:BASE-002",
         "relationship_present": false,
         "evidence": "narrative-adjacency-only"
       },
       {
-        "source": "startup",
-        "target": "catalog",
-        "relationship_present": true,
-        "evidence": "modeled-relationship"
-      },
-      {
-        "source": "catalog",
-        "target": "orchestrator",
-        "relationship_present": true,
-        "evidence": "modeled-relationship"
-      },
-      {
-        "source": "orchestrator",
-        "target": "effects",
+        "source": "requirement:BASE-002",
+        "target": "requirement:BASE-003",
         "relationship_present": false,
         "evidence": "narrative-adjacency-only"
       },
       {
-        "source": "effects",
-        "target": "evidence",
-        "relationship_present": false,
-        "evidence": "narrative-adjacency-only"
-      },
-      {
-        "source": "evidence",
-        "target": "verify",
-        "relationship_present": true,
-        "evidence": "modeled-relationship"
-      },
-      {
-        "source": "verify",
-        "target": "recovery",
+        "source": "requirement:BASE-003",
+        "target": "requirement:BASE-004",
         "relationship_present": false,
         "evidence": "narrative-adjacency-only"
       }
     ]
   },
   {
-    "name": "Learning",
-    "flow_id": "F07",
+    "name": "W1",
+    "flow_id": "planned-wave:W1",
     "steps": [
-      "telemetry",
-      "learning",
-      "comparison",
-      "learninggate",
-      "knowledge",
-      "reuse",
-      "invalidation"
+      "requirement:SEM-001",
+      "requirement:SEM-002",
+      "requirement:SEM-003",
+      "requirement:SEM-004",
+      "requirement:SEM-005",
+      "requirement:SEM-006"
     ],
-    "description": "Explicit observations form a signed learning pipeline. Frozen candidates pass statistical comparison, research and final validation, then a separate knowledge proposal verification/approval/promotion. Measured reuse can make a canonical head suspect and invalidate declared dependents.",
-    "limit": "Metrics and trials are submitted by callers. There is no established automatic bus-to-learning trigger or autonomous experiment execution. This is a real governed state-change loop.",
+    "description": "Locked planning membership; not an executed workflow",
+    "limit": null,
     "segments": [
       {
-        "source": "telemetry",
-        "target": "learning",
-        "relationship_present": true,
-        "evidence": "modeled-relationship"
-      },
-      {
-        "source": "learning",
-        "target": "comparison",
-        "relationship_present": true,
-        "evidence": "modeled-relationship"
-      },
-      {
-        "source": "comparison",
-        "target": "learninggate",
-        "relationship_present": true,
-        "evidence": "modeled-relationship"
-      },
-      {
-        "source": "learninggate",
-        "target": "knowledge",
-        "relationship_present": true,
-        "evidence": "modeled-relationship"
-      },
-      {
-        "source": "knowledge",
-        "target": "reuse",
-        "relationship_present": true,
-        "evidence": "modeled-relationship"
-      },
-      {
-        "source": "reuse",
-        "target": "invalidation",
-        "relationship_present": true,
-        "evidence": "modeled-relationship"
-      }
-    ]
-  },
-  {
-    "name": "Failure/Recovery",
-    "flow_id": "F03",
-    "steps": [
-      "ui",
-      "bridge",
-      "cli",
-      "workflow",
-      "studioauth",
-      "scheduler",
-      "supervisor",
-      "resources",
-      "recovery",
-      "dashboard"
-    ],
-    "description": "A workflow revision is saved, validated/admitted and dry-run. Ready nodes run in bounded conflict-free batches; typed outputs enable branches. Approval, timeout, retry and lifecycle controls produce durable run state.",
-    "limit": "Diagram is a narrative order, not a claim of one linear function chain. Adapter branches and resource cleanup are parallel responsibilities.",
-    "segments": [
-      {
-        "source": "ui",
-        "target": "bridge",
-        "relationship_present": true,
-        "evidence": "modeled-relationship"
-      },
-      {
-        "source": "bridge",
-        "target": "cli",
-        "relationship_present": true,
-        "evidence": "modeled-relationship"
-      },
-      {
-        "source": "cli",
-        "target": "workflow",
-        "relationship_present": true,
-        "evidence": "modeled-relationship"
-      },
-      {
-        "source": "workflow",
-        "target": "studioauth",
+        "source": "requirement:SEM-001",
+        "target": "requirement:SEM-002",
         "relationship_present": false,
         "evidence": "narrative-adjacency-only"
       },
       {
-        "source": "studioauth",
-        "target": "scheduler",
+        "source": "requirement:SEM-002",
+        "target": "requirement:SEM-003",
         "relationship_present": false,
         "evidence": "narrative-adjacency-only"
       },
       {
-        "source": "scheduler",
-        "target": "supervisor",
+        "source": "requirement:SEM-003",
+        "target": "requirement:SEM-004",
         "relationship_present": false,
         "evidence": "narrative-adjacency-only"
       },
       {
-        "source": "supervisor",
-        "target": "resources",
-        "relationship_present": true,
-        "evidence": "modeled-relationship"
-      },
-      {
-        "source": "resources",
-        "target": "recovery",
+        "source": "requirement:SEM-004",
+        "target": "requirement:SEM-005",
         "relationship_present": false,
         "evidence": "narrative-adjacency-only"
       },
       {
-        "source": "recovery",
-        "target": "dashboard",
+        "source": "requirement:SEM-005",
+        "target": "requirement:SEM-006",
         "relationship_present": false,
         "evidence": "narrative-adjacency-only"
       }
     ]
   },
   {
-    "name": "Knowledge Change",
-    "flow_id": "F09",
+    "name": "W2",
+    "flow_id": "planned-wave:W2",
     "steps": [
-      "projectmap",
-      "invalidation",
-      "graphs",
-      "router",
-      "plan",
-      "tests"
+      "requirement:MIG-001",
+      "requirement:MIG-002",
+      "requirement:MIG-003",
+      "requirement:MIG-004",
+      "requirement:MIG-005"
     ],
-    "description": "Source impact and declared dependency currentness identify stale maps/projections/proof. Freshness gates prevent reuse until the appropriate owned rebuild or test stage completes.",
-    "limit": "Propagation coverage depends on the registered graph. This report computes no product revision refresh and runs no release gates.",
+    "description": "Locked planning membership; not an executed workflow",
+    "limit": null,
     "segments": [
       {
-        "source": "projectmap",
-        "target": "invalidation",
+        "source": "requirement:MIG-001",
+        "target": "requirement:MIG-002",
         "relationship_present": false,
         "evidence": "narrative-adjacency-only"
       },
       {
-        "source": "invalidation",
-        "target": "graphs",
-        "relationship_present": true,
-        "evidence": "modeled-relationship"
+        "source": "requirement:MIG-002",
+        "target": "requirement:MIG-003",
+        "relationship_present": false,
+        "evidence": "narrative-adjacency-only"
       },
       {
-        "source": "graphs",
-        "target": "router",
-        "relationship_present": true,
-        "evidence": "modeled-relationship"
+        "source": "requirement:MIG-003",
+        "target": "requirement:MIG-004",
+        "relationship_present": false,
+        "evidence": "narrative-adjacency-only"
       },
       {
-        "source": "router",
-        "target": "plan",
-        "relationship_present": true,
-        "evidence": "modeled-relationship"
-      },
-      {
-        "source": "plan",
-        "target": "tests",
+        "source": "requirement:MIG-004",
+        "target": "requirement:MIG-005",
         "relationship_present": false,
         "evidence": "narrative-adjacency-only"
       }
     ]
   },
   {
-    "name": "Release Proof",
-    "flow_id": "F10",
+    "name": "W3",
+    "flow_id": "planned-wave:W3",
     "steps": [
-      "gapledger",
-      "repair",
-      "tests",
-      "package",
-      "operational",
-      "certificate"
+      "requirement:EXE-001",
+      "requirement:EXE-002",
+      "requirement:EXE-003",
+      "requirement:EXE-004",
+      "requirement:EXE-005",
+      "requirement:EXE-006"
     ],
-    "description": "Repair intake closes, one reconciliation establishes identity, current sections precede one full profile and validation, then package/install/installed-system testing/certification advance in order.",
-    "limit": "The user confirmed Marketplace publication and verification. Local README still carries older pending-release language; neither is treated as a fresh independent Marketplace audit here.",
+    "description": "Locked planning membership; not an executed workflow",
+    "limit": null,
     "segments": [
       {
-        "source": "gapledger",
-        "target": "repair",
-        "relationship_present": true,
-        "evidence": "modeled-relationship"
+        "source": "requirement:EXE-001",
+        "target": "requirement:EXE-002",
+        "relationship_present": false,
+        "evidence": "narrative-adjacency-only"
       },
       {
-        "source": "repair",
-        "target": "tests",
-        "relationship_present": true,
-        "evidence": "modeled-relationship"
+        "source": "requirement:EXE-002",
+        "target": "requirement:EXE-003",
+        "relationship_present": false,
+        "evidence": "narrative-adjacency-only"
       },
       {
-        "source": "tests",
-        "target": "package",
-        "relationship_present": true,
-        "evidence": "modeled-relationship"
+        "source": "requirement:EXE-003",
+        "target": "requirement:EXE-004",
+        "relationship_present": false,
+        "evidence": "narrative-adjacency-only"
       },
       {
-        "source": "package",
-        "target": "operational",
-        "relationship_present": true,
-        "evidence": "modeled-relationship"
+        "source": "requirement:EXE-004",
+        "target": "requirement:EXE-005",
+        "relationship_present": false,
+        "evidence": "narrative-adjacency-only"
       },
       {
-        "source": "operational",
-        "target": "certificate",
-        "relationship_present": true,
-        "evidence": "modeled-relationship"
+        "source": "requirement:EXE-005",
+        "target": "requirement:EXE-006",
+        "relationship_present": false,
+        "evidence": "narrative-adjacency-only"
+      }
+    ]
+  },
+  {
+    "name": "W4",
+    "flow_id": "planned-wave:W4",
+    "steps": [
+      "requirement:DUR-001",
+      "requirement:DUR-002",
+      "requirement:DUR-003",
+      "requirement:DUR-004",
+      "requirement:DUR-005",
+      "requirement:DUR-006"
+    ],
+    "description": "Locked planning membership; not an executed workflow",
+    "limit": null,
+    "segments": [
+      {
+        "source": "requirement:DUR-001",
+        "target": "requirement:DUR-002",
+        "relationship_present": false,
+        "evidence": "narrative-adjacency-only"
+      },
+      {
+        "source": "requirement:DUR-002",
+        "target": "requirement:DUR-003",
+        "relationship_present": false,
+        "evidence": "narrative-adjacency-only"
+      },
+      {
+        "source": "requirement:DUR-003",
+        "target": "requirement:DUR-004",
+        "relationship_present": false,
+        "evidence": "narrative-adjacency-only"
+      },
+      {
+        "source": "requirement:DUR-004",
+        "target": "requirement:DUR-005",
+        "relationship_present": false,
+        "evidence": "narrative-adjacency-only"
+      },
+      {
+        "source": "requirement:DUR-005",
+        "target": "requirement:DUR-006",
+        "relationship_present": false,
+        "evidence": "narrative-adjacency-only"
+      }
+    ]
+  },
+  {
+    "name": "W5",
+    "flow_id": "planned-wave:W5",
+    "steps": [
+      "requirement:INT-001",
+      "requirement:INT-002",
+      "requirement:INT-003",
+      "requirement:INT-004",
+      "requirement:INT-005"
+    ],
+    "description": "Locked planning membership; not an executed workflow",
+    "limit": null,
+    "segments": [
+      {
+        "source": "requirement:INT-001",
+        "target": "requirement:INT-002",
+        "relationship_present": false,
+        "evidence": "narrative-adjacency-only"
+      },
+      {
+        "source": "requirement:INT-002",
+        "target": "requirement:INT-003",
+        "relationship_present": false,
+        "evidence": "narrative-adjacency-only"
+      },
+      {
+        "source": "requirement:INT-003",
+        "target": "requirement:INT-004",
+        "relationship_present": false,
+        "evidence": "narrative-adjacency-only"
+      },
+      {
+        "source": "requirement:INT-004",
+        "target": "requirement:INT-005",
+        "relationship_present": false,
+        "evidence": "narrative-adjacency-only"
+      }
+    ]
+  },
+  {
+    "name": "W6",
+    "flow_id": "planned-wave:W6",
+    "steps": [
+      "requirement:EGF-001",
+      "requirement:EGF-002",
+      "requirement:EGF-003",
+      "requirement:EGF-004",
+      "requirement:EGF-005",
+      "requirement:EGF-006"
+    ],
+    "description": "Locked planning membership; not an executed workflow",
+    "limit": null,
+    "segments": [
+      {
+        "source": "requirement:EGF-001",
+        "target": "requirement:EGF-002",
+        "relationship_present": false,
+        "evidence": "narrative-adjacency-only"
+      },
+      {
+        "source": "requirement:EGF-002",
+        "target": "requirement:EGF-003",
+        "relationship_present": false,
+        "evidence": "narrative-adjacency-only"
+      },
+      {
+        "source": "requirement:EGF-003",
+        "target": "requirement:EGF-004",
+        "relationship_present": false,
+        "evidence": "narrative-adjacency-only"
+      },
+      {
+        "source": "requirement:EGF-004",
+        "target": "requirement:EGF-005",
+        "relationship_present": false,
+        "evidence": "narrative-adjacency-only"
+      },
+      {
+        "source": "requirement:EGF-005",
+        "target": "requirement:EGF-006",
+        "relationship_present": false,
+        "evidence": "narrative-adjacency-only"
+      }
+    ]
+  },
+  {
+    "name": "W7",
+    "flow_id": "planned-wave:W7",
+    "steps": [
+      "requirement:ASSURE-001",
+      "requirement:ASSURE-002",
+      "requirement:ASSURE-003",
+      "requirement:ASSURE-004",
+      "requirement:ASSURE-005"
+    ],
+    "description": "Locked planning membership; not an executed workflow",
+    "limit": null,
+    "segments": [
+      {
+        "source": "requirement:ASSURE-001",
+        "target": "requirement:ASSURE-002",
+        "relationship_present": false,
+        "evidence": "narrative-adjacency-only"
+      },
+      {
+        "source": "requirement:ASSURE-002",
+        "target": "requirement:ASSURE-003",
+        "relationship_present": false,
+        "evidence": "narrative-adjacency-only"
+      },
+      {
+        "source": "requirement:ASSURE-003",
+        "target": "requirement:ASSURE-004",
+        "relationship_present": false,
+        "evidence": "narrative-adjacency-only"
+      },
+      {
+        "source": "requirement:ASSURE-004",
+        "target": "requirement:ASSURE-005",
+        "relationship_present": false,
+        "evidence": "narrative-adjacency-only"
+      }
+    ]
+  },
+  {
+    "name": "W8",
+    "flow_id": "planned-wave:W8",
+    "steps": [
+      "requirement:EVO-001",
+      "requirement:EVO-002",
+      "requirement:EVO-003",
+      "requirement:EVO-004",
+      "requirement:EVO-005"
+    ],
+    "description": "Locked planning membership; not an executed workflow",
+    "limit": null,
+    "segments": [
+      {
+        "source": "requirement:EVO-001",
+        "target": "requirement:EVO-002",
+        "relationship_present": false,
+        "evidence": "narrative-adjacency-only"
+      },
+      {
+        "source": "requirement:EVO-002",
+        "target": "requirement:EVO-003",
+        "relationship_present": false,
+        "evidence": "narrative-adjacency-only"
+      },
+      {
+        "source": "requirement:EVO-003",
+        "target": "requirement:EVO-004",
+        "relationship_present": false,
+        "evidence": "narrative-adjacency-only"
+      },
+      {
+        "source": "requirement:EVO-004",
+        "target": "requirement:EVO-005",
+        "relationship_present": false,
+        "evidence": "narrative-adjacency-only"
+      }
+    ]
+  },
+  {
+    "name": "W9",
+    "flow_id": "planned-wave:W9",
+    "steps": [
+      "requirement:CMP-001",
+      "requirement:CMP-002",
+      "requirement:CMP-003",
+      "requirement:CMP-004"
+    ],
+    "description": "Locked planning membership; not an executed workflow",
+    "limit": null,
+    "segments": [
+      {
+        "source": "requirement:CMP-001",
+        "target": "requirement:CMP-002",
+        "relationship_present": false,
+        "evidence": "narrative-adjacency-only"
+      },
+      {
+        "source": "requirement:CMP-002",
+        "target": "requirement:CMP-003",
+        "relationship_present": false,
+        "evidence": "narrative-adjacency-only"
+      },
+      {
+        "source": "requirement:CMP-003",
+        "target": "requirement:CMP-004",
+        "relationship_present": false,
+        "evidence": "narrative-adjacency-only"
+      }
+    ]
+  },
+  {
+    "name": "W10",
+    "flow_id": "planned-wave:W10",
+    "steps": [
+      "requirement:UXG-001",
+      "requirement:UXG-002",
+      "requirement:UXG-003"
+    ],
+    "description": "Locked planning membership; not an executed workflow",
+    "limit": null,
+    "segments": [
+      {
+        "source": "requirement:UXG-001",
+        "target": "requirement:UXG-002",
+        "relationship_present": false,
+        "evidence": "narrative-adjacency-only"
+      },
+      {
+        "source": "requirement:UXG-002",
+        "target": "requirement:UXG-003",
+        "relationship_present": false,
+        "evidence": "narrative-adjacency-only"
+      }
+    ]
+  },
+  {
+    "name": "W11",
+    "flow_id": "planned-wave:W11",
+    "steps": [
+      "requirement:REL-001",
+      "requirement:REL-002",
+      "requirement:REL-003",
+      "requirement:REL-004",
+      "requirement:REL-005"
+    ],
+    "description": "Locked planning membership; not an executed workflow",
+    "limit": null,
+    "segments": [
+      {
+        "source": "requirement:REL-001",
+        "target": "requirement:REL-002",
+        "relationship_present": false,
+        "evidence": "narrative-adjacency-only"
+      },
+      {
+        "source": "requirement:REL-002",
+        "target": "requirement:REL-003",
+        "relationship_present": false,
+        "evidence": "narrative-adjacency-only"
+      },
+      {
+        "source": "requirement:REL-003",
+        "target": "requirement:REL-004",
+        "relationship_present": false,
+        "evidence": "narrative-adjacency-only"
+      },
+      {
+        "source": "requirement:REL-004",
+        "target": "requirement:REL-005",
+        "relationship_present": false,
+        "evidence": "narrative-adjacency-only"
       }
     ]
   }

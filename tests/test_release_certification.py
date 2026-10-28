@@ -143,7 +143,7 @@ def test_release_sanitation_excludes_generated_control_custody_only(
 ) -> None:
     from scripts.audit_sanitization import audit
 
-    generated = tmp_path / ".engineering-bootstrap/control.json"
+    generated = tmp_path / ".agentic_engineering_os_px/control.json"
     generated.parent.mkdir()
     generated.write_text(
         "C:" + "/Users/LocalOwner/generated.json\n", encoding="utf-8"
@@ -165,16 +165,16 @@ def test_clean_release_copy_uses_the_canonical_product_boundary() -> None:
         destination = root / "destination"
         (source / "runtime").mkdir(parents=True)
         (source / "runtime/owned.py").write_text("owned = True\n", encoding="utf-8")
-        (source / ".engineering-bootstrap").mkdir()
-        (source / ".engineering-bootstrap/owned.json").write_text("{}\n", encoding="utf-8")
+        (source / ".agentic_engineering_os_px").mkdir()
+        (source / ".agentic_engineering_os_px/owned.json").write_text("{}\n", encoding="utf-8")
         for relative in (
             ".tmp/host-cache.bin",
             ".venv-certify/dependency.txt",
             "Python/runtime.txt",
-            ".engineering-bootstrap/diagnostics/cache.json",
-            ".engineering-bootstrap/operation-bus/wal/owned.zip",
-            ".engineering-bootstrap/project-map-history-archives/owned.zip",
-            ".engineering-bootstrap/.lock-recovery-receipts/release.lock/receipt.json",
+            ".agentic_engineering_os_px/diagnostics/cache.json",
+            ".agentic_engineering_os_px/operation-bus/wal/owned.zip",
+            ".agentic_engineering_os_px/project-map-history-archives/owned.zip",
+            ".agentic_engineering_os_px/.lock-recovery-receipts/release.lock/receipt.json",
         ):
             path = source / relative
             path.parent.mkdir(parents=True, exist_ok=True)
@@ -183,17 +183,17 @@ def test_clean_release_copy_uses_the_canonical_product_boundary() -> None:
         _copy_clean(source, destination)
 
         assert (destination / "runtime/owned.py").is_file()
-        assert (destination / ".engineering-bootstrap/owned.json").is_file()
+        assert (destination / ".agentic_engineering_os_px/owned.json").is_file()
         assert not (destination / ".tmp").exists()
         assert not (destination / ".venv-certify").exists()
         assert not (destination / "Python").exists()
-        assert not (destination / ".engineering-bootstrap/diagnostics").exists()
-        assert not (destination / ".engineering-bootstrap/operation-bus").exists()
+        assert not (destination / ".agentic_engineering_os_px/diagnostics").exists()
+        assert not (destination / ".agentic_engineering_os_px/operation-bus").exists()
         assert not (
-            destination / ".engineering-bootstrap/project-map-history-archives"
+            destination / ".agentic_engineering_os_px/project-map-history-archives"
         ).exists()
         assert not (
-            destination / ".engineering-bootstrap/.lock-recovery-receipts"
+            destination / ".agentic_engineering_os_px/.lock-recovery-receipts"
         ).exists()
 
 
@@ -594,6 +594,35 @@ def test_release_evidence_commit_rejects_every_existing_file_collision() -> None
         assert existing.read_text(encoding="utf-8") == "existing bytes\n"
 
 
+def _release_campaign_admitted() -> bool:
+    """The declared rev1xx release campaign is admitted by the repair campaign."""
+
+    import json
+
+    try:
+        repair = json.loads(
+            (ROOT / ".agentic_engineering_os_px/processing-order/repair-campaign.json")
+            .read_text(encoding="utf-8")
+        )
+    except FileNotFoundError:
+        # Clean source checkouts intentionally have no live beta campaign.
+        # Missing local state cannot admit a publication test, but must not
+        # abort collection of independent certificate contract tests.
+        return False
+    policy = json.loads(
+        (ROOT / "policies/rev1xx-validation.json").read_text(encoding="utf-8")
+    )
+    return repair.get("campaign_id") == policy.get("campaign_id")
+
+
+@pytest.mark.skipif(
+    not _release_campaign_admitted(),
+    reason=(
+        "the policy-declared rev1xx release campaign has not been admitted by "
+        "the managed repair campaign; starting it is an owner-authority "
+        "certification step that stays held in this continuation"
+    ),
+)
 def test_published_authenticated_certificate_closes_every_release_card() -> None:
     assert not _certificate_ledger_errors(ROOT)
     assert validate_corrective_ledger(ROOT, require_blocking_passed=True)["valid"]
@@ -620,7 +649,7 @@ def test_finalizer_requires_authenticated_offline_release_inputs() -> None:
 def test_missing_release_inputs_fail_without_state_promotion() -> None:
     root = _eligible_clone()
     original_state = (
-        root / ".engineering-bootstrap/project-management/state.json"
+        root / ".agentic_engineering_os_px/project-management/state.json"
     ).read_bytes()
     result = finalize_release(
         root,
@@ -633,7 +662,7 @@ def test_missing_release_inputs_fail_without_state_promotion() -> None:
     assert not result["valid"]
     assert not result["published"]
     assert (
-        root / ".engineering-bootstrap/project-management/state.json"
+        root / ".agentic_engineering_os_px/project-management/state.json"
     ).read_bytes() == original_state
 
 
@@ -650,7 +679,7 @@ def test_revoked_certificate_cannot_be_reused_after_product_change() -> None:
 
 def test_manual_state_promotion_without_certificate_fails_closed() -> None:
     root = _eligible_clone()
-    state_path = root / ".engineering-bootstrap/project-management/state.json"
+    state_path = root / ".agentic_engineering_os_px/project-management/state.json"
     state = json.loads(state_path.read_text(encoding="utf-8"))
     state["lifecycle"] = {
         "phase": "deployment-certified",

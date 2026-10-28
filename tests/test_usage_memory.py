@@ -62,18 +62,35 @@ def test_memory_lives_inside_the_subject(kind: str) -> None:
     assert (memory / "stats.json").is_file()
 
 
-def test_agent_memory_resolves_through_the_registry() -> None:
-    # An agent subject is only valid when the registry declares it with a real body path.
-    registry = json.loads((ROOT / "registry/agency_agent_registry.json").read_text(encoding="utf-8-sig"))
-    assert registry.get("agents"), "the agency agent registry must declare agents"
-    agents = list_subjects_with_memory(ROOT, "agent")
-    assert agents, "at least one declared agent must already carry usage memory"
+def test_agent_memory_resolves_through_the_registry_and_isolates_shared_domains(tmp_path) -> None:
+    ids = ["agency.testing.first", "agency.testing.second"]
+    rows = []
+    for index, identifier in enumerate(ids):
+        relative = f"providers/agency_agents/agents/testing/agent-{index}.md"
+        body = tmp_path / relative; body.parent.mkdir(parents=True, exist_ok=True); body.write_text("Declared agent", encoding="utf-8")
+        rows.append({"agent_id": identifier, "path": relative})
+    registry = tmp_path / "registry/agency_agent_registry.json"; registry.parent.mkdir()
+    registry.write_text(json.dumps({"provider_id": "agency-agents", "agent_count": 2, "agents": rows}), encoding="utf-8")
+    record_observation(tmp_path, "agent", ids[0], {"outcome": "success"})
+    record_observation(tmp_path, "agent", ids[1], {"outcome": "failure"})
+    assert list_subjects_with_memory(tmp_path, "agent") == ids
+    assert read_stats(tmp_path, "agent", ids[0])["outcomes"]["failure"] == 0
+    assert read_stats(tmp_path, "agent", ids[1])["outcomes"]["success"] == 0
+    from runtime.usage_memory import subject_memory_directory
+    foreign = subject_memory_directory(tmp_path, "agent", ids[0]) / "usage.jsonl"
+    with foreign.open("a", encoding="utf-8") as stream:
+        stream.write(json.dumps({"subject_kind": "agent", "subject_id": ids[1], "outcome": "success"}) + "\n")
+    with pytest.raises(ValueError, match="exact operational object"):
+        rebuild_stats(tmp_path, "agent", ids[0])
 
 
-def test_memory_directories_carry_an_append_only_log() -> None:
-    for kind in ("skill", "agent", "workflow"):
-        subjects = list_subjects_with_memory(ROOT, kind)
-        assert subjects, f"{kind}: at least one subject must carry memory"
+@pytest.mark.parametrize("kind", ["skill", "workflow"])
+def test_memory_directories_carry_an_append_only_log(kind) -> None:
+    root, identifier = _subject(kind, "fresh-experience")
+    record_observation(root, kind, identifier, {"outcome": "success"})
+    record_observation(root, kind, identifier, {"outcome": "refused"})
+    assert list_subjects_with_memory(root, kind) == [identifier]
+    assert read_stats(root, kind, identifier)["record_count"] == 2
 
 
 def test_subject_roots_are_the_declared_locations() -> None:

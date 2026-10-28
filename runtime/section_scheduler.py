@@ -51,7 +51,7 @@ def run_section(root, section, name, started):
             cwd=Path(section['cwd']), environment=environment,
             timeout_seconds=min(validate_timeout(timeout), deadline - monotonic()),
             deadline=deadline, cancel_event=cancel,
-            resource_manager=ResourceManager(root / '.engineering-bootstrap/resource-lifecycle/ledger.json'),
+            resource_manager=ResourceManager(root / '.agentic_engineering_os_px/resource-lifecycle/ledger.json'),
             run_id=f'test-section-{name}-{chunk_id}-{uuid4().hex}',
             lane_id=f'section:{name}' + (':' + chunk_id if chunk_id else ''), manage_process_temp=True,
         )

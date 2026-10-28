@@ -6,5 +6,6 @@ def test_inventory_is_candidate_not_authority_and_tracks_installed_waves():
     assert inventory["authoritative"] is False
     assert inventory["admission_required"] is True
     assert inventory["waves_required"] == inventory["installed_waves"]
-    assert inventory["installed_waves"] == ["wave1", "wave2", "wave3", "wave4"]
+    assert inventory["installed_waves"] == ["wave1", "wave2", "wave3", "wave4", "rev1xx-tie", "rev1xx-w2"]
+    assert {"semantic.tie.retrieve", "semantic.remap.plan", "semantic.remap.compile"}.issubset(inventory["operations"])
     assert "semantic.knowledge.fuse" in inventory["operations"]

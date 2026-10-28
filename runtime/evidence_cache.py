@@ -29,7 +29,7 @@ class EvidenceCache:
 
     def __init__(self, root: Path) -> None:
         self.root = root.resolve()
-        self.directory = self.root / ".engineering-bootstrap/evidence-cache"
+        self.directory = self.root / ".agentic_engineering_os_px/evidence-cache"
         self.manifest = self.directory / "manifest.json"
         self.lock = self.directory / ".cache.lock"
 

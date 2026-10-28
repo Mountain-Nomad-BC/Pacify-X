@@ -32,7 +32,7 @@ ALIASES = {
     "user:2026-08-17-promotional-layered-memory-hashes": Path("registry/operational_gap_ledger.jsonl"),
     "PX996 crash-consistency source trace 2026-08-17": Path("runtime/studio_catalog_status.py"),
     "Live Playwright walk against VS Code CDP endpoint 127.0.0.1:9333": Path("evidence/operational-gap-ledger/live-walk-visual-audit-20260816.json"),
-    "dashboard-extension section receipt 0785e91b2022556eb0dea830ea56b8eefd85b18113d123e243be16b1138a6510": Path(".engineering-bootstrap/test-evidence/sections/dashboard-extension.json"),
+    "dashboard-extension section receipt 0785e91b2022556eb0dea830ea56b8eefd85b18113d123e243be16b1138a6510": Path(".agentic_engineering_os_px/test-evidence/sections/dashboard-extension.json"),
     "extension/src/studioProtocol.js": Path("runtime/studio_protocol.py"),
 }
 SEMANTIC_ALIASES = frozenset(ALIASES) - {"attachment:pasted-text.txt"}

@@ -5,6 +5,8 @@ from __future__ import annotations
 import argparse
 from datetime import datetime, timezone
 import hashlib
+import fnmatch
+import tomllib
 import json
 import os
 from pathlib import Path
@@ -68,16 +70,70 @@ TEXT_SUFFIXES = {
 }
 ARCHIVE_TIMESTAMP = (1980, 1, 1, 0, 0, 0)
 RETAINED_CONTROL_STATE = {
-    ".engineering-bootstrap/project-management/state.json",
-    ".engineering-bootstrap/project-map/architecture-graph.json",
-    ".engineering-bootstrap/project-registry.json",
+    ".agentic_engineering_os_px/project-management/state.json",
+    ".agentic_engineering_os_px/project-map/architecture-graph.json",
+    ".agentic_engineering_os_px/project-registry.json",
 }
 RETAINED_CONTROL_TREES = {
     # This two-file authority projection is required to verify the exported
     # commissioning ledger.  The volatile operation bus remains excluded.
-    ".engineering-bootstrap/.ledger-authority/commissioning-events",
+    ".agentic_engineering_os_px/.ledger-authority/commissioning-events",
 }
 RETAINED_TEST_RECEIPT_ROOTS = {"groups", "profiles", "section-chunks", "sections"}
+
+# Three-root custody (see .agentic_engineering_os_px/registers/evidence-custody-decision.json).
+# The governed evidence corpus has three canonical roots with distinct lifecycles and
+# production points, and each class keeps exactly one architectural owner:
+#
+#   evidence/                             product-artifact receipts that ship as
+#                                         packaged distribution data. These are named
+#                                         explicitly in pyproject.toml under
+#                                         "share/agentic-engineering-os-px/evidence",
+#                                         and runtime/capability_assimilation.py and
+#                                         runtime/source_coverage.py require several of
+#                                         them to exist in the working tree.
+#   .agentic_engineering_os_px/test-evidence/  source-tree governed test/runtime
+#                                         verification receipts (retained via
+#                                         RETAINED_TEST_RECEIPT_ROOTS).
+#   extension/evidence/                   installed-artifact / VSIX / extension
+#                                         certification evidence.
+#
+# The top-level "evidence" name stays inside EXCLUDED_DIRS so that arbitrary
+# evidence-shaped paths (evidence/bundles/**, evidence/release/**, historical
+# material) remain excluded. Only the specific packaged receipts below are
+# retained, by name, because they are declared product artifacts.
+#
+# Installed-artifact receipts are NOT regenerable from the source tree: they only
+# come into existence by certifying a real installed VSIX on win32 and linux.
+# Their absence is therefore a legitimate unresolved release-stage condition, not
+# evidence corruption, and is never synthesized to satisfy an index.
+#
+# These paths mirror the "share/agentic-engineering-os-px/evidence" declaration in
+# pyproject.toml. Keep the two in step: an artifact declared packaged there but
+# absent here will pass validation in one surface and fail in the other.
+PACKAGED_PRODUCT_EVIDENCE = frozenset(
+    {
+        "evidence/archive-catalog.json",
+        "evidence/capability-mining-receipt.json",
+        "evidence/contract-disposition-receipt.json",
+        "evidence/corpus-intake-receipt.json",
+        "evidence/domain-reference-receipt.json",
+        "evidence/external-source-admission-receipt.json",
+        "evidence/process-audit-intake-receipt.json",
+        "evidence/source-intake-receipt.json",
+        "evidence/source-migration-receipt.json",
+        "evidence/source-corpus-completeness.json",
+    }
+)
+
+# Packaged evidence subtrees declared with a glob in pyproject.toml. These are
+# retained as prefixes because the declaration is wildcard-based.
+PACKAGED_PRODUCT_EVIDENCE_TREES = (
+    "evidence/bundles/archive-custody-20260803",
+)
+RETAINED_DISTRIBUTION_EVIDENCE_TREES = {
+    "extension/evidence",
+}
 
 
 def _mode(data: bytes) -> str:
@@ -90,14 +146,31 @@ def _archive_bytes(path: Path, relative: str) -> tuple[bytes, bool]:
     return path.read_bytes(), False
 
 
+def _declared_evidence_patterns(root: Path):
+    configuration = root / "pyproject.toml"
+    if not configuration.is_file():
+        return None  # Compatibility for legacy fixtures without a package manifest.
+    value = tomllib.loads(configuration.read_text(encoding="utf-8"))
+    groups = value.get("tool", {}).get("setuptools", {}).get("data-files", {})
+    patterns = []
+    for values in groups.values():
+        for pattern in values:
+            if pattern.startswith("evidence/"):
+                if ".." in Path(pattern).parts:
+                    raise ValueError("declared evidence must be source-relative")
+                patterns.append(pattern)
+    return patterns
+
+
 def included_files(root: Path, output: Path | None = None) -> tuple[Path, ...]:
+    evidence_patterns = _declared_evidence_patterns(root)
     resolved_output = output.resolve() if output else None
     records = []
     for path in root.rglob("*"):
         relative = path.relative_to(root)
         retained_test_receipt = (
             len(relative.parts) >= 4
-            and relative.parts[0] == ".engineering-bootstrap"
+            and relative.parts[0] == ".agentic_engineering_os_px"
             and relative.parts[1] == "test-evidence"
             and relative.parts[2] in RETAINED_TEST_RECEIPT_ROOTS
             and relative.suffix.casefold() == ".json"
@@ -108,22 +181,48 @@ def included_files(root: Path, output: Path | None = None) -> tuple[Path, ...]:
             or relative.as_posix().startswith(f"{prefix}/")
             for prefix in RETAINED_CONTROL_TREES
         )
-        generated_or_dependency_tree = bool(
-            EXCLUDED_DIRS.intersection(relative.parts)
+        retained_distribution_evidence = any(
+            relative.as_posix() == prefix
+            or relative.as_posix().startswith(f"{prefix}/")
+            for prefix in RETAINED_DISTRIBUTION_EVIDENCE_TREES
+        )
+        packaged_product_evidence = (
+            any(fnmatch.fnmatchcase(relative.as_posix(), pattern) for pattern in evidence_patterns)
+            if evidence_patterns is not None else
+            relative.as_posix() in PACKAGED_PRODUCT_EVIDENCE or any(
+                relative.as_posix() == prefix or relative.as_posix().startswith(prefix + "/")
+                for prefix in PACKAGED_PRODUCT_EVIDENCE_TREES)
+        )
+        generated_or_dependency_tree = (
+            bool(EXCLUDED_DIRS.intersection(relative.parts))
+            and not retained_distribution_evidence
+            and not packaged_product_evidence
         ) or (
             is_external_environment_relative(relative)
             and not retained_test_receipt
             and not retained_control_state
             and not retained_control_tree
+            and not retained_distribution_evidence
+            and not packaged_product_evidence
         )
         if (
             generated_or_dependency_tree
             or (
                 relative.parts
-                and relative.parts[0] == ".engineering-bootstrap"
+                and relative.parts[0] == ".agentic_engineering_os_px"
                 and not retained_test_receipt
                 and not retained_control_state
                 and not retained_control_tree
+            )
+            or (
+                # The top-level evidence/ root is excluded by default. Only the
+                # specific receipts declared as packaged product artifacts in
+                # pyproject.toml survive; every other evidence-shaped path,
+                # including evidence/bundles/** and evidence/release/**, stays out.
+                relative.parts
+                and relative.parts[0] == "evidence"
+                and not retained_distribution_evidence
+                and not packaged_product_evidence
             )
             or not path.is_file()
             or path.is_symlink()
@@ -232,7 +331,7 @@ def _certification_preflight(
     sanitation_excluded_names = frozenset(
         EXCLUDED_DIRS
         | {
-            ".engineering-bootstrap",
+            ".agentic_engineering_os_px",
             "preserved-extension-installations",
             "preserved-skills",
         }
@@ -769,7 +868,7 @@ def create_clean_export(
     from runtime.resource_lifecycle import ResourceManager, RunState
 
     run_id = f"clean-export-{uuid4().hex}"
-    manager = ResourceManager(root / ".engineering-bootstrap/export-resources.json")
+    manager = ResourceManager(root / ".agentic_engineering_os_px/export-resources.json")
     allowed_root = output.parent.resolve(strict=True)
     stage_record = manager.create_workspace(
         allowed_root,
@@ -924,7 +1023,7 @@ def create_clean_export(
     receipt_paths = [
         str(record["path"])
         for record in records
-        if str(record["path"]).startswith(".engineering-bootstrap/test-evidence/")
+        if str(record["path"]).startswith(".agentic_engineering_os_px/test-evidence/")
     ]
     payload = {
         "schema_version": "px.clean-export-result/2.0",

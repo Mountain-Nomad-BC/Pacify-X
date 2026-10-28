@@ -118,7 +118,7 @@ def record_process_candidate(
     root: Path, project: Path, record: dict[str, Any], *, apply: bool = False
 ) -> dict[str, Any]:
     project = project.resolve()
-    state_path = project / ".engineering-bootstrap/project-management/state.json"
+    state_path = project / ".agentic_engineering_os_px/project-management/state.json"
     if not state_path.is_file():
         raise ValueError("project is not commissioned")
     result = compile_process_candidate(root, record)
@@ -127,7 +127,7 @@ def record_process_candidate(
         return result
     digest = result["candidate"]["source_process_sha256"]
     relative = (
-        Path(".engineering-bootstrap/project-management/process") / f"{digest}.json"
+        Path(".agentic_engineering_os_px/project-management/process") / f"{digest}.json"
     )
     target = project / relative
     target.parent.mkdir(parents=True, exist_ok=True)

@@ -15,7 +15,7 @@ from typing import Mapping, Sequence
 
 
 SCHEMA_VERSION = "px.task-execution-plan/1.0"
-PLAN_DIRECTORY = Path(".engineering-bootstrap/task-plans")
+PLAN_DIRECTORY = Path(".agentic_engineering_os_px/task-plans")
 
 
 def _canonical(value: object) -> bytes:

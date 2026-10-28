@@ -1,0 +1,183 @@
+✔ valid current-run evidence satisfies the declared requirement (4.865ms)
+✔ foreign taskId cannot satisfy completion (0.3227ms)
+✔ foreign runId cannot satisfy completion (0.257ms)
+✔ missing current run fails closed for required evidence (0.4218ms)
+✔ foreign current-run owner fails closed (0.2662ms)
+✔ out-of-run timestamp 2000-01-01T00:00:00.000Z cannot satisfy completion (0.2278ms)
+✔ out-of-run timestamp 2099-01-01T00:00:00.000Z cannot satisfy completion (0.1926ms)
+✔ out-of-run timestamp invalid cannot satisfy completion (0.2881ms)
+✔ conflicting duplicate identity invalidates both records regardless of order (0.3638ms)
+✔ identical retransmission contributes one evidence ID (0.658ms)
+✔ malformed evidence does not masquerade as a typed pass (0.3465ms)
+✖ actual controller completion filters current evidence (19.266ms)
+✖ actual controller completion filters foreign-task evidence (0.3215ms)
+✖ actual controller completion filters previous-run evidence (1.353ms)
+✔ failed synchronous save cannot publish a task mutation (3.4914ms)
+✔ cancelled task cannot return to implementation or start a run (0.3244ms)
+✔ only one live run can own a task (1.0742ms)
+✔ task and run identities cannot be rebound by an update (0.242ms)
+✔ corrupt persisted state is refused rather than silently replaced with empty state (0.1256ms)
+✔ persistence rejection prevents further dispatch-facing reads (0.3087ms)
+✔ stale disposable cannot delete a replacement worker registration (0.8519ms)
+✔ late health response cannot overwrite replacement worker health (0.2816ms)
+✖ controller does not dispatch before worker selection is durably acknowledged (21.6591ms)
+✖ cancellation settles usage but cannot publish completion or late deltas (0.4464ms)
+✖ controller rejects a run belonging to another task before dispatch (0.3662ms)
+✔ returned task values cannot mutate persisted ownership or constraints (0.3137ms)
+✖ restart cannot redispatch a worker-selected run with unknown previous effects (0.8255ms)
+✖ cancel request has a bound while unsettled adapter remains fenced from replacement (0.3537ms)
+ℹ tests 28
+ℹ suites 0
+ℹ pass 20
+ℹ fail 8
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3058.2312
+
+✖ failing tests:
+
+test at extension\tests\completion-ownership-audit.test.js:40:70
+✖ actual controller completion filters current evidence (19.266ms)
+  C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\src\agentHarness\harnessController.js:6
+  <<<<<<< HEAD
+  ^^
+  
+  SyntaxError: Unexpected token '<<'
+      at wrapSafe (node:internal/modules/cjs/loader:1787:18)
+      at Module._compile (node:internal/modules/cjs/loader:1828:20)
+      at Object..js (node:internal/modules/cjs/loader:1985:10)
+      at Module.load (node:internal/modules/cjs/loader:1577:32)
+      at Module._load (node:internal/modules/cjs/loader:1379:12)
+      at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+      at Module.require (node:internal/modules/cjs/loader:1600:12)
+      at require (node:internal/modules/helpers:153:16)
+      at TestContext.<anonymous> (C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\tests\completion-ownership-audit.test.js:41:33)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+
+test at extension\tests\completion-ownership-audit.test.js:40:70
+✖ actual controller completion filters foreign-task evidence (0.3215ms)
+  C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\src\agentHarness\harnessController.js:6
+  <<<<<<< HEAD
+  ^^
+  
+  SyntaxError: Unexpected token '<<'
+      at wrapSafe (node:internal/modules/cjs/loader:1787:18)
+      at Module._compile (node:internal/modules/cjs/loader:1828:20)
+      at Object..js (node:internal/modules/cjs/loader:1985:10)
+      at Module.load (node:internal/modules/cjs/loader:1577:32)
+      at Module._load (node:internal/modules/cjs/loader:1379:12)
+      at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+      at Module.require (node:internal/modules/cjs/loader:1600:12)
+      at require (node:internal/modules/helpers:153:16)
+      at TestContext.<anonymous> (C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\tests\completion-ownership-audit.test.js:41:33)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+
+test at extension\tests\completion-ownership-audit.test.js:40:70
+✖ actual controller completion filters previous-run evidence (1.353ms)
+  C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\src\agentHarness\harnessController.js:6
+  <<<<<<< HEAD
+  ^^
+  
+  SyntaxError: Unexpected token '<<'
+      at wrapSafe (node:internal/modules/cjs/loader:1787:18)
+      at Module._compile (node:internal/modules/cjs/loader:1828:20)
+      at Object..js (node:internal/modules/cjs/loader:1985:10)
+      at Module.load (node:internal/modules/cjs/loader:1577:32)
+      at Module._load (node:internal/modules/cjs/loader:1379:12)
+      at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+      at Module.require (node:internal/modules/cjs/loader:1600:12)
+      at require (node:internal/modules/helpers:153:16)
+      at TestContext.<anonymous> (C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\tests\completion-ownership-audit.test.js:41:33)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+
+test at extension\tests\task-state-custody.test.js:103:1
+✖ controller does not dispatch before worker selection is durably acknowledged (21.6591ms)
+  C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\src\agentHarness\harnessController.js:6
+  <<<<<<< HEAD
+  ^^
+  
+  SyntaxError: Unexpected token '<<'
+      at wrapSafe (node:internal/modules/cjs/loader:1787:18)
+      at Module._compile (node:internal/modules/cjs/loader:1828:20)
+      at Object..js (node:internal/modules/cjs/loader:1985:10)
+      at Module.load (node:internal/modules/cjs/loader:1577:32)
+      at Module._load (node:internal/modules/cjs/loader:1379:12)
+      at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+      at Module.require (node:internal/modules/cjs/loader:1600:12)
+      at require (node:internal/modules/helpers:153:16)
+      at harness (C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\tests\task-state-custody.test.js:91:33)
+      at TestContext.<anonymous> (C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\tests\task-state-custody.test.js:107:17)
+
+test at extension\tests\task-state-custody.test.js:118:1
+✖ cancellation settles usage but cannot publish completion or late deltas (0.4464ms)
+  C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\src\agentHarness\harnessController.js:6
+  <<<<<<< HEAD
+  ^^
+  
+  SyntaxError: Unexpected token '<<'
+      at wrapSafe (node:internal/modules/cjs/loader:1787:18)
+      at Module._compile (node:internal/modules/cjs/loader:1828:20)
+      at Object..js (node:internal/modules/cjs/loader:1985:10)
+      at Module.load (node:internal/modules/cjs/loader:1577:32)
+      at Module._load (node:internal/modules/cjs/loader:1379:12)
+      at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+      at Module.require (node:internal/modules/cjs/loader:1600:12)
+      at require (node:internal/modules/helpers:153:16)
+      at harness (C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\tests\task-state-custody.test.js:91:33)
+      at TestContext.<anonymous> (C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\tests\task-state-custody.test.js:121:17)
+
+test at extension\tests\task-state-custody.test.js:137:1
+✖ controller rejects a run belonging to another task before dispatch (0.3662ms)
+  C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\src\agentHarness\harnessController.js:6
+  <<<<<<< HEAD
+  ^^
+  
+  SyntaxError: Unexpected token '<<'
+      at wrapSafe (node:internal/modules/cjs/loader:1787:18)
+      at Module._compile (node:internal/modules/cjs/loader:1828:20)
+      at Object..js (node:internal/modules/cjs/loader:1985:10)
+      at Module.load (node:internal/modules/cjs/loader:1577:32)
+      at Module._load (node:internal/modules/cjs/loader:1379:12)
+      at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+      at Module.require (node:internal/modules/cjs/loader:1600:12)
+      at require (node:internal/modules/helpers:153:16)
+      at harness (C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\tests\task-state-custody.test.js:91:33)
+      at TestContext.<anonymous> (C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\tests\task-state-custody.test.js:139:17)
+
+test at extension\tests\task-state-custody.test.js:154:1
+✖ restart cannot redispatch a worker-selected run with unknown previous effects (0.8255ms)
+  C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\src\agentHarness\harnessController.js:6
+  <<<<<<< HEAD
+  ^^
+  
+  SyntaxError: Unexpected token '<<'
+      at wrapSafe (node:internal/modules/cjs/loader:1787:18)
+      at Module._compile (node:internal/modules/cjs/loader:1828:20)
+      at Object..js (node:internal/modules/cjs/loader:1985:10)
+      at Module.load (node:internal/modules/cjs/loader:1577:32)
+      at Module._load (node:internal/modules/cjs/loader:1379:12)
+      at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+      at Module.require (node:internal/modules/cjs/loader:1600:12)
+      at require (node:internal/modules/helpers:153:16)
+      at harness (C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\tests\task-state-custody.test.js:91:33)
+      at TestContext.<anonymous> (C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\tests\task-state-custody.test.js:157:32)
+
+test at extension\tests\task-state-custody.test.js:162:1
+✖ cancel request has a bound while unsettled adapter remains fenced from replacement (0.3537ms)
+  C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\src\agentHarness\harnessController.js:6
+  <<<<<<< HEAD
+  ^^
+  
+  SyntaxError: Unexpected token '<<'
+      at wrapSafe (node:internal/modules/cjs/loader:1787:18)
+      at Module._compile (node:internal/modules/cjs/loader:1828:20)
+      at Object..js (node:internal/modules/cjs/loader:1985:10)
+      at Module.load (node:internal/modules/cjs/loader:1577:32)
+      at Module._load (node:internal/modules/cjs/loader:1379:12)
+      at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+      at Module.require (node:internal/modules/cjs/loader:1600:12)
+      at require (node:internal/modules/helpers:153:16)
+      at harness (C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\tests\task-state-custody.test.js:91:33)
+      at TestContext.<anonymous> (C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\tests\task-state-custody.test.js:164:15)
+

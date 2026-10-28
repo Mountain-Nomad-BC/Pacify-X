@@ -63,7 +63,7 @@ def test_skill_promotion_api_returns_the_physical_component_receipt_path(tmp_pat
     skill_id = "skill:rollback-path"
     expected = (
         tmp_path
-        / ".engineering-bootstrap/studios/skills"
+        / ".agentic_engineering_os_px/studios/skills"
         / _component(skill_id)
         / "revisions/1.2.3/promotion-receipt.json"
     )
@@ -75,7 +75,7 @@ def test_skill_rollback_api_uses_authenticated_receipt_without_reconstructing_ma
 ) -> None:
     receipt = (
         tmp_path
-        / ".engineering-bootstrap/studios/skills/demo/revisions/1.1.0/promotion-receipt.json"
+        / ".agentic_engineering_os_px/studios/skills/demo/revisions/1.1.0/promotion-receipt.json"
     )
     receipt.parent.mkdir(parents=True)
     receipt.write_text("{}\n", encoding="utf-8")
@@ -376,7 +376,7 @@ def test_allocation_revalidation_detects_source_tree_change_before_publication(t
             _authorized(tmp_path, "agent", "create", candidate),
         )
     assert not next(
-        (tmp_path / ".engineering-bootstrap/studios/agents").glob(
+        (tmp_path / ".agentic_engineering_os_px/studios/agents").glob(
             "*/revisions/1.0.1"
         ),
         None,
@@ -701,14 +701,14 @@ def test_studio_receipts_are_project_move_portable_with_host_only_key(tmp_path, 
     moved = tmp_path / "moved"
     shutil.copytree(original, moved)
     assert StudioAuthorityStore(moved).verify_receipt(receipt)["value"] == 7
-    assert not (original / ".engineering-bootstrap/studios/authority/.receipt-key").exists()
+    assert not (original / ".agentic_engineering_os_px/studios/authority/.receipt-key").exists()
 
 
 def test_legacy_project_key_is_backed_up_migrated_and_removed(tmp_path, monkeypatch) -> None:
     host_keys = tmp_path.parent / f"{tmp_path.name}-host-keys"
     monkeypatch.setenv("PX_STUDIO_KEY_ROOT", str(host_keys))
     project = tmp_path / "project"
-    authority_root = project / ".engineering-bootstrap/studios/authority"
+    authority_root = project / ".agentic_engineering_os_px/studios/authority"
     authority_root.mkdir(parents=True)
     (authority_root / "project-identity.json").write_text(
         json.dumps({"schema_version": "px.studio-project-identity/1.0", "project_identity": "px-project-testlegacy"}),

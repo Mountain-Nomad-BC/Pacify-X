@@ -269,7 +269,7 @@ def validate(value, kind, *, name=None, chunk_id=None):
 def receipt_path(root, kind, name, chunk_id=None):
     root = directory_root(root)
     name = _identity(name)
-    base = root / '.engineering-bootstrap/test-evidence'
+    base = root / '.agentic_engineering_os_px/test-evidence'
     if kind == 'chunk':
         target = base / 'section-chunks' / name / (_identity(chunk_id) + '.json')
     else:
@@ -302,7 +302,7 @@ def write(root, kind, receipt):
         raise ValueError('receipt image exceeds byte budget')
     target.parent.mkdir(parents=True, exist_ok=True)
     reject_path_links(target)
-    manager = ResourceManager(root / '.engineering-bootstrap/resource-lifecycle/ledger.json')
+    manager = ResourceManager(root / '.agentic_engineering_os_px/resource-lifecycle/ledger.json')
     run_id = 'receipt-' + uuid4().hex
     temporary = target.with_name('.' + target.name + '.' + uuid4().hex + '.tmp')
     # Persist the exact owner before creating the prepared image. A failed

@@ -5,7 +5,7 @@ description: Ingest, validate, and export source-traceable transcript evidence t
 
 # Transcript Analysis
 
-1. Load an explicit profile or the active project’s `.engineering-bootstrap/transcript-analysis.json`; otherwise use the dependency-free canonical-import profile.
+1. Load an explicit profile or the active project’s `.agentic_engineering_os_px/transcript-analysis.json`; otherwise use the dependency-free canonical-import profile.
 2. Confirm the queue identity and load only that queue’s reviewed ontology.
 3. Dry-run immutable ingest, then create a new named run. Never edit source transcripts or publish an ad hoc run as `latest`.
 4. Preserve conversation ID, source file/date/hash, and exact source line spans.

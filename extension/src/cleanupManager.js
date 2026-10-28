@@ -183,7 +183,7 @@ async function scanCleanupCandidates(root, options = {}) {
       const target = path.join(current, child.name);
       const relative = path.relative(resolvedRoot, target);
       const evidenceRoot = 'evidence';
-      const quarantineRoot = path.join('.engineering-bootstrap', 'quarantine');
+      const quarantineRoot = path.join('.agentic_engineering_os_px', 'quarantine');
       const operatorQuarantineRoot = '.quarantine';
       if (relative === evidenceRoot || relative.startsWith(`${evidenceRoot}${path.sep}`)
         || relative === quarantineRoot || relative.startsWith(`${quarantineRoot}${path.sep}`)

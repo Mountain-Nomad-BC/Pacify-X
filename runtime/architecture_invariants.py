@@ -106,7 +106,9 @@ def validate_architecture_invariants(root: Path) -> dict[str, object]:
         isinstance(dependency, Mapping)
         and validate_dependency_authority(root, dependency)["valid"]
     )
-    release = load(".engineering-bootstrap/processing-order/release-identity.json")
+    from .release_campaign import release_state_relative
+
+    release = load(release_state_relative(root).as_posix())
     release_ok = not (
         isinstance(release, Mapping)
         and release.get("state") in {"active", "certified"}

@@ -10,8 +10,11 @@ function effectAllows(workerClass, requiredClass) { return EFFECT_ORDER.indexOf(
 function admitWorker(worker, context) {
   const reasons = [];
   if (!worker.enabled) reasons.push('disabled');
+  if (context.requestedServiceId && context.requestedServiceId !== 'auto' && worker.providerId !== context.requestedServiceId) reasons.push('service-selection');
+  if (context.requestedModelId && context.requestedModelId !== 'auto' && worker.modelId !== context.requestedModelId) reasons.push('model-selection');
+  if ((context.excludeWorkerIds || []).includes(worker.workerId)) reasons.push('already-attempted');
   const health = context.registry.getHealth(worker.workerId);
-  if (health.status === 'unavailable') reasons.push('unavailable');
+  if (['unavailable', 'unhealthy'].includes(health.status)) reasons.push('unavailable');
   if (worker.contextLimit != null && context.contextTokens > worker.contextLimit) reasons.push('context-limit');
   if (!effectAllows(worker.supportedEffectClass, context.task.constraints.maxEffectClass)) reasons.push('effect-class');
   const budget = context.budgetLedger.canAdmit(worker, context.task, context.projectedChargeUsd?.[worker.workerId] ?? null);

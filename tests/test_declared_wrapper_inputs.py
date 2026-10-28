@@ -27,16 +27,16 @@ def test_active_wrapper_projections_match_canonical_owner():
 
 def installed_namespace(monkeypatch, root, result=None):
     calls = []
-    package = ModuleType("engineering_bootstrap")
+    package = ModuleType("agentic_engineering_os_px")
     package.__path__ = []
-    declared = ModuleType("engineering_bootstrap.declared_suite")
+    declared = ModuleType("agentic_engineering_os_px.declared_suite")
 
     def run(framework, outcome, payload):
         calls.append((framework, outcome, payload))
         return {"valid": True, "result": payload} if result is None else result
 
     declared.run_script_outcome = run
-    paths = ModuleType("engineering_bootstrap.paths")
+    paths = ModuleType("agentic_engineering_os_px.paths")
     paths.framework_root = lambda: root
     for name, module in {
         "": package,
@@ -46,7 +46,7 @@ def installed_namespace(monkeypatch, root, result=None):
         ".json_io": json_io,
         ".numeric_inputs": numeric_inputs,
     }.items():
-        monkeypatch.setitem(sys.modules, "engineering_bootstrap" + name, module)
+        monkeypatch.setitem(sys.modules, "agentic_engineering_os_px" + name, module)
     return calls
 
 
@@ -162,7 +162,7 @@ def test_original_input_junction_refuses_before_dispatch(tmp_path, monkeypatch, 
 
 @pytest.mark.parametrize(
     "missing",
-    ["engineering_bootstrap.declared_suite", "installed_dependency"],
+    ["agentic_engineering_os_px.declared_suite", "installed_dependency"],
     ids=["missing-submodule", "missing-dependency"],
 )
 def test_broken_installed_namespace_never_falls_back(
@@ -177,16 +177,16 @@ def test_broken_installed_namespace_never_falls_back(
         lambda *args: calls.append(args) or {"valid": True},
     )
     monkeypatch.setattr(paths, "framework_root", lambda: tmp_path)
-    package = ModuleType("engineering_bootstrap")
+    package = ModuleType("agentic_engineering_os_px")
     package.__path__ = []
-    monkeypatch.setitem(sys.modules, "engineering_bootstrap", package)
+    monkeypatch.setitem(sys.modules, "agentic_engineering_os_px", package)
     monkeypatch.delitem(
-        sys.modules, "engineering_bootstrap.declared_suite", raising=False
+        sys.modules, "agentic_engineering_os_px.declared_suite", raising=False
     )
 
     class BrokenDependency(importlib.abc.MetaPathFinder):
         def find_spec(self, fullname, path=None, target=None):
-            if fullname == "engineering_bootstrap.declared_suite":
+            if fullname == "agentic_engineering_os_px.declared_suite":
                 raise ModuleNotFoundError(
                     "fixture installed import failure", name=missing
                 )
@@ -320,9 +320,9 @@ def test_cached_runtime_from_another_root_is_refused(tmp_path, monkeypatch):
     }
 
     def load(name):
-        if name == "engineering_bootstrap.declared_suite":
+        if name == "agentic_engineering_os_px.declared_suite":
             raise ModuleNotFoundError(
-                "absent namespace fixture", name="engineering_bootstrap"
+                "absent namespace fixture", name="agentic_engineering_os_px"
             )
         return imports[name.split(".")[-1]]
 

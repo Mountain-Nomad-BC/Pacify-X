@@ -1,0 +1,22 @@
+{
+  "command": [
+    "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\Python\\pythoncore-3.14-64\\python.exe",
+    "-m",
+    "pytest",
+    "-c",
+    "docs/repair/evidence/merge-2026-10-28/focused.ini",
+    "--rootdir",
+    ".",
+    "tests/test_operational_gap_ledger_delta_lifecycle.py",
+    "-k",
+    "legacy_cumulative",
+    "-vv"
+  ],
+  "exit_code": 4,
+  "tree_closed": true,
+  "resource_inactive": true,
+  "receipt": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.tmp\\resume10\\owned\\cleanup-receipts\\process-c9e59302abc840dfbc0da73d4d9a8b13.json",
+  "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.tmp\\resume10\\owned\\pacifyx-3ojli4wb",
+  "log": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\docs\\repair\\evidence\\resume10-merge-legacy-append-causal-red.log",
+  "log_sha256": "1b7c75c21917abb956ded3b85f0e5130112b81abe0d2554b9dfe66107ae04e7e"
+}

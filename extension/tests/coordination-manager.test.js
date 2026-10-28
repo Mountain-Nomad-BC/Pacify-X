@@ -35,16 +35,16 @@ test('authoritative workspace identity accepts only Windows drive-letter case eq
   const alternateDriveCase = root.replace(/^([A-Za-z]):/, (_match, drive) => `${drive === drive.toUpperCase() ? drive.toLowerCase() : drive.toUpperCase()}:`);
   assert.notEqual(alternateDriveCase, root);
   assert.equal(readCoordination(alternateDriveCase).state.tasks.find(item => item.id === 'identity').title, 'Identity');
-  assert.equal(fs.existsSync(path.join(root, '.engineering-bootstrap', 'coordination', 'quarantine')), false);
+  assert.equal(fs.existsSync(path.join(root, '.agentic_engineering_os_px', 'coordination', 'quarantine')), false);
 
-  const statePath = path.join(root, '.engineering-bootstrap', 'coordination', 'state.json');
+  const statePath = path.join(root, '.agentic_engineering_os_px', 'coordination', 'state.json');
   const state = JSON.parse(fs.readFileSync(statePath, 'utf8'));
   state.project.root = path.join(root, 'different-workspace');
   fs.writeFileSync(statePath, `${JSON.stringify(state, null, 2)}\n`, 'utf8');
   assert.throws(() => readCoordination(root), /coordination-authoritative-state-workspace-mismatch/);
-  assert.equal(fs.existsSync(path.join(root, '.engineering-bootstrap', 'coordination', 'quarantine')), false);
+  assert.equal(fs.existsSync(path.join(root, '.agentic_engineering_os_px', 'coordination', 'quarantine')), false);
   assert.throws(() => createParallelPlan(root, actorA, { objective: 'must fail', tasks: [] }), /coordination-authoritative-state-workspace-mismatch/);
-  assert.equal(fs.existsSync(path.join(root, '.engineering-bootstrap', 'coordination', 'quarantine')), true);
+  assert.equal(fs.existsSync(path.join(root, '.agentic_engineering_os_px', 'coordination', 'quarantine')), true);
 });
 
 test('authoritative workspace identity accepts an alias of the same directory', t => {
@@ -59,13 +59,13 @@ test('authoritative workspace identity accepts an alias of the same directory', 
     tasks: [{ id: 'identity', title: 'Identity', claims: ['src/identity'] }]
   });
   assert.equal(readCoordination(root).state.tasks.find(item => item.id === 'identity').title, 'Identity');
-  assert.equal(fs.existsSync(path.join(root, '.engineering-bootstrap', 'coordination', 'quarantine')), false);
+  assert.equal(fs.existsSync(path.join(root, '.agentic_engineering_os_px', 'coordination', 'quarantine')), false);
 });
 
 test('read-only coordination and memory inspections never quarantine a corrupt authoritative state', t => {
   const root = fixture(t);
   createParallelPlan(root, actorA, { objective: 'corruption', tasks: [{ id: 'one', title: 'One', claims: ['one/'] }] });
-  const store = path.join(root, '.engineering-bootstrap', 'coordination');
+  const store = path.join(root, '.agentic_engineering_os_px', 'coordination');
   fs.writeFileSync(path.join(store, 'state.json'), '{"broken":', 'utf8');
   assert.throws(() => readCoordination(root), /coordination-authoritative-state-corrupt/);
   assert.throws(() => readMemoryTelemetry(root), /coordination-authoritative-state-corrupt/);
@@ -160,13 +160,13 @@ test('portable memory validates confidence, provenance hashes, seals, and counte
   assert.equal(telemetry.integrity.valid, true);
   assert.equal(telemetry.records[0].source_hash_method, 'artifact-bytes-sha256');
   assert.equal(telemetry.records[0].source_hash, require('crypto').createHash('sha256').update('source bytes').digest('hex'));
-  const file = path.join(root, '.engineering-bootstrap', 'coordination', 'memory', 'project.jsonl');
+  const file = path.join(root, '.agentic_engineering_os_px', 'coordination', 'memory', 'project.jsonl');
   fs.appendFileSync(file, `${fs.readFileSync(file, 'utf8').trim().replace('sealed value', 'tampered value')}\n`);
   const tampered = readMemoryTelemetry(root, { includeContent: true });
   assert.equal(tampered.integrity.valid, false);
   assert.equal(tampered.integrity.invalid_records, 1);
   assert.equal(tampered.integrity.counter_drift.length, 0);
-  const stateFile = path.join(root, '.engineering-bootstrap', 'coordination', 'state.json');
+  const stateFile = path.join(root, '.agentic_engineering_os_px', 'coordination', 'state.json');
   const state = JSON.parse(fs.readFileSync(stateFile, 'utf8')); state.memory.project_records = 2; state.state_hash = require('../src/coordinationManager').hash({ ...state, state_hash: null });
   fs.writeFileSync(stateFile, `${JSON.stringify(state, null, 2)}\n`, 'utf8');
   assert.equal(readMemoryTelemetry(root).integrity.counter_drift.length, 1);

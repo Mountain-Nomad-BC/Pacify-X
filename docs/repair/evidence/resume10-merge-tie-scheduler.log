@@ -1,0 +1,431 @@
+============================= test session starts =============================
+platform win32 -- Python 3.14.7, pytest-9.1.1, pluggy-1.6.0 -- C:\Users\Ben\Documents\bootstrap_project\Pacify-X\Python\pythoncore-3.14-64\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\Ben\Documents\bootstrap_project\Pacify-X
+configfile: pyproject.toml
+collecting ... collected 71 items
+
+tests/test_usage_memory.py::test_memory_lives_inside_the_subject[skill] PASSED [  1%]
+tests/test_usage_memory.py::test_memory_lives_inside_the_subject[workflow] PASSED [  2%]
+tests/test_usage_memory.py::test_agent_memory_resolves_through_the_registry_and_isolates_shared_domains PASSED [  4%]
+tests/test_usage_memory.py::test_memory_directories_carry_an_append_only_log[skill] PASSED [  5%]
+tests/test_usage_memory.py::test_memory_directories_carry_an_append_only_log[workflow] PASSED [  7%]
+tests/test_usage_memory.py::test_subject_roots_are_the_declared_locations PASSED [  8%]
+tests/test_usage_memory.py::test_no_parallel_agent_tree_exists PASSED    [  9%]
+tests/test_usage_memory.py::test_success_is_recorded_with_a_success_rate PASSED [ 11%]
+tests/test_usage_memory.py::test_a_failure_captures_gap_shortcoming_and_issue PASSED [ 12%]
+tests/test_usage_memory.py::test_a_refusal_is_not_counted_as_a_success PASSED [ 14%]
+tests/test_usage_memory.py::test_success_rate_is_computed_over_decisive_outcomes_only PASSED [ 15%]
+tests/test_usage_memory.py::test_duration_and_tokens_are_summarised PASSED [ 16%]
+tests/test_usage_memory.py::test_no_prompt_output_or_secret_field_is_accepted PASSED [ 18%]
+tests/test_usage_memory.py::test_recorded_fields_are_outcome_metadata_only PASSED [ 19%]
+tests/test_usage_memory.py::test_unknown_outcome_is_rejected PASSED      [ 21%]
+tests/test_usage_memory.py::test_unknown_disposition_is_rejected PASSED  [ 22%]
+tests/test_usage_memory.py::test_all_v3_dispositions_are_accepted PASSED [ 23%]
+tests/test_usage_memory.py::test_every_outcome_kind_is_accepted PASSED   [ 25%]
+tests/test_usage_memory.py::test_invalid_subject_id_is_rejected PASSED   [ 26%]
+tests/test_usage_memory.py::test_unknown_subject_kind_is_rejected PASSED [ 28%]
+tests/test_usage_memory.py::test_missing_subject_is_not_invented PASSED  [ 29%]
+tests/test_usage_memory.py::test_negative_duration_is_rejected PASSED    [ 30%]
+tests/test_usage_memory.py::test_rollup_is_rebuildable_and_deterministic PASSED [ 32%]
+tests/test_usage_memory.py::test_stale_rollup_is_rebuilt_from_the_log PASSED [ 33%]
+tests/test_usage_memory.py::test_a_corrupt_log_line_is_surfaced_not_dropped PASSED [ 35%]
+tests/test_usage_memory.py::test_stats_note_declares_it_is_derived_not_canonical PASSED [ 36%]
+tests/test_usage_memory.py::test_every_declared_skill_has_a_memory_log PASSED [ 38%]
+tests/test_usage_memory.py::test_agents_and_workflows_have_memory_roots PASSED [ 39%]
+tests/test_usage_memory_custody.py::test_normal_observation_has_actual_native_commit_and_ephemeral_closure PASSED [ 40%]
+tests/test_usage_memory_custody.py::test_terminal_identity_replay_is_observational_and_does_not_append PASSED [ 42%]
+tests/test_usage_memory_custody.py::test_conflicting_content_under_same_terminal_identity_refuses PASSED [ 43%]
+tests/test_usage_memory_custody.py::test_failed_rollup_after_append_remains_uncertain_and_never_reappends PASSED [ 45%]
+tests/test_usage_memory_custody.py::test_corrupt_promoted_rollup_is_not_committed PASSED [ 46%]
+tests/test_usage_memory_custody.py::test_final_commit_failure_retains_actual_images_and_uncertain_intent PASSED [ 47%]
+tests/test_usage_memory_custody.py::test_competing_native_lease_refuses_before_object_mutation PASSED [ 49%]
+tests/test_usage_memory_custody.py::test_explicit_rollup_reconciliation_preserves_old_unfenced_log PASSED [ 50%]
+tests/test_usage_memory_custody.py::test_subject_initialization_is_native_fenced_without_fabricated_use PASSED [ 52%]
+tests/test_usage_memory_custody.py::test_real_studio_terminal_consumer_keeps_persistence_failure_separate PASSED [ 53%]
+tests/test_usage_memory_custody.py::test_native_migration_retains_provenance_and_uses_destination_custody PASSED [ 54%]
+tests/test_usage_memory_custody.py::test_ephemeral_cleanup_error_does_not_falsely_commit_observation PASSED [ 56%]
+tests/test_usage_memory_custody.py::test_lost_native_lease_before_rollup_refuses_and_retains_uncertainty PASSED [ 57%]
+tests/test_usage_memory_custody.py::test_incomplete_retained_log_tail_is_not_merged_or_rewritten PASSED [ 59%]
+tests/test_usage_memory_custody.py::test_object_lock_release_error_does_not_mask_primary_failure PASSED [ 60%]
+tests/test_usage_memory_custody.py::test_committed_payload_does_not_hide_unclosed_native_lease_on_replay PASSED [ 61%]
+tests/test_usage_memory_custody.py::test_native_quarantine_blocks_host_rollup_even_before_lease_expiry PASSED [ 63%]
+tests/test_tie_fusion.py::test_fuses_recorded_experience_with_attributed_lineage FAILED [ 64%]
+tests/test_tie_fusion.py::test_fusion_is_deterministic_and_grants_no_authority PASSED [ 66%]
+tests/test_tie_fusion.py::test_fusion_is_read_only FAILED                [ 67%]
+tests/test_tie_fusion.py::test_subject_without_experience_is_reported_not_invented FAILED [ 69%]
+tests/test_tie_fusion.py::test_unavailable_subject_is_reported_with_its_failure FAILED [ 70%]
+tests/test_tie_fusion.py::test_malformed_bindings_are_refused[binding0] PASSED [ 71%]
+tests/test_tie_fusion.py::test_malformed_bindings_are_refused[binding1] PASSED [ 73%]
+tests/test_tie_fusion.py::test_malformed_bindings_are_refused[binding2] PASSED [ 74%]
+tests/test_tie_fusion.py::test_malformed_bindings_are_refused[binding3] FAILED [ 76%]
+tests/test_tie_fusion.py::test_malformed_bindings_are_refused[not-a-mapping] PASSED [ 77%]
+tests/test_tie_fusion.py::test_unknown_subject_kind_is_refused FAILED    [ 78%]
+tests/test_tie_fusion.py::test_binding_count_is_bounded PASSED           [ 80%]
+tests/test_tie_fusion.py::test_corrupt_log_line_is_surfaced_not_dropped FAILED [ 81%]
+tests/test_tie_fusion.py::test_linked_experience_log_is_refused FAILED   [ 83%]
+tests/test_tie_fusion.py::test_two_field_binding_is_accepted FAILED      [ 84%]
+tests/test_tie_fusion.py::test_fusion_digest_changes_when_experience_changes FAILED [ 85%]
+tests/test_capability_scheduler_regression.py::PXAUD077_NegativeResourceNeedsRejected::test_bool_cpu_cores_rejected PASSED [ 87%]
+tests/test_capability_scheduler_regression.py::PXAUD077_NegativeResourceNeedsRejected::test_negative_cpu_cores_rejected PASSED [ 88%]
+tests/test_capability_scheduler_regression.py::PXAUD077_NegativeResourceNeedsRejected::test_negative_disk_gb_rejected PASSED [ 90%]
+tests/test_capability_scheduler_regression.py::PXAUD077_NegativeResourceNeedsRejected::test_negative_gpu_count_rejected PASSED [ 91%]
+tests/test_capability_scheduler_regression.py::PXAUD077_NegativeResourceNeedsRejected::test_negative_ram_gb_rejected PASSED [ 92%]
+tests/test_capability_scheduler_regression.py::PXAUD077_NegativeResourceNeedsRejected::test_negative_vram_gb_rejected PASSED [ 94%]
+tests/test_capability_scheduler_regression.py::PXAUD077_NegativeResourceNeedsRejected::test_non_numeric_cpu_cores_rejected PASSED [ 95%]
+tests/test_capability_scheduler_regression.py::PXAUD077_NegativeResourceNeedsRejected::test_positive_resources_accepted PASSED [ 97%]
+tests/test_capability_scheduler_regression.py::PXAUD077_NegativeResourceNeedsRejected::test_scheduler_rejects_negative_task_resources PASSED [ 98%]
+tests/test_capability_scheduler_regression.py::PXAUD077_NegativeResourceNeedsRejected::test_zero_resources_accepted PASSED [100%]
+
+================================== FAILURES ===================================
+___________ test_fuses_recorded_experience_with_attributed_lineage ____________
+
+project = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.tmp/resume10/owned/pacifyx-3nw03uu9/pytest-of-Ben/pytest-0/test_fuses_recorded_experience0')
+
+    def test_fuses_recorded_experience_with_attributed_lineage(project):
+        _record(project)
+>       fused = um.fuse_tie_experience(project, ({"kind": "workflow", "identity": "wf_probe"},))
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_tie_fusion.py:46: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.tmp/resume10/owned/pacifyx-3nw03uu9/pytest-of-Ben/pytest-0/test_fuses_recorded_experience0')
+bindings = ({'kind': 'workflow', 'identity': 'wf_probe'},)
+max_records_per_subject = 20
+
+    def fuse_tie_experience(root: Path, bindings, *, max_records_per_subject: int = 20) -> dict[str, Any]:
+        """Fuse bounded, attributed operational experience for normal plan preparation.
+    
+        ``bindings`` is a bounded sequence of exact ``{kind, identity, version}`` objects.
+        Each subject is read through its own immutable Studio owner. A corrupt or
+        unattributed source is reported honestly as unavailable/corrupt; it is never
+        silently substituted with a fabricated or partial-but-claimed-complete record.
+        """
+        rows = tuple(bindings)
+        if len(rows) > 4:
+            raise ValueError("T.I.E. fusion requires at most four explicit object bindings")
+        if type(max_records_per_subject) is not int or not 1 <= max_records_per_subject <= 100:
+            raise ValueError("bounded per-subject record budget required")
+        subjects: list[dict[str, Any]] = []
+        for binding in rows:
+            if type(binding) is not dict or set(binding) != {"kind", "identity", "version"}:
+>               raise ValueError("T.I.E. fusion requires exact canonical object bindings")
+E               ValueError: T.I.E. fusion requires exact canonical object bindings
+
+runtime\usage_memory.py:564: ValueError
+__________________________ test_fusion_is_read_only ___________________________
+
+project = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.tmp/resume10/owned/pacifyx-3nw03uu9/pytest-of-Ben/pytest-0/test_fusion_is_read_only0')
+
+    def test_fusion_is_read_only(project):
+        _record(project)
+        log = project / "orchestration/workflows/wf_probe/memory/usage.jsonl"
+        before = log.read_bytes()
+>       um.fuse_tie_experience(project, ({"kind": "workflow", "identity": "wf_probe"},))
+
+tests\test_tie_fusion.py:69: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.tmp/resume10/owned/pacifyx-3nw03uu9/pytest-of-Ben/pytest-0/test_fusion_is_read_only0')
+bindings = ({'kind': 'workflow', 'identity': 'wf_probe'},)
+max_records_per_subject = 20
+
+    def fuse_tie_experience(root: Path, bindings, *, max_records_per_subject: int = 20) -> dict[str, Any]:
+        """Fuse bounded, attributed operational experience for normal plan preparation.
+    
+        ``bindings`` is a bounded sequence of exact ``{kind, identity, version}`` objects.
+        Each subject is read through its own immutable Studio owner. A corrupt or
+        unattributed source is reported honestly as unavailable/corrupt; it is never
+        silently substituted with a fabricated or partial-but-claimed-complete record.
+        """
+        rows = tuple(bindings)
+        if len(rows) > 4:
+            raise ValueError("T.I.E. fusion requires at most four explicit object bindings")
+        if type(max_records_per_subject) is not int or not 1 <= max_records_per_subject <= 100:
+            raise ValueError("bounded per-subject record budget required")
+        subjects: list[dict[str, Any]] = []
+        for binding in rows:
+            if type(binding) is not dict or set(binding) != {"kind", "identity", "version"}:
+>               raise ValueError("T.I.E. fusion requires exact canonical object bindings")
+E               ValueError: T.I.E. fusion requires exact canonical object bindings
+
+runtime\usage_memory.py:564: ValueError
+__________ test_subject_without_experience_is_reported_not_invented ___________
+
+project = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.tmp/resume10/owned/pacifyx-3nw03uu9/pytest-of-Ben/pytest-0/test_subject_without_experienc0')
+
+    def test_subject_without_experience_is_reported_not_invented(project):
+        (project / "orchestration" / "workflows" / "wf_empty").mkdir(parents=True)
+>       fused = um.fuse_tie_experience(project, ({"kind": "workflow", "identity": "wf_empty"},))
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_tie_fusion.py:76: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.tmp/resume10/owned/pacifyx-3nw03uu9/pytest-of-Ben/pytest-0/test_subject_without_experienc0')
+bindings = ({'kind': 'workflow', 'identity': 'wf_empty'},)
+max_records_per_subject = 20
+
+    def fuse_tie_experience(root: Path, bindings, *, max_records_per_subject: int = 20) -> dict[str, Any]:
+        """Fuse bounded, attributed operational experience for normal plan preparation.
+    
+        ``bindings`` is a bounded sequence of exact ``{kind, identity, version}`` objects.
+        Each subject is read through its own immutable Studio owner. A corrupt or
+        unattributed source is reported honestly as unavailable/corrupt; it is never
+        silently substituted with a fabricated or partial-but-claimed-complete record.
+        """
+        rows = tuple(bindings)
+        if len(rows) > 4:
+            raise ValueError("T.I.E. fusion requires at most four explicit object bindings")
+        if type(max_records_per_subject) is not int or not 1 <= max_records_per_subject <= 100:
+            raise ValueError("bounded per-subject record budget required")
+        subjects: list[dict[str, Any]] = []
+        for binding in rows:
+            if type(binding) is not dict or set(binding) != {"kind", "identity", "version"}:
+>               raise ValueError("T.I.E. fusion requires exact canonical object bindings")
+E               ValueError: T.I.E. fusion requires exact canonical object bindings
+
+runtime\usage_memory.py:564: ValueError
+____________ test_unavailable_subject_is_reported_with_its_failure ____________
+
+project = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.tmp/resume10/owned/pacifyx-3nw03uu9/pytest-of-Ben/pytest-0/test_unavailable_subject_is_re0')
+
+    def test_unavailable_subject_is_reported_with_its_failure(project):
+>       fused = um.fuse_tie_experience(project, ({"kind": "agent", "identity": "agt_absent"},))
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_tie_fusion.py:84: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.tmp/resume10/owned/pacifyx-3nw03uu9/pytest-of-Ben/pytest-0/test_unavailable_subject_is_re0')
+bindings = ({'kind': 'agent', 'identity': 'agt_absent'},)
+max_records_per_subject = 20
+
+    def fuse_tie_experience(root: Path, bindings, *, max_records_per_subject: int = 20) -> dict[str, Any]:
+        """Fuse bounded, attributed operational experience for normal plan preparation.
+    
+        ``bindings`` is a bounded sequence of exact ``{kind, identity, version}`` objects.
+        Each subject is read through its own immutable Studio owner. A corrupt or
+        unattributed source is reported honestly as unavailable/corrupt; it is never
+        silently substituted with a fabricated or partial-but-claimed-complete record.
+        """
+        rows = tuple(bindings)
+        if len(rows) > 4:
+            raise ValueError("T.I.E. fusion requires at most four explicit object bindings")
+        if type(max_records_per_subject) is not int or not 1 <= max_records_per_subject <= 100:
+            raise ValueError("bounded per-subject record budget required")
+        subjects: list[dict[str, Any]] = []
+        for binding in rows:
+            if type(binding) is not dict or set(binding) != {"kind", "identity", "version"}:
+>               raise ValueError("T.I.E. fusion requires exact canonical object bindings")
+E               ValueError: T.I.E. fusion requires exact canonical object bindings
+
+runtime\usage_memory.py:564: ValueError
+________________ test_malformed_bindings_are_refused[binding3] ________________
+
+project = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.tmp/resume10/owned/pacifyx-3nw03uu9/pytest-of-Ben/pytest-0/test_malformed_bindings_are_re3')
+binding = {'kind': 'workflow', 'identity': 'wf', 'version': ''}
+
+    @pytest.mark.parametrize(
+        "binding",
+        [
+            {"kind": "workflow"},
+            {"kind": "workflow", "identity": "wf", "extra": 1},
+            {"kind": "", "identity": "wf"},
+            {"kind": "workflow", "identity": "wf", "version": ""},
+            "not-a-mapping",
+        ],
+    )
+    def test_malformed_bindings_are_refused(project, binding):
+>       with pytest.raises(ValueError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+tests\test_tie_fusion.py:102: Failed
+____________________ test_unknown_subject_kind_is_refused _____________________
+
+project = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.tmp/resume10/owned/pacifyx-3nw03uu9/pytest-of-Ben/pytest-0/test_unknown_subject_kind_is_r0')
+
+    def test_unknown_subject_kind_is_refused(project):
+>       with pytest.raises(ValueError, match="unknown experience subject kind"):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError: Regex pattern did not match.
+E         Expected regex: 'unknown experience subject kind'
+E         Actual message: 'T.I.E. fusion requires exact canonical object bindings'
+
+tests\test_tie_fusion.py:107: AssertionError
+________________ test_corrupt_log_line_is_surfaced_not_dropped ________________
+
+project = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.tmp/resume10/owned/pacifyx-3nw03uu9/pytest-of-Ben/pytest-0/test_corrupt_log_line_is_surfa0')
+
+    def test_corrupt_log_line_is_surfaced_not_dropped(project):
+        log = project / "orchestration/workflows/wf_bad/memory/usage.jsonl"
+        log.parent.mkdir(parents=True)
+        log.write_text('{"not": "a valid record"}\n', encoding="utf-8")
+>       fused = um.fuse_tie_experience(project, ({"kind": "workflow", "identity": "wf_bad"},))
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_tie_fusion.py:121: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.tmp/resume10/owned/pacifyx-3nw03uu9/pytest-of-Ben/pytest-0/test_corrupt_log_line_is_surfa0')
+bindings = ({'kind': 'workflow', 'identity': 'wf_bad'},)
+max_records_per_subject = 20
+
+    def fuse_tie_experience(root: Path, bindings, *, max_records_per_subject: int = 20) -> dict[str, Any]:
+        """Fuse bounded, attributed operational experience for normal plan preparation.
+    
+        ``bindings`` is a bounded sequence of exact ``{kind, identity, version}`` objects.
+        Each subject is read through its own immutable Studio owner. A corrupt or
+        unattributed source is reported honestly as unavailable/corrupt; it is never
+        silently substituted with a fabricated or partial-but-claimed-complete record.
+        """
+        rows = tuple(bindings)
+        if len(rows) > 4:
+            raise ValueError("T.I.E. fusion requires at most four explicit object bindings")
+        if type(max_records_per_subject) is not int or not 1 <= max_records_per_subject <= 100:
+            raise ValueError("bounded per-subject record budget required")
+        subjects: list[dict[str, Any]] = []
+        for binding in rows:
+            if type(binding) is not dict or set(binding) != {"kind", "identity", "version"}:
+>               raise ValueError("T.I.E. fusion requires exact canonical object bindings")
+E               ValueError: T.I.E. fusion requires exact canonical object bindings
+
+runtime\usage_memory.py:564: ValueError
+____________________ test_linked_experience_log_is_refused ____________________
+
+project = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.tmp/resume10/owned/pacifyx-3nw03uu9/pytest-of-Ben/pytest-0/test_linked_experience_log_is_0')
+
+    def test_linked_experience_log_is_refused(project):
+        """A log reachable through a link must be reported, not read.
+    
+        The experience log is append-only evidence; reading it through a symlink or
+        junction would let unrelated bytes be presented as a subject's history.
+        """
+        victim = project / "outside.txt"
+        victim.write_text('{"outcome": "success", "run_id": "forged"}\n', encoding="utf-8")
+        log = project / "orchestration/workflows/wf_linked/memory/usage.jsonl"
+        log.parent.mkdir(parents=True)
+        try:
+            log.symlink_to(victim)
+        except (OSError, NotImplementedError):
+            pytest.skip("host cannot create symlinks for this check")
+>       fused = um.fuse_tie_experience(project, ({"kind": "workflow", "identity": "wf_linked"},))
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_tie_fusion.py:141: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.tmp/resume10/owned/pacifyx-3nw03uu9/pytest-of-Ben/pytest-0/test_linked_experience_log_is_0')
+bindings = ({'kind': 'workflow', 'identity': 'wf_linked'},)
+max_records_per_subject = 20
+
+    def fuse_tie_experience(root: Path, bindings, *, max_records_per_subject: int = 20) -> dict[str, Any]:
+        """Fuse bounded, attributed operational experience for normal plan preparation.
+    
+        ``bindings`` is a bounded sequence of exact ``{kind, identity, version}`` objects.
+        Each subject is read through its own immutable Studio owner. A corrupt or
+        unattributed source is reported honestly as unavailable/corrupt; it is never
+        silently substituted with a fabricated or partial-but-claimed-complete record.
+        """
+        rows = tuple(bindings)
+        if len(rows) > 4:
+            raise ValueError("T.I.E. fusion requires at most four explicit object bindings")
+        if type(max_records_per_subject) is not int or not 1 <= max_records_per_subject <= 100:
+            raise ValueError("bounded per-subject record budget required")
+        subjects: list[dict[str, Any]] = []
+        for binding in rows:
+            if type(binding) is not dict or set(binding) != {"kind", "identity", "version"}:
+>               raise ValueError("T.I.E. fusion requires exact canonical object bindings")
+E               ValueError: T.I.E. fusion requires exact canonical object bindings
+
+runtime\usage_memory.py:564: ValueError
+_____________________ test_two_field_binding_is_accepted ______________________
+
+project = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.tmp/resume10/owned/pacifyx-3nw03uu9/pytest-of-Ben/pytest-0/test_two_field_binding_is_acce0')
+
+    def test_two_field_binding_is_accepted(project):
+        """Callers may bind without a version; the fusion must not require one."""
+        _record(project, count=1)
+>       fused = um.fuse_tie_experience(project, ({"kind": "workflow", "identity": "wf_probe"},))
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_tie_fusion.py:150: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.tmp/resume10/owned/pacifyx-3nw03uu9/pytest-of-Ben/pytest-0/test_two_field_binding_is_acce0')
+bindings = ({'kind': 'workflow', 'identity': 'wf_probe'},)
+max_records_per_subject = 20
+
+    def fuse_tie_experience(root: Path, bindings, *, max_records_per_subject: int = 20) -> dict[str, Any]:
+        """Fuse bounded, attributed operational experience for normal plan preparation.
+    
+        ``bindings`` is a bounded sequence of exact ``{kind, identity, version}`` objects.
+        Each subject is read through its own immutable Studio owner. A corrupt or
+        unattributed source is reported honestly as unavailable/corrupt; it is never
+        silently substituted with a fabricated or partial-but-claimed-complete record.
+        """
+        rows = tuple(bindings)
+        if len(rows) > 4:
+            raise ValueError("T.I.E. fusion requires at most four explicit object bindings")
+        if type(max_records_per_subject) is not int or not 1 <= max_records_per_subject <= 100:
+            raise ValueError("bounded per-subject record budget required")
+        subjects: list[dict[str, Any]] = []
+        for binding in rows:
+            if type(binding) is not dict or set(binding) != {"kind", "identity", "version"}:
+>               raise ValueError("T.I.E. fusion requires exact canonical object bindings")
+E               ValueError: T.I.E. fusion requires exact canonical object bindings
+
+runtime\usage_memory.py:564: ValueError
+_____________ test_fusion_digest_changes_when_experience_changes ______________
+
+project = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.tmp/resume10/owned/pacifyx-3nw03uu9/pytest-of-Ben/pytest-0/test_fusion_digest_changes_whe0')
+
+    def test_fusion_digest_changes_when_experience_changes(project):
+        _record(project, count=1)
+>       first = um.fuse_tie_experience(project, ({"kind": "workflow", "identity": "wf_probe"},))
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_tie_fusion.py:156: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.tmp/resume10/owned/pacifyx-3nw03uu9/pytest-of-Ben/pytest-0/test_fusion_digest_changes_whe0')
+bindings = ({'kind': 'workflow', 'identity': 'wf_probe'},)
+max_records_per_subject = 20
+
+    def fuse_tie_experience(root: Path, bindings, *, max_records_per_subject: int = 20) -> dict[str, Any]:
+        """Fuse bounded, attributed operational experience for normal plan preparation.
+    
+        ``bindings`` is a bounded sequence of exact ``{kind, identity, version}`` objects.
+        Each subject is read through its own immutable Studio owner. A corrupt or
+        unattributed source is reported honestly as unavailable/corrupt; it is never
+        silently substituted with a fabricated or partial-but-claimed-complete record.
+        """
+        rows = tuple(bindings)
+        if len(rows) > 4:
+            raise ValueError("T.I.E. fusion requires at most four explicit object bindings")
+        if type(max_records_per_subject) is not int or not 1 <= max_records_per_subject <= 100:
+            raise ValueError("bounded per-subject record budget required")
+        subjects: list[dict[str, Any]] = []
+        for binding in rows:
+            if type(binding) is not dict or set(binding) != {"kind", "identity", "version"}:
+>               raise ValueError("T.I.E. fusion requires exact canonical object bindings")
+E               ValueError: T.I.E. fusion requires exact canonical object bindings
+
+runtime\usage_memory.py:564: ValueError
+=========================== short test summary info ===========================
+FAILED tests/test_tie_fusion.py::test_fuses_recorded_experience_with_attributed_lineage - ValueError: T.I.E. fusion requires exact canonical object bindings
+FAILED tests/test_tie_fusion.py::test_fusion_is_read_only - ValueError: T.I.E. fusion requires exact canonical object bindings
+FAILED tests/test_tie_fusion.py::test_subject_without_experience_is_reported_not_invented - ValueError: T.I.E. fusion requires exact canonical object bindings
+FAILED tests/test_tie_fusion.py::test_unavailable_subject_is_reported_with_its_failure - ValueError: T.I.E. fusion requires exact canonical object bindings
+FAILED tests/test_tie_fusion.py::test_malformed_bindings_are_refused[binding3] - Failed: DID NOT RAISE ValueError
+FAILED tests/test_tie_fusion.py::test_unknown_subject_kind_is_refused - AssertionError: Regex pattern did not match.
+  Expected regex: 'unknown experience subject kind'
+  Actual message: 'T.I.E. fusion requires exact canonical object bindings'
+FAILED tests/test_tie_fusion.py::test_corrupt_log_line_is_surfaced_not_dropped - ValueError: T.I.E. fusion requires exact canonical object bindings
+FAILED tests/test_tie_fusion.py::test_linked_experience_log_is_refused - ValueError: T.I.E. fusion requires exact canonical object bindings
+FAILED tests/test_tie_fusion.py::test_two_field_binding_is_accepted - ValueError: T.I.E. fusion requires exact canonical object bindings
+FAILED tests/test_tie_fusion.py::test_fusion_digest_changes_when_experience_changes - ValueError: T.I.E. fusion requires exact canonical object bindings
+======================= 10 failed, 61 passed in 28.90s ========================
+

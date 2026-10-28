@@ -61,6 +61,9 @@ _EXECUTION_POLICIES = dict(zip(RISK_ORDER, ("advisory_only", "read_only_defensiv
 MAX_ARCHIVE_BYTES = 32 * 1024 * 1024
 MAX_ARCHIVE_ENTRIES = 10_000
 MAX_HYDRATION_BYTES = 1024 * 1024
+MAX_SECURITY_JSONL_BYTES = 16 * 1024 * 1024
+MAX_SECURITY_JSONL_LINE_BYTES = 65_536
+MAX_SECURITY_JSONL_RECORDS = 20_000
 _RECORD_BOOLEANS = frozenset({"credential_access_potential", "destructive_potential", "requires_explicit_scope", "requires_human_approval", "requires_written_authorization"})
 _RECORD_LISTS = frozenset({"avoid_when", "conflicts_with", "negative_matches", "related_skills", "risk_reasons", "tags"})
 _RECORD_STRINGS = frozenset({
@@ -205,29 +208,29 @@ def validate_security_declarations(records: Sequence[dict], domains: dict, risks
 
 
 def decode_security_jsonl(raw: bytes | bytearray, *, expected_sha256: str | None = None) -> tuple[dict[str, object], ...]:
-    if len(raw) > 16 * 1024 * 1024:
+    if len(raw) > MAX_SECURITY_JSONL_BYTES:
         raise ValueError("security JSONL byte budget exceeded")
     if expected_sha256 is not None and hashlib.sha256(raw).hexdigest() != expected_sha256:
         raise ValueError("security metadata pinned source hash mismatch")
     rows: list[dict[str, object]] = []
     used = 0
     with io.BytesIO(raw) as stream:
-        for number in range(20_001):
-            line = stream.readline(min(65_537, 16 * 1024 * 1024 + 1 - used))
+        for number in range(MAX_SECURITY_JSONL_RECORDS + 1):
+            line = stream.readline(min(MAX_SECURITY_JSONL_LINE_BYTES + 1, MAX_SECURITY_JSONL_BYTES + 1 - used))
             if not line:
                 break
             used += len(line)
-            if number >= 20_000 or len(line) > 65_536 or used > 16 * 1024 * 1024:
+            if number >= MAX_SECURITY_JSONL_RECORDS or len(line) > MAX_SECURITY_JSONL_LINE_BYTES or used > MAX_SECURITY_JSONL_BYTES:
                 raise ValueError("security JSONL byte, line or record budget exceeded")
             if not line.strip():
                 continue
-            value = decode_json_object(line, max_bytes=65_536)
+            value = decode_json_object(line, max_bytes=MAX_SECURITY_JSONL_LINE_BYTES)
             rows.append(value)
     return tuple(rows)
 
 
 def _jsonl(path: Path, *, expected_sha256: str | None = None) -> tuple[dict[str, object], ...]:
-    return decode_security_jsonl(read_bounded_bytes(path, max_bytes=16 * 1024 * 1024), expected_sha256=expected_sha256)
+    return decode_security_jsonl(read_bounded_bytes(path, max_bytes=MAX_SECURITY_JSONL_BYTES), expected_sha256=expected_sha256)
 
 
 def _terms(value: str) -> list[str]:

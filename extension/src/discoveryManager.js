@@ -333,7 +333,7 @@ function boundedTree(roots = [], options = {}) {
         const record = { root, absolute, relative, name: child.name, depth: depth + 1, directory: child.isDirectory(), file: child.isFile() };
         entries.push(record);
         if (child.isDirectory() && /^\.venv.*$/i.test(child.name)) inspectPythonEnvironment(root, absolute, relative, depth);
-        if (child.isDirectory() && depth < MAX_SCAN_DEPTH && !/^(\.git|node_modules|__pycache__|\.engineering-bootstrap|\.pytest_cache|\.ruff_cache|\.mypy_cache|\.cache|\.px|evidence|Python|\.venv.*|dist|build|coverage)$/i.test(child.name)) pending.push({ target: absolute, depth: depth + 1 });
+        if (child.isDirectory() && depth < MAX_SCAN_DEPTH && !/^(\.git|node_modules|__pycache__|\.agentic_engineering_os_px|\.pytest_cache|\.ruff_cache|\.mypy_cache|\.cache|\.px|evidence|Python|\.venv.*|dist|build|coverage)$/i.test(child.name)) pending.push({ target: absolute, depth: depth + 1 });
       }
     }
     if (entries.length >= MAX_SCAN_ENTRIES) capped = true;
@@ -653,7 +653,7 @@ function buildInventory({ extensions = [], tools = [], packages = {}, virtualEnv
   return { ...stable, generated_utc: generatedUtc, snapshot_hash: sha(stable) };
 }
 function pathsFor(projectRoot) {
-  const root = path.join(path.resolve(projectRoot), '.engineering-bootstrap', 'environment');
+  const root = path.join(path.resolve(projectRoot), '.agentic_engineering_os_px', 'environment');
   return { root, current: path.join(root, 'current.json'), events: path.join(root, 'events.jsonl'), snapshots: path.join(root, 'snapshots') };
 }
 function optionalCurrentPathFor(projectRoot) {

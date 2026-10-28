@@ -2,16 +2,16 @@
 
 ## Files
 
-- `PROJECT_MANAGEMENT.md` plus `.engineering-bootstrap/project-management/`: durable context, assumptions, plan, cards, orchestration, risk, acceptance, and machine-readable checkpoint state.
+- `PROJECT_MANAGEMENT.md` plus `.agentic_engineering_os_px/project-management/`: durable context, assumptions, plan, cards, orchestration, risk, acceptance, and machine-readable checkpoint state.
 - `PROJECT_BLUEPRINT.md`, `ARCHITECTURE_GOVERNANCE_AND_RISK.md`, and `EXECUTION_PLAN_PUNCH_CARDS_AND_ACCEPTANCE.md`: compact commissioning dossier.
-- `.engineering-bootstrap/AGENTS.md` and `.engineering-bootstrap/AI_ASSISTANT.md`: collision-safe canonical bootstrap instructions.
+- `.agentic_engineering_os_px/AGENTS.md` and `.agentic_engineering_os_px/AI_ASSISTANT.md`: collision-safe canonical bootstrap instructions.
 - `AGENTS.md`: optional root integration; preserve a differing existing owner.
 - `.codex/config.toml`: trusted-project settings only. Do not set provider, authentication, global profile, notification, or telemetry keys.
 - `.vscode/settings.json`: editor-only `chatgpt.*` behavior and file exclusions.
 - `.vscode/tasks.json`: validation, doctor, and test commands.
-- `.engineering-bootstrap/project.toml`: bootstrap identity, project mode, and bounded lifecycle settings.
-- `.engineering-bootstrap/project-registry.json`: hashes and metadata for canonical installed skills. Skill bodies stay in the framework and are hydrated explicitly rather than copied into the project.
-- `.engineering-bootstrap/prompts/`: separate new-project and existing-project copy/paste prompts.
+- `.agentic_engineering_os_px/project.toml`: bootstrap identity, project mode, and bounded lifecycle settings.
+- `.agentic_engineering_os_px/project-registry.json`: hashes and metadata for canonical installed skills. Skill bodies stay in the framework and are hydrated explicitly rather than copied into the project.
+- `.agentic_engineering_os_px/prompts/`: separate new-project and existing-project copy/paste prompts.
 
 ## Collision policy
 

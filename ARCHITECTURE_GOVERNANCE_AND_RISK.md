@@ -5,7 +5,7 @@
 - Python 3.11+ standard-library runtime with an installable console command.
 - Compact JSON/TOML registries and policy summaries at startup.
 - Skill bodies retained in the installed framework, addressed by hash, and hydrated explicitly after selection.
-- Project-local `.engineering-bootstrap/` namespace for durable control state and collision-safe adoption.
+- Project-local `.agentic_engineering_os_px/` namespace for durable control state and collision-safe adoption.
 - Human-readable `PROJECT_MANAGEMENT.md` plus schema-backed state and append-only evidence/checkpoints.
 - Separate capability, I/O, dependency/effect, and system graphs; admitted handlers execute bounded workflows.
 

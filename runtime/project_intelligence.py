@@ -42,7 +42,7 @@ DEFAULT_EXCLUDES = {
     "build",
     "dist",
     "__pycache__",
-    ".engineering-bootstrap",
+    ".agentic_engineering_os_px",
     "quarantine",
     ".mypy_cache",
     ".pytest_cache",
@@ -288,12 +288,7 @@ def _stable_hash(value: object) -> str:
     return hashlib.sha256(_canonical_bytes(value)).hexdigest()
 
 
-def _sha_file(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as stream:
-        for chunk in iter(lambda: stream.read(1024 * 1024), b""):
-            digest.update(chunk)
-    return digest.hexdigest()
+from runtime.hash_utils import file_sha256 as _sha_file
 
 
 def _write_json(path: Path, value: object) -> None:
@@ -2956,7 +2951,7 @@ def _summary_markdown(
             "",
             "## Retrieval",
             "",
-            "Use `engineering-bootstrap project-map query --project <path> --query <goal>` to retrieve map records and a minimal source hydration plan.",
+            "Use `agentic-engineering-os-px project-map query --project <path> --query <goal>` to retrieve map records and a minimal source hydration plan.",
             "",
         ]
     )
@@ -2979,7 +2974,7 @@ def _map_dir(path: Path) -> Path:
     resolved = path.resolve()
     if (resolved / "project-manifest.json").is_file():
         return resolved
-    candidate = resolved / ".engineering-bootstrap" / "project-map"
+    candidate = resolved / ".agentic_engineering_os_px" / "project-map"
     if candidate.is_dir():
         return candidate
     raise ValueError(f"project intelligence map not found under {resolved}")
@@ -3004,11 +2999,11 @@ def _build_project_map_direct(
     if min(max_files, max_depth, max_bytes, max_text_bytes) < 1:
         raise ValueError("mapping limits must be positive")
     caller_exclude_prefixes = _normalize_exclude_prefixes(exclude_prefixes)
-    output = (output_dir or (root / ".engineering-bootstrap" / "project-map")).resolve()
+    output = (output_dir or (root / ".agentic_engineering_os_px" / "project-map")).resolve()
     if (
         output == root
         or root in output.parents
-        and ".engineering-bootstrap" not in output.parts
+        and ".agentic_engineering_os_px" not in output.parts
     ):
         raise ValueError("output directory must not replace the project root")
     control = output.parent
@@ -3474,7 +3469,7 @@ def validate_project_map(
         recorded_root = str(manifest.get("project_root", ""))
         project_root = Path(recorded_root)
         requested_root = Path(project_or_map).resolve()
-        if requested_root == map_dir and map_dir.parent.name == ".engineering-bootstrap":
+        if requested_root == map_dir and map_dir.parent.name == ".agentic_engineering_os_px":
             requested_root = map_dir.parent.parent
         if not recorded_root or not project_root.is_absolute() or not project_root.is_dir():
             errors.append(

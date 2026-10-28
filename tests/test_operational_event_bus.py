@@ -139,7 +139,7 @@ def test_cli_publishes_bounded_external_batch(tmp_path: Path, monkeypatch, capsy
     }
     stream = io.TextIOWrapper(io.BytesIO(json.dumps(document).encode("utf-8")))
     monkeypatch.setattr("sys.stdin", stream)
-    bus_root = tmp_path / "workspace" / ".engineering-bootstrap" / "operation-bus"
+    bus_root = tmp_path / "workspace" / ".agentic_engineering_os_px" / "operation-bus"
     status = cli_main(
         [
             "--root",

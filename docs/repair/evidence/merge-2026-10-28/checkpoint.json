@@ -1,0 +1,32 @@
+{
+  "schema_version": "px.operational-gap-ledger-event/1.0",
+  "sequence": 36253,
+  "event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000036253",
+  "event_type": "work_checkpoint",
+  "timestamp": "2026-10-28T10:19:31.306010Z",
+  "actor": "codex",
+  "previous_event_sha256": "5c237c276355a2fda3497be0013855c5d64a8978dd970eca3ad64c0187772aa6",
+  "payload": {
+    "active_gap_id": "PX-OS-1067",
+    "evidence": [
+      {
+        "artifact_sha256": "54cb5a45b4e13e472d7b4abc19b8c0a776c6faf82be0b78c4cca85fa989161fc",
+        "artifact_size": 941,
+        "claim": "Focused merge-recovery evidence; not certification.",
+        "reference": "docs/repair/evidence/resume10-merge-legacy-append-green.json"
+      },
+      {
+        "artifact_sha256": "aa0a37f348492132de1192e79e95ce744356081d365dc98b3b2d2559b1b42c25",
+        "artifact_size": 2878,
+        "claim": "Focused merge-recovery evidence; not certification.",
+        "reference": "docs/repair/evidence/merge-2026-10-28/unresolved-files.json"
+      }
+    ],
+    "learned": "### Resume merge recovery (2026-10-28)\n\nUser-started merge found on resume: repair branch HEAD e4c6806f, incoming rollout 5ebc7368, initially 78 unmerged paths. No merge commit, abort/reset, package or certification performed. Preserved the pre-resolution index at .audit-handoff/merge-2026-10-28/git-index.before-resolution and conflicted source preimages plus per-file decisions under docs/repair/evidence/merge-2026-10-28. Resolved and staged 12 reviewed foundational/custody files; 66 conflicts remain. Existing legacy resource/policy custody paths are retained pending a verified namespace migration. Kept signed containment requirements, whitespace deltas, bounded schema lookup, physical reads and exact provider resolver bindings. Staging is not validation or release acceptance.\n\nThe merged incremental-ledger writer could read a legacy cumulative checkpoint but appended its first new event before failing checkpoint publication. Native write_snapshot recovered the projection at authoritative event36250 without deleting/replacing event history. Repair admission is now36252, predecessor checkpoint36251, session repair-merge-reconciliation-20261028; read/write/execute guards passed. Earlier bootstrap attempts with empty evidence or wrong guard argument shapes were rejected; no admission bypass was used.\n\nCausal reproduction retained at resume10-merge-legacy-append-causal-red2.json. Fixed first legacy write by folding the verified cumulative predecessor once into a snapshot before starting a new incremental chain. Tests cover explicitly labelled and original unlabelled heads, preserved old delta bytes, successful next write, replay equivalence and concurrent writers. Delta lifecycle/scaling: 14 passed, owned tree closed and resource inactive (resume10-merge-legacy-append-green.json). Default pytest startup is blocked by conflicted pyproject.toml; the bounded ledger reproduction used a retained minimal focused.ini, not the certification configuration. Earlier failed startup receipts are retained (conflicted TOML; a PowerShell UTF8-BOM ini corrected before causal execution). No claim of full repository/test readiness.\n\nPrior prepared-group entry/receipt-owner implementation has a retained historical 55-pass receipt (resume10-prepared-group-entry-and-receipt-owner.json). It requires revalidation after merge reconciliation. Production model-group registration stays closed; W1/W2 operating proof, W3/W4, independent review, current section gates and ordered rollout remain incomplete. Next: reconcile the remaining source/schema/test/packaging conflicts with both sides retained, verify actual custody namespace and dispatch contracts, then resume operating integration. Do not count old receipts as merged-source certification.",
+    "newly_discovered_gap_ids": [],
+    "next_action": "Run the single revision/generated-projection reconciliation, make every governed section current, then execute exactly one full profile, validation, package, install, installed-system operational test, and certification in registered order.",
+    "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000036251",
+    "unresolved_branch_gap_ids": []
+  },
+  "event_sha256": "81b1b5baa90e317d3a3fc4f4cefe5a587f32c2ff08db7396dfb9e3c97bb12480"
+}

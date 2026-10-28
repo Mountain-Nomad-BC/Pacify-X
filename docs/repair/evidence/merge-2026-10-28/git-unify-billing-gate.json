@@ -1,0 +1,101 @@
+{
+  "chunks": [
+    {
+      "chunk_id": "chunk-01",
+      "duration_seconds": 24.609,
+      "execution_started": true,
+      "execution_valid": true,
+      "exit_code": 0,
+      "input_sha256": "de25983cc8e2d7a5cda2be2bd6ef0a1771dec42ec702c4c5b0e51df8d3e460b5",
+      "member_count": 1,
+      "members": [
+        "tests/test_billing_budget_audit.py"
+      ],
+      "output_evidence": {
+        "failure_nodes": [],
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 102,
+        "stdout_sha256": "03a91ead7178ddae099467cbdb487fe3a3d1fe9049b7dffbd94c95ad63b247a8"
+      },
+      "passed": true,
+      "process_tree_terminated": true,
+      "receipt_published": true,
+      "receipt_sha256": "72edd241dc41d3dec00fb60773ae5148515f5f4f8fe41b7bd4710f783602f57e",
+      "reused": false,
+      "timed_out": false
+    },
+    {
+      "chunk_id": "chunk-02",
+      "duration_seconds": 9.422,
+      "execution_started": true,
+      "execution_valid": true,
+      "exit_code": 0,
+      "input_sha256": "fa083a951f7208f746065222605b3af7c36068a57539d8c9cde2d25eddb2cf3e",
+      "member_count": 1,
+      "members": [
+        "tests/test_capability_scheduler.py"
+      ],
+      "output_evidence": {
+        "failure_nodes": [],
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 100,
+        "stdout_sha256": "a92928abbb86fe0a56b470df35117625e8c85b3d7379bb0e84b93cd89bd890a6"
+      },
+      "passed": true,
+      "process_tree_terminated": true,
+      "receipt_published": true,
+      "receipt_sha256": "44a61ba865df8adc485e502191e26b508d20fa20616ed24e26823debb37c57c0",
+      "reused": false,
+      "timed_out": false
+    },
+    {
+      "chunk_id": "chunk-03",
+      "duration_seconds": 62.343,
+      "execution_started": true,
+      "execution_valid": true,
+      "exit_code": 0,
+      "input_sha256": "0d4745a4781a2be230d2b87d9e76f7a496ac4ab499a1d1cf7454811c6cbef5e6",
+      "member_count": 1,
+      "members": [
+        "tests/test_provider_gateway_streaming.py"
+      ],
+      "output_evidence": {
+        "failure_nodes": [],
+        "stderr_bytes": 0,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stdout_bytes": 101,
+        "stdout_sha256": "7b6d587eb60fae4ad4ec11ab03bcb0b2c524c263922634aea0ab849a35d2e9b4"
+      },
+      "passed": true,
+      "process_tree_terminated": true,
+      "receipt_published": true,
+      "receipt_sha256": "fde0fa901d2b5f4a0d7f8a281c7ab1c34f77c927da21424682068e18aff790fc",
+      "reused": false,
+      "timed_out": false
+    }
+  ],
+  "command": [
+    "python",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "tests/test_billing_budget_audit.py",
+    "tests/test_capability_scheduler.py",
+    "tests/test_provider_gateway_streaming.py"
+  ],
+  "cwd": ".",
+  "dependencies": [],
+  "duration_seconds": 118.5,
+  "execution_valid": true,
+  "exit_code": 0,
+  "input_sha256": "3ee9f948997e5e50357e757ee04960bc1c8cdad0c7554dcce8e7fc0ab146b4b8",
+  "passed": true,
+  "receipt_sha256": "f6584988424fadf62ba11a86cb3653fb2cf9266934082c94334e2be380e03f8a",
+  "schema_version": "px.test-section-receipt/1.2",
+  "section": "billing-budget",
+  "timed_out": false
+}

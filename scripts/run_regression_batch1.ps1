@@ -1,0 +1,4 @@
+$env:Path = [Environment]::GetEnvironmentVariable("Path", "User") + ";" + $env:Path
+Set-Location $PSScriptRoot\..
+python -m pytest tests/test_repository_scope.py tests/test_release_boundary_diff.py tests/test_source_boundary.py tests/test_evidence_portability.py tests/test_external_evidence.py tests/test_release_compliance.py tests/test_release_compliance_artifacts.py tests/test_release_certification.py tests/test_release_identity_controls.py tests/test_release_identity_inputs.py tests/test_release_invariants.py tests/test_release_audit.py tests/test_release_candidate_driver.py -q --tb=short -p no:cacheprovider 2>&1 | Out-String -Width 400 | Set-Content -Encoding UTF8 .agentic_engineering_os_px/validation/regression-batch-1.txt
+$LASTEXITCODE | Set-Content .agentic_engineering_os_px/validation/regression-batch-1.exitcode

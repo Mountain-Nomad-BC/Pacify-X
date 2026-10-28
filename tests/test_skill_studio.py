@@ -267,7 +267,7 @@ def test_skill_stage_preserves_committed_truth_when_post_publish_closure_degrade
         "resource is not marked reclaimable",
     ]
     assert next(
-        (tmp_path / ".engineering-bootstrap/studios/skills").glob(
+        (tmp_path / ".agentic_engineering_os_px/studios/skills").glob(
             "*/revisions/1.0.0/package-record.json"
         )
     ).is_file()
@@ -311,7 +311,7 @@ def test_skill_stage_revalidates_allocation_and_preserves_existing_revision(tmp_
         tmp_path, "skill", package().skill_id, package().version
     )
     source_record = next(
-        (tmp_path / ".engineering-bootstrap/studios/skills").glob(
+        (tmp_path / ".agentic_engineering_os_px/studios/skills").glob(
             "*/revisions/1.0.0/package-record.json"
         )
     )
@@ -336,7 +336,7 @@ def test_skill_stage_revalidates_allocation_and_preserves_existing_revision(tmp_
         version_allocation=allocation,
     )
     record_path = next(
-        (tmp_path / ".engineering-bootstrap/studios/skills").glob(
+        (tmp_path / ".agentic_engineering_os_px/studios/skills").glob(
             "*/revisions/1.0.1/package-record.json"
         )
     )
@@ -372,7 +372,7 @@ def test_skill_exact_replay_rejects_each_corrupted_revision(tmp_path, mutation):
     token = studio.admit_source(draft_source, approved_by="human:owner")
     studio.stage_draft(package(), draft_source, source_token=token)
     record_path = next(
-        (tmp_path / ".engineering-bootstrap/studios/skills").glob(
+        (tmp_path / ".agentic_engineering_os_px/studios/skills").glob(
             "*/revisions/1.0.0/package-record.json"
         )
     )
@@ -537,7 +537,7 @@ def test_skill_runtime_stages_only_the_normalized_canonical_version(tmp_path):
     record = studio.stage_draft(normalized, draft_source, source_token=token)
     assert record["manifest"]["version"] == "1.0.0-rc.1"
     revision = next(
-        (tmp_path / ".engineering-bootstrap/studios/skills").glob(
+        (tmp_path / ".agentic_engineering_os_px/studios/skills").glob(
             "*/revisions/1.0.0-rc.1/package-record.json"
         )
     )
@@ -550,7 +550,7 @@ def test_skill_physical_allocation_rejects_tampered_predecessor_record(tmp_path)
     token = studio.admit_source(draft_source, approved_by="human:owner")
     studio.stage_draft(package(), draft_source, source_token=token)
     source_record = next(
-        (tmp_path / ".engineering-bootstrap/studios/skills").glob(
+        (tmp_path / ".agentic_engineering_os_px/studios/skills").glob(
             "*/revisions/1.0.0/package-record.json"
         )
     )
@@ -676,7 +676,7 @@ def test_skill_tamper_after_admission_blocks_promotion(tmp_path):
     studio.validate(package())
     studio.admit(package(), approved=True, approver="human:owner")
     payload = next(
-        (tmp_path / ".engineering-bootstrap/studios/skills").glob(
+        (tmp_path / ".agentic_engineering_os_px/studios/skills").glob(
             "*/revisions/1.0.0/payload/SKILL.md"
         )
     )
@@ -804,7 +804,7 @@ def test_skill_projection_updates_use_an_authenticated_recoverable_transaction(
     ]
     manifest_path = next(
         (
-            tmp_path / ".engineering-bootstrap/studios/skills/lifecycle-transactions"
+            tmp_path / ".agentic_engineering_os_px/studios/skills/lifecycle-transactions"
         ).glob("*/manifest.json")
     )
     signed = json.loads(manifest_path.read_text(encoding="utf-8"))
@@ -852,7 +852,7 @@ def test_skill_rollback_restores_package_and_every_projection_before_image(tmp_p
 
     promotion_receipt = next(
         (
-            tmp_path / ".engineering-bootstrap/studios/skills"
+            tmp_path / ".agentic_engineering_os_px/studios/skills"
         ).glob("*/revisions/1.1.0/promotion-receipt.json")
     )
     promoted_tree = materialization_attestation(target)[0]
@@ -910,7 +910,7 @@ def test_promotion_lifecycle_transaction_recovers_after_canonical_publication(
 
     restarted = SkillStudio(tmp_path)
     receipt = next(
-        (tmp_path / ".engineering-bootstrap/studios/skills").glob(
+        (tmp_path / ".agentic_engineering_os_px/studios/skills").glob(
             "*/revisions/1.0.0/promotion-receipt.json"
         )
     )
@@ -942,7 +942,7 @@ def test_rollback_lifecycle_transaction_recovers_after_canonical_publication(
     studio.admit(second, approved=True, approver="human:owner")
     studio.promote(second, approved=True)
     promotion_receipt = next(
-        (tmp_path / ".engineering-bootstrap/studios/skills").glob(
+        (tmp_path / ".agentic_engineering_os_px/studios/skills").glob(
             "*/revisions/1.1.0/promotion-receipt.json"
         )
     )

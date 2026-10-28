@@ -21,11 +21,11 @@ ROOT = Path(__file__).resolve().parents[1]
 FIXTURES = Path(__file__).parent / "fixtures"
 EVALUATED_AT = "2026-08-11T18:00:00.000Z"
 WAL_ROOTS = (
-    ".engineering-bootstrap/operations/wal",
-    ".engineering-bootstrap/provider-budget/wal",
-    ".engineering-bootstrap/resource-lifecycle/wal",
-    ".engineering-bootstrap/coordination/wal",
-    ".engineering-bootstrap/diagnostics/wal",
+    ".agentic_engineering_os_px/operations/wal",
+    ".agentic_engineering_os_px/provider-budget/wal",
+    ".agentic_engineering_os_px/resource-lifecycle/wal",
+    ".agentic_engineering_os_px/coordination/wal",
+    ".agentic_engineering_os_px/diagnostics/wal",
 )
 
 
@@ -167,8 +167,8 @@ def test_live_doctor_covers_full_stack_without_writing() -> None:
 
 
 def test_environment_handoff_probe_marks_old_evidence_stale(tmp_path: Path) -> None:
-    environment = tmp_path / ".engineering-bootstrap/environment/current.json"
-    handoff = tmp_path / ".engineering-bootstrap/coordination/handoff.json"
+    environment = tmp_path / ".agentic_engineering_os_px/environment/current.json"
+    handoff = tmp_path / ".agentic_engineering_os_px/coordination/handoff.json"
     environment.parent.mkdir(parents=True)
     handoff.parent.mkdir(parents=True)
     environment.write_text(json.dumps({
@@ -193,9 +193,9 @@ def test_environment_handoff_probe_marks_old_evidence_stale(tmp_path: Path) -> N
 def test_environment_handoff_age_is_not_stale_when_state_hash_is_current(
     tmp_path: Path,
 ) -> None:
-    environment = tmp_path / ".engineering-bootstrap/environment/current.json"
-    handoff = tmp_path / ".engineering-bootstrap/coordination/handoff.json"
-    state = tmp_path / ".engineering-bootstrap/coordination/state.json"
+    environment = tmp_path / ".agentic_engineering_os_px/environment/current.json"
+    handoff = tmp_path / ".agentic_engineering_os_px/coordination/handoff.json"
+    state = tmp_path / ".agentic_engineering_os_px/coordination/state.json"
     environment.parent.mkdir(parents=True)
     handoff.parent.mkdir(parents=True)
     environment.write_text(json.dumps({

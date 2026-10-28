@@ -1,6 +1,6 @@
 # Execution Plan, Punch Cards, and Acceptance
 
-This is the compact operational plan for maintaining and releasing PACIFY-X. `PROJECT_MANAGEMENT.md` and `.engineering-bootstrap/project-management/state.json` own the live card and lifecycle state; this document defines the reusable process and must not be pinned to a historical card.
+This is the compact operational plan for maintaining and releasing PACIFY-X. `PROJECT_MANAGEMENT.md` and `.agentic_engineering_os_px/project-management/state.json` own the live card and lifecycle state; this document defines the reusable process and must not be pinned to a historical card.
 
 ## Execution waves
 

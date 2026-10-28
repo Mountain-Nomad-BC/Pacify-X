@@ -365,21 +365,7 @@ def record_tool_intake(
 ) -> dict[str, Any]:
     record = scan_project_tooling(project, framework_root, **scan_options)
     project_root = project.resolve()
-    # Bind the same lifecycle state commissioned by this integration's native
-    # commissioning owner. A newer source tree's namespace cannot create a
-    # second state authority beside that existing project.
-    #
-    # Migration note (R01 namespace review): this spelling stays legacy on
-    # purpose. The commissioning owner still writes the ".engineering-bootstrap"
-    # tree, and 61 of the 1435 test-evidence JSON receipts embed that literal
-    # path (measured 2026-10-27 over .engineering-bootstrap/test-evidence).
-    # Switching only this consumer to `control_path()` would look like a
-    # migration while actually splitting the state, because commissioning would
-    # keep writing the legacy tree and this owner would read the empty canonical
-    # one. That was reproduced: lifecycle routing then lost the state entirely.
-    # Migrating the control directory is one atomic change across the
-    # commissioning owner and its receipts, not a per-consumer edit.
-    target_root = project_root / ".engineering-bootstrap" / "project-management"
+    target_root = project_root / ".agentic_engineering_os_px" / "project-management"
     target = target_root / "tool-intake.json"
     if not apply:
         return {

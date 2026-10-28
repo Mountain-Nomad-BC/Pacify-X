@@ -49,7 +49,7 @@ def git_paths(root: Path) -> list[str]:
 
 
 VOLATILE_SNAPSHOT_PATHS = {
-    ".engineering-bootstrap/test-evidence/.test-orchestration.lock",
+    ".agentic_engineering_os_px/test-evidence/.test-orchestration.lock",
 }
 
 

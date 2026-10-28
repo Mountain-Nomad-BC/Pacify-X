@@ -368,7 +368,7 @@ test('external skill create fails before materialization when preserved-original
 test('source selection accepts the canonical version-qualified Studio record ID and rejects path syntax', () => {
   let sequence = 0; const trust = createStudioTrustRegistry({ randomUUID: () => `record-${++sequence}` });
   const owner = { originId: 'panel:record', requestId: 'package:record' };
-  const token = trust.registerSourceSelection(sourceSelection({ record_id: 'studio:skill:demo@1.0.0', source_scope: 'studio-physical', source_origin: 'project-studio', package_scope: 'project-studio', package_path: '.engineering-bootstrap/studios/skills/demo/revisions/1.0.0/payload', source_content_sha256: 'c'.repeat(64), tree_sha256: 'b'.repeat(64) }), owner);
+  const token = trust.registerSourceSelection(sourceSelection({ record_id: 'studio:skill:demo@1.0.0', source_scope: 'studio-physical', source_origin: 'project-studio', package_scope: 'project-studio', package_path: '.agentic_engineering_os_px/studios/skills/demo/revisions/1.0.0/payload', source_content_sha256: 'c'.repeat(64), tree_sha256: 'b'.repeat(64) }), owner);
   assert.match(token, /^source-selection:/);
   assert.throws(() => trust.registerSourceSelection(sourceSelection({ record_id: 'studio/skill/demo@1.0.0' }), { ...owner, requestId: 'package:bad-record' }), /source-selection-invalid/);
 });

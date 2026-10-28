@@ -163,7 +163,7 @@ def _prepare_certification_hygiene(root: Path, *, apply: bool) -> dict[str, obje
         apply=apply,
         quarantine_root=(
             root
-            / ".engineering-bootstrap"
+            / ".agentic_engineering_os_px"
             / "quarantine"
             / "disposable-cache"
             / "certification-preflight"
@@ -219,7 +219,7 @@ def _refresh_stale_groups_for_full_profile(
         registered_budget + custody_allowance,
     )
     resource_manager = ResourceManager(
-        root / ".engineering-bootstrap/resource-lifecycle/ledger.json"
+        root / ".agentic_engineering_os_px/resource-lifecycle/ledger.json"
     )
     baseline_records = resource_manager.ledger.load()
     baseline_unresolved_ids = (
@@ -425,15 +425,93 @@ def _require_claimed_full_profile_campaign(root: Path) -> dict[str, object]:
     return release
 
 
+def _gremlin_command(args: argparse.Namespace, *, backend=None) -> dict[str, object]:
+    """Explicit Gremlin host commissioning through the canonical owners.
+
+    ``commission`` creates the local machine-bound identity (Windows Credential
+    Manager by default), composes the secret-free audit sink, and writes the
+    signed host configuration consumed by ``load_configured_gremlin_runtime``.
+    Authority identities are owner-supplied, never generated or defaulted. A
+    real independent recovery verifier remains a separate external adapter;
+    this command never fabricates one.
+    """
+    if args.gremlin_action != "commission":
+        raise ValueError("unsupported Gremlin command")
+    if args.nanny_authority_id.strip() == args.recovery_authority_id.strip():
+        raise ValueError("recovery authority must be independent from the Nanny")
+    from .archive_io import reject_path_links
+    from .studio_authority import StudioAuthorityStore
+    from .gremlin.commissioning import create_local_runtime_identity
+    from .gremlin.host_configuration import CONFIGURATION_RELATIVE
+
+    root = args.project.resolve(strict=True)
+    reject_path_links(root)
+    if root == Path(root.anchor):
+        raise ValueError("Gremlin commissioning requires a bounded project root")
+    config_path = root / CONFIGURATION_RELATIVE
+    if config_path.exists():
+        raise FileExistsError(
+            "commissioned Gremlin host configuration already exists; use explicit rotation"
+        )
+    store, identity = create_local_runtime_identity(
+        root, args.nanny_authority_id.strip(), backend=backend)
+    try:
+        record = {
+            "schema_version": "px.gremlin-host-configuration/1.0",
+            "project_root": root.as_posix(),
+            "backend_id": identity.backend_id,
+            "nanny_authority_id": args.nanny_authority_id.strip(),
+            "recovery_authority_id": args.recovery_authority_id.strip(),
+            "identity_id": identity.identity_id,
+            "identity_generation": identity.generation,
+            "signing_key_sha256": identity.signing_key_sha256,
+        }
+        signed = StudioAuthorityStore(root).sign_receipt(record)
+        config_path.parent.mkdir(parents=True, exist_ok=True)
+        from .studio_models import write_json_atomic
+        write_json_atomic(config_path, signed)
+    except BaseException:
+        store.revoke(identity)
+        raise
+    return {
+        "schema_version": "px.gremlin-commissioning-result/1.0",
+        "project_root": root.as_posix(),
+        "backend_id": identity.backend_id,
+        "nanny_authority_id": identity.authority_id,
+        "recovery_authority_id": args.recovery_authority_id.strip(),
+        "identity_id": identity.identity_id,
+        "identity_generation": identity.generation,
+        "configuration_path": config_path.relative_to(root).as_posix(),
+        "recovery_verifier": "external-host-adapter-required",
+    }
+
+
 def parser() -> argparse.ArgumentParser:
     result = argparse.ArgumentParser(
-        prog="engineering-bootstrap",
+        prog="agentic-engineering-os-px",
         description="PACIFY-X package and command-line control plane",
     )
     result.add_argument("--root", type=Path, default=None)
     result.add_argument("--version", action="version", version=f"%(prog)s {VERSION}")
     commands = result.add_subparsers(dest="command", required=True)
     commands.add_parser("validate")
+    commands.add_parser("plan-readiness", help="Inspect dependency readiness without trusting status assertions")
+    commands.add_parser("plan-waves", help="Inspect the admitted canonical W0 through W11 wave map")
+    commands.add_parser("plan-start", help="Start a fresh planned campaign under explicit owner authority")
+    foundation = commands.add_parser("plan-foundation", help="Verify current non-Git W0 criteria without build/install or historical artifacts")
+    foundation.add_argument("--reference-root", type=Path, required=True)
+    foundation.add_argument("--register-readiness", action="store_true")
+    foundation.add_argument("--git-deferral-authority")
+    corpus = commands.add_parser("plan-corpus", help="Inventory current reference inputs without inherited historical expectations")
+    corpus.add_argument("--reference-root", type=Path, required=True)
+    corpus.add_argument("--admit", action="store_true")
+    requirements = commands.add_parser("plan-requirements", help="Report or admit current source-to-card requirement assignments")
+    requirements.add_argument("--admit", action="store_true")
+    requirements.add_argument("--trace", type=Path)
+    requirements.add_argument("--candidate-matrix", type=Path)
+    requirements.add_argument("--routing", type=Path)
+    requirements.add_argument("--trace-sha256")
+    requirements.add_argument("--matrix-sha256")
     processing_order = commands.add_parser("processing-order")
     processing_order.add_argument(
         "action",
@@ -453,6 +531,8 @@ def parser() -> argparse.ArgumentParser:
             "resolve-findings",
             "close-intake",
             "freeze-repair",
+            "succession-status",
+            "succession-recover",
         ),
     )
     processing_order.add_argument("--project", type=Path)
@@ -462,6 +542,11 @@ def parser() -> argparse.ArgumentParser:
     processing_order.add_argument("--authority")
     processing_order.add_argument("--evidence")
     processing_order.add_argument("--campaign-id")
+    processing_order.add_argument("--source-freeze-reference", help="JSON exact final {path,sha256} source-freeze reference for current identity apply")
+    processing_order.add_argument("--owner-policy", type=Path)
+    processing_order.add_argument("--owner-authorization", type=Path)
+    processing_order.add_argument("--authorization-signature", type=Path)
+    processing_order.add_argument("--source-digest")
     processing_order.add_argument(
         "--release-stage",
         choices=(
@@ -498,7 +583,7 @@ def parser() -> argparse.ArgumentParser:
     doctor.add_argument(
         "--write-receipt",
         nargs="?",
-        const=Path(".engineering-bootstrap/diagnostics"),
+        const=Path(".agentic_engineering_os_px/diagnostics"),
         type=Path,
         metavar="DIR",
         help="retain the diagnostic receipt below the project root (optional DIR)",
@@ -533,6 +618,22 @@ def parser() -> argparse.ArgumentParser:
         "--ledger", type=Path, default=Path(".pacify-x/resource-ledger.json")
     )
     resource_reconcile.add_argument("--apply", action="store_true")
+    gremlin = commands.add_parser("gremlin")
+    gremlin_commands = gremlin.add_subparsers(dest="gremlin_action", required=True)
+    gremlin_commission = gremlin_commands.add_parser(
+        "commission",
+        help="Explicitly commission a local machine-bound Gremlin runtime identity "
+        "and write the signed host configuration for the model-group host caller",
+    )
+    gremlin_commission.add_argument("--project", type=Path, required=True)
+    gremlin_commission.add_argument(
+        "--nanny-authority-id", required=True,
+        help="Explicit owner-supplied Nanny authority identity (never generated here)",
+    )
+    gremlin_commission.add_argument(
+        "--recovery-authority-id", required=True,
+        help="Explicit owner-supplied independent recovery authority identity",
+    )
     recovery = commands.add_parser("recovery")
     recovery_commands = recovery.add_subparsers(dest="recovery_action", required=True)
     recovery_doctor = recovery_commands.add_parser("doctor")
@@ -1330,7 +1431,41 @@ def main(argv: list[str] | None = None) -> int:
         orchestration_lock, previous_orchestration_owner = (
             _claim_test_orchestration_single_flight(root, args)
         )
-        if args.command == "processing-order":
+        if args.command == "plan-readiness":
+            from .plan_registry import readiness_report
+
+            output = readiness_report(root)
+        elif args.command == "plan-waves":
+            from .plan_registry import wave_report
+
+            output = wave_report(root)
+        elif args.command == "plan-start":
+            from .plan_registry import begin_plan_campaign
+
+            output = begin_plan_campaign(root)
+        elif args.command == "plan-foundation":
+            from .plan_registry import foundation_report, register_foundation_readiness
+
+            output = (register_foundation_readiness(root, reference_root=args.reference_root,
+                git_deferral_authority=args.git_deferral_authority)
+                if args.register_readiness else foundation_report(root, reference_root=args.reference_root))
+        elif args.command == "plan-corpus":
+            from .plan_registry import admit_current_corpus, inventory_current_corpus
+
+            output = (admit_current_corpus(args.reference_root, root) if args.admit
+                      else inventory_current_corpus(args.reference_root))
+        elif args.command == "plan-requirements":
+            from .plan_registry import admit_current_requirement_trace, requirement_report
+
+            if args.admit:
+                if not all([args.trace, args.candidate_matrix, args.routing, args.trace_sha256, args.matrix_sha256]):
+                    raise ValueError("requirement admission needs exact trace, candidate matrix, routing and source hashes")
+                output = admit_current_requirement_trace(root, trace_path=args.trace,
+                    candidate_path=args.candidate_matrix, routing_path=args.routing,
+                    trace_sha256=args.trace_sha256, candidate_sha256=args.matrix_sha256)
+            else:
+                output = requirement_report(root)
+        elif args.command == "processing-order":
             from .release_campaign import (
                 apply_release_identity,
                 claim_release_stage,
@@ -1352,7 +1487,16 @@ def main(argv: list[str] | None = None) -> int:
             )
 
             processing_root = args.project or root
-            if args.action == "initialize":
+            if args.action in {"succession-status", "succession-recover"}:
+                from .project_revision_succession import SuccessionLedger
+                ledger = SuccessionLedger(processing_root)
+                if args.action == "succession-status":
+                    output = ledger.status()
+                else:
+                    if not args.admission_event_id:
+                        raise ValueError("succession-recover requires --admission-event-id")
+                    output = ledger.recover(admission_event_id=args.admission_event_id)
+            elif args.action == "initialize":
                 if args.project is None:
                     raise ValueError("processing-order initialize requires --project")
                 output = initialize_project_repair_campaign(processing_root)
@@ -1440,7 +1584,7 @@ def main(argv: list[str] | None = None) -> int:
                     processing_root, campaign_id=args.campaign_id
                 )
             elif args.action == "apply-release-identity":
-                output = apply_release_identity(processing_root)
+                output = apply_release_identity(processing_root, source_freeze_reference=json.loads(args.source_freeze_reference) if args.source_freeze_reference else None)
             elif args.action == "claim-release-stage":
                 if not args.release_stage:
                     raise ValueError("claim-release-stage requires --release-stage")
@@ -1463,12 +1607,9 @@ def main(argv: list[str] | None = None) -> int:
             from .test_profiles import require_processing_stage
             from .registry import validate_registry
 
-            release_state = (
-                root
-                / ".engineering-bootstrap"
-                / "processing-order"
-                / "release-identity.json"
-            )
+            from .release_campaign import release_state_relative
+
+            release_state = root / release_state_relative(root)
             # Source certification owns an ordered, one-shot validate stage.
             # An installed wheel has no source campaign pointer and its public
             # ``validate`` command must remain a read-only registry check.
@@ -1651,6 +1792,8 @@ def main(argv: list[str] | None = None) -> int:
                 output = resource_status(ledger, storage_path=storage_path)
             else:
                 output = ResourceManager(ledger).reconcile(apply=args.apply)
+        elif args.command == "gremlin":
+            output = _gremlin_command(args)
         elif args.command == "recovery":
             from .recovery import RecoveryConfiguration, RecoveryCoordinator
             from .resource_lifecycle import ResourceManager
@@ -2261,7 +2404,7 @@ def main(argv: list[str] | None = None) -> int:
                 run_id = f"test-profile-{args.name}-{uuid4().hex}"
                 resource_manager = ResourceManager(
                     root
-                    / ".engineering-bootstrap"
+                    / ".agentic_engineering_os_px"
                     / "resource-lifecycle"
                     / "ledger.json"
                 )
@@ -2343,13 +2486,13 @@ def main(argv: list[str] | None = None) -> int:
                     )
 
                 manager = ResourceManager(
-                    root / ".engineering-bootstrap/resource-lifecycle/ledger.json"
+                    root / ".agentic_engineering_os_px/resource-lifecycle/ledger.json"
                 )
 
                 def execute_group(group):
                     if group.get("index_current") is not True:
                         raise ValueError(
-                            f"test group index is stale for {group['group']}; run python scripts/build_test_group_index.py"
+                            f"test group index is stale for {group['group']}; run python scripts/build_test_group_index.py --admission-event-id <current-admission-event-id>"
                         )
                     environment = dict(os.environ)
                     environment.update(group["environment"])

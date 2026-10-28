@@ -1,0 +1,32 @@
+[
+  {
+    "path": "runtime/agent_runtime.py",
+    "hunks": 11,
+    "reason": "Keep complete local/remote custody, signed receipt reader, live generation recheck, convergence PASS prerequisite and explicit cleanup failures. Do not append unsigned advisory annotations to signed execution receipts."
+  },
+  {
+    "path": "runtime/studio_models.py",
+    "hunks": 1,
+    "reason": "Retain closed typed approved/fail-closed prepared-group declarations rather than permitting arbitrary task configs."
+  },
+  {
+    "path": "runtime/remote_provider_profiles.py",
+    "hunks": 2,
+    "reason": "Retain pinned bounded physical configuration reads."
+  },
+  {
+    "path": "runtime/remote_service_protocols.py",
+    "hunks": 2,
+    "reason": "Retain pinned bounded physical protocol registry reads."
+  },
+  {
+    "path": "runtime/gremlin/host_configuration.py",
+    "hunks": 1,
+    "reason": "Retain actual commissioned host namespace until verified migration."
+  },
+  {
+    "path": "runtime/model_branch_artifacts.py",
+    "hunks": 9,
+    "reason": "Retain pre-creation ownership registration, uncertainty reconciliation and current installed schema owner."
+  }
+]

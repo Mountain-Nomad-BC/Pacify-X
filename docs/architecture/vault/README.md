@@ -1,17 +1,17 @@
 # Pacify-X architecture vault
 
-1077 canonical systems documented in JSON. Historical IDs preserved. Start at [[Views/Full_Architecture]] or the layer maps.
+60 current architecture requirements with static source anchors. Implementation status remains unverified. Start at [[Views/Full_Architecture]] or the layer maps.
 
-**Not a certification.** Imported historical findings are not automatically reopened or closed. Source currentness is checked separately.
+**Not a certification.** No historical baseline is required. File bytes and static imports are measured separately from behavior.
 
 - [[Layers/host]]
-- [[Layers/scope]]
-- [[Layers/discovery]]
-- [[Layers/governance]]
-- [[Layers/execution]]
-- [[Layers/memory]]
 - [[Layers/acquisition]]
+- [[Layers/discovery]]
+- [[Layers/scope]]
+- [[Layers/execution]]
 - [[Layers/reasoning]]
-- [[Layers/evidence]]
+- [[Layers/memory]]
 - [[Layers/durability]]
+- [[Layers/evidence]]
 - [[Layers/release]]
+- [[Layers/governance]]

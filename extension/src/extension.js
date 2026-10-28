@@ -8,12 +8,14 @@ const { performance } = require('node:perf_hooks');
 const { findEngineRoot, runValidation, resolveAdmittedPath, revalidateAdmittedPath } = require('./runtimeBridge');
 const { PxBridge, disconnected, exactStudioVersionConflictError } = require('./pxBridge');
 const { createSecretStorageApprovalKeyProvider } = require('./studioApprovalHost');
+const { registerDataControlCommand } = require('./dataControlHost');
 const { createLaunchAuthority } = require('./mcpMutationAuthority');
 const { SidebarViewProvider } = require('./sidebarView');
 const { registerAgentConsole } = require('./agentHarness/registerAgentConsole');
 const { MESSAGE_SCHEMA_VERSION, SIDEBAR_ASSET_PROTOCOL } = require('./sidebarMessages');
 const { buildContextEnvelope, providerStatus, gitConflictDecision } = require('./contextBridge');
 const { codexHostHandoffDecision } = require('./operationAuthority');
+const { executeAdmittedHostModel } = require('./hostModelExecution');
 const { OllamaChatProvider } = require('./ollamaProvider');
 const { PxLanguageModelProvider } = require('./pxLanguageModelProvider');
 const { McpModelFabricBridge } = require('./mcpModelFabricBridge');
@@ -142,113 +144,6 @@ function enforceAdmittedHostToolPolicy(binding, input) {
   return { effects, scope_roots: scopeRoots, validated_targets: targets.map(target => target.pointer), sanitized_input: sanitizedInput };
 }
 
-async function executeAdmittedHostModel(prepared, token) {
-  if (!vscode.lm?.selectChatModels) throw new Error('VS Code Language Model API is unavailable in this host.');
-  const route = prepared?.record?.model || prepared?.model || {};
-  const selector = {};
-  if (route.vendor && route.vendor !== 'auto') selector.vendor = String(route.vendor);
-  if (route.family && route.family !== 'auto') selector.family = String(route.family);
-  if (route.model_id && route.model_id !== 'auto') selector.id = String(route.model_id);
-  if (route.version && route.version !== 'auto') selector.version = String(route.version);
-  if (!selector.id) throw new Error('An exact admitted VS Code model ID is required; automatic model substitution is refused.');
-  if (route.provider === 'pacify-local' && selector.vendor !== 'pacify-local') throw new Error('Pacify local routes must bind vendor pacify-local exactly.');
-  const models = await vscode.lm.selectChatModels(selector);
-  if (!models.length) throw new Error(`No VS Code language model matches ${JSON.stringify(selector)}.`);
-  const model = models[0];
-  for (const [field, actual] of [['id', model.id], ['vendor', model.vendor], ['family', model.family], ['version', model.version]]) {
-    if (selector[field] && String(selector[field]) !== String(actual)) throw new Error(`VS Code returned ${field} ${actual} for the exact admitted ${field} ${selector[field]}; model substitution is refused.`);
-  }
-  const instructions = String(prepared?.record?.instructions || prepared?.instructions || '').trim();
-  const task = prepared?.record?.task || prepared?.task || {};
-  const outputSchema = prepared?.record?.output_schema || prepared?.output_schema || { type: 'object', additionalProperties: true };
-  const prompt = [
-    instructions,
-    'Execute only the bounded task below. Do not expand authority, scope, tools, or effects.',
-    `Task JSON:\n${JSON.stringify(task, null, 2)}`,
-    `Return one JSON object matching this output schema:\n${JSON.stringify(outputSchema, null, 2)}`
-  ].filter(Boolean).join('\n\n');
-  const messages = [vscode.LanguageModelChatMessage.User(prompt)];
-  const inputTokens = await model.countTokens(prompt, token);
-  if (Number.isFinite(model.maxInputTokens) && inputTokens > model.maxInputTokens) throw new Error(`Agent prompt requires ${inputTokens} tokens but the selected model accepts ${model.maxInputTokens}.`);
-  const requestedModelOptions = { maxOutputTokens: Number(route.max_output_tokens || 4096), temperature: Number(route.temperature || 0) };
-  const requestOptions = { justification: `Run admitted Pacify-X agent ${prepared?.record?.agent_id || prepared?.agent_id || ''}`, modelOptions: requestedModelOptions };
-  const admittedHostTools = Array.isArray(prepared?.record?.host_tools || prepared?.host_tools) ? (prepared?.record?.host_tools || prepared?.host_tools) : [];
-  const registeredTools = new Map((vscode.lm?.tools || []).map(tool => [tool.name, tool]));
-  const missingTools = admittedHostTools.filter(binding => !registeredTools.has(binding.name)).map(binding => binding.name);
-  if (missingTools.length) throw new Error(`Admitted agent tools are unavailable in this host: ${missingTools.join(', ')}.`);
-  const liveToolInterfaces = new Map(admittedHostTools.map(binding => [binding.name, attestHostToolInterface(registeredTools.get(binding.name), binding.name)]));
-  if (admittedHostTools.length) {
-    if (route.provider === 'pacify-local') throw new Error('The selected local model route does not support tool calling.');
-    requestOptions.tools = admittedHostTools.map(binding => {
-      const tool = registeredTools.get(binding.name);
-      return { name: tool.name, description: tool.description, inputSchema: tool.inputSchema };
-    });
-    requestOptions.toolMode = vscode.LanguageModelChatToolMode.Auto;
-  }
-  let text = ''; let streamedText = ''; const toolsDispatched = []; let toolCalls = 0; let outputTokens = 0; let aggregateInputTokens = 0;
-  const outputTokenLimit = Math.max(1, Math.min(32768, Number(route.max_output_tokens || 4096)));
-  const aggregateInputTokenLimit = Math.max(inputTokens, Math.min(1_000_000, Number(route.max_total_input_tokens || model.maxInputTokens || Math.max(8192, inputTokens * 4))));
-  const deadlineMs = Math.max(10_000, Math.min(300_000, Number(route.timeout_seconds || 120) * 1000));
-  const started = performance.now();
-  const requestCancellation = new vscode.CancellationTokenSource();
-  const linkedCancellation = token?.onCancellationRequested(() => requestCancellation.cancel());
-  const deadline = setTimeout(() => requestCancellation.cancel(), deadlineMs);
-  try { while (true) {
-    if (performance.now() - started >= deadlineMs) throw new Error(`Agent model request exceeded the admitted ${deadlineMs} ms wall-time budget.`);
-    const roundInputTokens = (await Promise.all(messages.map(message => model.countTokens(message, requestCancellation.token)))).reduce((sum, count) => sum + count, 0);
-    aggregateInputTokens += roundInputTokens;
-    if (aggregateInputTokens > aggregateInputTokenLimit) throw new Error(`Agent conversation exceeded the admitted ${aggregateInputTokenLimit}-token aggregate input budget.`);
-    if (Number.isFinite(model.maxInputTokens) && roundInputTokens > model.maxInputTokens) throw new Error(`Agent conversation requires ${roundInputTokens} tokens but the selected model accepts ${model.maxInputTokens}.`);
-    const response = await model.sendRequest(messages, requestOptions, requestCancellation.token);
-    const responseParts = []; const calls = []; let responseText = '';
-    for await (const part of response.stream) {
-      if (part instanceof vscode.LanguageModelTextPart) {
-        responseText += part.value; streamedText += part.value; responseParts.push(part);
-      } else if (part instanceof vscode.LanguageModelToolCallPart) {
-        calls.push(part); responseParts.push(part);
-      }
-    }
-    outputTokens += await model.countTokens(responseText, requestCancellation.token);
-    if (outputTokens > outputTokenLimit) throw new Error(`Agent model output exceeded the admitted ${outputTokenLimit}-token budget.`);
-    if (!calls.length) { text += responseText; break; }
-    if (toolCalls + calls.length > 8) throw new Error('Agent exceeded the admitted eight-call tool budget.');
-    messages.push(vscode.LanguageModelChatMessage.Assistant(responseParts));
-    const resultParts = [];
-    for (const call of calls) {
-      const admitted = admittedHostTools.find(binding => binding.name === call.name);
-      if (!admitted) throw new Error(`Model requested an unbound tool: ${call.name}.`);
-      const policy = enforceAdmittedHostToolPolicy(admitted, call.input);
-      const toolReceipt = { call_id: call.callId, name: call.name, binding_id: admitted.binding_id, binding_sha256: admitted.binding_sha256, host_tool_interface_sha256: liveToolInterfaces.get(call.name), input_sha256: crypto.createHash('sha256').update(JSON.stringify(policy.sanitized_input || {})).digest('hex'), result_sha256: null, effect_grant_ids: admitted.effect_grant_ids || [], effects: policy.effects, scope_roots: policy.scope_roots, validated_targets: policy.validated_targets, status: 'started' };
-      toolsDispatched.push(toolReceipt);
-      let result;
-      try {
-        result = await vscode.lm.invokeTool(call.name, {
-          input: policy.sanitized_input,
-          toolInvocationToken: undefined,
-          tokenizationOptions: { tokenBudget: Math.max(1, Math.min(4096, outputTokenLimit - outputTokens)), countTokens: (value, countToken) => model.countTokens(value, countToken) }
-        }, requestCancellation.token);
-      } catch (error) {
-        toolReceipt.status = 'failed'; toolReceipt.error_code = error?.name || 'ToolInvocationError'; throw error;
-      }
-      resultParts.push(new vscode.LanguageModelToolResultPart(call.callId, result.content));
-      const resultJson = JSON.stringify(result.content || []);
-      toolReceipt.result_sha256 = crypto.createHash('sha256').update(resultJson).digest('hex'); toolReceipt.status = 'completed';
-      toolCalls += 1;
-    }
-    messages.push(vscode.LanguageModelChatMessage.User(resultParts));
-  }} catch (error) { error.pxToolsDispatched = toolsDispatched; throw error; } finally { clearTimeout(deadline); linkedCancellation?.dispose(); requestCancellation.dispose(); }
-  if (!text.trim()) throw new Error('The selected language model returned an empty response.');
-  let output;
-  try { output = JSON.parse(text); }
-  catch { output = { text }; }
-  if (!output || Array.isArray(output) || typeof output !== 'object') output = { value: output };
-  return {
-    status: 'completed',
-    output,
-    model: { id: model.id, family: model.family, vendor: model.vendor, version: model.version, initial_input_tokens: inputTokens, aggregate_input_tokens: aggregateInputTokens, aggregate_input_token_limit: aggregateInputTokenLimit, output_tokens: outputTokens, output_token_limit: outputTokenLimit, streamed_characters: streamedText.length, requested_model_options: requestedModelOptions, wall_time_ms: Math.round(performance.now() - started) },
-    tools_dispatched: toolsDispatched
-  };
-}
 
 function extensionAssetIdentity(extensionRoot) {
   const files = [];
@@ -305,6 +200,8 @@ function settings() {
     refreshIntervalSeconds: Number(config.get('refreshIntervalSeconds') || 300),
     contextInjectionCapTokens: Number(config.get('contextInjectionCapTokens') || 12000),
     codexSandbox: String(config.get('codexSandbox') || 'read-only'),
+    isolatedAgentSandbox: require('./isolatedAgentSandbox').readSandboxMode(),
+    isolatedAgentSandboxEndpoints: require('./isolatedAgentSandbox').readAllowedEndpoints(),
     ollamaEnabled: Boolean(config.get('ollama.enabled')),
     ollamaBaseUrl: String(config.get('ollama.baseUrl') || 'http://127.0.0.1:11434'),
     pythonPath: String(config.get('pythonPath') || 'python'),
@@ -363,6 +260,7 @@ function rememberDashboardViewState(value) {
 const OWNED_OPERATIONAL_CONFIGURATION_FAULTS = new Set([
   'setActivityPaused',
   'toggleBillablePolicy',
+  'sandboxControl',
   'configureCanonicalMemory',
   'disconnectCanonicalMemory',
   'validate'
@@ -619,6 +517,7 @@ function activateImplementation(context, transaction) {
     engineRoot: () => engineRoot(),
     projectRoot: () => workspaceRoot() || engineRoot()
   });
+  const publishSandboxPolicy = request => modelFabricClient.setSandboxMode(request);
   const { buildPxProviderGatewayInvoker } = require('./agentHarness/pxProviderInvoker');
   const agentConsole = registerAgentConsole(vscode, context, {
     settingsProvider: settings,
@@ -626,13 +525,59 @@ function activateImplementation(context, transaction) {
     activityObserver: observeActivity,
     openControlPlane: () => openDashboard('/control-plane'),
     onDiagnostic: detail => codexOutput.appendLine(`[agent-console] ${detail}`),
+    // Isolated Agent Sandbox: publish the shared policy selection to the PX runtime.
+    // Publication failure is visible; publication itself is not an enforcement proof.
+    onSandboxModeChanged: async request => {
+      try { await publishSandboxPolicy(request); }
+      catch (error) { codexOutput.appendLine(`[sandbox] runtime publish failed: ${String(error?.message || error).slice(0, 300)}`); throw error; }
+    },
+    // The console's selectable model surface is owned by PX's canonical model fabric.
+    // `list` returns exactly the profiles that are certified, bound to the running governed
+    // router session, and loaded, so the console never has to restate that admission list
+    // locally. gatewayWorkers remains only as a bring-up fallback for hosts with no fabric.
+    modelFabricLister: () => modelFabricClient.listModels(),
+    inspectPreparedGroup: reference => modelFabricClient.inspectPreparedGroup(reference),
+    // Canonical prepared-group execution transport. The console supplies only
+    // the immutable plan reference; this host resolves the single admitted
+    // workflow owner through the read-only Studio operation, consumes a
+    // host-signed single-use approval capability, and dispatches the canonical
+    // Python governed-group path. A missing host boundary or missing commissioned
+    // Gremlin runtime surfaces as a rejected execution, never a downgrade.
+    executePreparedGroup: async reference => {
+      const runtime = bridge();
+      const owner = await runtime.studioOperation('workflow', 'resolve-plan-owner', {
+        prepared_group_reference: reference
+      });
+      if (owner?.schema_version !== 'px.prepared-group-owner/1.0' || owner.execution_authorized !== false ||
+          owner.plan_id !== reference.plan_id || owner.plan_sha256 !== reference.plan_sha256) {
+        throw new Error('prepared-group-owner-contract-mismatch');
+      }
+      const approval = await runtime.issueStudioApproval('workflow', 'execute-plan-owner', {
+        prepared_group_reference: reference
+      });
+      return runtime.studioOperation('workflow', 'execute-plan-owner', {
+        prepared_group_reference: reference,
+        approval_capability: approval.approval_capability
+      });
+    },
+    retrievalProvider: async ({ task, librarian, budgetTokens, signal }) => {
+      const query = (librarian.retrievalQueries || []).find(value => typeof value === 'string' && value.trim()) || task.goal;
+      const result = await modelFabricClient.retrieveContext({ query: String(query).slice(0, 1000),
+        max_bytes: Math.max(4096, Math.min(262144, Math.floor(budgetTokens * 4))) }, signal);
+      if (result?.schema_version !== 'px.chat-context-retrieval/1.0' || result.authority_granted !== false || !Array.isArray(result.refs)) throw new Error('chat-retrieval-contract-invalid');
+      const refs = result.refs;
+      if (result.unavailable_sources?.length) refs.push({ refId: 'retrieval-unavailable', kind: 'retrieval-status',
+        label: 'Unavailable retrieval sources', source: 'runtime.chat_context', authority: 'status-only',
+        content: JSON.stringify({ unavailable: result.unavailable_sources, receiptSha256: result.receipt_sha256, authorityGranted: false }) });
+      return refs;
+    },
     gatewayWorkers: PX_AGENT_GATEWAY_WORKERS.map(worker => ({ ...worker })),
     gatewayWorkerCatalog: () => modelFabricClient.listModels(),
     providerGatewayInvoker: buildPxProviderGatewayInvoker({
       bridge: modelFabricClient,
       profileIdForWorker: worker => worker?.profileId || worker?.modelId || null
     }),
-    providerGatewayHealth: worker => ({ status: worker?.enabled ? 'unknown' : 'unhealthy', detail: 'PX provider gateway readiness is resolved at first invocation' })
+    providerGatewayHealth: worker => ({ status: worker?.enabled ? 'unknown' : 'unhealthy', detail: worker?.bridge?.available === false ? (worker.bridge.unavailableReason || 'PX reports this model as unavailable.') : 'PX provider gateway readiness is resolved at first invocation' })
   });
   transaction.own(agentConsole);
 
@@ -738,7 +683,7 @@ function activateImplementation(context, transaction) {
   function excludedActivityPath(uri) {
     const relative = relativeScope(uri); if (!relative) return true;
     return /(^|\/)(\.git|node_modules|__pycache__|\.pytest_cache|\.mypy_cache|\.ruff_cache|\.playwright-profile[^/]*|\.edge-profile[^/]*|\.chrome-profile[^/]*)(\/|$)/i.test(relative)
-      || /^\.engineering-bootstrap\/(coordination\/activity|operation-bus)(\/|$)/i.test(relative);
+      || /^\.agentic_engineering_os_px\/(coordination\/activity|operation-bus)(\/|$)/i.test(relative);
   }
 
   function unknownObserver(source) {
@@ -780,7 +725,7 @@ function activateImplementation(context, transaction) {
     if (!root) throw new Error('Open a workspace before refreshing the environment capability map.');
     let persist = persistence === 'approved';
     if (persistence === 'prompt') {
-      const approval = await vscode.window.showWarningMessage('Refresh and retain the project environment map? Pacify-X writes a bounded, secret-safe, hash-bound inventory below .engineering-bootstrap/environment; it does not activate extensions or execute discovered tools.', { modal: true }, 'Refresh and retain');
+      const approval = await vscode.window.showWarningMessage('Refresh and retain the project environment map? Pacify-X writes a bounded, secret-safe, hash-bound inventory below .agentic_engineering_os_px/environment; it does not activate extensions or execute discovered tools.', { modal: true }, 'Refresh and retain');
       if (approval !== 'Refresh and retain') return { cancelled: true, reason: 'environment-persistence-not-approved' };
       persist = true;
     }
@@ -1650,7 +1595,10 @@ function activateImplementation(context, transaction) {
                   try {
                     hostResult = await vscode.window.withProgress({ location: vscode.ProgressLocation.Notification, title: `Running ${message.payload.agent_id} with the selected VS Code model`, cancellable: true }, (_progress, token) => {
                       token.onCancellationRequested(() => { hostCancelled = true; hostCancellation.cancel(); });
-                      return executeAdmittedHostModel(prepared, hostCancellation.token);
+                      return executeAdmittedHostModel({vscode,prepared,token:hostCancellation.token,attestHostToolInterface,enforceAdmittedHostToolPolicy,assertCurrent:async()=>{
+                        const current=await bridge().studioOperation('agent','check-host-run',{...preparePayload,run_id:runId});
+                        if(current?.schema_version !== 'px.agent-host-run-current/1.0' || current.run_id !== runId || current.control_sequence !== preparedRecord.control_sequence || current.agent_revision_sha256 !== preparedRecord.agent_revision_sha256 || current.state !== 'running')throw new Error('Native host run currentness mismatch.');
+                      }});
                     });
                   } catch (error) {
                     hostResult = { status: hostCancelled ? 'cancelled' : 'failed', output: {}, error_code: hostCancelled ? 'HOST_MODEL_CANCELLED' : error?.name || 'HOST_MODEL_FAILED', error: error?.message || String(error), tools_dispatched: Array.isArray(error?.pxToolsDispatched) ? error.pxToolsDispatched : [] };
@@ -1704,7 +1652,7 @@ function activateImplementation(context, transaction) {
               if (existing.instrumented) {
                 await acknowledgeHostAction('no-op', { reason: 'project-already-initialized' });
               } else {
-                const approval = await vscode.window.showWarningMessage('Initialize Pacify-X for the open project? This creates only the project-owned rolling coordination ledger under .engineering-bootstrap.', governedConfirmationOptions(), 'Initialize project');
+                const approval = await vscode.window.showWarningMessage('Initialize Pacify-X for the open project? This creates only the project-owned rolling coordination ledger under .agentic_engineering_os_px.', governedConfirmationOptions(), 'Initialize project');
                 if (approval !== 'Initialize project') {
                   await acknowledgeHostAction('cancelled', { stage: 'project-initialization' });
                   break;
@@ -1755,6 +1703,42 @@ function activateImplementation(context, transaction) {
             case 'enterpriseTargetConfigure':
             case 'enterpriseDoctor':
             case 'toggleBillablePolicy': await enterpriseAction(message, dashboardPanel.webview); break;
+            case 'sandboxControl': {
+              // Isolated Agent Sandbox — the Side Panel Control Panel surface. It uses
+              // the SAME shared owner as the top Chat Settings dropdown, so the two
+              // surfaces always stay synchronized. Selection and policy publication
+              // do not certify that platform containment is actively enforced.
+              const sandbox = require('./isolatedAgentSandbox');
+              const previous = sandbox.currentSandboxSelection();
+              const nextMode = sandbox.normalizeMode(message.mode);
+              if (nextMode === 'ON' && previous.mode !== 'ON') {
+                const approved = await vscode.window.showWarningMessage('Select sandbox policy mode ON?', { modal: true, detail: 'This saves and publishes the sandbox policy selection. Publication does not prove process or network isolation is enforced; protected execution remains fail-closed unless the canonical Gremlin Nanny and process-custody owners are active.' }, 'Select policy ON');
+                if (approved !== 'Select policy ON') { await publishSnapshot(true, dashboardPanel.webview); break; }
+              }
+              await sandbox.setSandboxMode(nextMode);
+              if (Array.isArray(message.allowedEndpoints)) await sandbox.setAllowedEndpoints(message.allowedEndpoints);
+              const applied = sandbox.currentSandboxSelection();
+              let runtimePublication = 'failed';
+              let runtimePolicySha256 = null;
+              let publicationError = null;
+              try {
+                const result = await publishSandboxPolicy(sandbox.buildSandboxPolicyRequest());
+                runtimePublication = 'published';
+                runtimePolicySha256 = result.policy.policy_sha256;
+              } catch (error) {
+                publicationError = String(error?.message || error).slice(0, 300);
+              }
+              await publishSnapshot(true, dashboardPanel.webview);
+              await dashboardPanel.webview.postMessage({
+                type: 'sandboxResult',
+                operation: 'sandboxControl',
+                sandbox: applied,
+                runtimePublication,
+                runtimePolicySha256,
+                error: publicationError
+              });
+              break;
+            }
             case 'refreshEnvironment': {
               const ownedReversibleApproval = process.env.PX_OWNED_VSCODE_HOST === '1'
                 && process.env.PX_OWNED_VSCODE_HOST_CONFIRM_REVERSIBLE_WRITES === '1';
@@ -1973,7 +1957,7 @@ function activateImplementation(context, transaction) {
   transaction.own(activityListenerGate);
   const coordinationRoot = workspaceRoot();
   if (coordinationRoot && vscode.workspace.createFileSystemWatcher && vscode.RelativePattern) {
-    const watcher = vscode.workspace.createFileSystemWatcher(new vscode.RelativePattern(coordinationRoot, '.engineering-bootstrap/coordination/{state.json,events.jsonl}'));
+    const watcher = vscode.workspace.createFileSystemWatcher(new vscode.RelativePattern(coordinationRoot, '.agentic_engineering_os_px/coordination/{state.json,events.jsonl}'));
     const revisionChanged = () => {
       if (!sidebar.hasVisibleView() && !panel?.visible) return;
       clearTimeout(sidebarRevisionTimer);
@@ -2004,6 +1988,7 @@ function activateImplementation(context, transaction) {
     }
   }));
   transaction.own(
+    registerDataControlCommand(vscode, context, bridge),
     vscode.commands.registerCommand('pacifyX.openDashboard', openDashboard),
     vscode.commands.registerCommand('pacifyX.setupStudio', () => runStudioSetup()),
     vscode.commands.registerCommand('pacifyX.refreshDashboard', () => publishSnapshot(true)),

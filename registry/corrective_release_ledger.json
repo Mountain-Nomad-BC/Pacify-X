@@ -19,7 +19,7 @@
       "id": "REL-010-A",
       "owning_paths": [
         "PROJECT_MANAGEMENT.md",
-        ".engineering-bootstrap/project-management/state.json",
+        ".agentic_engineering_os_px/project-management/state.json",
         "evidence/release-revocation-0.6.1.json"
       ],
       "priority": "P0",
@@ -97,7 +97,7 @@
     {
       "acceptance_commands": [
         "python -m pytest -q tests/test_release_certification.py",
-        "engineering-bootstrap release verify"
+        "agentic-engineering-os-px release verify"
       ],
       "dependencies": [
         "REG-010-A",
@@ -140,9 +140,9 @@
     },
     {
       "acceptance_commands": [
-        "engineering-bootstrap test-profile run fast",
-        "engineering-bootstrap test-profile run full",
-        "engineering-bootstrap test-profile run release"
+        "agentic-engineering-os-px test-profile run fast",
+        "agentic-engineering-os-px test-profile run full",
+        "agentic-engineering-os-px test-profile run release"
       ],
       "dependencies": [
         "REG-010-A"
@@ -227,7 +227,7 @@
     },
     {
       "acceptance_commands": [
-        "engineering-bootstrap release environment"
+        "agentic-engineering-os-px release environment"
       ],
       "dependencies": [],
       "disposition": "Implemented, independently validated, and covered by evidence/rel010-repair-validation.json; final release promotion remains gated by TST-010-D and the atomic finalizer.",
@@ -330,7 +330,7 @@
       "id": "CFG-010-A",
       "owning_paths": [
         "bootstrap/profiles",
-        ".engineering-bootstrap/profiles",
+        ".agentic_engineering_os_px/profiles",
         "runtime/profiles.py"
       ],
       "priority": "P2",
@@ -382,7 +382,7 @@
     },
     {
       "acceptance_commands": [
-        "engineering-bootstrap audit structure"
+        "agentic-engineering-os-px audit structure"
       ],
       "dependencies": [],
       "disposition": "Implemented, independently validated, and covered by evidence/rel010-repair-validation.json; final release promotion remains gated by TST-010-D and the atomic finalizer.",
@@ -401,7 +401,7 @@
     },
     {
       "acceptance_commands": [
-        "engineering-bootstrap audit structure"
+        "agentic-engineering-os-px audit structure"
       ],
       "dependencies": [],
       "disposition": "Implemented, independently validated, and covered by evidence/rel010-repair-validation.json; final release promotion remains gated by TST-010-D and the atomic finalizer.",
@@ -420,7 +420,7 @@
     },
     {
       "acceptance_commands": [
-        "engineering-bootstrap release verify"
+        "agentic-engineering-os-px release verify"
       ],
       "dependencies": [
         "REL-010-C",
@@ -431,7 +431,7 @@
       "owning_paths": [
         "README.md",
         "PROJECT_MANAGEMENT.md",
-        ".engineering-bootstrap/project-management/state.json"
+        ".agentic_engineering_os_px/project-management/state.json"
       ],
       "priority": "P1",
       "receipts": [
@@ -460,8 +460,8 @@
     },
     {
       "acceptance_commands": [
-        "engineering-bootstrap release finalize --release 0.6.3",
-        "engineering-bootstrap release verify --release 0.6.3"
+        "agentic-engineering-os-px release finalize --release 0.6.3",
+        "agentic-engineering-os-px release verify --release 0.6.3"
       ],
       "dependencies": [
         "REL-010-C",
@@ -473,7 +473,7 @@
       "owning_paths": [
         "runtime/release_certification.py",
         "evidence/release-certification-0.6.2.json",
-        ".engineering-bootstrap/project-management/state.json"
+        ".agentic_engineering_os_px/project-management/state.json"
       ],
       "priority": "P0",
       "receipts": [
@@ -484,7 +484,7 @@
     },
     {
       "acceptance_commands": [
-        "engineering-bootstrap project-check --project ."
+        "agentic-engineering-os-px project-check --project ."
       ],
       "dependencies": [
         "REL-010-B"
@@ -492,7 +492,7 @@
       "disposition": "Newly discovered during REL-010 containment; project-check must pass from the final tree.",
       "id": "REL-010-F01",
       "owning_paths": [
-        ".engineering-bootstrap/project-registry.json",
+        ".agentic_engineering_os_px/project-registry.json",
         ".px/skills/audit-source-capabilities/SKILL.md",
         "tests/test_commissioning_apply.py"
       ],
@@ -572,7 +572,7 @@
     },
     {
       "acceptance_commands": [
-        "engineering-bootstrap release environment"
+        "agentic-engineering-os-px release environment"
       ],
       "dependencies": [
         "ENV-010-A"
@@ -698,7 +698,7 @@
     },
     {
       "acceptance_commands": [
-        "engineering-bootstrap test-profile run full",
+        "agentic-engineering-os-px test-profile run full",
         "python -m pytest -q tests/test_release_certification.py"
       ],
       "dependencies": [
@@ -722,7 +722,7 @@
     },
     {
       "acceptance_commands": [
-        "engineering-bootstrap audit structure"
+        "agentic-engineering-os-px audit structure"
       ],
       "dependencies": [
         "GEN-010-A",
@@ -749,7 +749,7 @@
     {
       "acceptance_commands": [
         "python -m pytest -q tests/test_rel011_revocation.py",
-        "engineering-bootstrap audit structure"
+        "agentic-engineering-os-px audit structure"
       ],
       "dependencies": [
         "ARCH-028"
@@ -762,7 +762,7 @@
         "evidence/releases/0.6.3/public-release-verification.json",
         "registry/full_repair_ledger.json",
         "PROJECT_MANAGEMENT.md",
-        ".engineering-bootstrap/project-management/state.json"
+        ".agentic_engineering_os_px/project-management/state.json"
       ],
       "parent": "REL-010-E",
       "priority": "P0",

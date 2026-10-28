@@ -1,0 +1,159 @@
+============================= test session starts =============================
+platform win32 -- Python 3.14.7, pytest-9.1.1, pluggy-1.6.0 -- C:\Users\Ben\Documents\bootstrap_project\Pacify-X\Python\pythoncore-3.14-64\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\Ben\Documents\bootstrap_project\Pacify-X
+configfile: docs\repair\evidence\merge-2026-10-28\focused.ini
+collecting ... collected 47 items
+
+tests/test_gemini_protocol.py::test_blocked_gemini_is_not_success[SAFETY] PASSED [  2%]
+tests/test_gemini_protocol.py::test_blocked_gemini_is_not_success[RECITATION] PASSED [  4%]
+tests/test_gemini_protocol.py::test_blocked_gemini_is_not_success[OTHER] PASSED [  6%]
+tests/test_gemini_protocol.py::test_blocked_gemini_is_not_success[MALFORMED_FUNCTION_CALL] PASSED [  8%]
+tests/test_gemini_protocol.py::test_resource_path_cannot_escape[../escape] PASSED [ 10%]
+tests/test_gemini_protocol.py::test_resource_path_cannot_escape[model?key=secret] PASSED [ 12%]
+tests/test_gemini_protocol.py::test_resource_path_cannot_escape[models/model] PASSED [ 14%]
+tests/test_gemini_protocol.py::test_resource_path_cannot_escape[a%2fb] PASSED [ 17%]
+tests/test_gemini_protocol.py::test_resource_path_cannot_escape[] PASSED [ 19%]
+tests/test_gemini_protocol.py::test_resource_path_cannot_escape[xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx] PASSED [ 21%]
+tests/test_gemini_protocol.py::test_native_terminal_and_exact_thought_usage PASSED [ 23%]
+tests/test_gemini_protocol.py::test_unsupported_or_unmetered_terminal_is_rejected[[DONE]] PASSED [ 25%]
+tests/test_gemini_protocol.py::test_unsupported_or_unmetered_terminal_is_rejected[payload1] PASSED [ 27%]
+tests/test_gemini_protocol.py::test_unsupported_or_unmetered_terminal_is_rejected[payload2] PASSED [ 29%]
+tests/test_gemini_protocol.py::test_unsupported_or_unmetered_terminal_is_rejected[payload3] PASSED [ 31%]
+tests/test_gemini_protocol.py::test_gemini_reaches_actual_prepared_group_custody FAILED [ 34%]
+tests/test_gemini_protocol.py::test_authored_protocol_matrix_matches_actual_adapter_denominator PASSED [ 36%]
+tests/test_model_protocol_translate.py::test_canonical_request_translates_to_exact_supported_wire_shapes PASSED [ 38%]
+tests/test_model_protocol_translate.py::test_sse_parser_is_chunk_boundary_independent_and_bounded PASSED [ 40%]
+tests/test_model_protocol_translate.py::test_openai_chat_stream_normalizes_tool_fragments_usage_and_terminal_order PASSED [ 42%]
+tests/test_model_protocol_translate.py::test_responses_stream_tracks_item_id_alias_and_normalizes_completion PASSED [ 44%]
+tests/test_model_protocol_translate.py::test_anthropic_stream_normalizes_text_tool_json_and_usage PASSED [ 46%]
+tests/test_model_protocol_translate.py::test_invalid_tool_json_fails_before_any_tool_can_be_executed PASSED [ 48%]
+tests/test_model_protocol_translate.py::test_safe_reverse_translation_refuses_stateless_tool_guessing PASSED [ 51%]
+tests/test_model_protocol_translate.py::test_responses_done_event_can_supply_full_arguments_but_cannot_disagree_with_deltas PASSED [ 53%]
+tests/test_model_protocol_translate.py::test_anthropic_complete_initial_tool_input_cannot_be_followed_by_json_deltas PASSED [ 55%]
+tests/test_model_protocol_translate.py::test_translators_reject_duplicate_tool_identity_and_index_state PASSED [ 57%]
+tests/test_model_protocol.py::test_request_round_trip_is_exact_and_rejects_bool_numeric_fields PASSED [ 59%]
+tests/test_model_protocol.py::test_stream_hash_is_independent_of_backend_text_chunk_boundaries PASSED [ 61%]
+tests/test_model_protocol.py::test_stream_state_enforces_tool_lifecycle_usage_and_terminal_order PASSED [ 63%]
+tests/test_model_protocol.py::test_model_protocol_binding_is_versioned_exact_and_cannot_invent_tool_support PASSED [ 65%]
+tests/test_model_protocol.py::test_request_mapping_does_not_coerce_identity_fields_and_tool_end_must_match_deltas PASSED [ 68%]
+tests/test_model_protocol.py::test_stream_state_bounds_total_tool_output_and_tool_count PASSED [ 70%]
+tests/test_model_group_preparation.py::test_exact_members_normal_compiler_and_recovery[1] PASSED [ 72%]
+tests/test_model_group_preparation.py::test_exact_members_normal_compiler_and_recovery[3] PASSED [ 74%]
+tests/test_model_group_preparation.py::test_exact_members_normal_compiler_and_recovery[5] PASSED [ 76%]
+tests/test_model_group_preparation.py::test_exact_members_normal_compiler_and_recovery[7] PASSED [ 78%]
+tests/test_model_group_preparation.py::test_exact_members_normal_compiler_and_recovery[12] PASSED [ 80%]
+tests/test_model_group_preparation.py::test_missing_swapped_and_context_drift_refused PASSED [ 82%]
+tests/test_model_group_preparation.py::test_live_member_execution_selects_exact_attachment_and_releases PASSED [ 85%]
+tests/test_model_group_preparation.py::test_native_member_hardware_route_and_durable_cleanup PASSED [ 87%]
+tests/test_model_group_preparation.py::test_branch_artifact_registers_before_directory_creation_and_settles_exact_resource PASSED [ 89%]
+tests/test_model_group_preparation.py::test_interrupted_branch_publication_retains_recoverable_custody_and_denies_retry PASSED [ 91%]
+tests/test_model_group_preparation.py::test_tie_path_requires_real_bound_experience PASSED [ 93%]
+tests/test_secure_publish_operating.py::test_real_reader_contention_never_reexecutes_producer[True] PASSED [ 95%]
+tests/test_secure_publish_operating.py::test_real_reader_contention_never_reexecutes_producer[False] PASSED [ 97%]
+tests/test_secure_publish_operating.py::test_owned_crash_retains_uncommitted_image_and_restart_does_not_adopt_it PASSED [100%]
+
+================================== FAILURES ===================================
+______________ test_gemini_reaches_actual_prepared_group_custody ______________
+
+configured = (WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.tmp/resume10/owned/pacifyx-twd85lbo/pytest-of-Ben/pyt...e', 'request_id': 'fixture-run', 'client_session_id': 'fixture-session', 'correlation_id': 'fixture-correlation', ...})
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001D01BEEDBA0>
+
+    def test_gemini_reaches_actual_prepared_group_custody(configured, monkeypatch):
+        import io
+        from runtime.remote_provider_profiles import CONFIG, ROOT
+        from runtime.studio_models import EffectGrant
+        import tests.test_remote_group_effect_owner as owner
+        from tests.test_remote_member_effect_owner import run
+        engine, root, authority, profile, _ = configured
+        profile.update(provider_id='gemini', adapter_id='gemini-generate-content', origin='https://generativelanguage.googleapis.com', grant_id='gemini-fixture-grant')
+        authority.admit_grant(EffectGrant(profile['grant_id'], 'human:vscode-local-user', ('read','write','network'),
+            (ROOT, profile['origin']), 'fixture-owner', ('explicit-disposable-gemini-permission',), '2099-01-01T00:00:00Z','admitted'))
+        path = root / CONFIG
+        body = authority.verify_receipt(json.loads(path.read_text()))
+        body['profiles'] = [profile]
+        path.write_text(json.dumps(authority.sign_receipt(body)))
+        for relative, section, changes in (
+            ('registry/provider_adapters.json','adapters',{'adapter_id':profile['adapter_id'],'provider_id':'gemini'}),
+            ('models/provider-protocols.json','adapters',{'adapter_id':profile['adapter_id'],'surfaces':['gemini_generate_content']}),
+            ('registry/provider_budget_policy.json','budgets',{'provider_id':'gemini'})):
+            target = engine / relative
+            payload = json.loads(target.read_text()); payload[section][0].update(changes)
+            target.write_text(json.dumps(payload))
+        class NativeRecordingTransport:
+            def __init__(self): self.calls=[]
+            def open(self, **request):
+                self.calls.append({k:v for k,v in request.items() if k != 'credential'})
+                payload={'responseId':'gemini-fixture-response','candidates':[{'content':{'parts':[{'text':'hello'}]},'finishReason':'STOP'}],
+                         'usageMetadata':{'promptTokenCount':3,'candidatesTokenCount':1}}
+                return self, io.BytesIO(('data: '+json.dumps(payload)+'\n\n').encode())
+            def close(self): pass
+        monkeypatch.setattr(owner,'RecordingTransport',NativeRecordingTransport)
+>       f = owner.remote_group_fixture(configured,monkeypatch)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_gemini_protocol.py:71: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_remote_group_effect_owner.py:27: in remote_group_fixture
+    fixture=workflow_group_fixture(root,plan,group,placements=placements,claims=claims)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\workflow_group_owner_fixture.py:43: in workflow_group_fixture
+    authority.register_authority_transaction((binding,), grants, {binding.binding_id: "model-group"})
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <runtime.studio_authority.StudioAuthorityStore object at 0x000001D01F41BBD0>
+bindings = (CapabilityBinding(binding_id='binding:workflow-group', subject_kind='workflow', subject_id='workflow:effect', capabil...ace=None, cost_policy='non-billable', egress_policy='deny', state='admitted', evidence_refs=('unit:workflow-group',)),)
+grants = (EffectGrant(grant_id='grant:workflow-effect:0', subject_id='workflow:effect', effects=('execute',), scope_roots=('run...ents',), approved_by='human:owner', evidence_refs=('unit:workflow-exact-effect',), expires_utc=None, state='admitted'))
+executors = {'binding:workflow-group': 'model-group'}
+
+    def register_authority_transaction(
+        self,
+        bindings: tuple[CapabilityBinding, ...],
+        grants: tuple[EffectGrant, ...],
+        executors: Mapping[str, str] | None = None,
+    ) -> dict[str, object]:
+        """Publish one fully prevalidated authority set with compensating rollback."""
+        executor_map = {str(key): str(value) for key, value in (executors or {}).items()}
+        grant_map = {grant.grant_id: grant for grant in grants}
+        binding_map = {binding.binding_id: binding for binding in bindings}
+        if len(grant_map) != len(grants) or len(binding_map) != len(bindings):
+            raise ValueError("authority transaction contains duplicate identities")
+        if any(grant.state != "admitted" for grant in grants):
+            raise ValueError("authority transaction contains a non-admitted grant")
+        if any(binding.state != "admitted" for binding in bindings):
+            raise ValueError("authority transaction contains a non-admitted binding")
+        subjects = {grant.subject_id for grant in grants} | {binding.subject_id for binding in bindings}
+        if len(subjects) != 1:
+            raise ValueError("authority transaction must belong to exactly one subject")
+        capability_records: dict[str, dict[str, object]] = {}
+        referenced_grants: set[str] = set()
+        for binding in bindings:
+            referenced = [grant_map.get(grant_id) for grant_id in binding.effect_grant_ids]
+            if not referenced or any(grant is None for grant in referenced):
+                raise ValueError(f"binding references a grant outside this transaction: {binding.binding_id}")
+            if any(grant.subject_id != binding.subject_id for grant in referenced if grant):
+                raise ValueError(f"binding/grant subject mismatch: {binding.binding_id}")
+            referenced_grants.update(binding.effect_grant_ids)
+            effects = sorted({effect for grant in referenced if grant for effect in grant.effects})
+            identity = f"{binding.capability_id}@{binding.capability_version}"
+            record = {
+                "capability_id": binding.capability_id,
+                "version": binding.capability_version,
+                "effects": effects,
+                "state": "admitted",
+                "approved_by": next(grant.approved_by for grant in referenced if grant),
+            }
+            prior = capability_records.get(identity)
+            if prior is not None and prior != record:
+                raise ValueError(f"one capability version has conflicting authority definitions: {identity}")
+            capability_records[identity] = record
+            adapter = executor_map.get(binding.binding_id)
+            if adapter is not None and adapter not in {"identity", "increment", "double", "fail", "sleep"}:
+>               raise ValueError(f"workflow executor adapter is not in the closed registry: {adapter}")
+E               ValueError: workflow executor adapter is not in the closed registry: model-group
+
+runtime\studio_authority.py:387: ValueError
+=========================== short test summary info ===========================
+FAILED tests/test_gemini_protocol.py::test_gemini_reaches_actual_prepared_group_custody - ValueError: workflow executor adapter is not in the closed registry: model-group
+======================== 1 failed, 46 passed in 4.46s =========================
+

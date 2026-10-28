@@ -214,6 +214,36 @@
       "default_profile_id": "deep-qwen3-30b-a3b-hybrid"
     },
     {
+      "model_id": "qwen35-08b-librarian",
+      "display_name": "Qwen3.5-0.8B",
+      "source_repo": "Qwen/Qwen3.5-0.8B",
+      "runtime": "llama_cpp_router",
+      "lane": "control",
+      "role": "local_librarian_concierge_candidate",
+      "state": "candidate",
+      "privacy": "local",
+      "traits": [
+        "px_internal_operator",
+        "librarian",
+        "concierge",
+        "ambiguity_resolution",
+        "retrieval_assistance",
+        "orchestration_support",
+        "skill_tool_action_selection_support"
+      ],
+      "authority": {
+        "direct_tool_execution": false,
+        "canonical_memory_write": false,
+        "canonical_knowledge_write": false,
+        "policy_write": false,
+        "graph_map_persistence": false,
+        "learning_promotion": false,
+        "effect_grant_required": true
+      },
+      "artifact_sha256": null,
+      "default_profile_id": "control-qwen35-08b-cpu-q8"
+    },
+    {
       "model_id": "qwen35-35b-a3b-deep-challenger",
       "display_name": "Qwen3.5-35B-A3B",
       "source_repo": "Qwen/Qwen3.5-35B-A3B",

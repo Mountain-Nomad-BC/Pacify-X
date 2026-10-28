@@ -192,8 +192,8 @@ def main() -> int:
     
     # Load configs
     try:
-        automation_path = ROOT / ".engineering-bootstrap" / "processing-order" / "Final172-automation.json"
-        stage_path = ROOT / ".engineering-bootstrap" / "processing-order" / "Final172-stage-owner.json"
+        automation_path = ROOT / ".agentic_engineering_os_px" / "processing-order" / "Final172-automation.json"
+        stage_path = ROOT / ".agentic_engineering_os_px" / "processing-order" / "Final172-stage-owner.json"
         
         if not automation_path.exists():
             print(f"[BLOCKED] Config not found: {automation_path}")

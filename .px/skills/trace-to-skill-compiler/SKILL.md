@@ -34,7 +34,7 @@ Convert repeated verified trajectories into candidate governed skill packages.
 ## Procedure
 1. Normalize successful and failed traces into `contracts/engineering-process-record.schema.json`; reject unverified outcomes or recoveries.
 2. Preserve why each decision and tool was chosen, including alternatives and effects.
-3. Run `engineering-bootstrap process compile --record <record.json>` to derive decision, tool, and execution graphs.
+3. Run `agentic-engineering-os-px process compile --record <record.json>` to derive decision, tool, and execution graphs.
 4. Identify invariant steps, branches, activation, termination, recovery, and evidence requirements.
 5. Compare against existing skills before drafting; prefer an evidenced improvement over a duplicate skill.
 6. Generate positive, negative, recovery, effect-boundary, and termination tests.

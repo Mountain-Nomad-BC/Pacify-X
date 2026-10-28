@@ -30,7 +30,7 @@ Load `references/capabilities-index.json` or `references/scripts-index.json` onl
 
 Keep evaluation data, scoring rules, and implementation under test independently reviewable; do not certify from a self-authored happy path alone.
 
-Run `engineering-bootstrap tools certify` when the declared-suite exact-tool registry is in scope. Require a current hash match, direct load, positive behavior, and the registered fail-closed case before certifying each tool.
+Run `agentic-engineering-os-px tools certify` when the declared-suite exact-tool registry is in scope. Require a current hash match, direct load, positive behavior, and the registered fail-closed case before certifying each tool.
 
 Use `references/scripts-index.json` to locate a deterministic helper interface. The
 cross-domain orchestration registry is `orchestration/workflows/declared-suite.yaml`.

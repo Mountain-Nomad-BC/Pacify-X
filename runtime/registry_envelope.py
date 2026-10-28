@@ -28,6 +28,19 @@ UNOWNED_COUNT_FIELDS = {
         "dashboard_navigation_surface_count",
     ),
     ("registry/operational_surface_inventory.json", "ui_action_count"),
+    # BASE-003's declared plan expectation EXPECTED_UNIQUE_PAYLOADS. This is an
+    # externally-declared expectation carried so that variance against the measured
+    # corpus is reported rather than reconciled by assumption; it is not a count
+    # derived from any collection inside the document. The envelope vocabulary can
+    # only recompute from a local collection (length/filtered/unique/duplicates/
+    # nested_*) or an external JSON document (external_*), so it cannot express a
+    # Python module constant without misrepresenting it as locally derived.
+    #
+    # Integrity is enforced at the owning generator instead: admit_corpus() writes
+    # this field, unique_payload_matches_expectation and the digest-bound body from
+    # the same constant in one commit, so a drift is reported, not reconciled away.
+    # Same shape as the externally-derived surface counts exempted above.
+    ("registry/plan_corpus.json", "expected_unique_payload_count"),
 }
 
 
@@ -205,6 +218,32 @@ def derive_count(
             for item in collection
             if isinstance(item, dict)
             for nested in item.get(record["nested"], ())
+        )
+    if rule == "sum_bytes":
+        # Totals an integer field across a list collection. Used where a registry
+        # declares an aggregate byte size alongside the per-item sizes it is the
+        # total of. Only plain integers are summed, so a malformed or boolean entry
+        # is skipped rather than silently coerced.
+        return sum(
+            item[record["field"]]
+            for item in collection
+            if isinstance(item, dict)
+            and isinstance(item.get(record["field"]), int)
+            and not isinstance(item.get(record["field"]), bool)
+        )
+    if rule == "nested_nonempty":
+        # Counts list-valued entries whose nested collection is non-empty. This
+        # expresses "has at least one child", which `nested_filtered` cannot: that
+        # rule compares a single field for exact JSON equality and so cannot match
+        # "any non-empty array". Every such entry still has to appear literally in
+        # the source collection, so this only narrows which entries qualify; it does
+        # not weaken the equality check that `length` and `filtered` rely on.
+        return sum(
+            isinstance(item, dict)
+            and isinstance(item.get(record["nested"]), list)
+            and bool(item[record["nested"]])
+            for item in collection
+            if isinstance(item, dict)
         )
     if rule == "nested_object_filtered":
         return sum(

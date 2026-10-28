@@ -21,6 +21,7 @@ from urllib.parse import unquote, urlsplit
 
 from .paths import declared_file_available
 from .json_io import json_value_key, load_json_object, validate_json_value
+from .bounded_walk import _is_junction
 
 
 SUPPORTED_DIALECT = "https://json-schema.org/draft/2020-12/schema"
@@ -128,7 +129,7 @@ def _resolve_external_path(
     contained = False
     while True:
         if cursor.is_symlink() or (
-            hasattr(cursor, "is_junction") and cursor.is_junction()
+            _is_junction(cursor)
         ):
             raise ValueError(
                 f"symlinked schema references are not allowed: {ref_path!r}"
@@ -498,6 +499,15 @@ def _pattern_example(pattern: str) -> str:
         return "A"
     if pattern.startswith("^external\\.cybersecurity\\."):
         return "external.cybersecurity.example"
+    semantic_identifier_examples = {
+        "^pxe1:": "pxe1:" + "a" * 32,
+        "^pxl1:": "pxl1:" + "a" * 32,
+        "^pxr1:": "pxr1:" + "a" * 32,
+        "^PXA1:": "PXA1:" + "a" * 8 + ":" + "1",
+    }
+    for prefix, example in semantic_identifier_examples.items():
+        if pattern.startswith(prefix):
+            return example
     if ":" in pattern and "a-zA-Z_" in pattern:
         return "runtime.module:handler"
     prefixes = {
@@ -522,6 +532,7 @@ def _pattern_example(pattern: str) -> str:
         "^projects/[^/]+$": "projects/example",
         "^projects/": "projects/example",
         "^projects_tracking/projects/prj_[^/]+/memory$": "projects_tracking/projects/prj_example/memory",
+        "^pxdep:": "pxdep:" + "a" * 64,
         "^projects_tracking/projects/prj_[^/]+$": "projects_tracking/projects/prj_example",
         "^projects_tracking/projects/prj_": "projects_tracking/projects/prj_example",
         "^projects_tracking/projects/": "projects_tracking/projects/prj_example",

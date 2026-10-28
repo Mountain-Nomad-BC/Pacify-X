@@ -1,0 +1,105 @@
+"""Existing-authority remote profiles; configuration never admits a provider."""
+from datetime import datetime, timezone
+import hashlib
+import ipaddress
+from pathlib import Path
+import re
+from urllib.parse import urlsplit
+
+from .archive_io import reject_path_links
+<<<<<<< HEAD
+from .json_io import bounded_canonical_json_bytes, decode_json_object
+from .secure_publish import read_physical_bytes
+=======
+from .json_io import bounded_canonical_json_bytes, load_json_object
+>>>>>>> codex/rollout-day1-20261024
+from .studio_authority import StudioAuthorityStore
+from .remote_service_protocols import service_protocol, service_endpoint
+
+ROOT = '.agentic_engineering_os_px/runtime-core/remote-models'
+CONFIG = ROOT + '/profiles.json'
+SCHEMA = 'px.remote-provider-profiles/1.0'
+ADAPTER = 'custom-openai-chat'
+
+
+def digest(value):
+    return hashlib.sha256(bounded_canonical_json_bytes(value, max_bytes=256 * 1024)).hexdigest()
+
+
+def https_origin(origin, addresses):
+    parsed = urlsplit(origin)
+    if (parsed.scheme != 'https' or not parsed.hostname or parsed.port not in (None, 443)
+            or parsed.username is not None or parsed.password is not None or parsed.path
+            or parsed.query or parsed.fragment or origin != 'https://' + parsed.hostname
+            or re.fullmatch(r'[a-z0-9](?:[a-z0-9.-]{0,251}[a-z0-9])?', parsed.hostname) is None
+            or '.' not in parsed.hostname or parsed.hostname.endswith(('.localhost', '.local'))):
+        raise ValueError('exact public HTTPS origin required')
+    if type(addresses) is not list or not 1 <= len(addresses) <= 8 or len(set(addresses)) != len(addresses):
+        raise ValueError('explicit approved address pins required')
+    for address in addresses:
+        if type(address) is not str or not ipaddress.ip_address(address).is_global:
+            raise ValueError('private/non-global endpoint address refused')
+    return parsed.hostname
+
+
+def load_profiles(project_root):
+    root = Path(project_root)
+    reject_path_links(root)
+    root = root.resolve(strict=True)
+    locator = root / CONFIG
+    reject_path_links(locator)
+    if not locator.exists():
+        return None, []
+    authority = StudioAuthorityStore.open_existing(root)
+<<<<<<< HEAD
+    config = authority.verify_receipt(decode_json_object(read_physical_bytes(locator, max_bytes=256 * 1024), max_bytes=256 * 1024))
+=======
+    config = authority.verify_receipt(load_json_object(locator, max_bytes=256 * 1024))
+>>>>>>> codex/rollout-day1-20261024
+    if (config.get('schema_version') != SCHEMA or config.get('state') != 'approved'
+            or not config.get('approved_by') or not config.get('evidence_refs')
+            or type(config.get('profiles')) is not list or len(config['profiles']) > 128):
+        raise PermissionError('approved remote profile configuration required')
+    expiry = datetime.fromisoformat(config['expires_utc'].replace('Z', '+00:00'))
+    if expiry.tzinfo is None or expiry <= datetime.now(timezone.utc):
+        raise PermissionError('remote profile configuration expired')
+    from .contracts import validate_instance
+    from .paths import framework_root
+    schema_root = framework_root()
+    validate_instance(config, schema_root / 'contracts/operations/remote-provider-profile.schema.json')
+    seen = set()
+    for row in config['profiles']:
+        fields = {'profile_id', 'provider_id', 'adapter_id', 'model_id', 'model_revision',
+                  'origin', 'approved_addresses', 'credential_reference', 'context_tokens',
+                  'max_output_tokens', 'capabilities', 'locality', 'cost_class', 'grant_id',
+                  'policy_locator', 'budget_id', 'authorized_requesters', 'revision_evidence'}
+        if type(row) is not dict or set(row) != fields:
+            raise ValueError('closed remote profile required')
+        for field in fields - {'approved_addresses', 'context_tokens', 'max_output_tokens',
+                              'capabilities', 'authorized_requesters', 'revision_evidence'}:
+            if type(row[field]) is not str or not row[field] or len(row[field]) > 512 or any(ord(c) < 32 for c in row[field]):
+                raise ValueError('bounded remote profile text required')
+        protocol = service_protocol(row['adapter_id'], row['provider_id'])
+        service_endpoint(protocol, row['model_id'])
+        if ((protocol['origin'] is not None and row['origin'] != protocol['origin'])
+                or row['locality'] != 'remote' or row['cost_class'] != 'billable-api'
+                or not row['policy_locator'].startswith(ROOT + '/')
+                or '\\' in row['policy_locator'] or any(p in {'', '.', '..'} for p in row['policy_locator'].split('/'))
+                or re.fullmatch(r'[A-Za-z][A-Za-z0-9_]{0,127}', row['credential_reference']) is None
+                or re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9._:-]{0,159}', row['profile_id']) is None
+                or row['profile_id'] in seen or not row['revision_evidence']
+                or type(row['authorized_requesters']) is not list or not row['authorized_requesters']):
+            raise PermissionError('remote identity/configuration binding differs')
+        for field in ('context_tokens', 'max_output_tokens'):
+            if type(row[field]) is not int or not 1 <= row[field] <= 10_000_000:
+                raise ValueError('bounded remote token limits required')
+        if row['max_output_tokens'] > row['context_tokens']:
+            raise ValueError('remote output exceeds context limit')
+        caps = row['capabilities']
+        if (type(caps) is not dict or set(caps) != {'coding', 'planning', 'review', 'classification', 'toolUse', 'vision', 'structuredOutput'}
+                or any(type(caps[k]) not in (float, int) or not 0 <= caps[k] <= 1 for k in ('coding', 'planning', 'review', 'classification'))
+                or any(caps[k] is not False for k in ('toolUse', 'vision', 'structuredOutput'))):
+            raise ValueError('explicit conservative remote capabilities required')
+        https_origin(row['origin'], row['approved_addresses'])
+        seen.add(row['profile_id'])
+    return authority, config['profiles']

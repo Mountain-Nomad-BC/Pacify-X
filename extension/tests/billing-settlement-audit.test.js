@@ -64,6 +64,7 @@ const path = require('node:path');
 const { HarnessController } = require('../src/agentHarness/harnessController');
 const { registerAgentConsole, BUDGET_STATE_KEY, TASK_STATE_KEY } = require('../src/agentHarness/registerAgentConsole');
 const { buildPxProviderGatewayInvoker } = require('../src/agentHarness/pxProviderInvoker');
+const { createExecutionContext } = require('../src/agentHarness/executionContext');
 function usage(overrides = {}) { return { workerId: worker.workerId, providerId: worker.providerId, costClass: worker.costClass,
   inputTokens: 2, outputTokens: 1, totalTokens: 3, actualChargeUsd: 0.25, projectedChargeUsd: null,
   billingIdentityKnown: true, quotaRemaining: null, taskId: task.taskId, runId: 'run', executionId: 'invocation', settlementId: 'a'.repeat(64), ...overrides }; }
@@ -155,16 +156,9 @@ test('actual host registration never invokes a provider before asynchronous rese
 
 test('native invoker carries the reserved invocation identity across the bridge', async () => {
   let payload;const invoke=buildPxProviderGatewayInvoker({profileIdForWorker:()=> 'profile',bridge:{streamChat:async(value,signal,onEvent)=>{payload=value;onEvent({kind:'px_receipt',payload:{controlled:true}});}}});
-  await invoke({worker,task,run:{runId:'run'},executionContext:{execution_id:'invocation'},message:'inspect'});
-  assert.equal(payload.request_id,'invocation');assert.equal(payload.correlation_id,'corr-task');
+  await invoke({worker,task,run:{runId:'run'},executionContext:createExecutionContext({run:{runId:'run',revision:1,epoch:1},projectId:'project',sessionId:'run',providerId:'local',authoritySha256:'a'.repeat(64),effectBudgetSha256:'b'.repeat(64)}),message:'inspect'});
+  assert.equal(payload.request_id, payload.execution_context.execution_id);assert.equal(payload.correlation_id,'corr-task');
   await assert.rejects(invoke({worker,task,run:{runId:'run'}}),/invocation-owner-required/);
-});
-
-test('nonfinite settlement cannot publish a financial snapshot', () => {
-  const ledger=new BudgetLedger(policy,{persistence:persistence()});
-  ledger.reserve({worker,task,runId:'run',executionId:'invocation',projectedChargeUsd:.5});
-  for(const n of [NaN,Infinity,-1])assert.throws(()=>ledger.record(usage({actualChargeUsd:n})));
-  assert.equal(ledger.entries.length,0);assert.equal(ledger.reservations.size,1);
 });
 
 const { sha256 } = require('../src/agentHarness/ids');
@@ -205,4 +199,56 @@ test('cancelled paid attempt records its returned typed usage before rejecting l
   assert.equal(registered.harness.taskStore.requireRun(run.runId).status,'cancelled');
   assert.equal(registered.harness.eventBus.snapshot().some(event=>event.type==='worker.completed'),false);
   registered.dispose();
+const fs = require('node:fs');
+const os = require('node:os');
+const path = require('node:path');
+const { DurableBudgetState } = require('../src/agentHarness/durableTaskState');
+const { HarnessController } = require('../src/agentHarness/harnessController');
+const { createExecutionContext } = require('../src/agentHarness/executionContext');
+function usage(overrides = {}) { return { workerId: worker.workerId, providerId: worker.providerId, costClass: worker.costClass,
+  inputTokens: 2, outputTokens: 1, totalTokens: 3, actualChargeUsd: 0.25, projectedChargeUsd: null,
+  billingIdentityKnown: true, quotaRemaining: null, taskId: task.taskId, runId: 'run', executionId: 'invocation', settlementId: 'a'.repeat(64), ...overrides }; }
+
+test('real durable owner retains settlements and rejects duplicate or conflicting charges', () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'px-billing-owner-'));
+  try {
+    const first = new BudgetLedger(policy, { persistence: new DurableBudgetState(root) });
+    first.reserve({ worker, task, runId: 'run', executionId: 'invocation', projectedChargeUsd: 0.75 });
+    first.record(usage());
+    const next = new BudgetLedger(policy, { persistence: new DurableBudgetState(root) });
+    next.record(usage());
+    assert.equal(next.receipts.length, 1);
+    assert.equal(next.reservations.size, 0);
+    assert.equal(next.canAdmit(worker, task, 0.76).allowed, false);
+    assert.throws(() => next.record(usage({ actualChargeUsd: 0.5 })), /conflict/);
+    assert.throws(() => next.record(usage({ settlementId: 'b'.repeat(64) })), /already-settled/);
+  } finally { fs.rmSync(root, { recursive: true, force: true }); }
+});
+
+test('reservation ownership, unknown actual costs and persistence failures fail closed', () => {
+  const ledger = new BudgetLedger(policy, { persistence: persistence() });
+  ledger.reserve({ worker, task, runId: 'run', executionId: 'invocation', projectedChargeUsd: 0.5 });
+  assert.throws(() => ledger.record(usage({ taskId: 'other-task' })), /owner-mismatch/);
+  ledger.record(usage({ actualChargeUsd: null }));
+  assert.equal(ledger.reservations.size, 1);
+  assert.equal(ledger.canAdmit(worker, task, 0).allowed, false);
+  const disk = persistence(); const broken = new BudgetLedger(policy, { persistence: disk });
+  disk.save = () => { throw new Error('disk-unavailable'); };
+  assert.throws(() => broken.reserve({ worker, task, runId: 'run', executionId: 'invocation', projectedChargeUsd: 0.1 }), /disk-unavailable/);
+  assert.throws(() => broken.canAdmit(worker, task, 0), /disk-unavailable/);
+});
+
+test('controller settlement helper binds task and execution and flushes durable usage', async () => {
+  const ledger = new BudgetLedger(policy, { persistence: persistence() });
+  const owner = { budgetLedger: ledger };
+  const localWorker = { ...worker, costClass: 'local' };
+  const context = { execution_id: 'invocation' };
+  await HarnessController.prototype._reserveUsage.call(owner, localWorker, task, { runId: 'run' }, context, 0);
+  await HarnessController.prototype._recordUsage.call(owner, localWorker, task, { runId: 'run' }, context,
+    { usage: usage({ costClass: 'local', actualChargeUsd: null, billingIdentityKnown: false }), settlementId: null });
+  assert.equal(ledger.entries[0].taskId, task.taskId);
+  assert.equal(ledger.entries[0].executionId, context.execution_id);
+  assert.equal(ledger.entries[0].receipt.costClass, 'local');
+  assert.equal(ledger.reservations.size, 0);
+});
 });

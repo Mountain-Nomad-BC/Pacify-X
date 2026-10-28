@@ -1,0 +1,47 @@
+{
+  "schema_version": "px.build-claims/1.0",
+  "version": "0.9.0",
+  "counts": {
+<<<<<<< HEAD
+    "runtime_modules": 420,
+    "contracts": 196,
+    "registry_artifacts": 515,
+    "tool_and_support_scripts": 207,
+=======
+    "runtime_modules": 468,
+    "contracts": 210,
+    "registry_artifacts": 530,
+    "tool_and_support_scripts": 230,
+>>>>>>> codex/rollout-day1-20261024
+    "skills": 185,
+    "agents": 270,
+    "workflow_definitions": 40,
+    "orchestrations": 38,
+<<<<<<< HEAD
+    "test_modules": 465,
+    "graph_records": 1071,
+    "graph_edges": 2065,
+    "effect_surfaces": 1408
+=======
+    "test_modules": 508,
+    "graph_records": 1071,
+    "graph_edges": 2065,
+    "effect_surfaces": 1800
+>>>>>>> codex/rollout-day1-20261024
+  },
+  "sources": {
+    "version": "pyproject.toml:project.version",
+    "runtime_modules": "runtime/**/*.py",
+    "contracts": "contracts/**/*.json",
+    "registry_artifacts": "registry/**/* non-lock files",
+    "tool_and_support_scripts": "scripts/*.py + .px/skills/*/scripts/*.py",
+    "skills": "registry/skill_catalog.toml:skills",
+    "agents": "registry/agency_agent_registry.json:agents",
+    "workflow_definitions": "orchestration/workflows/**/*.yaml",
+    "orchestrations": "registry/skill_orchestrations.json:workflows",
+    "test_modules": "tests/test_*.py",
+    "graph_records": "registry/cognitive_map_index.json:records",
+    "graph_edges": "registry/cognitive_map_index.json:edges",
+    "effect_surfaces": "registry/effect_surface_ownership.json:records"
+  }
+}

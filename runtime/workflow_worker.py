@@ -2,12 +2,13 @@
 
 from __future__ import annotations
 
+
 import argparse
 import os
 from .resource_lifecycle import ResourceManager
 import json
-import re
 from pathlib import Path
+import re
 import time
 
 from .studio_authority import StudioAuthorityStore
@@ -39,7 +40,7 @@ def _verify_prepared_effect_intents(project_root, task, grants, *, native_result
     context = execution_context_from_dict(task.get("execution_context"))
     run_id, node_id = task.get("run_id"), task.get("node_id")
     control = DurableRunControl(Path(project_root), Path(project_root) /
-        ".engineering-bootstrap/studios/workflows/sessions").read(run_id)
+        ".agentic_engineering_os_px/studios/workflows/sessions").read(run_id)
     expected_context_id = "workflow-node-" + hashlib.sha256(
         f"{run_id}\0{node_id}\0{task.get('attempt')}\0{context.epoch}".encode()).hexdigest()[:40]
     if (context.root_execution_id != run_id or context.parent_execution_id != run_id
@@ -151,6 +152,8 @@ def _spec_for_group(task: dict):
     config = task.get("node_config")
     canonical = validate_prepared_group_node_config(config)
     return agent_spec_from_group_config(canonical["agent_spec"])
+
+
 
 
 def _matches(value: object, data_type: str) -> bool:
@@ -435,7 +438,7 @@ def _host_custody_state_path(task: dict, project_root: Path) -> Path | None:
     # The bound ledger must live inside the project's canonical workflow state;
     # an arbitrary filesystem file is never an admitted custody authority.
     canonical_root = (project_root /
-                      ".engineering-bootstrap/studios/workflows").resolve(strict=False)
+                      ".agentic_engineering_os_px/studios/workflows").resolve(strict=False)
     if resolved != canonical_root / "resources.json":
         raise ValueError("host custody state must be the canonical workflow resource ledger")
     return resolved

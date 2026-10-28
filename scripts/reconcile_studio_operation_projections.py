@@ -5,6 +5,8 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+
+from runtime.guarded_registry_projection import publish_guarded_studio_operation_mirror
 from pathlib import Path
 
 
@@ -14,7 +16,7 @@ PROJECTIONS = (
 )
 
 
-def reconcile(root: Path, *, check: bool) -> dict[str, object]:
+def reconcile(root: Path, *, check: bool, admission_event_id: str | None = None) -> dict[str, object]:
     root = root.resolve(strict=True)
     owner = root / "registry/studio_operations.json"
     payload = owner.read_bytes()
@@ -24,8 +26,7 @@ def reconcile(root: Path, *, check: bool) -> dict[str, object]:
         if not target.is_file() or target.read_bytes() != payload:
             changed.append(relative.as_posix())
             if not check:
-                target.parent.mkdir(parents=True, exist_ok=True)
-                target.write_bytes(payload)
+                publish_guarded_studio_operation_mirror(root, relative.as_posix(), admission_event_id=admission_event_id)
     return {
         "schema_version": "px.studio-operation-projections/1.0",
         "valid": not changed or not check,
@@ -41,8 +42,9 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--root", type=Path, default=Path.cwd())
     parser.add_argument("--check", action="store_true")
+    parser.add_argument("--admission-event-id")
     args = parser.parse_args()
-    result = reconcile(args.root, check=args.check)
+    result = reconcile(args.root, check=args.check, admission_event_id=args.admission_event_id)
     print(json.dumps(result, indent=2))
     return 0 if result["valid"] else 1
 

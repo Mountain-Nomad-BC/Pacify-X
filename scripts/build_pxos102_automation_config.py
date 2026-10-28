@@ -21,7 +21,7 @@ def stage(step):
     return owner(
         "scripts/run_release_stage_owner.py",
         "--config",
-        ".engineering-bootstrap/processing-order/r102-successor-stage.json",
+        ".agentic_engineering_os_px/processing-order/r102-successor-stage.json",
         "--step",
         step,
         "--execute",
@@ -120,9 +120,9 @@ config = {
     "log_root": "evidence/release/pxos102-driver-logs",
     "installed_summary": "evidence/release/pxos102-installed-operational-summary.json",
     "installed_exhaustive_receipt": "evidence/release/pxos102-installed/exhaustive-output/receipt.json",
-    "cohesion_dag": ".engineering-bootstrap/punch-cards/cohesion-closure-20260904/dag.json",
+    "cohesion_dag": ".agentic_engineering_os_px/punch-cards/cohesion-closure-20260904/dag.json",
     "identity_manifest": {
-        "path": ".engineering-bootstrap/processing-order/pxos102-source-manifest.json"
+        "path": ".agentic_engineering_os_px/processing-order/pxos102-source-manifest.json"
     },
     "timeouts_seconds": {
         "archive_clear": 120,
@@ -145,7 +145,7 @@ config = {
         "evidence/release/pxos102-installed-operational-summary.json",
         "evidence/release/r102-stage-owner-logs",
         "evidence/release/r102-stage-receipts",
-        ".engineering-bootstrap/processing-order/pxos102-source-manifest.json",
+        ".agentic_engineering_os_px/processing-order/pxos102-source-manifest.json",
     ],
     "owners": {
         "archive_clear": {"commands": [stage("archive_clear")]},
@@ -172,7 +172,7 @@ config = {
     },
 }
 
-out = Path(".engineering-bootstrap/processing-order/pxos102-successor-automation.json")
+out = Path(".agentic_engineering_os_px/processing-order/pxos102-successor-automation.json")
 with out.open("x", encoding="utf-8", newline="\n") as f:
     json.dump(config, f, indent=2)
     f.write("\n")

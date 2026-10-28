@@ -14,7 +14,7 @@ from runtime.commissioning import _skill_registry  # noqa: E402 -- local source 
 
 def reconcile(root: Path, *, check: bool) -> dict[str, object]:
     root = root.resolve()
-    target = root / ".engineering-bootstrap/project-registry.json"
+    target = root / ".agentic_engineering_os_px/project-registry.json"
     current = json.loads(target.read_text(encoding="utf-8"))
     mode = current.get("mode", "existing")
     expected = json.loads(_skill_registry(root, str(mode)).decode("utf-8"))

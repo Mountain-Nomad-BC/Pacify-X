@@ -164,7 +164,7 @@ def disposition_for(relative: Path, suite: str) -> tuple[str, str]:
     if "/runtime/" in f"/{text}" and name.endswith(".py"):
         return (
             "admit_namespaced_runtime",
-            "engineering_bootstrap.metacognitive_evolution",
+            "agentic_engineering_os_px.metacognitive_evolution",
         )
     if "/scripts/" in f"/{text}" and name == "release_hygiene.py":
         return "merge_no_copy", "quarantine-only cleanup and release audit"
@@ -968,8 +968,8 @@ tags = ["scheduling", "orchestration", "resources", "budgets", "recovery"]
         "version": "1.0.0",
         "owner": "runtime/metacognitive_evolution/facade.py",
         "status": "active",
-        "handler": "engineering_bootstrap.metacognitive_evolution.facade:run_operation",
-        "healthcheck": "engineering_bootstrap.metacognitive_evolution.facade:integration_healthcheck",
+        "handler": "agentic_engineering_os_px.metacognitive_evolution.facade:run_operation",
+        "healthcheck": "agentic_engineering_os_px.metacognitive_evolution.facade:integration_healthcheck",
         "provides": [
             "bounded_metacognitive_analysis",
             "semantic_effect_lint",
@@ -993,8 +993,8 @@ tags = ["scheduling", "orchestration", "resources", "budgets", "recovery"]
         "version": "1.0.0",
         "owner": "runtime/capability_scheduler.py",
         "status": "active",
-        "handler": "engineering_bootstrap.capability_scheduler:simulate_schedule",
-        "healthcheck": "engineering_bootstrap.capability_scheduler:integration_healthcheck",
+        "handler": "agentic_engineering_os_px.capability_scheduler:simulate_schedule",
+        "healthcheck": "agentic_engineering_os_px.capability_scheduler:integration_healthcheck",
         "provides": [
             "deterministic_observe_only_schedule",
             "hard_gate_reason_codes",

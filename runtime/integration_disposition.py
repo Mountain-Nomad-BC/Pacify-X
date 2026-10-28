@@ -24,12 +24,7 @@ def _sha(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def _stable(value: object) -> str:
-    return hashlib.sha256(
-        json.dumps(
-            value, sort_keys=True, separators=(",", ":"), ensure_ascii=False
-        ).encode("utf-8")
-    ).hexdigest()
+from runtime.hash_utils import json_utf8_hash as _stable
 
 
 def _load_json(path: Path) -> dict[str, Any]:

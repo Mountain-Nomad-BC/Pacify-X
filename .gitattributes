@@ -27,21 +27,31 @@ evidence/releases/*/rel-*/* binary
 /.px/preserved-extension-installations/** export-ignore
 /.px/preserved-skills export-ignore
 /.px/preserved-skills/** export-ignore
-/.engineering-bootstrap/** export-ignore
-/.engineering-bootstrap/project-management -export-ignore
-/.engineering-bootstrap/project-management/state.json -export-ignore
-/.engineering-bootstrap/project-map -export-ignore
-/.engineering-bootstrap/project-map/architecture-graph.json -export-ignore
-/.engineering-bootstrap/project-registry.json -export-ignore
-/.engineering-bootstrap/test-evidence -export-ignore
-/.engineering-bootstrap/test-evidence/** -export-ignore
-/.engineering-bootstrap/test-evidence/**/*.json -export-ignore
-/.engineering-bootstrap/.ledger-authority -export-ignore
-/.engineering-bootstrap/.ledger-authority/commissioning-events -export-ignore
-/.engineering-bootstrap/.ledger-authority/commissioning-events/** -export-ignore
+/.agentic_engineering_os_px/** export-ignore
+/.agentic_engineering_os_px/project-management -export-ignore
+/.agentic_engineering_os_px/project-management/state.json -export-ignore
+/.agentic_engineering_os_px/project-map -export-ignore
+/.agentic_engineering_os_px/project-map/architecture-graph.json -export-ignore
+/.agentic_engineering_os_px/project-registry.json -export-ignore
+/.agentic_engineering_os_px/test-evidence -export-ignore
+/.agentic_engineering_os_px/test-evidence/** -export-ignore
+/.agentic_engineering_os_px/test-evidence/**/*.json -export-ignore
+/.agentic_engineering_os_px/.ledger-authority -export-ignore
+/.agentic_engineering_os_px/.ledger-authority/commissioning-events -export-ignore
+/.agentic_engineering_os_px/.ledger-authority/commissioning-events/** -export-ignore
 /registry/.operational-gap-ledger.lock export-ignore
 /registry/operational_gap_ledger.snapshot.json export-ignore
 /evidence export-ignore
 /evidence/** export-ignore
 /docs/architecture/reference/graph_baseline_architecture.json export-ignore
 /docs/architecture/reference/graph_baseline_evidence-map.json export-ignore
+
+# Beta controls remain in historical Git custody, never in rollout source archives.
+/.engineering-bootstrap export-ignore
+/.engineering-bootstrap/** export-ignore
+
+# Retained merge preimages and test outputs keep their exact evidence bytes.
+docs/repair/evidence/merge-2026-10-28/*.txt binary
+docs/repair/evidence/merge-2026-10-28/*.json -text whitespace=cr-at-eol,-blank-at-eof
+docs/repair/evidence/resume10-merge-*.log binary
+docs/repair/evidence/resume10-git-unify-*.log binary

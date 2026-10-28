@@ -11,8 +11,7 @@ _SHA = re.compile(r"^[0-9a-f]{64}$")
 _MAX_FIELD_BYTES = 4096
 
 
-def _sha(value: object) -> str:
-    return hashlib.sha256(json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode("utf-8")).hexdigest()
+from runtime.hash_utils import json_utf8_hash as _sha
 
 
 def _text(value: object, label: str, *, required: bool = True) -> str:

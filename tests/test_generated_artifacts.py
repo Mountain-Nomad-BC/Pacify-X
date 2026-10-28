@@ -41,7 +41,7 @@ def test_all_generated_projections_match_one_canonical_owner():
     assert result["checks"]["declared_suite_templates"]["projection_count"] == 21
     assert len(result["checks"]["profile_projections"]["records"]) == 5
     commissioned = json.loads(
-        (ROOT / ".engineering-bootstrap/project-registry.json").read_text(
+        (ROOT / ".agentic_engineering_os_px/project-registry.json").read_text(
             encoding="utf-8"
         )
     )

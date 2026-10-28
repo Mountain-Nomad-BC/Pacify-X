@@ -550,7 +550,7 @@ def test_workflow_condition_never_does_not_propagate_and_failed_run_is_durable(
     ]
     assert receipt["node_receipts"][1]["skip_reason"] == "incoming_condition_disabled"
     receipts = list(
-        (tmp_path / ".engineering-bootstrap/studios/workflows/runs").glob("run-*.json")
+        (tmp_path / ".agentic_engineering_os_px/studios/workflows/runs").glob("run-*.json")
     )
     assert (
         len(receipts) == 1
@@ -622,7 +622,7 @@ def test_workflow_timeout_and_retry_controls_are_enforced(tmp_path):
     with pytest.raises(RuntimeError, match="node failed"):
         studio.execute(definition, {"node:timeout.seconds": 0.2}, approval=True)
     receipt_path = next(
-        (tmp_path / ".engineering-bootstrap/studios/workflows/runs").glob("run-*.json")
+        (tmp_path / ".agentic_engineering_os_px/studios/workflows/runs").glob("run-*.json")
     )
     receipt = __import__("json").loads(receipt_path.read_text(encoding="utf-8"))
     assert receipt["run_state"] == "failed"
@@ -824,7 +824,7 @@ def test_workflow_pause_resume_cancel_and_checkpoint_recovery(
     grant = EffectGrant(
         "grant:lifecycle",
         "workflow:lifecycle",
-        ("write",),
+        ("read",),
         ("workspace:demo",),
         "human:owner",
         ("receipt:grant",),
@@ -834,7 +834,7 @@ def test_workflow_pause_resume_cancel_and_checkpoint_recovery(
         "binding:lifecycle-first",
         "workflow",
         "workflow:lifecycle",
-        "capability:increment",
+        "capability:identity",
         "1.0.0",
         (grant.grant_id,),
         None,
@@ -859,8 +859,8 @@ def test_workflow_pause_resume_cancel_and_checkpoint_recovery(
     first = WorkflowNode(
         "node:first",
         first_binding.binding_id,
-        (WorkflowPort("value", "integer"),),
-        (WorkflowPort("value", "integer"),),
+        (WorkflowPort("value", "number"),),
+        (WorkflowPort("value", "number"),),
         (grant.grant_id,),
         "fail-closed",
         5,
@@ -875,7 +875,8 @@ def test_workflow_pause_resume_cancel_and_checkpoint_recovery(
         10,
     )
     definition = WorkflowDefinition(
-        "workflow:lifecycle", "1.0.0", "human:owner", (first, slow), ()
+        "workflow:lifecycle", "1.0.0", "human:owner", (first, slow),
+        (WorkflowEdge("node:first", "value", "node:slow", "seconds"),)
     )
     studio = WorkflowStudio(tmp_path)
     studio.save_revision(definition)
@@ -883,20 +884,23 @@ def test_workflow_pause_resume_cancel_and_checkpoint_recovery(
         [first_binding, slow_binding],
         [grant],
         {
-            first_binding.binding_id: "increment",
+            first_binding.binding_id: "identity",
             slow_binding.binding_id: "sleep",
         },
     )
     studio.validate_and_admit(definition)
     # Keep a real pause/cancel window after a clean-room status subprocess
     # starts on Windows, below the admitted node deadline.
-    inputs = {"node:first.value": 1, "node:slow.seconds": 4.0}
+    inputs = {"node:first.value": 4.0, "node:slow.seconds": 4.0}
     start_payload = {**asdict(definition), "run_inputs": inputs, "approvals": {}}
     approval = approval_proof(tmp_path, "workflow", "start", start_payload)
     started = _one_shot(tmp_path, "workflow", "start", {**start_payload, "approval_capability": approval})
     assert _one_shot(tmp_path, "workflow", "status", {"run_id": started["run_id"]})["state"] != "queued"
     state = _wait_for_workflow_state(studio, started["run_id"], {"running"})
+    checkpoint_deadline = time.monotonic() + 30
     while "node:first" not in state["checkpoint"]["completed_nodes"]:
+        assert state["state"] not in {"failed", "cancelled"}, state
+        assert time.monotonic() < checkpoint_deadline, state
         time.sleep(0.02)
         state = studio.status(started["run_id"])
     with pytest.raises(PermissionError, match="explicit host approval"):
@@ -913,7 +917,11 @@ def test_workflow_pause_resume_cancel_and_checkpoint_recovery(
         approved_by="human:owner",
     )
     paused = _wait_for_workflow_state(studio, started["run_id"], {"paused"})
-    assert paused["checkpoint"]["completed_nodes"] == ["node:first"]
+    # Pause is graceful and checkpoints publish per parallel batch: the batch
+    # containing the slow node completes before the pause lands, so the paused
+    # checkpoint must contain the completed batch and never an unstarted node.
+    assert set(paused["checkpoint"]["completed_nodes"]) <= {"node:first", "node:slow"}
+    assert "node:first" in paused["checkpoint"]["completed_nodes"]
     paused_observers = [
         record
         for record in studio.manager.ledger.load()
@@ -981,7 +989,7 @@ def test_workflow_pause_resume_cancel_and_checkpoint_recovery(
         )
         immediate = studio.execute(
             definition,
-            {"node:first.value": 1, "node:slow.seconds": 0.02},
+            {"node:first.value": 0.02, "node:slow.seconds": 0.02},
             approval=True,
         )
         assert immediate["run_state"] == "succeeded"
@@ -990,7 +998,7 @@ def test_workflow_pause_resume_cancel_and_checkpoint_recovery(
             for record in studio.manager.ledger.load()
         )
 
-    success_inputs = {"node:first.value": 1, "node:slow.seconds": 0.02}
+    success_inputs = {"node:first.value": 0.02, "node:slow.seconds": 0.02}
     success_payload = {**asdict(definition), "run_inputs": success_inputs, "approvals": {}}
     success_approval = approval_proof(tmp_path, "workflow", "start", success_payload)
     success_start = _one_shot(tmp_path, "workflow", "start", {**success_payload, "approval_capability": success_approval})
@@ -1203,3 +1211,153 @@ def test_independent_ready_nodes_use_bounded_deterministic_parallel_batch(
             "branch:b": (("workspace:demo", "exclusive", "effect:b"),),
         },
     ) == ["branch:a"]
+
+
+def test_checkpoint_keeps_failed_attempts_outside_completed_denominator():
+    succeeded = {"node_id": "node:done", "state": "succeeded"}
+    failed = {"node_id": "node:retry", "state": "failed"}
+    checkpoint = WorkflowStudio._checkpoint_value(
+        {"node:done"}, {"node:done": {"value": 2}},
+        [failed, succeeded], ["node:retry"],
+    )
+    assert checkpoint["completed_nodes"] == ["node:done"]
+    assert checkpoint["node_receipts"] == [succeeded]
+    assert checkpoint["incomplete_node_receipts"] == [failed]
+    assert checkpoint["ready_nodes"] == ["node:retry"]
+
+
+def test_pause_after_failed_closed_node_keeps_that_node_retryable(tmp_path, monkeypatch):
+    definition, bindings, grants = fixture()
+    studio = WorkflowStudio(tmp_path)
+    studio.save_revision(definition)
+    studio.register_authority(bindings, grants,
+        {bindings[0].binding_id: "increment", bindings[1].binding_id: "double"})
+    studio.validate_and_admit(definition)
+    approval = studio.issue_approval(definition, "node:two", approved_by="human:vscode-local-user")
+
+    def execute_node(definition, node, inputs, run_id, approval_execution):
+        if node.node_id == "node:one":
+            return {"value": 3}, {"node_id": node.node_id, "kind": node.kind,
+                "state": "succeeded", "attempts": []}
+        studio.request_lifecycle(run_id, "pause", approved=True, approved_by="human:owner")
+        return None, {"node_id": node.node_id, "kind": node.kind,
+            "state": "failed", "attempts": [{"status": "timed_out"}]}
+
+    monkeypatch.setattr(studio, "_execute_node", execute_node)
+    receipt = studio.execute(definition, {"node:one.value": 2},
+        {"node:two": approval}, approval=True)
+    assert receipt["run_state"] == "paused"
+    checkpoint = studio.status(receipt["run_id"])["checkpoint"]
+    assert checkpoint["completed_nodes"] == ["node:one"]
+    assert set(checkpoint["results"]) == {"node:one"}
+    assert [row["node_id"] for row in checkpoint["node_receipts"]] == ["node:one"]
+    assert checkpoint["ready_nodes"] == ["node:two"]
+    assert checkpoint["incomplete_node_receipts"][0]["attempts"] == [{"status": "timed_out"}]
+    assert len(receipt["node_receipts"]) == 2
+
+
+def _effect_fence_studio(tmp_path, monkeypatch):
+    definition, _, _ = fixture()
+    node = replace(definition.nodes[0], retry_limit=2)
+    studio = WorkflowStudio(tmp_path)
+    monkeypatch.setattr(studio, "_node_authority",
+        lambda *args: ({"grant:mutation": "a" * 64}, (("workspace:demo", "exclusive", "write"),)))
+    return studio, definition, node
+
+def test_workflow_effect_intent_and_lease_precede_worker_and_only_owner_commits(tmp_path, monkeypatch):
+    from runtime.effect_intent import EffectIntentLedger
+    from runtime.scope_lease import ScopeLeaseStore
+    studio, definition, node = _effect_fence_studio(tmp_path, monkeypatch)
+    def worker(*args):
+        bindings = args[-1]
+        ledger = EffectIntentLedger(tmp_path)
+        leases = ScopeLeaseStore(tmp_path).active(effect="write")
+        assert len(leases) == 1
+        assert leases[0].execution_id == bindings[0]["execution_id"]
+        assert ledger.fence(bindings[0]["idempotency_key"])["disposition"] == "in_flight"
+        # The actual effect owner commits its native intent, then returns that
+        # exact outcome. Host settlement only observes it.
+        ledger.commit(idempotency_key=bindings[0]["idempotency_key"],
+            execution_id=bindings[0]["execution_id"], result_sha256="b" * 64)
+        outcome = {**bindings[0], "result_sha256": "b" * 64}
+        committed = studio._settle_node_effect_intents(bindings, {"completed_effects": [outcome]})
+        return {"value": 3}, {"committed_effect_intents": committed}
+    monkeypatch.setattr(studio, "_run_node_attempt", worker)
+    outputs, receipt = studio._run_node(definition, node, {"value": 2}, "run:effect", 1, None, None)
+    assert outputs == {"value": 3}
+    assert receipt["committed_effect_intents"][0]["result_sha256"] == "b" * 64
+    assert ScopeLeaseStore(tmp_path).active(effect="write") == ()
+
+def test_unused_mutating_permission_never_manufactures_commit_or_retries(tmp_path, monkeypatch):
+    from runtime.effect_intent import EffectIntentLedger
+    from runtime.workflow_studio import _WorkflowEffectReconciliationRequired
+    studio, definition, node = _effect_fence_studio(tmp_path, monkeypatch)
+    calls = []
+    def pure_worker(*args):
+        bindings = args[-1]
+        calls.append(bindings)
+        studio._settle_node_effect_intents(bindings,
+            {"completed_effects": [], "attempted_effects": [], "outputs": {"value": 3}})
+    monkeypatch.setattr(studio, "_run_node_attempt", pure_worker)
+    output, receipt = studio._execute_node(definition, node, {"value": 2}, "run:unused", None)
+    assert output is None
+    assert len(calls) == len(receipt["attempts"]) == 1
+    key = calls[0][0]["idempotency_key"]
+    assert EffectIntentLedger(tmp_path).fence(key)["disposition"] == "failed"
+    with pytest.raises(_WorkflowEffectReconciliationRequired, match="reconciliation"):
+        studio._run_node(definition, node, {"value": 2}, "run:unused", 99, None, None)
+    assert len(calls) == 1
+
+def test_worker_output_cannot_commit_a_native_effect(tmp_path, monkeypatch):
+    from runtime.effect_intent import EffectIntentLedger
+    from runtime.workflow_studio import _WorkflowEffectReconciliationRequired
+    studio, definition, node = _effect_fence_studio(tmp_path, monkeypatch)
+    seen = []
+    def forged_worker(*args):
+        bindings = args[-1]
+        seen.extend(bindings)
+        studio._settle_node_effect_intents(bindings,
+            {"completed_effects": [{**bindings[0], "result_sha256": "b" * 64}]})
+    monkeypatch.setattr(studio, "_run_node_attempt", forged_worker)
+    with pytest.raises(_WorkflowEffectReconciliationRequired):
+        studio._run_node(definition, node, {}, "run:forged", 1, None, None)
+    assert EffectIntentLedger(tmp_path).fence(seen[0]["idempotency_key"])["disposition"] == "failed"
+
+def test_partial_native_effect_failure_is_not_replayed(tmp_path, monkeypatch):
+    from runtime.effect_intent import EffectIntentLedger
+    studio, definition, node = _effect_fence_studio(tmp_path, monkeypatch)
+    monkeypatch.setattr(studio, "_node_authority", lambda *args:
+        ({"grant:mutation": "a" * 64}, (("workspace:a", "exclusive", "write"),
+                                         ("workspace:b", "exclusive", "write"))))
+    seen = []
+    def partial_worker(*args):
+        bindings = args[-1]
+        seen.extend(bindings)
+        EffectIntentLedger(tmp_path).commit(idempotency_key=bindings[0]["idempotency_key"],
+            execution_id=bindings[0]["execution_id"], result_sha256="b" * 64)
+        raise RuntimeError("second effect outcome unknown")
+    monkeypatch.setattr(studio, "_run_node_attempt", partial_worker)
+    output, receipt = studio._execute_node(definition, node, {}, "run:partial", None)
+    assert output is None
+    assert len(receipt["attempts"]) == 1
+    assert len(seen) == 2
+    assert [EffectIntentLedger(tmp_path).fence(row["idempotency_key"])["disposition"]
+            for row in seen] == ["committed", "failed"]
+
+
+def test_lease_acquisition_failure_cannot_fail_another_attempts_intent(tmp_path, monkeypatch):
+    from runtime.effect_intent import EffectIntentLedger
+    from runtime.scope_lease import ScopeLeaseStore, ScopeLeaseError
+    from runtime.studio_models import digest
+    from runtime.workflow_studio import _WorkflowEffectReconciliationRequired
+    studio, definition, node = _effect_fence_studio(tmp_path, monkeypatch)
+    key = "workflow-node-effect:" + digest({"run_id": "run:race",
+        "node_id": node.node_id, "effect": "write", "scope": "workspace:demo"})
+    def competing_acquire(self, **request):
+        EffectIntentLedger(tmp_path).intend(idempotency_key=key,
+            execution_id=request["execution_id"], effect="write", scopes=["workspace:demo"])
+        raise ScopeLeaseError("concurrent holder")
+    monkeypatch.setattr(ScopeLeaseStore, "acquire", competing_acquire)
+    with pytest.raises(_WorkflowEffectReconciliationRequired):
+        studio._run_node(definition, node, {}, "run:race", 1, None, None)
+    assert EffectIntentLedger(tmp_path).fence(key)["disposition"] == "in_flight"

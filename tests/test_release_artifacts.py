@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import json
 from pathlib import Path
 import shutil
@@ -36,20 +37,7 @@ RETAINED_REJECTED_VSIX = (
     "evidence/release/rejected-marketplace-upload/"
     "pacify-x-vscode-0.6.87-c412addf-rejected-license-path.vsix"
 )
-DECLARED_PACKAGED_EVIDENCE = (
-    "evidence/archive-catalog.json",
-    "evidence/bundles/archive-custody-20260803/manifest.json",
-    "evidence/bundles/archive-custody-20260803/complete_file_inventory.jsonl",
-    "evidence/capability-mining-receipt.json",
-    "evidence/contract-disposition-receipt.json",
-    "evidence/corpus-intake-receipt.json",
-    "evidence/domain-reference-receipt.json",
-    "evidence/external-source-admission-receipt.json",
-    "evidence/process-audit-intake-receipt.json",
-    "evidence/source-corpus-completeness.json",
-    "evidence/source-intake-receipt.json",
-    "evidence/source-migration-receipt.json",
-)
+DECLARED_PACKAGED_EVIDENCE = ()  # OWNER-FRESH-VALIDATION-001 retires historical package inputs.
 
 
 def _minimal_tree() -> Path:
@@ -123,7 +111,7 @@ def test_only_evidence_change_does_not_change_product_digest() -> None:
 
 def test_live_test_orchestration_lock_is_control_output_not_product() -> None:
     root = _minimal_tree()
-    lock = root / ".engineering-bootstrap/test-evidence/.test-orchestration.lock"
+    lock = root / ".agentic_engineering_os_px/test-evidence/.test-orchestration.lock"
     lock.parent.mkdir(parents=True)
     lock.write_text('{"owner":"active-test-profile"}\n', encoding="utf-8")
 
@@ -163,7 +151,7 @@ def test_host_local_probe_and_lock_recovery_receipts_are_excluded_from_release()
 
 def test_project_local_focused_test_custody_is_excluded_from_release() -> None:
     root = _minimal_tree()
-    generated = root / ".engineering-bootstrap/focused-temp/pytest/generated.py"
+    generated = root / ".agentic_engineering_os_px/focused-temp/pytest/generated.py"
     generated.parent.mkdir(parents=True)
     generated.write_text("raise RuntimeError('test-only')\n", encoding="utf-8")
 
@@ -220,16 +208,16 @@ def test_governance_and_receipt_progress_cannot_mutate_frozen_product_identity()
 ):
     root = _minimal_tree()
     controls = {
-        ".engineering-bootstrap/admission-payloads/release-stage.json": '{"effect":"execute"}\n',
-        ".engineering-bootstrap/cleanup-receipts/cleanup.json": '{"status":"closed"}\n',
-        ".engineering-bootstrap/export-resources.json": '{"active":0}\n',
-        ".engineering-bootstrap/export-resources.json.lock": '{"owner":"none"}\n',
-        ".engineering-bootstrap/processing-order/final-stage.json": '{"state":"pending"}\n',
-        ".engineering-bootstrap/processing-order/repair-campaign.json": '{"phase":"repair_frozen"}\n',
-        ".engineering-bootstrap/processing-order/release-identity.json": '{"state":"cleared"}\n',
-        ".engineering-bootstrap/test-evidence/sections/testing-governance.json": '{"passed":true}\n',
-        ".engineering-bootstrap/test-evidence/groups/core-a-f.json": '{"passed":true}\n',
-        ".engineering-bootstrap/resource-lifecycle/cleanup-receipts/process.json": '{"status":"exited"}\n',
+        ".agentic_engineering_os_px/admission-payloads/release-stage.json": '{"effect":"execute"}\n',
+        ".agentic_engineering_os_px/cleanup-receipts/cleanup.json": '{"status":"closed"}\n',
+        ".agentic_engineering_os_px/export-resources.json": '{"active":0}\n',
+        ".agentic_engineering_os_px/export-resources.json.lock": '{"owner":"none"}\n',
+        ".agentic_engineering_os_px/processing-order/final-stage.json": '{"state":"pending"}\n',
+        ".agentic_engineering_os_px/processing-order/repair-campaign.json": '{"phase":"repair_frozen"}\n',
+        ".agentic_engineering_os_px/processing-order/release-identity.json": '{"state":"cleared"}\n',
+        ".agentic_engineering_os_px/test-evidence/sections/testing-governance.json": '{"passed":true}\n',
+        ".agentic_engineering_os_px/test-evidence/groups/core-a-f.json": '{"passed":true}\n',
+        ".agentic_engineering_os_px/resource-lifecycle/cleanup-receipts/process.json": '{"status":"exited"}\n',
         "extension/SHA256SUMS.txt": "old  dist/package.vsix\n",
         "registry/.operational-gap-ledger.lock": '{"owner":"one"}\n',
         "registry/completion_status.json": '{"complete":false}\n',
@@ -248,14 +236,14 @@ def test_governance_and_receipt_progress_cannot_mutate_frozen_product_identity()
     assert frozen["product_digest"] == current["product_digest"]
     records = {item["path"]: item for item in current["records"]}
     for relative in (
-        ".engineering-bootstrap/admission-payloads/release-stage.json",
-        ".engineering-bootstrap/cleanup-receipts/cleanup.json",
-        ".engineering-bootstrap/export-resources.json",
-        ".engineering-bootstrap/export-resources.json.lock",
-        ".engineering-bootstrap/processing-order/final-stage.json",
-        ".engineering-bootstrap/processing-order/repair-campaign.json",
-        ".engineering-bootstrap/processing-order/release-identity.json",
-        ".engineering-bootstrap/test-evidence/sections/testing-governance.json",
+        ".agentic_engineering_os_px/admission-payloads/release-stage.json",
+        ".agentic_engineering_os_px/cleanup-receipts/cleanup.json",
+        ".agentic_engineering_os_px/export-resources.json",
+        ".agentic_engineering_os_px/export-resources.json.lock",
+        ".agentic_engineering_os_px/processing-order/final-stage.json",
+        ".agentic_engineering_os_px/processing-order/repair-campaign.json",
+        ".agentic_engineering_os_px/processing-order/release-identity.json",
+        ".agentic_engineering_os_px/test-evidence/sections/testing-governance.json",
         "extension/SHA256SUMS.txt",
         "registry/.operational-gap-ledger.lock",
         "registry/completion_status.json",
@@ -402,11 +390,14 @@ def test_invalid_active_passed_prefix_rewinds_only_from_its_exact_repair_phase(
 
 
 def _write_release_repair_state(root: Path, phase: str) -> None:
-    campaign = root / ".engineering-bootstrap/processing-order/repair-campaign.json"
+    policy_path = root / "policies/rev1xx-validation.json"
+    current_repair_id = (json.loads(policy_path.read_text(encoding="utf-8"))["campaign_id"]
+                         if policy_path.is_file() else "repair-exact")
+    campaign = root / ".agentic_engineering_os_px/processing-order/repair-campaign.json"
     campaign.parent.mkdir(parents=True, exist_ok=True)
     campaign.write_text(
         '{"schema_version":"px.repair-campaign/1.0",'
-        f'"campaign_id":"repair-exact","phase":"{phase}",'
+        f'"campaign_id":"{current_repair_id}","phase":"{phase}",'
         '"intake_open":false,"unresolved":[]}\n',
         encoding="utf-8",
     )
@@ -448,7 +439,7 @@ def test_real_classifier_is_stable_across_identity_apply_and_invalid_supersessio
         item
         for item in after_apply["records"]
         if item["path"]
-        == ".engineering-bootstrap/processing-order/release-identity.json"
+        == ".agentic_engineering_os_px/processing-order/release-identity.json"
     )
     assert identity_record["classification"] == "control_output"
     assert identity_record["sha256"] is None
@@ -495,7 +486,21 @@ def test_current_product_tree_identity_apply_is_a_fixed_point(tmp_path: Path) ->
     cleared = classify_tree(root)
     assert cleared["valid"] and cleared["product_valid"], cleared["errors"]
     _write_release_repair_state(root, "revision_reconciled")
-    applied = apply_release_identity(root)
+    # The materialized tree carries the current-campaign validation policy, so
+    # identity apply requires a verified native source anchor. Build the exact
+    # anchor through the source-freeze producer after the campaign-state writes
+    # settle, so the live tree matches the anchor at verification time.
+    from runtime.source_freeze import freeze_source
+
+    freeze = freeze_source(
+        root, freeze_id="exact-current-product", current_campaign=True
+    )
+    receipt_path = root / freeze.receipt["receipt_path"]
+    source_anchor = {
+        "path": freeze.receipt["receipt_path"],
+        "sha256": hashlib.sha256(receipt_path.read_bytes()).hexdigest(),
+    }
+    applied = apply_release_identity(root, source_freeze_reference=source_anchor)
     active = classify_tree(root)
     assert active["valid"] and active["product_valid"], active["errors"]
     assert applied["valid"] is True
@@ -516,7 +521,7 @@ def test_current_product_tree_identity_apply_is_a_fixed_point(tmp_path: Path) ->
 
 def test_control_output_prefix_does_not_hide_neighboring_product_source() -> None:
     root = _minimal_tree()
-    source = root / ".engineering-bootstrap/test-evidence-contract.py"
+    source = root / ".agentic_engineering_os_px/test-evidence-contract.py"
     source.parent.mkdir(parents=True, exist_ok=True)
     source.write_text("VALUE = 1\n", encoding="utf-8")
     frozen = classify_tree(root)
@@ -534,7 +539,7 @@ def test_control_output_prefix_does_not_hide_neighboring_product_source() -> Non
 def test_retained_wal_transaction_custody_is_control_output() -> None:
     root = _minimal_tree()
     first = classify_tree(root)
-    journal = root / ".engineering-bootstrap/wal/cohesion/committed/tx/manifest.json"
+    journal = root / ".agentic_engineering_os_px/wal/cohesion/committed/tx/manifest.json"
     journal.parent.mkdir(parents=True)
     journal.write_text('{"state":"committed"}\n', encoding="utf-8")
     second = classify_tree(root)
@@ -751,7 +756,7 @@ def test_materialized_release_source_is_bounded_and_complete() -> None:
         receipt = materialize_release_source(
             ROOT,
             destination,
-            extra_paths=("evidence/externalized-payload-index.json",),
+            extra_paths=("policies/rev1xx-validation.json",),
         )
 
         assert receipt["valid"]
@@ -767,7 +772,7 @@ def test_materialized_release_source_is_bounded_and_complete() -> None:
             ROOT / "pyproject.toml"
         ).read_bytes()
         assert (destination / "runtime/release_artifacts.py").is_file()
-        assert (destination / "evidence/externalized-payload-index.json").is_file()
+        assert (destination / "policies/rev1xx-validation.json").is_file()
         assert not (destination / "registry/operational_gap_ledger.jsonl").exists()
         assert not (
             destination / "registry/operational_gap_ledger.snapshot.json"
@@ -1124,7 +1129,7 @@ def _claimed_campaign_tree() -> Path:
     """A tree whose recorded identity cannot match its live source."""
 
     root = _minimal_tree()
-    state_dir = root / ".engineering-bootstrap/processing-order"
+    state_dir = root / ".agentic_engineering_os_px/processing-order"
     state_dir.mkdir(parents=True)
     (state_dir / "release-identity.json").write_text(
         json.dumps(_orphanable_campaign(), indent=2) + "\n", encoding="utf-8"
@@ -1152,7 +1157,7 @@ def test_orphaned_claim_release_returns_the_stage_to_pending_not_passed() -> Non
     root = _claimed_campaign_tree()
     result = release_orphaned_release_stage_claim(root)
     campaign = json.loads(
-        (root / ".engineering-bootstrap/processing-order/release-identity.json").read_text(
+        (root / ".agentic_engineering_os_px/processing-order/release-identity.json").read_text(
             encoding="utf-8"
         )
     )
@@ -1171,7 +1176,7 @@ def test_orphaned_claim_release_preserves_the_abandoned_claim_in_history() -> No
 
     root = _claimed_campaign_tree()
     original = json.loads(
-        (root / ".engineering-bootstrap/processing-order/release-identity.json").read_text(
+        (root / ".agentic_engineering_os_px/processing-order/release-identity.json").read_text(
             encoding="utf-8"
         )
     )
@@ -1180,7 +1185,7 @@ def test_orphaned_claim_release_preserves_the_abandoned_claim_in_history() -> No
 
     release_orphaned_release_stage_claim(root)
     campaign = json.loads(
-        (root / ".engineering-bootstrap/processing-order/release-identity.json").read_text(
+        (root / ".agentic_engineering_os_px/processing-order/release-identity.json").read_text(
             encoding="utf-8"
         )
     )
@@ -1200,7 +1205,7 @@ def test_orphaned_claim_release_requires_a_bound_single_claim() -> None:
     """A campaign without exactly one bound claim is refused."""
 
     root = _claimed_campaign_tree()
-    state = root / ".engineering-bootstrap/processing-order/release-identity.json"
+    state = root / ".agentic_engineering_os_px/processing-order/release-identity.json"
     campaign = json.loads(state.read_text(encoding="utf-8"))
     campaign["active_claim"] = None
     campaign["stages"]["sections"] = {"status": "pending", "claim_id": None}
@@ -1214,7 +1219,7 @@ def test_orphaned_claim_release_refuses_a_mismatched_claim_binding() -> None:
     """The claim must name the stage it is bound to."""
 
     root = _claimed_campaign_tree()
-    state = root / ".engineering-bootstrap/processing-order/release-identity.json"
+    state = root / ".agentic_engineering_os_px/processing-order/release-identity.json"
     campaign = json.loads(state.read_text(encoding="utf-8"))
     campaign["active_claim"]["stage"] = "certify"
     state.write_text(json.dumps(campaign, indent=2) + "\n", encoding="utf-8")
@@ -1228,13 +1233,13 @@ def test_orphaned_claim_release_does_not_advance_the_repair_campaign() -> None:
 
     root = _claimed_campaign_tree()
     before = json.loads(
-        (root / ".engineering-bootstrap/processing-order/repair-campaign.json").read_text(
+        (root / ".agentic_engineering_os_px/processing-order/repair-campaign.json").read_text(
             encoding="utf-8"
         )
     )
     release_orphaned_release_stage_claim(root)
     after = json.loads(
-        (root / ".engineering-bootstrap/processing-order/repair-campaign.json").read_text(
+        (root / ".agentic_engineering_os_px/processing-order/repair-campaign.json").read_text(
             encoding="utf-8"
         )
     )
@@ -1248,7 +1253,7 @@ def test_released_campaign_state_validates() -> None:
     root = _claimed_campaign_tree()
     release_orphaned_release_stage_claim(root)
     campaign = json.loads(
-        (root / ".engineering-bootstrap/processing-order/release-identity.json").read_text(
+        (root / ".agentic_engineering_os_px/processing-order/release-identity.json").read_text(
             encoding="utf-8"
         )
     )

@@ -71,7 +71,7 @@ def test_stable_idle_snapshot_is_read_only_and_cached_work_is_quiet(tmp_path: Pa
         domains=("hardware",),
         cache_seconds=60,
     )
-    state_path = tmp_path / ".engineering-bootstrap/runtime-core/state.json"
+    state_path = tmp_path / ".agentic_engineering_os_px/runtime-core/state.json"
     before = state_path.read_bytes()
     second = plane.execute(
         "sensor",
@@ -92,7 +92,7 @@ def test_corrupt_cache_is_rejected_and_rebuilt(tmp_path: Path) -> None:
     plane = RuntimeWorkPlane(tmp_path)
     operation = "sensor"
     key = __import__("hashlib").sha256(operation.encode("utf-8")).hexdigest()[:24]
-    cache_path = tmp_path / ".engineering-bootstrap/runtime-core/cache" / f"{key}.json"
+    cache_path = tmp_path / ".agentic_engineering_os_px/runtime-core/cache" / f"{key}.json"
     cache_path.parent.mkdir(parents=True)
     cache_path.write_text("{not-json", encoding="utf-8")
 
@@ -130,7 +130,7 @@ def test_tampered_cache_result_and_invalid_creation_times_are_rebuilt(
     )
     assert first["result"] == {"cpu": 1}
     key = __import__("hashlib").sha256(b"sensor").hexdigest()[:24]
-    cache_path = tmp_path / ".engineering-bootstrap/runtime-core/cache" / f"{key}.json"
+    cache_path = tmp_path / ".agentic_engineering_os_px/runtime-core/cache" / f"{key}.json"
     cached = __import__("json").loads(cache_path.read_text(encoding="utf-8"))
     cached["result"] = {"cpu": 999}
     cache_path.write_text(__import__("json").dumps(cached), encoding="utf-8")
@@ -178,7 +178,7 @@ def test_owned_vscode_host_can_isolate_its_runtime_work_plane(
     assert plane.plane == isolated.resolve()
     assert result["result"] == {"isolated": True}
     assert (isolated / "state.json").is_file()
-    assert not (tmp_path / "engine/.engineering-bootstrap/runtime-core").exists()
+    assert not (tmp_path / "engine/.agentic_engineering_os_px/runtime-core").exists()
 
 
 def test_runtime_work_plane_override_rejects_unowned_process(

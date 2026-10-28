@@ -459,7 +459,7 @@ function readSkillPackage(engineRoot, suppliedPath, options = {}) {
   if (scope === 'project-studio') {
     if (typeof options.projectRoot !== 'string' || !options.projectRoot.trim()) throw new Error('studio-package-project-root-required');
     root = fs.realpathSync.native(path.resolve(options.projectRoot));
-    allowed = path.resolve(root, '.engineering-bootstrap', 'studios', 'skills');
+    allowed = path.resolve(root, '.agentic_engineering_os_px', 'studios', 'skills');
   }
   const candidate = path.resolve(root, ...relativePath.split('/')); if (!fs.existsSync(candidate)) throw new Error('studio-package-read-missing');
   rejectLinkBoundary(root, candidate);

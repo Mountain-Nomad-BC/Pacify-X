@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from .remote_model_attachment import SCHEMA as REMOTE_ATTACHMENT_SCHEMA
+
 from dataclasses import asdict
 from datetime import datetime, timezone, timedelta
 import hashlib
@@ -211,7 +213,7 @@ class AgentRuntimeController:
             self.project_root.anchor
         ):
             raise ValueError("agent project root must be bounded")
-        self.state_root = self.project_root / ".engineering-bootstrap/studios/agents"
+        self.state_root = self.project_root / ".agentic_engineering_os_px/studios/agents"
         self.manager = ResourceManager(self.state_root / "resources.json")
         self.supervisor = ProcessSupervisor(self.manager)
         self.authority = StudioAuthorityStore(self.project_root)
@@ -1254,6 +1256,8 @@ class AgentRuntimeController:
         supervisor verification.
         """
         from .remote_provider_placement import require_complete_group_provider_custody
+        if workflow_effect_receipt is not None and not callable(getattr(member_executor, "adapter_for", None)):
+            raise PermissionError("production group workflow requires its exact bound provider resolver")
         # Custody is proven against the adapter resolver this executor was built
         # with, so the check matches the provider that will actually run.
         require_complete_group_provider_custody(
@@ -1722,6 +1726,42 @@ class AgentRuntimeController:
         )
         return str(state["run_id"]), record_path, admission, live_hashes
 
+    @classmethod
+    def assert_host_run_current(cls, project_root: Path, spec: AgentSpec, *, run_id: str, task: Mapping[str, object]) -> dict[str, object]:
+        """Observe existing signed host authority without initializing any owner."""
+        # A read-only view reuses the canonical admission checks. It never escapes
+        # this method and has no process/resource publisher installed.
+        view = cls.__new__(cls)
+        view.project_root = Path(project_root).resolve(strict=True)
+        view.state_root = view.project_root / ".agentic_engineering_os_px/studios/agents"
+        verify_safe_ancestors(view.project_root, view.state_root)
+        view.authority = StudioAuthorityStore.open_existing(view.project_root)
+        view.run_control = DurableRunControl.open_existing(view.project_root, view.state_root / "sessions")
+        # Use the canonical signed snapshot verifier without creating advisory
+        # lock/lease metadata. Concurrent publication fails closed on readback.
+        state = view.run_control._read_unlocked(run_id)
+        record_path, admission, live_hashes = view._admitted_context(spec)
+        path = record_path.parent / "runs" / f"{run_id}-prepared.json"
+        verify_safe_ancestors(view.project_root, path)
+        prepared = view.authority.verify_receipt(_read_revision_json(path))
+        if (spec.harness_id != "harness:vscode-lm" or spec.model.get("provider") not in {"vscode-lm", "pacify-local"}
+                or state["state"] != "running" or state["kind"] != "agent"
+                or state["subject_id"] != spec.agent_id or state["version"] != spec.version
+                or state["request_sha256"] != digest(task)
+                or prepared.get("schema_version") != "px.agent-host-run-prepared/1.0"
+                or prepared.get("run_id") != run_id or prepared.get("agent_id") != spec.agent_id
+                or prepared.get("task") != dict(task) or prepared.get("task_sha256") != digest(task)
+                or prepared.get("model") != dict(spec.model)
+                or prepared.get("agent_revision_sha256") != admission["agent_revision_sha256"]
+                or prepared.get("authority_record_hashes") != live_hashes
+                or prepared.get("control_sequence") != state["sequence"]
+                or view.run_control._read_unlocked(run_id) != state):
+            raise PermissionError("signed host run is no longer current")
+        _validate_object_contract(task, spec.input_schema, "input")
+        return {"schema_version": "px.agent-host-run-current/1.0", "run_id": run_id,
+                "control_sequence": state["sequence"], "agent_revision_sha256": admission["agent_revision_sha256"],
+                "prepared_sha256": digest(prepared), "state": "running", "authority_granted": False}
+
     def prepare_host_run(
         self, spec: AgentSpec, *, task: Mapping[str, object], approval: bool
     ) -> dict[str, object]:
@@ -2114,7 +2154,22 @@ class AgentRuntimeController:
             "error": failure,
         }
         signed = self.authority.sign_receipt(receipt)
-        write_json_atomic(record_path.parent / "runs" / f"{run_id}.json", signed)
+        receipt_path = record_path.parent / "runs" / f"{run_id}.json"
+        write_json_atomic(receipt_path, signed)
+        # Attribute the host execution to the agent's own immutable Studio owner. As
+        # with governed-plan completion, an advisory T.I.E. write must never turn a
+        # completed host effect into a reported failure.
+        from .usage_memory import retain_studio_run_experience
+        try:
+            receipt["tie_update"] = retain_studio_run_experience(self.project_root, "agent", spec.agent_id,
+                spec.version, run_id=run_id, state=str(target),
+                evidence_ref=receipt_path.relative_to(self.project_root).as_posix())
+            signed = self.authority.sign_receipt(receipt)
+            write_json_atomic(receipt_path, signed)
+        except Exception as error:
+            receipt["tie_update"] = {"status": "PERSISTENCE_FAILED", "recorded": False,
+                "failure_type": type(error).__name__, "reason": str(error)[:512], "authority_granted": False}
+            signed = {**signed, "tie_update": receipt["tie_update"], "base_receipt_sha256": digest(signed)}
         return signed
 
     def _execute_session(

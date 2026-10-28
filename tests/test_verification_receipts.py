@@ -82,7 +82,7 @@ def test_concurrent_receipt_publications_keep_exact_complete_image_and_closed_ow
     assert targets[0] == targets[1]
     assert receipts.read(tmp_path, 'chunk', 'fixture', 'chunk-01') in rows
     from runtime.resource_lifecycle import ResourceLedger
-    records = ResourceLedger(tmp_path / '.engineering-bootstrap/resource-lifecycle/ledger.json').load()
+    records = ResourceLedger(tmp_path / '.agentic_engineering_os_px/resource-lifecycle/ledger.json').load()
     assert len(records) == 2
     assert all(row.status == 'reclaimed' and not row.active for row in records)
     assert not list(targets[0].parent.glob('*.tmp'))
@@ -105,7 +105,7 @@ def test_failed_publication_retains_exact_owned_image_and_predecessor(tmp_path, 
         receipts.write(tmp_path, 'chunk', row)
     assert target.read_bytes() == before
     from runtime.resource_lifecycle import ResourceLedger
-    records = ResourceLedger(tmp_path / '.engineering-bootstrap/resource-lifecycle/ledger.json').load()
+    records = ResourceLedger(tmp_path / '.agentic_engineering_os_px/resource-lifecycle/ledger.json').load()
     retained = [r for r in records if r.status == 'retained']
     assert len(retained) == 1 and retained[0].retention_required
     assert Path(retained[0].path).is_file()

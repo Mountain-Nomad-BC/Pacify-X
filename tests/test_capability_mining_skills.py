@@ -172,11 +172,11 @@ class CapabilityMiningSkillTests(unittest.TestCase):
             root = Path(folder)
             diagnostic = (
                 root
-                / ".engineering-bootstrap/diagnostics/retained/source/runtime.py"
+                / ".agentic_engineering_os_px/diagnostics/retained/source/runtime.py"
             )
             diagnostic.parent.mkdir(parents=True)
             diagnostic.write_text("def copied_source():\n    pass\n", encoding="utf-8")
-            managed = root / ".engineering-bootstrap/policies/live.py"
+            managed = root / ".agentic_engineering_os_px/policies/live.py"
             managed.parent.mkdir(parents=True)
             managed.write_text("def managed_source():\n    pass\n", encoding="utf-8")
             active = root / "runtime.py"
@@ -187,7 +187,7 @@ class CapabilityMiningSkillTests(unittest.TestCase):
             self.assertEqual(result["finding_count"], 2)
             self.assertEqual(
                 {item["path"] for item in result["findings"]},
-                {".engineering-bootstrap/policies/live.py", "runtime.py"},
+                {".agentic_engineering_os_px/policies/live.py", "runtime.py"},
             )
 
     def test_source_auditor_accounts_for_every_file(self):

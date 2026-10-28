@@ -37,6 +37,7 @@
     "onLanguageModelChat:pacify-x",
     "onChatParticipant:pacify-x.control",
     "onCommand:pacifyX.openDashboard",
+    "onCommand:pacifyX.manageSubjectData",
     "onCommand:pacifyX.setupStudio",
     "onUri",
     "onView:pacifyX.controlCenter"
@@ -66,6 +67,11 @@
       }
     ],
     "commands": [
+      {
+        "command": "pacifyX.manageSubjectData",
+        "title": "Manage Subject Data (Approved Native Controls)",
+        "category": "Pacify-X"
+      },
       {
         "command": "pacifyX.openDashboard",
         "title": "Open Control Plane",
@@ -409,6 +415,27 @@
           "type": "boolean",
           "default": true,
           "description": "Require a fresh explicit human approval before every billable execution."
+        },
+        "pacifyX.isolatedAgentSandbox": {
+          "type": "string",
+          "enum": [
+            "OFF",
+            "ON"
+          ],
+          "default": "OFF",
+          "scope": "resource",
+          "markdownDescription": "Isolated Agent Sandbox mode. **ON** activates the single coordinated execution mode: monitored isolation for all governed agents (monitoring, stable process registration, read-only Gremlin Nanny control plane, fail-closed network policy, enforcement rules, logging provenance and orchestrator awareness). PX runtime policy is the authority that enforces this mode; the UI only selects it. This setting is shared by the top Chat Settings dropdown and the Side Panel Control Panel and always stays synchronized."
+        },
+        "pacifyX.isolatedAgentSandbox.allowedEndpoints": {
+          "type": "array",
+          "default": [],
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9.-]*(:[0-9]{1,5})?$"
+          },
+          "scope": "resource",
+          "description": "Explicit external endpoints a governed agent may contact while Isolated Agent Sandbox is ON. An empty list denies all governed external connectivity. Endpoints are exact host[:port] values, never URLs or paths."
         },
         "pacifyX.codexSandbox": {
           "type": "string",

@@ -1,0 +1,27 @@
+✔ PX-AUD-052 openai CRLF frame separator is parsed across chunks (17.5515ms)
+✔ PX-AUD-053 openai truncated stream without terminal throws (0.5989ms)
+✔ PX-AUD-053 openai data after terminal throws (0.4359ms)
+✔ PX-AUD-054 ollama trailing record without newline is consumed (0.5754ms)
+✔ PX-AUD-055 ollama early EOF without done:true throws (0.4607ms)
+✔ PX-AUD-055 ollama explicit done:true is accepted (0.3936ms)
+✔ openai malformed frame cancels actual stream source and releases reader custody (0.4268ms)
+✔ openai abort settles a pending stream read and releases transport (0.3498ms)
+✔ ollama malformed frame cancels actual stream source and releases reader custody (0.8304ms)
+✔ ollama abort settles a pending stream read and releases transport (0.3709ms)
+✔ bounded Ollama loopback stream succeeds only after an explicit completion event (39.2978ms)
+✔ Ollama streaming faults have stable, non-sensitive classifications (118.0634ms)
+✔ Ollama cancellation is distinct from timeout and disconnect (32.6698ms)
+✔ Ollama total deadline is independently classified (48.7627ms)
+✔ provider invoker uses the routed worker output-token allowance (1.8949ms)
+✔ provider invoker retains its bounded default when no worker allowance is supplied (0.2208ms)
+✔ provider invoker rejects an invalid output-token allowance before bridge invocation (0.3909ms)
+✔ provider invoker refuses a missing invocation owner instead of minting one (0.1271ms)
+ℹ tests 18
+ℹ suites 0
+ℹ pass 18
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 301.5711
+

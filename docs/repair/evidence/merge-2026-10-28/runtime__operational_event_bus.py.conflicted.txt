@@ -1,0 +1,466 @@
+"""Durable local publication and replay for canonical operational events."""
+
+from __future__ import annotations
+
+from copy import deepcopy
+import hashlib
+import json
+from pathlib import Path
+import threading
+import time
+from typing import Any, Mapping
+
+from .file_lock import FileLock
+from .operational_visibility import validate_operation_event, validate_route_registry
+from .wal_transaction import JsonArtifact, JsonWal
+
+
+ZERO_SHA256 = "0" * 64
+
+
+def _canonical(value: object) -> bytes:
+    return json.dumps(
+        value, sort_keys=True, separators=(",", ":"), ensure_ascii=False, allow_nan=False
+    ).encode("utf-8")
+
+
+def _sha(value: object) -> str:
+    return hashlib.sha256(_canonical(value)).hexdigest()
+
+
+class OperationalEventBus:
+    """Publish one ordered operation stream below an explicitly bounded root."""
+
+    def __init__(self, engine_root: Path, bus_root: Path, allowed_root: Path) -> None:
+        self.engine_root = engine_root.resolve(strict=True)
+        self.allowed_root = allowed_root.resolve(strict=True)
+        self.root = bus_root.resolve()
+        try:
+            self.root.relative_to(self.allowed_root)
+        except ValueError as error:
+            raise ValueError("event bus root must stay below allowed root") from error
+        self.wal = JsonWal(self.root / "wal", self.allowed_root)
+        self._condition = threading.Condition()
+        self._route_registry_identity: tuple[int, int, int] | None = None
+        self._route_tiers: dict[str, str] = {}
+
+    @property
+    def _state_path(self) -> Path:
+        return self.root / "state.json"
+
+    @property
+    def _head_path(self) -> Path:
+        return self.root / ".authority" / "head.json"
+
+    def _state(self) -> dict[str, object]:
+        if not self._state_path.is_file():
+            if (self._head_path.exists()
+                    or any((self.root / "events").glob("*.json"))
+                    or any((self.root / "receipts").glob("*.json"))
+                    or any((self.root / ".authority/anchors").glob("*.json"))):
+                raise ValueError("operational event bus state is missing despite durable history")
+            return {
+                "schema_version": "px.operation-bus-state/1.0",
+                "revision": 0,
+                "event_count": 0,
+                "head_sha256": ZERO_SHA256,
+            }
+        try:
+            value = json.loads(self._state_path.read_text(encoding="utf-8"))
+        except (OSError, UnicodeError, json.JSONDecodeError) as error:
+            raise ValueError("operational event bus state is unreadable") from error
+        expected = {"schema_version", "revision", "event_count", "head_sha256"}
+        if (
+            not isinstance(value, dict)
+            or set(value) != expected
+            or value.get("schema_version") != "px.operation-bus-state/1.0"
+            or type(value.get("revision")) is not int
+            or value.get("revision", -1) < 0
+            or value.get("event_count") != value.get("revision")
+            or type(value.get("event_count")) is not int
+            or not isinstance(value.get("head_sha256"), str)
+            or len(value["head_sha256"]) != 64
+            or any(ch not in "0123456789abcdef" for ch in value["head_sha256"])
+            or (value["revision"] == 0 and value["head_sha256"] != ZERO_SHA256)
+        ):
+            raise ValueError("operational event bus state is invalid")
+        return value
+
+    def _route_tier(self, route_id: str) -> str:
+        path = self.engine_root / "registry/operation_route_registry.json"
+        stat = path.stat()
+        identity = (stat.st_size, stat.st_mtime_ns, stat.st_ctime_ns)
+        if identity != self._route_registry_identity:
+            report = validate_route_registry(self.engine_root)
+            if not report["valid"]:
+                raise ValueError("operation route registry is invalid")
+            registry = json.loads(path.read_text(encoding="utf-8"))
+            self._route_tiers = {
+                str(route["route_id"]): str(route["coverage_tier"])
+                for route in registry["routes"]
+            }
+            self._route_registry_identity = identity
+        if route_id in self._route_tiers:
+            return self._route_tiers[route_id]
+        raise ValueError(f"operation route is not admitted: {route_id}")
+
+    def _read_publication(self, reader, **kwargs):
+        self.root.mkdir(parents=True, exist_ok=True)
+        with FileLock(self.root / ".publish.lock", timeout_seconds=10):
+            self.wal.recover()
+            generation = self.wal.capture_generation()
+            result = reader(**kwargs)
+            if self.wal.capture_generation() != generation:
+                from .wal_transaction import WalConflictError
+                raise WalConflictError("event read generation changed during acquisition")
+            return result
+
+    def head(self) -> dict[str, Any]:
+        """Read the anchored current head under one settled publication generation."""
+        return self._read_publication(self._head_locked)
+
+    def _head_locked(self) -> dict[str, Any]:
+        """Return the current anchored event without replaying full ancestry.
+
+        This is the operational synchronization primitive.  It validates the
+        canonical state, protected head, current anchor, current event, and the
+        immediately preceding link.  Full forensic ancestry remains owned by
+        :meth:`replay` and is never replaced by this bounded check.
+        """
+        errors: list[str] = []
+        envelope: dict[str, object] | None = None
+        state = self._state()
+        revision = int(state["revision"])
+        if revision == 0:
+            if (self._head_path.exists()
+                    or any((self.root / "events").glob("*.json"))
+                    or any((self.root / "receipts").glob("*.json"))
+                    or any((self.root / ".authority/anchors").glob("*.json"))):
+                errors.append("durable history exists for an empty event bus")
+            return {
+                "schema_version": "px.operation-head-read/1.0",
+                "valid": not errors,
+                "revision": 0,
+                "event_sha256": None,
+                "event": None,
+                "verification_scope": "anchored-current-head",
+                "errors": errors,
+            }
+        try:
+            envelope_path = self.root / "events" / f"{revision:08d}.json"
+            envelope = json.loads(envelope_path.read_text(encoding="utf-8"))
+            event = envelope["event"]
+            event_sha256 = str(envelope["event_sha256"])
+            expected_head = {
+                "schema_version": "px.operation-bus-head/1.0",
+                "revision": revision,
+                "event_sha256": event_sha256,
+            }
+            anchor = (
+                self.root
+                / ".authority"
+                / "anchors"
+                / f"{revision:08d}-{event_sha256}.json"
+            )
+            if (
+                set(envelope)
+                != {"schema_version", "revision", "event_sha256", "event"}
+                or envelope["schema_version"] != "px.operation-envelope/1.0"
+                or envelope["revision"] != revision
+                or event_sha256 != _sha(event)
+                or state["head_sha256"] != event_sha256
+                or json.loads(self._head_path.read_text(encoding="utf-8"))
+                != expected_head
+                or json.loads(anchor.read_text(encoding="utf-8")) != expected_head
+            ):
+                raise ValueError("current event, state, head, or anchor mismatch")
+            validation = validate_operation_event(self.engine_root, event)
+            if not validation["valid"]:
+                raise ValueError("current event contract invalid")
+            previous_sha = event["integrity"]["previous_event_sha256"]
+            if revision == 1:
+                if previous_sha is not None:
+                    raise ValueError("first event has unexpected ancestry")
+            else:
+                previous_path = self.root / "events" / f"{revision - 1:08d}.json"
+                previous = json.loads(previous_path.read_text(encoding="utf-8"))
+                if (
+                    previous.get("schema_version") != "px.operation-envelope/1.0"
+                    or previous.get("revision") != revision - 1
+                    or previous.get("event_sha256") != _sha(previous.get("event"))
+                    or previous_sha != previous.get("event_sha256")
+                ):
+                    raise ValueError("current event previous link mismatch")
+        except (
+            OSError,
+            UnicodeError,
+            json.JSONDecodeError,
+            KeyError,
+            TypeError,
+            ValueError,
+        ) as error:
+            errors.append(str(error))
+        return {
+            "schema_version": "px.operation-head-read/1.0",
+            "valid": not errors,
+            "revision": int(state["revision"]),
+            "event_sha256": None if envelope is None else envelope.get("event_sha256"),
+            "event": None if envelope is None else envelope.get("event"),
+            "verification_scope": "anchored-current-head",
+            "errors": errors,
+        }
+
+    def publish(
+        self, event: Mapping[str, object], *, link_current_head: bool = False
+    ) -> dict[str, object]:
+        """Validate and atomically publish one event plus all canonical projections."""
+        return self._publish_with_projection(event, link_current_head=link_current_head)
+
+    def _publish_with_projection(
+        self, event, *, link_current_head=False, projection_builder=None,
+        expected_generation=None, expected_inputs=None,
+    ):
+        """Commit trusted local consumer projections with their canonical event.
+
+        The builder runs before effects under the publication lock and must be
+        pure: it must not acquire fleet/publication locks or publish anything.
+        """
+        self.root.mkdir(parents=True, exist_ok=True)
+        with FileLock(self.root / ".publish.lock", timeout_seconds=10):
+            recovery = self.wal.recover()
+            generation = self.wal.capture_generation()
+            if projection_builder is not None and generation != expected_generation:
+                from .wal_transaction import WalConflictError
+                raise WalConflictError("consumer generation changed before event publication")
+            state = self._state()
+            if not self._head_locked()["valid"]:
+                raise ValueError("operational event bus head is not trusted")
+            receipt, _, artifacts, transaction_id = self._prepare_event(
+                event, state, recovery, link_current_head=link_current_head)
+            if projection_builder is not None:
+                artifacts += tuple(projection_builder(deepcopy(receipt)))
+            transaction = self.wal.commit(
+                artifacts, transaction_id=transaction_id,
+                expected_generation=generation, expected_inputs=expected_inputs,
+            )
+        with self._condition:
+            self._condition.notify_all()
+        return {**receipt, "transaction": transaction}
+
+    def _prepare_event(self, event, state, recovery, *, link_current_head=False):
+        """Pure validation/image preparation; caller owns the publication lock."""
+        operation = deepcopy(dict(event))
+        source = operation.get("source")
+        integrity = operation.get("integrity")
+        if not isinstance(source, dict) or not isinstance(integrity, dict):
+            raise ValueError("operation source and integrity must be objects")
+        tier = self._route_tier(str(source.get("route_id", "")))
+        if source.get("coverage_tier") != tier:
+            raise ValueError("operation event coverage tier differs from registry")
+        expected_previous = (
+            None if state["event_count"] == 0 else state["head_sha256"]
+        )
+        if link_current_head:
+            integrity["previous_event_sha256"] = expected_previous
+        if integrity.get("previous_event_sha256") != expected_previous:
+            raise ValueError("operation event previous digest differs from bus head")
+        validation = validate_operation_event(self.engine_root, operation)
+        if not validation["valid"]:
+            raise ValueError("invalid operation event: " + "; ".join(validation["errors"]))
+        receipt_path = self.root / "receipts" / f"{operation['event_id']}.json"
+        if receipt_path.exists() or receipt_path.is_symlink():
+<<<<<<< HEAD
+            raise ValueError("duplicate event_id: " + str(operation["event_id"]))
+=======
+            raise ValueError("duplicate operation event_id: " + str(operation["event_id"]))
+>>>>>>> codex/rollout-day1-20261024
+        revision = int(state["revision"]) + 1
+        event_sha256 = _sha(operation)
+        envelope = {
+            "schema_version": "px.operation-envelope/1.0",
+            "revision": revision,
+            "event_sha256": event_sha256,
+            "event": operation,
+        }
+        next_state = {
+            "schema_version": "px.operation-bus-state/1.0",
+            "revision": revision,
+            "event_count": revision,
+            "head_sha256": event_sha256,
+        }
+        head = {
+            "schema_version": "px.operation-bus-head/1.0",
+            "revision": revision,
+            "event_sha256": event_sha256,
+        }
+        receipt = {
+            "schema_version": "px.operation-receipt/1.0",
+            "event_id": operation["event_id"],
+            "correlation_id": operation["correlation_id"],
+            "revision": revision,
+            "event_sha256": event_sha256,
+            "transaction_recovery": recovery,
+        }
+        projection = {
+            "schema_version": "px.operation-revision/1.0",
+            "revision": revision,
+            "event_id": operation["event_id"],
+            "lifecycle": operation["operation"]["lifecycle"],
+            "result": operation["operation"]["result"],
+            "event_sha256": event_sha256,
+        }
+        suffix = hashlib.sha256(str(operation["event_id"]).encode()).hexdigest()[:12]
+        transaction_id = f"operation-{revision:08d}-{suffix}"
+        artifacts = (
+            JsonArtifact("event", self.root / "events" / f"{revision:08d}.json", envelope),
+            JsonArtifact("receipt", self.root / "receipts" / f"{operation['event_id']}.json", receipt),
+            JsonArtifact("state", self._state_path, next_state),
+            JsonArtifact("state", self._head_path, head),
+            JsonArtifact("state", self.root / ".authority" / "anchors" / f"{revision:08d}-{event_sha256}.json", head),
+            JsonArtifact("projection", self.root / "projections" / "revision.json", projection),
+        )
+        return receipt, next_state, artifacts, transaction_id
+
+    def publish_batch(
+        self, events: list[Mapping[str, object]], *, link_current_head: bool = False
+    ) -> list[dict[str, object]]:
+        """Validate the entire batch, then commit all events in one WAL transaction."""
+        from .wal_transaction import MAX_ARTIFACTS
+        maximum = (MAX_ARTIFACTS - 3) // 3
+        if type(events) is not list or len(events) > maximum:
+            raise ValueError(f"atomic operational event batch exceeds {maximum} events")
+        if not events:
+            return []
+        self.root.mkdir(parents=True, exist_ok=True)
+        with FileLock(self.root / ".publish.lock", timeout_seconds=10):
+            recovery = self.wal.recover()
+            generation = self.wal.capture_generation()
+            state = self._state()
+            if not self._head_locked()["valid"]:
+                raise ValueError("operational event bus head is not trusted")
+            images = {}
+            receipts = []
+            seen = set()
+            for event in events:
+                receipt, state, artifacts, _ = self._prepare_event(
+                    event, state, recovery, link_current_head=link_current_head)
+                key = str(receipt["event_id"]).casefold()
+                if key in seen:
+                    raise ValueError("duplicate operation event_id in batch")
+                seen.add(key)
+                receipts.append(receipt)
+                for artifact in artifacts:
+                    images[artifact.path] = artifact
+            transaction_id = (f"operation-batch-{receipts[0]['revision']:08d}-"
+                              f"{str(receipts[-1]['event_sha256'])[:12]}")
+            transaction = self.wal.commit(tuple(images.values()),
+                transaction_id=transaction_id, expected_generation=generation)
+        with self._condition:
+            self._condition.notify_all()
+        return [{**receipt, "transaction": transaction} for receipt in receipts]
+
+    def replay(self, *, after_revision: int = 0, limit: int = 1000) -> dict[str, Any]:
+        """Replay the next bounded page from an anchored cursor."""
+        if after_revision < 0 or not 0 <= limit <= 10_000:
+            raise ValueError("invalid replay boundary")
+        return self._read_publication(self._replay_locked, after_revision=after_revision, limit=limit)
+
+    def _replay_locked(self, *, after_revision, limit):
+        records: list[dict[str, object]] = []
+        errors: list[str] = []
+        state = self._state()
+        head_revision = int(state["revision"])
+        epoch = None
+        previous: str | None = None
+        if head_revision:
+            try:
+                first = json.loads((self.root / "events" / "00000001.json").read_text(encoding="utf-8"))
+                epoch = str(first["event_sha256"])
+            except (OSError, UnicodeError, json.JSONDecodeError, KeyError, TypeError):
+                errors.append("event epoch anchor is missing or invalid")
+        if after_revision > head_revision:
+            errors.append("replay cursor is ahead of the current revision")
+        if after_revision > 0 and not errors:
+            try:
+                cursor_path = self.root / "events" / f"{after_revision:08d}.json"
+                cursor = json.loads(cursor_path.read_text(encoding="utf-8"))
+                previous = str(cursor["event_sha256"])
+                cursor_head = {"schema_version": "px.operation-bus-head/1.0", "revision": after_revision, "event_sha256": previous}
+                anchor = self.root / ".authority" / "anchors" / f"{after_revision:08d}-{previous}.json"
+                if (cursor.get("schema_version") != "px.operation-envelope/1.0"
+                    or cursor.get("revision") != after_revision
+                    or previous != _sha(cursor.get("event"))
+                    or json.loads(anchor.read_text(encoding="utf-8")) != cursor_head):
+                    raise ValueError("cursor event or anchor mismatch")
+            except (OSError, UnicodeError, json.JSONDecodeError, KeyError, TypeError, ValueError) as error:
+                errors.append(f"cursor {after_revision}: {error}")
+        stop = min(head_revision, after_revision + limit + 1)
+        for expected in range(after_revision + 1, stop + 1):
+            path = self.root / "events" / f"{expected:08d}.json"
+            try:
+                envelope = json.loads(path.read_text(encoding="utf-8"))
+                if set(envelope) != {"schema_version", "revision", "event_sha256", "event"}:
+                    raise ValueError("envelope fields are not exact")
+                event = envelope["event"]
+                expected_previous = None if expected == 1 else previous
+                if (
+                    envelope["schema_version"] != "px.operation-envelope/1.0"
+                    or envelope["revision"] != expected
+                    or path.name != f"{expected:08d}.json"
+                    or envelope["event_sha256"] != _sha(event)
+                    or event["integrity"]["previous_event_sha256"] != expected_previous
+                ):
+                    raise ValueError("event ancestry or digest mismatch")
+                validation = validate_operation_event(self.engine_root, event)
+                if not validation["valid"]:
+                    raise ValueError("event contract invalid")
+            except (OSError, UnicodeError, json.JSONDecodeError, KeyError, TypeError, ValueError) as error:
+                errors.append(f"{path.name}: {error}")
+                break
+            previous = str(envelope["event_sha256"])
+            records.append(envelope)
+        has_more = len(records) > limit
+        selected = records[:limit] if limit else []
+        page_revision = int(selected[-1]["revision"]) if selected else after_revision
+        if not errors and not has_more and page_revision == head_revision and head_revision:
+            expected_head = {
+                "schema_version": "px.operation-bus-head/1.0",
+                "revision": head_revision,
+                "event_sha256": previous,
+            }
+            try:
+                head = json.loads(self._head_path.read_text(encoding="utf-8"))
+                anchor = self.root / ".authority" / "anchors" / f"{head_revision:08d}-{previous}.json"
+                if head != expected_head or json.loads(anchor.read_text(encoding="utf-8")) != expected_head:
+                    raise ValueError("protected head or anchor mismatch")
+                if state["head_sha256"] != previous:
+                    raise ValueError("bus state differs from event ancestry")
+            except (OSError, UnicodeError, json.JSONDecodeError, ValueError) as error:
+                errors.append(str(error))
+        return {
+            "schema_version": "px.operation-replay/2.0",
+            "valid": not errors,
+            "revision": state["revision"],
+            "epoch": epoch,
+            "after_revision": after_revision,
+            "next_revision": page_revision,
+            "has_more": has_more,
+            "gap": bool(errors),
+            "verification_scope": "anchored-cursor-forward-page",
+            "valid_prefix_count": page_revision,
+            "events": selected,
+            "errors": errors,
+        }
+
+    def wait_for_revision(self, after_revision: int, timeout_seconds: float) -> dict[str, Any]:
+        """Wait without polling the backend and then return a verified replay delta."""
+        if timeout_seconds <= 0 or timeout_seconds > 300:
+            raise ValueError("subscription timeout must be between zero and 300 seconds")
+        deadline = time.monotonic() + timeout_seconds
+        with self._condition:
+            while int(self._state()["revision"]) <= after_revision:
+                remaining = deadline - time.monotonic()
+                if remaining <= 0:
+                    break
+                self._condition.wait(remaining)
+        return self.replay(after_revision=after_revision)

@@ -1,0 +1,1195 @@
+{
+  "capacity_report": {
+    "spare_at_worst_subject": 234,
+    "worst_subject": "agents",
+    "worst_subject_occupancy": 20
+  },
+  "derived_from": {
+    "census": "runtime.semantic_prefreeze_census.run_prefreeze_census (live run)",
+    "census_authority": "candidate / not authoritative / not frozen",
+    "census_schema_version": "px.semantic-taxonomy-census/2.0",
+    "model": "B namespace-local objects with recurring families only",
+    "traversal_order_invariance": "STABLE"
+  },
+  "dimension_capacity": 254,
+  "dimensions": [
+    {
+      "capacity": 254,
+      "member_count": 21,
+      "members": [
+        {
+          "member": "agents",
+          "number": 1
+        },
+        {
+          "member": "capability",
+          "number": 2
+        },
+        {
+          "member": "code",
+          "number": 3
+        },
+        {
+          "member": "cognitive",
+          "number": 4
+        },
+        {
+          "member": "diagnostics",
+          "number": 5
+        },
+        {
+          "member": "evidence",
+          "number": 6
+        },
+        {
+          "member": "governance",
+          "number": 7
+        },
+        {
+          "member": "integration",
+          "number": 8
+        },
+        {
+          "member": "learning",
+          "number": 9
+        },
+        {
+          "member": "lsp",
+          "number": 10
+        },
+        {
+          "member": "memory",
+          "number": 11
+        },
+        {
+          "member": "orchestration",
+          "number": 12
+        },
+        {
+          "member": "release",
+          "number": 13
+        },
+        {
+          "member": "research",
+          "number": 14
+        },
+        {
+          "member": "retrieval",
+          "number": 15
+        },
+        {
+          "member": "routing",
+          "number": 16
+        },
+        {
+          "member": "runtime",
+          "number": 17
+        },
+        {
+          "member": "scheduling",
+          "number": 18
+        },
+        {
+          "member": "security",
+          "number": 19
+        },
+        {
+          "member": "skills",
+          "number": 20
+        },
+        {
+          "member": "verification",
+          "number": 21
+        }
+      ],
+      "name": "subject"
+    },
+    {
+      "capacity": 254,
+      "member_count": 48,
+      "members": [
+        {
+          "member": "agent",
+          "number": 1,
+          "subjects": [
+            "agents"
+          ]
+        },
+        {
+          "member": "architect",
+          "number": 2,
+          "subjects": [
+            "agents",
+            "governance",
+            "security"
+          ]
+        },
+        {
+          "member": "assurance",
+          "number": 3,
+          "subjects": [
+            "verification"
+          ]
+        },
+        {
+          "member": "capability",
+          "number": 4,
+          "subjects": [
+            "agents",
+            "capability",
+            "code",
+            "cognitive",
+            "diagnostics",
+            "evidence",
+            "governance",
+            "learning",
+            "memory",
+            "orchestration",
+            "release",
+            "research",
+            "retrieval",
+            "routing",
+            "runtime",
+            "security",
+            "skills",
+            "verification"
+          ]
+        },
+        {
+          "member": "codeowners",
+          "number": 5,
+          "subjects": [
+            "governance"
+          ]
+        },
+        {
+          "member": "companion",
+          "number": 6,
+          "subjects": [
+            "agents"
+          ]
+        },
+        {
+          "member": "compiler",
+          "number": 7,
+          "subjects": [
+            "skills"
+          ]
+        },
+        {
+          "member": "construction",
+          "number": 8,
+          "subjects": [
+            "agents"
+          ]
+        },
+        {
+          "member": "contract",
+          "number": 9,
+          "subjects": [
+            "agents",
+            "capability",
+            "code",
+            "cognitive",
+            "evidence",
+            "governance",
+            "integration",
+            "learning",
+            "memory",
+            "orchestration",
+            "release",
+            "research",
+            "routing",
+            "scheduling",
+            "security",
+            "skills",
+            "verification"
+          ]
+        },
+        {
+          "member": "controller",
+          "number": 10,
+          "subjects": [
+            "skills"
+          ]
+        },
+        {
+          "member": "designer",
+          "number": 11,
+          "subjects": [
+            "agents"
+          ]
+        },
+        {
+          "member": "document",
+          "number": 12,
+          "subjects": [
+            "agents",
+            "capability",
+            "code",
+            "cognitive",
+            "diagnostics",
+            "evidence",
+            "governance",
+            "integration",
+            "learning",
+            "lsp",
+            "memory",
+            "orchestration",
+            "release",
+            "research",
+            "retrieval",
+            "routing",
+            "runtime",
+            "scheduling",
+            "security",
+            "skills",
+            "verification"
+          ]
+        },
+        {
+          "member": "engineer",
+          "number": 13,
+          "subjects": [
+            "agents",
+            "retrieval",
+            "security",
+            "verification"
+          ]
+        },
+        {
+          "member": "gitattributes",
+          "number": 14,
+          "subjects": [
+            "evidence",
+            "governance",
+            "skills"
+          ]
+        },
+        {
+          "member": "gitignore",
+          "number": 15,
+          "subjects": [
+            "governance",
+            "release",
+            "runtime",
+            "verification"
+          ]
+        },
+        {
+          "member": "handoff",
+          "number": 16,
+          "subjects": [
+            "code"
+          ]
+        },
+        {
+          "member": "html",
+          "number": 17,
+          "subjects": [
+            "evidence",
+            "retrieval"
+          ]
+        },
+        {
+          "member": "invariants",
+          "number": 18,
+          "subjects": [
+            "code"
+          ]
+        },
+        {
+          "member": "ledger",
+          "number": 19,
+          "subjects": [
+            "governance"
+          ]
+        },
+        {
+          "member": "manifest",
+          "number": 20,
+          "subjects": [
+            "governance",
+            "release",
+            "runtime",
+            "skills"
+          ]
+        },
+        {
+          "member": "map",
+          "number": 21,
+          "subjects": [
+            "code"
+          ]
+        },
+        {
+          "member": "model",
+          "number": 22,
+          "subjects": [
+            "memory"
+          ]
+        },
+        {
+          "member": "module",
+          "number": 23,
+          "subjects": [
+            "agents",
+            "capability",
+            "code",
+            "cognitive",
+            "diagnostics",
+            "evidence",
+            "governance",
+            "integration",
+            "learning",
+            "memory",
+            "orchestration",
+            "release",
+            "research",
+            "retrieval",
+            "routing",
+            "runtime",
+            "skills",
+            "verification"
+          ]
+        },
+        {
+          "member": "notes",
+          "number": 24,
+          "subjects": [
+            "integration"
+          ]
+        },
+        {
+          "member": "officer",
+          "number": 25,
+          "subjects": [
+            "agents"
+          ]
+        },
+        {
+          "member": "openai",
+          "number": 26,
+          "subjects": [
+            "agents",
+            "research",
+            "skills"
+          ]
+        },
+        {
+          "member": "operator",
+          "number": 27,
+          "subjects": [
+            "agents"
+          ]
+        },
+        {
+          "member": "orchestration",
+          "number": 28,
+          "subjects": [
+            "agents"
+          ]
+        },
+        {
+          "member": "plane",
+          "number": 29,
+          "subjects": [
+            "orchestration"
+          ]
+        },
+        {
+          "member": "policy",
+          "number": 30,
+          "subjects": [
+            "evidence",
+            "governance",
+            "verification"
+          ]
+        },
+        {
+          "member": "provenance",
+          "number": 31,
+          "subjects": [
+            "code"
+          ]
+        },
+        {
+          "member": "record",
+          "number": 32,
+          "subjects": [
+            "agents",
+            "capability",
+            "evidence",
+            "governance",
+            "integration",
+            "memory",
+            "orchestration",
+            "routing",
+            "runtime",
+            "security",
+            "verification"
+          ]
+        },
+        {
+          "member": "registry",
+          "number": 33,
+          "subjects": [
+            "capability",
+            "cognitive",
+            "evidence",
+            "governance",
+            "skills"
+          ]
+        },
+        {
+          "member": "researcher",
+          "number": 34,
+          "subjects": [
+            "research"
+          ]
+        },
+        {
+          "member": "selector",
+          "number": 35,
+          "subjects": [
+            "agents",
+            "capability",
+            "code",
+            "diagnostics",
+            "evidence",
+            "governance",
+            "integration",
+            "learning",
+            "memory",
+            "orchestration",
+            "retrieval",
+            "skills",
+            "verification"
+          ]
+        },
+        {
+          "member": "seller",
+          "number": 36,
+          "subjects": [
+            "agents"
+          ]
+        },
+        {
+          "member": "service",
+          "number": 37,
+          "subjects": [
+            "agents"
+          ]
+        },
+        {
+          "member": "skill",
+          "number": 38,
+          "subjects": [
+            "research",
+            "skills"
+          ]
+        },
+        {
+          "member": "specialist",
+          "number": 39,
+          "subjects": [
+            "agents",
+            "integration"
+          ]
+        },
+        {
+          "member": "symbol",
+          "number": 40,
+          "subjects": [
+            "agents",
+            "capability",
+            "code",
+            "cognitive",
+            "diagnostics",
+            "evidence",
+            "governance",
+            "integration",
+            "learning",
+            "lsp",
+            "memory",
+            "orchestration",
+            "release",
+            "research",
+            "retrieval",
+            "routing",
+            "runtime",
+            "scheduling",
+            "security",
+            "skills",
+            "verification"
+          ]
+        },
+        {
+          "member": "test",
+          "number": 41,
+          "subjects": [
+            "code",
+            "cognitive",
+            "memory",
+            "skills",
+            "verification"
+          ]
+        },
+        {
+          "member": "translation",
+          "number": 42,
+          "subjects": [
+            "lsp"
+          ]
+        },
+        {
+          "member": "trust",
+          "number": 43,
+          "subjects": [
+            "security"
+          ]
+        },
+        {
+          "member": "txt",
+          "number": 44,
+          "subjects": [
+            "release"
+          ]
+        },
+        {
+          "member": "validation",
+          "number": 45,
+          "subjects": [
+            "code"
+          ]
+        },
+        {
+          "member": "verifier",
+          "number": 46,
+          "subjects": [
+            "skills"
+          ]
+        },
+        {
+          "member": "walkthrough",
+          "number": 47,
+          "subjects": [
+            "cognitive"
+          ]
+        },
+        {
+          "member": "writer",
+          "number": 48,
+          "subjects": [
+            "research"
+          ]
+        }
+      ],
+      "name": "object",
+      "note": "object families are namespace-local: a family number is interpreted within its subject, not globally"
+    },
+    {
+      "capacity": 254,
+      "member_count": 102,
+      "members": [
+        {
+          "member": "adaptation",
+          "number": 1
+        },
+        {
+          "member": "aggregation",
+          "number": 2
+        },
+        {
+          "member": "approval",
+          "number": 3
+        },
+        {
+          "member": "attachment",
+          "number": 4
+        },
+        {
+          "member": "audit",
+          "number": 5
+        },
+        {
+          "member": "authentication",
+          "number": 6
+        },
+        {
+          "member": "authorization",
+          "number": 7
+        },
+        {
+          "member": "binding",
+          "number": 8
+        },
+        {
+          "member": "caching",
+          "number": 9
+        },
+        {
+          "member": "classification",
+          "number": 10
+        },
+        {
+          "member": "closure",
+          "number": 11
+        },
+        {
+          "member": "coalescing",
+          "number": 12
+        },
+        {
+          "member": "compaction",
+          "number": 13
+        },
+        {
+          "member": "comparison",
+          "number": 14
+        },
+        {
+          "member": "compliance",
+          "number": 15
+        },
+        {
+          "member": "computation",
+          "number": 16
+        },
+        {
+          "member": "conflicting",
+          "number": 17
+        },
+        {
+          "member": "connection",
+          "number": 18
+        },
+        {
+          "member": "construction",
+          "number": 19
+        },
+        {
+          "member": "consumption",
+          "number": 20
+        },
+        {
+          "member": "conversion",
+          "number": 21
+        },
+        {
+          "member": "coordination",
+          "number": 22
+        },
+        {
+          "member": "creation",
+          "number": 23
+        },
+        {
+          "member": "declaration",
+          "number": 24
+        },
+        {
+          "member": "decoding",
+          "number": 25
+        },
+        {
+          "member": "deduplication",
+          "number": 26
+        },
+        {
+          "member": "definition",
+          "number": 27
+        },
+        {
+          "member": "denial",
+          "number": 28
+        },
+        {
+          "member": "dependency",
+          "number": 29
+        },
+        {
+          "member": "deployment",
+          "number": 30
+        },
+        {
+          "member": "derivation",
+          "number": 31
+        },
+        {
+          "member": "diagnostics",
+          "number": 32
+        },
+        {
+          "member": "dispatch",
+          "number": 33
+        },
+        {
+          "member": "distribution",
+          "number": 34
+        },
+        {
+          "member": "emission",
+          "number": 35
+        },
+        {
+          "member": "encoding",
+          "number": 36
+        },
+        {
+          "member": "evolution",
+          "number": 37
+        },
+        {
+          "member": "execution",
+          "number": 38
+        },
+        {
+          "member": "explanation",
+          "number": 39
+        },
+        {
+          "member": "failure",
+          "number": 40
+        },
+        {
+          "member": "finalization",
+          "number": 41
+        },
+        {
+          "member": "formatting",
+          "number": 42
+        },
+        {
+          "member": "freezing",
+          "number": 43
+        },
+        {
+          "member": "generation",
+          "number": 44
+        },
+        {
+          "member": "governance",
+          "number": 45
+        },
+        {
+          "member": "import",
+          "number": 46
+        },
+        {
+          "member": "indexing",
+          "number": 47
+        },
+        {
+          "member": "inference",
+          "number": 48
+        },
+        {
+          "member": "initialization",
+          "number": 49
+        },
+        {
+          "member": "inspection",
+          "number": 50
+        },
+        {
+          "member": "installation",
+          "number": 51
+        },
+        {
+          "member": "integrity",
+          "number": 52
+        },
+        {
+          "member": "invocation",
+          "number": 53
+        },
+        {
+          "member": "learning",
+          "number": 54
+        },
+        {
+          "member": "lifecycle",
+          "number": 55
+        },
+        {
+          "member": "loading",
+          "number": 56
+        },
+        {
+          "member": "merging",
+          "number": 57
+        },
+        {
+          "member": "migration",
+          "number": 58
+        },
+        {
+          "member": "monitoring",
+          "number": 59
+        },
+        {
+          "member": "notification",
+          "number": 60
+        },
+        {
+          "member": "observation",
+          "number": 61
+        },
+        {
+          "member": "opening",
+          "number": 62
+        },
+        {
+          "member": "orchestration",
+          "number": 63
+        },
+        {
+          "member": "packaging",
+          "number": 64
+        },
+        {
+          "member": "parsing",
+          "number": 65
+        },
+        {
+          "member": "persistence",
+          "number": 66
+        },
+        {
+          "member": "policy",
+          "number": 67
+        },
+        {
+          "member": "production",
+          "number": 68
+        },
+        {
+          "member": "projection",
+          "number": 69
+        },
+        {
+          "member": "promotion",
+          "number": 70
+        },
+        {
+          "member": "publication",
+          "number": 71
+        },
+        {
+          "member": "query",
+          "number": 72
+        },
+        {
+          "member": "reading",
+          "number": 73
+        },
+        {
+          "member": "reclamation",
+          "number": 74
+        },
+        {
+          "member": "reconciliation",
+          "number": 75
+        },
+        {
+          "member": "recording",
+          "number": 76
+        },
+        {
+          "member": "recovery",
+          "number": 77
+        },
+        {
+          "member": "rendering",
+          "number": 78
+        },
+        {
+          "member": "reporting",
+          "number": 79
+        },
+        {
+          "member": "request",
+          "number": 80
+        },
+        {
+          "member": "resolution",
+          "number": 81
+        },
+        {
+          "member": "response",
+          "number": 82
+        },
+        {
+          "member": "retrieval",
+          "number": 83
+        },
+        {
+          "member": "reversal",
+          "number": 84
+        },
+        {
+          "member": "routing",
+          "number": 85
+        },
+        {
+          "member": "scheduling",
+          "number": 86
+        },
+        {
+          "member": "sealing",
+          "number": 87
+        },
+        {
+          "member": "serialization",
+          "number": 88
+        },
+        {
+          "member": "shutdown",
+          "number": 89
+        },
+        {
+          "member": "signing",
+          "number": 90
+        },
+        {
+          "member": "snapshot",
+          "number": 91
+        },
+        {
+          "member": "specification",
+          "number": 92
+        },
+        {
+          "member": "storage",
+          "number": 93
+        },
+        {
+          "member": "summary",
+          "number": 94
+        },
+        {
+          "member": "supervision",
+          "number": 95
+        },
+        {
+          "member": "tracing",
+          "number": 96
+        },
+        {
+          "member": "tracking",
+          "number": 97
+        },
+        {
+          "member": "training",
+          "number": 98
+        },
+        {
+          "member": "translation",
+          "number": 99
+        },
+        {
+          "member": "upgrade",
+          "number": 100
+        },
+        {
+          "member": "validation",
+          "number": 101
+        },
+        {
+          "member": "verification",
+          "number": 102
+        }
+      ],
+      "name": "semantic_role"
+    },
+    {
+      "capacity": 254,
+      "member_count": 37,
+      "members": [
+        {
+          "member": "agent",
+          "number": 1
+        },
+        {
+          "member": "checksum",
+          "number": 2
+        },
+        {
+          "member": "class",
+          "number": 3
+        },
+        {
+          "member": "configuration",
+          "number": 4
+        },
+        {
+          "member": "contract",
+          "number": 5
+        },
+        {
+          "member": "dependency",
+          "number": 6
+        },
+        {
+          "member": "design_token",
+          "number": 7
+        },
+        {
+          "member": "document",
+          "number": 8
+        },
+        {
+          "member": "documentation",
+          "number": 9
+        },
+        {
+          "member": "element",
+          "number": 10
+        },
+        {
+          "member": "extension",
+          "number": 11
+        },
+        {
+          "member": "function",
+          "number": 12
+        },
+        {
+          "member": "image",
+          "number": 13
+        },
+        {
+          "member": "indexing",
+          "number": 14
+        },
+        {
+          "member": "layer",
+          "number": 15
+        },
+        {
+          "member": "manifest",
+          "number": 16
+        },
+        {
+          "member": "member",
+          "number": 17
+        },
+        {
+          "member": "module",
+          "number": 18
+        },
+        {
+          "member": "orchestration",
+          "number": 19
+        },
+        {
+          "member": "ownership",
+          "number": 20
+        },
+        {
+          "member": "pattern",
+          "number": 21
+        },
+        {
+          "member": "policy",
+          "number": 22
+        },
+        {
+          "member": "recording",
+          "number": 23
+        },
+        {
+          "member": "reference",
+          "number": 24
+        },
+        {
+          "member": "registry",
+          "number": 25
+        },
+        {
+          "member": "rule",
+          "number": 26
+        },
+        {
+          "member": "rule_setting",
+          "number": 27
+        },
+        {
+          "member": "script",
+          "number": 28
+        },
+        {
+          "member": "section",
+          "number": 29
+        },
+        {
+          "member": "selector",
+          "number": 30
+        },
+        {
+          "member": "setting",
+          "number": 31
+        },
+        {
+          "member": "skill",
+          "number": 32
+        },
+        {
+          "member": "stylesheet",
+          "number": 33
+        },
+        {
+          "member": "table",
+          "number": 34
+        },
+        {
+          "member": "template",
+          "number": 35
+        },
+        {
+          "member": "test",
+          "number": 36
+        },
+        {
+          "member": "variable",
+          "number": 37
+        }
+      ],
+      "name": "kind"
+    }
+  ],
+  "schema_version": "px.semantic-address-vocabulary/1.0",
+  "segment_range": [
+    1,
+    254
+  ],
+  "singleton_policy": {
+    "count_by_subject": {
+      "agents": 28,
+      "capability": 9,
+      "code": 8,
+      "cognitive": 1,
+      "diagnostics": 2,
+      "evidence": 6,
+      "governance": 9,
+      "integration": 10,
+      "learning": 3,
+      "lsp": 4,
+      "memory": 11,
+      "orchestration": 8,
+      "release": 12,
+      "research": 8,
+      "retrieval": 5,
+      "routing": 5,
+      "runtime": 3,
+      "scheduling": 2,
+      "security": 9,
+      "skills": 26,
+      "verification": 6
+    },
+    "disposition": "intentionally_unclassified",
+    "rule": "an object observed exactly once is not a family",
+    "total": 175
+  }
+}

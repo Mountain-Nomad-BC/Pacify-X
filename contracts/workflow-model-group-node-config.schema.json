@@ -1,0 +1,176 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:workflow-model-group-node-config",
+  "title": "Closed canonical prepared-model-group workflow task config",
+  "description": "Structural declaration only. Native parser enforces finite JSON and256KiB whole-image bound, one to twelve placement keys, and canonical AgentSpec. Runtime resolves canonical plan, exact members, placement/profile digests, approval, providers and containment. No execution authority is granted.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "execution_mode",
+    "prepared_group_reference",
+    "agent_spec",
+    "placements"
+  ],
+  "properties": {
+    "execution_mode": {
+      "const": "prepared-model-group"
+    },
+    "prepared_group_reference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "schema_version",
+        "plan_id",
+        "plan_sha256"
+      ],
+      "properties": {
+        "schema_version": {
+          "const": "px.prepared-group-reference/1.0"
+        },
+        "plan_id": {
+          "type": "string",
+          "pattern": "^task-plan-[0-9a-f]{24}$"
+        },
+        "plan_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      }
+    },
+    "agent_spec": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "agent_id",
+        "version",
+        "project_id",
+        "owner",
+        "harness_id",
+        "instruction_sha256",
+        "lifecycle",
+        "capability_binding_ids",
+        "effect_grant_ids",
+        "required_tests",
+        "tool_binding_ids",
+        "memory_binding_ids",
+        "handoff_agent_ids",
+        "model",
+        "input_schema",
+        "output_schema"
+      ],
+      "properties": {
+        "agent_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "project_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "owner": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "harness_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "instruction_sha256": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "lifecycle": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "capability_binding_ids": {
+          "type": "array",
+          "maxItems": 512,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          }
+        },
+        "effect_grant_ids": {
+          "type": "array",
+          "maxItems": 512,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          }
+        },
+        "required_tests": {
+          "type": "array",
+          "maxItems": 512,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          }
+        },
+        "tool_binding_ids": {
+          "type": "array",
+          "maxItems": 512,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          }
+        },
+        "memory_binding_ids": {
+          "type": "array",
+          "maxItems": 512,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          }
+        },
+        "handoff_agent_ids": {
+          "type": "array",
+          "maxItems": 512,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          }
+        },
+        "model": {
+          "type": "object"
+        },
+        "input_schema": {
+          "type": "object"
+        },
+        "output_schema": {
+          "type": "object"
+        }
+      }
+    },
+    "placements": {
+      "type": "object",
+      "description": "Native parser requires1..12 bounded model IDs and matching placement model_id; full placement contract/denominator belongs to canonical group consumer.",
+      "additionalProperties": {
+        "type": "object"
+      }
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "active_gap_id": "PX-OS-1067",
+  "evidence": [
+    {
+      "reference": "docs/repair/MERGE_WIP_STATE_2026-10-27.md",
+      "claim": "An unresolved merge of codex/rollout-day1-20261024 was found in the working tree with 794 staged files and 20 files containing literal conflict markers; recorded with the abort-or-complete decision and the measured fact that the rollout side lacks SEMANTIC_DIR_OWNERS.",
+      "artifact_sha256": "0495c9002f99718d65fe49b61cf519c22ae38c16607add3f071aa184a0e084f2",
+      "artifact_size": 3869
+    }
+  ],
+  "learned": "Handoff understated the working state: HEAD had moved to e4c6806f and an unresolved 8-commit merge of the rollout branch was in progress with 794 staged files (+405k/-441k) and 20 files physically corrupted by conflict markers, so the tree could not import its own gates. Restored those 20 files from Git HEAD (not hand-edited) leaving all three conflict stages and MERGE_HEAD intact, so the merge remains completable or abortable deliberately. Measured that ours carries the repairs and more tests while the rollout side lacks SEMANTIC_DIR_OWNERS, so take-theirs would delete the ownership fix. Discovered the namespace migration recorded as pending has in fact already happened in e4c6806f, and fixed four tests that still seeded the legacy control tree, one of which had been silently skipping the release-bypass guard entirely.",
+  "newly_discovered_gap_ids": [],
+  "next_action": "Run the single revision/generated-projection reconciliation, make every governed section current, then execute exactly one full profile, validation, package, install, installed-system operational test, and certification in registered order.",
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000036255",
+  "unresolved_branch_gap_ids": []
+}

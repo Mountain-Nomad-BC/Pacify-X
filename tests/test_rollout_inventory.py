@@ -158,5 +158,8 @@ def test_partial_interruption_retains_recovery_without_rolling_back_external_edi
 
 def test_clean_managed_project_cannot_bypass_release_commissioning(tmp_path):
     from runtime.test_profiles import require_processing_stage,ProcessingOrderBlocked
-    marker=tmp_path/'.engineering-bootstrap/project-record.json';marker.parent.mkdir();marker.write_text('{}')
+    # The managed-project marker lives in the canonical control directory; a
+    # marker planted under the legacy spelling is not a managed project and
+    # would let this guard be skipped without ever exercising it.
+    marker=tmp_path/'.agentic_engineering_os_px/project-record.json';marker.parent.mkdir();marker.write_text('{}')
     with pytest.raises(ProcessingOrderBlocked,match='missing mandatory'):require_processing_stage(tmp_path,'certify')

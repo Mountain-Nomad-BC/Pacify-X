@@ -93,7 +93,7 @@ async function run() {
   assert.equal(environmentResult?.inventory?.schema_version, 'px.environment-capability-map/2.0');
   assert.equal(environmentResult?.inventory?.boundaries?.credential_values_persisted, false);
   assert.equal(environmentResult?.inventory?.boundaries?.network_installs, false);
-  const environmentPath = path.join(folder.uri.fsPath, '.engineering-bootstrap', 'environment', 'current.json');
+  const environmentPath = path.join(folder.uri.fsPath, '.agentic_engineering_os_px', 'environment', 'current.json');
   assert.equal(fs.existsSync(environmentPath), true, 'Approved installed-host environment discovery did not persist current.json');
   const persistedEnvironment = JSON.parse(fs.readFileSync(environmentPath, 'utf8'));
   assert.equal(persistedEnvironment.snapshot_hash, environmentResult.inventory.snapshot_hash);
@@ -371,7 +371,7 @@ async function run() {
   assert.equal(inspection.listeners.coverage_tier, 'B');
   assert.equal(inspection.listeners.canonical_bus_connected, process.env.PX_EXPECT_CANONICAL_BUS === '1');
   let canonicalBusState = null;
-  const canonicalBusStatePath = path.join(folder.uri.fsPath, '.engineering-bootstrap', 'operation-bus', 'state.json');
+  const canonicalBusStatePath = path.join(folder.uri.fsPath, '.agentic_engineering_os_px', 'operation-bus', 'state.json');
   if (process.env.PX_EXPECT_CANONICAL_BUS === '1') {
     canonicalBusState = JSON.parse(fs.readFileSync(canonicalBusStatePath, 'utf8'));
     assert.ok(canonicalBusState.event_count > 0, 'canonical operational bus must retain published events');
@@ -406,7 +406,7 @@ async function run() {
     },
     live_knowledge_graph: liveGraph,
     approved_environment_persistence: {
-      current_path: '.engineering-bootstrap/environment/current.json',
+      current_path: '.agentic_engineering_os_px/environment/current.json',
       snapshot_hash: persistedEnvironment.snapshot_hash,
       generation: persistedEnvironment.discovery?.generation,
       credential_values_persisted: persistedEnvironment.boundaries?.credential_values_persisted

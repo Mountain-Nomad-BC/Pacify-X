@@ -1,0 +1,50 @@
+✔ PX-AUD-052 openai CRLF frame separator is parsed across chunks (40.5623ms)
+✔ PX-AUD-053 openai truncated stream without terminal throws (0.6594ms)
+✔ PX-AUD-053 openai data after terminal throws (0.4071ms)
+✔ PX-AUD-054 ollama trailing record without newline is consumed (0.5712ms)
+✔ PX-AUD-055 ollama early EOF without done:true throws (0.4364ms)
+✔ PX-AUD-055 ollama explicit done:true is accepted (0.3856ms)
+✔ openai malformed frame cancels actual stream source and releases reader custody (0.4232ms)
+✔ openai abort settles a pending stream read and releases transport (0.3533ms)
+✔ ollama malformed frame cancels actual stream source and releases reader custody (0.2628ms)
+✔ ollama abort settles a pending stream read and releases transport (0.3976ms)
+✔ bounded Ollama loopback stream succeeds only after an explicit completion event (38.0343ms)
+✔ Ollama streaming faults have stable, non-sensitive classifications (131.2299ms)
+✔ Ollama cancellation is distinct from timeout and disconnect (32.303ms)
+✔ Ollama total deadline is independently classified (49.5641ms)
+✖ provider invoker uses the routed worker output-token allowance (0.6294ms)
+✖ provider invoker retains its bounded default when no worker allowance is supplied (0.1218ms)
+✔ provider invoker rejects an invalid output-token allowance before bridge invocation (0.3346ms)
+ℹ tests 17
+ℹ suites 0
+ℹ pass 15
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 426.6182
+
+✖ failing tests:
+
+test at extension\tests\px-provider-invoker.test.js:7:1
+✖ provider invoker uses the routed worker output-token allowance (0.6294ms)
+  Error: px-provider-invocation-owner-required
+      at invokeProvider (C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\src\agentHarness\pxProviderInvoker.js:30:104)
+      at TestContext.<anonymous> (C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\tests\px-provider-invoker.test.js:20:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.start (node:internal/test_runner/test:1177:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:385:17)
+
+test at extension\tests\px-provider-invoker.test.js:31:1
+✖ provider invoker retains its bounded default when no worker allowance is supplied (0.1218ms)
+  Error: px-provider-invocation-owner-required
+      at invokeProvider (C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\src\agentHarness\pxProviderInvoker.js:30:104)
+      at TestContext.<anonymous> (C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\tests\px-provider-invoker.test.js:44:9)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3)
+

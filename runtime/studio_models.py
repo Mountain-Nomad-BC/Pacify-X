@@ -47,6 +47,11 @@ _STUDIO_KIND_ROOTS = {
     "workflows": "workflows",
     "skill": "skills",
     "skills": "skills",
+    # Knowledge sources and models also carry T.I.E. experience (W5). Their
+    # versioned roots live beside the other studio kinds so experience stays
+    # object-local rather than in a parallel store.
+    "knowledge": "knowledge",
+    "model": "models",
 }
 LIFECYCLE_STATES = frozenset(
     {"draft", "candidate", "tested", "admitted", "deprecated", "retired", "rejected"}
@@ -196,7 +201,7 @@ def _studio_kind(kind: str) -> tuple[str, str]:
     token = str(kind).strip().lower()
     physical = _STUDIO_KIND_ROOTS.get(token)
     if physical is None:
-        raise ValueError("studio version kind must be agent, workflow, or skill")
+        raise ValueError("studio version kind must be agent, workflow, skill, knowledge, or model")
     return physical.removesuffix("s"), physical
 
 
@@ -213,7 +218,7 @@ def studio_revision_root(root: Path, kind: str, identity: str) -> Path:
     _, physical = _studio_kind(kind)
     return (
         root
-        / ".engineering-bootstrap"
+        / ".agentic_engineering_os_px"
         / "studios"
         / physical
         / studio_component(identity)
@@ -946,7 +951,15 @@ class WorkflowNode:
             normalized_config = json.loads(canonical_bytes(dict(self.config)))
         except (TypeError, ValueError) as error:
             raise ValueError("workflow node config must be canonical JSON") from error
-        if len(canonical_bytes(normalized_config)) > 16384:
+        group_task = kind == "task" and "execution_mode" in normalized_config
+        if kind == "task" and normalized_config and not group_task:
+            raise ValueError("task workflow node config is closed and must be empty unless it declares a prepared-group execution mode")
+        if group_task:
+            from .workflow_group_config import validate_prepared_group_node_config
+            normalized_config = validate_prepared_group_node_config(normalized_config)
+            if not self.approval_required or self.failure_policy != "fail-closed":
+                raise ValueError("prepared-group task requires approval and fail-closed behavior")
+        elif len(canonical_bytes(normalized_config)) > 16384:
             raise ValueError("workflow node config exceeds 16384 bytes")
         group_mode = kind == "task" and normalized_config.get("execution_mode") == "prepared-model-group"
         if group_mode:

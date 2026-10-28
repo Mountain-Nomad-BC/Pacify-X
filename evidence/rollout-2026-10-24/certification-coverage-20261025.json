@@ -1,0 +1,37 @@
+{
+  "valid": true,
+  "required_count": 9,
+  "membership": {
+    "tests/test_certificate_input_contracts.py": [
+      "runtime-domain-contracts",
+      "release-lifecycle"
+    ],
+    "tests/test_project_revision_succession.py": [
+      "release-lifecycle"
+    ],
+    "tests/test_revision_campaign_lifecycle.py": [
+      "release-lifecycle"
+    ],
+    "tests/test_release_candidate_driver.py": [
+      "release-lifecycle"
+    ],
+    "tests/test_release_stage_owner.py": [
+      "release-lifecycle"
+    ],
+    "tests/test_run_installed_operational_owner.py": [
+      "release-lifecycle"
+    ],
+    "tests/test_certification_readiness.py": [
+      "release-lifecycle"
+    ],
+    "tests/test_rollout_inventory.py": [
+      "release-lifecycle"
+    ],
+    "tests/test_certification_pipeline_readiness.py": [
+      "release-lifecycle"
+    ]
+  },
+  "missing_membership": [],
+  "missing_files": [],
+  "duplicate_members": []
+}

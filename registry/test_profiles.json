@@ -2160,7 +2160,86 @@
         "tests/release_preflight_testkit.py",
         "tests/test_release_feedback_audit.py",
         "tests/test_release_evidence_portability.py",
-        "tests/test_contract_length_bounds.py"
+        "tests/test_contract_length_bounds.py",
+        "runtime/source_freeze.py",
+        "runtime/source_boundary.py",
+        "runtime/plan_registry.py",
+        "tests/test_source_freeze.py",
+        "tests/test_plan_registry_integrity.py",
+        "tests/test_plan_status_authority.py",
+        "tests/test_plan_waves.py",
+        "policies/rev1xx-validation.json",
+        "registry/planning/rev1xx/**",
+        "docs/adr/ADR-REV1XX-FRESH-VALIDATION-001.md",
+        "tests/test_plan_current_campaign.py",
+        "tests/test_plan_registry.py",
+        "runtime/context_generation.py",
+        "runtime/projection_gate.py",
+        "runtime/librarian_semantic_map.py",
+        "runtime/semantic_entity.py",
+        "runtime/semantic_locator.py",
+        "runtime/semantic_revision.py",
+        "tests/test_context_generation.py",
+        "tests/test_projection_gate.py",
+        "tests/test_librarian_semantic_map.py",
+        "tests/test_semantic_entity.py",
+        "tests/test_semantic_locator.py",
+        "tests/test_semantic_revision.py",
+        "scripts/build_contract_ownership_registry.py",
+        "tests/test_contract_ownership_registry.py",
+        "runtime/compact_address.py",
+        "tests/test_compact_address.py",
+        "tests/test_plan_foundation_authority.py",
+        "runtime/semantic_surfaces.py",
+        "runtime/semantic_prefreeze_census.py",
+        "runtime/semantic_taxonomy_census.py",
+        "runtime/semantic_taxonomy.py",
+        "runtime/semantic_entity_worthiness.py",
+        "runtime/semantic_evidence_graph.py",
+        "tests/test_semantic_surfaces.py",
+        "scripts/cert_env.ps1",
+        ".agentic_engineering_os_px/tmp/run_auth.ps1",
+        ".agentic_engineering_os_px/tmp/run_iso.ps1",
+        ".agentic_engineering_os_px/tmp/run_broad2.ps1",
+        "scripts/cleanup_pytest_ephemerals.ps1",
+        "scripts/cleanup_owned_test_ephemerals.ps1",
+        "scripts/cleanup_px_generated_test_fixtures.ps1",
+        "tests/test_powershell_campaign_controls.py",
+        "runtime/engine_identity.py",
+        "registry/source_boundary.json",
+        "tests/test_source_boundary.py",
+        "runtime/semantic_powershell_source.py",
+        "tests/test_semantic_powershell_source.py",
+        "runtime/usage_memory.py",
+        "runtime/semantic_authored_sources.py",
+        "tests/test_semantic_authored_sources.py",
+        "tests/test_semantic_project_map_bridge.py",
+        "tests/test_engineering_os_paths.py",
+        "runtime/engineering_os_paths.py",
+        "contracts/semantic/source-census-binding.schema.json",
+        "runtime/model_execution_group.py",
+        "runtime/model_branch_contracts.py",
+        "runtime/model_convergence.py",
+        "runtime/generation_bound_verdict.py",
+        "runtime/governed_exception.py",
+        "runtime/work_disposition.py",
+        "runtime/deterministic_model_stub.py",
+        "runtime/model_route_state.py",
+        "runtime/task_execution_plan.py",
+        "contracts/models/*.schema.json",
+        "contracts/task_execution_plan.schema.json",
+        "tests/test_refines_mesh_integration.py",
+        "tests/test_model_execution_group.py",
+        "runtime/agent_handoff.py",
+        "tests/test_refines_generation_lineage.py",
+        "tests/test_agent_handoff.py",
+        "tests/test_execution_contract.py",
+        "tests/test_agent_governed_integration.py",
+        "runtime/model_group_preparation.py",
+        "runtime/execution_placement.py",
+        "tests/test_model_group_preparation.py",
+        "tests/test_execution_placement.py",
+        "tests/test_hardware_routing.py"
       ],
       "command": [
         "python",
@@ -2169,6 +2248,10 @@
         "-q",
         "-p",
         "no:cacheprovider",
+        "tests/test_plan_registry.py",
+        "tests/test_plan_current_campaign.py",
+        "tests/test_plan_waves.py",
+        "tests/test_plan_status_authority.py",
         "tests/test_contract_runtime.py",
         "tests/test_json_io.py",
         "tests/test_bounded_walk.py",
@@ -2254,7 +2337,36 @@
         "tests/test_release_feedback_audit.py",
         "tests/test_release_evidence_budget.py",
         "tests/test_release_evidence_portability.py",
-        "tests/test_contract_length_bounds.py"
+        "tests/test_contract_length_bounds.py",
+        "tests/test_source_freeze.py",
+        "tests/test_plan_registry_integrity.py",
+        "tests/test_context_generation.py",
+        "tests/test_projection_gate.py",
+        "tests/test_librarian_semantic_map.py",
+        "tests/test_semantic_entity.py",
+        "tests/test_semantic_locator.py",
+        "tests/test_semantic_revision.py",
+        "tests/test_contract_ownership_registry.py",
+        "tests/test_compact_address.py",
+        "tests/test_plan_foundation_authority.py",
+        "tests/test_semantic_surfaces.py",
+        "tests/test_powershell_campaign_controls.py",
+        "tests/test_source_boundary.py",
+        "tests/test_semantic_powershell_source.py",
+        "tests/test_semantic_authored_sources.py",
+        "tests/test_semantic_project_map_bridge.py",
+        "tests/test_engineering_os_paths.py",
+        "tests/test_refines_mesh_integration.py",
+        "tests/test_model_execution_group.py",
+        "tests/test_task_execution_plan.py",
+        "tests/test_model_route_state.py",
+        "tests/test_refines_generation_lineage.py",
+        "tests/test_agent_handoff.py",
+        "tests/test_execution_contract.py",
+        "tests/test_agent_governed_integration.py",
+        "tests/test_model_group_preparation.py",
+        "tests/test_execution_placement.py",
+        "tests/test_hardware_routing.py"
       ],
       "chunk_size": 8,
       "max_parallel_chunks": 1,
@@ -2427,7 +2539,9 @@
         "tests/test_gremlin_recovery_authority.py",
         "tests/test_gremlin_host_configuration.py",
         "tests/test_isolated_agent_sandbox.py",
-        "registry/test_profiles.json"
+        "registry/test_profiles.json",
+        "tests/test_gremlin_audit.py",
+        "tests/test_gremlin_composition.py"
       ],
       "command": [
         "python",
@@ -2441,7 +2555,9 @@
         "tests/test_gremlin_runtime_identity.py",
         "tests/test_gremlin_recovery_authority.py",
         "tests/test_gremlin_host_configuration.py",
-        "tests/test_isolated_agent_sandbox.py"
+        "tests/test_isolated_agent_sandbox.py",
+        "tests/test_gremlin_audit.py",
+        "tests/test_gremlin_composition.py"
       ],
       "chunk_size": 2,
       "max_parallel_chunks": 1,
@@ -2524,20 +2640,26 @@
         "extension/tests/event-integrity-audit.test.js",
         "extension/tests/agent-harness-core.test.js",
         "extension/tests/agent-console-messages.test.js",
-        "registry/test_profiles.json"
+        "registry/test_profiles.json",
+        "extension/src/agentHarness/harnessController.js",
+        "extension/src/agentHarness/registerAgentConsole.js",
+        "extension/tests/agent-console-catalog-currentness.test.js",
+        "extension/tests/agent-console-model-fabric-catalog.test.js"
       ],
       "command": [
         "node",
         "--test",
         "tests/event-integrity-audit.test.js",
         "tests/agent-harness-core.test.js",
-        "tests/agent-console-messages.test.js"
+        "tests/agent-console-messages.test.js",
+        "tests/agent-console-catalog-currentness.test.js",
+        "tests/agent-console-model-fabric-catalog.test.js"
       ],
       "cwd": "extension",
       "chunk_size": 1,
       "max_parallel_chunks": 1,
       "chunk_timeout_seconds": 120,
-      "timeout_seconds": 400
+      "timeout_seconds": 600
     },
     "agent-task-lifecycle": {
       "description": "Task/run persistence acknowledgement, cancellation and owner binding; stale worker registration/health rejection; no model or installed-host certification from local controlled adapters.",
@@ -2546,14 +2668,16 @@
         "extension/tests/task-state-custody.test.js",
         "extension/tests/agent-harness-core.test.js",
         "registry/test_profiles.json",
-        "extension/tests/completion-ownership-audit.test.js"
+        "extension/tests/completion-ownership-audit.test.js",
+        "extension/tests/task-store-generation-custody.test.js"
       ],
       "command": [
         "node",
         "--test",
         "tests/task-state-custody.test.js",
         "tests/agent-harness-core.test.js",
-        "tests/completion-ownership-audit.test.js"
+        "tests/completion-ownership-audit.test.js",
+        "tests/task-store-generation-custody.test.js"
       ],
       "cwd": "extension",
       "chunk_size": 1,
@@ -2646,7 +2770,22 @@
         "tests/test_certification_readiness.py",
         "tests/test_certification_pipeline_readiness.py",
         "registry/test_profiles.json",
-        "runtime/test_runner.py"
+        "runtime/test_runner.py",
+        "runtime/project_revision_succession.py",
+        "runtime/revision_campaign_lifecycle.py",
+        "runtime/test_profiles.py",
+        "runtime/release_campaign.py",
+        "runtime/release_identity.py",
+        "runtime/release_source_identity.py",
+        "runtime/certification_readiness.py",
+        "runtime/wal_transaction.py",
+        "runtime/json_io.py",
+        "contracts/project_revision_succession/*.json",
+        "scripts/rollout/*.py",
+        "tests/test_project_revision_succession.py",
+        "tests/test_revision_campaign_lifecycle.py",
+        "tests/test_certificate_input_contracts.py",
+        "tests/test_rollout_inventory.py"
       ],
       "command": [
         "python",
@@ -2659,12 +2798,16 @@
         "tests/test_release_stage_owner.py",
         "tests/test_run_installed_operational_owner.py",
         "tests/test_certification_readiness.py",
-        "tests/test_certification_pipeline_readiness.py"
+        "tests/test_certification_pipeline_readiness.py",
+        "tests/test_project_revision_succession.py",
+        "tests/test_revision_campaign_lifecycle.py",
+        "tests/test_certificate_input_contracts.py",
+        "tests/test_rollout_inventory.py"
       ],
       "chunk_size": 1,
       "max_parallel_chunks": 1,
-      "chunk_timeout_seconds": 240,
-      "timeout_seconds": 1200
+      "chunk_timeout_seconds": 600,
+      "timeout_seconds": 2100
     },
     "source-inventory": {
       "description": "Review-bound non-deleting source plans, pinned bounded reads, Git/custody exclusion and hostile source intake; never generated refresh or release admission.",
@@ -2694,12 +2837,14 @@
       "source_patterns": [
         "extension/src/agentHarness/adapters/**",
         "extension/tests/agent-harness-streaming.test.js",
-        "registry/test_profiles.json"
+        "registry/test_profiles.json",
+        "extension/tests/px-provider-invoker.test.js"
       ],
       "command": [
         "node",
         "--test",
-        "tests/agent-harness-streaming.test.js"
+        "tests/agent-harness-streaming.test.js",
+        "tests/px-provider-invoker.test.js"
       ],
       "cwd": "extension",
       "chunk_size": 0,
@@ -2795,14 +2940,18 @@
         "extension/src/agentHarness/**",
         "extension/tests/gateway-catalog-binding.test.js",
         "extension/tests/mcp-client-protocol-audit.test.js",
-        "registry/test_profiles.json"
+        "registry/test_profiles.json",
+        "extension/tests/mcp-model-fabric-stream.test.js",
+        "extension/tests/px-language-model-provider.test.js"
       ],
       "command": [
         "node",
         "--test",
         "tests/gateway-catalog-binding.test.js",
         "tests/mcp-client-protocol-audit.test.js",
-        "tests/mcp-model-fabric-bridge.test.js"
+        "tests/mcp-model-fabric-bridge.test.js",
+        "tests/mcp-model-fabric-stream.test.js",
+        "tests/px-language-model-provider.test.js"
       ],
       "cwd": "extension",
       "chunk_size": 0,
@@ -2878,6 +3027,28 @@
       "max_parallel_chunks": 1,
       "chunk_timeout_seconds": 180,
       "timeout_seconds": 300
+    },
+    "billing-accounting": {
+      "description": "Durable reservations, cumulative ceilings, owner-bound idempotent settlement and exact provider receipt validation.",
+      "source_patterns": [
+        "extension/src/agentHarness/**",
+        "extension/tests/billing-settlement-audit.test.js",
+        "extension/tests/agent-harness-core.test.js",
+        "extension/tests/px-provider-invoker.test.js",
+        "registry/test_profiles.json"
+      ],
+      "command": [
+        "node",
+        "--test",
+        "tests/billing-settlement-audit.test.js",
+        "tests/agent-harness-core.test.js",
+        "tests/px-provider-invoker.test.js"
+      ],
+      "cwd": "extension",
+      "chunk_size": 1,
+      "max_parallel_chunks": 1,
+      "chunk_timeout_seconds": 120,
+      "timeout_seconds": 600
     }
   },
   "certification": {
@@ -2909,7 +3080,8 @@
       "remote-profile-catalog",
       "agent-gateway-integration",
       "agent-tool-authority",
-      "model-group-execution"
+      "model-group-execution",
+      "billing-accounting"
     ],
     "whole_suite_after_sections": true,
     "required_groups": [

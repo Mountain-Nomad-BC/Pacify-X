@@ -38,11 +38,8 @@ class OwnerBlocked(RuntimeError):
 
 
 def _sha256(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as stream:
-        for chunk in iter(lambda: stream.read(1024 * 1024), b""):
-            digest.update(chunk)
-    return digest.hexdigest()
+    from runtime.hash_utils import file_sha256
+    return file_sha256(path)
 
 
 def _is_sha256(value: object) -> bool:
@@ -237,7 +234,7 @@ class ProductionEffects:
         )
 
     def advance(self, config: Config) -> None:
-        path = config.root / ".engineering-bootstrap/processing-order/repair-campaign.json"
+        path = config.root / ".agentic_engineering_os_px/processing-order/repair-campaign.json"
         value = _object(path)
         if (
             value.get("phase") != "installed"
@@ -282,11 +279,12 @@ class ProductionEffects:
 
 
 def _identity(config: Config) -> tuple[dict[str, Any], dict[str, Any]]:
+    from runtime.release_campaign import release_state_relative
     release = _object(
-        config.root / ".engineering-bootstrap/processing-order/release-identity.json"
+        config.root / release_state_relative(config.root)
     )
     repair = _object(
-        config.root / ".engineering-bootstrap/processing-order/repair-campaign.json"
+        config.root / ".agentic_engineering_os_px/processing-order/repair-campaign.json"
     )
     stages = release.get("stages")
     identity = release.get("identity")

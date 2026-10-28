@@ -1,0 +1,154 @@
+{
+  "schema_version": "px.punch-card-status/1.0",
+  "campaign_id": "px-rev1xx-unbuilt-2026-10-01",
+  "cards": {
+    "BASE-001": {
+      "status": "narrowly_verified",
+      "evidence": [
+        {
+          "reference": "registry/source_freeze.json",
+          "claim": "Content-addressed freeze published: tree_sha256 67eb7a8cef97a6987f275d5c14c63f6490170c9b9f2d98584e4214d4169b6197 across 4872 authored files, extension 0.9.0 recorded."
+        },
+        {
+          "reference": "tests/test_source_freeze.py",
+          "claim": "12 of 12 tests pass, and a full-scale restore of all 4872 files reproduced an identical tree digest, ROUND TRIP EXACT True."
+        },
+        {
+          "reference": "registry/source_freeze.json",
+          "claim": "ADR-BASE-001-001 records the D-001 Git deviation explicitly with its equivalence, consequence and revisit condition."
+        }
+      ]
+    },
+    "BASE-002": {
+      "status": "narrowly_verified",
+      "evidence": [
+        {
+          "reference": ".agentic_engineering_os_px/registers/base-002-supersession-receipt.json",
+          "claim": "Owner decision receipt records explicit supersession of repair12/final100, the observed superseded state, and the preservation rule."
+        },
+        {
+          "reference": ".agentic_engineering_os_px/registers/base-002-supersession-receipt.json",
+          "claim": "Carry-forward register lists 7 release obligations, 8 adversarial obligations, 1 closure obligation and 3 contradictions, none marked satisfied."
+        },
+        {
+          "reference": ".agentic_engineering_os_px/project-management/state.json",
+          "claim": "Superseded state is retained verbatim as historical evidence and was neither deleted nor rewritten."
+        }
+      ]
+    },
+    "BASE-003": {
+      "status": "narrowly_verified",
+      "evidence": [
+        {
+          "reference": "registry/plan_corpus.json",
+          "claim": "11 planning archives fingerprinted and collapsed to 9 unique payloads across 2 duplicate pairs, each collapsing onto one admitted requirement source."
+        },
+        {
+          "reference": "tests/test_plan_registry.py",
+          "claim": "14 of 14 tests pass, including the 9-versus-8 variance being reported rather than reconciled by assumption."
+        }
+      ]
+    },
+    "BASE-004": {
+      "status": "narrowly_verified",
+      "evidence": [
+        {
+          "reference": "registry/punch_card_ledger.json",
+          "claim": "All 60 cards publish authority, dependencies, acceptance, rollback and source traceability; graph is acyclic with every edge resolving and zero ownerless cards."
+        },
+        {
+          "reference": "tests/test_plan_registry.py",
+          "claim": "Coverage proves unknown dependencies, cycles and ownerless cards all fail closed."
+        }
+      ]
+    },
+    "SEM-003": {
+      "status": "reopened",
+      "reopened_reason": "SEM-003 was incorrectly reported as narrowly_verified. The card asks for Subject.Object.SemanticRole.Kind aliases, which implies four SEMANTIC dimensions drawn from a real taxonomy. The implementation instead derived all four segments from raw digest bytes, so every dimension was semantically empty. A dry run over eight operations produced eight distinct kind values when all eight are operations and must share one; eight distinct roles from a closed vocabulary that does not exist; and unrelated subjects for read_head and append_event even though both live in the same module. The tests verified collision-freedom, reserved-value safety and determinism, all of which pass while the thing carries no meaning. Mechanics were proven; intent was not.",
+      "evidence": [
+        {
+          "reference": "runtime/compact_address.py",
+          "claim": "DEFECT: segments are digest bytes, not taxonomy. _candidate_stream seeds subject/object/semantic_role/kind from digest[0..3] modulo 254, so no segment has a system-wide stable meaning."
+        },
+        {
+          "reference": "dry run over eight operation entities",
+          "claim": "distinct kind values [3, 25, 55, 56, 73, 114, 142, 224] for eight operations that must all share one kind value; distinct roles [24, 75, 134, 142, 149, 154, 216, 223] from a closed role vocabulary that does not exist."
+        },
+        {
+          "reference": "contracts/semantic/compact-address-record.schema.json",
+          "claim": "The schema bounds segments to 1..254 but defines no vocabulary, so a conforming record can be produced that is semantically meaningless."
+        },
+        {
+          "reference": "tests/test_compact_address.py",
+          "claim": "RETAINED as mechanics coverage only. These tests still prove zero collisions, 0/255 reserved enforcement and deterministic round trip, but they cannot prove semantic correctness and must not be read as if they do."
+        }
+      ]
+    },
+    "SEM-002": {
+      "status": "narrowly_verified",
+      "evidence": [
+        {
+          "reference": "contracts/semantic/locator-record.schema.json",
+          "claim": "Locator record contract created at the card's declared candidate owner path; it is the only place a filesystem location appears in the semantic model."
+        },
+        {
+          "reference": "contracts/semantic/relation-record.schema.json",
+          "claim": "Relation record contract created with a typed relation_kind enum, and target_entity_id nullable only where external_target is supplied."
+        },
+        {
+          "reference": "runtime/semantic_locator.py",
+          "claim": "ACCEPTANCE MET: a path edit changes the locator and never the entity identity. relocate replaces the locator, derives a distinct locator_id, keeps exactly one current locator per (entity, kind), and leaves identity_basis and entity_id untouched."
+        },
+        {
+          "reference": "runtime/semantic_locator.py",
+          "claim": "ACCEPTANCE MET: no dangling relation endpoints. Dangling and retired endpoints are refused at registration and re-checked on demand, so an endpoint retired after acceptance surfaces as a reported dangling relation rather than a silently broken edge."
+        },
+        {
+          "reference": "runtime/semantic_project_map_bridge.py",
+          "claim": "Prior behavior is the defect being repaired: query_project_map_evidence builds locator as an inline path string with no entity binding, and stable_id folds in the project map revision so locator identity moves with the revision."
+        },
+        {
+          "reference": "runtime/semantic_locator.py",
+          "claim": "located_at edges are derived from current locators by bind_locators and never asserted independently, so a location edge cannot contradict the locator it reflects."
+        },
+        {
+          "reference": "tests/test_semantic_locator.py",
+          "claim": "13 of 13 tests pass, covering both acceptance criteria, unknown and retired endpoints, line-range validation, graph-only relations refusing to dangle externally, idempotent relation identity, self-reference rules, and derived location edges."
+        },
+        {
+          "reference": "campaign-touched suites",
+          "claim": "211 passed, 0 failed in 547.60s across every campaign suite after the SEM-002 addition."
+        }
+      ]
+    },
+    "SEM-001": {
+      "status": "narrowly_verified",
+      "evidence": [
+        {
+          "reference": "contracts/semantic/semantic-entity.schema.json",
+          "claim": "New owning contract established at the path the card declares, with required entity_id, entity_kind, identity_basis, lifecycle and provenance; it deliberately carries no location field."
+        },
+        {
+          "reference": "runtime/semantic_entity.py",
+          "claim": "entity_id is derived as pxe1 plus a sha256 of the canonical identity tuple and the derivation accepts no path, location or file argument, so identity survives rename and move."
+        },
+        {
+          "reference": "runtime/semantic_entity.py",
+          "claim": "EntityRecord has no path field at all; location is deferred to SEM-002 locator records rather than fused into identity."
+        },
+        {
+          "reference": "runtime/librarian_semantic_map.py",
+          "claim": "Prior behavior is the defect being repaired: registry entity ids are derived from path-shaped raw identifiers and source_path is stored as a field on the Entity, so a rename forks identity."
+        },
+        {
+          "reference": "tests/test_semantic_entity.py",
+          "claim": "17 of 17 tests pass, covering the contract, id shape, rename and move invariance, separator normalization, absence of any path field, content-digest enforcement, lifecycle monotonicity, idempotent registration, and fail-closed validation."
+        },
+        {
+          "reference": "campaign-touched suites",
+          "claim": "198 passed, 0 failed across every campaign suite after the SEM-001 addition."
+        }
+      ]
+    }
+  }
+}

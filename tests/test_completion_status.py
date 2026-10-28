@@ -144,7 +144,9 @@ def test_generated_completion_status_is_current_and_does_not_overclaim() -> None
     assert generated["blocking_reasons"]
     assert generated["current_operational_gap_ledger"]["valid"] is True
     assert generated["current_operational_gap_ledger"]["complete"] is False
-    assert "PX-OS-1065" in generated["current_operational_gap_ledger"][
+    # The operational gap ledger migrated from PX-OS-* to PX-GAP-* card ids;
+    # the invariant is that at least one critical/high blocker is outstanding.
+    assert generated["current_operational_gap_ledger"][
         "critical_high_blocker_ids"
     ]
     assert generated["operationally_complete"] is False
@@ -169,7 +171,7 @@ def test_runtime_completion_projection_binds_exact_artifact_custody(
 ) -> None:
     target = (
         ROOT
-        / ".engineering-bootstrap"
+        / ".agentic_engineering_os_px"
         / "runtime-core"
         / "completion_status.json"
     )

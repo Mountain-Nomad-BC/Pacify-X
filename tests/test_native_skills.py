@@ -336,3 +336,30 @@ class NativeSkillTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+def test_native_resources_share_static_packaging_inventory(tmp_path, monkeypatch):
+    from scripts import migrate_px_skills as migration
+    from runtime import native_skills as native
+
+    source = tmp_path / "source"
+    source.mkdir()
+    (source / "SKILL.md").write_text("# Fixture skill\n")
+    (source / "memory").mkdir()
+    (source / "memory/stats.json").write_text('{"observations": 7}')
+    (source / "memory/usage.jsonl").write_text('{"event": "fixture"}\n')
+    (source / "references").mkdir()
+    (source / "references/guide.txt").write_text("Required static guidance")
+    row = migration._native_package(tmp_path, source, {"id": "fixture", "status": "active"})
+    package = tmp_path / ".px/skills/fixture"
+    resources = json.loads((package / "resources/index.json").read_text())["resources"]
+    assert "memory/stats.json" not in resources
+    assert "memory/usage.jsonl" not in resources
+    assert "references/guide.txt" in resources
+    assert (package / "memory/stats.json").read_text() == '{"observations": 7}'
+    monkeypatch.setattr(native, "load_index", lambda root: {"records": [row]})
+    assert native.validate_native_packages(tmp_path)["valid"]
+    (package / "references/guide.txt").unlink()
+    result = native.validate_native_packages(tmp_path)
+    assert result["valid"] is False
+    assert "resource-missing:fixture:references/guide.txt" in result["errors"]

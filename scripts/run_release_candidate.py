@@ -12,7 +12,6 @@ from __future__ import annotations
 import argparse
 from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
-import hashlib
 import json
 import os
 from pathlib import Path
@@ -39,6 +38,7 @@ from runtime.certification_contract import (  # noqa: E402
 
 
 CONFIG_SCHEMA = "px.release-candidate-automation/1.0"
+CURRENT_CONFIG_SCHEMA = "px.release-candidate-automation/2.0"
 STATE_SCHEMA = "px.release-candidate-automation-state/1.0"
 SHA256_RE = re.compile(r"^[a-f0-9]{64}$")
 DATE_RE = re.compile(r"^20\d{6}$")
@@ -53,11 +53,8 @@ def _now() -> str:
 
 
 def _sha256(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as stream:
-        for chunk in iter(lambda: stream.read(1024 * 1024), b""):
-            digest.update(chunk)
-    return digest.hexdigest()
+    from runtime.hash_utils import file_sha256
+    return file_sha256(path)
 
 
 def _git_tag_target(root: Path, tag: str) -> str:
@@ -83,6 +80,13 @@ def _validate_prior_tag_target(config: Config) -> None:
     if len(positions) != 1 or positions[0] + 1 >= len(command):
         raise AutomationBlocked("identity owner has no unique stage configuration")
     stage_path = _inside(config.root, command[positions[0] + 1], "identity stage config")
+    if config.identity_kind=="standalone_current_campaign":
+        from scripts.run_release_stage_owner import Config as StageConfig
+        stage=StageConfig.load(stage_path)
+        if stage.identity_kind!=config.identity_kind or stage.source_freeze_reference!=config.source_freeze_reference or stage.candidate_id!=config.candidate_id or stage.artifact!=config.artifact:
+            raise AutomationBlocked("current automation and identity owner bindings differ")
+        _prepare_identity_manifest(config)
+        return
     stage = _object(stage_path)
     identity = stage.get("identity")
     if not isinstance(identity, dict):
@@ -136,6 +140,9 @@ def _validate_git_convergence(config: Config) -> None:
     but no blocking source drift or staged change is allowed at campaign start.
     """
 
+    if config.identity_kind=="standalone_current_campaign":
+        _prepare_identity_manifest(config)
+        return
     _validate_empty_git_index(config)
     head = _git_output(config.root, "rev-parse", "HEAD")
     upstream = _git_output(config.root, "rev-parse", "--abbrev-ref", "--symbolic-full-name", "@{u}")
@@ -219,11 +226,14 @@ class Config:
     timeouts_seconds: Mapping[str, int]
     fresh_paths: tuple[Path, ...]
     owners: Mapping[str, tuple[tuple[str, ...], ...]]
+    identity_kind: str = "git"
+    source_freeze_reference: dict | None = None
+    artifact_state: str = "committed_legacy"
 
     @classmethod
     def load(cls, path: Path) -> "Config":
         raw = _object(path)
-        if raw.get("schema_version") != CONFIG_SCHEMA:
+        if raw.get("schema_version") not in (CONFIG_SCHEMA,CURRENT_CONFIG_SCHEMA):
             raise AutomationBlocked(f"configuration must use {CONFIG_SCHEMA}")
         root_value = Path(_required(raw, "root"))
         root = (root_value if root_value.is_absolute() else path.parent / root_value).resolve()
@@ -245,8 +255,26 @@ class Config:
         predecessor = _required(raw, "predecessor_campaign_id")
         if predecessor == candidate_id:
             raise AutomationBlocked("candidate and predecessor IDs must differ")
-        digest = _required(raw, "artifact_sha256").lower()
-        if not SHA256_RE.fullmatch(digest):
+        current=raw["schema_version"]==CURRENT_CONFIG_SCHEMA
+        reference=None
+        if current:
+            from runtime.release_source_identity import release_configuration_relative
+            if path.resolve()!=root/release_configuration_relative(candidate_id,"automation"):
+                raise AutomationBlocked("current automation config must migrate to its closed native derived-control locator")
+            from runtime.release_source_identity import current_campaign
+            identity=raw.get("identity")
+            artifact=raw.get("artifact")
+            if not current_campaign(root) or type(identity) is not dict or set(identity)!={"identity_kind","source_freeze"} or identity["identity_kind"]!="standalone_current_campaign":
+                raise AutomationBlocked("current automation requires exact native source identity")
+            reference=identity["source_freeze"]
+            if type(reference) is not dict or set(reference)!={"path","sha256"}:
+                raise AutomationBlocked("current automation requires exact final source reference")
+            if type(artifact) is not dict or set(artifact)!={"state","path","type","build_owner"} or artifact.get("state")!="planned" or artifact.get("type")!="vsix" or artifact.get("build_owner")!="extension/scripts/package-vsix.js":
+                raise AutomationBlocked("current automation requires exact planned VSIX producer")
+            if {"artifact_sha256","artifact_size","artifact_mtime_ns","identity_manifest"}&raw.keys():
+                raise AutomationBlocked("planned current automation cannot include invented artifact or Git manifest fields")
+        digest = "" if current else _required(raw, "artifact_sha256").lower()
+        if not current and not SHA256_RE.fullmatch(digest):
             raise AutomationBlocked("artifact_sha256 is invalid")
         prefix = _required(raw, "evidence_prefix")
         if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]{0,79}", prefix):
@@ -320,7 +348,7 @@ class Config:
         timeouts_seconds = {step: int(timeout_values[step]) for step in STEP_ORDER}
         if any(value <= 0 or value > 14400 for value in timeouts_seconds.values()):
             raise AutomationBlocked("step timeouts must be between 1 and 14400 seconds")
-        identity_manifest = raw.get("identity_manifest")
+        identity_manifest = reference if current else raw.get("identity_manifest")
         if not isinstance(identity_manifest, dict):
             raise AutomationBlocked("identity_manifest must be an object")
         identity_path_manifest = _inside(
@@ -328,14 +356,16 @@ class Config:
             _required(identity_manifest, "path"),
             "identity_manifest.path",
         )
-        if identity_path_manifest not in fresh_paths:
+        if current and identity_path_manifest in fresh_paths:
+            raise AutomationBlocked("final source freeze is an immutable input, not a fresh output")
+        if not current and identity_path_manifest not in fresh_paths:
             raise AutomationBlocked(
                 "fresh_paths must include identity_manifest.path so stale manifests cannot be reused"
             )
         log_root = _inside(root, _required(raw, "log_root"), "log_root")
         artifact_size = int(raw.get("artifact_size") or 0)
         artifact_mtime_ns = int(raw.get("artifact_mtime_ns") or 0)
-        if artifact_size <= 0 or artifact_mtime_ns <= 0:
+        if not current and (artifact_size <= 0 or artifact_mtime_ns <= 0):
             raise AutomationBlocked("artifact size and mtime_ns must be positive")
         return cls(
             root=root,
@@ -344,7 +374,7 @@ class Config:
             predecessor_campaign_id=predecessor,
             repair_campaign_id=_required(raw, "repair_campaign_id"),
             evidence_prefix=prefix,
-            artifact=_inside(root, _required(raw, "artifact"), "artifact"),
+            artifact=_inside(root, artifact["path"] if current else _required(raw, "artifact"), "artifact"),
             artifact_sha256=digest,
             artifact_size=artifact_size,
             artifact_mtime_ns=artifact_mtime_ns,
@@ -357,6 +387,9 @@ class Config:
             timeouts_seconds=timeouts_seconds,
             fresh_paths=fresh_paths,
             owners=owners,
+            identity_kind="standalone_current_campaign" if current else "git",
+            source_freeze_reference=dict(reference) if current else None,
+            artifact_state="planned" if current else "committed_legacy",
         )
 
     def relative(self, path: Path) -> str:
@@ -402,14 +435,13 @@ def plan(config: Config) -> dict[str, Any]:
 
 
 def _release(config: Config) -> dict[str, Any]:
-    return _object(
-        config.root / ".engineering-bootstrap/processing-order/release-identity.json"
-    )
+    from runtime.release_campaign import release_state_relative
+    return _object(config.root / release_state_relative(config.root))
 
 
 def _repair(config: Config) -> dict[str, Any]:
     return _object(
-        config.root / ".engineering-bootstrap/processing-order/repair-campaign.json"
+        config.root / ".agentic_engineering_os_px/processing-order/repair-campaign.json"
     )
 
 
@@ -501,7 +533,15 @@ def readiness(config: Config) -> dict[str, Any]:
         errors.append(
             f"full-profile timeout envelope is unavailable: {type(exc).__name__}"
         )
-    if not config.artifact.is_file() or config.artifact.is_symlink():
+    if config.artifact_state=="planned":
+        # The current stage owner explicitly refuses planned artifacts at
+        # package/install. Detect that before consuming archive/reconcile/tests,
+        # rather than admitting a candidate that can never complete its graph.
+        errors.append(
+            "planned artifact has no implemented package/install realization owner; "
+            "complete producer custody and exact-artifact binding before starting a release attempt"
+        )
+    elif not config.artifact.is_file() or config.artifact.is_symlink():
         errors.append("immutable artifact is not an exact non-symlink file")
     else:
         info = config.artifact.stat()
@@ -972,6 +1012,12 @@ def validate_installed_summary(config: Config) -> dict[str, Any]:
 def _prepare_identity_manifest(config: Config) -> dict[str, Any]:
     """Freeze the exact Git-visible source and mutable-control path sets."""
 
+    if config.identity_kind=="standalone_current_campaign":
+        from runtime.release_repository_context import verify_source_anchor
+        if config.identity_path_manifest!=config.root/config.source_freeze_reference["path"]:
+            raise AutomationBlocked("current source input locator differs from native reference")
+        verified=verify_source_anchor(config.root,config.source_freeze_reference,require_live=True)
+        return {"identity_kind":config.identity_kind,"source_freeze":verified["reference"],"git_acceptance":{"state":"deferred_by_owner","satisfied":False}}
     from runtime.release_identity import _release_dirty_state
 
     if config.identity_path_manifest.exists():
@@ -1008,9 +1054,9 @@ class SubprocessOwners:
             from runtime.resource_lifecycle import ResourceManager
 
             manager = ResourceManager(
-                config.root / ".engineering-bootstrap/resource-lifecycle/ledger.json",
+                config.root / ".agentic_engineering_os_px/resource-lifecycle/ledger.json",
                 receipt_dir=config.root
-                / ".engineering-bootstrap/resource-lifecycle/cleanup-receipts",
+                / ".agentic_engineering_os_px/resource-lifecycle/cleanup-receipts",
             )
         self.manager = manager
 
@@ -1061,7 +1107,7 @@ class SubprocessOwners:
 
                     post_resources = resource_status(
                         self.config.root
-                        / ".engineering-bootstrap/resource-lifecycle/ledger.json"
+                        / ".agentic_engineering_os_px/resource-lifecycle/ledger.json"
                     )
                     if any(
                         post_resources.get(field) != 0

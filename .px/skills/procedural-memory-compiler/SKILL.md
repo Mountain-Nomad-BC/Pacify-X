@@ -33,7 +33,7 @@ Compile repeated successful patterns into candidate procedures with activation, 
 ## Procedure
 1. Require a verified engineering process record conforming to `contracts/engineering-process-record.schema.json`.
 2. Preserve goal, decision reasons and alternatives, tool-selection reasons and effects, ordered steps, failures, recovery, verification, and evidence.
-3. Run `engineering-bootstrap process compile --record <record.json>` to build decision, tool, and execution graphs.
+3. Run `agentic-engineering-os-px process compile --record <record.json>` to build decision, tool, and execution graphs.
 4. Separate required actions from incidental trace details and compare the result with the current skill catalog.
 5. Improve the closest existing skill when overlap is material; otherwise emit a new candidate.
 6. Test activation, success, failure, recovery, and termination before submitting the inert candidate to admission.

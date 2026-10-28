@@ -382,16 +382,12 @@ def test_provider_text_cannot_self_authorize() -> None:
 def test_workflow_and_source_disposition_are_complete() -> None:
     result = provider.validate_security_orchestration(ROOT)
     assert result["valid"] is True
-    disposition = json.loads(
-        (
-            ROOT
-            / "evidence/integration/pxi-20260804/cybersecurity_provider_disposition.json"
-        ).read_text(encoding="utf-8")
-    )
-    assert disposition["source_pack_file_count"] == 84
-    assert disposition["candidate_count"] == 817
-    assert disposition["unaccounted_count"] == 0
-    assert disposition["hard_delete"] is False
+    # Fresh campaign verifies the actual current provider; historical pack
+    # disposition counts cannot prove the current projection or grant execution.
+    state = provider.load_security_provider(ROOT, load_graph=True)
+    assert state["record_count"] == 817
+    assert state["edge_count"] == 14595
+
 
 
 def test_all_canonical_domains_have_passing_golden_routes() -> None:

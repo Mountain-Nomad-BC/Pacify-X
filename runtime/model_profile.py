@@ -12,6 +12,7 @@ import hashlib
 import json
 import math
 from pathlib import Path
+import re
 from typing import Mapping
 
 from .archive_io import reject_path_links
@@ -24,6 +25,7 @@ _PROFILE_STATES = frozenset({"candidate", "certified", "retired"})
 _RESIDENCIES = frozenset({"resident", "warm", "cold", "exclusive_cold"})
 _LANES = frozenset({"control", "embedding", "reranker", "fast", "balanced", "deep", "specialist"})
 _RUNTIMES = frozenset({"llama_cpp_router"})
+_CACHE_TYPE = re.compile(r"^[a-z0-9][a-z0-9_.-]{0,31}$")
 
 
 def _canonical(value: object) -> bytes:
@@ -83,6 +85,8 @@ class ModelRuntimeProfile:
     exclusive_heavy: bool
     benchmark_required: bool
     profile_sha256: str
+    cache_type_k: str | None = None
+    cache_type_v: str | None = None
 
     @property
     def is_certified(self) -> bool:
@@ -95,10 +99,16 @@ class ModelRuntimeProfile:
     def identity_payload(self) -> dict[str, object]:
         payload = asdict(self)
         payload.pop("profile_sha256")
+        if self.schema_version == "px.model-runtime-profile/1.0":
+            payload.pop("cache_type_k")
+            payload.pop("cache_type_v")
         return payload
 
     def validate(self) -> None:
-        if self.schema_version != "px.model-runtime-profile/1.0":
+        if self.schema_version not in {
+            "px.model-runtime-profile/1.0",
+            "px.model-runtime-profile/1.1",
+        }:
             raise ValueError("unsupported model runtime profile schema")
         _text(self.profile_id, "profile_id")
         _text(self.model_id, "model_id")
@@ -116,6 +126,14 @@ class ModelRuntimeProfile:
         _integer(self.gpu_layers, "gpu_layers", 0, 100_000, optional=True)
         _integer(self.cpu_moe_layers, "cpu_moe_layers", 0, 100_000, optional=True)
         _integer(self.idle_evict_seconds, "idle_evict_seconds", 0, 7 * 24 * 60 * 60, optional=True)
+        for field in ("cache_type_k", "cache_type_v"):
+            value = getattr(self, field)
+            if value is not None and (
+                type(value) is not str or _CACHE_TYPE.fullmatch(value) is None
+            ):
+                raise ValueError(f"model profile {field} must be a bounded lowercase cache type or null")
+            if self.schema_version == "px.model-runtime-profile/1.0" and value is not None:
+                raise ValueError("model profile 1.0 cannot declare KV cache types")
         for field in ("flash_attention", "reasoning", "prompt_cache", "text_only", "exclusive_heavy", "benchmark_required"):
             _boolean(getattr(self, field), field)
         if self.max_output_tokens > self.context_tokens:
@@ -142,14 +160,25 @@ class ModelRuntimeProfile:
 
 
 def runtime_profile_from_mapping(payload: Mapping[str, object]) -> ModelRuntimeProfile:
-    required = {
+    legacy_fields = {
         "schema_version", "profile_id", "model_id", "lane", "runtime", "state", "residency",
         "context_tokens", "max_output_tokens", "parallel_slots", "threads", "threads_batch",
         "batch_size", "ubatch_size", "gpu_layers", "cpu_moe_layers", "flash_attention",
         "reasoning", "prompt_cache", "text_only", "idle_evict_seconds", "exclusive_heavy",
         "benchmark_required",
     }
-    if type(payload) is not dict or set(payload) != required:
+    extended_fields = legacy_fields | {"cache_type_k", "cache_type_v"}
+    if type(payload) is not dict:
+        raise ValueError("model runtime profile fields are incomplete or unsupported")
+    version = payload.get("schema_version")
+    required = (
+        legacy_fields
+        if version == "px.model-runtime-profile/1.0"
+        else extended_fields
+        if version == "px.model-runtime-profile/1.1"
+        else set()
+    )
+    if not required or set(payload) != required:
         raise ValueError("model runtime profile fields are incomplete or unsupported")
     body = dict(payload)
     profile = ModelRuntimeProfile(
@@ -177,6 +206,8 @@ def runtime_profile_from_mapping(payload: Mapping[str, object]) -> ModelRuntimeP
         exclusive_heavy=_boolean(body["exclusive_heavy"], "exclusive_heavy"),
         benchmark_required=_boolean(body["benchmark_required"], "benchmark_required"),
         profile_sha256="",
+        cache_type_k=body.get("cache_type_k"),
+        cache_type_v=body.get("cache_type_v"),
     )
     profile = ModelRuntimeProfile(**{**asdict(profile), "profile_sha256": _sha(profile.identity_payload())})
     profile.validate()

@@ -131,7 +131,7 @@ function exactSourceSelection(value) {
     && typeof value.record_id === 'string' && RECORD_ID.test(value.record_id)
     && typeof value.package_path === 'string' && validBoundedRelativePath(value.package_path)
     && ((value.package_scope === 'engine' && /^\.px\/skills\/[^/]+$/.test(value.package_path))
-      || (value.package_scope === 'project-studio' && /^\.engineering-bootstrap\/studios\/skills\/[^/]+\/revisions\/[^/]+\/payload$/.test(value.package_path)))
+      || (value.package_scope === 'project-studio' && /^\.agentic_engineering_os_px\/studios\/skills\/[^/]+\/revisions\/[^/]+\/payload$/.test(value.package_path)))
     && SHA256.test(value.source_revision_sha256) && SHA256.test(value.source_content_sha256) && SHA256.test(value.tree_sha256)
     && (value.source_scope !== 'external-authenticated' || value.tree_sha256 === value.source_content_sha256)
     && Number.isInteger(value.file_count) && value.file_count >= 1 && value.file_count <= 128;

@@ -16,9 +16,9 @@ from .test_runner import aggregate_test_disk_consumption_limit, validate_timeout
 
 
 REPAIR_CAMPAIGN_PATH = Path("registry/repair_campaign.json")
-MANAGED_PROJECT_MARKER = Path(".engineering-bootstrap/project-record.json")
+MANAGED_PROJECT_MARKER = Path(".agentic_engineering_os_px/project-record.json")
 PROJECT_REPAIR_CAMPAIGN_PATH = Path(
-    ".engineering-bootstrap/processing-order/repair-campaign.json"
+    ".agentic_engineering_os_px/processing-order/repair-campaign.json"
 )
 PROCESSING_PHASES = (
     "intake", "repair", "operational_verification", "repair_frozen",

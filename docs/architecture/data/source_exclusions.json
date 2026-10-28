@@ -1,22 +1,6 @@
 [
   {
-    "path": ".VSCodeCounter",
-    "reason": "excluded directory or link"
-  },
-  {
-    "path": ".audit-visible",
-    "reason": "excluded directory or link"
-  },
-  {
-    "path": ".engineering-bootstrap",
-    "reason": "excluded directory or link"
-  },
-  {
-    "path": ".git",
-    "reason": "excluded directory or link"
-  },
-  {
-    "path": ".pacify-x",
+    "path": ".agentic_engineering_os_px",
     "reason": "excluded directory or link"
   },
   {
@@ -24,19 +8,7 @@
     "reason": "excluded directory or link"
   },
   {
-    "path": ".quarantine",
-    "reason": "excluded directory or link"
-  },
-  {
-    "path": ".tmp",
-    "reason": "excluded directory or link"
-  },
-  {
-    "path": ".venv-certify",
-    "reason": "excluded directory or link"
-  },
-  {
-    "path": "Python",
+    "path": ".ruff_cache",
     "reason": "excluded directory or link"
   },
   {
@@ -44,32 +16,104 @@
     "reason": "excluded directory or link"
   },
   {
+    "path": "build",
+    "reason": "excluded directory or link"
+  },
+  {
+    "path": "dist",
+    "reason": "excluded directory or link"
+  },
+  {
     "path": "evidence",
     "reason": "excluded directory or link"
   },
   {
-    "path": "projects",
+    "path": ".engineering-bootstrap/diagnostics",
     "reason": "excluded directory or link"
   },
   {
-    "path": "projects_tracking",
+    "path": ".engineering-bootstrap/project-map",
     "reason": "excluded directory or link"
   },
   {
-    "path": "repo_quarantine",
+    "path": ".engineering-bootstrap/receipts",
     "reason": "excluded directory or link"
   },
   {
-    "path": ".px/global-skill-isolation",
+    "path": ".engineering-bootstrap/registers",
     "reason": "excluded directory or link"
   },
   {
-    "path": ".px/preserved-extension-installations",
+    "path": ".engineering-bootstrap/resource-lifecycle",
     "reason": "excluded directory or link"
   },
   {
-    "path": ".px/preserved-skills",
+    "path": ".engineering-bootstrap/runtime-core",
     "reason": "excluded directory or link"
+  },
+  {
+    "path": ".engineering-bootstrap/test-evidence",
+    "reason": "excluded directory or link"
+  },
+  {
+    "path": ".engineering-bootstrap/tmp",
+    "reason": "excluded directory or link"
+  },
+  {
+    "path": ".engineering-bootstrap/project-record.json",
+    "reason": "mutable release control output"
+  },
+  {
+    "path": ".engineering-bootstrap/project-registry.json",
+    "reason": "mutable release control output"
+  },
+  {
+    "path": ".engineering-bootstrap/.ledger-authority/commissioning-events/head.json",
+    "reason": "mutable release control output"
+  },
+  {
+    "path": ".engineering-bootstrap/.ledger-authority/commissioning-events/anchors/00000001-f59c855db407e23ddd7823b696828832d35ed011499e128553eecc7f909b0d31.json",
+    "reason": "mutable release control output"
+  },
+  {
+    "path": ".engineering-bootstrap/.ledger-authority/commissioning-events/anchors/00000002-08495675d647408d52b97e4f7661598dff3c0174d638fa1371900d8c4818c98c.json",
+    "reason": "mutable release control output"
+  },
+  {
+    "path": ".engineering-bootstrap/.ledger-authority/commissioning-events/history/00000001.json",
+    "reason": "mutable release control output"
+  },
+  {
+    "path": ".engineering-bootstrap/processing-order/repair-campaign.json",
+    "reason": "mutable release control output"
+  },
+  {
+    "path": ".engineering-bootstrap/processing-order/current-campaigns/694b33a9956117c936ea0a374b6f2760f7770caa76ab2d274ca81ef153ea28ae/release-identity.json",
+    "reason": "mutable release control output"
+  },
+  {
+    "path": ".engineering-bootstrap/profiles/cloud-restricted.toml",
+    "reason": "mutable release control output"
+  },
+  {
+    "path": ".engineering-bootstrap/profiles/constrained.toml",
+    "reason": "mutable release control output"
+  },
+  {
+    "path": ".engineering-bootstrap/profiles/default.toml",
+    "reason": "mutable release control output"
+  },
+  {
+    "path": ".engineering-bootstrap/profiles/large-workstation.toml",
+    "reason": "mutable release control output"
+  },
+  {
+    "path": ".engineering-bootstrap/profiles/local-model.toml",
+    "reason": "mutable release control output"
+  },
+  {
+    "path": ".engineering-bootstrap/project-management/state.json",
+    "reason": "mutable release control output"
   },
   {
     "path": ".px/mcp-runtime-probe.json",
@@ -77,14 +121,6 @@
   },
   {
     "path": "docs/architecture",
-    "reason": "excluded directory or link"
-  },
-  {
-    "path": "extension/.engineering-bootstrap",
-    "reason": "excluded directory or link"
-  },
-  {
-    "path": "extension/dist",
     "reason": "excluded directory or link"
   },
   {
@@ -100,11 +136,23 @@
     "reason": "mutable release control output"
   },
   {
+    "path": "extension/.engineering-bootstrap/resource-lifecycle",
+    "reason": "excluded directory or link"
+  },
+  {
+    "path": "px/py_cert/runtime/__pycache__",
+    "reason": "excluded directory or link"
+  },
+  {
     "path": "registry/.lock-recovery-receipts",
     "reason": "excluded directory or link"
   },
   {
     "path": "registry/operational_gap_ledger.deltas",
+    "reason": "excluded directory or link"
+  },
+  {
+    "path": "registry/source-freeze",
     "reason": "excluded directory or link"
   },
   {
@@ -130,5 +178,33 @@
   {
     "path": "registry/px_world_state.json",
     "reason": "mutable release control output"
+  },
+  {
+    "path": "registry/planning/rev1xx/foundation",
+    "reason": "excluded directory or link"
+  },
+  {
+    "path": "registry/planning/rev1xx/status-history",
+    "reason": "excluded directory or link"
+  },
+  {
+    "path": "runtime/__pycache__",
+    "reason": "excluded directory or link"
+  },
+  {
+    "path": "runtime/gremlin/__pycache__",
+    "reason": "excluded directory or link"
+  },
+  {
+    "path": "runtime/metacognitive_evolution/__pycache__",
+    "reason": "excluded directory or link"
+  },
+  {
+    "path": "scripts/__pycache__",
+    "reason": "excluded directory or link"
+  },
+  {
+    "path": "tests/__pycache__",
+    "reason": "excluded directory or link"
   }
 ]

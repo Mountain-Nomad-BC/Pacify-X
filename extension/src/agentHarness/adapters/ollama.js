@@ -1,6 +1,6 @@
 'use strict';
 
-const { ExecutionAdapter, sanitizeRemoteError } = require('./base');
+const { ExecutionAdapter, sanitizeRemoteError, providerHttpError } = require('./base');
 const { withStreamReader, errorPreview } = require('./streamCustody');
 const { compileMessages } = require('../pxProviderInvoker');
 
@@ -15,13 +15,19 @@ class OllamaAdapter extends ExecutionAdapter {
   }
 
   async runTurn(input) {
+    const requestedOutputTokens = input.maxOutputTokens == null ? 1024 : input.maxOutputTokens;
+    if (!Number.isSafeInteger(requestedOutputTokens) || requestedOutputTokens < 1) {
+      throw new Error('ollama-output-token-budget-invalid');
+    }
+    const maxOutputTokens = Math.min(requestedOutputTokens, 8192);
     const messages = compileMessages(input);
     let response;
     try {
       response = await fetch(`${this.baseUrl}/api/chat`, { method: 'POST', headers: { 'content-type': 'application/json' }, signal: input.signal,
-        body: JSON.stringify({ model: this.model, stream: true, messages, options: this.options.options || {} }) });
+        body: JSON.stringify({ model: this.model, stream: true, messages,
+          options: { ...(this.options.options || {}), num_predict: maxOutputTokens } }) });
     } catch (error) { throw new Error(`ollama-request-failed:${sanitizeRemoteError(error)}`); }
-    if (!response.ok || !response.body) throw new Error(`ollama-http-${response.status}:${sanitizeRemoteError(await errorPreview(response, input.signal))}`);
+    if (!response.ok || !response.body) throw providerHttpError(response.status, await errorPreview(response, input.signal));
     return withStreamReader(response.body, input.signal, async reader => {
     const decoder = new TextDecoder('utf-8', { fatal: true });
     let receivedBytes = 0;

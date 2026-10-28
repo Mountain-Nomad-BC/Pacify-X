@@ -158,6 +158,8 @@ def _available(engine_root: Path, project_root: Path) -> list[dict[str, object]]
         result.append({
             "profile_id": profile.profile_id,
             "provider_id": "llama.cpp",
+            "bridge_kind": "local",
+            "available": True,
             "model_id": profile.model_id,
             "model_sha256": admission["model_sha256"],
             "lane": profile.lane,

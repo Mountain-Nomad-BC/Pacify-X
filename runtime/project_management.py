@@ -11,7 +11,7 @@ from .paths import framework_root
 from .version import VERSION
 
 
-CONTROL_DIR = Path(".engineering-bootstrap/project-management")
+CONTROL_DIR = Path(".agentic_engineering_os_px/project-management")
 CONTROL_FILES = (
     "PROJECT_CONTEXT.md",
     "ASSUMPTIONS.md",
@@ -138,12 +138,12 @@ def project_management_files(
             else "confirm objective, scope, constraints, risks, and acceptance criteria",
         },
         "evidence": {
-            "commissioning_receipt": ".engineering-bootstrap/commissioning-receipt.json",
-            "existing_project_inventory": ".engineering-bootstrap/existing-project-inventory.json"
+            "commissioning_receipt": ".agentic_engineering_os_px/commissioning-receipt.json",
+            "existing_project_inventory": ".agentic_engineering_os_px/existing-project-inventory.json"
             if mode == "existing"
             else None,
             "validation_receipt": None,
-            "commissioning_questionnaire": ".engineering-bootstrap/project-management/commissioning-questionnaire.json"
+            "commissioning_questionnaire": ".agentic_engineering_os_px/project-management/commissioning-questionnaire.json"
             if questionnaire
             else None,
         },
@@ -155,7 +155,7 @@ def project_management_files(
         ),
         Path("PROJECT_MANAGEMENT.md"): _document(
             "Project Management",
-            "This is the durable human entry point for the governed engineering loop. Update it from evidence; keep machine-readable state synchronized in `.engineering-bootstrap/project-management/state.json`.",
+            "This is the durable human entry point for the governed engineering loop. Update it from evidence; keep machine-readable state synchronized in `.agentic_engineering_os_px/project-management/state.json`.",
             (
                 (
                     "Current state",
@@ -167,7 +167,7 @@ def project_management_files(
                 ),
                 (
                     "Control files",
-                    "- [Project context](.engineering-bootstrap/project-management/PROJECT_CONTEXT.md)\n- [Assumptions](.engineering-bootstrap/project-management/ASSUMPTIONS.md)\n- [Execution plan](.engineering-bootstrap/project-management/EXECUTION_PLAN.md)\n- [Punch cards](.engineering-bootstrap/project-management/PUNCH_CARDS.md)\n- [Orchestration](.engineering-bootstrap/project-management/ORCHESTRATION.md)\n- [Risks](.engineering-bootstrap/project-management/RISKS.md)\n- [Acceptance criteria](.engineering-bootstrap/project-management/ACCEPTANCE_CRITERIA.md)",
+                    "- [Project context](.agentic_engineering_os_px/project-management/PROJECT_CONTEXT.md)\n- [Assumptions](.agentic_engineering_os_px/project-management/ASSUMPTIONS.md)\n- [Execution plan](.agentic_engineering_os_px/project-management/EXECUTION_PLAN.md)\n- [Punch cards](.agentic_engineering_os_px/project-management/PUNCH_CARDS.md)\n- [Orchestration](.agentic_engineering_os_px/project-management/ORCHESTRATION.md)\n- [Risks](.agentic_engineering_os_px/project-management/RISKS.md)\n- [Acceptance criteria](.agentic_engineering_os_px/project-management/ACCEPTANCE_CRITERIA.md)",
                 ),
                 (
                     "Update contract",
@@ -230,7 +230,7 @@ def project_management_files(
             (
                 (
                     "PM-001 — Commission bootstrap",
-                    "Status: complete after `engineering-bootstrap project-check --project .` passes.",
+                    "Status: complete after `agentic-engineering-os-px project-check --project .` passes.",
                 ),
                 (
                     "PM-002 — Confirm project brief",
@@ -256,7 +256,7 @@ def project_management_files(
                 ),
                 (
                     "Commands",
-                    '`engineering-bootstrap validate`  \n`engineering-bootstrap startup --project .`  \n`engineering-bootstrap working-set --goal "<goal>"`  \n`engineering-bootstrap hydrate --skill <selected-id>`',
+                    '`agentic-engineering-os-px validate`  \n`agentic-engineering-os-px startup --project .`  \n`agentic-engineering-os-px working-set --goal "<goal>"`  \n`agentic-engineering-os-px hydrate --skill <selected-id>`',
                 ),
                 (
                     "Stop conditions",
@@ -317,7 +317,7 @@ def project_management_files(
             (
                 (
                     "Facts, assumptions, unknowns, contradictions",
-                    "See `.engineering-bootstrap/project-management/ASSUMPTIONS.md`; summarize accepted findings here.",
+                    "See `.agentic_engineering_os_px/project-management/ASSUMPTIONS.md`; summarize accepted findings here.",
                 ),
                 (
                     "Options and recommendation",
@@ -346,7 +346,7 @@ def project_management_files(
                 ),
                 (
                     "Risks and mitigations",
-                    "See `.engineering-bootstrap/project-management/RISKS.md`.",
+                    "See `.agentic_engineering_os_px/project-management/RISKS.md`.",
                 ),
             ),
         ),
@@ -360,7 +360,7 @@ def project_management_files(
                 ),
                 (
                     "Punch cards and dependencies",
-                    "See `.engineering-bootstrap/project-management/PUNCH_CARDS.md` and `EXECUTION_PLAN.md`.",
+                    "See `.agentic_engineering_os_px/project-management/PUNCH_CARDS.md` and `EXECUTION_PLAN.md`.",
                 ),
                 (
                     "Approval checkpoints",
@@ -376,11 +376,11 @@ def project_management_files(
                 ),
                 (
                     "Acceptance criteria and definition of done",
-                    "See `.engineering-bootstrap/project-management/ACCEPTANCE_CRITERIA.md`.",
+                    "See `.agentic_engineering_os_px/project-management/ACCEPTANCE_CRITERIA.md`.",
                 ),
                 (
                     "Initial project prompt",
-                    "Use `.engineering-bootstrap/prompts/new-project.md` or `existing-project.md` according to the commissioned mode.",
+                    "Use `.agentic_engineering_os_px/prompts/new-project.md` or `existing-project.md` according to the commissioned mode.",
                 ),
             ),
         ),

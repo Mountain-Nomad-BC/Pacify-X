@@ -118,7 +118,7 @@ def crash_rollback(root: Path) -> None:
     studio.promote(first, approved=True)
     second, _ = _stage(studio, root, "1.1.0", "rollback-second")
     studio.promote(second, approved=True)
-    promotion_receipt = next((root / ".engineering-bootstrap/studios/skills").glob("*/revisions/1.1.0/promotion-receipt.json"))
+    promotion_receipt = next((root / ".agentic_engineering_os_px/studios/skills").glob("*/revisions/1.1.0/promotion-receipt.json"))
     _terminate_on_first_projection(root)
     studio.rollback(promotion_receipt, approved=True, approver="px-owned-walker")
     raise RuntimeError("rollback crash boundary was not reached")
@@ -130,7 +130,7 @@ def recover(root: Path, operation: str) -> None:
     canonical = root / ".px/skills/installed-crash"
     version = "1.0.0" if operation == "promotion" else "1.0.0"
     receipt_name = "promotion-receipt.json" if operation == "promotion" else "rollback-receipt.json"
-    receipt = next((root / ".engineering-bootstrap/studios/skills").glob(f"*/revisions/{'1.0.0' if operation == 'promotion' else '1.1.0'}/{receipt_name}"))
+    receipt = next((root / ".agentic_engineering_os_px/studios/skills").glob(f"*/revisions/{'1.0.0' if operation == 'promotion' else '1.1.0'}/{receipt_name}"))
     verified = studio.authority.verify_receipt(json.loads(receipt.read_text(encoding="utf-8")))
     print(json.dumps({
         "schema_version": "px.installed-studio-lifecycle-crash/1.0",

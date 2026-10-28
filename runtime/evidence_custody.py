@@ -11,13 +11,14 @@ import stat
 from typing import Any, Iterable, Mapping
 from uuid import uuid4
 import zipfile
+from .bounded_walk import _is_junction
 
 
 def _files(inputs: Iterable[Path]) -> list[tuple[Path, str]]:
     records: list[tuple[Path, str]] = []
     for supplied in inputs:
         if supplied.is_symlink() or (
-            hasattr(supplied, "is_junction") and supplied.is_junction()
+            _is_junction(supplied)
         ):
             raise ValueError("evidence custody input cannot be a link or junction")
         source = supplied.resolve(strict=True)
@@ -26,7 +27,7 @@ def _files(inputs: Iterable[Path]) -> list[tuple[Path, str]]:
         else:
             for path in sorted(source.rglob("*")):
                 if path.is_symlink() or (
-                    hasattr(path, "is_junction") and path.is_junction()
+                    _is_junction(path)
                 ):
                     raise ValueError("evidence custody tree contains a link or junction")
                 if not path.is_file():

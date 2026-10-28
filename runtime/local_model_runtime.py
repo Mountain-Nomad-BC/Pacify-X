@@ -26,6 +26,9 @@ from .process_supervisor import ProcessSupervisor
 from .resource_lifecycle import ResourceManager, RunState
 from .model_pool import ModelPool, PoolModelSpec
 from .model_profile import ModelRuntimeProfile
+from .model_router_preset import (
+    RouterPresetFormat, render_model_router_preset, MAX_PRESET_BYTES,
+)
 from .llama_cpp_capabilities import (
     LlamaCppCapabilityFingerprint,
     LlamaCppLaunchPolicy,
@@ -255,6 +258,7 @@ class RouterPoolPlan:
     command: tuple[str, ...]
     plan_sha256: str
     created_at: str
+    preset_binding: dict[str, object] | None = None
 
 
 @dataclass(frozen=True, slots=True)
@@ -290,12 +294,12 @@ class LocalModelRuntime:
         self.config_roots = tuple(path.resolve(strict=True) for path in config_roots)
         if not self.model_roots or not self.runtime_roots or not self.config_roots:
             raise ValueError("explicit model, runtime, and config roots are required")
-        state = self.root / ".engineering-bootstrap" / "local-model-runtime"
+        state = self.root / ".agentic_engineering_os_px" / "local-model-runtime"
         self.event_path = state / "events.jsonl"
         self.head_path = state / "head.json"
         self.manager = manager or ResourceManager(
-            self.root / ".engineering-bootstrap" / "resources" / "ledger.json",
-            receipt_dir=self.root / ".engineering-bootstrap" / "resources" / "receipts",
+            self.root / ".agentic_engineering_os_px" / "resources" / "ledger.json",
+            receipt_dir=self.root / ".agentic_engineering_os_px" / "resources" / "receipts",
         )
         self.readiness_probe = readiness_probe or self._http_ready
         self.router_request = router_request or self._http_json
@@ -338,11 +342,10 @@ class LocalModelRuntime:
 
     @staticmethod
     def _digest_file(path: Path) -> str:
-        digest = hashlib.sha256()
-        with path.open("rb") as stream:
-            for block in iter(lambda: stream.read(1024 * 1024), b""):
-                digest.update(block)
-        return digest.hexdigest()
+        # Canonical bounded digest adapter; runtime/hash_utils is the single owner.
+        from runtime.hash_utils import file_sha256
+
+        return file_sha256(path)
 
     def _admitted_path(self, value: Path, roots: Sequence[Path], suffix: str | None = None) -> Path:
         path = value.resolve(strict=True)
@@ -456,6 +459,10 @@ class LocalModelRuntime:
         *,
         port: int,
         models_max: int = 2,
+        profiles: Mapping[str, ModelRuntimeProfile] | None = None,
+        capability_fingerprint: LlamaCppCapabilityFingerprint | None = None,
+        preset_format: RouterPresetFormat | None = None,
+        verify_preset_format: Callable[[RouterPresetFormat, LlamaCppCapabilityFingerprint], None] | None = None,
     ) -> RouterPoolPlan:
         if type(models) is not dict or not 1 <= len(models) <= 128:
             raise ValueError("router pool requires a bounded nonempty admitted model mapping")
@@ -465,6 +472,21 @@ class LocalModelRuntime:
             raise ValueError("router pool port is invalid")
         executable = self._admitted_path(executable_path, self.runtime_roots)
         preset = self._admitted_path(preset_path, self.config_roots, ".ini")
+        if type(capability_fingerprint) is not LlamaCppCapabilityFingerprint or profiles is None:
+            raise ValueError("router pool requires exact executable capabilities and frozen per-model profiles")
+        assert_fingerprint_current(capability_fingerprint, executable)
+        if preset_format is None or verify_preset_format is None:
+            raise ValueError("router preset format commissioning is not configured")
+        expected_preset, preset_binding = render_model_router_preset(
+            models, profiles, capability_fingerprint, preset_format,
+            verify_format=verify_preset_format,
+        )
+        if preset.stat().st_size > MAX_PRESET_BYTES:
+            raise ValueError("router preset exceeds the bounded byte contract")
+        with preset.open("rb") as preset_stream:
+            actual_preset = preset_stream.read(MAX_PRESET_BYTES + 1)
+        if actual_preset != expected_preset:
+            raise ValueError("router preset bytes do not match exact admitted artifacts and frozen profiles")
         bound_models: list[dict[str, object]] = []
         for model_id in sorted(models):
             if type(model_id) is not str or not model_id.strip() or len(model_id.encode("utf-8")) > 256:
@@ -482,8 +504,11 @@ class LocalModelRuntime:
             "--models-preset", str(preset), "--models-max", str(models_max),
             "--no-models-autoload", "--metrics", "--slots", "--no-ui", "--log-jsonl",
         )
+        requested_options = tuple(arg for arg in command[1:] if arg.startswith("--"))
+        if not capability_fingerprint.supports(*requested_options):
+            raise ValueError("pinned executable does not advertise all requested router options")
         base = {
-            "schema_version": "px.local-model-router-pool-plan/1.0",
+            "schema_version": "px.local-model-router-pool-plan/1.1",
             "plan_id": f"local-model-router-plan-{uuid4().hex}",
             "models": bound_models,
             "executable_path": str(executable),
@@ -495,6 +520,7 @@ class LocalModelRuntime:
             "models_max": models_max,
             "command": list(command),
             "created_at": _now(),
+            "preset_binding": asdict(preset_binding),
         }
         return RouterPoolPlan(**{**base, "models": tuple(bound_models), "command": command}, plan_sha256=_sha(base))
 
@@ -618,6 +644,20 @@ class LocalModelRuntime:
             if self._digest_file(Path(plan.model["model_path"])) != plan.model["model_sha256"]:
                 raise ValueError("model changed after planning")
         else:
+            binding = plan.preset_binding
+            if plan.schema_version != "px.local-model-router-pool-plan/1.1" or type(binding) is not dict:
+                raise ValueError("legacy unbound router plans cannot launch; replan against commissioned preset format")
+            if (_sha({key: value for key, value in binding.items() if key != "binding_sha256"}) != binding.get("binding_sha256")
+                    or binding.get("authority") is not False or binding.get("executable_sha256") != plan.executable_sha256
+                    or binding.get("preset_sha256") != plan.preset_sha256):
+                raise ValueError("router preset profile binding integrity failed")
+            from .contracts import validate_instance
+            validate_instance(json.loads(json.dumps(binding)),
+                              Path(__file__).resolve().parents[1] / "contracts/models/model-router-preset.schema.json")
+            bound_pairs = [(row["model_id"], row["model_sha256"]) for row in binding["models"]]
+            plan_pairs = [(row["model_id"], row["admission"]["model_sha256"]) for row in plan.models]
+            if len(set(bound_pairs)) != len(bound_pairs) or sorted(bound_pairs) != sorted(plan_pairs):
+                raise ValueError("router preset artifact coverage differs from planned admissions")
             if self._digest_file(Path(plan.preset_path)) != plan.preset_sha256:
                 raise ValueError("router preset changed after planning")
             for item in plan.models:
@@ -674,7 +714,9 @@ class LocalModelRuntime:
     def _router_plan_for_session(self, session_id: str) -> dict[str, object]:
         started = self._started_event(session_id)
         plan = started["payload"].get("plan")
-        if type(plan) is not dict or plan.get("schema_version") != "px.local-model-router-pool-plan/1.0":
+        if type(plan) is not dict or plan.get("schema_version") not in {
+            "px.local-model-router-pool-plan/1.0", "px.local-model-router-pool-plan/1.1",
+        }:
             raise ValueError("session is not backed by a governed router-pool plan")
         return plan
 
@@ -822,6 +864,14 @@ class LocalModelRuntime:
             if type(profile) is not ModelRuntimeProfile or profile.model_id != model_id:
                 raise ValueError(f"missing or mismatched runtime profile for {model_id}")
             profile.validate()
+            if plan.get("schema_version") == "px.local-model-router-pool-plan/1.1":
+                binding = plan.get("preset_binding")
+                if type(binding) is not dict or type(binding.get("models")) is not list:
+                    raise ValueError("router preset profile binding is missing")
+                member = next((row for row in binding["models"]
+                               if type(row) is dict and row.get("model_id") == model_id), None)
+                if member is None or member.get("profile_sha256") != profile.profile_sha256:
+                    raise ValueError("model pool profile differs from frozen router preset")
             model_sha = admission.get("model_sha256")
             if type(model_sha) is not str:
                 raise ValueError("router admission model digest is invalid")

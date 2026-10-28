@@ -36,12 +36,12 @@ ROUTES = (
     (
         "provider.local-model",
         "mediator",
-        ".engineering-bootstrap/provider-budget/ledger.json",
+        ".agentic_engineering_os_px/provider-budget/ledger.json",
     ),
     (
         "runtime.package-environment",
         "observer",
-        ".engineering-bootstrap/environment/current.json",
+        ".agentic_engineering_os_px/environment/current.json",
     ),
 )
 

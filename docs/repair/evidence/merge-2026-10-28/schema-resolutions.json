@@ -1,0 +1,27 @@
+[
+  {
+    "path": "contracts/model_attachment.schema.json",
+    "hunks": 1,
+    "reason": "Retain nested local attachment definitions needed by exact local refs."
+  },
+  {
+    "path": "contracts/project_revision_succession/active-revision.schema.json",
+    "hunks": 1,
+    "reason": "Align fresh revision root schema to canonical namespace; no historical revision rewritten."
+  },
+  {
+    "path": "contracts/project_revision_succession/authorization.schema.json",
+    "hunks": 2,
+    "reason": "Retain source identity, nonrevocation and exact predecessor policy/record hashes."
+  },
+  {
+    "path": "contracts/semantic/semantic-entity.schema.json",
+    "hunks": 8,
+    "reason": "Retain reproducible qualifier and typed bounded timestamps/provenance; preserve no-location identity."
+  },
+  {
+    "path": "tests/test_model_group_preparation.py",
+    "hunks": 2,
+    "reason": "Retain causal artifact registration/interruption/replay tests and malformed TIE binding denial."
+  }
+]

@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "status": "active",
   "body": ".px/skills/commission-project/SKILL.md",
-  "body_sha256": "26cc3a21835c8e5fd52610ad3b85cf50467588ef0fc8cc4789972b38b79b1b53",
+  "body_sha256": "6880ad7a68473b830d619dd16cfdd8ce68924027ae44933e139e77e9d29aa873",
   "references": [
     ".px/skills/commission-project/agents/openai.yaml",
     ".px/skills/commission-project/contracts/manifest.json",
@@ -11,9 +11,21 @@
     ".px/skills/commission-project/resources/index.json",
     ".px/skills/commission-project/tests/validation.json"
   ],
-  "capability_tags": ["bootstrap", "onboarding"],
-  "effects": ["read_local"],
-  "provenance": {"adapted": false, "source": ".px/preserved-skills/initial/workspace-original/commission-project", "type": "preserved_workspace_original", "basis": [".px/preserved-skills/initial/workspace-original/commission-project"]},
+  "capability_tags": [
+    "bootstrap",
+    "onboarding"
+  ],
+  "effects": [
+    "read_local"
+  ],
+  "provenance": {
+    "adapted": false,
+    "source": ".px/preserved-skills/initial/workspace-original/commission-project",
+    "type": "preserved_workspace_original",
+    "basis": [
+      ".px/preserved-skills/initial/workspace-original/commission-project"
+    ]
+  },
   "clean_room": false,
   "tests": "tests/test_native_skills.py",
   "evidence": "tests/test_native_skills.py",

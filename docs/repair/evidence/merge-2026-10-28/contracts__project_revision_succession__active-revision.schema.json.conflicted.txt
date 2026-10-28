@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:project_revision_succession:active-revision",
+  "title": "Hash-bound active project revision pointer",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "project_id",
+    "revision_root",
+    "event_sha256",
+    "campaign_sha256",
+    "policy_sha256",
+    "project_record_sha256"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "px.active-project-revision/1.0"
+    },
+    "project_id": {
+      "type": "string",
+      "pattern": "^prj_[A-Za-z0-9_-]+$"
+    },
+    "revision_root": {
+      "type": "string",
+<<<<<<< HEAD
+      "pattern": "^\\.engineering-bootstrap/project-revisions/prj_[A-Za-z0-9_-]+$",
+      "default": ".engineering-bootstrap/project-revisions/prj_example"
+=======
+      "pattern": "^\\.agentic_engineering_os_px/project-revisions/prj_[A-Za-z0-9_-]+$",
+      "default": ".agentic_engineering_os_px/project-revisions/prj_example"
+>>>>>>> codex/rollout-day1-20261024
+    },
+    "event_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "campaign_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "policy_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "project_record_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  }
+}

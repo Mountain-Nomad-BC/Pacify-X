@@ -1,11 +1,14 @@
 from __future__ import annotations
 
 import ast
+from dataclasses import replace
 from hashlib import sha256
 import importlib.util
 from pathlib import Path
 
 import pytest
+from runtime.llama_cpp_capabilities import launch_policy_from_profile
+from runtime.model_profile import load_runtime_profiles, runtime_profile_from_mapping
 
 
 MODULE_PATH = Path(__file__).resolve().parents[1] / "runtime" / "llama_cpp_capabilities.py"
@@ -77,6 +80,68 @@ def test_typed_policy_rejects_conflicts() -> None:
         LlamaCppLaunchPolicy(cpu_moe=False, cpu_moe_layers=4).validate()
     with pytest.raises(ValueError, match="ubatch_size"):
         LlamaCppLaunchPolicy(batch_size=64, ubatch_size=128).validate()
+
+
+def test_profile_bridge_requires_a_current_typed_profile_and_preserves_declared_settings() -> None:
+    root = Path(__file__).resolve().parents[1]
+    profile = next(
+        item for item in load_runtime_profiles(root)
+        if item.profile_id == "control-qwen35-4b-cpu-q6"
+    )
+    policy = launch_policy_from_profile(profile)
+    assert policy.gpu_layers == profile.gpu_layers == 0
+    assert policy.threads == profile.threads
+    assert policy.threads_batch == profile.threads_batch
+    assert policy.batch_size == profile.batch_size
+    assert policy.ubatch_size == profile.ubatch_size
+    assert policy.flash_attention is profile.flash_attention
+
+    with pytest.raises(TypeError, match="typed model runtime profile"):
+        launch_policy_from_profile(object())
+    with pytest.raises(ValueError, match="identity digest"):
+        launch_policy_from_profile(replace(profile, profile_sha256="0" * 64))
+
+
+def test_profile_bridge_carries_measured_kv_cache_types() -> None:
+    source = next(
+        item for item in load_runtime_profiles(Path(__file__).resolve().parents[1])
+        if item.profile_id == "deep-qwen3-30b-a3b-hybrid"
+    )
+    raw = source.identity_payload()
+    raw.update({
+        "schema_version": "px.model-runtime-profile/1.1",
+        "cache_type_k": "q8_0",
+        "cache_type_v": "q4_0",
+    })
+    profile = runtime_profile_from_mapping(raw)
+    policy = launch_policy_from_profile(profile)
+    assert policy.cache_type_k == "q8_0"
+    assert policy.cache_type_v == "q4_0"
+
+    fingerprint = CAP.LlamaCppCapabilityFingerprint(
+        schema_version=CAP.FINGERPRINT_SCHEMA,
+        executable_path="C:/llama/llama-server.exe",
+        executable_sha256="a" * 64,
+        executable_size_bytes=1,
+        version_text="test",
+        version_sha256=sha256(b"test").hexdigest(),
+        help_sha256=sha256(b"help").hexdigest(),
+        devices_sha256=None,
+        supported_options=("--batch-size", "--cache-type-k", "--cache-type-v", "--ctx-size", "--flash-attn", "--n-gpu-layers", "--threads", "--threads-batch", "--ubatch-size"),
+        device_probe_supported=False,
+        fingerprint_sha256="",
+    )
+    from dataclasses import asdict
+    fingerprint = replace(
+        fingerprint,
+        fingerprint_sha256=CAP._sha({
+            **{key: value for key, value in asdict(fingerprint).items() if key != "fingerprint_sha256"},
+            "supported_options": list(fingerprint.supported_options),
+        }),
+    )
+    rendered = render_launch_policy(policy, fingerprint)
+    assert rendered[-4:] == ("--cache-type-k", "q8_0", "--cache-type-v", "q4_0")
+    assert "--cache-type-k" not in rendered[:-4] and "--cache-type-v" not in rendered[:-4]
 
 
 def test_local_runtime_source_contains_modern_qwen_and_capability_binding() -> None:

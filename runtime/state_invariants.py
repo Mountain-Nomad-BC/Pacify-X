@@ -1426,7 +1426,7 @@ def validate_coordination_startup(project_root: Path) -> dict[str, object]:
         reject_path_links(project_root)
         project = project_root.resolve()
         reject_path_links(
-            project / ".engineering-bootstrap" / "coordination" / "state.json"
+            project / ".agentic_engineering_os_px" / "coordination" / "state.json"
         )
     except (OSError, ValueError) as error:
         raise StateInvariantError(
@@ -1435,7 +1435,7 @@ def validate_coordination_startup(project_root: Path) -> dict[str, object]:
                 "startup",
             )
         ) from error
-    coordination_root = project / ".engineering-bootstrap" / "coordination"
+    coordination_root = project / ".agentic_engineering_os_px" / "coordination"
     state_path = coordination_root / "state.json"
     if not state_path.exists():
         return {

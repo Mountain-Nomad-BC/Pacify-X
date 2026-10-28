@@ -1,0 +1,70 @@
+{
+  "timestamp_utc": "2026-10-25T13:11:08.118806+00:00",
+  "segment": "G04-event-integrity-source-verification",
+  "cards": [
+    "PX-AUD-044",
+    "PX-AUD-045",
+    "PX-AUD-049",
+    "PX-AUD-066",
+    "PX-AUD-068",
+    "PX-AUD-084",
+    "PX-AUD-085",
+    "PX-AUD-086",
+    "PX-AUD-087",
+    "PX-AUD-088",
+    "PX-AUD-089"
+  ],
+  "status": "TESTED_INTEGRATION; independent review and installed gates pending",
+  "governed_gates": {
+    "event-integrity": {
+      "valid": true,
+      "input_sha256": "b36ec0b8127b5f45de30540fd83bd1476deba4bf07c3fd995ae6beba9feda4d1",
+      "exit_code": 0,
+      "duration_seconds": 258.286176,
+      "receipt_published": true,
+      "chunks_passed": true
+    },
+    "ui-event-integrity": {
+      "valid": true,
+      "input_sha256": "519af756c639dc2cf73dc69e4bdc71a0e65646620950e4faf0b9b9beb64a537b",
+      "exit_code": 0,
+      "duration_seconds": 16.656101,
+      "receipt_published": true,
+      "chunks_passed": true
+    },
+    "secure-persistence": {
+      "valid": true,
+      "input_sha256": "06c45d07970154c0e32789ff2e1089e7efe214b0d27e7ae6bbfb949bdc44244b",
+      "exit_code": 0,
+      "duration_seconds": 14.405227,
+      "receipt_published": true,
+      "chunks_passed": true
+    },
+    "host-containment": {
+      "valid": true,
+      "input_sha256": "5bc934b5cb07c56a21003a5adf5e2fece594389b7a86ccf298f98dcd6c4d9a00",
+      "exit_code": 0,
+      "duration_seconds": 18.712003,
+      "receipt_published": true,
+      "chunks_passed": true
+    },
+    "release-lifecycle": {
+      "valid": true,
+      "input_sha256": "e9c479ee8c8a200b9fa205d5d7bc39e750cb292d0dba2545dd0b0ad3837334be",
+      "exit_code": 0,
+      "duration_seconds": 51.510993,
+      "receipt_published": true,
+      "chunks_passed": true
+    }
+  },
+  "node_neighbors": 38,
+  "newly_closed": 0,
+  "limits": [
+    "Atomic ingress batches limited to41events by existing128artifact WAL bound",
+    "Large payload omission explicitly declares retained:false",
+    "Interrupted legacy head recovers only through exact pending intent; mismatched authority remains an incident",
+    "Tool-intake WAL retains failed allocation custody with explicit failed acknowledgement; does not erase evidence"
+  ],
+  "known_external_generated_failure": "Provider route index stale; canonical reconciliation remains held until source repair/freeze",
+  "second_kit": "QUEUED"
+}

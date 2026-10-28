@@ -1,0 +1,27 @@
+[
+  {
+    "path": "runtime/isolated_sandbox.py",
+    "hunks": 2,
+    "reason": "Retain actual legacy policy namespace until verified namespace migration."
+  },
+  {
+    "path": "runtime/secure_publish.py",
+    "hunks": 5,
+    "reason": "Preserve pinned no-create physical reader required by inventories; preserve incoming nonconflicting changes."
+  },
+  {
+    "path": "runtime/event_ledger.py",
+    "hunks": 1,
+    "reason": "Missing event set with retained head/anchors is damage regardless of optional head requirement."
+  },
+  {
+    "path": "runtime/operational_event_bus.py",
+    "hunks": 1,
+    "reason": "Equivalent duplicate-event denial; preserve established error contract."
+  },
+  {
+    "path": "runtime/member_execution.py",
+    "hunks": 1,
+    "reason": "Retain exact bound provider resolver exposed for preflight custody."
+  }
+]

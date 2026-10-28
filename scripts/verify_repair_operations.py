@@ -87,7 +87,7 @@ def produce_operational_verification(root: Path) -> dict[str, Any]:
     campaign_path = root / PROJECT_REPAIR_CAMPAIGN_PATH
     campaign_bytes = campaign_path.read_bytes()
     campaign = json.loads(campaign_bytes)
-    relative_base = Path(".engineering-bootstrap/processing-order/operational-verification")
+    relative_base = Path(".agentic_engineering_os_px/processing-order/operational-verification")
     current = root
     for part in relative_base.parts:
         current = current / part
@@ -118,7 +118,7 @@ def produce_operational_verification(root: Path) -> dict[str, Any]:
                 parsed = json.loads(observed["stdout"])
                 passed = passed and parsed.get("valid") is True
             if name == "runtime-cli-version":
-                passed = passed and observed["stdout"] == f"engineering-bootstrap {VERSION}"
+                passed = passed and observed["stdout"] == f"agentic-engineering-os-px {VERSION}"
             artifact = {"name": name, "passed": bool(passed), "observed": observed}
         except Exception as error:
             passed = False

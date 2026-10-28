@@ -173,7 +173,7 @@ def main(argv: list[str] | None = None) -> int:
     if args.observer_run_id != f"studio-finalizer-{args.run_id}-{args.launch_nonce}":
         raise PermissionError("terminal observer launch binding is invalid")
     root = args.root.resolve(strict=True)
-    state_root = root / ".engineering-bootstrap" / "studios" / (
+    state_root = root / ".agentic_engineering_os_px" / "studios" / (
         "agents" if args.kind == "agent" else "workflows"
     )
     manager = ResourceManager(state_root / "resources.json")

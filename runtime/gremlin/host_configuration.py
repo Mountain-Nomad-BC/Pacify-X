@@ -13,7 +13,7 @@ from .audit import GremlinAuditLedger
 from .composition import compose_gremlin_runtime
 from .runtime_identity import GremlinRuntimeIdentityStore, WindowsCredentialManagerBackend
 
-CONFIGURATION_RELATIVE = Path(".engineering-bootstrap/runtime-core/gremlin/host.json")
+CONFIGURATION_RELATIVE = Path(".agentic_engineering_os_px/runtime-core/gremlin/host.json")
 RECOVERY_VERIFIER_ENVIRONMENT = "PX_GREMLIN_RECOVERY_VERIFIER"
 
 

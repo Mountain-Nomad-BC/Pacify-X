@@ -1,0 +1,4298 @@
+{
+  "schema_version": "px.runtime-static-inventory/1",
+  "boundary": "AST inventory only. Exception suppression and abstract methods need reachability and fault tests; neither a grep match nor absence establishes completion.",
+  "files": [
+    {
+      "path": "runtime/__init__.py",
+      "sha256": "7c830018fba1b10803f05ecc8a4b5ce7afefff228e4b618b42b618b03afffa2c",
+      "classes": 0,
+      "functions": 0,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/__main__.py",
+      "sha256": "935a1c1166b0c1ea35a82256345000bf2c73ded718d77773bc27a71ecce28f7d",
+      "classes": 0,
+      "functions": 0,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/action_fusion.py",
+      "sha256": "2059375feb57285fe3f6ff1ac1a2de4ccf14e1925f8d270edb91a12a7e0cf4fd",
+      "classes": 0,
+      "functions": 4,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/action_surface.py",
+      "sha256": "ab880ecf207cd6453ec42be4b6b2bed981739cb5e50624293d503e29d1f1f822",
+      "classes": 3,
+      "functions": 14,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/admission_controller.py",
+      "sha256": "8d8a874f9a07267282e8ca68d185707183dcf3ed30a2f59dec542ed7d4c1ae5c",
+      "classes": 1,
+      "functions": 4,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/admitted_fabric_integrations.py",
+      "sha256": "ecd325c3af20ae1cb7a459d1de7c5982e736aa2d792b9ead78fe4971c5383a72",
+      "classes": 0,
+      "functions": 17,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/affected_proof.py",
+      "sha256": "eede94163dc4a7ff2ab748417fde3306f1b5a2805b01c334719b38fde717b495",
+      "classes": 0,
+      "functions": 3,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/agency_studio_adapter.py",
+      "sha256": "c8dd4e66d45c83a8e73cc01031ca7f02a3b9a9028d890583ef35e6d5aa281a4b",
+      "classes": 1,
+      "functions": 3,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/agent_builder.py",
+      "sha256": "75f7c4f53a7b7baa2bc01ee1083e5bc1c013fd2e6932df23debc4b3561a26dd1",
+      "classes": 4,
+      "functions": 37,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/agent_fleet_controls.py",
+      "sha256": "86f2a11bbd34aba738d2809d7f6915b21175cdb625f05eeabe54fe2dc64269ed",
+      "classes": 1,
+      "functions": 36,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/agent_handoff.py",
+      "sha256": "0b5030b4df290d757200b5ab2bcb7c5f6f9eae11e9fb0cbc9a36c57aaf32856b",
+      "classes": 2,
+      "functions": 7,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/agent_harness_worker.py",
+      "sha256": "d34c89b12fd10cdf9a826635f1ca59c7179aa65a2c68c2e6cd61b9b64e09d3dc",
+      "classes": 0,
+      "functions": 1,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/agent_provider.py",
+      "sha256": "a193719574246c3f8c44df1448769b1cee38a8bad42186a40726c3cee307d471",
+      "classes": 1,
+      "functions": 19,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/agent_runtime.py",
+      "sha256": "5130a1120e7026dea870561b316095945502349b6801a65a244a383f7162ef1d",
+      "classes": 1,
+      "functions": 50,
+      "pass_statements": [
+        {
+          "line": 1381,
+          "parent": "ExceptHandler",
+          "exception_handler": true
+        },
+        {
+          "line": 1874,
+          "parent": "ExceptHandler",
+          "exception_handler": true
+        },
+        {
+          "line": 1933,
+          "parent": "ExceptHandler",
+          "exception_handler": true
+        },
+        {
+          "line": 2634,
+          "parent": "ExceptHandler",
+          "exception_handler": true
+        }
+      ],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/airllm_runtime.py",
+      "sha256": "5e79bdda1d44cb65e5f3796af734bc7802fe5dadef060ffb185264dff4a68512",
+      "classes": 3,
+      "functions": 13,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/architecture_invariants.py",
+      "sha256": "f1c57b77025d318bff27a4b4303af8c8d448c13579dc5a84b5341fab1cdd97d1",
+      "classes": 0,
+      "functions": 3,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/archive_io.py",
+      "sha256": "8c631d02d76b72897e90bb108e31aa7da5224449e38abbbd623b77d955a24c62",
+      "classes": 2,
+      "functions": 16,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/artifact_reachability.py",
+      "sha256": "3ce9097ede23056139ffea86c23cf49908c734d49c154afa31802374b8b00f8a",
+      "classes": 1,
+      "functions": 13,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/assurance_controls.py",
+      "sha256": "c4728c424298536bc5cc5f234994b3a9fcdb6a1b58d21e74d40adef32e676f93",
+      "classes": 1,
+      "functions": 11,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/authoritative_json.py",
+      "sha256": "fb2b71571bcc7c5ecbf256018a07c8f26dbcfa8fdc5b8f7d70fccb73a056ca0f",
+      "classes": 1,
+      "functions": 13,
+      "pass_statements": [
+        {
+          "line": 236,
+          "parent": "ExceptHandler",
+          "exception_handler": true
+        },
+        {
+          "line": 280,
+          "parent": "ExceptHandler",
+          "exception_handler": true
+        }
+      ],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/authority_topology.py",
+      "sha256": "8b7e740d02cdedbcf41d8d0b4db8875ded60ccfd82b91d6a136e493bb9ba34ae",
+      "classes": 0,
+      "functions": 5,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/backend_capabilities.py",
+      "sha256": "47defa079a0a0dbbfd8fb6de2b2aa05d703465c3b75ab1b85eca280e70f44be8",
+      "classes": 0,
+      "functions": 2,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/behavioral_assurance.py",
+      "sha256": "f82939fda7262d6a84f85b1de8a8dd7cf1b1fec8e6d79a232754d41799ffbeac",
+      "classes": 4,
+      "functions": 9,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/behavioral_certification.py",
+      "sha256": "140318fa15f45f9b1bd88ee2730896f4d8284f11b6a71d65652b341d75ba7a2a",
+      "classes": 0,
+      "functions": 3,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/benchmark_operations.py",
+      "sha256": "6c8bd5d92204c7e4b633b853cd04350d26219634d3bcbd25c3ceb469e61dde31",
+      "classes": 5,
+      "functions": 18,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/bounded_walk.py",
+      "sha256": "98090f9580a55f315d99231cd35dfb3fd1185bcfc115bbd911855d3f224be9d6",
+      "classes": 4,
+      "functions": 11,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/build_claims.py",
+      "sha256": "2ed92159a71a4c15c2a0581c6b975f37c7bbd19103ff000a58b9901273cadad2",
+      "classes": 0,
+      "functions": 8,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/cancellation_scope.py",
+      "sha256": "83674bcdb52d0eb4dc632ac2f2aed53bc9380536eab1013dd12e67d7aa17d958",
+      "classes": 2,
+      "functions": 5,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/capability_assimilation.py",
+      "sha256": "1dcffed608d54254bdc42f51223023753655b7cef9bd239d44fc333a353717d4",
+      "classes": 0,
+      "functions": 3,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/capability_maturity.py",
+      "sha256": "7e8f9d4c14d3c71c940a70d5dcfc2b9f1d3bb0e9b27343ea37964c3a7e95e44a",
+      "classes": 0,
+      "functions": 4,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/capability_routing.py",
+      "sha256": "f32d12baa354be924e275f6d4c0ab8c49be4ecc45cf0fcd51a02be7ee43a8514",
+      "classes": 5,
+      "functions": 15,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/capability_scheduler.py",
+      "sha256": "9f54fec47dc6b85b1c18ab0c9e03222c30241d32812ed9bfd3e364b81e374889",
+      "classes": 3,
+      "functions": 24,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/capability_semantics.py",
+      "sha256": "caaa274bd828ddd8477d3e06b04681f3c4d018d52ec2f3c05e85a35d4115cae4",
+      "classes": 1,
+      "functions": 4,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/certification_contract.py",
+      "sha256": "84c457b401a79ac1ce4cf6b548dc5387e74166b52789bf21a3cdd4fdefe52690",
+      "classes": 1,
+      "functions": 1,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/certification_readiness.py",
+      "sha256": "bba88a320ac5285ef82a85be0d80df428b61be1566f57ea04e077cd265956443",
+      "classes": 1,
+      "functions": 22,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/change_classification.py",
+      "sha256": "2584d6a519c98991ce5ed456469ebf1e379c2677d09a99ba9b5d5b26bb7f68d5",
+      "classes": 2,
+      "functions": 8,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/chat_context.py",
+      "sha256": "53b8ccd4efada85eccb715f9b0c4ab2ac09a8cb13749c7e0141a8bbbd1464d50",
+      "classes": 0,
+      "functions": 3,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/classifier.py",
+      "sha256": "2a1a6260ee9305bdaba3af72bd68271cf68ce90168afad955ea1b3abb241d806",
+      "classes": 1,
+      "functions": 2,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/clean_room_capabilities.py",
+      "sha256": "2f59ec5ac6e771c6fe94b4c406e4de46b4365e86be9a65b81f68ed6702418774",
+      "classes": 0,
+      "functions": 2,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/cli.py",
+      "sha256": "70f75c9783f606c83b55e8bac3f66efa556cda18c976555c2616ccda4ea8fd59",
+      "classes": 0,
+      "functions": 12,
+      "pass_statements": [
+        {
+          "line": 3625,
+          "parent": "ExceptHandler",
+          "exception_handler": true
+        }
+      ],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/cognitive_assurance.py",
+      "sha256": "24bdd1dea581cecba8dacee435b54d18602280f2c503122bbadd54379c7eb68a",
+      "classes": 6,
+      "functions": 11,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/cognitive_core/__init__.py",
+      "sha256": "3628c1ab81d08c5b2f42481238286ef0339deeea12868b8479f138fc5551cf72",
+      "classes": 0,
+      "functions": 0,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/cognitive_core/abduction.py",
+      "sha256": "754025f90a5a5dd508e17fd486e3fbd440e1de0be7dc8180d36f17c925b70b63",
+      "classes": 0,
+      "functions": 3,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/cognitive_core/analogy.py",
+      "sha256": "58a0cfa56813bdf2da4e139b72d2fa42126aaa8765d37d6b6f39a96afddb4dde",
+      "classes": 0,
+      "functions": 6,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/cognitive_core/causal.py",
+      "sha256": "afbdfe58b9a34018dd9716b54763e310a4090a5a041d032c652871158e32f9c5",
+      "classes": 1,
+      "functions": 8,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/cognitive_core/common.py",
+      "sha256": "1b7a1153728eb4c2f9af2ffd8268758336128a2c107ba7df387c2cb4ad5152d2",
+      "classes": 0,
+      "functions": 10,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/cognitive_core/constraint.py",
+      "sha256": "cb5d3df42697a5714c1510ed6fb937c21fea9a3a0391f1554342b8385a1418a6",
+      "classes": 0,
+      "functions": 6,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/cognitive_core/decision.py",
+      "sha256": "86d9744bc9743e97d69bfa3fd645f9e7e9ad504da76e6249a8b2c52082297cd9",
+      "classes": 0,
+      "functions": 3,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/cognitive_core/facade.py",
+      "sha256": "1d38e5ef42b4f2c22b7e2bac37367c66e681869b2d70b4cd3bd442be427b3b82",
+      "classes": 0,
+      "functions": 2,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/cognitive_core/formula_engine.py",
+      "sha256": "73911519b14c818e8c58036971ca194e97b9966ff1d2e3cdd447921b600885d5",
+      "classes": 4,
+      "functions": 21,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/cognitive_core/index_builder.py",
+      "sha256": "76bf24c87aa7892a54fce97ee4a2a60ced62be85fa6ed528bbf6708d0e05b15a",
+      "classes": 2,
+      "functions": 32,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/cognitive_core/knowledge.py",
+      "sha256": "fa85cc13bf76b1845d5d92167bfb8e9e4bdf83529b547ec0787da1a882faf27a",
+      "classes": 2,
+      "functions": 6,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/cognitive_core/logic.py",
+      "sha256": "a0cc01d56eee69fe548bc0f2bdf3cc9402e25d2630cc0553f7bdcaefc0c193a6",
+      "classes": 4,
+      "functions": 10,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/cognitive_core/navigator.py",
+      "sha256": "7a60ca873808e83c02f3344d718602785dd2a04778a66ad87e03676db8bafd83",
+      "classes": 3,
+      "functions": 5,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/cognitive_core/probability.py",
+      "sha256": "64f0a37d56622b28d4054d88a7437d6b0105d59ed3d0f19e8d85b7c0982ae125",
+      "classes": 0,
+      "functions": 4,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/cognitive_core/strategy.py",
+      "sha256": "e4dec6f61d1a3cf352a95dd4971982fb1790ca75a0672aebe96dac4bf5e3894a",
+      "classes": 0,
+      "functions": 2,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/cognitive_core/temporal.py",
+      "sha256": "5f46f9b8b1f26d264c5287671e64c125ead5dcd2fac70f20d5e1e58b0ec4985f",
+      "classes": 1,
+      "functions": 4,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/cognitive_query.py",
+      "sha256": "e2b42cd7b52162aca44bc879d66de2c16ace43ae70dedd90b0c81153e7e1cc76",
+      "classes": 2,
+      "functions": 10,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/commissioning.py",
+      "sha256": "b71d5ce6d980a58dadeeb3d65d4b5d609fcd292a20b96e03cb8b2e31687cda0e",
+      "classes": 0,
+      "functions": 14,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/compact_address.py",
+      "sha256": "8b082f37eed3944fae5bc083dc386a2e824f30a3906df684a8c74c7e406eace4",
+      "classes": 3,
+      "functions": 29,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/completion_controls.py",
+      "sha256": "1a8903496dc0035aa0ea5dc2ba04a088e66b68f7151f08738f94792b1b746a52",
+      "classes": 0,
+      "functions": 21,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/config.py",
+      "sha256": "6472939fbe41f0adbcf88fde255753a23c2e460291d91a8bef11392962bdcda5",
+      "classes": 3,
+      "functions": 5,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/containment_invariants.py",
+      "sha256": "f7892bac556d16f21c811ee4b5bf17476e1033116667f5832943c122a195be08",
+      "classes": 1,
+      "functions": 6,
+      "pass_statements": [
+        {
+          "line": 247,
+          "parent": "ExceptHandler",
+          "exception_handler": true
+        }
+      ],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/context_checkpoint.py",
+      "sha256": "1cae33fb7d9222375fc2c01eca067855451b5c2346b45fdd9a5112c949497d41",
+      "classes": 1,
+      "functions": 6,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/context_generation.py",
+      "sha256": "60cd507495427c935b130339e9b5bee00332cd4092b5f981ee38e7b42b72d443",
+      "classes": 1,
+      "functions": 8,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/contracts.py",
+      "sha256": "627499b092ad4714cbb9d932ecf81b4546688a173c7eac5f13c12162f200a605",
+      "classes": 1,
+      "functions": 22,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/corrective_release.py",
+      "sha256": "7b53d3f9851bd381fc39b98eb60439fffc073c445950defdab4a2b0fc0e76c1a",
+      "classes": 0,
+      "functions": 4,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/coverage_assurance.py",
+      "sha256": "0ea9d2af2b818beade6d1f4018d304fdd41bcefb1dada9941e095523163c9dee",
+      "classes": 0,
+      "functions": 3,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/cybersecurity_provider.py",
+      "sha256": "43876dd50c236673bd45c9631e85861130242426e0949d9e28eb392e0d9f0e5b",
+      "classes": 1,
+      "functions": 21,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/dashboard_api.py",
+      "sha256": "a89543e7c45539377cf46b2b50716c1b1e3d4728462d9174ad817dcaf08e8ac5",
+      "classes": 0,
+      "functions": 50,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/data_controls.py",
+      "sha256": "7b6ac9afdb1570612d9f2f5d2d76948096fc9a9b6206f9407d8b999fbe4de4b3",
+      "classes": 0,
+      "functions": 4,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/data_inventory.py",
+      "sha256": "824312403c8ab14de21cd343e216b7040ae3f9d03fc4144dc87da3770d3e9e4d",
+      "classes": 2,
+      "functions": 6,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/data_subject_records.py",
+      "sha256": "57f6e882e37604f5bb9a5a22fa9eac10abab42c91475cc30b81e72b6c29eb5da",
+      "classes": 0,
+      "functions": 5,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/declared_suite.py",
+      "sha256": "db57259a8cdd4778bfdbad02b05491356af3dc0cd35895ce203b7a7f4993b0cd",
+      "classes": 1,
+      "functions": 29,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/declared_suite_formulas.py",
+      "sha256": "f8cfa75df0f02d6d4fca1bbd2cc40e4308bde756c2f66edf759a0656c388d3e4",
+      "classes": 0,
+      "functions": 20,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/dependency_audit.py",
+      "sha256": "40b85570219ca06f2350b71fec845618d042baa548a3e5db896818e58d5decab",
+      "classes": 0,
+      "functions": 6,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/dependency_identity.py",
+      "sha256": "80cfe724119d7ede36653a4aa736ade4a26e3a17d6b952d5bc58d2a78faec38f",
+      "classes": 1,
+      "functions": 5,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/dependency_invalidation.py",
+      "sha256": "cc1a21c9b7ae3445a519ed00126c1007e6c36fce39bd4f6836d3ba341a3396b6",
+      "classes": 1,
+      "functions": 17,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/deterministic_model_stub.py",
+      "sha256": "113de168a8a5513a981e952a6d842c3415cbe5d6a6cf1acd231f8b82e002d736",
+      "classes": 0,
+      "functions": 1,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/distribution_drift.py",
+      "sha256": "4281b7ae1c217a41218a92bfc459a1cc345fae756dfe5e47ee1e2e98c22a6076",
+      "classes": 1,
+      "functions": 6,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/docker_model_runtime.py",
+      "sha256": "9e815aaf194173d9158c9e1b7b073b48a3ceca3d4fb85dc14c5e439ff5f727b9",
+      "classes": 3,
+      "functions": 15,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/durable_state.py",
+      "sha256": "3a3484152f671512ca648622a660ae31e29c371c209dabc2ff90b936e76985ec",
+      "classes": 0,
+      "functions": 2,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/effect_grants.py",
+      "sha256": "b3c1cbccb6385f50a9510fa5d35551ef79a66ee2fb156fc3416931e4f0ebf5bc",
+      "classes": 0,
+      "functions": 3,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/effect_intent.py",
+      "sha256": "40b761ce207ba0adfbea4ef4b9d1a633076218717c05abe99cb629eae7c10a2b",
+      "classes": 3,
+      "functions": 14,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/effect_surface.py",
+      "sha256": "c95f69b7c018886f08ea470c8266418871a811013e54b04194e643a3741f5ab4",
+      "classes": 0,
+      "functions": 13,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/engine_identity.py",
+      "sha256": "7da1b13eeadb54db86e67e958ade76b1ba9568e44d2944d407cfe6c7e7297a62",
+      "classes": 0,
+      "functions": 4,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/engineering_intelligence.py",
+      "sha256": "a45d3972bf010bb35ed0c3ff715908ad6cd9f1ca573af2433527348e3eb4dcf3",
+      "classes": 0,
+      "functions": 15,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/engineering_lifecycle.py",
+      "sha256": "3772d387b0f51a8b7402a1f4175a9701dbeebfea9ee1dfbbf9b3de5523c534d2",
+      "classes": 0,
+      "functions": 1,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/engineering_os_paths.py",
+      "sha256": "7d50d633fa7c4fe34a59e06bea191e02674b469cb22b8cbef785748dba6d803c",
+      "classes": 1,
+      "functions": 12,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/event_ledger.py",
+      "sha256": "92c45b8ed4c4c33f3de484e3a07df6e8144289df9df8280d58e03d1b6bed4ed3",
+      "classes": 0,
+      "functions": 11,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/evidence_assembler.py",
+      "sha256": "6440fab4df27c11f558cca985f9dbe75611ba98dc48a2af3564023d799036876",
+      "classes": 11,
+      "functions": 8,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/evidence_cache.py",
+      "sha256": "7d337fe86ace91f87b36af2941f45a50ba838ab5deef1071851bcec01d27c510",
+      "classes": 1,
+      "functions": 8,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/evidence_claims.py",
+      "sha256": "82087b77bd1349e640e5fcb53e0d47bf691b2e49bf1a38b17a8d743cbefc8fe8",
+      "classes": 2,
+      "functions": 11,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/evidence_custody.py",
+      "sha256": "fdc876aed2bfac2ff31db50457cde75ee2bf1175a3576c7e1b11521b26fad3d0",
+      "classes": 0,
+      "functions": 4,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/evidence_index.py",
+      "sha256": "c20914348f72b5188e33cf05a43b5101be320d154238e80b6d1ad848de81aaf9",
+      "classes": 0,
+      "functions": 6,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/evidence_portability.py",
+      "sha256": "163b125fb5e5291692e0bd5224198df0afb17d861e51f2b7e2667ea147775f59",
+      "classes": 0,
+      "functions": 8,
+      "pass_statements": [
+        {
+          "line": 179,
+          "parent": "ExceptHandler",
+          "exception_handler": true
+        }
+      ],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/evidence_reducer.py",
+      "sha256": "4e27a1b9ce389b36c8d2c05b6c1c3a2b02f6cf8591106ebc37a49b3b3a5c8170",
+      "classes": 1,
+      "functions": 6,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/exact_tool_certification.py",
+      "sha256": "6e22cfba8e88c34c5f2440bc3ebd93026b1de0ae992201439297f492acdd951d",
+      "classes": 1,
+      "functions": 22,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/execution_context.py",
+      "sha256": "977df7db44776bb0c2858cbf6d98577778fdfc909b3a0703c2fc4c7283893a28",
+      "classes": 1,
+      "functions": 7,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/execution_contract.py",
+      "sha256": "b3386f72b4c13b2cac42da88517dfe43af9a96c9daabaf38aa4bac7ac7c481a9",
+      "classes": 3,
+      "functions": 4,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/execution_placement.py",
+      "sha256": "90a610223c34bb3e5dbf91926c5a65d05b2669c7edcd0320c0ec1c8bb1990ea9",
+      "classes": 1,
+      "functions": 20,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/exit_codes.py",
+      "sha256": "e4cd2ba2958688011ee3bf09663f16960fc6381ea0a19030a4dc92deabfc99ed",
+      "classes": 0,
+      "functions": 1,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/external_capability_provider.py",
+      "sha256": "8fbd3dd15f23dc9cc8060e346ac51766c2eff7954a3ebfca99233c4ac476baff",
+      "classes": 3,
+      "functions": 22,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/external_evidence.py",
+      "sha256": "50c19cbe3af72bcaa3aed3522b50a8acaf83b69449a035c059ab95f17d3a79bb",
+      "classes": 0,
+      "functions": 1,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/external_toolchain.py",
+      "sha256": "63a2110a4328ab9ddef27de50852fe55275383349908ddeebb616ffad7ed6687",
+      "classes": 0,
+      "functions": 2,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/file_lock.py",
+      "sha256": "035cf057a34b8a669f587f9ab805c21cf257a20865e494c78d7005a6d4602b95",
+      "classes": 2,
+      "functions": 23,
+      "pass_statements": [
+        {
+          "line": 159,
+          "parent": "ExceptHandler",
+          "exception_handler": true
+        },
+        {
+          "line": 383,
+          "parent": "ExceptHandler",
+          "exception_handler": true
+        },
+        {
+          "line": 173,
+          "parent": "ExceptHandler",
+          "exception_handler": true
+        }
+      ],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/foundation_assurance.py",
+      "sha256": "99b05b75abb78c2ca3addde00501e903aa94d103db3af546b95beb381c26df7e",
+      "classes": 5,
+      "functions": 23,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/foundry_studio_bridge.py",
+      "sha256": "d4c72c8a5ab1be58ae246975134c602d6bed099349e68fd2bc300d00d873dffb",
+      "classes": 2,
+      "functions": 4,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/full_repair.py",
+      "sha256": "63cbee3ca136dc06b46ef488728a83a5069f6e2f2b84c5bde7cbaf525e53bbcb",
+      "classes": 0,
+      "functions": 1,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/gate_runner.py",
+      "sha256": "87cc12a11ce25d8d529e28dc9e9836f4bb3047509b62197707f1e5864e04f8b0",
+      "classes": 1,
+      "functions": 22,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/gemini_protocol.py",
+      "sha256": "0cc281cadbc47dafc51820da7286b3a824a44951d2998abefe2294197aab354e",
+      "classes": 0,
+      "functions": 2,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/generated_artifacts.py",
+      "sha256": "eb011aeeabfa4c20ae601036dfed600b5df97a76376a786889986486759f118b",
+      "classes": 0,
+      "functions": 2,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/generated_dependency.py",
+      "sha256": "8b78b87c82fafba1b08a0a2af8adb49744b6290a73a2299d82cb8c0901a890a7",
+      "classes": 0,
+      "functions": 5,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/generation_bound_verdict.py",
+      "sha256": "db3aee45e0ac6342541c8059d7b8091bf07ac1ebf7c4e589cece2ed494a053e5",
+      "classes": 0,
+      "functions": 5,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/global_skill_isolation.py",
+      "sha256": "8410c258df0cbbfddf357eacbfb2622f927725f47ac5633cbef2309dffb65367",
+      "classes": 0,
+      "functions": 16,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/governed_exception.py",
+      "sha256": "c2274733fba3be49639aa52a6994524abca44dc3d459e7e1cfd6e2e4a3496030",
+      "classes": 0,
+      "functions": 3,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/graph_registry.py",
+      "sha256": "0c10605880cbb8bc8cf4c3606a043b1180e843acc3b8a18fa789dbf6995caeef",
+      "classes": 0,
+      "functions": 6,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/graphs.py",
+      "sha256": "f5182743ac0dad857e2d1ab9f7f9f1329b2663ccc3a6afe9aee7d312487cd1b0",
+      "classes": 3,
+      "functions": 7,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/gremlin/__init__.py",
+      "sha256": "930aea6c417536ee79aefa832b50389ee51268d5dc9b8f1a89cc697137602ed6",
+      "classes": 0,
+      "functions": 0,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/gremlin/admin.py",
+      "sha256": "4792f40c2f1e64af47f599848156ce40f9c1c263b812e893095ddfb74ed5d4ed",
+      "classes": 4,
+      "functions": 10,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/gremlin/audit.py",
+      "sha256": "38d493c650b74f2858eb194866b2f0fa75651c8d353ae920cc2b85819eaa8bfb",
+      "classes": 1,
+      "functions": 4,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/gremlin/authorization.py",
+      "sha256": "d33a0f8420a74dc67de2ab0ce3f6f4b3bbf91f126e6e6efce5985962cbb82689",
+      "classes": 2,
+      "functions": 7,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/gremlin/commissioning.py",
+      "sha256": "7cd7ff622f056044962c57b52ff2d13140e8bacddfa1d9792de0e1df9d871609",
+      "classes": 0,
+      "functions": 1,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/gremlin/composition.py",
+      "sha256": "13669bc0acb5d46bb4ca6b683a291d8a03d68cd7345ff04b76bb49952d6776a8",
+      "classes": 1,
+      "functions": 5,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/gremlin/containment.py",
+      "sha256": "67759c8d8a24b17c3917da3fd2451ed43f3c53ff75a489d6ef8a968a90fe5aab",
+      "classes": 4,
+      "functions": 25,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/gremlin/deviation.py",
+      "sha256": "f8b6c6353af4417cc9415c26366160e24594a8f7184a7ddc34be9ca5c03f790c",
+      "classes": 2,
+      "functions": 5,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/gremlin/enrollment.py",
+      "sha256": "ff93c1bc498653cc50a3d41f8ec9944e96e9f7caff5a7c9e05e50bb562a398ed",
+      "classes": 2,
+      "functions": 7,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/gremlin/events.py",
+      "sha256": "15301d12ff6252dc27ae5a58cd35d9a2d67e24191093e2b30010633030d62f2a",
+      "classes": 2,
+      "functions": 8,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/gremlin/health.py",
+      "sha256": "6037d63fa737ed1b7567009320bfd947eed039b4c6e874b6448086b319d7db22",
+      "classes": 1,
+      "functions": 4,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/gremlin/host_configuration.py",
+      "sha256": "d33285dc66cb0b6c174c7744bcef5d1b7b1ee42a24488663b9dcd14a5d888cfb",
+      "classes": 0,
+      "functions": 2,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/gremlin/host_enforcement_backend.py",
+      "sha256": "f38562654b886b726b491db5febc932e646992c285ac2ff23c6491b7a259357e",
+      "classes": 2,
+      "functions": 6,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/gremlin/host_process_observer.py",
+      "sha256": "560a3116fef33a7c1bd26d7dfc5ecc80b08760097d2c03698603832241776079",
+      "classes": 1,
+      "functions": 4,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/gremlin/identity.py",
+      "sha256": "85ad2da05b0b27d80eb42890e652d5bceea1f7c33940f8c3f110823258bb1080",
+      "classes": 1,
+      "functions": 8,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/gremlin/intervention.py",
+      "sha256": "636b78f232f6785f1e4f8589692dfa6da2c428b6e6b22d46fccd9669c24ce379",
+      "classes": 2,
+      "functions": 7,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/gremlin/observers.py",
+      "sha256": "6e39c187b0f2a86e8630df45ebeeeb9d54c183e3908839bdd550df652c3760d6",
+      "classes": 3,
+      "functions": 6,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/gremlin/policy.py",
+      "sha256": "dc7ff798d03ce30bc554055d443680dcfff9c8b8cf209b01ecea1afad4f0420b",
+      "classes": 3,
+      "functions": 11,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/gremlin/receipts.py",
+      "sha256": "d6888986459cff818b1a803d2ca535b9493405f5b0dc3f5eac0f51695049f55f",
+      "classes": 3,
+      "functions": 12,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/gremlin/recovery_authority.py",
+      "sha256": "e68b313a45f8ed69f70529d6f85d22b820f8d1b111bd505e39c5e8acddf92985",
+      "classes": 8,
+      "functions": 25,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/gremlin/recovery_verifier_console.py",
+      "sha256": "1cc1ee659d1d9f330c3d2b0d1a0b8657082a933f8022e4215c95991e0112ddf4",
+      "classes": 1,
+      "functions": 3,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/gremlin/registry.py",
+      "sha256": "23c5cfd1d5e719584736cff225172849aa0436871246bf99e3196f979bb2ee2f",
+      "classes": 3,
+      "functions": 15,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/gremlin/runtime_identity.py",
+      "sha256": "2b1488da37399785667b73a632f32c958b343e70b481db31e4ffd8e3984e8541",
+      "classes": 9,
+      "functions": 26,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/gremlin/supervisor.py",
+      "sha256": "8d0c001ac5464cc7ea195e64b92346a080a309e37016952278646ca13441f4ad",
+      "classes": 4,
+      "functions": 7,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/group_provider_adapters.py",
+      "sha256": "95aad2f80d0cbbb4b282bea284c2e49f107cbf5bf4c8506b0e38ba8c3ff6f965",
+      "classes": 2,
+      "functions": 8,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/guarded_registry_projection.py",
+      "sha256": "98e24c3655f91648cd9e058263e980a4c45db6315d56eec2e35e93112943182c",
+      "classes": 1,
+      "functions": 8,
+      "pass_statements": [
+        {
+          "line": 17,
+          "parent": "ClassDef",
+          "exception_handler": false
+        },
+        {
+          "line": 27,
+          "parent": "ExceptHandler",
+          "exception_handler": true
+        }
+      ],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/hardware_routing.py",
+      "sha256": "791ecc2ced6e8dfb90237ea5495c870c190e40bb7c6fcf23a98910e6c5c9ad6e",
+      "classes": 9,
+      "functions": 30,
+      "pass_statements": [
+        {
+          "line": 264,
+          "parent": "ExceptHandler",
+          "exception_handler": true
+        }
+      ],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/hash_utils.py",
+      "sha256": "a86b6416c06b38061b3df01ae9f52175c20468cac57e05af9445e2269400bcc4",
+      "classes": 0,
+      "functions": 5,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/health_model.py",
+      "sha256": "4d7be6420529ea447ecdc769dcfd5bea0257312d43d9e6724aece9e05287ae1c",
+      "classes": 1,
+      "functions": 15,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/host_boundaries.py",
+      "sha256": "e92c030d39b33f92a1e0cc8c8cba2bb68332da9d324ed9ed32ac3dca72387c47",
+      "classes": 0,
+      "functions": 13,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/input_files.py",
+      "sha256": "195be373e33e2117a7405da4b1995a19f60264d262e12154b82cb2c5f014de3d",
+      "classes": 0,
+      "functions": 10,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/instrumentation_sdk.py",
+      "sha256": "24d43788c6c33664f161bbd5fd4f740ec599e06cd042c9e01131827b193d9bdb",
+      "classes": 0,
+      "functions": 3,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/intake.py",
+      "sha256": "1fda1828db804e348e708b37a8381334c09a04a6eeef6111dd9e3cb78d698821",
+      "classes": 0,
+      "functions": 1,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/intake_lifecycle.py",
+      "sha256": "8858583fdb988a8be38159d9892b03299f7f44e68ab593c93d35aaa9833bde0d",
+      "classes": 0,
+      "functions": 11,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/integration_disposition.py",
+      "sha256": "5f1b04e59626916edd0427af3ea407473f99c260a794965f64bec2a3db74123f",
+      "classes": 0,
+      "functions": 9,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/integration_registry.py",
+      "sha256": "799b69e699fb9680783a8aa9e8887ce4fe4f9bcd50633466cd5921f2ff148c50",
+      "classes": 0,
+      "functions": 3,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/isolated_sandbox.py",
+      "sha256": "55ed469ab2f12c0eb5cb836af8940686c3b1c05d5017d7eec086732df7039682",
+      "classes": 7,
+      "functions": 24,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/iterative_subgraph.py",
+      "sha256": "acb2a76571aaf558f64697415645f57945dfeff053c727a3caf67373a0281069",
+      "classes": 3,
+      "functions": 6,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/job_receipt.py",
+      "sha256": "ba0dca99fc5ce32b99bef6abfbacd0bc372ae86eb90a071f76b8469948f40ca4",
+      "classes": 1,
+      "functions": 13,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/json_io.py",
+      "sha256": "99e293f70e8624e3878d4c5017e5322eaf850a4904a4b76c57a8e264e95e8091",
+      "classes": 0,
+      "functions": 18,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/knowledge_core_controller.py",
+      "sha256": "629d803f823438781facb05cbe7cb4ee2e7107405b15f16a57c19ccc5afe6dca",
+      "classes": 2,
+      "functions": 68,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/knowledge_foundry.py",
+      "sha256": "0fdb414e1121c0cc1c4e088ceeee9f1eda3ffce11b2bd0f0d912c7f100303fc4",
+      "classes": 6,
+      "functions": 25,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/knowledge_refinery.py",
+      "sha256": "88ec6e8ba4d270a4237854977b9cba28284597d59929152de0921c4230215de6",
+      "classes": 0,
+      "functions": 18,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/latency_budget.py",
+      "sha256": "1be4d08579c6a09b3d29b4186f0433d0030da8303579f67aa204fbbb7156f066",
+      "classes": 3,
+      "functions": 11,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/lazy_loader.py",
+      "sha256": "663ea611d74277e65026fe20535208f6e786105fa79d4240404c3a31474b021b",
+      "classes": 3,
+      "functions": 10,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/learning_promotion.py",
+      "sha256": "be3f59e5509786fbf19c65449953a3e136a81fdbce72068c81d188181c8f85fd",
+      "classes": 0,
+      "functions": 27,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/librarian_answer.py",
+      "sha256": "5f1a025a10065de05625c742ef12a17820ba76afb8681909b138a410c0fcc03e",
+      "classes": 2,
+      "functions": 9,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/librarian_semantic_map.py",
+      "sha256": "f8cc91c4b9049271dcdadb2d1d4a55c8417bb7bf8ab421d6ba2e2d98a4761eef",
+      "classes": 4,
+      "functions": 34,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/licensing.py",
+      "sha256": "8362b19cb34c51473052dbb9e8bfa32cbdc1c54082ec5a6ac3de5b689e5a732d",
+      "classes": 0,
+      "functions": 10,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/lifecycle.py",
+      "sha256": "263761c7094a678db50ce0978c370cc7efd6f98fc6009d137a5a4f35bdf27adf",
+      "classes": 5,
+      "functions": 6,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/llama_cpp_capabilities.py",
+      "sha256": "70397bf94026062139ad35183bc2d5a70146c2e4a4c66658fc7ad985a28da424",
+      "classes": 2,
+      "functions": 25,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/local_model_lane_orchestration.py",
+      "sha256": "9837d69afb4d5630c08567353cab363c93478a7c555c24acf0529a79bba2f717",
+      "classes": 1,
+      "functions": 6,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/local_model_runtime.py",
+      "sha256": "8cb8312335262c5c2be04371e3e86ba10ef581fa80532cf4db46ea2cff115960",
+      "classes": 7,
+      "functions": 45,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/member_execution.py",
+      "sha256": "31276f2af267286c1d47a80ec88a413e537cf12c08efd5bc2a389b441e0de6f4",
+      "classes": 1,
+      "functions": 2,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/memory_broker.py",
+      "sha256": "d6eacdc32e1b280fb774a440235d00c12fde27acf01943847ab4b36f70f96bcb",
+      "classes": 1,
+      "functions": 6,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/memory_fabric.py",
+      "sha256": "9ad048336d6009de42a45de5a012d3dabcb4e7ba6c771b25ffb0df7a67024141",
+      "classes": 7,
+      "functions": 15,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/memory_intelligence.py",
+      "sha256": "923d9566bb074140871a8b6f768fa4bc12cff01073c2d3eb1e7c5c014e717834",
+      "classes": 12,
+      "functions": 27,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/memory_operations.py",
+      "sha256": "4d27203a843f9eae27bcaa6fe3a68686c323fbfc81bd98c1b64715ca403cdab3",
+      "classes": 9,
+      "functions": 17,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/memory_remediation.py",
+      "sha256": "15bd3935838bdf5f45f4bb3ba92d592e8c7e6dcc4caeffd5ebd8e8690d7585c7",
+      "classes": 0,
+      "functions": 1,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/memory_vault.py",
+      "sha256": "0b915f59fb5960bef93b1b2630699287f060115151f66aa48cbb369aed33d239",
+      "classes": 4,
+      "functions": 36,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/metacognitive_evolution/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "classes": 0,
+      "functions": 0,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/metacognitive_evolution/agent_profiles/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "classes": 0,
+      "functions": 0,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/metacognitive_evolution/agent_profiles/router.py",
+      "sha256": "30a0901568eea8a57ca0afc630bca241a6b7b6fde4778b212855dc7f222f88c4",
+      "classes": 0,
+      "functions": 3,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/metacognitive_evolution/capability_genome/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "classes": 0,
+      "functions": 0,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/metacognitive_evolution/capability_genome/genome.py",
+      "sha256": "710ad3accc90de5f579de08c0da1dd003e113de13fb10140aa4839ac1dd94847",
+      "classes": 0,
+      "functions": 4,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/metacognitive_evolution/common/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "classes": 0,
+      "functions": 0,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/metacognitive_evolution/common/io.py",
+      "sha256": "11d3a1113bce63412d7907a7ad65fab9eed0a236433c1d02deef9bf44a9a402f",
+      "classes": 0,
+      "functions": 2,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/metacognitive_evolution/common/mathx.py",
+      "sha256": "16af691d107599234a283087f041304bc5ef601159e3d3160fe5dcabe8fd8785",
+      "classes": 0,
+      "functions": 4,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/metacognitive_evolution/engineering_dna/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "classes": 0,
+      "functions": 0,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/metacognitive_evolution/engineering_dna/profiler.py",
+      "sha256": "a72a1b87fd35d81ad97ae69768f20228289e8e62d51f95de579bb6de2050c506",
+      "classes": 0,
+      "functions": 2,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/metacognitive_evolution/facade.py",
+      "sha256": "b5338ef305b2f5a4cd16271707578745b5d8855e34d0e1337d12ad0c05ebe95b",
+      "classes": 0,
+      "functions": 7,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/metacognitive_evolution/introspection/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "classes": 0,
+      "functions": 0,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/metacognitive_evolution/introspection/trace.py",
+      "sha256": "426677f5ae69fe73bff9710adb57e4f6443ea844120958d03ffc4cec64a55e25",
+      "classes": 0,
+      "functions": 3,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/metacognitive_evolution/knowledge_physics/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "classes": 0,
+      "functions": 0,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/metacognitive_evolution/knowledge_physics/engine.py",
+      "sha256": "81bff59cc2b937a9113a6e88291abba6d62126ec299cb0e0ceeda6a67aa59844",
+      "classes": 0,
+      "functions": 3,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/metacognitive_evolution/metacognition/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "classes": 0,
+      "functions": 0,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/metacognitive_evolution/metacognition/contradiction.py",
+      "sha256": "c08dd910e9d505f1c2e5153314a2dd1ed2d3581206c7b47fb990f1c130877ecc",
+      "classes": 0,
+      "functions": 2,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/metacognitive_evolution/metacognition/epistemic.py",
+      "sha256": "59b618f3bf148dff0b7fd5fd772d443d06959c5538221b9415942385c0285ff7",
+      "classes": 0,
+      "functions": 4,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/metacognitive_evolution/optimization/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "classes": 0,
+      "functions": 0,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/metacognitive_evolution/optimization/engine.py",
+      "sha256": "a51df7bc7f1c64208d2ead6773b1ca58a53f176d74fd84b31f6dc4ab663356b7",
+      "classes": 0,
+      "functions": 3,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/metacognitive_evolution/runner.py",
+      "sha256": "01e1b9400dee52057ce9d2cd0d285d12d10abcde5fc82280f74ad09e889acc55",
+      "classes": 2,
+      "functions": 7,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/metacognitive_evolution/semantic_contracts/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "classes": 0,
+      "functions": 0,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/metacognitive_evolution/semantic_contracts/linter.py",
+      "sha256": "ec2c40a06b4d67102d56cbff4ca7ce9952793efe1c6f2461dee7e0c0834a5fa9",
+      "classes": 0,
+      "functions": 1,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/metacognitive_evolution/theory_induction/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "classes": 0,
+      "functions": 0,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/metacognitive_evolution/theory_induction/inducer.py",
+      "sha256": "88d65f4d3488bd336f1d561d6c6d1427e7ec473d0b9d2478a6dd4f2d400e51a3",
+      "classes": 0,
+      "functions": 4,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/model_attachment.py",
+      "sha256": "81e3c9762843dc755c96d8e0f9b30738cb33a9ca8e45ac473efae76558dc0614",
+      "classes": 3,
+      "functions": 15,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/model_branch_artifacts.py",
+      "sha256": "7c9577b35454944d4260b800ff6a2884891c46d4710f5ff4130fb655bf194619",
+      "classes": 0,
+      "functions": 8,
+      "pass_statements": [
+        {
+          "line": 175,
+          "parent": "ExceptHandler",
+          "exception_handler": true
+        }
+      ],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/model_branch_contracts.py",
+      "sha256": "613c5cbff9cc6a4e4b7cb55017732a092385772dc359e64560f88c8552c21460",
+      "classes": 3,
+      "functions": 7,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/model_capacity.py",
+      "sha256": "4650f0bc9a1f8d2f4ec37201ea4e29bee991e55a71da785e43146dee8479bb8a",
+      "classes": 3,
+      "functions": 15,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/model_convergence.py",
+      "sha256": "ca3e75e2125fe6f84a59eaaf270f422e1fd75eb64aee007398275782a5bd197a",
+      "classes": 2,
+      "functions": 6,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/model_execution_group.py",
+      "sha256": "bf7a50da2df9df090e759c0eae74a7bce63b3e54963e514873a04bbbed10ab2c",
+      "classes": 5,
+      "functions": 18,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/model_fabric_generation.py",
+      "sha256": "5c221f48e2334991408996bb6bcb65b9391e281fa8072068504590a846111969",
+      "classes": 1,
+      "functions": 9,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/model_group_preparation.py",
+      "sha256": "ee2aeafff2cc329007f1452f313a2e50eeac6f2f8670bb53e0a7935b6eec6c3c",
+      "classes": 2,
+      "functions": 12,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/model_health.py",
+      "sha256": "83bf420f14a3729a13b718ab1845e7d6449b8b5abbb844e000f70d273822fadf",
+      "classes": 1,
+      "functions": 9,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/model_pool.py",
+      "sha256": "ac8148465bcede9904367cbdd0aca479548b5ed4f32170950e7111f226068c03",
+      "classes": 5,
+      "functions": 22,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/model_profile.py",
+      "sha256": "ab104c9c56d2edaa115525d5f956f5190b7ddb9c999d0075f32b1c0a518039d7",
+      "classes": 1,
+      "functions": 11,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/model_protocol.py",
+      "sha256": "9ee754a76a6b48eb4e4a8406c86e5a9fa8893a908e82d786bab29a2c984367d6",
+      "classes": 5,
+      "functions": 27,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/model_protocol_translate.py",
+      "sha256": "3ab92744e41372d60c46a3c6fe8562996395a2f819a865019a4920322c27ed59",
+      "classes": 2,
+      "functions": 16,
+      "pass_statements": [
+        {
+          "line": 345,
+          "parent": "If",
+          "exception_handler": false
+        },
+        {
+          "line": 577,
+          "parent": "If",
+          "exception_handler": false
+        }
+      ],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/model_resource_interlock.py",
+      "sha256": "8f4420f721ac9961e94145691d66e938355f4a8e138f8ae734f13fc21e5d34f3",
+      "classes": 4,
+      "functions": 14,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/model_route_state.py",
+      "sha256": "2e2d71b3317420255617199d6701d4cb71339de9a251c27060407d56e3a45bea",
+      "classes": 3,
+      "functions": 13,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/model_router_preset.py",
+      "sha256": "3a795aa60f3df5e5382efef5d5d51e7875722a96cda4c4d232787fb14255cea5",
+      "classes": 2,
+      "functions": 6,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/model_routing_observability.py",
+      "sha256": "d122b0c8e63d13a6c7664162ec38b908212cb01ebebd135bb37d3c0dc8252558",
+      "classes": 1,
+      "functions": 17,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/models.py",
+      "sha256": "624aa0786b13018a12a6a84d2e9fa228034059e19fe8ed8ac6eee33d1b68b7ba",
+      "classes": 6,
+      "functions": 17,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/mutating_producer_custody_reviewed.py",
+      "sha256": "b18c1a319984c63f4b9bbc20b6e0e5c1ce05528d52616332a916eb2cf20c9cf7",
+      "classes": 0,
+      "functions": 0,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/mutating_producer_registry.py",
+      "sha256": "2a1382dcdac258c09f677e8e40cabdb923f830ad97d9291a678a149563a8b782",
+      "classes": 1,
+      "functions": 8,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/mutation_queue.py",
+      "sha256": "8f5b04c7c6d39206ea4c09bd1088b36cf14e054f419396657d022bff74a0eefb",
+      "classes": 3,
+      "functions": 12,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/native_skills.py",
+      "sha256": "1c8e72b27eaea04510254cdddf32d5529309b4416f154d977bd35011a128962b",
+      "classes": 0,
+      "functions": 26,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/nsai_knowledge.py",
+      "sha256": "5c8453a73dfab036e9b77ac6df79fb32a9f6ef2fb1d6fd43684c32072f90e274",
+      "classes": 1,
+      "functions": 21,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/numeric_inputs.py",
+      "sha256": "7491429df85b51c3e50c8ead1475693ba67c86e3f6b60fce86fddd96031bf898",
+      "classes": 0,
+      "functions": 11,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/observation_projection.py",
+      "sha256": "103cac2b354e899c0b2ea42e68510d99c52a85acc6d85407fe838ec66248b80a",
+      "classes": 0,
+      "functions": 3,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/operation_authority.py",
+      "sha256": "39ac8674543ae473fb48c0f0a664b40c1aa1ba78712575bbce34565de2306873",
+      "classes": 2,
+      "functions": 3,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/operation_coverage.py",
+      "sha256": "c35bba64f2399959da0c84f9869a5dd83f66ed7e15ed83c388015a242ec9e8d3",
+      "classes": 0,
+      "functions": 12,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/operational_controls.py",
+      "sha256": "efef445f5768c4e7088292e9f581d291a645a8a8261e22980cff2d366f11183c",
+      "classes": 1,
+      "functions": 18,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/operational_event_bus.py",
+      "sha256": "ab8c3574af97c6d892e53ab5bf14c97269ec894065323675336d63281f7c1b35",
+      "classes": 1,
+      "functions": 16,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/operational_gap_ledger.py",
+      "sha256": "61b4dd084307a9de4acd68ec794510835259d2bf55a8b1741db64ddaab35540e",
+      "classes": 0,
+      "functions": 83,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/operational_observers.py",
+      "sha256": "3be984f8b315a3ab25c8fcd1fc9e829beb37199390e7d41bb999ac71299d8625",
+      "classes": 8,
+      "functions": 50,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/operational_projection.py",
+      "sha256": "62884df9765d542551d6ef7763facf01809f19ccfe63c154f2f647bc6285be39",
+      "classes": 1,
+      "functions": 10,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/operational_visibility.py",
+      "sha256": "d6a42001be4d2180c4bbb9d731bec5317ae721a9352ba62d63f6aa03911a76f9",
+      "classes": 0,
+      "functions": 2,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/orchestrator.py",
+      "sha256": "a2e31a2356518d8457880e539d365ad8a5288fea336822f033f8019b70cf423c",
+      "classes": 6,
+      "functions": 5,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/outcome_verifier.py",
+      "sha256": "335cbc84b6e4ee58385e5db159a6057a9bfe321f40fc8392396e077cfc0d622a",
+      "classes": 1,
+      "functions": 3,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/parity_lint.py",
+      "sha256": "a86f1519d26a8f96881c5c0c110e674fda9f6769effaef7b4d98860fb151ccd4",
+      "classes": 1,
+      "functions": 6,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/paths.py",
+      "sha256": "a6d0f15afee9d594a74887bec91a9b4e90c277416f2f173a7f558351df3c7111",
+      "classes": 0,
+      "functions": 5,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/persistent_memory_provider.py",
+      "sha256": "d4639dc07f761a616932edeec028c27d2b299979499481abd101adb917e774c8",
+      "classes": 1,
+      "functions": 7,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/personal_record_store.py",
+      "sha256": "acc2963eb51a37eec1a0c58283569379597f6cd3572fad927a39c6f25b478f12",
+      "classes": 0,
+      "functions": 7,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/plan_registry.py",
+      "sha256": "fecae1fae8df02308a578464ed3cdaeaa875989fb8942d6835f3ca0087b1c8fd",
+      "classes": 7,
+      "functions": 48,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/planner.py",
+      "sha256": "d1ce71d33ea94059913ed5d87ecc2133590a7b7e747c55935c4512398887888f",
+      "classes": 3,
+      "functions": 5,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/platform_support.py",
+      "sha256": "95e953511741ecaebcf3d40eb05a9e20e957e75756773e4f969ac0f7596b65b7",
+      "classes": 0,
+      "functions": 3,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/portable_audit_bundle.py",
+      "sha256": "df09ce172fe9049563a70661ffe6d76f400cd77d547a25556da3f857036c65b6",
+      "classes": 0,
+      "functions": 14,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/prepared_group_transport.py",
+      "sha256": "6a88c677fecbaa86d5d175fbb7fa403e8638f84111ef039ca2eddceae45a1320",
+      "classes": 0,
+      "functions": 2,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/primitive_authority.py",
+      "sha256": "38f8756b10bbf2cf770ef886db2aad3f45546211dd5e05a0ffab1c6a2a8e7849",
+      "classes": 0,
+      "functions": 6,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/primitive_lint.py",
+      "sha256": "9a9316b20f30e6b314c0495e09f7a85fc59b7282114f0e74d526a4f86fac9ff2",
+      "classes": 0,
+      "functions": 5,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/process_memory.py",
+      "sha256": "c8c78b61eede8f553bb22a4c51724e2aa711f4208c16fc37d4e315a08e167ee6",
+      "classes": 0,
+      "functions": 5,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/process_supervisor.py",
+      "sha256": "990b30784fc2ae3a8deb0c09f0524c8ec426ad78b69da699b0fda89b378cf08f",
+      "classes": 17,
+      "functions": 52,
+      "pass_statements": [
+        {
+          "line": 1336,
+          "parent": "ExceptHandler",
+          "exception_handler": true
+        },
+        {
+          "line": 1084,
+          "parent": "ExceptHandler",
+          "exception_handler": true
+        },
+        {
+          "line": 1110,
+          "parent": "ExceptHandler",
+          "exception_handler": true
+        },
+        {
+          "line": 679,
+          "parent": "ExceptHandler",
+          "exception_handler": true
+        },
+        {
+          "line": 683,
+          "parent": "ExceptHandler",
+          "exception_handler": true
+        },
+        {
+          "line": 698,
+          "parent": "ExceptHandler",
+          "exception_handler": true
+        },
+        {
+          "line": 911,
+          "parent": "ExceptHandler",
+          "exception_handler": true
+        },
+        {
+          "line": 688,
+          "parent": "ExceptHandler",
+          "exception_handler": true
+        },
+        {
+          "line": 1250,
+          "parent": "ExceptHandler",
+          "exception_handler": true
+        },
+        {
+          "line": 468,
+          "parent": "ExceptHandler",
+          "exception_handler": true
+        },
+        {
+          "line": 1168,
+          "parent": "ExceptHandler",
+          "exception_handler": true
+        },
+        {
+          "line": 1244,
+          "parent": "ExceptHandler",
+          "exception_handler": true
+        }
+      ],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/profiles.py",
+      "sha256": "09a0d36639b8c47292200851830e22af7bfe96f468bbcd57daaa90881171d984",
+      "classes": 0,
+      "functions": 2,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/project_control_plane.py",
+      "sha256": "667b1e3eb84e4b9601985b3b662c6d4d126f1bda6934dc23140b6b7e44fd5cfd",
+      "classes": 0,
+      "functions": 18,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/project_impact.py",
+      "sha256": "fff696ab1f24a6adac09874437750c8ce0b0fef51dabb7316ea5c6db95d874e8",
+      "classes": 0,
+      "functions": 9,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/project_intelligence.py",
+      "sha256": "d7e3856f73234006b5c247a57f745ff5919a16c03ade9ae09a090f2e9471c43f",
+      "classes": 1,
+      "functions": 71,
+      "pass_statements": [
+        {
+          "line": 3298,
+          "parent": "ExceptHandler",
+          "exception_handler": true
+        }
+      ],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/project_management.py",
+      "sha256": "e2bf901e16ba601a16d0af00ac09bc382ad74f3eb6733f5c99987841a0a605ac",
+      "classes": 0,
+      "functions": 3,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/project_map_retrieval.py",
+      "sha256": "0168a062ee6ac2f7260de8d5c23e9d9b7c9a6da7f425110c5e03cdfed8bb7192",
+      "classes": 0,
+      "functions": 8,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/project_reasoning/__init__.py",
+      "sha256": "5eb6c1342781d3215a14dc0e103d6a8b854b97ea3e0b2a552412d275798c4388",
+      "classes": 0,
+      "functions": 0,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/project_reasoning/deep_module_audit.py",
+      "sha256": "d7da68bcc6666c89eafbe4666764111960c1da7fbbd42cb9d73f57c903d67e61",
+      "classes": 0,
+      "functions": 1,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/project_reasoning/frontier.py",
+      "sha256": "30bcef357facd39cfd63b253dd1e515a1282f70ac44a3c4a516fef29eace20f4",
+      "classes": 0,
+      "functions": 5,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/project_reasoning/glossary_audit.py",
+      "sha256": "65faea8bea3388e0d85bde608dbb63248d854f9bb35f08598319f1c3a1f9ec72",
+      "classes": 0,
+      "functions": 1,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/project_revision_succession.py",
+      "sha256": "effbdb543f6a845b3e6730841ec8506c6219c084ec859decbfd66d647c55e507",
+      "classes": 2,
+      "functions": 29,
+      "pass_statements": [
+        {
+          "line": 34,
+          "parent": "ClassDef",
+          "exception_handler": false
+        }
+      ],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/project_stream_controls.py",
+      "sha256": "7b567c94a5fcf37fd58d3b59eb92f56938692ff976f714e0d61b41504c31bf6e",
+      "classes": 8,
+      "functions": 8,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/project_stream_orchestrator.py",
+      "sha256": "a16041e89861ab5c799afd1f746878e2f9f91d9285455277ec4ccd57951a4f31",
+      "classes": 2,
+      "functions": 24,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/projection_dependencies.py",
+      "sha256": "39e9af73b09cab2496b3a597cc6240e5927a3c59af037cbf2399fd428ecdfc38",
+      "classes": 0,
+      "functions": 12,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/projection_gate.py",
+      "sha256": "b4648220bdf1c7f31242fa8bb735c630a62ca2ccd4b32b10bdbfcf01cb45948b",
+      "classes": 4,
+      "functions": 7,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/provider_budget.py",
+      "sha256": "fc091591aaa7c2bc1d9dc524b1cf51be90e378f96db26706fbae615a6098c462",
+      "classes": 6,
+      "functions": 20,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/provider_certification.py",
+      "sha256": "b866adc2d75ad7881bc789b5d37920d8f5cc7aba90c9fccf2685d8d968bae591",
+      "classes": 4,
+      "functions": 12,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/provider_gateway.py",
+      "sha256": "d03efe779ccb45fbfec73f8d74e198f52d9d7aca532b1a086eea8d1e0c854d25",
+      "classes": 12,
+      "functions": 51,
+      "pass_statements": [
+        {
+          "line": 1343,
+          "parent": "ExceptHandler",
+          "exception_handler": true
+        },
+        {
+          "line": 1704,
+          "parent": "ExceptHandler",
+          "exception_handler": true
+        },
+        {
+          "line": 1736,
+          "parent": "ExceptHandler",
+          "exception_handler": true
+        },
+        {
+          "line": 88,
+          "parent": "ExceptHandler",
+          "exception_handler": true
+        },
+        {
+          "line": 1659,
+          "parent": "ExceptHandler",
+          "exception_handler": true
+        },
+        {
+          "line": 1712,
+          "parent": "ExceptHandler",
+          "exception_handler": true
+        }
+      ],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/px_doctor.py",
+      "sha256": "e86d5eed0c2396b1cba1aa959c5c393ecf22581319df4a6617e63efae3c7c7f9",
+      "classes": 0,
+      "functions": 19,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/python_surface_certification.py",
+      "sha256": "c81244575a2fca83a426cbab0263605b94c85b32e6726c98f97bb1dfac869e94",
+      "classes": 0,
+      "functions": 5,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/query_certification.py",
+      "sha256": "e37ed30394b9bc7ed4056f24df75da0aef9e506ba70c07e1988772cc1ae1e880",
+      "classes": 0,
+      "functions": 2,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/query_planner.py",
+      "sha256": "ec56f35b8514fc3efed72d45e09447eabd967dd4034fb4783dbc4ba171e5ed81",
+      "classes": 3,
+      "functions": 9,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/reasoning_controls.py",
+      "sha256": "0c6b71cdaa337a028371c660702def3406fdf660db379889d8aab3fc0faa2f5c",
+      "classes": 0,
+      "functions": 3,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/recovery.py",
+      "sha256": "665b1f2cd8925f7b86e94aa12c169b7f1022dc5c487261539b0d23bb89ca2013",
+      "classes": 6,
+      "functions": 19,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/registry.py",
+      "sha256": "071228310f65d5471d494145452a5482cba193ac517d747e05c573eed7eaba77",
+      "classes": 0,
+      "functions": 10,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/registry_envelope.py",
+      "sha256": "49687e26d6c51c5c3a91e953961b21a3ff6542b7c89db72de1b1f8f0dd07c570",
+      "classes": 0,
+      "functions": 12,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/release_artifacts.py",
+      "sha256": "75a607e4ffce6badf4f086080a30ca6d5cae9f6f585060ca4d4bca0df9d514b1",
+      "classes": 1,
+      "functions": 23,
+      "pass_statements": [
+        {
+          "line": 794,
+          "parent": "ExceptHandler",
+          "exception_handler": true
+        }
+      ],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/release_audit.py",
+      "sha256": "b16c6e95f7dbe2e375c854f5bc02fe53e772c3f457f9d485a764093c1ee346df",
+      "classes": 0,
+      "functions": 9,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/release_boundary.py",
+      "sha256": "072247d48f089ccbabb25fbce620550d72b0c61ce4bdb9bd077bdac9c0a194b6",
+      "classes": 0,
+      "functions": 2,
+      "pass_statements": [
+        {
+          "line": 45,
+          "parent": "ExceptHandler",
+          "exception_handler": true
+        }
+      ],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/release_campaign.py",
+      "sha256": "7b1f13aea5ef6f9d5f60e72f36a97778ab085d9343b5e8329428c5d7750853ab",
+      "classes": 1,
+      "functions": 24,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/release_certification.py",
+      "sha256": "0f72d1f220f1031c7235a97750df27c9d8727f3b5df0ede76319a09321fc0367",
+      "classes": 0,
+      "functions": 38,
+      "pass_statements": [
+        {
+          "line": 1254,
+          "parent": "ExceptHandler",
+          "exception_handler": true
+        }
+      ],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/release_current_acceptance.py",
+      "sha256": "7dbe453e39bc60f85b82cc37a622aef745b9edf41b6911c4e54321bfffaac6ec",
+      "classes": 0,
+      "functions": 1,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/release_distribution.py",
+      "sha256": "297114dc05b221013717cf09bbf2227072f7f0f7e772c774500c39147ab70bb1",
+      "classes": 1,
+      "functions": 46,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/release_environment.py",
+      "sha256": "45434e92556b66b80662c2e9b52e0b44134437a126cbaaa00871276c879506f4",
+      "classes": 0,
+      "functions": 11,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/release_evidence.py",
+      "sha256": "b397660f9a176c71e00b1dac0aee014d504372a5b06b85a5b5a118ba80e37375",
+      "classes": 0,
+      "functions": 12,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/release_identity.py",
+      "sha256": "ac41f1049b05c1d50c86ab0f8d0f13dff5ffb46c4877dcf2113e5e4db998606b",
+      "classes": 0,
+      "functions": 18,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/release_preflight.py",
+      "sha256": "939639231372694b03622306b53249bb3cfc297a8b2a4569aaef2161ab133de0",
+      "classes": 2,
+      "functions": 54,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/release_process_custody.py",
+      "sha256": "ee603c7c1245ce2196e96bf6eb3b42bf4c2815e57d2d7b37259e55b0a4e5c493",
+      "classes": 0,
+      "functions": 5,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/release_repository_context.py",
+      "sha256": "a55fd2adef818aeaaa7289307f79a6e8886d46b9e04dcdc82466afbd2d0b1c27",
+      "classes": 0,
+      "functions": 3,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/release_signing.py",
+      "sha256": "247e3f5b1bf0ad1544a3a693d509009bd53bd13034e5021c37b3641d88aeee3a",
+      "classes": 0,
+      "functions": 10,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/release_skip_policy.py",
+      "sha256": "e36d4e35cc688a796f4829b16b844f399b840777c25296779c66f00c4b7e64ba",
+      "classes": 1,
+      "functions": 12,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/release_source_identity.py",
+      "sha256": "c481ec51069da35f5eeae20dd523f599282131a8c2e99293a04186c70912421b",
+      "classes": 0,
+      "functions": 6,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/remote_member_execution.py",
+      "sha256": "655fc770b13bc23565bfb6b45f6726b3de75133c2b4ca57ccde557c7aa773663",
+      "classes": 0,
+      "functions": 16,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/remote_model_attachment.py",
+      "sha256": "3264bc895bbe2ea6832e3a5fcf6a0d03264638318ad17060315db01adf4b521d",
+      "classes": 1,
+      "functions": 7,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/remote_model_bridge.py",
+      "sha256": "1555ed7ecf959c925e69d1ba9c01409196a47bb8a3051af635e426fc3cf468e8",
+      "classes": 0,
+      "functions": 5,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/remote_provider_adapters.py",
+      "sha256": "2166b0f0365481cac01ccd72496fbfd4b2874b7394f76c5149370ffe7d5cdaad",
+      "classes": 3,
+      "functions": 7,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/remote_provider_placement.py",
+      "sha256": "e6f3f2c490a8be7dc869efcaadbdda8d0439057a06eaeb547f46ce2fd4003469",
+      "classes": 0,
+      "functions": 3,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/remote_provider_profiles.py",
+      "sha256": "0dc837f3b0d21d0ee65b942444e48cf6fa7c92e4d9aaabbb9b7225cfb0086b3b",
+      "classes": 0,
+      "functions": 3,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/remote_service_protocols.py",
+      "sha256": "2efc606b6a9236bf246450494d441595712a685922e4d176d444af9babe51b78",
+      "classes": 0,
+      "functions": 2,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/repair_root_analysis.py",
+      "sha256": "994293d6ea9a47ab8ee9924a370cfb5404743b98b2b0118362df643e8801662e",
+      "classes": 0,
+      "functions": 3,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/repository_scope.py",
+      "sha256": "7ce004c4491fb70569ec699a72c6050fbeb84cacef4cf60a2f849bde3cba5c62",
+      "classes": 0,
+      "functions": 3,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/research_assimilation.py",
+      "sha256": "b43349e04a16e1fa371ff10d65e895616d472cc082013b7868560bc11913357d",
+      "classes": 1,
+      "functions": 3,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/resource_lifecycle.py",
+      "sha256": "4b5fea7bf8fe9d5656d451a58bfbd7acb4929ef97c6c3d2567fcf6ae1b3989ea",
+      "classes": 12,
+      "functions": 86,
+      "pass_statements": [
+        {
+          "line": 167,
+          "parent": "ExceptHandler",
+          "exception_handler": true
+        },
+        {
+          "line": 1543,
+          "parent": "ExceptHandler",
+          "exception_handler": true
+        },
+        {
+          "line": 1756,
+          "parent": "ExceptHandler",
+          "exception_handler": true
+        },
+        {
+          "line": 1487,
+          "parent": "ExceptHandler",
+          "exception_handler": true
+        },
+        {
+          "line": 1083,
+          "parent": "ExceptHandler",
+          "exception_handler": true
+        },
+        {
+          "line": 1297,
+          "parent": "ExceptHandler",
+          "exception_handler": true
+        }
+      ],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/resource_storage.py",
+      "sha256": "4f8ef22aea6f1b4b8d91bff24249a55ae2f0c1bad1a8775edb4d656aa7ce6427",
+      "classes": 2,
+      "functions": 21,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/retrieval.py",
+      "sha256": "61e2ccf1f2ea4c4b065e082e15504720cfbad62d75f41a50bb838698637a01bf",
+      "classes": 3,
+      "functions": 8,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/retrieval_generation.py",
+      "sha256": "979b0c59ad85a0b88d68e7ce51efe329886e5921a4ef2897a6f50d47069cfb84",
+      "classes": 3,
+      "functions": 21,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/retrieval_model_service.py",
+      "sha256": "a49529c32c60f0e0ad4ae1264168c3697b6bc878f5997801267f1fe994dfaa5a",
+      "classes": 2,
+      "functions": 6,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/revision_campaign_lifecycle.py",
+      "sha256": "9e65dc21105f3383384fd9c34b3d1afae8f7015ac9b277bca6e86ad5c9a97397",
+      "classes": 1,
+      "functions": 8,
+      "pass_statements": [
+        {
+          "line": 20,
+          "parent": "ClassDef",
+          "exception_handler": false
+        }
+      ],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/runtime_lifecycle.py",
+      "sha256": "4651cb80392c877b741e844a48a340bc45159302b4b07e96a358048a3e7f0434",
+      "classes": 1,
+      "functions": 4,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/sanitation_assurance.py",
+      "sha256": "5f0e5be85f35c7b6c6148017d6aa2fc16232647aed989718441c4e1b8cb521e2",
+      "classes": 0,
+      "functions": 7,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/scheduler.py",
+      "sha256": "46c679c876d0c56af4b5fb3fe078ef1b875e23cdf652287b8c17d4f4565d6091",
+      "classes": 3,
+      "functions": 8,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/scope_lease.py",
+      "sha256": "8deaad745a5121f5ae06a33da35fd1b34d94ca614e3a8fc588ea82f4cd27d128",
+      "classes": 3,
+      "functions": 16,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/secret_scanning.py",
+      "sha256": "6d55b464a91d14f737b6861a48f5b395b36e630cf598e6aad189f06780bf534e",
+      "classes": 2,
+      "functions": 18,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/section_scheduler.py",
+      "sha256": "7726c22816a55aee1c53fe1299c22b0c123992077f017f7ca20fe66371d4a8d4",
+      "classes": 0,
+      "functions": 8,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/self_diagnostics.py",
+      "sha256": "b654334ffde68cedbbd2e62e134b8b7441141c7ab5dcc27cacd8039f88b0d0a0",
+      "classes": 3,
+      "functions": 7,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/semantic_address_vocabulary.py",
+      "sha256": "eaed2e32c67b350b2ded73a19e296648a40ca49924bf984abf96ed3b53d14bd5",
+      "classes": 3,
+      "functions": 15,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/semantic_authored_sources.py",
+      "sha256": "22635200cb2a55f0b9d934b26534b1e231ea4baa4609b399da721358e5e0a58c",
+      "classes": 6,
+      "functions": 26,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/semantic_authority_bridge.py",
+      "sha256": "cded498f88882eaad5c6354c0de426d7ba3d2984a0f5397f6e37950ad4f4e3d2",
+      "classes": 0,
+      "functions": 2,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/semantic_authorization.py",
+      "sha256": "91d3ff644c3e28b446b85eb253c1356c0970b26afc051f16a83f7b2c26aa4667",
+      "classes": 1,
+      "functions": 2,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/semantic_capability_projection.py",
+      "sha256": "db9d23068e90fe560257e60dea3fbf692c6131b194e2035302e1f58af8920de5",
+      "classes": 0,
+      "functions": 3,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/semantic_census.py",
+      "sha256": "a5c84fe7f19082f9adbe5cbb799ffb8a14b723cb0f239a47a166dee41ff6c4fc",
+      "classes": 3,
+      "functions": 10,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/semantic_census_report.py",
+      "sha256": "71ef735cf5d4065f4d8aadfe58d2e8e43236372aa8979686e0af3ec513beafeb",
+      "classes": 0,
+      "functions": 6,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/semantic_census_v2.py",
+      "sha256": "23f10774c679631a79194286f9d12358c204bd52865605968763b7dba91d5f98",
+      "classes": 0,
+      "functions": 7,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/semantic_code_backend.py",
+      "sha256": "3180476fb8782d9680ff008d6a24a1b758fd3d3cdae271ca51c59a29cd6bca4d",
+      "classes": 2,
+      "functions": 6,
+      "pass_statements": [],
+      "not_implemented_raises": [
+        24
+      ]
+    },
+    {
+      "path": "runtime/semantic_code_cache.py",
+      "sha256": "a680e99a78e90266dc7bef70ed45cde49be9fbb458ff35b7b7065f14295ec7bd",
+      "classes": 2,
+      "functions": 6,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/semantic_code_capabilities.py",
+      "sha256": "02ec0bc80f968a1c1c920f27dce3495c70c78b5da61c85d645438d480dc43266",
+      "classes": 1,
+      "functions": 1,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/semantic_code_concurrency.py",
+      "sha256": "b9f70c81547c556ee77d27f2a66e1da254812237089724034c23c1c1b4e123d9",
+      "classes": 3,
+      "functions": 5,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/semantic_code_diagnostics.py",
+      "sha256": "b7e590dd13c74b03796353c4d77937c36b902e2ecf6d0180bdda7e100baa295d",
+      "classes": 0,
+      "functions": 3,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/semantic_code_document.py",
+      "sha256": "4bdeee6d09650ac7fd05b0b5b2a85208c8f9a3dd5533afaf7cc14bd7b55d7aa0",
+      "classes": 2,
+      "functions": 7,
+      "pass_statements": [
+        {
+          "line": 15,
+          "parent": "ClassDef",
+          "exception_handler": false
+        }
+      ],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/semantic_code_edits.py",
+      "sha256": "69b0d6e55bd81d942a05ceda3639b0a34f26a4d2f2d8e71aafb9de47a520966a",
+      "classes": 2,
+      "functions": 7,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/semantic_code_export.py",
+      "sha256": "7ca34afddbb5cc0de71f4c0e57d4fb1a2d4c493a120b82b793df51b1c3b0a13f",
+      "classes": 0,
+      "functions": 2,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/semantic_code_graph.py",
+      "sha256": "2cae40e8c6920f09f6dc054c857e022a4fa0190f58872339a4480e5be5c238bf",
+      "classes": 2,
+      "functions": 2,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/semantic_code_index.py",
+      "sha256": "0a4e36e3c405f534cbd97cede7d1df71ea80ab9cf764552f9162f17807e37a74",
+      "classes": 1,
+      "functions": 6,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/semantic_code_lifecycle.py",
+      "sha256": "6346ad5e58ceb005b1e4ab9c22b2256ce477b45286076a774bbd5e4ba6adee19",
+      "classes": 1,
+      "functions": 5,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/semantic_code_limits.py",
+      "sha256": "492140978cc48f8494b686e23c074431e99406e3802ca566b5e3cd4cc1666aa6",
+      "classes": 3,
+      "functions": 6,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/semantic_code_paths.py",
+      "sha256": "f1b28df45dea240006cf3997b8a4203b921d9888bd582da799732ad331ea5e24",
+      "classes": 1,
+      "functions": 4,
+      "pass_statements": [
+        {
+          "line": 9,
+          "parent": "ClassDef",
+          "exception_handler": false
+        }
+      ],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/semantic_code_project.py",
+      "sha256": "357df39f03bdea3bbae1a90e5943023ca2b015323495bc8907c5dd8b37173d53",
+      "classes": 1,
+      "functions": 13,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/semantic_code_python.py",
+      "sha256": "eaf2dac090f1d506952b5c8e47cda4116ecdbccdfc1ca9e7bdc1746ba0c1e433",
+      "classes": 2,
+      "functions": 27,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/semantic_code_query.py",
+      "sha256": "48b024ca1dcf95e2983c9e2dae937105472f217375dd4e4f8f23f031c95dfc88",
+      "classes": 1,
+      "functions": 6,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/semantic_code_receipts.py",
+      "sha256": "594d54cb1c7f1d741500684075024888119e831bc9071178b33426af03b326e5",
+      "classes": 0,
+      "functions": 1,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/semantic_code_registry.py",
+      "sha256": "e8fc8f1810d333d715ee70f7197a231ee914fd78a91523a748fe72532e615edf",
+      "classes": 2,
+      "functions": 8,
+      "pass_statements": [
+        {
+          "line": 13,
+          "parent": "ClassDef",
+          "exception_handler": false
+        }
+      ],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/semantic_code_service.py",
+      "sha256": "94d8745dbb226a96e35c4ddc47f2d8b932de6caddef51906b5011650ae1a848f",
+      "classes": 1,
+      "functions": 12,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/semantic_code_transaction.py",
+      "sha256": "751adab455a892fed2b12d22420e0d86a30391e150076c90b3974eb8047cb486",
+      "classes": 1,
+      "functions": 3,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/semantic_code_types.py",
+      "sha256": "7f5d6431889c2d6ab2431bf852c13b77e86449f11c8c2ab2542f9fcfebca5a51",
+      "classes": 10,
+      "functions": 12,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/semantic_context_profiles.py",
+      "sha256": "c306cc7cd8794617b7664a18087eda0395171e379e3d7081822460cba5efda12",
+      "classes": 0,
+      "functions": 2,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/semantic_coverage.py",
+      "sha256": "27f7e40307445e32b73abdaad7d14dedbcc619809e8eaf13a3349bb6b51b6c1f",
+      "classes": 3,
+      "functions": 16,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/semantic_cross_project.py",
+      "sha256": "626ba801fcc6262d4b9eb48e8220b68dc84596f4101d41d540345063105416c4",
+      "classes": 1,
+      "functions": 8,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/semantic_entity.py",
+      "sha256": "8ecd0e19dd469bf584cccf93b1ff8a01e9b3498c2dc4ff1a89b6d56b80bf19a7",
+      "classes": 3,
+      "functions": 24,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/semantic_entity_worthiness.py",
+      "sha256": "ce4afa12ab0db207ec7313d14dc749a31742e7b24a697658f16e752764b6b5ac",
+      "classes": 1,
+      "functions": 5,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/semantic_evidence.py",
+      "sha256": "164be79386967323dea86da1fa22d1097b89fb3f953239b0f7dea11cd5194e8f",
+      "classes": 1,
+      "functions": 9,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/semantic_evidence_bridge.py",
+      "sha256": "4c037dac4bfd1b582c670d693c75879ee5361d2254d32d7469496f65475d381c",
+      "classes": 0,
+      "functions": 1,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/semantic_evidence_graph.py",
+      "sha256": "fbbe868d03f6f7b708c5113aa004020d1b92fb9accc11c72ba723ac62de5b952",
+      "classes": 2,
+      "functions": 15,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/semantic_hierarchy.py",
+      "sha256": "4f7693ce0e225412aacd639e7c53cb39a399d87e064b11d77d53745f6461cd44",
+      "classes": 3,
+      "functions": 9,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/semantic_index.py",
+      "sha256": "b8545ae3ba6024c7218165defe2875dc9c264340d25b005e5d2ac88a4e4ace90",
+      "classes": 0,
+      "functions": 9,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/semantic_integration_limits.py",
+      "sha256": "849ee56fb264f9dc06443fc9bcfcb9d33b991e81c2cd9862ef69c81eaee91e59",
+      "classes": 1,
+      "functions": 1,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/semantic_integration_registry.py",
+      "sha256": "751ea53a7370a7041a3f1f396c22c3f9b2e188e8b021bb49d94fc72c2dd6a2d7",
+      "classes": 0,
+      "functions": 1,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/semantic_integration_service.py",
+      "sha256": "2e1bc0d02cf9484226a1f8a08175b95c5bc620745bc0c433058f78100bc208c1",
+      "classes": 1,
+      "functions": 12,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/semantic_integration_types.py",
+      "sha256": "0966a3d56c19efa0d9408ebafa5f87d9a7387dd6457910c9728916f470184827",
+      "classes": 9,
+      "functions": 13,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/semantic_knowledge_bridge.py",
+      "sha256": "6643a8a670cb37518da93052a59bd2522c4cefb81247ebecd259894d2ca36885",
+      "classes": 0,
+      "functions": 1,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/semantic_local_model_bridge.py",
+      "sha256": "1ae828a7aaa326cb34381c2853f5974bffb442a4af227cd040811533e4e68428",
+      "classes": 0,
+      "functions": 1,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/semantic_local_rerank.py",
+      "sha256": "77de28024c202626271f0fd5d94f123dd61202fb697d1bb6783542cdae59d67c",
+      "classes": 0,
+      "functions": 1,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/semantic_locator.py",
+      "sha256": "de6595d93fdaf09e2f90d62cf95d24799076d369364db9a428db3ad723bccf08",
+      "classes": 6,
+      "functions": 36,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/semantic_lsp_adapters.py",
+      "sha256": "193052d0f7e56f6dd6d5a880ee112163bf1da9cc6c51e4757c7165a7118f2819",
+      "classes": 3,
+      "functions": 6,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/semantic_lsp_backend.py",
+      "sha256": "f6274bfc4fa01151b8ca2c5c3226aed5c5cb42c5446db1213070908bc1316959",
+      "classes": 1,
+      "functions": 2,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/semantic_lsp_capabilities.py",
+      "sha256": "75408f1d0f2c49b08e9b3f9dd74050e33fdfc2ea7dd409372de582a43003e38a",
+      "classes": 1,
+      "functions": 4,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/semantic_lsp_client.py",
+      "sha256": "056ea636a748ee60ad149f1103dfbb4138de9cba43e7a75fa4e4d9bbc0dfee83",
+      "classes": 2,
+      "functions": 16,
+      "pass_statements": [
+        {
+          "line": 22,
+          "parent": "ClassDef",
+          "exception_handler": false
+        },
+        {
+          "line": 195,
+          "parent": "ExceptHandler",
+          "exception_handler": true
+        }
+      ],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/semantic_lsp_diagnostics.py",
+      "sha256": "aed30b95a440f175c7f359c3ed4b5e46ab3a57c0f18974b9db607deb8c26d8a0",
+      "classes": 2,
+      "functions": 7,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/semantic_lsp_discovery.py",
+      "sha256": "0b980863d84d584b27512bbc0877811df7a43b56257810d18a695c89158b301b",
+      "classes": 1,
+      "functions": 2,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/semantic_lsp_documents.py",
+      "sha256": "a2eb494f72f1db2dc25c7a6333c2cdd721a93b718b17aba306d9f3b15a5f671d",
+      "classes": 3,
+      "functions": 13,
+      "pass_statements": [
+        {
+          "line": 30,
+          "parent": "ClassDef",
+          "exception_handler": false
+        }
+      ],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/semantic_lsp_encoding.py",
+      "sha256": "8bc1612516fa086809e9fd7975b088c419fa27e4b3c226908599eddb3e14e6fe",
+      "classes": 1,
+      "functions": 6,
+      "pass_statements": [
+        {
+          "line": 8,
+          "parent": "ClassDef",
+          "exception_handler": false
+        }
+      ],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/semantic_lsp_framing.py",
+      "sha256": "94dc9e30d5c31f99f4a2679d0003e5edde22b984c23fa0cbcb503f27870469fd",
+      "classes": 1,
+      "functions": 3,
+      "pass_statements": [
+        {
+          "line": 9,
+          "parent": "ClassDef",
+          "exception_handler": false
+        }
+      ],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/semantic_lsp_health.py",
+      "sha256": "8f49c6919d13be496900ab194e1cb777d8ed18275f89d638916fefc5bc2e68d3",
+      "classes": 3,
+      "functions": 10,
+      "pass_statements": [
+        {
+          "line": 13,
+          "parent": "ClassDef",
+          "exception_handler": false
+        }
+      ],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/semantic_lsp_initialize.py",
+      "sha256": "f8d50bc4b158044e1c891e9aba272eff1e574097089cfce14523fe9b765a1de9",
+      "classes": 0,
+      "functions": 2,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/semantic_lsp_manager.py",
+      "sha256": "725f7f1feb862911d2da5e6a3a1a48bc71b39410a04056683d7f0ba3368db736",
+      "classes": 2,
+      "functions": 7,
+      "pass_statements": [
+        {
+          "line": 20,
+          "parent": "ClassDef",
+          "exception_handler": false
+        }
+      ],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/semantic_lsp_normalize.py",
+      "sha256": "6b7b184a61ea793d079a360b93725d80d03122bccf6d5cddf4cd17a3851d854b",
+      "classes": 0,
+      "functions": 8,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/semantic_lsp_process.py",
+      "sha256": "2586af7261cabfd2c66bbbd2d426a6e4cb291567861d2765cf0d1cf3309f552b",
+      "classes": 2,
+      "functions": 12,
+      "pass_statements": [
+        {
+          "line": 22,
+          "parent": "ClassDef",
+          "exception_handler": false
+        },
+        {
+          "line": 141,
+          "parent": "ExceptHandler",
+          "exception_handler": true
+        },
+        {
+          "line": 204,
+          "parent": "ExceptHandler",
+          "exception_handler": true
+        },
+        {
+          "line": 160,
+          "parent": "ExceptHandler",
+          "exception_handler": true
+        },
+        {
+          "line": 183,
+          "parent": "ExceptHandler",
+          "exception_handler": true
+        },
+        {
+          "line": 174,
+          "parent": "ExceptHandler",
+          "exception_handler": true
+        }
+      ],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/semantic_lsp_protocol.py",
+      "sha256": "b07cc26e2ed7d5b28fb1cf26204d1d9c1bb328a05ba206cedcc7ad8c362de951",
+      "classes": 3,
+      "functions": 8,
+      "pass_statements": [
+        {
+          "line": 15,
+          "parent": "ClassDef",
+          "exception_handler": false
+        }
+      ],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/semantic_lsp_queries.py",
+      "sha256": "0c7d3039c9c2434591ed1bbed71a17dd0c627b11c47bcf2140de694bdafa5724",
+      "classes": 2,
+      "functions": 11,
+      "pass_statements": [
+        {
+          "line": 18,
+          "parent": "ClassDef",
+          "exception_handler": false
+        }
+      ],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/semantic_lsp_registry.py",
+      "sha256": "34b0ce26660492fb6633f686febbfee4c7bf02ace885b9eab5d596a40c91efcb",
+      "classes": 1,
+      "functions": 7,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/semantic_lsp_service.py",
+      "sha256": "de4dfd3f256b04c946b75b13c89afc9f1afe271ab083cdb65655f2d634c9546c",
+      "classes": 1,
+      "functions": 10,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/semantic_lsp_transaction.py",
+      "sha256": "f5702e536d14000750af4d0e9ade13011d04843dbec9c51d661fc76b939c98b8",
+      "classes": 1,
+      "functions": 5,
+      "pass_statements": [
+        {
+          "line": 62,
+          "parent": "ExceptHandler",
+          "exception_handler": true
+        }
+      ],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/semantic_lsp_transport.py",
+      "sha256": "c94b3ba97f75ca8625e0a41885fe5643a716abc6766c539064bc6c2fd72938f9",
+      "classes": 5,
+      "functions": 21,
+      "pass_statements": [
+        {
+          "line": 29,
+          "parent": "ClassDef",
+          "exception_handler": false
+        },
+        {
+          "line": 33,
+          "parent": "ClassDef",
+          "exception_handler": false
+        },
+        {
+          "line": 37,
+          "parent": "ClassDef",
+          "exception_handler": false
+        },
+        {
+          "line": 285,
+          "parent": "ExceptHandler",
+          "exception_handler": true
+        },
+        {
+          "line": 264,
+          "parent": "ExceptHandler",
+          "exception_handler": true
+        },
+        {
+          "line": 192,
+          "parent": "ExceptHandler",
+          "exception_handler": true
+        }
+      ],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/semantic_lsp_types.py",
+      "sha256": "1d7b552a8b28e9c781d3ae79496cd5326769f245b1816b77fc2df09d4960a8fd",
+      "classes": 9,
+      "functions": 6,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/semantic_lsp_uri.py",
+      "sha256": "3b0e22fba5a162360c5cbb98c7e2cac7369e0edea694579d61c633b60951bf83",
+      "classes": 1,
+      "functions": 4,
+      "pass_statements": [
+        {
+          "line": 12,
+          "parent": "ClassDef",
+          "exception_handler": false
+        }
+      ],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/semantic_lsp_workspace.py",
+      "sha256": "f794823c39cf232d1d85c550a8f6648eebfc3105be79906afcd9b48da2010dcd",
+      "classes": 1,
+      "functions": 3,
+      "pass_statements": [
+        {
+          "line": 17,
+          "parent": "ClassDef",
+          "exception_handler": false
+        }
+      ],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/semantic_memory.py",
+      "sha256": "515b3064c578888e17e15b114f547054fec6ecec291145361c558a2ec8452ec3",
+      "classes": 3,
+      "functions": 15,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/semantic_memory_aliases.py",
+      "sha256": "b1394164b51b4dfebedfd83d83a799a8a57eb96f3a2b4d22f5419d52707ab194",
+      "classes": 2,
+      "functions": 6,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/semantic_memory_integrity.py",
+      "sha256": "362261b107e77de0094ac14469e449849ada6fdd4c96113d980b9800544e116a",
+      "classes": 2,
+      "functions": 1,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/semantic_memory_refs.py",
+      "sha256": "ef33bd52f3bef41327b3ae87bf0567d981c3b7a033f94749036eb25c6587d121",
+      "classes": 1,
+      "functions": 5,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/semantic_memory_relocation.py",
+      "sha256": "efcaeb1c63b3d5a58f05278117ed840b9749ed4bf4bf3d747870fa2d5c92090a",
+      "classes": 2,
+      "functions": 7,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/semantic_memory_repair.py",
+      "sha256": "1642da41ce9c27cea472234bb164a420e919a2d0e0df9fcd951e0f0499681e10",
+      "classes": 2,
+      "functions": 7,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/semantic_migration.py",
+      "sha256": "09ba9362aeae5c3ba336fb3d89ab6f651810890a33e30f71073439c8ff2e965c",
+      "classes": 0,
+      "functions": 13,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/semantic_mode_profiles.py",
+      "sha256": "3ac743300ba61e3760fa7978b7095a14031a2837c7cd0cf8ea0bbec713a09b89",
+      "classes": 0,
+      "functions": 3,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/semantic_model_context.py",
+      "sha256": "dbc290780124e0381d2d4d548aa9d65d4e6823dd8674caaaab35e8fef7babdda",
+      "classes": 0,
+      "functions": 3,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/semantic_normalize.py",
+      "sha256": "8c30da4e26ea0e66011719776d47c29332db655633b641d854b20048de8ed252",
+      "classes": 1,
+      "functions": 7,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/semantic_orchestration.py",
+      "sha256": "2e56f32f10873507a86c7645fae1fe4cbc4d859ac07405a134bf996508f93d3b",
+      "classes": 1,
+      "functions": 2,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/semantic_powershell_source.py",
+      "sha256": "cec36dffa021009b604255f266e5a6911ee4fb0c40b2c9db67bc0035c2deb8fb",
+      "classes": 4,
+      "functions": 2,
+      "pass_statements": [
+        {
+          "line": 23,
+          "parent": "ClassDef",
+          "exception_handler": false
+        },
+        {
+          "line": 27,
+          "parent": "ClassDef",
+          "exception_handler": false
+        },
+        {
+          "line": 31,
+          "parent": "ClassDef",
+          "exception_handler": false
+        },
+        {
+          "line": 35,
+          "parent": "ClassDef",
+          "exception_handler": false
+        }
+      ],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/semantic_prefreeze_census.py",
+      "sha256": "607ca2fb46ec044a1073a1281e1f0bf78b421fecd4b6a250721fcc242aff90cf",
+      "classes": 0,
+      "functions": 12,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/semantic_project_catalog.py",
+      "sha256": "fbf660473f8d99aa7d08a6bf03c325ae635d1fc04d195dc13b5ab96b89c54c25",
+      "classes": 1,
+      "functions": 5,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/semantic_project_map_bridge.py",
+      "sha256": "97629ab2e7fcd3564b773d73a9bbfe23d662bf9cb7bf670d9a91387654dc29e2",
+      "classes": 0,
+      "functions": 2,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/semantic_provenance.py",
+      "sha256": "1161f90eacb796e012d88193b428e9b8275baeeb6f1516dfb57f1ca12214cfd7",
+      "classes": 0,
+      "functions": 1,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/semantic_query_receipts.py",
+      "sha256": "73506cda902401501468d7b0a6b9876dc2507b76e4bcdc5fa24d6d65dacd7038",
+      "classes": 0,
+      "functions": 2,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/semantic_remap_transaction.py",
+      "sha256": "b23fc8e8833393970936f0804e990b909ebdbdf96a247963c010f13a42379463",
+      "classes": 0,
+      "functions": 9,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/semantic_retrieval_fusion.py",
+      "sha256": "64adcc8c8609beb0b89eabd7b0e910557ef670188f08701eaf9c45bd0b91bea2",
+      "classes": 0,
+      "functions": 2,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/semantic_revision.py",
+      "sha256": "26c10b0b629eb773e3b32973ea0ecef31d00590e786b262b57bab69a397e82fb",
+      "classes": 1,
+      "functions": 4,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/semantic_stability_diagnosis.py",
+      "sha256": "a77fbd746ebe5e00a2caa06a2d598a20305f8d062881f75413d4ed21d31d4bc8",
+      "classes": 0,
+      "functions": 4,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/semantic_stability_repair.py",
+      "sha256": "c889e49c4f87cf589b2b7eea9f2330ddfa7d4edb3ab796a9d85e190dd74f7c0f",
+      "classes": 1,
+      "functions": 9,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/semantic_surfaces.py",
+      "sha256": "d33c94bd4b9b6292d5a88b60457d70c5fe28a22d46cf535a06431362d749f2a4",
+      "classes": 5,
+      "functions": 19,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/semantic_taxonomy.py",
+      "sha256": "fb254a4e3577c921da700d478388d91aa7ed7bcb1037fbdc449de28bded936fb",
+      "classes": 1,
+      "functions": 3,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/semantic_taxonomy_census.py",
+      "sha256": "64b00133c29cc7220efea37972d750e9e5429c290e5c9836cb494170b8e9fbd5",
+      "classes": 0,
+      "functions": 8,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/semantic_tool_projection.py",
+      "sha256": "59d4d3fbf04cd6c806d0e2874edb90b2a351c5c19bd9b4d5bb75ca2f8a96e444",
+      "classes": 0,
+      "functions": 1,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/service_capability_provider.py",
+      "sha256": "27f66dfaf639da86ae0874ef3123480cd518ae5a3cf4818671b01aa86c7fd3db",
+      "classes": 0,
+      "functions": 7,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/session_context_guard.py",
+      "sha256": "48cf538356b5c32e6da3408a6ff3a449828dcc67c80bb40ba9cc36da618d3957",
+      "classes": 3,
+      "functions": 9,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/shared_contributions.py",
+      "sha256": "5c3aedd0e5fd59588101b666ebc28aa537edf9961a012b4273b2601ee5dce798",
+      "classes": 1,
+      "functions": 14,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/skill_inputs.py",
+      "sha256": "40981bfb06098e5c608eabbf06c81aea43632899dfbd5b75fbcca749790c8d63",
+      "classes": 0,
+      "functions": 5,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/skill_navigator.py",
+      "sha256": "c936437fd06e8d1e1c68cba74c59b630f4e234c25725b31a3c7fe16afd19a889",
+      "classes": 5,
+      "functions": 7,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/skill_studio.py",
+      "sha256": "3c7a404e13b5ad0daef053e85a55ec7a0f295be045126b02d05732d22bdc9927",
+      "classes": 1,
+      "functions": 42,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/source_boundary.py",
+      "sha256": "fa174b6e0ebee777a047bd4e51e6955bf18eb5bdd8e2fe12d924b4e83b40c2a6",
+      "classes": 3,
+      "functions": 14,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/source_coverage.py",
+      "sha256": "fb008f450b4df3ae99897b1b81f7fd5aeffa9e97c34dae4b1630be3ef0bc29f9",
+      "classes": 0,
+      "functions": 1,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/source_freeze.py",
+      "sha256": "e0b400e25b0d67f979a36f155ceb4c02f4cb1b7c6566da67923d41dfc7e0908b",
+      "classes": 2,
+      "functions": 10,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/startup.py",
+      "sha256": "0996f8c4e61d17524cefc007a0a9faa98d6e759cf225fc488dd2680f960a8718",
+      "classes": 1,
+      "functions": 7,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/state_invariants.py",
+      "sha256": "f8d9e136db399f2ea8bbff5101d8e0b312c811b25861817557352fab1cb36cd1",
+      "classes": 3,
+      "functions": 31,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/structural_integrity.py",
+      "sha256": "b0d4bd221898e901e59544667eef8d51c827652673fe3c7f7bb104ec6e0dc9ee",
+      "classes": 0,
+      "functions": 23,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/studio_api.py",
+      "sha256": "61f742b864ecee42a4b4e003f583edc626d938e5a1634bd060a6bc5b9056f402",
+      "classes": 0,
+      "functions": 35,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/studio_approval.py",
+      "sha256": "64a4151d879737b9ff20b4d8f1df79fe046bc60939ba32ca3af87e4e39abc79f",
+      "classes": 0,
+      "functions": 1,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/studio_authority.py",
+      "sha256": "9fbc08d30e51fa0e9c7e35372d9d0a0bc3e495c224687202d2a7bf24915c4532",
+      "classes": 1,
+      "functions": 28,
+      "pass_statements": [
+        {
+          "line": 185,
+          "parent": "ExceptHandler",
+          "exception_handler": true
+        }
+      ],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/studio_catalog_status.py",
+      "sha256": "a10f09deabfdc5351924798e523b8dd05d7492f328baa2d634e2f618101eb90d",
+      "classes": 0,
+      "functions": 8,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/studio_filesystem.py",
+      "sha256": "b9243cb22289f43f773cd07dfc80bb818b5f6dbcd873bde2bfca7c637ad017de",
+      "classes": 0,
+      "functions": 5,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/studio_models.py",
+      "sha256": "e211b8fdbde658bccb19f7bd406285b57dd22860d25fd13b76809e161f381a65",
+      "classes": 10,
+      "functions": 36,
+      "pass_statements": [
+        {
+          "line": 1228,
+          "parent": "ExceptHandler",
+          "exception_handler": true
+        }
+      ],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/studio_protocol.py",
+      "sha256": "0a5727c2d01c59ef938c1aaf0ef6811e8362a7b03e009a0314d3070b8a800f4d",
+      "classes": 0,
+      "functions": 1,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/studio_run_control.py",
+      "sha256": "4c7199b25d941749a05b574974e7454980d89a68711d812d85e8772a7a7a6b57",
+      "classes": 2,
+      "functions": 23,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/studio_session_worker.py",
+      "sha256": "2896078def643c79ac7fd7b9321f631d5c340a9011cbf2f514b88bd006b7faca",
+      "classes": 0,
+      "functions": 4,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/studio_terminal_observer.py",
+      "sha256": "5bb9d2e38801fe749763ffed7faa2f731a74ad82240842f94552ab50ee8a84dd",
+      "classes": 0,
+      "functions": 5,
+      "pass_statements": [
+        {
+          "line": 246,
+          "parent": "ExceptHandler",
+          "exception_handler": true
+        }
+      ],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/studio_worker_launch.py",
+      "sha256": "191541ea23612cb68be9d9a979acced12c5a1c7e1345067fde7225d55a35cb2f",
+      "classes": 0,
+      "functions": 5,
+      "pass_statements": [
+        {
+          "line": 419,
+          "parent": "ExceptHandler",
+          "exception_handler": true
+        },
+        {
+          "line": 354,
+          "parent": "ExceptHandler",
+          "exception_handler": true
+        }
+      ],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/system_graph.py",
+      "sha256": "c96719968ce6b32c9db7f0c975d29f0f02ea8382f4090b321b1bd3f99632cdfd",
+      "classes": 3,
+      "functions": 3,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/system_one_decision.py",
+      "sha256": "239aa2415565d8f04060199bc7418bc8a55c4297df82e56137c518bf73f78029",
+      "classes": 8,
+      "functions": 17,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/task_execution_plan.py",
+      "sha256": "5fac0ce522a784ad971aa037f41f89495a772c6586123826930cadfd05f32723",
+      "classes": 1,
+      "functions": 12,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/test_orchestration_lock.py",
+      "sha256": "c337f782372bbe4b39da611bd6d27a1a5636c1003f148403eca7e362c94f6bfe",
+      "classes": 0,
+      "functions": 2,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/test_profiles.py",
+      "sha256": "a806d454977a17a4051b3792dc09b5506fb43b6597c251748f01c48704c11ca2",
+      "classes": 1,
+      "functions": 43,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/test_runner.py",
+      "sha256": "1d0ad66b2668f85c464eb8003cb01b2cf146efb271e51c08952b3ff04a9cfbca",
+      "classes": 1,
+      "functions": 11,
+      "pass_statements": [
+        {
+          "line": 139,
+          "parent": "ClassDef",
+          "exception_handler": false
+        },
+        {
+          "line": 384,
+          "parent": "ExceptHandler",
+          "exception_handler": true
+        }
+      ],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/tie_experience.py",
+      "sha256": "d131e15f011f7a3ba07c324d993f0b169fcc215a968516f892232a5dde292ece",
+      "classes": 1,
+      "functions": 19,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/tiny_model_operator.py",
+      "sha256": "62b8f248e64ee7be672c88a40ad769b9a834ed2d9f730dbad040152faf509888",
+      "classes": 3,
+      "functions": 6,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/tool_intake.py",
+      "sha256": "ade2582cb7cd3551cce184ce4a4dd042bea0b75cbd7e75f2f0fbf6ffc398a22d",
+      "classes": 0,
+      "functions": 8,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/tool_recommendations.py",
+      "sha256": "77b5d4c3e1cd25c53d888d2ed74c961281a3666433ba0808b44fd8b5ffcd4587",
+      "classes": 0,
+      "functions": 10,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/tooling.py",
+      "sha256": "084dae54d06e235bfb32776ec35f0d82228438d4db104d966c86235c3201d790",
+      "classes": 1,
+      "functions": 7,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/transcript_analysis.py",
+      "sha256": "d9076d2bc435b0952bc431da42c49b83a08df0f1413932127f1481d064063338",
+      "classes": 0,
+      "functions": 16,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/trusted_evidence.py",
+      "sha256": "3d1079f224cad11d5c109f5d0f991ffb21d3250b8e665580d64c9c9a6f297e92",
+      "classes": 3,
+      "functions": 16,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/turbovec_adapter.py",
+      "sha256": "e234ba8225de0250ea9e1b5922911b12ef925c8db96b83afbd811d647f27d980",
+      "classes": 2,
+      "functions": 8,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/usage_memory.py",
+      "sha256": "4574f4999bdb6aea35cca32a2738e2f1746617806ba14709ca5f280e671ac383",
+      "classes": 0,
+      "functions": 33,
+      "pass_statements": [
+        {
+          "line": 63,
+          "parent": "ExceptHandler",
+          "exception_handler": true
+        }
+      ],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/verification_inputs.py",
+      "sha256": "2f94a34ecfaeb896807c532752b1df5595a8abf7c3d39cfb586c19ca5e7c6667",
+      "classes": 1,
+      "functions": 36,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/verification_receipts.py",
+      "sha256": "64a928a5ef0210adf6ca58c5cfe8e8ce393a185b3284b0a389235dc30f8f4e55",
+      "classes": 0,
+      "functions": 14,
+      "pass_statements": [
+        {
+          "line": 88,
+          "parent": "If",
+          "exception_handler": false
+        }
+      ],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/verification_status.py",
+      "sha256": "8c55b08bffbd19e7ec2b6bff17d103e62ea602e8f9633f6237e4d40e2cf2d6ff",
+      "classes": 0,
+      "functions": 10,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/version.py",
+      "sha256": "bbe2ce1fc9210938066f8c427f7174aaa1b60f09019491b968c1ddc8c6a1312d",
+      "classes": 0,
+      "functions": 0,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/vscode_model_bridge.py",
+      "sha256": "e203a201b34100983a581c858755f2d2528e274111db2c6ce6ff227e6d36b962",
+      "classes": 0,
+      "functions": 17,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/w1_exit_gate.py",
+      "sha256": "c354b473ea36db9b2d46fc97e36cca9b5f0c5ef780c713a78b10aa3de1877921",
+      "classes": 1,
+      "functions": 14,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/wal_generation.py",
+      "sha256": "4fa8a32fa0bbe02eaf3ec0abed0e227d3ed6217b8802d31724c32d2c641e9952",
+      "classes": 1,
+      "functions": 14,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/wal_migration.py",
+      "sha256": "ad4a50e90c2c22d99d2f327e885bd687e3885f583d2be77dab81bc86bbb28008",
+      "classes": 1,
+      "functions": 12,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/wal_ownership.py",
+      "sha256": "c69d9bfe6126a2fa5101e10b02c5ae3e2ea7baa1239ab02c36d3e577065a2904",
+      "classes": 1,
+      "functions": 12,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/wal_transaction.py",
+      "sha256": "243c5ca89e1bc4391ad86727b61500a227b4bc864ffd2a0c70aec2321488800e",
+      "classes": 9,
+      "functions": 60,
+      "pass_statements": [
+        {
+          "line": 167,
+          "parent": "ExceptHandler",
+          "exception_handler": true
+        },
+        {
+          "line": 171,
+          "parent": "ExceptHandler",
+          "exception_handler": true
+        }
+      ],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/work_admission.py",
+      "sha256": "8ab33c9b5051b470a63ec725e02939044a49af645478f0bb5dee653531eb47fe",
+      "classes": 2,
+      "functions": 24,
+      "pass_statements": [
+        {
+          "line": 39,
+          "parent": "ClassDef",
+          "exception_handler": false
+        }
+      ],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/work_disposition.py",
+      "sha256": "a9be7455ee43b94a1d6721d31423720ebb7ddc438a3032b45659a23c05bac773",
+      "classes": 1,
+      "functions": 3,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/workflow_group_config.py",
+      "sha256": "074810cce8969ca6f924d6d805286c0301d3c646c7ff64755fe4ebebcd2c2295",
+      "classes": 0,
+      "functions": 2,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/workflow_inputs.py",
+      "sha256": "30feefa315fa0e7801d69e1bcaa77af1560260a17c466494872e76867d390051",
+      "classes": 0,
+      "functions": 7,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/workflow_resume.py",
+      "sha256": "64b4ce6fbff83530b0b748e7e7da0857a711c7b17ea9afcd7e3e5fd4a317d1ba",
+      "classes": 2,
+      "functions": 2,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/workflow_studio.py",
+      "sha256": "9d88013c0c2f01874f2d753f993d30e3334817bcca27adab3ce206c6de89d6ee",
+      "classes": 4,
+      "functions": 50,
+      "pass_statements": [
+        {
+          "line": 1236,
+          "parent": "ExceptHandler",
+          "exception_handler": true
+        }
+      ],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/workflow_worker.py",
+      "sha256": "9936bbda68b4e145b430d49936d007ea54039e800ea63e1d48bd704f9e9aace0",
+      "classes": 1,
+      "functions": 21,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/workspace_manager.py",
+      "sha256": "dbcf8cf5f686f05f72444c712a2277497c710ed87ad9b86a2c20301214e511ef",
+      "classes": 1,
+      "functions": 68,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/world_state.py",
+      "sha256": "5a166827cf38eaffd37f084ee2fbd3e3d99dea713fd7d15fbba8b08429004e1f",
+      "classes": 0,
+      "functions": 13,
+      "pass_statements": [],
+      "not_implemented_raises": []
+    },
+    {
+      "path": "runtime/yaml_subject_files.py",
+      "sha256": "04429756a6c87d170f5daa567f19b1a6b7e07b272074634d5ad653f68ecc08d0",
+      "classes": 1,
+      "functions": 12,
+      "pass_statements": [
+        {
+          "line": 251,
+          "parent": "ExceptHandler",
+          "exception_handler": true
+        }
+      ],
+      "not_implemented_raises": []
+    }
+  ],
+  "parse_errors": [],
+  "markers": [
+    {
+      "path": "runtime/assurance_controls.py",
+      "line": 88,
+      "text": "sorted(str(item) for item in payload.get(\"todo_stub_findings\", ()))"
+    },
+    {
+      "path": "runtime/assurance_controls.py",
+      "line": 117,
+      "text": "\"todo_stub_findings\": todo_records,"
+    },
+    {
+      "path": "runtime/commissioning.py",
+      "line": 792,
+      "text": "if not description_match or \"TODO\" in description_match.group(1):"
+    }
+  ]
+}

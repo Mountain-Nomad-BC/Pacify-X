@@ -142,7 +142,7 @@ def test_memory_record_limit_is_global_across_files(tmp_path, monkeypatch):
 
 def test_startup_duplicate_state_field_rejects_without_mutation(tmp_path):
     state, _, _ = _states(tmp_path)
-    root = tmp_path / ".engineering-bootstrap/coordination"
+    root = tmp_path / ".agentic_engineering_os_px/coordination"
     root.mkdir(parents=True)
     path = root / "state.json"
     raw = json.dumps(state)[:-1] + ', "tasks": null}'
@@ -166,7 +166,7 @@ def _forbid_open(monkeypatch, paths):
 
 
 def test_oversized_state_rejected_before_open(tmp_path, monkeypatch):
-    path = tmp_path / ".engineering-bootstrap/coordination/state.json"
+    path = tmp_path / ".agentic_engineering_os_px/coordination/state.json"
     path.parent.mkdir(parents=True)
     with path.open("wb") as stream:
         stream.truncate(module.MAX_STATE_BYTES + 1)
@@ -268,7 +268,7 @@ def test_recovery_coordinator_consumes_structured_startup_result_without_rewrite
     from tests.test_state_invariants import _write_startup_store
 
     _write_startup_store(tmp_path)
-    state = tmp_path / ".engineering-bootstrap/coordination/state.json"
+    state = tmp_path / ".agentic_engineering_os_px/coordination/state.json"
     if malformed:
         state.write_text(state.read_text()[:-1] + ', "tasks": null}')
     original = {p: p.read_bytes() for p in tmp_path.rglob("*") if p.is_file()}

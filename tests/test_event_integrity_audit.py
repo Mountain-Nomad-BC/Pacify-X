@@ -10,21 +10,29 @@ from tests.test_operational_event_bus import ROOT, _event
 
 
 def test_real_commissioning_and_tool_intake_share_one_lifecycle_owner(tmp_path):
+    """Tool intake must advance the *same* state commissioning created.
+
+    The control namespace is now canonical (`.agentic_engineering_os_px`). This
+    test previously asserted the legacy spelling and explicitly required the
+    canonical tree to be absent, which inverted the contract once the owner
+    migrated: intake then wrote a state file nothing else read.
+    """
     from runtime.commissioning import commission
     from runtime.tool_intake import record_tool_intake
     project = tmp_path / "project"
     commission(project, "new", apply=True, source_root=ROOT)
-    state_path = project / ".engineering-bootstrap/project-management/state.json"
+    state_path = project / ".agentic_engineering_os_px/project-management/state.json"
     before = json.loads(state_path.read_text(encoding="utf-8"))
     result = record_tool_intake(project, ROOT, apply=True)
     after = json.loads(state_path.read_text(encoding="utf-8"))
     assert result["applied"] is True
     assert result["decision"] == "no_external_tooling"
     assert after["checkpoint"]["revision"] == before["checkpoint"]["revision"] + 1
-    expected = ".engineering-bootstrap/project-management/tool-intake.json"
+    expected = ".agentic_engineering_os_px/project-management/tool-intake.json"
     assert after["evidence"]["tool_intake_records"] == [expected]
     assert json.loads((project / expected).read_text(encoding="utf-8"))["decision"] == result["decision"]
-    assert not (project / ".agentic_engineering_os_px/project-management/state.json").exists()
+    # A second state authority beside the commissioned project is the defect.
+    assert not (project / ".engineering-bootstrap/project-management/state.json").exists()
 
 
 def test_duplicate_event_id_cannot_overwrite_receipt(tmp_path):
@@ -243,7 +251,7 @@ def test_pending_recovery_refuses_a_changed_head_before_image(tmp_path, monkeypa
 def test_tool_intake_and_checkpoint_recover_as_one_transaction(tmp_path, monkeypatch, index):
     from runtime import tool_intake
     from runtime.wal_transaction import JsonWal
-    directory = tmp_path / ".engineering-bootstrap/project-management"
+    directory = tmp_path / ".agentic_engineering_os_px/project-management"
     directory.mkdir(parents=True)
     state_path = directory / "state.json"
     state_path.write_text('{"checkpoint":{"revision":0}}', encoding="utf-8")

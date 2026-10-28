@@ -112,7 +112,7 @@ def _catalog_rows(document: dict, key: str, count: str, maximum: int) -> list[di
 def _stage_path(project: Path, kind: str, plan_id: str) -> Path:
     if type(plan_id) is not str or re.fullmatch(r"xcp_[0-9a-f]{24}", plan_id) is None:
         raise ValueError("invalid selective stage plan ID")
-    directory = (project / ".engineering-bootstrap/external-capabilities" / kind).resolve()
+    directory = (project / ".agentic_engineering_os_px/external-capabilities" / kind).resolve()
     target = (directory / f"{plan_id}.json").resolve()
     if not _inside(directory, project) or not _inside(target, directory):
         raise ValueError("selective stage path escapes project custody")
@@ -453,7 +453,7 @@ def plan_selective_stage(
 ) -> SelectiveStagePlan:
     root = root.resolve(strict=True)
     project = project.resolve(strict=True)
-    if not (project / ".engineering-bootstrap/project-management/state.json").is_file():
+    if not (project / ".agentic_engineering_os_px/project-management/state.json").is_file():
         raise ValueError("target project is not commissioned")
     catalog = load_external_catalog(root)
     bundles = {str(item["id"]): item for item in catalog["bundles"]}

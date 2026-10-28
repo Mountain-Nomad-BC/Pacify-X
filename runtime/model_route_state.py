@@ -11,7 +11,7 @@ from dataclasses import asdict, dataclass
 import hashlib
 import json
 import math
-from typing import Iterable, Mapping, Sequence
+from typing import Iterable, Sequence
 
 from .json_io import bounded_strings, validate_json_value
 
@@ -157,6 +157,8 @@ class ModelRouteDecision:
     fallback_used: bool
     authority_granted: bool
     decision_sha256: str
+    selected_model_ids: tuple[str, ...] = ()
+    portfolio_input_sha256: str | None = None
 
     def record(self) -> dict[str, object]:
         return _jsonable({
@@ -179,6 +181,8 @@ def build_route_decision(
     dispatch_state: str,
     wait_reason: str | None = None,
     fallback_used: bool = False,
+    selected_model_ids: Sequence[str] | None = None,
+    portfolio_input_sha256: str | None = None,
 ) -> ModelRouteDecision:
     """Create an immutable, content-addressed route decision.
 
@@ -225,6 +229,16 @@ def build_route_decision(
         wait_reason = _bounded_text(wait_reason, "route wait_reason", max_bytes=512)
     if type(fallback_used) is not bool:
         raise ValueError("fallback_used must be boolean")
+    selected = tuple(selected_model_ids) if selected_model_ids is not None else tuple(
+        mid for mid in (primary_model_id, challenger_model_id) if mid is not None)
+    if ((primary_model_id is not None and not selected) or len(selected) > 12 or len(set(selected)) != len(selected) or any(mid not in ids for mid in selected)
+            or (selected and selected[0] != primary_model_id)
+            or (challenger_model_id is not None and (len(selected) < 2 or selected[1] != challenger_model_id))):
+        raise ValueError("canonical portfolio must contain compatible distinct ranked members")
+    if portfolio_input_sha256 is not None and not _valid_sha256(portfolio_input_sha256):
+        raise ValueError("portfolio input digest must be SHA256")
+    if dispatch_state != "dispatch" and len(selected) > 1:
+        raise ValueError("non-dispatch decisions cannot select a portfolio")
 
     body = {
         "schema_version": "px.model-route-decision/1.0",
@@ -241,6 +255,8 @@ def build_route_decision(
         "wait_reason": wait_reason,
         "fallback_used": fallback_used,
         "authority_granted": False,
+        "selected_model_ids": list(selected),
+        "portfolio_input_sha256": portfolio_input_sha256,
     }
     digest = _sha256(body)
     return ModelRouteDecision(
@@ -258,6 +274,8 @@ def build_route_decision(
         fallback_used=fallback_used,
         authority_granted=False,
         decision_sha256=digest,
+        selected_model_ids=selected,
+        portfolio_input_sha256=portfolio_input_sha256,
     )
 
 

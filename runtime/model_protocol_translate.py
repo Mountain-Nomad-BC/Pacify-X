@@ -261,9 +261,9 @@ class WireStreamTranslator:
         self.finished = False
         self._tools_by_index: dict[int, _ToolAssembly] = {}
         self._tools_by_id: dict[str, _ToolAssembly] = {}
-        self._anthropic_input: dict[str, int] = {}
         self._input_tokens: int | None = None
         self._output_tokens: int | None = None
+        self._anthropic_input: dict[str, int] = {}
         self._provider_request_id: str | None = None
         self._anthropic_block_tool: dict[int, str] = {}
         self._pending_finish_reason: str | None = None

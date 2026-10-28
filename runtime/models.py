@@ -15,6 +15,27 @@ from .json_io import bounded_strings, load_json_object
 
 MAX_MODEL_CANDIDATES = 256
 
+#: Upper bound on N-way challenger branches. The mesh converges a handful of
+#: branches; a larger fan-out multiplies cold-start cost without improving
+#: convergence, so the bound is part of the contract rather than a tuning knob.
+MAX_CHALLENGER_BRANCHES = 8
+
+
+def _valid_challenger_budget(value: object) -> bool:
+    """A bounded N-way challenger budget, replacing the single-challenger pin.
+
+    The routing contract used to require exactly one challenger, which made an
+    N-way mesh impossible by construction. The bound still matters: an unbounded
+    fan-out multiplies cold-start cost and latency without bound, and the mesh
+    converges a small set of branches rather than brute-forcing them.
+
+    Zero means "challenger routing disabled", which is a legitimate
+    configuration and is now expressible rather than being an error.
+    """
+    if type(value) is not int or isinstance(value, bool):
+        return False
+    return 0 <= value <= MAX_CHALLENGER_BRANCHES
+
 
 @dataclass(frozen=True, slots=True)
 class PortfolioModel:
@@ -290,7 +311,7 @@ def load_model_routing_policy(root: Path) -> ModelRoutingPolicy:
     if type(challenger) is not dict or set(challenger) != {
         "discovery_mode", "calibration_mode", "anneal_mode", "freeze_mode", "certify_mode",
         "publish_mode", "score_margin", "sample_rate", "max_challengers",
-    } or challenger["max_challengers"] != 1:
+    } or not _valid_challenger_budget(challenger["max_challengers"]):
         raise ValueError("challenger routing controls are incomplete or unsupported")
     capacity = payload["capacity"]
     if type(capacity) is not dict or set(capacity) != {
@@ -747,3 +768,47 @@ def validate_model_capability(model: ModelCapability) -> None:
             raise ValueError(
                 f"model {field} must be bounded finite nonnegative metadata"
             )
+
+
+def select_execution_portfolio(decision, diversity_traits, *, target_members=5, minimum_members=4):
+    """Diversify an existing admissible route without bypassing its hard filters."""
+    from .model_route_state import ModelRouteDecision, build_route_decision
+    from .generation_bound_verdict import digest
+    if type(decision) is not ModelRouteDecision or decision.dispatch_state != "dispatch":
+        raise ValueError("portfolio requires a current dispatch route")
+    if type(target_members) is not int or type(minimum_members) is not int or not 1 <= minimum_members <= target_members <= 12:
+        raise ValueError("portfolio bounds must be1..12")
+    if not isinstance(diversity_traits, Mapping) or len(diversity_traits) > MAX_MODEL_CANDIDATES:
+        raise ValueError("bounded current diversity metadata required")
+    dimensions = ("family", "provider", "failure_mode", "runtime", "evidence_method")
+    eligible = [row for row in decision.candidates if row.capacity_state not in {"deny", "wait"}]
+    selected = [row for row in eligible if row.model_id == decision.primary_model_id]
+    if not selected:
+        raise ValueError("primary route lacks admissible capacity")
+    features = {}
+    for row in eligible:
+        traits = diversity_traits.get(row.model_id, {})
+        if type(traits) is not dict or any(k not in dimensions for k in traits):
+            raise ValueError("invalid diversity dimensions")
+        for value in traits.values():
+            if type(value) is not str or not value or len(value) > 256:
+                raise ValueError("invalid diversity value")
+        features[row.model_id] = {(key, value) for key, value in traits.items()}
+    observed = set(features[selected[0].model_id])
+    while len(selected) < min(target_members, len(eligible)):
+        pool = [row for row in eligible if row not in selected]
+        winner = min(pool, key=lambda row: (-len(features[row.model_id] - observed), -row.adjusted_score, row.rank))
+        selected.append(winner)
+        observed.update(features[winner.model_id])
+    if len(selected) < minimum_members:
+        raise ValueError("portfolio cannot meet declared minimum")
+    ids = tuple(row.model_id for row in selected)
+    return build_route_decision(request_id=decision.request_id, task_class=decision.task_class,
+        subject_ids=decision.subject_ids, policy_sha256=decision.policy_sha256,
+        policy_semantic_sha256=decision.policy_semantic_sha256, phase=decision.phase,
+        candidates=decision.candidates, primary_model_id=ids[0],
+        challenger_model_id=ids[1] if len(ids)>1 else None, selected_model_ids=ids,
+        dispatch_state=decision.dispatch_state, fallback_used=decision.fallback_used,
+        portfolio_input_sha256=digest({"parent_decision": decision.decision_sha256,
+            "diversity_traits": dict(diversity_traits), "target_members": target_members,
+            "minimum_members": minimum_members}))

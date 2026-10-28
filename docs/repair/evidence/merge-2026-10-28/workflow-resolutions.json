@@ -1,0 +1,18 @@
+[
+  {
+    "path": "runtime/workflow_studio.py",
+    "hunks": 15,
+    "duplicate_definitions": [
+      "_definition_from_record"
+    ],
+    "decision": "Keep verified pre-dispatch approval, exact effect fences/custody, native physical closure, live generation and signed receipt owners. Keep group registration closed. Retain incoming adapter revision binding; remove duplicate imports."
+  },
+  {
+    "path": "runtime/workflow_worker.py",
+    "hunks": 15,
+    "duplicate_definitions": [
+      "_verify_prepared_effect_intents"
+    ],
+    "decision": "Keep verified pre-dispatch approval, exact effect fences/custody, native physical closure, live generation and signed receipt owners. Keep group registration closed. Retain incoming adapter revision binding; remove duplicate imports."
+  }
+]

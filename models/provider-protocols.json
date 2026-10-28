@@ -14,7 +14,9 @@
   "adapters": [
     {
       "adapter_id": "ollama-http",
-      "surfaces": ["terminal"],
+      "surfaces": [
+        "terminal"
+      ],
       "implemented": true,
       "streaming": false,
       "tools": false,
@@ -28,7 +30,9 @@
     },
     {
       "adapter_id": "llama-cpp-http",
-      "surfaces": ["terminal"],
+      "surfaces": [
+        "terminal"
+      ],
       "implemented": true,
       "streaming": false,
       "tools": false,
@@ -42,7 +46,9 @@
     },
     {
       "adapter_id": "llama-cpp-stream",
-      "surfaces": ["openai_chat"],
+      "surfaces": [
+        "openai_chat"
+      ],
       "implemented": true,
       "streaming": true,
       "tools": true,
@@ -56,7 +62,9 @@
     },
     {
       "adapter_id": "llama-cpp-responses",
-      "surfaces": ["openai_responses"],
+      "surfaces": [
+        "openai_responses"
+      ],
       "implemented": true,
       "streaming": true,
       "tools": true,
@@ -70,7 +78,9 @@
     },
     {
       "adapter_id": "llama-cpp-anthropic",
-      "surfaces": ["anthropic_messages"],
+      "surfaces": [
+        "anthropic_messages"
+      ],
       "implemented": true,
       "streaming": true,
       "tools": true,
@@ -84,17 +94,147 @@
     },
     {
       "adapter_id": "openai-responses",
-      "surfaces": ["openai_responses"],
-      "implemented": false,
+      "surfaces": [
+        "openai_responses"
+      ],
+      "implemented": true,
       "streaming": true,
-      "tools": true,
-      "structured_output": true,
-      "images": true,
+      "tools": false,
+      "structured_output": false,
+      "images": false,
       "embeddings": false,
       "rerank": false,
       "exact_token_count": false,
       "cancellation": true,
       "load_unload_status": false
+    },
+    {
+      "adapter_id": "custom-openai-chat",
+      "surfaces": [
+        "openai_chat"
+      ],
+      "implemented": true,
+      "streaming": true,
+      "tools": false,
+      "structured_output": false,
+      "images": false,
+      "embeddings": false,
+      "rerank": false,
+      "exact_token_count": false,
+      "cancellation": true,
+      "load_unload_status": false
+    },
+    {
+      "tools": false,
+      "structured_output": false,
+      "images": false,
+      "embeddings": false,
+      "rerank": false,
+      "exact_token_count": false,
+      "load_unload_status": false,
+      "adapter_id": "gemini-generate-content",
+      "surfaces": [
+        "gemini_generate_content"
+      ],
+      "implemented": true,
+      "streaming": true,
+      "cancellation": true
+    },
+    {
+      "tools": false,
+      "structured_output": false,
+      "images": false,
+      "embeddings": false,
+      "rerank": false,
+      "exact_token_count": false,
+      "load_unload_status": false,
+      "adapter_id": "claude-anthropic-messages",
+      "surfaces": [
+        "anthropic_messages"
+      ],
+      "implemented": true,
+      "streaming": true,
+      "cancellation": true
+    },
+    {
+      "tools": false,
+      "structured_output": false,
+      "images": false,
+      "embeddings": false,
+      "rerank": false,
+      "exact_token_count": false,
+      "load_unload_status": false,
+      "adapter_id": "openai-chat-compatible",
+      "surfaces": [
+        "terminal"
+      ],
+      "implemented": false,
+      "streaming": false,
+      "cancellation": false
+    },
+    {
+      "tools": false,
+      "structured_output": false,
+      "images": false,
+      "embeddings": false,
+      "rerank": false,
+      "exact_token_count": false,
+      "load_unload_status": false,
+      "adapter_id": "codex-app-server",
+      "surfaces": [
+        "terminal"
+      ],
+      "implemented": false,
+      "streaming": false,
+      "cancellation": false
+    },
+    {
+      "tools": false,
+      "structured_output": false,
+      "images": false,
+      "embeddings": false,
+      "rerank": false,
+      "exact_token_count": false,
+      "load_unload_status": false,
+      "adapter_id": "codegpt-chat",
+      "surfaces": [
+        "terminal"
+      ],
+      "implemented": false,
+      "streaming": false,
+      "cancellation": false
+    },
+    {
+      "tools": false,
+      "structured_output": false,
+      "images": false,
+      "embeddings": false,
+      "rerank": false,
+      "exact_token_count": false,
+      "load_unload_status": false,
+      "adapter_id": "mistral-chat",
+      "surfaces": [
+        "openai_chat"
+      ],
+      "implemented": true,
+      "streaming": true,
+      "cancellation": true
+    },
+    {
+      "tools": false,
+      "structured_output": false,
+      "images": false,
+      "embeddings": false,
+      "rerank": false,
+      "exact_token_count": false,
+      "load_unload_status": false,
+      "adapter_id": "github-copilot-chat",
+      "surfaces": [
+        "terminal"
+      ],
+      "implemented": false,
+      "streaming": false,
+      "cancellation": false
     }
   ],
   "rules": {

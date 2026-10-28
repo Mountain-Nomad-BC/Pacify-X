@@ -60,7 +60,7 @@ def begin_repair(root: Path, *, admission_event_id: str) -> dict[str, Any]:
         _guard_succession_effect(root, admission_event_id, "write")
     except (SuccessionProposalBlocked, OSError, ValueError) as error:
         raise RevisionCampaignBlocked("repair transition lacks a current scoped admission") from error
-    lock = root / ".engineering-bootstrap/project-revision-succession/activation.lock"
+    lock = root / ".agentic_engineering_os_px/project-revision-succession/activation.lock"
     with FileLock(lock, timeout_seconds=10.0):
         campaign_path, _, pointer = _load_revision(root)
         before = campaign_path.read_bytes()
@@ -79,7 +79,7 @@ def begin_repair(root: Path, *, admission_event_id: str) -> dict[str, Any]:
 
 
 def _publish_campaign_update(root: Path, campaign_path: Path, state: dict[str, Any], pointer: dict[str, Any], admission_event_id: str, before: bytes) -> None:
-    wal = JsonWal(Path(".engineering-bootstrap/project-revision-succession/wal"), root)
+    wal = JsonWal(Path(".agentic_engineering_os_px/project-revision-succession/wal"), root)
     policy_path = campaign_path.parent / "validation-policy.json"
     policy_before = policy_path.read_bytes()
     pointer_path = root / ACTIVE_REVISION_PATH
@@ -126,7 +126,7 @@ def _transition(root: Path, *, admission_event_id: str, transition: str,
     from .test_profiles import prepare_intake_closure, prepare_repair_freeze
     root = Path(root).resolve(strict=True)
     _guard_succession_effect(root, admission_event_id, "write")
-    lock = root / ".engineering-bootstrap/project-revision-succession/activation.lock"
+    lock = root / ".agentic_engineering_os_px/project-revision-succession/activation.lock"
     with FileLock(lock, timeout_seconds=10.0):
         campaign_path, _, pointer = _load_revision(root)
         before = campaign_path.read_bytes()
@@ -159,10 +159,10 @@ def _mutate(root: Path, *, admission_event_id: str, mutation: str, payload: Mapp
         _guard_succession_effect(root, admission_event_id, "write")
     except (SuccessionProposalBlocked, OSError, ValueError) as error:
         raise RevisionCampaignBlocked("revision campaign mutation lacks a current scoped write admission") from error
-    lock = root / ".engineering-bootstrap/project-revision-succession/activation.lock"
+    lock = root / ".agentic_engineering_os_px/project-revision-succession/activation.lock"
     with FileLock(lock, timeout_seconds=10.0):
         campaign_path, _, pointer = _load_revision(root)
-        wal = JsonWal(Path(".engineering-bootstrap/project-revision-succession/wal"), root)
+        wal = JsonWal(Path(".agentic_engineering_os_px/project-revision-succession/wal"), root)
         try:
             if wal._pending_transactions():
                 raise RevisionCampaignBlocked("succession WAL recovery must be completed before campaign mutation")

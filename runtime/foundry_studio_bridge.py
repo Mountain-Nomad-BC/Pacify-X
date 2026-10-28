@@ -16,16 +16,7 @@ DRAFT_SCHEMA_VERSION = "px.skill-studio-foundry-draft/1.0"
 SHA256 = re.compile(r"^[a-f0-9]{64}$")
 
 
-def _digest(value: object) -> str:
-    return hashlib.sha256(
-        json.dumps(
-            value,
-            sort_keys=True,
-            separators=(",", ":"),
-            ensure_ascii=False,
-            default=str,
-        ).encode("utf-8")
-    ).hexdigest()
+from runtime.hash_utils import json_utf8_string_hash as _digest
 
 
 @dataclass(frozen=True, slots=True)

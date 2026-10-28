@@ -36,7 +36,7 @@ def _retain_publication_failure(
     }
     primary = (
         root
-        / ".engineering-bootstrap"
+        / ".agentic_engineering_os_px"
         / "studios"
         / ("agents" if kind == "agent" else "workflows")
         / "sessions"
@@ -50,7 +50,7 @@ def _retain_publication_failure(
         payload["diagnostic_write_error"] = type(primary_error).__name__
     fallback = (
         root
-        / ".engineering-bootstrap"
+        / ".agentic_engineering_os_px"
         / "studios"
         / "worker-publication-errors"
         / f"{kind}-{run_id}.json"
@@ -184,7 +184,7 @@ def main(argv: list[str] | None = None) -> int:
             raise PermissionError("Studio worker launch binding is invalid")
         resource_id = str(request.get("resource_id") or "")
         request_resource_id = str(request.get("request_resource_id") or "")
-        state_root = root / ".engineering-bootstrap" / "studios" / ("agents" if args.kind == "agent" else "workflows")
+        state_root = root / ".agentic_engineering_os_px" / "studios" / ("agents" if args.kind == "agent" else "workflows")
         manager = ResourceManager(state_root / "resources.json")
         record = manager.ledger.get(resource_id)
         expected_launcher_pid = int(request["expected_pid"])
@@ -234,7 +234,7 @@ def main(argv: list[str] | None = None) -> int:
     except BaseException as error:
         exit_code = 1
         try:
-            state_root = root / ".engineering-bootstrap" / "studios" / ("agents" if args.kind == "agent" else "workflows")
+            state_root = root / ".agentic_engineering_os_px" / "studios" / ("agents" if args.kind == "agent" else "workflows")
             control = (AgentRuntimeController(root).run_control if args.kind == "agent" else WorkflowStudio(root).run_control)
             state = control.read(args.run_id)
             if str(state["state"]) not in TERMINAL_STATES and str(state["state"]) != "finalizing":

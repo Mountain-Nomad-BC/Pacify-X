@@ -63,3 +63,7 @@ Resume12 continuation checkpoint: HANDOFF_RESUME12_2026-10-27.md records actual 
 
 
 Resume13: group declaration/preparation/local member execution integrated; see HANDOFF_RESUME13_2026-10-27.md. Current source203contractJSON; candidate12dependencyreviews+2namespace migrations remain.43mandatory suites/28section definitions. Native catalog legacy/canonical discovery repaired; existing Qwen3.5-4B certified profile file located in ignored .pacify-x/models. Earlier request for model paths was premature. Full workflow mesh/TIE/remote integration, trusted task-evidence ingestion and release gates remain open. No release/VSIX/merge claim.
+
+
+## Merge recovery update — 2026-10-28
+The extension harness owner conflicts (`budgetLedger.js`, `contextCompiler.js`, `toolBroker.js`) are semantically reconciled with both branches' durability, authority and budget guarantees retained. Core and billing audit tests now contain both distinct test sets, with 45/45 focused Node tests passing. The tests are reconciled in the worktree and awaiting stage/index reconciliation. This does not close source intake: three generated registry projection conflicts remain unresolved until the repair freeze gate. No full profile, validation, build, package/install, certification, merge commit or push has been performed. Preserve all historical failed/blocked evidence and keep independent closure at 0/105. Next source conflicts are README, ownership generator, rollout/certification scripts/tests; projections remain deferred.

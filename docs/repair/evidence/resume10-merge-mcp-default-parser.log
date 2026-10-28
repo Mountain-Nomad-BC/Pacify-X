@@ -1,0 +1,23 @@
+✔ bridge delegates only named PX model-client operations with explicit roots (1.3349ms)
+✔ bridge fails before spawning when PX roots are unavailable (0.283ms)
+✔ bridge rejects an OFF sandbox request carrying an unused allowlist (0.1064ms)
+✔ bridge rejects a sandbox request scoped to a different project root (0.1749ms)
+✔ real stream parser preserves typed provider failure with or without final newline (2.7435ms)
+✔ real stream parser rejects output after a failure terminal (0.5937ms)
+✔ real stream parser rejects a missing terminal receipt (0.5821ms)
+✔ real stream completion awaits asynchronous receipt consumer (2.094ms)
+✔ aborted AbortSignal refuses launch (0.2118ms)
+✔ provider advertises only bridge-admitted model metadata (0.6414ms)
+✔ mixed VS Code history is reduced to bounded canonical text without granting tool authority (0.2629ms)
+✔ provider streams text and tool calls while suppressing reasoning deltas (0.8728ms)
+✔ provider forwards the VS Code cancellation token to the PX bridge (0.1243ms)
+✔ provider hides unavailable, unqualified and remote catalog declarations from local dispatch (0.1418ms)
+ℹ tests 14
+ℹ suites 0
+ℹ pass 14
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 111.2309
+

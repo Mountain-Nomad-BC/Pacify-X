@@ -39,7 +39,7 @@ test('exact catalog selection reopens a hash-bound physical candidate without gr
 test('revision tree commitment is deterministic, content-sensitive, bounded, and link-refusing', t => {
   const project = fs.mkdtempSync(path.join(os.tmpdir(), 'px-studio-dashboard-host-'));
   t.after(() => fs.rmSync(project, { recursive: true, force: true }));
-  const revision = path.join(project, '.engineering-bootstrap', 'studios', 'agents', 'demo', 'revisions', '1.0.0');
+  const revision = path.join(project, '.agentic_engineering_os_px', 'studios', 'agents', 'demo', 'revisions', '1.0.0');
   fs.mkdirSync(path.join(revision, 'payload'), { recursive: true });
   fs.writeFileSync(path.join(revision, 'record.json'), '{"version":"1.0.0"}\n');
   fs.writeFileSync(path.join(revision, 'payload', 'agent.json'), '{"agent_id":"agent:demo"}\n');

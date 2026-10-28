@@ -20,7 +20,7 @@ SHA = re.compile(r"^[a-f0-9]{64}$")
 MAX_WORLD_SOURCE_BYTES = 2 * 1024 * 1024
 MAX_WORLD_RECORDS = 20000
 DETAIL_PATHS = {
-    "project": ".engineering-bootstrap/project-map/map-receipt.json",
+    "project": ".agentic_engineering_os_px/project-map/map-receipt.json",
     "ledger": "registry/operational_gap_ledger.head.json",
     "capabilities": "registry/semantic_capability_index.json",
     "agents": "registry/agency_agent_registry.json",
@@ -28,8 +28,14 @@ DETAIL_PATHS = {
     "staleness": "registry/projection_staleness.json",
     "authority": "registry/authority_topology.json",
     "hardware": "registry/hardware_profile.json",
-    "release": ".engineering-bootstrap/processing-order/release-identity.json",
+    "release": ".agentic_engineering_os_px/processing-order/release-identity.json",
 }
+
+
+def _detail_paths(root: Path) -> dict[str, str]:
+    from .release_campaign import release_state_relative
+
+    return {**DETAIL_PATHS, "release": release_state_relative(root).as_posix()}
 
 
 def _read(root: Path, relative: str) -> dict[str, object] | None:
@@ -123,7 +129,8 @@ def build_world_state(root: Path, *, source_revision: str) -> dict[str, object]:
     reject_path_links(root)
     root = root.resolve(strict=True)
     _sha(source_revision, "source_revision")
-    sources = {key: _read(root, path) for key, path in DETAIL_PATHS.items()}
+    detail_paths = _detail_paths(root)
+    sources = {key: _read(root, path) for key, path in detail_paths.items()}
     (
         project,
         ledger,
@@ -229,7 +236,7 @@ def build_world_state(root: Path, *, source_revision: str) -> dict[str, object]:
             if blocker_count
             else (["rebuild_stale_projections"] if stale else [])
         ),
-        "details": dict(DETAIL_PATHS),
+        "details": detail_paths,
         "detail_bodies_hydrated": False,
     }
     if health == "GREEN" and (
@@ -242,7 +249,7 @@ def build_world_state(root: Path, *, source_revision: str) -> dict[str, object]:
         body["health_state"] = "UNVERIFIED"
     bounded_json_text(body, max_bytes=MAX_WORLD_STATE_BYTES)
     result = {**body, "world_state_sha256": _digest(body)}
-    validate_world_state(result, current_source_revision=source_revision)
+    validate_world_state(result, current_source_revision=source_revision, root=root)
     return result
 
 
@@ -288,7 +295,7 @@ def load_world_state_for_startup(
         if current_source_revision is None
         else current_source_revision
     )
-    validate_world_state(value, current_source_revision=expected)
+    validate_world_state(value, current_source_revision=expected, root=root)
     stale = list(value.get("stale_projection_ids", ()))
     hydrate = ["startup_core_metadata"]
     hydrate.extend(f"projection:{item}" for item in stale)
@@ -305,7 +312,7 @@ def load_world_state_for_startup(
 
 
 def validate_world_state(
-    state: Mapping[str, object], *, current_source_revision: str
+    state: Mapping[str, object], *, current_source_revision: str, root: Path | None = None
 ) -> dict[str, object]:
     fields = {
         "schema_version",
@@ -366,13 +373,14 @@ def validate_world_state(
         ):
             raise ValueError("invalid world state: count/list metadata mismatch")
     details = state["details"]
+    expected_details = _detail_paths(root) if root is not None else DETAIL_PATHS
     if (
         type(details) is not dict
         or len(details) != len(DETAIL_PATHS)
         or set(details) != set(DETAIL_PATHS)
         or any(
             type(details[key]) is not str or details[key] != value
-            for key, value in DETAIL_PATHS.items()
+            for key, value in expected_details.items()
         )
     ):
         raise ValueError(

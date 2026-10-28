@@ -30,35 +30,35 @@ Python/
 
 # PACIFY-X local runtime custody (retained and audited outside source control)
 .pacify-x/
-.engineering-bootstrap/operation-bus/
-.engineering-bootstrap/coordination/activity/
-.engineering-bootstrap/project-map-history/
-.engineering-bootstrap/project-map-history-archives/
-.engineering-bootstrap/project-map-lock-history/
-.engineering-bootstrap/resource-lifecycle/
-.engineering-bootstrap/cleanup-receipts/
-.engineering-bootstrap/diagnostics/hardware-dashboard-cache.json
-.engineering-bootstrap/export-resources.json
-.engineering-bootstrap/export-resources.json.lock
-.engineering-bootstrap/project-map/retrieval-index.json
-.engineering-bootstrap/runtime-core/cache/
-.engineering-bootstrap/runtime-core/state.json
+.agentic_engineering_os_px/operation-bus/
+.agentic_engineering_os_px/coordination/activity/
+.agentic_engineering_os_px/project-map-history/
+.agentic_engineering_os_px/project-map-history-archives/
+.agentic_engineering_os_px/project-map-lock-history/
+.agentic_engineering_os_px/resource-lifecycle/
+.agentic_engineering_os_px/cleanup-receipts/
+.agentic_engineering_os_px/diagnostics/hardware-dashboard-cache.json
+.agentic_engineering_os_px/export-resources.json
+.agentic_engineering_os_px/export-resources.json.lock
+.agentic_engineering_os_px/project-map/retrieval-index.json
+.agentic_engineering_os_px/runtime-core/cache/
+.agentic_engineering_os_px/runtime-core/state.json
 # All other runtime-core content is derived local custody. Existing tracked
 # historical records remain tracked; newly generated preflight/cache/log
 # evidence must never dirty or enter the product source revision.
-.engineering-bootstrap/runtime-core/
-.engineering-bootstrap/processing-order/
-.engineering-bootstrap/test-evidence/adversarial-repair-gates/
-.engineering-bootstrap/test-evidence/github-reconciliation-gates/
+.agentic_engineering_os_px/runtime-core/
+.agentic_engineering_os_px/processing-order/
+.agentic_engineering_os_px/test-evidence/adversarial-repair-gates/
+.agentic_engineering_os_px/test-evidence/github-reconciliation-gates/
 
 # Derived local custody: live runtime state, budget/WAL ledgers, and resource
 # custody are retained and audited OUTSIDE source control. They are local
 # execution state, not authored product source, and must never enter the
 # product source revision.
-.engineering-bootstrap/local-model-runtime/
-.engineering-bootstrap/model-client-gateway/
-.engineering-bootstrap/resources/ledger.json
-.engineering-bootstrap/resources/ledger.json.lock
+.agentic_engineering_os_px/local-model-runtime/
+.agentic_engineering_os_px/model-client-gateway/
+.agentic_engineering_os_px/resources/ledger.json
+.agentic_engineering_os_px/resources/ledger.json.lock
 
 # Per-skill usage memory is derived local runtime custody, not authored source.
 # No skill's memory/ is tracked anywhere in this repository; stats.json is a
@@ -75,8 +75,8 @@ Desktop.ini
 *.swo
 
 # Framework-local transient release controls
-.engineering-bootstrap/release.lock
-.engineering-bootstrap/release-transaction.json
+.agentic_engineering_os_px/release.lock
+.agentic_engineering_os_px/release-transaction.json
 
 # Recoverable intake/quarantine belongs outside the deployable product
 temp/
@@ -85,7 +85,7 @@ temp_*/
 .tmp_*/
 /.tmp_*
 .VSCodeCounter/
-.engineering-bootstrap/coordination/
+.agentic_engineering_os_px/coordination/
 .px/global-skill-isolation/
 registry/.operational-gap-ledger.lock
 tmp_*.json
@@ -106,3 +106,15 @@ registry/operational_gap_ledger.jsonl
 registry/operational_gap_ledger.head.json
 registry/operational_gap_ledger.snapshot.json
 registry/operational_gap_ledger.deltas/
+
+# Legacy beta runtime custody and experience state are not new source.
+.engineering-bootstrap/
+orchestration/workflows/*/memory/
+providers/agency_agents/agents/*/memory/
+
+# Live governed test receipts have separate local evidence custody.
+.agentic_engineering_os_px/test-evidence/sections/
+.agentic_engineering_os_px/test-evidence/section-chunks/
+
+# Live test orchestration lock; local process custody.
+.agentic_engineering_os_px/test-evidence/.test-orchestration.lock

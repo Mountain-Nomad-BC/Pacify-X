@@ -7,7 +7,7 @@ import hashlib
 import importlib
 import importlib.util
 import json
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 import re
 import shlex
 import sys
@@ -78,6 +78,13 @@ DUPLICATE_CLASSIFICATIONS = {
         "regeneration_command": "commission profile projection",
         "equivalence_rule": "byte-for-byte",
     },
+    "commissioned-project-scaffold-projections": {
+        "owner": "runtime/commissioning.py",
+        "rationale": "commissioned project-owned state is an exact projection of its framework template by design; the legacy .px namespace is preserved read-compatibly",
+        "authoritative_source": "runtime/commissioning.py scaffold_files",
+        "regeneration_command": "runtime commission --mode existing --apply",
+        "equivalence_rule": "byte-for-byte",
+    },
     "portable-skill-hash-helpers": {
         "owner": ".px/skills",
         "rationale": "portable skill-local helpers",
@@ -123,14 +130,14 @@ DUPLICATE_CLASSIFICATIONS = {
     "ledger-authority-head-anchor": {
         "owner": "runtime/event_ledger.py and runtime/model_client_gateway.py",
         "rationale": "the current authority head is an exact recoverable projection of its immutable sequence anchor",
-        "authoritative_source": ".engineering-bootstrap/.ledger-authority, .engineering-bootstrap/model-client-gateway/events/.authority",
+        "authoritative_source": ".agentic_engineering_os_px/.ledger-authority, .agentic_engineering_os_px/model-client-gateway/events/.authority",
         "regeneration_command": "append chained event",
         "equivalence_rule": "byte-for-byte",
     },
     "ledger-authority-anchor-history": {
         "owner": "runtime/event_ledger.py and runtime/model_client_gateway.py",
         "rationale": "an immutable sequence anchor and retained prior authority head preserve the same reviewed chain state",
-        "authoritative_source": ".engineering-bootstrap/.ledger-authority, .engineering-bootstrap/model-client-gateway/events/.authority",
+        "authoritative_source": ".agentic_engineering_os_px/.ledger-authority, .agentic_engineering_os_px/model-client-gateway/events/.authority",
         "regeneration_command": "append chained event",
         "equivalence_rule": "byte-for-byte",
     },
@@ -222,6 +229,34 @@ DUPLICATE_CLASSIFICATIONS = {
         "regeneration_command": None,
         "equivalence_rule": "byte-for-byte",
     },
+    "commissioning-prompt-projections": {
+        "owner": "runtime/commissioning.py",
+        "rationale": "commissioned projects receive exact byte projections of the reviewed bootstrap entry prompts; the canonical namespace copy is the active project surface",
+        "authoritative_source": "bootstrap/prompts",
+        "regeneration_command": "runtime commission --apply",
+        "equivalence_rule": "byte-for-byte",
+    },
+    "content-addressed-requirement-source-projections": {
+        "owner": "runtime/plan_registry.py",
+        "rationale": "the admitted requirement-routing source is retained under its own content digest; the digest-addressed member is the immutable custody copy of the routed name",
+        "authoritative_source": "runtime/plan_registry.py admit_current_requirements",
+        "regeneration_command": "python -m runtime.plan_registry admit-current-requirements",
+        "equivalence_rule": "byte-for-byte",
+    },
+    "diagnostic-workspace-helpers": {
+        "owner": "scripts",
+        "rationale": "independent read-only diagnostic scripts share the identical bounded ResourceManager workspace open/close helper without product authority",
+        "authoritative_source": "runtime/resource_lifecycle.py contract",
+        "regeneration_command": None,
+        "equivalence_rule": "stable AST equivalent bounded workspace helper",
+    },
+    "semantic-census-percentile-adapters": {
+        "owner": "runtime semantic census modules",
+        "rationale": "the two census owners use the same small bounded percentile index helper for family and taxonomy reporting without a shared import surface",
+        "authoritative_source": "runtime numeric reporting contract",
+        "regeneration_command": None,
+        "equivalence_rule": "stable AST equivalent bounded percentile helper",
+    },
 }
 
 
@@ -234,8 +269,8 @@ def _sha(path: Path) -> str:
 
 
 def _is_committed_wal(parts: tuple[str, ...]) -> bool:
-    """Recognize committed custody below any engineering-bootstrap WAL owner."""
-    if not parts or parts[0] != ".engineering-bootstrap":
+    """Recognize committed custody below any agentic-engineering-os-px WAL owner."""
+    if not parts or parts[0] != ".agentic_engineering_os_px":
         return False
     try:
         wal_index = parts.index("wal", 1)
@@ -251,7 +286,7 @@ def _is_inactive_derived_path(path: Path, root: Path) -> bool:
     parts = path.relative_to(root).parts
     if _is_committed_wal(parts):
         return True
-    return len(parts) >= 2 and parts[0] == ".engineering-bootstrap" and parts[1] in {
+    return len(parts) >= 2 and parts[0] == ".agentic_engineering_os_px" and parts[1] in {
         "environment",
         "diagnostics",
         "project-map",
@@ -271,9 +306,9 @@ def _exclude_structural_path(relative: str) -> bool:
         return True
     if _is_committed_wal(parts):
         return True
-    if parts[:3] == (".engineering-bootstrap", "processing-order", "operational-verification"):
+    if parts[:3] == (".agentic_engineering_os_px", "processing-order", "operational-verification"):
         return True
-    return len(parts) >= 2 and parts[0] == ".engineering-bootstrap" and parts[1] in {
+    return len(parts) >= 2 and parts[0] == ".agentic_engineering_os_px" and parts[1] in {
         "environment", "diagnostics", "project-map", "project-map-history",
         "project-map-lock-history", "quarantine",
     }
@@ -367,8 +402,8 @@ def _import_cycles(root: Path) -> list[list[str]]:
 def _classify_exact_group(paths: list[str]) -> str | None:
     path_set = set(paths)
     if path_set == {
-        ".engineering-bootstrap/test-evidence/adversarial-repair-gates/contracts.json",
-        ".engineering-bootstrap/test-evidence/github-reconciliation-gates/contracts.json",
+        ".agentic_engineering_os_px/test-evidence/adversarial-repair-gates/contracts.json",
+        ".agentic_engineering_os_px/test-evidence/github-reconciliation-gates/contracts.json",
     }:
         return "independent-gate-receipts"
     if (
@@ -430,11 +465,29 @@ def _classify_exact_group(paths: list[str]) -> str | None:
     ) and all(path.startswith("templates/declared_suite/") for path in paths):
         return "generated-declared-suite-projections"
     if (
-        len(paths) == 2
-        and any(path.startswith("bootstrap/profiles/") for path in paths)
-        and any(path.startswith(".engineering-bootstrap/profiles/") for path in paths)
+        any(path.startswith("bootstrap/profiles/") for path in paths)
+        and all(
+            PurePosixPath(path).parent.name == "profiles"
+            and (
+                path.startswith("bootstrap/profiles/")
+                or path.startswith(".agentic_engineering_os_px/")
+                or path.startswith(".px/")
+                or path.startswith(".engineering-bootstrap/")
+            )
+            for path in paths
+        )
+        and len({PurePosixPath(path).name for path in paths}) >= 1
     ):
         return "generated-profile-projections"
+    if (
+        any(path.startswith(".px/") for path in paths)
+        and all(
+            path.startswith(".px/")
+            or path.startswith(".agentic_engineering_os_px/")
+            for path in paths
+        )
+    ):
+        return "commissioned-project-scaffold-projections"
     if path_set == {
         "extension/resources/studio-operations.json",
         "registry/studio_operations.json",
@@ -444,7 +497,76 @@ def _classify_exact_group(paths: list[str]) -> str | None:
     if (
         len(paths) == 2
         and all(
-            path.startswith(".engineering-bootstrap/.ledger-authority/")
+            (path.startswith(".agentic_engineering_os_px/.ledger-authority/")
+             or path.startswith(".engineering-bootstrap/.ledger-authority/")
+             or "/events/.authority/" in path)
+            for path in paths
+        )
+        and any(path.endswith("/head.json") for path in paths)
+        and any("/anchors/" in path for path in paths)
+    ):
+        return "ledger-authority-head-anchor"
+    if (
+        len(paths) == 2
+        and all(
+            (path.startswith(".agentic_engineering_os_px/.ledger-authority/")
+             or path.startswith(".engineering-bootstrap/.ledger-authority/")
+             or "/events/.authority/" in path)
+            for path in paths
+        )
+        and any("/anchors/" in path for path in paths)
+        and any("/history/" in path for path in paths)
+    ):
+        return "ledger-authority-anchor-history"
+    if (
+        len(paths) == 2
+        and sum(path.startswith("bootstrap/prompts/") for path in paths) == 1
+        and sum(
+            path.startswith(".agentic_engineering_os_px/prompts/")
+            and path.endswith("-project.md")
+            for path in paths
+        )
+        == 1
+        and {
+            "bootstrap/prompts/NEW_PROJECT_PROMPT.md",
+            ".agentic_engineering_os_px/prompts/new-project.md",
+        }
+        == path_set
+        | {
+            "bootstrap/prompts/EXISTING_PROJECT_PROMPT.md",
+            ".agentic_engineering_os_px/prompts/existing-project.md",
+        }
+        - path_set
+        or (
+            len(paths) == 2
+            and path_set
+            in (
+                {
+                    "bootstrap/prompts/NEW_PROJECT_PROMPT.md",
+                    ".agentic_engineering_os_px/prompts/new-project.md",
+                },
+                {
+                    "bootstrap/prompts/EXISTING_PROJECT_PROMPT.md",
+                    ".agentic_engineering_os_px/prompts/existing-project.md",
+                },
+            )
+        )
+    ):
+        return "commissioning-prompt-projections"
+    if (
+        len(paths) == 2
+        and all(path.startswith("registry/planning/rev1xx/") for path in paths)
+        and any(
+            path.startswith("registry/planning/rev1xx/source-")
+            and path.endswith(".json")
+            for path in paths
+        )
+    ):
+        return "content-addressed-requirement-source-projections"
+    if (
+        len(paths) == 2
+        and all(
+            path.startswith(".agentic_engineering_os_px/.ledger-authority/")
             or "/events/.authority/" in path
             for path in paths
         )
@@ -455,7 +577,7 @@ def _classify_exact_group(paths: list[str]) -> str | None:
     if (
         len(paths) == 2
         and all(
-            path.startswith(".engineering-bootstrap/.ledger-authority/")
+            path.startswith(".agentic_engineering_os_px/.ledger-authority/")
             or "/events/.authority/" in path
             for path in paths
         )
@@ -708,6 +830,32 @@ def _logic_duplicates(root: Path, files: tuple[Path, ...] | None = None) -> tupl
             path.startswith("runtime/") for path in paths
         ):
             classification = "bounded-progress-envelope"
+        elif (
+            names == {"_workspace"}
+            and set(paths)
+            == {
+                "scripts/prove_envelope_count_invariant.py",
+                "scripts/verify_evidence_custody.py",
+            }
+        ):
+            classification = "diagnostic-workspace-helpers"
+        elif (
+            names == {"put"}
+            and all(
+                path in {"tests/test_semantic_authored_sources.py", "tests/test_semantic_surfaces.py"}
+                for path in paths
+            )
+        ):
+            classification = "local-test-json-fixtures"
+        elif (
+            names <= {"_percentile", "percentile"}
+            and set(paths)
+            == {
+                "runtime/semantic_prefreeze_census.py",
+                "runtime/semantic_taxonomy_census.py",
+            }
+        ):
+            classification = "semantic-census-percentile-adapters"
         elif names == {"_projection_scaffold", "_scaffold"} and set(paths) == {
             "extension/tests/installed-harness/studio_late_card_worker.py",
             "extension/tests/installed-harness/studio_lifecycle_crash_worker.py",
@@ -909,7 +1057,7 @@ def _document_errors(root: Path, release_open: bool) -> list[str]:
             or "release-certification-0.5.0.json" in execution_text
         ):
             errors.append("execution-plan document is pinned to revoked release state")
-    state = _json(root / ".engineering-bootstrap/project-management/state.json")
+    state = _json(root / ".agentic_engineering_os_px/project-management/state.json")
     lifecycle_next = state.get("lifecycle", {}).get("next_action")
     checkpoint_next = state.get("checkpoint", {}).get("next_safe_action")
     if lifecycle_next != checkpoint_next:
@@ -1016,7 +1164,7 @@ def _example_errors(root: Path) -> list[str]:
             path.read_text(encoding="utf-8", errors="replace").splitlines(), 1
         ):
             stripped = line.strip()
-            if not stripped.startswith("engineering-bootstrap "):
+            if not stripped.startswith("agentic-engineering-os-px "):
                 continue
             normalized = re.sub(r"<[^>]+>", "fixture", stripped)
             try:
@@ -1054,7 +1202,7 @@ def _marker_result(root: Path) -> dict[str, Any]:
 
 def audit_structural_integrity(root: Path) -> dict[str, Any]:
     root = root.resolve()
-    state = _json(root / ".engineering-bootstrap/project-management/state.json")
+    state = _json(root / ".agentic_engineering_os_px/project-management/state.json")
     release_open = state.get("lifecycle", {}).get("status") != "complete"
     structural_files = _structural_files(root)
     exact_groups, exact_unreviewed = _duplicate_files(root, structural_files)

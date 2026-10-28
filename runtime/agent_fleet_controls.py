@@ -36,11 +36,7 @@ SESSION_TRANSITIONS = {
 _SHA256 = re.compile(r"[0-9a-f]{64}\Z")
 
 
-def _stable(value: object) -> str:
-    rendered = json.dumps(
-        value, sort_keys=True, separators=(",", ":"), ensure_ascii=False
-    )
-    return hashlib.sha256(rendered.encode("utf-8")).hexdigest()
+from runtime.hash_utils import json_utf8_hash as _stable
 
 
 def _required_text(value: object, field: str) -> str:
@@ -599,11 +595,27 @@ class AgentSessionCoordinator:
             raise ValueError("canonical agent heartbeat does not advance time")
 
     def _session_events(self, project_id: str, agent_id: str, session_id: str) -> list[dict[str, object]]:
-        replay = self.bus.replay(limit=10_000)
-        if not replay["valid"]:
-            raise ValueError("cannot reconstruct agent session over degraded event ancestry")
+        from .dependency_invalidation import subscribe_dependency_events
+        consumer_id = "fleet-reconstruction:" + _stable({"project_id": project_id,
+            "agent_id": agent_id, "session_id": session_id})
+        subscription = subscribe_dependency_events(self.bus, consumer_id,
+            ("runtime.agent",), after_revision=0)
+        canonical_events = []
+        scanned = 0
+        try:
+            while True:
+                page = subscription.read(limit=1000)
+                scanned += page["scanned_event_count"]
+                canonical_events.extend(page["events"])
+                if not page["has_more"]:
+                    break
+                if scanned >= 10_000:
+                    raise ValueError("fleet reconstruction exceeds canonical event scan budget; "
+                                     "history must be explicitly checkpointed before continuation")
+        finally:
+            subscription.unsubscribe()
         matches: list[dict[str, object]] = []
-        for raw in replay["events"]:
+        for raw in canonical_events:
             if not isinstance(raw, dict) or not isinstance(raw.get("event"), dict):
                 continue
             event = raw["event"]

@@ -24,7 +24,7 @@ function safeId(value, fallback = 'unknown') {
 function activityPaths(workspaceRoot) {
   const workspace = path.resolve(workspaceRoot || '');
   if (!workspaceRoot || workspace === path.parse(workspace).root) throw new Error('activity-workspace-must-be-bounded');
-  const coordination = path.join(workspace, '.engineering-bootstrap', 'coordination');
+  const coordination = path.join(workspace, '.agentic_engineering_os_px', 'coordination');
   const root = path.join(coordination, 'activity');
   return { workspace, coordination, root, state: path.join(root, 'current.json'), events: path.join(root, 'events.jsonl'), lock: path.join(root, '.activity.lock'), quarantine: path.join(root, 'quarantine') };
 }

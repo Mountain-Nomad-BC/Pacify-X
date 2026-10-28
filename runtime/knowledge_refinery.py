@@ -31,12 +31,7 @@ DECISIONS = (
 )
 
 
-def _stable(value: object) -> str:
-    return hashlib.sha256(
-        json.dumps(
-            value, sort_keys=True, separators=(",", ":"), ensure_ascii=False
-        ).encode("utf-8")
-    ).hexdigest()
+from runtime.hash_utils import json_utf8_hash as _stable
 
 
 def _terms(value: object) -> set[str]:
@@ -545,7 +540,7 @@ def stage_merge_plan(
     apply: bool = False,
 ) -> dict[str, object]:
     project = project.resolve(strict=True)
-    if not (project / ".engineering-bootstrap/project-management/state.json").is_file():
+    if not (project / ".agentic_engineering_os_px/project-management/state.json").is_file():
         raise ValueError("project is not commissioned")
     if plan.get("valid") is not True or plan.get("plan_sha256") != _stable(
         {
@@ -568,7 +563,7 @@ def stage_merge_plan(
         return result
     target = (
         project
-        / ".engineering-bootstrap/knowledge-refinery/staged"
+        / ".agentic_engineering_os_px/knowledge-refinery/staged"
         / f"{plan['plan_sha256']}.json"
     )
     target.parent.mkdir(parents=True, exist_ok=True)

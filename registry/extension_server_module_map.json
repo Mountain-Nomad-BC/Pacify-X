@@ -1,0 +1,75 @@
+{
+  "schema_version": "px.extension-server-module-map/1.0",
+  "generated_utc": "2026-10-05T00:00:00Z",
+  "card": "PX-GAP-0006",
+  "conclusion": "module_boundaries_recovered_no_decomposition_needed",
+  "summary": "extension/server/index.js is a generated esbuild bundle, not authored source. Its true module boundary is extension/server/source.mjs (the authored pre-bundle entry point), produced by extension/scripts/build-mcp.js. Because the authored source and its build script both exist, the original boundary is recoverable without decomposing the bundle. Per the card, decomposition must NOT begin.",
+  "authored_source": {
+    "path": "extension/server/source.mjs",
+    "role": "authored MCP server entry point (the real module boundary)",
+    "format": "ES module"
+  },
+  "generated_bundle": {
+    "path": "extension/server/index.js",
+    "role": "esbuild bundle output; NOT authored; never edit directly",
+    "generator": "extension/scripts/build-mcp.js",
+    "regeneration_command": "npm run build:mcp --prefix extension",
+    "staleness_check": "npm run check:mcp --prefix extension",
+    "esbuild_options": {
+      "bundle": true,
+      "platform": "node",
+      "target": "node20",
+      "format": "cjs",
+      "sourcemap": false,
+      "legalComments": "none",
+      "define": { "__PX_EXTENSION_VERSION__": "package.json version" }
+    },
+    "source_boundary_classification": "packaging_generated"
+  },
+  "capability_to_module_map": [
+    { "capability": "context-snapshot", "tool": "pacify_context_snapshot", "module": "source.mjs: contextEnvelope()" },
+    { "capability": "git-context", "tool": "pacify_git_context", "module": "source.mjs: contextEnvelope().git" },
+    { "capability": "control-plane-summary", "tool": "pacify_control_plane_summary", "module": "source.mjs: runApi(['snapshot'])" },
+    { "capability": "capability-manifest", "tool": "pacify_capability_manifest", "module": "source.mjs: inline manifest" },
+    { "capability": "knowledge-graph", "tool": "pacify_graph_query", "module": "source.mjs: runApi(['graph'])" },
+    { "capability": "hardware-telemetry", "tool": "pacify_hardware_telemetry", "module": "source.mjs: runApi(['snapshot']).runtime.hardware" },
+    { "capability": "agent-readiness", "tool": "pacify_agent_readiness", "module": "source.mjs: runApi(['readiness'])" },
+    { "capability": "plugin-catalog", "tool": "pacify_plugin_catalog", "module": "source.mjs: readEnvironmentSubject / runApi(['catalog'])" },
+    { "capability": "environment-inventory", "tool": "pacify_environment_inventory", "module": "source.mjs: readEnvironmentSubject" },
+    { "capability": "environment-extension-detail", "tool": "pacify_environment_extension_detail", "module": "source.mjs: readEnvironmentExtension" },
+    { "capability": "catalog-query", "tool": "pacify_catalog_query", "module": "source.mjs: runApi(['catalog'])" },
+    { "capability": "cognitive-query", "tool": "pacify_cognitive_query", "module": "source.mjs: runApi(['cognitive-query'])" },
+    { "capability": "coordination-mailbox", "tool": "pacify_message_send/read/consume", "module": "source.mjs -> extension/src/coordinationManager.js" },
+    { "capability": "coordination-wait-wake", "tool": "pacify_wait_register/wait_status/wake_ack", "module": "source.mjs -> extension/src/coordinationManager.js" },
+    { "capability": "parallel-planning", "tool": "pacify_parallel_plan_create", "module": "source.mjs -> extension/src/coordinationManager.js" },
+    { "capability": "task-claim-lifecycle", "tool": "pacify_task_claim/claim_renew/task_progress/task_reconcile/task_release", "module": "source.mjs -> extension/src/coordinationManager.js" },
+    { "capability": "memory-observability", "tool": "pacify_memory_observability/memory_capture", "module": "source.mjs -> extension/src/coordinationManager.js" },
+    { "capability": "activity-observability", "tool": "pacify_activity_observability/activity_emit", "module": "source.mjs -> extension/src/activityManager.js, extension/src/mcpActivityIntegration.js" },
+    { "capability": "mcp-instrumentation-health", "tool": "pacify_mcp_instrumentation_status", "module": "source.mjs: createMcpActivityIntegration" },
+    { "capability": "enterprise-status", "tool": "pacify_enterprise_status/billable_guardrail_evaluate/enterprise_readiness/pack_set/target_configure", "module": "source.mjs -> extension/src/enterpriseManager.js" },
+    { "capability": "team-fabric", "tool": "pacify_team_pack_preview/team_pack_stage/worker_adapter_doctor", "module": "source.mjs -> extension/src/teamFabricManager.js" },
+    { "capability": "discovery-environment", "tool": "pacify_plugin_catalog(extensions)", "module": "source.mjs -> extension/src/discoveryManager.js" },
+    { "capability": "tool-conflict-status", "tool": "pacify_tool_conflict_status", "module": "source.mjs -> extension/src/coordinationManager.js" },
+    { "capability": "resume-handoff", "tool": "pacify_resume_handoff/task_handoff", "module": "source.mjs -> extension/src/coordinationManager.js" },
+    { "capability": "work-stop-diagnostics", "tool": "pacify_work_stop_diagnostics/work_room", "module": "source.mjs -> extension/src/coordinationManager.js" },
+    { "capability": "mutation-authority", "tool": "(all write tools)", "module": "source.mjs -> extension/src/mcpMutationAuthority.js" },
+    { "capability": "lazy-service-custody", "tool": "(registerLazyTool)", "module": "source.mjs: lazyService/disposeLazyServices" }
+  ],
+  "inlined_modules_in_bundle": [
+    "extension/src/activityManager.js",
+    "extension/src/mcpActivityIntegration.js",
+    "extension/src/coordinationManager.js",
+    "extension/src/teamFabricManager.js",
+    "extension/src/enterpriseManager.js",
+    "extension/src/discoveryManager.js",
+    "extension/src/mcpMutationAuthority.js",
+    "@modelcontextprotocol/server",
+    "@modelcontextprotocol/server/stdio",
+    "zod"
+  ],
+  "decomposition": {
+    "authorized": false,
+    "reason": "The true boundary is already known (source.mjs). Decomposing the generated bundle is forbidden; edit the authored source and regenerate."
+  },
+  "authority_granted": false
+}

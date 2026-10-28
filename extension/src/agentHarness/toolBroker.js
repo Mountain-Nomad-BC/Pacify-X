@@ -1,28 +1,77 @@
-'use strict';
+﻿'use strict';
 
 const { EFFECT_ORDER } = require('./taskStore');
 const { PxToolRequest, PxToolResult, parse } = require('./contracts');
 const { nowIso } = require('./ids');
+const { validateExecutionContextForRun } = require('./executionContext');
 
 class ToolBroker {
-  constructor(options = {}) { this.tools = new Map(); this.taskStore = options.taskStore || null; this.approvalProvider = options.approvalProvider || null; this.eventBus = options.eventBus || null; }
+  constructor(options = {}) { this.tools = new Map(); this.loading = new Map(); this.taskStore = options.taskStore || null; this.approvalProvider = options.approvalProvider || null; this.eventBus = options.eventBus || null; }
 
   register(tool) {
-    if (!tool?.toolId || !tool?.effectClass || typeof tool.execute !== 'function') throw new Error('tool-registration-invalid');
+    if (!tool?.toolId || !EFFECT_ORDER.includes(tool.effectClass) || typeof tool.execute !== 'function') throw new Error('tool-registration-invalid');
     if (this.tools.has(tool.toolId)) throw new Error(`tool-already-registered:${tool.toolId}`);
     const registration = Object.freeze({ ...tool }); this.tools.set(tool.toolId, registration); return { dispose: () => { if (this.tools.get(tool.toolId) === registration) this.tools.delete(tool.toolId); } };
   }
 
-  list() { return [...this.tools.values()].map(({ execute, ...rest }) => rest); }
+  registerLazy(metadata, loader) {
+    if (!metadata?.toolId || !EFFECT_ORDER.includes(metadata.effectClass) || typeof loader !== 'function') throw new Error('lazy-tool-registration-invalid');
+    if (this.tools.has(metadata.toolId)) throw new Error(`tool-already-registered:${metadata.toolId}`);
+    const entry = { toolId: metadata.toolId, effectClass: metadata.effectClass,
+      requireApproval: metadata.requireApproval === true, description: String(metadata.description || '').slice(0, 1000),
+      serverId: metadata.serverId || null, revision: metadata.revision || null, loader };
+    this.tools.set(entry.toolId, entry);
+    return { dispose: () => { if (this.tools.get(entry.toolId) === entry) this.tools.delete(entry.toolId); } };
+  }
 
-  async execute(input, task) {
+  // Discovery carries descriptions, never every server's schemas or implementation.
+  list() { return [...this.tools.values()].map(tool => ({ toolId: tool.toolId, effectClass: tool.effectClass,
+    requireApproval: tool.requireApproval === true, description: String(tool.description || '').slice(0, 1000),
+    serverId: tool.serverId || null, revision: tool.revision || null, loaded: typeof tool.execute === 'function' })); }
+
+  async _load(entry) {
+    if (typeof entry.execute === 'function') return entry;
+    if (!this.loading.has(entry)) {
+      const pending = Promise.resolve().then(() => entry.loader()).then(loaded => {
+        if (this.tools.get(entry.toolId) !== entry) throw new Error('tool-registration-changed-during-load');
+        if (!loaded || loaded.toolId !== entry.toolId || loaded.effectClass !== entry.effectClass ||
+            (loaded.requireApproval === true) !== entry.requireApproval ||
+            typeof loaded.execute !== 'function' || typeof loaded.validateArguments !== 'function' ||
+            !loaded.inputSchema || Buffer.byteLength(JSON.stringify(loaded.inputSchema), 'utf8') > 65536) {
+          throw new Error('lazy-tool-owner-or-contract-mismatch');
+        }
+        entry.execute = loaded.execute; entry.inputSchema = loaded.inputSchema; entry.validateArguments = loaded.validateArguments;
+        return entry;
+      }).finally(() => this.loading.delete(entry));
+      this.loading.set(entry, pending);
+    }
+    return this.loading.get(entry);
+  }
+
+  async describe(toolIds) {
+    if (!Array.isArray(toolIds) || toolIds.length > 8 || new Set(toolIds).size !== toolIds.length) throw new Error('tool-schema-selection-budget-exceeded');
+    const selected = [];
+    for (const id of toolIds) {
+      const entry = this.tools.get(id); if (!entry) throw new Error(`unknown-tool:${id}`);
+      const loaded = await this._load(entry);
+      selected.push({ toolId: loaded.toolId, effectClass: loaded.effectClass,
+        description: loaded.description || '', inputSchema: loaded.inputSchema || null });
+    }
+    return selected;
+  }
+
+  async execute(input, task, executionContext) {
     const request = immutableRequest(parse(PxToolRequest, input, 'tool-request'));
     try { await this.taskStore?.flush(); } catch { return this._result(request, 'blocked', 'Task policy persistence failed.', null, []); }
     const authority = this._authority(request, task);
     if (!authority) return this._result(request, 'blocked', 'Current task/run/worker authority is unavailable.', null, []);
+    if (executionContext == null) throw new Error('execution-context-required');
+    validateExecutionContextForRun(executionContext, request.runId);
+    if (executionContext.epoch !== authority.run.epoch) throw new Error('tool-execution-context-stale-epoch');
     task = authority.task;
     const tool = this.tools.get(request.toolId);
     if (!tool) return this._result(request, 'blocked', 'Unknown tool.', null, []);
+    if (request.taskId !== task.taskId) return this._result(request, 'blocked', 'Tool request task owner mismatch.', null, []);
     if (tool.effectClass !== request.effectClass) return this._result(request, 'blocked', 'Tool effect class does not match registered authority.', null, []);
     if (EFFECT_ORDER.indexOf(request.effectClass) > EFFECT_ORDER.indexOf(task.constraints.maxEffectClass)) return this._result(request, 'blocked', 'Task stage/effect policy blocks this tool.', null, []);
     const needsApproval = tool.requireApproval === true || ['MUTATING', 'HIGH_RISK'].includes(request.effectClass);
@@ -35,7 +84,11 @@ class ToolBroker {
     if (!this._authority(request, task, authority.snapshot) || this.tools.get(request.toolId) !== tool) return this._result(request, 'blocked', 'Tool authority changed before dispatch.', null, []);
     this.eventBus?.emit('tool.started', { taskId: request.taskId, runId: request.runId, workerId: request.workerId, status: 'started', summary: request.toolId, payload: { requestId: request.requestId, effectClass: request.effectClass } });
     try {
-      const value = await tool.execute({ request, task });
+      const loadedTool = await this._load(tool);
+      if (loadedTool.validateArguments && await loadedTool.validateArguments(request.arguments) !== true) throw new Error('tool-arguments-rejected-by-native-contract');
+      validateExecutionContextForRun(executionContext, request.runId);
+      if (!this._authority(request, task, authority.snapshot) || this.tools.get(request.toolId) !== loadedTool) throw new Error('tool-authority-changed-before-execution');
+      const value = await loadedTool.execute({ request, task, executionContext });
       if (!this._authority(request, task, authority.snapshot)) throw new Error('tool-authority-changed-during-execution');
       if (value?.evidence?.some(row => row.taskId !== request.taskId || row.runId !== request.runId)) throw new Error('tool-evidence-owner-mismatch');
       const result = this._result(request, 'succeeded', value?.summary || `${request.toolId} completed.`, value?.output ?? value ?? null, value?.evidence || []);
@@ -54,7 +107,7 @@ class ToolBroker {
       const task = this.taskStore.requireTask(request.taskId); const run = this.taskStore.requireRun(request.runId);
       if (task.status !== 'active' || run.status !== 'running' || run.taskId !== task.taskId || run.activeWorkerId !== request.workerId || this.taskStore.requiresRecovery(run.runId)) return null;
       const snapshot = JSON.stringify([task, run]);
-      return expectedSnapshot !== null && snapshot !== expectedSnapshot ? null : { task, snapshot };
+      return expectedSnapshot !== null && snapshot !== expectedSnapshot ? null : { task, run, snapshot };
     } catch { return null; }
   }
 

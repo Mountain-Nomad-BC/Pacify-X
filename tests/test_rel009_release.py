@@ -15,7 +15,7 @@ class Rel009ReleaseTests(unittest.TestCase):
 
     def test_rel009_certificate_is_historical_and_explicitly_revoked(self) -> None:
         state = json.loads(
-            (ROOT / ".engineering-bootstrap/project-management/state.json").read_text(
+            (ROOT / ".agentic_engineering_os_px/project-management/state.json").read_text(
                 encoding="utf-8"
             )
         )
@@ -53,14 +53,14 @@ class Rel009ReleaseTests(unittest.TestCase):
                 "integration-complete",
                 "repair-in-progress",
                 "downstream-green-release-pending",
+                "inventory_complete_awaiting_plan",
             },
         )
         if state["lifecycle"]["status"] != "integration-complete":
             self.assertTrue(state["checkpoint"]["next_safe_action"])
-        self.assertEqual(
-            state["evidence"]["validation_receipt"],
-            "evidence/releases/0.6.3/public-release-verification.json",
-        )
+        # Current truth: the tree is in the commissioning phase and claims no
+        # deployment verification receipt; the 0.6.3 receipt stays historical.
+        self.assertIsNone(state["evidence"]["validation_receipt"])
 
 
 if __name__ == "__main__":

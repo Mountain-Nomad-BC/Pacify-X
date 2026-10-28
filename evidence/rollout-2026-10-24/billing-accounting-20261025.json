@@ -1,0 +1,123 @@
+{
+  "schema_version": "px.billing-source-repair/1.0",
+  "timestamp_utc": "2026-10-25T18:33:06.764124+00:00",
+  "cards": [
+    "PX-AUD-024",
+    "PX-AUD-026",
+    "PX-AUD-050",
+    "PX-AUD-056",
+    "PX-AUD-063",
+    "PX-AUD-067",
+    "PX-AUD-078"
+  ],
+  "state": "IMPLEMENTED_UNVERIFIED",
+  "reviewer": "UNASSIGNED",
+  "closed": false,
+  "base_commit": "75eb8363b2858e3c02951dad9fed59dd798d698b",
+  "files": [
+    {
+      "path": "extension/src/agentHarness/adapters/pxProviderGateway.js",
+      "before_sha256": "3019d2fdda418f8314d084bc474c770e504525e341aa97b6168a6e66192cde94",
+      "after_sha256": "498655ecae468e4f205fab4b365306c9b77c3ffd79bc67c9e91f00a326c9adb8"
+    },
+    {
+      "path": "extension/src/agentHarness/agentConsoleView.js",
+      "before_sha256": "b41eab144e2946a4ac03b11ab84d39415229c648ac83af7f904644fc1c3b26ce",
+      "after_sha256": "12ef66873b1553b989eed506006149a1d272904a498034cb088ed2c01521f2ff"
+    },
+    {
+      "path": "extension/src/agentHarness/budgetLedger.js",
+      "before_sha256": "581ec49a003aa741b23c786292aec5c54f2e1a01cf3b51475aab085026aec822",
+      "after_sha256": "9eba354965becbd204585b001f5c919477ff967596bec3899a0e6c0ef019d25c"
+    },
+    {
+      "path": "extension/src/agentHarness/durableTaskState.js",
+      "before_sha256": "1da38a73f284a5afa9288f62b3433429beb93d4932dccb7205af505a7d28e48f",
+      "after_sha256": "00fa054c672e5374252ce95361e307d782a1f6d3100bbe7213209dbece60d310"
+    },
+    {
+      "path": "extension/src/agentHarness/harnessController.js",
+      "before_sha256": "14368c5dea8c637e6d721fd142c4efac1e36b3db70699791cb734760c5f51bb1",
+      "after_sha256": "c5ef6ce872a0560bf42e318c8919efc57893fe4d1746abe8ea9dd47c0826f4df"
+    },
+    {
+      "path": "extension/src/agentHarness/registerAgentConsole.js",
+      "before_sha256": "dc3f43411e601970b5c9eb9dfa86e8a127a8bc7b30d005f89f999ffdf55bf0eb",
+      "after_sha256": "5f7c0555fe5402f66e6bca2bac00825a64194f9893bb63846d491612ad087e7c"
+    },
+    {
+      "path": "extension/tests/agent-harness-core.test.js",
+      "before_sha256": "f183e14a949dad2cad8e54de88fc9c68d2cbceabd183b96aa0bf8257f13faade",
+      "after_sha256": "a2aef4c9309d987a7cc758740005b4f04e78919dccac5ec4cc0c362673117e15"
+    },
+    {
+      "path": "extension/tests/billing-settlement-audit.test.js",
+      "before_sha256": null,
+      "after_sha256": "ec49c9fc4dd6a2d58406f4aa22236fc98bc31ed836b84417397b9c8c07c6f6fa"
+    },
+    {
+      "path": "runtime/capability_scheduler.py",
+      "before_sha256": "9f54fec47dc6b85b1c18ab0c9e03222c30241d32812ed9bfd3e364b81e374889",
+      "after_sha256": "143b6e8f4c7ab2618fc6d4f66fbaaf47477bac1c6aa6598e6e55906f4e59ef0e"
+    },
+    {
+      "path": "tests/test_billing_budget_audit.py",
+      "before_sha256": null,
+      "after_sha256": "54c5dd6f576def192d2e7a9e9c21285573776821d203f0c30ee6f14dfe3cd3de"
+    },
+    {
+      "path": "registry/test_profiles.json",
+      "before_sha256": "ed853ab0a937873dd5fc3e5ccf759255cbf1ae4d9933e6e2837078b3c61a5c60",
+      "after_sha256": "2ee8c9473f59098c6ccd426074ea8a163931ce52d5a4e5f3486dd1819313cef9"
+    },
+    {
+      "path": "scripts/validate_certification_pipeline.py",
+      "before_sha256": "81a390a96832c64a88a2248ff8cca1ae1f7c09e64543e5cf3949395de3bdaca4",
+      "after_sha256": "b36e23c065866c240114141764284d01808ea8c64eb79e6af17b419e2d102934"
+    },
+    {
+      "path": "tests/test_certification_pipeline_readiness.py",
+      "before_sha256": "7c699449e4b628d00e5388d57e315c16aaf9a4a1e398ec97f0b20c8eab97958b",
+      "after_sha256": "650a39f050b0f0187353e5acb804872366a3b1d278c7d43614f129743b9e4b6f"
+    }
+  ],
+  "governed_gates": {
+    "billing-accounting": {
+      "valid": true,
+      "input_sha256": "8b8448a339dec08255854b5015e38c52ab166f77f7eab730f36022904183ba1c",
+      "exit_code": 0,
+      "duration_seconds": 35.564791,
+      "receipt_published": true
+    },
+    "billing-budget": {
+      "valid": true,
+      "input_sha256": "eafcbdbaa3c4eb2adf1eff46dd3dca459f7ded25014e6749c393b514dc9193f9",
+      "exit_code": 0,
+      "duration_seconds": 87.821593,
+      "receipt_published": true
+    }
+  },
+  "focused_node_neighbors": 33,
+  "native_receipt_proof": "billing-budget executes actual Python gateway against a local fixture, passes its exact receipt to Node validator and rejects tampered hash/wrong owner; no live provider or billable call",
+  "source_changes": [
+    "Finite nonnegative complete scheduler budget bounds; preserve zero ceiling",
+    "Durable task/run/execution reservations before dispatch and usage flush before cancellation/status discard in both turn/mesh paths",
+    "Cumulative known actuals plus in-flight reservations; deny unknown estimates and missing synchronous durable financial owner",
+    "Snapshot CAS and persisted settlement dedup/conflict/ownership validation; no silent financial history truncation",
+    "Typed hashed native stream receipt and wrapped outcome validation before settlement; billing identity from trusted native callback"
+  ],
+  "limits": [
+    "Independent review and installed-host/provider evidence remain pending",
+    "Unknown actual costs and ambiguous failure reservations remain held; no automatic no-charge inference or reconciliation override",
+    "Ledger capacity is5000rows; reaching bound fails closed. Owned archival/reconciliation is future work",
+    "Shared durable snapshot owner retains separate G06 path/lease security acceptance work; no power-loss/host-complete claim",
+    "No configured billable-provider quote or network call was invented; unpriced paid work remains denied",
+    "Changes remain on rollout review branch until semantic integration with authoritative bootstrap source"
+  ],
+  "red_logs": [
+    "g05-node-before.log",
+    "g05-python-before.log",
+    "g05-accounting-gate.log"
+  ],
+  "rollback": "Revert this source commit on review branch; retain budget snapshots and before-image custody; never erase financial records to reset spend."
+}

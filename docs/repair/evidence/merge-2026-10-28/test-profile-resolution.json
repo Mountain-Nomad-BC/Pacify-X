@@ -1,0 +1,66 @@
+{
+  "decision": "Union both authored source-pattern/test/required-section denominators. Keep identical command prefixes; merge only test paths. Keep original descriptions, larger bounded timeouts and smaller chunks. No hashes refreshed and no test receipt issued.",
+  "sections": 29,
+  "scalar_decisions": [
+    {
+      "path": "/sections/host-containment/description",
+      "ours": "Native containment admission, protected identity/recovery replay, host configuration and sandbox policy; actual host proof has a separate mandatory section.",
+      "incoming": "Host Job inventory, complete containment postconditions and descendant observation; causal and neighboring Gremlin regressions.",
+      "chosen": "Native containment admission, protected identity/recovery replay, host configuration and sandbox policy; actual host proof has a separate mandatory section."
+    },
+    {
+      "path": "/sections/host-containment/chunk_size",
+      "ours": 2,
+      "incoming": 3,
+      "chosen": 2
+    },
+    {
+      "path": "/sections/host-containment/chunk_timeout_seconds",
+      "ours": 180,
+      "incoming": 120,
+      "chosen": 180
+    },
+    {
+      "path": "/sections/host-containment/timeout_seconds",
+      "ours": 600,
+      "incoming": 300,
+      "chosen": 600
+    },
+    {
+      "path": "/sections/ui-event-integrity/description",
+      "ours": "Canonical event commit, immutable observer delivery, bounded cumulative buffering and redaction across live/snapshot console transport. Existing controller behavior is preserved.",
+      "incoming": "Live/snapshot privacy, bounded event buffering and isolated observers; console and harness neighboring suites.",
+      "chosen": "Canonical event commit, immutable observer delivery, bounded cumulative buffering and redaction across live/snapshot console transport. Existing controller behavior is preserved."
+    },
+    {
+      "path": "/sections/ui-event-integrity/timeout_seconds",
+      "ours": 400,
+      "incoming": 600,
+      "chosen": 600
+    },
+    {
+      "path": "/sections/release-lifecycle/description",
+      "ours": "Current candidate/stage/installed owner contracts and mandatory coverage admission; focused fixtures do not execute a release.",
+      "incoming": "Revision lifecycle, real WAL publication/recovery, certification owner ordering and readiness, installed proof and source-overlay boundaries.",
+      "chosen": "Current candidate/stage/installed owner contracts and mandatory coverage admission; focused fixtures do not execute a release."
+    },
+    {
+      "path": "/sections/release-lifecycle/chunk_size",
+      "ours": 1,
+      "incoming": 3,
+      "chosen": 1
+    },
+    {
+      "path": "/sections/release-lifecycle/chunk_timeout_seconds",
+      "ours": 240,
+      "incoming": 600,
+      "chosen": 600
+    },
+    {
+      "path": "/sections/release-lifecycle/timeout_seconds",
+      "ours": 1200,
+      "incoming": 2100,
+      "chosen": 2100
+    }
+  ]
+}

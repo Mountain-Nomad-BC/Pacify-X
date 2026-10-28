@@ -1,0 +1,71 @@
+"""Immutable evidence verdicts; changed dependencies invalidate rather than rewrite."""
+from __future__ import annotations
+
+import hashlib
+<<<<<<< HEAD
+import re
+from pathlib import Path
+from .paths import framework_root
+=======
+from pathlib import Path
+>>>>>>> codex/rollout-day1-20261024
+from collections.abc import Mapping
+
+from .json_io import bounded_canonical_json_bytes
+
+
+def validate_record(record, name):
+<<<<<<< HEAD
+    if type(name) is not str or re.fullmatch(r"[a-z][a-z0-9-]{0,95}", name) is None:
+        raise ValueError("bounded local schema name required")
+    from .contracts import validate_instance
+    validate_instance(record, framework_root() / "contracts/models" / (name + ".schema.json"))
+=======
+    from .contracts import validate_instance
+    validate_instance(record, Path(__file__).resolve().parents[1] / "contracts/models" / (name + ".schema.json"))
+>>>>>>> codex/rollout-day1-20261024
+    return record
+
+
+def sha256_text(value):
+    if type(value) is not str or len(value) != 64 or any(c not in "0123456789abcdef" for c in value):
+        raise ValueError("expected lowercase SHA256")
+    return value
+
+
+def digest(value):
+    return hashlib.sha256(bounded_canonical_json_bytes(value, max_bytes=65536)).hexdigest()
+
+
+def create_verdict(*, candidate_sha256, dependencies, verifier_revision, evidence_sha256, status):
+    sha256_text(candidate_sha256)
+    if not isinstance(dependencies, Mapping) or not 1 <= len(dependencies) <= 32:
+        raise ValueError("bounded nonempty exact dependencies required")
+    for key, value in dependencies.items():
+        if type(key) is not str or not key or len(key) > 128:
+            raise ValueError("invalid dependency name")
+        sha256_text(value)
+    if type(verifier_revision) is not str or not verifier_revision or len(verifier_revision) > 256:
+        raise ValueError("verifier revision required")
+    if type(evidence_sha256) not in (tuple, list) or not 1 <= len(evidence_sha256) <= 256:
+        raise ValueError("bounded evidence required")
+    for value in evidence_sha256:
+        sha256_text(value)
+    if status not in {"PASS", "FAIL", "INDETERMINATE"}:
+        raise ValueError("invalid verdict status")
+    body = dict(schema_version="px.generation-bound-verdict/1.0", candidate_sha256=candidate_sha256,
+                dependencies=dict(sorted(dependencies.items())), verifier_revision=verifier_revision,
+                evidence_sha256=sorted(set(evidence_sha256)), status=status, authority_granted=False)
+    return validate_record({**body, "verdict_sha256": digest(body)}, "generation-bound-verdict")
+
+
+def verdict_is_current(verdict, candidate_sha256, dependencies):
+    try:
+        body = {k: v for k, v in verdict.items() if k != "verdict_sha256"}
+        rebuilt = create_verdict(candidate_sha256=verdict["candidate_sha256"],
+                                 dependencies=verdict["dependencies"], verifier_revision=verdict["verifier_revision"],
+                                 evidence_sha256=verdict["evidence_sha256"], status=verdict["status"])
+        return (verdict == rebuilt and digest(body) == verdict["verdict_sha256"]
+                and candidate_sha256 == verdict["candidate_sha256"] and dict(dependencies) == verdict["dependencies"])
+    except (ValueError, TypeError, KeyError, AttributeError):
+        return False

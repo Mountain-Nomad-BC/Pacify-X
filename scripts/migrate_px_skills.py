@@ -149,6 +149,22 @@ def _native_record(target: Path, skill: dict[str, object]) -> dict[str, object]:
     }
 
 
+def native_static_resources(package: Path) -> list[str]:
+    """Publish the same authored file inventory used by wheel packaging.
+
+    Runtime observation stores remain on disk and are not static resources.
+    Never synthesize them to repair an authored package projection.
+    """
+    from scripts.migration.sync_skill_packaging import _owned_files
+
+    excluded = {"capability.json", "skill.yaml", "resources/index.json"}
+    return [
+        path.relative_to(package).as_posix()
+        for path in _owned_files(package, package)
+        if path.relative_to(package).as_posix() not in excluded
+    ]
+
+
 def _native_package(
     root: Path,
     source: Path,
@@ -168,7 +184,7 @@ def _native_package(
     contract_record = {"source": str(skill.get("contract", "")), "sha256": contract_sha, "available": bool(contract_sha)}
     _write_json(target / "contracts" / "manifest.json", {"schema_version": "px.skill-contract-links/1.0", "contracts": [contract_record]})
     _write_json(target / "tests" / "validation.json", {"schema_version": "px.skill-validation-links/1.0", "checks": ["native-package-schema", "body-hash", "domain-policy", "bounded-hydration"], "shared_suite": "tests/test_native_skills.py"})
-    resources = [path.relative_to(target).as_posix() for path in sorted(target.rglob("*")) if path.is_file() and path.name not in {"capability.json", "skill.yaml"}]
+    resources = native_static_resources(target)
     capability = {
         "schema_version": PACKAGE_SCHEMA, "id": skill_id, "version": str(skill.get("version", "0.1.0")),
         "domain": "px-standard", "origin": "workspace-agents-original", "native": True,

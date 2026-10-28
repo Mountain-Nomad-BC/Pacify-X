@@ -1,0 +1,46 @@
+{
+  "section": "release-lifecycle",
+  "valid": true,
+  "exit_code": 0,
+  "timed_out": false,
+  "duration_seconds": 18.483263,
+  "receipt_published": true,
+  "input_sha256": "dba60179bc5a22b518c3884566de92da45aff6374a8cdb9e3b115e48efc7aaa7",
+  "chunks": [
+    {
+      "id": "chunk-01",
+      "members": [
+        "tests/test_project_revision_succession.py",
+        "tests/test_revision_campaign_lifecycle.py",
+        "tests/test_release_candidate_driver.py"
+      ],
+      "exit_code": 0,
+      "passed": 74,
+      "receipt_sha256": "ca67992e3fc92a06a7c196db85d1923e791f0196f5a1a29563af1807ede3f3be"
+    },
+    {
+      "id": "chunk-02",
+      "members": [
+        "tests/test_release_stage_owner.py",
+        "tests/test_run_installed_operational_owner.py",
+        "tests/test_certificate_input_contracts.py"
+      ],
+      "exit_code": 0,
+      "passed": 103,
+      "receipt_sha256": "1d769e3cc1f61be0ccbc7b5897c59358c49c9509ab02e5d4de26e51760d626f4"
+    },
+    {
+      "id": "chunk-03",
+      "members": [
+        "tests/test_certification_readiness.py",
+        "tests/test_rollout_inventory.py",
+        "tests/test_certification_pipeline_readiness.py"
+      ],
+      "exit_code": 0,
+      "passed": 24,
+      "receipt_sha256": "01421118ea0c7611d7ffaa924828626aafbee28910548420c6a2661a54aaf94c"
+    }
+  ],
+  "passed_tests": 201,
+  "scope": "Current source governed section; not final managed rollout certification."
+}

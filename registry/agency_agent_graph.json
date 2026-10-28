@@ -1,2818 +1,4 @@
 {
-  "schema_version": "2.0.0",
-  "provider_id": "agency-agents",
-  "nodes": [
-    {
-      "id": "agency.academic.anthropologist",
-      "type": "agent",
-      "label": "Anthropologist",
-      "division": "academic",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.academic.geographer",
-      "type": "agent",
-      "label": "Geographer",
-      "division": "academic",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.academic.historian",
-      "type": "agent",
-      "label": "Historian",
-      "division": "academic",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.academic.narratologist",
-      "type": "agent",
-      "label": "Narratologist",
-      "division": "academic",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.academic.psychologist",
-      "type": "agent",
-      "label": "Psychologist",
-      "division": "academic",
-      "risk_tier": "high",
-      "source_audit_status": "REWRITE",
-      "lifecycle_state": "reference_only"
-    },
-    {
-      "id": "agency.academic.statistician",
-      "type": "agent",
-      "label": "Statistician",
-      "division": "academic",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.design.brand-guardian",
-      "type": "agent",
-      "label": "Brand Guardian",
-      "division": "design",
-      "risk_tier": "low",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.design.image-prompt-engineer",
-      "type": "agent",
-      "label": "Image Prompt Engineer",
-      "division": "design",
-      "risk_tier": "low",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.design.inclusive-visuals-specialist",
-      "type": "agent",
-      "label": "Inclusive Visuals Specialist",
-      "division": "design",
-      "risk_tier": "low",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.design.persona-walkthrough-specialist",
-      "type": "agent",
-      "label": "Persona Walkthrough Specialist",
-      "division": "design",
-      "risk_tier": "low",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.design.ui-designer",
-      "type": "agent",
-      "label": "UI Designer",
-      "division": "design",
-      "risk_tier": "low",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.design.ui-finish-gate-reviewer",
-      "type": "agent",
-      "label": "UI Finish-Gate Reviewer",
-      "division": "design",
-      "risk_tier": "low",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.design.ux-architect",
-      "type": "agent",
-      "label": "UX Architect",
-      "division": "design",
-      "risk_tier": "low",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.design.ux-researcher",
-      "type": "agent",
-      "label": "UX Researcher",
-      "division": "design",
-      "risk_tier": "low",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.design.visual-storyteller",
-      "type": "agent",
-      "label": "Visual Storyteller",
-      "division": "design",
-      "risk_tier": "low",
-      "source_audit_status": "REWRITE",
-      "lifecycle_state": "reference_only"
-    },
-    {
-      "id": "agency.design.whimsy-injector",
-      "type": "agent",
-      "label": "Whimsy Injector",
-      "division": "design",
-      "risk_tier": "low",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.engineering.ai-data-remediation-engineer",
-      "type": "agent",
-      "label": "AI Data Remediation Engineer",
-      "division": "engineering",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.engineering.ai-engineer",
-      "type": "agent",
-      "label": "AI Engineer",
-      "division": "engineering",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.engineering.api-platform-engineer",
-      "type": "agent",
-      "label": "API Platform Engineer",
-      "division": "engineering",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.engineering.autonomous-optimization-architect",
-      "type": "agent",
-      "label": "Autonomous Optimization Architect",
-      "division": "engineering",
-      "risk_tier": "high",
-      "source_audit_status": "REWRITE",
-      "lifecycle_state": "reference_only"
-    },
-    {
-      "id": "agency.engineering.backend-architect",
-      "type": "agent",
-      "label": "Backend Architect",
-      "division": "engineering",
-      "risk_tier": "medium",
-      "source_audit_status": "REWRITE",
-      "lifecycle_state": "reference_only"
-    },
-    {
-      "id": "agency.engineering.cms-developer",
-      "type": "agent",
-      "label": "CMS Developer",
-      "division": "engineering",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.engineering.code-reviewer",
-      "type": "agent",
-      "label": "Code Reviewer",
-      "division": "engineering",
-      "risk_tier": "medium",
-      "source_audit_status": "REWRITE",
-      "lifecycle_state": "reference_only"
-    },
-    {
-      "id": "agency.engineering.codebase-onboarding-engineer",
-      "type": "agent",
-      "label": "Codebase Onboarding Engineer",
-      "division": "engineering",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.engineering.data-engineer",
-      "type": "agent",
-      "label": "Data Engineer",
-      "division": "engineering",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.engineering.data-visualization-engineer",
-      "type": "agent",
-      "label": "Data Visualization Engineer",
-      "division": "engineering",
-      "risk_tier": "high",
-      "source_audit_status": "REWRITE",
-      "lifecycle_state": "reference_only"
-    },
-    {
-      "id": "agency.engineering.database-optimizer",
-      "type": "agent",
-      "label": "Database Optimizer",
-      "division": "engineering",
-      "risk_tier": "medium",
-      "source_audit_status": "REWRITE",
-      "lifecycle_state": "reference_only"
-    },
-    {
-      "id": "agency.engineering.database-reliability-engineer",
-      "type": "agent",
-      "label": "Database Reliability Engineer",
-      "division": "engineering",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.engineering.desktop-app-engineer",
-      "type": "agent",
-      "label": "Desktop App Engineer",
-      "division": "engineering",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.engineering.developer-tooling-engineer",
-      "type": "agent",
-      "label": "Developer Tooling Engineer",
-      "division": "engineering",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.engineering.devops-automator",
-      "type": "agent",
-      "label": "DevOps Automator",
-      "division": "engineering",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.engineering.drupal-performance-engineer",
-      "type": "agent",
-      "label": "Drupal Performance Engineer",
-      "division": "engineering",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.engineering.drupal-shopping-cart-engineer",
-      "type": "agent",
-      "label": "Drupal Shopping Cart Engineer",
-      "division": "engineering",
-      "risk_tier": "high",
-      "source_audit_status": "REWRITE",
-      "lifecycle_state": "reference_only"
-    },
-    {
-      "id": "agency.engineering.email-intelligence-engineer",
-      "type": "agent",
-      "label": "Email Intelligence Engineer",
-      "division": "engineering",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.engineering.embedded-firmware-engineer",
-      "type": "agent",
-      "label": "Embedded Firmware Engineer",
-      "division": "engineering",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.engineering.feishu-integration-developer",
-      "type": "agent",
-      "label": "Feishu Integration Developer",
-      "division": "engineering",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.engineering.filament-optimization-specialist",
-      "type": "agent",
-      "label": "Filament Optimization Specialist",
-      "division": "engineering",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.engineering.finops-engineer",
-      "type": "agent",
-      "label": "FinOps Engineer",
-      "division": "engineering",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.engineering.frontend-developer",
-      "type": "agent",
-      "label": "Frontend Developer",
-      "division": "engineering",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.engineering.gaussdb-expert-engineer",
-      "type": "agent",
-      "label": "GaussDB Expert Engineer",
-      "division": "engineering",
-      "risk_tier": "medium",
-      "source_audit_status": "REWRITE",
-      "lifecycle_state": "reference_only"
-    },
-    {
-      "id": "agency.engineering.git-workflow-master",
-      "type": "agent",
-      "label": "Git Workflow Master",
-      "division": "engineering",
-      "risk_tier": "medium",
-      "source_audit_status": "REWRITE",
-      "lifecycle_state": "reference_only"
-    },
-    {
-      "id": "agency.engineering.identity-access-engineer",
-      "type": "agent",
-      "label": "Identity & Access Engineer",
-      "division": "engineering",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.engineering.incident-response-commander",
-      "type": "agent",
-      "label": "Incident Response Commander",
-      "division": "engineering",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.engineering.internationalization-engineer",
-      "type": "agent",
-      "label": "Internationalization Engineer",
-      "division": "engineering",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.engineering.iot-fleet-engineer",
-      "type": "agent",
-      "label": "IoT Fleet Engineer",
-      "division": "engineering",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.engineering.it-service-manager",
-      "type": "agent",
-      "label": "IT Service Manager",
-      "division": "engineering",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.engineering.llm-post-training-engineer",
-      "type": "agent",
-      "label": "LLM Post-Training Engineer",
-      "division": "engineering",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.engineering.minimal-change-engineer",
-      "type": "agent",
-      "label": "Minimal Change Engineer",
-      "division": "engineering",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.engineering.mobile-app-builder",
-      "type": "agent",
-      "label": "Mobile App Builder",
-      "division": "engineering",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.engineering.mobile-release-engineer",
-      "type": "agent",
-      "label": "Mobile Release Engineer",
-      "division": "engineering",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.engineering.multi-agent-systems-architect",
-      "type": "agent",
-      "label": "Multi-Agent Systems Architect",
-      "division": "engineering",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.engineering.network-engineer",
-      "type": "agent",
-      "label": "Network Engineer",
-      "division": "engineering",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.engineering.orgscript-engineer",
-      "type": "agent",
-      "label": "OrgScript Engineer",
-      "division": "engineering",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.engineering.payments-billing-engineer",
-      "type": "agent",
-      "label": "Payments & Billing Engineer",
-      "division": "engineering",
-      "risk_tier": "high",
-      "source_audit_status": "REWRITE",
-      "lifecycle_state": "reference_only"
-    },
-    {
-      "id": "agency.engineering.privacy-engineer",
-      "type": "agent",
-      "label": "Privacy Engineer",
-      "division": "engineering",
-      "risk_tier": "high",
-      "source_audit_status": "REWRITE",
-      "lifecycle_state": "reference_only"
-    },
-    {
-      "id": "agency.engineering.prompt-engineer",
-      "type": "agent",
-      "label": "Prompt Engineer",
-      "division": "engineering",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.engineering.rag-pipeline-engineer",
-      "type": "agent",
-      "label": "RAG Pipeline Engineer",
-      "division": "engineering",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.engineering.rapid-prototyper",
-      "type": "agent",
-      "label": "Rapid Prototyper",
-      "division": "engineering",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.engineering.realtime-collaboration-engineer",
-      "type": "agent",
-      "label": "Realtime Collaboration Engineer",
-      "division": "engineering",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.engineering.rust-refactoring-specialist",
-      "type": "agent",
-      "label": "Rust Refactoring Specialist",
-      "division": "engineering",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.engineering.search-relevance-engineer",
-      "type": "agent",
-      "label": "Search Relevance Engineer",
-      "division": "engineering",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.engineering.section-508-accessibility-specialist",
-      "type": "agent",
-      "label": "Section 508 Accessibility Specialist",
-      "division": "engineering",
-      "risk_tier": "high",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.engineering.senior-developer",
-      "type": "agent",
-      "label": "Senior Developer",
-      "division": "engineering",
-      "risk_tier": "medium",
-      "source_audit_status": "REWRITE",
-      "lifecycle_state": "reference_only"
-    },
-    {
-      "id": "agency.engineering.software-architect",
-      "type": "agent",
-      "label": "Software Architect",
-      "division": "engineering",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.engineering.solidity-smart-contract-engineer",
-      "type": "agent",
-      "label": "Solidity Smart Contract Engineer",
-      "division": "engineering",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.engineering.sre-site-reliability-engineer",
-      "type": "agent",
-      "label": "SRE (Site Reliability Engineer)",
-      "division": "engineering",
-      "risk_tier": "medium",
-      "source_audit_status": "REWRITE",
-      "lifecycle_state": "reference_only"
-    },
-    {
-      "id": "agency.engineering.technical-writer",
-      "type": "agent",
-      "label": "Technical Writer",
-      "division": "engineering",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.engineering.uswds-developer",
-      "type": "agent",
-      "label": "USWDS Developer",
-      "division": "engineering",
-      "risk_tier": "high",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.engineering.video-streaming-engineer",
-      "type": "agent",
-      "label": "Video Streaming Engineer",
-      "division": "engineering",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.engineering.voice-ai-integration-engineer",
-      "type": "agent",
-      "label": "Voice AI Integration Engineer",
-      "division": "engineering",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.engineering.webassembly-engineer",
-      "type": "agent",
-      "label": "WebAssembly Engineer",
-      "division": "engineering",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.engineering.wechat-mini-program-developer",
-      "type": "agent",
-      "label": "WeChat Mini Program Developer",
-      "division": "engineering",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.engineering.wordpress-performance-engineer",
-      "type": "agent",
-      "label": "WordPress Performance Engineer",
-      "division": "engineering",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.engineering.wordpress-shopping-cart-engineer",
-      "type": "agent",
-      "label": "WordPress Shopping Cart Engineer",
-      "division": "engineering",
-      "risk_tier": "high",
-      "source_audit_status": "REWRITE",
-      "lifecycle_state": "reference_only"
-    },
-    {
-      "id": "agency.finance.bookkeeper-controller",
-      "type": "agent",
-      "label": "Bookkeeper & Controller",
-      "division": "finance",
-      "risk_tier": "high",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.finance.financial-analyst",
-      "type": "agent",
-      "label": "Financial Analyst",
-      "division": "finance",
-      "risk_tier": "high",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.finance.fp-a-analyst",
-      "type": "agent",
-      "label": "FP&A Analyst",
-      "division": "finance",
-      "risk_tier": "high",
-      "source_audit_status": "REWRITE",
-      "lifecycle_state": "reference_only"
-    },
-    {
-      "id": "agency.finance.investment-researcher",
-      "type": "agent",
-      "label": "Investment Researcher",
-      "division": "finance",
-      "risk_tier": "high",
-      "source_audit_status": "REWRITE",
-      "lifecycle_state": "reference_only"
-    },
-    {
-      "id": "agency.finance.tax-strategist",
-      "type": "agent",
-      "label": "Tax Strategist",
-      "division": "finance",
-      "risk_tier": "high",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.game_development.blender-add-on-engineer",
-      "type": "agent",
-      "label": "Blender Add-on Engineer",
-      "division": "game-development",
-      "risk_tier": "low",
-      "source_audit_status": "READY",
-      "lifecycle_state": "active"
-    },
-    {
-      "id": "agency.game_development.economy-designer",
-      "type": "agent",
-      "label": "Economy Designer",
-      "division": "game-development",
-      "risk_tier": "low",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.game_development.game-audio-engineer",
-      "type": "agent",
-      "label": "Game Audio Engineer",
-      "division": "game-development",
-      "risk_tier": "low",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.game_development.game-designer",
-      "type": "agent",
-      "label": "Game Designer",
-      "division": "game-development",
-      "risk_tier": "low",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.game_development.godot-gameplay-scripter",
-      "type": "agent",
-      "label": "Godot Gameplay Scripter",
-      "division": "game-development",
-      "risk_tier": "low",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.game_development.godot-multiplayer-engineer",
-      "type": "agent",
-      "label": "Godot Multiplayer Engineer",
-      "division": "game-development",
-      "risk_tier": "low",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.game_development.godot-shader-developer",
-      "type": "agent",
-      "label": "Godot Shader Developer",
-      "division": "game-development",
-      "risk_tier": "low",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.game_development.level-designer",
-      "type": "agent",
-      "label": "Level Designer",
-      "division": "game-development",
-      "risk_tier": "low",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.game_development.narrative-designer",
-      "type": "agent",
-      "label": "Narrative Designer",
-      "division": "game-development",
-      "risk_tier": "low",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.game_development.roblox-avatar-creator",
-      "type": "agent",
-      "label": "Roblox Avatar Creator",
-      "division": "game-development",
-      "risk_tier": "low",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.game_development.roblox-experience-designer",
-      "type": "agent",
-      "label": "Roblox Experience Designer",
-      "division": "game-development",
-      "risk_tier": "low",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.game_development.roblox-systems-scripter",
-      "type": "agent",
-      "label": "Roblox Systems Scripter",
-      "division": "game-development",
-      "risk_tier": "low",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.game_development.technical-artist",
-      "type": "agent",
-      "label": "Technical Artist",
-      "division": "game-development",
-      "risk_tier": "low",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.game_development.unity-architect",
-      "type": "agent",
-      "label": "Unity Architect",
-      "division": "game-development",
-      "risk_tier": "low",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.game_development.unity-editor-tool-developer",
-      "type": "agent",
-      "label": "Unity Editor Tool Developer",
-      "division": "game-development",
-      "risk_tier": "low",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.game_development.unity-multiplayer-engineer",
-      "type": "agent",
-      "label": "Unity Multiplayer Engineer",
-      "division": "game-development",
-      "risk_tier": "low",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.game_development.unity-shader-graph-artist",
-      "type": "agent",
-      "label": "Unity Shader Graph Artist",
-      "division": "game-development",
-      "risk_tier": "low",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.game_development.unreal-multiplayer-architect",
-      "type": "agent",
-      "label": "Unreal Multiplayer Architect",
-      "division": "game-development",
-      "risk_tier": "low",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.game_development.unreal-systems-engineer",
-      "type": "agent",
-      "label": "Unreal Systems Engineer",
-      "division": "game-development",
-      "risk_tier": "low",
-      "source_audit_status": "READY",
-      "lifecycle_state": "active"
-    },
-    {
-      "id": "agency.game_development.unreal-technical-artist",
-      "type": "agent",
-      "label": "Unreal Technical Artist",
-      "division": "game-development",
-      "risk_tier": "low",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.game_development.unreal-world-builder",
-      "type": "agent",
-      "label": "Unreal World Builder",
-      "division": "game-development",
-      "risk_tier": "low",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.gis.3d-scene-developer",
-      "type": "agent",
-      "label": "3D & Scene Developer",
-      "division": "gis",
-      "risk_tier": "medium",
-      "source_audit_status": "REWRITE",
-      "lifecycle_state": "reference_only"
-    },
-    {
-      "id": "agency.gis.bim-gis-specialist",
-      "type": "agent",
-      "label": "BIM/GIS Specialist",
-      "division": "gis",
-      "risk_tier": "medium",
-      "source_audit_status": "REWRITE",
-      "lifecycle_state": "reference_only"
-    },
-    {
-      "id": "agency.gis.cartography-designer",
-      "type": "agent",
-      "label": "Cartography Designer",
-      "division": "gis",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.gis.drone-reality-mapping-specialist",
-      "type": "agent",
-      "label": "Drone/Reality Mapping Specialist",
-      "division": "gis",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.gis.geoai-ml-engineer",
-      "type": "agent",
-      "label": "GeoAI/ML Engineer",
-      "division": "gis",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.gis.geoprocessing-specialist",
-      "type": "agent",
-      "label": "Geoprocessing Specialist",
-      "division": "gis",
-      "risk_tier": "medium",
-      "source_audit_status": "REWRITE",
-      "lifecycle_state": "reference_only"
-    },
-    {
-      "id": "agency.gis.gis-analyst",
-      "type": "agent",
-      "label": "GIS Analyst",
-      "division": "gis",
-      "risk_tier": "medium",
-      "source_audit_status": "REWRITE",
-      "lifecycle_state": "reference_only"
-    },
-    {
-      "id": "agency.gis.gis-qa-engineer",
-      "type": "agent",
-      "label": "GIS QA Engineer",
-      "division": "gis",
-      "risk_tier": "high",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.gis.solution-engineer",
-      "type": "agent",
-      "label": "Solution Engineer",
-      "division": "gis",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.gis.spatial-data-engineer",
-      "type": "agent",
-      "label": "Spatial Data Engineer",
-      "division": "gis",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.gis.spatial-data-scientist",
-      "type": "agent",
-      "label": "Spatial Data Scientist",
-      "division": "gis",
-      "risk_tier": "medium",
-      "source_audit_status": "REWRITE",
-      "lifecycle_state": "reference_only"
-    },
-    {
-      "id": "agency.gis.technical-consultant",
-      "type": "agent",
-      "label": "Technical Consultant",
-      "division": "gis",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.gis.web-gis-developer",
-      "type": "agent",
-      "label": "Web GIS Developer",
-      "division": "gis",
-      "risk_tier": "medium",
-      "source_audit_status": "REWRITE",
-      "lifecycle_state": "reference_only"
-    },
-    {
-      "id": "agency.healthcare.clinical-evidence-agent",
-      "type": "agent",
-      "label": "Clinical Evidence Agent",
-      "division": "healthcare",
-      "risk_tier": "high",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.healthcare.healthcare-innovation-strategist",
-      "type": "agent",
-      "label": "Healthcare Innovation Strategist",
-      "division": "healthcare",
-      "risk_tier": "high",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.healthcare.sovereign-health-systems-agent",
-      "type": "agent",
-      "label": "Sovereign Health Systems Agent",
-      "division": "healthcare",
-      "risk_tier": "high",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.marketing.aeo-foundations-architect",
-      "type": "agent",
-      "label": "AEO Foundations Architect",
-      "division": "marketing",
-      "risk_tier": "medium",
-      "source_audit_status": "READY",
-      "lifecycle_state": "active"
-    },
-    {
-      "id": "agency.marketing.agentic-search-optimizer",
-      "type": "agent",
-      "label": "Agentic Search Optimizer",
-      "division": "marketing",
-      "risk_tier": "medium",
-      "source_audit_status": "READY",
-      "lifecycle_state": "active"
-    },
-    {
-      "id": "agency.marketing.ai-citation-strategist",
-      "type": "agent",
-      "label": "AI Citation Strategist",
-      "division": "marketing",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.marketing.app-store-optimizer",
-      "type": "agent",
-      "label": "App Store Optimizer",
-      "division": "marketing",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.marketing.baidu-seo-specialist",
-      "type": "agent",
-      "label": "Baidu SEO Specialist",
-      "division": "marketing",
-      "risk_tier": "high",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.marketing.bilibili-content-strategist",
-      "type": "agent",
-      "label": "Bilibili Content Strategist",
-      "division": "marketing",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.marketing.book-co-author",
-      "type": "agent",
-      "label": "Book Co-Author",
-      "division": "marketing",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.marketing.carousel-growth-engine",
-      "type": "agent",
-      "label": "Carousel Growth Engine",
-      "division": "marketing",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.marketing.china-e-commerce-operator",
-      "type": "agent",
-      "label": "China E-Commerce Operator",
-      "division": "marketing",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.marketing.china-market-localization-strategist",
-      "type": "agent",
-      "label": "China Market Localization Strategist",
-      "division": "marketing",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.marketing.content-creator",
-      "type": "agent",
-      "label": "Content Creator",
-      "division": "marketing",
-      "risk_tier": "medium",
-      "source_audit_status": "REWRITE",
-      "lifecycle_state": "reference_only"
-    },
-    {
-      "id": "agency.marketing.cross-border-e-commerce-specialist",
-      "type": "agent",
-      "label": "Cross-Border E-Commerce Specialist",
-      "division": "marketing",
-      "risk_tier": "high",
-      "source_audit_status": "REWRITE",
-      "lifecycle_state": "reference_only"
-    },
-    {
-      "id": "agency.marketing.douyin-strategist",
-      "type": "agent",
-      "label": "Douyin Strategist",
-      "division": "marketing",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.marketing.email-marketing-strategist",
-      "type": "agent",
-      "label": "Email Marketing Strategist",
-      "division": "marketing",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.marketing.global-podcast-strategist",
-      "type": "agent",
-      "label": "Global Podcast Strategist",
-      "division": "marketing",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.marketing.growth-hacker",
-      "type": "agent",
-      "label": "Growth Hacker",
-      "division": "marketing",
-      "risk_tier": "medium",
-      "source_audit_status": "REWRITE",
-      "lifecycle_state": "reference_only"
-    },
-    {
-      "id": "agency.marketing.instagram-curator",
-      "type": "agent",
-      "label": "Instagram Curator",
-      "division": "marketing",
-      "risk_tier": "medium",
-      "source_audit_status": "REWRITE",
-      "lifecycle_state": "reference_only"
-    },
-    {
-      "id": "agency.marketing.kuaishou-strategist",
-      "type": "agent",
-      "label": "Kuaishou Strategist",
-      "division": "marketing",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.marketing.linkedin-content-creator",
-      "type": "agent",
-      "label": "LinkedIn Content Creator",
-      "division": "marketing",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.marketing.livestream-commerce-coach",
-      "type": "agent",
-      "label": "Livestream Commerce Coach",
-      "division": "marketing",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.marketing.multi-platform-publisher",
-      "type": "agent",
-      "label": "Multi-Platform Publisher",
-      "division": "marketing",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.marketing.podcast-strategist",
-      "type": "agent",
-      "label": "Podcast Strategist",
-      "division": "marketing",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.marketing.pr-communications-manager",
-      "type": "agent",
-      "label": "PR & Communications Manager",
-      "division": "marketing",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.marketing.private-domain-operator",
-      "type": "agent",
-      "label": "Private Domain Operator",
-      "division": "marketing",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.marketing.reddit-community-builder",
-      "type": "agent",
-      "label": "Reddit Community Builder",
-      "division": "marketing",
-      "risk_tier": "medium",
-      "source_audit_status": "REWRITE",
-      "lifecycle_state": "reference_only"
-    },
-    {
-      "id": "agency.marketing.seo-specialist",
-      "type": "agent",
-      "label": "SEO Specialist",
-      "division": "marketing",
-      "risk_tier": "medium",
-      "source_audit_status": "READY",
-      "lifecycle_state": "active"
-    },
-    {
-      "id": "agency.marketing.short-video-editing-coach",
-      "type": "agent",
-      "label": "Short-Video Editing Coach",
-      "division": "marketing",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.marketing.social-media-strategist",
-      "type": "agent",
-      "label": "Social Media Strategist",
-      "division": "marketing",
-      "risk_tier": "medium",
-      "source_audit_status": "REWRITE",
-      "lifecycle_state": "reference_only"
-    },
-    {
-      "id": "agency.marketing.tiktok-strategist",
-      "type": "agent",
-      "label": "TikTok Strategist",
-      "division": "marketing",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.marketing.twitter-engager",
-      "type": "agent",
-      "label": "Twitter Engager",
-      "division": "marketing",
-      "risk_tier": "medium",
-      "source_audit_status": "REWRITE",
-      "lifecycle_state": "reference_only"
-    },
-    {
-      "id": "agency.marketing.video-optimization-specialist",
-      "type": "agent",
-      "label": "Video Optimization Specialist",
-      "division": "marketing",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.marketing.wechat-official-account-manager",
-      "type": "agent",
-      "label": "WeChat Official Account Manager",
-      "division": "marketing",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.marketing.weibo-strategist",
-      "type": "agent",
-      "label": "Weibo Strategist",
-      "division": "marketing",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.marketing.x-twitter-intelligence-analyst",
-      "type": "agent",
-      "label": "X/Twitter Intelligence Analyst",
-      "division": "marketing",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.marketing.xiaohongshu-specialist",
-      "type": "agent",
-      "label": "Xiaohongshu Specialist",
-      "division": "marketing",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.marketing.zhihu-strategist",
-      "type": "agent",
-      "label": "Zhihu Strategist",
-      "division": "marketing",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.paid_media.ad-creative-strategist",
-      "type": "agent",
-      "label": "Ad Creative Strategist",
-      "division": "paid-media",
-      "risk_tier": "high",
-      "source_audit_status": "REWRITE",
-      "lifecycle_state": "reference_only"
-    },
-    {
-      "id": "agency.paid_media.paid-media-auditor",
-      "type": "agent",
-      "label": "Paid Media Auditor",
-      "division": "paid-media",
-      "risk_tier": "high",
-      "source_audit_status": "REWRITE",
-      "lifecycle_state": "reference_only"
-    },
-    {
-      "id": "agency.paid_media.paid-social-strategist",
-      "type": "agent",
-      "label": "Paid Social Strategist",
-      "division": "paid-media",
-      "risk_tier": "high",
-      "source_audit_status": "REWRITE",
-      "lifecycle_state": "reference_only"
-    },
-    {
-      "id": "agency.paid_media.ppc-campaign-strategist",
-      "type": "agent",
-      "label": "PPC Campaign Strategist",
-      "division": "paid-media",
-      "risk_tier": "high",
-      "source_audit_status": "REWRITE",
-      "lifecycle_state": "reference_only"
-    },
-    {
-      "id": "agency.paid_media.programmatic-display-buyer",
-      "type": "agent",
-      "label": "Programmatic & Display Buyer",
-      "division": "paid-media",
-      "risk_tier": "high",
-      "source_audit_status": "REWRITE",
-      "lifecycle_state": "reference_only"
-    },
-    {
-      "id": "agency.paid_media.search-query-analyst",
-      "type": "agent",
-      "label": "Search Query Analyst",
-      "division": "paid-media",
-      "risk_tier": "high",
-      "source_audit_status": "REWRITE",
-      "lifecycle_state": "reference_only"
-    },
-    {
-      "id": "agency.paid_media.tracking-measurement-specialist",
-      "type": "agent",
-      "label": "Tracking & Measurement Specialist",
-      "division": "paid-media",
-      "risk_tier": "high",
-      "source_audit_status": "REWRITE",
-      "lifecycle_state": "reference_only"
-    },
-    {
-      "id": "agency.product.behavioral-nudge-engine",
-      "type": "agent",
-      "label": "Behavioral Nudge Engine",
-      "division": "product",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.product.feedback-synthesizer",
-      "type": "agent",
-      "label": "Feedback Synthesizer",
-      "division": "product",
-      "risk_tier": "medium",
-      "source_audit_status": "REWRITE",
-      "lifecycle_state": "reference_only"
-    },
-    {
-      "id": "agency.product.product-manager",
-      "type": "agent",
-      "label": "Product Manager",
-      "division": "product",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.product.sprint-prioritizer",
-      "type": "agent",
-      "label": "Sprint Prioritizer",
-      "division": "product",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.product.trend-researcher",
-      "type": "agent",
-      "label": "Trend Researcher",
-      "division": "product",
-      "risk_tier": "medium",
-      "source_audit_status": "REWRITE",
-      "lifecycle_state": "reference_only"
-    },
-    {
-      "id": "agency.project_management.experiment-tracker",
-      "type": "agent",
-      "label": "Experiment Tracker",
-      "division": "project-management",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.project_management.jira-workflow-steward",
-      "type": "agent",
-      "label": "Jira Workflow Steward",
-      "division": "project-management",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.project_management.meeting-notes-specialist",
-      "type": "agent",
-      "label": "Meeting Notes Specialist",
-      "division": "project-management",
-      "risk_tier": "medium",
-      "source_audit_status": "REWRITE",
-      "lifecycle_state": "reference_only"
-    },
-    {
-      "id": "agency.project_management.project-shepherd",
-      "type": "agent",
-      "label": "Project Shepherd",
-      "division": "project-management",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.project_management.senior-project-manager",
-      "type": "agent",
-      "label": "Senior Project Manager",
-      "division": "project-management",
-      "risk_tier": "medium",
-      "source_audit_status": "REWRITE",
-      "lifecycle_state": "reference_only"
-    },
-    {
-      "id": "agency.project_management.studio-operations",
-      "type": "agent",
-      "label": "Studio Operations",
-      "division": "project-management",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.project_management.studio-producer",
-      "type": "agent",
-      "label": "Studio Producer",
-      "division": "project-management",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.sales.account-strategist",
-      "type": "agent",
-      "label": "Account Strategist",
-      "division": "sales",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.sales.deal-strategist",
-      "type": "agent",
-      "label": "Deal Strategist",
-      "division": "sales",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.sales.discovery-coach",
-      "type": "agent",
-      "label": "Discovery Coach",
-      "division": "sales",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.sales.offer-lead-gen-strategist",
-      "type": "agent",
-      "label": "Offer & Lead Gen Strategist",
-      "division": "sales",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.sales.outbound-strategist",
-      "type": "agent",
-      "label": "Outbound Strategist",
-      "division": "sales",
-      "risk_tier": "medium",
-      "source_audit_status": "REWRITE",
-      "lifecycle_state": "reference_only"
-    },
-    {
-      "id": "agency.sales.pipeline-analyst",
-      "type": "agent",
-      "label": "Pipeline Analyst",
-      "division": "sales",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.sales.proposal-strategist",
-      "type": "agent",
-      "label": "Proposal Strategist",
-      "division": "sales",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.sales.sales-coach",
-      "type": "agent",
-      "label": "Sales Coach",
-      "division": "sales",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.sales.sales-engineer",
-      "type": "agent",
-      "label": "Sales Engineer",
-      "division": "sales",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.security.ai-generated-code-security-auditor",
-      "type": "agent",
-      "label": "AI-Generated Code Security Auditor",
-      "division": "security",
-      "risk_tier": "high",
-      "source_audit_status": "READY",
-      "lifecycle_state": "active"
-    },
-    {
-      "id": "agency.security.application-security-engineer",
-      "type": "agent",
-      "label": "Application Security Engineer",
-      "division": "security",
-      "risk_tier": "high",
-      "source_audit_status": "READY",
-      "lifecycle_state": "active"
-    },
-    {
-      "id": "agency.security.blockchain-security-auditor",
-      "type": "agent",
-      "label": "Blockchain Security Auditor",
-      "division": "security",
-      "risk_tier": "high",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.security.cloud-security-architect",
-      "type": "agent",
-      "label": "Cloud Security Architect",
-      "division": "security",
-      "risk_tier": "high",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.security.compliance-auditor",
-      "type": "agent",
-      "label": "Compliance Auditor",
-      "division": "security",
-      "risk_tier": "high",
-      "source_audit_status": "REWRITE",
-      "lifecycle_state": "reference_only"
-    },
-    {
-      "id": "agency.security.incident-responder",
-      "type": "agent",
-      "label": "Incident Responder",
-      "division": "security",
-      "risk_tier": "high",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.security.penetration-tester",
-      "type": "agent",
-      "label": "Penetration Tester",
-      "division": "security",
-      "risk_tier": "high",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.security.secrets-credential-hygiene-engineer",
-      "type": "agent",
-      "label": "Secrets & Credential Hygiene Engineer",
-      "division": "security",
-      "risk_tier": "high",
-      "source_audit_status": "REWRITE",
-      "lifecycle_state": "reference_only"
-    },
-    {
-      "id": "agency.security.security-architect",
-      "type": "agent",
-      "label": "Security Architect",
-      "division": "security",
-      "risk_tier": "high",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.security.senior-secops-engineer",
-      "type": "agent",
-      "label": "Senior SecOps Engineer",
-      "division": "security",
-      "risk_tier": "high",
-      "source_audit_status": "READY",
-      "lifecycle_state": "active"
-    },
-    {
-      "id": "agency.security.threat-detection-engineer",
-      "type": "agent",
-      "label": "Threat Detection Engineer",
-      "division": "security",
-      "risk_tier": "high",
-      "source_audit_status": "REWRITE",
-      "lifecycle_state": "reference_only"
-    },
-    {
-      "id": "agency.security.threat-intelligence-analyst",
-      "type": "agent",
-      "label": "Threat Intelligence Analyst",
-      "division": "security",
-      "risk_tier": "high",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.spatial_computing.macos-spatial-metal-engineer",
-      "type": "agent",
-      "label": "macOS Spatial/Metal Engineer",
-      "division": "spatial-computing",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.spatial_computing.terminal-integration-specialist",
-      "type": "agent",
-      "label": "Terminal Integration Specialist",
-      "division": "spatial-computing",
-      "risk_tier": "medium",
-      "source_audit_status": "REWRITE",
-      "lifecycle_state": "reference_only"
-    },
-    {
-      "id": "agency.spatial_computing.visionos-spatial-engineer",
-      "type": "agent",
-      "label": "visionOS Spatial Engineer",
-      "division": "spatial-computing",
-      "risk_tier": "medium",
-      "source_audit_status": "REWRITE",
-      "lifecycle_state": "reference_only"
-    },
-    {
-      "id": "agency.spatial_computing.xr-cockpit-interaction-specialist",
-      "type": "agent",
-      "label": "XR Cockpit Interaction Specialist",
-      "division": "spatial-computing",
-      "risk_tier": "medium",
-      "source_audit_status": "REWRITE",
-      "lifecycle_state": "reference_only"
-    },
-    {
-      "id": "agency.spatial_computing.xr-immersive-developer",
-      "type": "agent",
-      "label": "XR Immersive Developer",
-      "division": "spatial-computing",
-      "risk_tier": "medium",
-      "source_audit_status": "REWRITE",
-      "lifecycle_state": "reference_only"
-    },
-    {
-      "id": "agency.spatial_computing.xr-interface-architect",
-      "type": "agent",
-      "label": "XR Interface Architect",
-      "division": "spatial-computing",
-      "risk_tier": "medium",
-      "source_audit_status": "REWRITE",
-      "lifecycle_state": "reference_only"
-    },
-    {
-      "id": "agency.specialized.accounts-payable-agent",
-      "type": "agent",
-      "label": "Accounts Payable Agent",
-      "division": "specialized",
-      "risk_tier": "high",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.specialized.agentic-identity-trust-architect",
-      "type": "agent",
-      "label": "Agentic Identity & Trust Architect",
-      "division": "specialized",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.specialized.agents-orchestrator",
-      "type": "agent",
-      "label": "Agents Orchestrator",
-      "division": "specialized",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.specialized.aging-parent-care-companion",
-      "type": "agent",
-      "label": "Aging Parent Care Companion",
-      "division": "specialized",
-      "risk_tier": "high",
-      "source_audit_status": "REWRITE",
-      "lifecycle_state": "reference_only"
-    },
-    {
-      "id": "agency.specialized.automation-governance-architect",
-      "type": "agent",
-      "label": "Automation Governance Architect",
-      "division": "specialized",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.specialized.business-strategist",
-      "type": "agent",
-      "label": "Business Strategist",
-      "division": "specialized",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.specialized.change-management-consultant",
-      "type": "agent",
-      "label": "Change Management Consultant",
-      "division": "specialized",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.specialized.chief-financial-officer",
-      "type": "agent",
-      "label": "Chief Financial Officer",
-      "division": "specialized",
-      "risk_tier": "high",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.specialized.chief-of-staff",
-      "type": "agent",
-      "label": "Chief of Staff",
-      "division": "specialized",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.specialized.civil-engineer",
-      "type": "agent",
-      "label": "Civil Engineer",
-      "division": "specialized",
-      "risk_tier": "high",
-      "source_audit_status": "REWRITE",
-      "lifecycle_state": "reference_only"
-    },
-    {
-      "id": "agency.specialized.codebase-archaeologist",
-      "type": "agent",
-      "label": "Codebase Archaeologist",
-      "division": "specialized",
-      "risk_tier": "high",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.specialized.corporate-training-designer",
-      "type": "agent",
-      "label": "Corporate Training Designer",
-      "division": "specialized",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.specialized.cultural-intelligence-strategist",
-      "type": "agent",
-      "label": "Cultural Intelligence Strategist",
-      "division": "specialized",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.specialized.customer-service",
-      "type": "agent",
-      "label": "Customer Service",
-      "division": "specialized",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.specialized.customer-success-manager",
-      "type": "agent",
-      "label": "Customer Success Manager",
-      "division": "specialized",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.specialized.data-consolidation-agent",
-      "type": "agent",
-      "label": "Data Consolidation Agent",
-      "division": "specialized",
-      "risk_tier": "medium",
-      "source_audit_status": "REWRITE",
-      "lifecycle_state": "reference_only"
-    },
-    {
-      "id": "agency.specialized.data-privacy-officer",
-      "type": "agent",
-      "label": "Data Privacy Officer",
-      "division": "specialized",
-      "risk_tier": "high",
-      "source_audit_status": "REWRITE",
-      "lifecycle_state": "reference_only"
-    },
-    {
-      "id": "agency.specialized.developer-advocate",
-      "type": "agent",
-      "label": "Developer Advocate",
-      "division": "specialized",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.specialized.document-generator",
-      "type": "agent",
-      "label": "Document Generator",
-      "division": "specialized",
-      "risk_tier": "medium",
-      "source_audit_status": "REWRITE",
-      "lifecycle_state": "reference_only"
-    },
-    {
-      "id": "agency.specialized.esg-sustainability-officer",
-      "type": "agent",
-      "label": "ESG & Sustainability Officer",
-      "division": "specialized",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.specialized.fedramp-rmf-compliance-engineer",
-      "type": "agent",
-      "label": "FedRAMP & RMF Compliance Engineer",
-      "division": "specialized",
-      "risk_tier": "high",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.specialized.french-consulting-market-navigator",
-      "type": "agent",
-      "label": "French Consulting Market Navigator",
-      "division": "specialized",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.specialized.government-digital-presales-consultant",
-      "type": "agent",
-      "label": "Government Digital Presales Consultant",
-      "division": "specialized",
-      "risk_tier": "high",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.specialized.grant-writer",
-      "type": "agent",
-      "label": "Grant Writer",
-      "division": "specialized",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.specialized.healthcare-customer-service",
-      "type": "agent",
-      "label": "Healthcare Customer Service",
-      "division": "specialized",
-      "risk_tier": "high",
-      "source_audit_status": "REWRITE",
-      "lifecycle_state": "reference_only"
-    },
-    {
-      "id": "agency.specialized.healthcare-marketing-compliance-specialist",
-      "type": "agent",
-      "label": "Healthcare Marketing Compliance Specialist",
-      "division": "specialized",
-      "risk_tier": "high",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.specialized.hospitality-guest-services",
-      "type": "agent",
-      "label": "Hospitality Guest Services",
-      "division": "specialized",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.specialized.hr-onboarding",
-      "type": "agent",
-      "label": "HR Onboarding",
-      "division": "specialized",
-      "risk_tier": "high",
-      "source_audit_status": "REWRITE",
-      "lifecycle_state": "reference_only"
-    },
-    {
-      "id": "agency.specialized.identity-graph-operator",
-      "type": "agent",
-      "label": "Identity Graph Operator",
-      "division": "specialized",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.specialized.korean-business-navigator",
-      "type": "agent",
-      "label": "Korean Business Navigator",
-      "division": "specialized",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.specialized.language-translator",
-      "type": "agent",
-      "label": "Language Translator",
-      "division": "specialized",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.specialized.legal-billing-time-tracking",
-      "type": "agent",
-      "label": "Legal Billing & Time Tracking",
-      "division": "specialized",
-      "risk_tier": "high",
-      "source_audit_status": "REWRITE",
-      "lifecycle_state": "reference_only"
-    },
-    {
-      "id": "agency.specialized.legal-client-intake",
-      "type": "agent",
-      "label": "Legal Client Intake",
-      "division": "specialized",
-      "risk_tier": "high",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.specialized.legal-document-review",
-      "type": "agent",
-      "label": "Legal Document Review",
-      "division": "specialized",
-      "risk_tier": "high",
-      "source_audit_status": "REWRITE",
-      "lifecycle_state": "reference_only"
-    },
-    {
-      "id": "agency.specialized.loan-officer-assistant",
-      "type": "agent",
-      "label": "Loan Officer Assistant",
-      "division": "specialized",
-      "risk_tier": "high",
-      "source_audit_status": "REWRITE",
-      "lifecycle_state": "reference_only"
-    },
-    {
-      "id": "agency.specialized.lsp-index-engineer",
-      "type": "agent",
-      "label": "LSP/Index Engineer",
-      "division": "specialized",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.specialized.m-a-integration-manager",
-      "type": "agent",
-      "label": "M&A Integration Manager",
-      "division": "specialized",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.specialized.mcp-builder",
-      "type": "agent",
-      "label": "MCP Builder",
-      "division": "specialized",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.specialized.medical-billing-coding-specialist",
-      "type": "agent",
-      "label": "Medical Billing & Coding Specialist",
-      "division": "specialized",
-      "risk_tier": "high",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.specialized.model-qa-specialist",
-      "type": "agent",
-      "label": "Model QA Specialist",
-      "division": "specialized",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.specialized.operations-manager",
-      "type": "agent",
-      "label": "Operations Manager",
-      "division": "specialized",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.specialized.organizational-psychologist",
-      "type": "agent",
-      "label": "Organizational Psychologist",
-      "division": "specialized",
-      "risk_tier": "high",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.specialized.personal-growth-mentor",
-      "type": "agent",
-      "label": "Personal Growth Mentor",
-      "division": "specialized",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.specialized.pricing-analyst",
-      "type": "agent",
-      "label": "Pricing Analyst",
-      "division": "specialized",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.specialized.real-estate-buyer-seller",
-      "type": "agent",
-      "label": "Real Estate Buyer & Seller",
-      "division": "specialized",
-      "risk_tier": "high",
-      "source_audit_status": "REWRITE",
-      "lifecycle_state": "reference_only"
-    },
-    {
-      "id": "agency.specialized.recruitment-specialist",
-      "type": "agent",
-      "label": "Recruitment Specialist",
-      "division": "specialized",
-      "risk_tier": "high",
-      "source_audit_status": "REWRITE",
-      "lifecycle_state": "reference_only"
-    },
-    {
-      "id": "agency.specialized.report-distribution-agent",
-      "type": "agent",
-      "label": "Report Distribution Agent",
-      "division": "specialized",
-      "risk_tier": "medium",
-      "source_audit_status": "REWRITE",
-      "lifecycle_state": "reference_only"
-    },
-    {
-      "id": "agency.specialized.resume-tailor",
-      "type": "agent",
-      "label": "Resume Tailor",
-      "division": "specialized",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.specialized.retail-customer-returns",
-      "type": "agent",
-      "label": "Retail Customer Returns",
-      "division": "specialized",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.specialized.sales-data-extraction-agent",
-      "type": "agent",
-      "label": "Sales Data Extraction Agent",
-      "division": "specialized",
-      "risk_tier": "medium",
-      "source_audit_status": "REWRITE",
-      "lifecycle_state": "reference_only"
-    },
-    {
-      "id": "agency.specialized.sales-outreach",
-      "type": "agent",
-      "label": "Sales Outreach",
-      "division": "specialized",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.specialized.salesforce-architect",
-      "type": "agent",
-      "label": "Salesforce Architect",
-      "division": "specialized",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.specialized.strategy-duel-agent",
-      "type": "agent",
-      "label": "Strategy Duel Agent",
-      "division": "specialized",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.specialized.study-abroad-advisor",
-      "type": "agent",
-      "label": "Study Abroad Advisor",
-      "division": "specialized",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.specialized.supply-chain-strategist",
-      "type": "agent",
-      "label": "Supply Chain Strategist",
-      "division": "specialized",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.specialized.workflow-architect",
-      "type": "agent",
-      "label": "Workflow Architect",
-      "division": "specialized",
-      "risk_tier": "medium",
-      "source_audit_status": "READY",
-      "lifecycle_state": "active"
-    },
-    {
-      "id": "agency.specialized.zk-steward",
-      "type": "agent",
-      "label": "ZK Steward",
-      "division": "specialized",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.support.analytics-reporter",
-      "type": "agent",
-      "label": "Analytics Reporter",
-      "division": "support",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.support.executive-summary-generator",
-      "type": "agent",
-      "label": "Executive Summary Generator",
-      "division": "support",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.support.finance-tracker",
-      "type": "agent",
-      "label": "Finance Tracker",
-      "division": "support",
-      "risk_tier": "high",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.support.infrastructure-maintainer",
-      "type": "agent",
-      "label": "Infrastructure Maintainer",
-      "division": "support",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.support.legal-compliance-checker",
-      "type": "agent",
-      "label": "Legal Compliance Checker",
-      "division": "support",
-      "risk_tier": "high",
-      "source_audit_status": "REWRITE",
-      "lifecycle_state": "reference_only"
-    },
-    {
-      "id": "agency.support.support-responder",
-      "type": "agent",
-      "label": "Support Responder",
-      "division": "support",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.testing.accessibility-auditor",
-      "type": "agent",
-      "label": "Accessibility Auditor",
-      "division": "testing",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.testing.api-tester",
-      "type": "agent",
-      "label": "API Tester",
-      "division": "testing",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.testing.evidence-collector",
-      "type": "agent",
-      "label": "Evidence Collector",
-      "division": "testing",
-      "risk_tier": "medium",
-      "source_audit_status": "REWRITE",
-      "lifecycle_state": "reference_only"
-    },
-    {
-      "id": "agency.testing.performance-benchmarker",
-      "type": "agent",
-      "label": "Performance Benchmarker",
-      "division": "testing",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.testing.reality-checker",
-      "type": "agent",
-      "label": "Reality Checker",
-      "division": "testing",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.testing.test-automation-engineer",
-      "type": "agent",
-      "label": "Test Automation Engineer",
-      "division": "testing",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.testing.test-results-analyzer",
-      "type": "agent",
-      "label": "Test Results Analyzer",
-      "division": "testing",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.testing.tool-evaluator",
-      "type": "agent",
-      "label": "Tool Evaluator",
-      "division": "testing",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "agency.testing.workflow-optimizer",
-      "type": "agent",
-      "label": "Workflow Optimizer",
-      "division": "testing",
-      "risk_tier": "medium",
-      "source_audit_status": "HARDEN",
-      "lifecycle_state": "advisory"
-    },
-    {
-      "id": "capability.academic",
-      "type": "capability",
-      "label": "academic"
-    },
-    {
-      "id": "capability.accessibility",
-      "type": "capability",
-      "label": "accessibility"
-    },
-    {
-      "id": "capability.ai_ml",
-      "type": "capability",
-      "label": "ai_ml"
-    },
-    {
-      "id": "capability.analytics",
-      "type": "capability",
-      "label": "analytics"
-    },
-    {
-      "id": "capability.architecture",
-      "type": "capability",
-      "label": "architecture"
-    },
-    {
-      "id": "capability.automation_workflow",
-      "type": "capability",
-      "label": "automation_workflow"
-    },
-    {
-      "id": "capability.backend",
-      "type": "capability",
-      "label": "backend"
-    },
-    {
-      "id": "capability.blockchain_web3",
-      "type": "capability",
-      "label": "blockchain_web3"
-    },
-    {
-      "id": "capability.civil_physical_systems",
-      "type": "capability",
-      "label": "civil_physical_systems"
-    },
-    {
-      "id": "capability.compliance_governance",
-      "type": "capability",
-      "label": "compliance_governance"
-    },
-    {
-      "id": "capability.content_generation",
-      "type": "capability",
-      "label": "content_generation"
-    },
-    {
-      "id": "capability.customer_support",
-      "type": "capability",
-      "label": "customer_support"
-    },
-    {
-      "id": "capability.data_engineering",
-      "type": "capability",
-      "label": "data_engineering"
-    },
-    {
-      "id": "capability.data_governance",
-      "type": "capability",
-      "label": "data_governance"
-    },
-    {
-      "id": "capability.database",
-      "type": "capability",
-      "label": "database"
-    },
-    {
-      "id": "capability.design",
-      "type": "capability",
-      "label": "design"
-    },
-    {
-      "id": "capability.devops",
-      "type": "capability",
-      "label": "devops"
-    },
-    {
-      "id": "capability.documentation",
-      "type": "capability",
-      "label": "documentation"
-    },
-    {
-      "id": "capability.education_training",
-      "type": "capability",
-      "label": "education_training"
-    },
-    {
-      "id": "capability.embedded_iot",
-      "type": "capability",
-      "label": "embedded_iot"
-    },
-    {
-      "id": "capability.engineering",
-      "type": "capability",
-      "label": "engineering"
-    },
-    {
-      "id": "capability.finance",
-      "type": "capability",
-      "label": "finance"
-    },
-    {
-      "id": "capability.frontend",
-      "type": "capability",
-      "label": "frontend"
-    },
-    {
-      "id": "capability.game_development",
-      "type": "capability",
-      "label": "game_development"
-    },
-    {
-      "id": "capability.gis",
-      "type": "capability",
-      "label": "gis"
-    },
-    {
-      "id": "capability.gis_spatial",
-      "type": "capability",
-      "label": "gis_spatial"
-    },
-    {
-      "id": "capability.git_version_control",
-      "type": "capability",
-      "label": "git_version_control"
-    },
-    {
-      "id": "capability.healthcare",
-      "type": "capability",
-      "label": "healthcare"
-    },
-    {
-      "id": "capability.identity_access",
-      "type": "capability",
-      "label": "identity_access"
-    },
-    {
-      "id": "capability.integration",
-      "type": "capability",
-      "label": "integration"
-    },
-    {
-      "id": "capability.investment",
-      "type": "capability",
-      "label": "investment"
-    },
-    {
-      "id": "capability.legal",
-      "type": "capability",
-      "label": "legal"
-    },
-    {
-      "id": "capability.llm_training",
-      "type": "capability",
-      "label": "llm_training"
-    },
-    {
-      "id": "capability.localization",
-      "type": "capability",
-      "label": "localization"
-    },
-    {
-      "id": "capability.marketing",
-      "type": "capability",
-      "label": "marketing"
-    },
-    {
-      "id": "capability.mobile",
-      "type": "capability",
-      "label": "mobile"
-    },
-    {
-      "id": "capability.multi_agent",
-      "type": "capability",
-      "label": "multi_agent"
-    },
-    {
-      "id": "capability.networking",
-      "type": "capability",
-      "label": "networking"
-    },
-    {
-      "id": "capability.operations",
-      "type": "capability",
-      "label": "operations"
-    },
-    {
-      "id": "capability.paid_media",
-      "type": "capability",
-      "label": "paid_media"
-    },
-    {
-      "id": "capability.payments_billing",
-      "type": "capability",
-      "label": "payments_billing"
-    },
-    {
-      "id": "capability.performance",
-      "type": "capability",
-      "label": "performance"
-    },
-    {
-      "id": "capability.privacy",
-      "type": "capability",
-      "label": "privacy"
-    },
-    {
-      "id": "capability.product",
-      "type": "capability",
-      "label": "product"
-    },
-    {
-      "id": "capability.product_management",
-      "type": "capability",
-      "label": "product_management"
-    },
-    {
-      "id": "capability.project_management",
-      "type": "capability",
-      "label": "project_management"
-    },
-    {
-      "id": "capability.research",
-      "type": "capability",
-      "label": "research"
-    },
-    {
-      "id": "capability.sales",
-      "type": "capability",
-      "label": "sales"
-    },
-    {
-      "id": "capability.search_retrieval",
-      "type": "capability",
-      "label": "search_retrieval"
-    },
-    {
-      "id": "capability.security",
-      "type": "capability",
-      "label": "security"
-    },
-    {
-      "id": "capability.seo_discovery",
-      "type": "capability",
-      "label": "seo_discovery"
-    },
-    {
-      "id": "capability.social_media",
-      "type": "capability",
-      "label": "social_media"
-    },
-    {
-      "id": "capability.spatial_computing",
-      "type": "capability",
-      "label": "spatial_computing"
-    },
-    {
-      "id": "capability.specialized",
-      "type": "capability",
-      "label": "specialized"
-    },
-    {
-      "id": "capability.sre_reliability",
-      "type": "capability",
-      "label": "sre_reliability"
-    },
-    {
-      "id": "capability.support",
-      "type": "capability",
-      "label": "support"
-    },
-    {
-      "id": "capability.tax",
-      "type": "capability",
-      "label": "tax"
-    },
-    {
-      "id": "capability.testing",
-      "type": "capability",
-      "label": "testing"
-    },
-    {
-      "id": "capability.xr_spatial_computing",
-      "type": "capability",
-      "label": "xr_spatial_computing"
-    },
-    {
-      "id": "division.academic",
-      "type": "division",
-      "label": "academic"
-    },
-    {
-      "id": "division.design",
-      "type": "division",
-      "label": "design"
-    },
-    {
-      "id": "division.engineering",
-      "type": "division",
-      "label": "engineering"
-    },
-    {
-      "id": "division.finance",
-      "type": "division",
-      "label": "finance"
-    },
-    {
-      "id": "division.game-development",
-      "type": "division",
-      "label": "game-development"
-    },
-    {
-      "id": "division.gis",
-      "type": "division",
-      "label": "gis"
-    },
-    {
-      "id": "division.healthcare",
-      "type": "division",
-      "label": "healthcare"
-    },
-    {
-      "id": "division.marketing",
-      "type": "division",
-      "label": "marketing"
-    },
-    {
-      "id": "division.paid-media",
-      "type": "division",
-      "label": "paid-media"
-    },
-    {
-      "id": "division.product",
-      "type": "division",
-      "label": "product"
-    },
-    {
-      "id": "division.project-management",
-      "type": "division",
-      "label": "project-management"
-    },
-    {
-      "id": "division.sales",
-      "type": "division",
-      "label": "sales"
-    },
-    {
-      "id": "division.security",
-      "type": "division",
-      "label": "security"
-    },
-    {
-      "id": "division.spatial-computing",
-      "type": "division",
-      "label": "spatial-computing"
-    },
-    {
-      "id": "division.specialized",
-      "type": "division",
-      "label": "specialized"
-    },
-    {
-      "id": "division.support",
-      "type": "division",
-      "label": "support"
-    },
-    {
-      "id": "division.testing",
-      "type": "division",
-      "label": "testing"
-    }
-  ],
   "edges": [
     {
       "source": "agency.academic.anthropologist",
@@ -21016,11 +18202,2825 @@
     }
   ],
   "metrics": {
-    "node_count": 346,
-    "edge_count": 3640,
     "agent_nodes": 270,
     "capability_nodes": 59,
-    "division_nodes": 17
+    "division_nodes": 17,
+    "edge_count": 3640,
+    "node_count": 346
   },
-  "revision": "918283828f4472d6589b51096c2dd5d631ef364ed8237e67588d13880382d60f"
+  "nodes": [
+    {
+      "division": "academic",
+      "id": "agency.academic.anthropologist",
+      "label": "Anthropologist",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "academic",
+      "id": "agency.academic.geographer",
+      "label": "Geographer",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "academic",
+      "id": "agency.academic.historian",
+      "label": "Historian",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "academic",
+      "id": "agency.academic.narratologist",
+      "label": "Narratologist",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "academic",
+      "id": "agency.academic.psychologist",
+      "label": "Psychologist",
+      "lifecycle_state": "reference_only",
+      "risk_tier": "high",
+      "source_audit_status": "REWRITE",
+      "type": "agent"
+    },
+    {
+      "division": "academic",
+      "id": "agency.academic.statistician",
+      "label": "Statistician",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "design",
+      "id": "agency.design.brand-guardian",
+      "label": "Brand Guardian",
+      "lifecycle_state": "advisory",
+      "risk_tier": "low",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "design",
+      "id": "agency.design.image-prompt-engineer",
+      "label": "Image Prompt Engineer",
+      "lifecycle_state": "advisory",
+      "risk_tier": "low",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "design",
+      "id": "agency.design.inclusive-visuals-specialist",
+      "label": "Inclusive Visuals Specialist",
+      "lifecycle_state": "advisory",
+      "risk_tier": "low",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "design",
+      "id": "agency.design.persona-walkthrough-specialist",
+      "label": "Persona Walkthrough Specialist",
+      "lifecycle_state": "advisory",
+      "risk_tier": "low",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "design",
+      "id": "agency.design.ui-designer",
+      "label": "UI Designer",
+      "lifecycle_state": "advisory",
+      "risk_tier": "low",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "design",
+      "id": "agency.design.ui-finish-gate-reviewer",
+      "label": "UI Finish-Gate Reviewer",
+      "lifecycle_state": "advisory",
+      "risk_tier": "low",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "design",
+      "id": "agency.design.ux-architect",
+      "label": "UX Architect",
+      "lifecycle_state": "advisory",
+      "risk_tier": "low",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "design",
+      "id": "agency.design.ux-researcher",
+      "label": "UX Researcher",
+      "lifecycle_state": "advisory",
+      "risk_tier": "low",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "design",
+      "id": "agency.design.visual-storyteller",
+      "label": "Visual Storyteller",
+      "lifecycle_state": "reference_only",
+      "risk_tier": "low",
+      "source_audit_status": "REWRITE",
+      "type": "agent"
+    },
+    {
+      "division": "design",
+      "id": "agency.design.whimsy-injector",
+      "label": "Whimsy Injector",
+      "lifecycle_state": "advisory",
+      "risk_tier": "low",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "engineering",
+      "id": "agency.engineering.ai-data-remediation-engineer",
+      "label": "AI Data Remediation Engineer",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "engineering",
+      "id": "agency.engineering.ai-engineer",
+      "label": "AI Engineer",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "engineering",
+      "id": "agency.engineering.api-platform-engineer",
+      "label": "API Platform Engineer",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "engineering",
+      "id": "agency.engineering.autonomous-optimization-architect",
+      "label": "Autonomous Optimization Architect",
+      "lifecycle_state": "reference_only",
+      "risk_tier": "high",
+      "source_audit_status": "REWRITE",
+      "type": "agent"
+    },
+    {
+      "division": "engineering",
+      "id": "agency.engineering.backend-architect",
+      "label": "Backend Architect",
+      "lifecycle_state": "reference_only",
+      "risk_tier": "medium",
+      "source_audit_status": "REWRITE",
+      "type": "agent"
+    },
+    {
+      "division": "engineering",
+      "id": "agency.engineering.cms-developer",
+      "label": "CMS Developer",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "engineering",
+      "id": "agency.engineering.code-reviewer",
+      "label": "Code Reviewer",
+      "lifecycle_state": "reference_only",
+      "risk_tier": "medium",
+      "source_audit_status": "REWRITE",
+      "type": "agent"
+    },
+    {
+      "division": "engineering",
+      "id": "agency.engineering.codebase-onboarding-engineer",
+      "label": "Codebase Onboarding Engineer",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "engineering",
+      "id": "agency.engineering.data-engineer",
+      "label": "Data Engineer",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "engineering",
+      "id": "agency.engineering.data-visualization-engineer",
+      "label": "Data Visualization Engineer",
+      "lifecycle_state": "reference_only",
+      "risk_tier": "high",
+      "source_audit_status": "REWRITE",
+      "type": "agent"
+    },
+    {
+      "division": "engineering",
+      "id": "agency.engineering.database-optimizer",
+      "label": "Database Optimizer",
+      "lifecycle_state": "reference_only",
+      "risk_tier": "medium",
+      "source_audit_status": "REWRITE",
+      "type": "agent"
+    },
+    {
+      "division": "engineering",
+      "id": "agency.engineering.database-reliability-engineer",
+      "label": "Database Reliability Engineer",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "engineering",
+      "id": "agency.engineering.desktop-app-engineer",
+      "label": "Desktop App Engineer",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "engineering",
+      "id": "agency.engineering.developer-tooling-engineer",
+      "label": "Developer Tooling Engineer",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "engineering",
+      "id": "agency.engineering.devops-automator",
+      "label": "DevOps Automator",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "engineering",
+      "id": "agency.engineering.drupal-performance-engineer",
+      "label": "Drupal Performance Engineer",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "engineering",
+      "id": "agency.engineering.drupal-shopping-cart-engineer",
+      "label": "Drupal Shopping Cart Engineer",
+      "lifecycle_state": "reference_only",
+      "risk_tier": "high",
+      "source_audit_status": "REWRITE",
+      "type": "agent"
+    },
+    {
+      "division": "engineering",
+      "id": "agency.engineering.email-intelligence-engineer",
+      "label": "Email Intelligence Engineer",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "engineering",
+      "id": "agency.engineering.embedded-firmware-engineer",
+      "label": "Embedded Firmware Engineer",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "engineering",
+      "id": "agency.engineering.feishu-integration-developer",
+      "label": "Feishu Integration Developer",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "engineering",
+      "id": "agency.engineering.filament-optimization-specialist",
+      "label": "Filament Optimization Specialist",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "engineering",
+      "id": "agency.engineering.finops-engineer",
+      "label": "FinOps Engineer",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "engineering",
+      "id": "agency.engineering.frontend-developer",
+      "label": "Frontend Developer",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "engineering",
+      "id": "agency.engineering.gaussdb-expert-engineer",
+      "label": "GaussDB Expert Engineer",
+      "lifecycle_state": "reference_only",
+      "risk_tier": "medium",
+      "source_audit_status": "REWRITE",
+      "type": "agent"
+    },
+    {
+      "division": "engineering",
+      "id": "agency.engineering.git-workflow-master",
+      "label": "Git Workflow Master",
+      "lifecycle_state": "reference_only",
+      "risk_tier": "medium",
+      "source_audit_status": "REWRITE",
+      "type": "agent"
+    },
+    {
+      "division": "engineering",
+      "id": "agency.engineering.identity-access-engineer",
+      "label": "Identity & Access Engineer",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "engineering",
+      "id": "agency.engineering.incident-response-commander",
+      "label": "Incident Response Commander",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "engineering",
+      "id": "agency.engineering.internationalization-engineer",
+      "label": "Internationalization Engineer",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "engineering",
+      "id": "agency.engineering.iot-fleet-engineer",
+      "label": "IoT Fleet Engineer",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "engineering",
+      "id": "agency.engineering.it-service-manager",
+      "label": "IT Service Manager",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "engineering",
+      "id": "agency.engineering.llm-post-training-engineer",
+      "label": "LLM Post-Training Engineer",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "engineering",
+      "id": "agency.engineering.minimal-change-engineer",
+      "label": "Minimal Change Engineer",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "engineering",
+      "id": "agency.engineering.mobile-app-builder",
+      "label": "Mobile App Builder",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "engineering",
+      "id": "agency.engineering.mobile-release-engineer",
+      "label": "Mobile Release Engineer",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "engineering",
+      "id": "agency.engineering.multi-agent-systems-architect",
+      "label": "Multi-Agent Systems Architect",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "engineering",
+      "id": "agency.engineering.network-engineer",
+      "label": "Network Engineer",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "engineering",
+      "id": "agency.engineering.orgscript-engineer",
+      "label": "OrgScript Engineer",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "engineering",
+      "id": "agency.engineering.payments-billing-engineer",
+      "label": "Payments & Billing Engineer",
+      "lifecycle_state": "reference_only",
+      "risk_tier": "high",
+      "source_audit_status": "REWRITE",
+      "type": "agent"
+    },
+    {
+      "division": "engineering",
+      "id": "agency.engineering.privacy-engineer",
+      "label": "Privacy Engineer",
+      "lifecycle_state": "reference_only",
+      "risk_tier": "high",
+      "source_audit_status": "REWRITE",
+      "type": "agent"
+    },
+    {
+      "division": "engineering",
+      "id": "agency.engineering.prompt-engineer",
+      "label": "Prompt Engineer",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "engineering",
+      "id": "agency.engineering.rag-pipeline-engineer",
+      "label": "RAG Pipeline Engineer",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "engineering",
+      "id": "agency.engineering.rapid-prototyper",
+      "label": "Rapid Prototyper",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "engineering",
+      "id": "agency.engineering.realtime-collaboration-engineer",
+      "label": "Realtime Collaboration Engineer",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "engineering",
+      "id": "agency.engineering.rust-refactoring-specialist",
+      "label": "Rust Refactoring Specialist",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "engineering",
+      "id": "agency.engineering.search-relevance-engineer",
+      "label": "Search Relevance Engineer",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "engineering",
+      "id": "agency.engineering.section-508-accessibility-specialist",
+      "label": "Section 508 Accessibility Specialist",
+      "lifecycle_state": "advisory",
+      "risk_tier": "high",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "engineering",
+      "id": "agency.engineering.senior-developer",
+      "label": "Senior Developer",
+      "lifecycle_state": "reference_only",
+      "risk_tier": "medium",
+      "source_audit_status": "REWRITE",
+      "type": "agent"
+    },
+    {
+      "division": "engineering",
+      "id": "agency.engineering.software-architect",
+      "label": "Software Architect",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "engineering",
+      "id": "agency.engineering.solidity-smart-contract-engineer",
+      "label": "Solidity Smart Contract Engineer",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "engineering",
+      "id": "agency.engineering.sre-site-reliability-engineer",
+      "label": "SRE (Site Reliability Engineer)",
+      "lifecycle_state": "reference_only",
+      "risk_tier": "medium",
+      "source_audit_status": "REWRITE",
+      "type": "agent"
+    },
+    {
+      "division": "engineering",
+      "id": "agency.engineering.technical-writer",
+      "label": "Technical Writer",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "engineering",
+      "id": "agency.engineering.uswds-developer",
+      "label": "USWDS Developer",
+      "lifecycle_state": "advisory",
+      "risk_tier": "high",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "engineering",
+      "id": "agency.engineering.video-streaming-engineer",
+      "label": "Video Streaming Engineer",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "engineering",
+      "id": "agency.engineering.voice-ai-integration-engineer",
+      "label": "Voice AI Integration Engineer",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "engineering",
+      "id": "agency.engineering.webassembly-engineer",
+      "label": "WebAssembly Engineer",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "engineering",
+      "id": "agency.engineering.wechat-mini-program-developer",
+      "label": "WeChat Mini Program Developer",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "engineering",
+      "id": "agency.engineering.wordpress-performance-engineer",
+      "label": "WordPress Performance Engineer",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "engineering",
+      "id": "agency.engineering.wordpress-shopping-cart-engineer",
+      "label": "WordPress Shopping Cart Engineer",
+      "lifecycle_state": "reference_only",
+      "risk_tier": "high",
+      "source_audit_status": "REWRITE",
+      "type": "agent"
+    },
+    {
+      "division": "finance",
+      "id": "agency.finance.bookkeeper-controller",
+      "label": "Bookkeeper & Controller",
+      "lifecycle_state": "advisory",
+      "risk_tier": "high",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "finance",
+      "id": "agency.finance.financial-analyst",
+      "label": "Financial Analyst",
+      "lifecycle_state": "advisory",
+      "risk_tier": "high",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "finance",
+      "id": "agency.finance.fp-a-analyst",
+      "label": "FP&A Analyst",
+      "lifecycle_state": "reference_only",
+      "risk_tier": "high",
+      "source_audit_status": "REWRITE",
+      "type": "agent"
+    },
+    {
+      "division": "finance",
+      "id": "agency.finance.investment-researcher",
+      "label": "Investment Researcher",
+      "lifecycle_state": "reference_only",
+      "risk_tier": "high",
+      "source_audit_status": "REWRITE",
+      "type": "agent"
+    },
+    {
+      "division": "finance",
+      "id": "agency.finance.tax-strategist",
+      "label": "Tax Strategist",
+      "lifecycle_state": "advisory",
+      "risk_tier": "high",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "game-development",
+      "id": "agency.game_development.blender-add-on-engineer",
+      "label": "Blender Add-on Engineer",
+      "lifecycle_state": "active",
+      "risk_tier": "low",
+      "source_audit_status": "READY",
+      "type": "agent"
+    },
+    {
+      "division": "game-development",
+      "id": "agency.game_development.economy-designer",
+      "label": "Economy Designer",
+      "lifecycle_state": "advisory",
+      "risk_tier": "low",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "game-development",
+      "id": "agency.game_development.game-audio-engineer",
+      "label": "Game Audio Engineer",
+      "lifecycle_state": "advisory",
+      "risk_tier": "low",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "game-development",
+      "id": "agency.game_development.game-designer",
+      "label": "Game Designer",
+      "lifecycle_state": "advisory",
+      "risk_tier": "low",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "game-development",
+      "id": "agency.game_development.godot-gameplay-scripter",
+      "label": "Godot Gameplay Scripter",
+      "lifecycle_state": "advisory",
+      "risk_tier": "low",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "game-development",
+      "id": "agency.game_development.godot-multiplayer-engineer",
+      "label": "Godot Multiplayer Engineer",
+      "lifecycle_state": "advisory",
+      "risk_tier": "low",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "game-development",
+      "id": "agency.game_development.godot-shader-developer",
+      "label": "Godot Shader Developer",
+      "lifecycle_state": "advisory",
+      "risk_tier": "low",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "game-development",
+      "id": "agency.game_development.level-designer",
+      "label": "Level Designer",
+      "lifecycle_state": "advisory",
+      "risk_tier": "low",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "game-development",
+      "id": "agency.game_development.narrative-designer",
+      "label": "Narrative Designer",
+      "lifecycle_state": "advisory",
+      "risk_tier": "low",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "game-development",
+      "id": "agency.game_development.roblox-avatar-creator",
+      "label": "Roblox Avatar Creator",
+      "lifecycle_state": "advisory",
+      "risk_tier": "low",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "game-development",
+      "id": "agency.game_development.roblox-experience-designer",
+      "label": "Roblox Experience Designer",
+      "lifecycle_state": "advisory",
+      "risk_tier": "low",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "game-development",
+      "id": "agency.game_development.roblox-systems-scripter",
+      "label": "Roblox Systems Scripter",
+      "lifecycle_state": "advisory",
+      "risk_tier": "low",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "game-development",
+      "id": "agency.game_development.technical-artist",
+      "label": "Technical Artist",
+      "lifecycle_state": "advisory",
+      "risk_tier": "low",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "game-development",
+      "id": "agency.game_development.unity-architect",
+      "label": "Unity Architect",
+      "lifecycle_state": "advisory",
+      "risk_tier": "low",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "game-development",
+      "id": "agency.game_development.unity-editor-tool-developer",
+      "label": "Unity Editor Tool Developer",
+      "lifecycle_state": "advisory",
+      "risk_tier": "low",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "game-development",
+      "id": "agency.game_development.unity-multiplayer-engineer",
+      "label": "Unity Multiplayer Engineer",
+      "lifecycle_state": "advisory",
+      "risk_tier": "low",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "game-development",
+      "id": "agency.game_development.unity-shader-graph-artist",
+      "label": "Unity Shader Graph Artist",
+      "lifecycle_state": "advisory",
+      "risk_tier": "low",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "game-development",
+      "id": "agency.game_development.unreal-multiplayer-architect",
+      "label": "Unreal Multiplayer Architect",
+      "lifecycle_state": "advisory",
+      "risk_tier": "low",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "game-development",
+      "id": "agency.game_development.unreal-systems-engineer",
+      "label": "Unreal Systems Engineer",
+      "lifecycle_state": "active",
+      "risk_tier": "low",
+      "source_audit_status": "READY",
+      "type": "agent"
+    },
+    {
+      "division": "game-development",
+      "id": "agency.game_development.unreal-technical-artist",
+      "label": "Unreal Technical Artist",
+      "lifecycle_state": "advisory",
+      "risk_tier": "low",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "game-development",
+      "id": "agency.game_development.unreal-world-builder",
+      "label": "Unreal World Builder",
+      "lifecycle_state": "advisory",
+      "risk_tier": "low",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "gis",
+      "id": "agency.gis.3d-scene-developer",
+      "label": "3D & Scene Developer",
+      "lifecycle_state": "reference_only",
+      "risk_tier": "medium",
+      "source_audit_status": "REWRITE",
+      "type": "agent"
+    },
+    {
+      "division": "gis",
+      "id": "agency.gis.bim-gis-specialist",
+      "label": "BIM/GIS Specialist",
+      "lifecycle_state": "reference_only",
+      "risk_tier": "medium",
+      "source_audit_status": "REWRITE",
+      "type": "agent"
+    },
+    {
+      "division": "gis",
+      "id": "agency.gis.cartography-designer",
+      "label": "Cartography Designer",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "gis",
+      "id": "agency.gis.drone-reality-mapping-specialist",
+      "label": "Drone/Reality Mapping Specialist",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "gis",
+      "id": "agency.gis.geoai-ml-engineer",
+      "label": "GeoAI/ML Engineer",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "gis",
+      "id": "agency.gis.geoprocessing-specialist",
+      "label": "Geoprocessing Specialist",
+      "lifecycle_state": "reference_only",
+      "risk_tier": "medium",
+      "source_audit_status": "REWRITE",
+      "type": "agent"
+    },
+    {
+      "division": "gis",
+      "id": "agency.gis.gis-analyst",
+      "label": "GIS Analyst",
+      "lifecycle_state": "reference_only",
+      "risk_tier": "medium",
+      "source_audit_status": "REWRITE",
+      "type": "agent"
+    },
+    {
+      "division": "gis",
+      "id": "agency.gis.gis-qa-engineer",
+      "label": "GIS QA Engineer",
+      "lifecycle_state": "advisory",
+      "risk_tier": "high",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "gis",
+      "id": "agency.gis.solution-engineer",
+      "label": "Solution Engineer",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "gis",
+      "id": "agency.gis.spatial-data-engineer",
+      "label": "Spatial Data Engineer",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "gis",
+      "id": "agency.gis.spatial-data-scientist",
+      "label": "Spatial Data Scientist",
+      "lifecycle_state": "reference_only",
+      "risk_tier": "medium",
+      "source_audit_status": "REWRITE",
+      "type": "agent"
+    },
+    {
+      "division": "gis",
+      "id": "agency.gis.technical-consultant",
+      "label": "Technical Consultant",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "gis",
+      "id": "agency.gis.web-gis-developer",
+      "label": "Web GIS Developer",
+      "lifecycle_state": "reference_only",
+      "risk_tier": "medium",
+      "source_audit_status": "REWRITE",
+      "type": "agent"
+    },
+    {
+      "division": "healthcare",
+      "id": "agency.healthcare.clinical-evidence-agent",
+      "label": "Clinical Evidence Agent",
+      "lifecycle_state": "advisory",
+      "risk_tier": "high",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "healthcare",
+      "id": "agency.healthcare.healthcare-innovation-strategist",
+      "label": "Healthcare Innovation Strategist",
+      "lifecycle_state": "advisory",
+      "risk_tier": "high",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "healthcare",
+      "id": "agency.healthcare.sovereign-health-systems-agent",
+      "label": "Sovereign Health Systems Agent",
+      "lifecycle_state": "advisory",
+      "risk_tier": "high",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "marketing",
+      "id": "agency.marketing.aeo-foundations-architect",
+      "label": "AEO Foundations Architect",
+      "lifecycle_state": "active",
+      "risk_tier": "medium",
+      "source_audit_status": "READY",
+      "type": "agent"
+    },
+    {
+      "division": "marketing",
+      "id": "agency.marketing.agentic-search-optimizer",
+      "label": "Agentic Search Optimizer",
+      "lifecycle_state": "active",
+      "risk_tier": "medium",
+      "source_audit_status": "READY",
+      "type": "agent"
+    },
+    {
+      "division": "marketing",
+      "id": "agency.marketing.ai-citation-strategist",
+      "label": "AI Citation Strategist",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "marketing",
+      "id": "agency.marketing.app-store-optimizer",
+      "label": "App Store Optimizer",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "marketing",
+      "id": "agency.marketing.baidu-seo-specialist",
+      "label": "Baidu SEO Specialist",
+      "lifecycle_state": "advisory",
+      "risk_tier": "high",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "marketing",
+      "id": "agency.marketing.bilibili-content-strategist",
+      "label": "Bilibili Content Strategist",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "marketing",
+      "id": "agency.marketing.book-co-author",
+      "label": "Book Co-Author",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "marketing",
+      "id": "agency.marketing.carousel-growth-engine",
+      "label": "Carousel Growth Engine",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "marketing",
+      "id": "agency.marketing.china-e-commerce-operator",
+      "label": "China E-Commerce Operator",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "marketing",
+      "id": "agency.marketing.china-market-localization-strategist",
+      "label": "China Market Localization Strategist",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "marketing",
+      "id": "agency.marketing.content-creator",
+      "label": "Content Creator",
+      "lifecycle_state": "reference_only",
+      "risk_tier": "medium",
+      "source_audit_status": "REWRITE",
+      "type": "agent"
+    },
+    {
+      "division": "marketing",
+      "id": "agency.marketing.cross-border-e-commerce-specialist",
+      "label": "Cross-Border E-Commerce Specialist",
+      "lifecycle_state": "reference_only",
+      "risk_tier": "high",
+      "source_audit_status": "REWRITE",
+      "type": "agent"
+    },
+    {
+      "division": "marketing",
+      "id": "agency.marketing.douyin-strategist",
+      "label": "Douyin Strategist",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "marketing",
+      "id": "agency.marketing.email-marketing-strategist",
+      "label": "Email Marketing Strategist",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "marketing",
+      "id": "agency.marketing.global-podcast-strategist",
+      "label": "Global Podcast Strategist",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "marketing",
+      "id": "agency.marketing.growth-hacker",
+      "label": "Growth Hacker",
+      "lifecycle_state": "reference_only",
+      "risk_tier": "medium",
+      "source_audit_status": "REWRITE",
+      "type": "agent"
+    },
+    {
+      "division": "marketing",
+      "id": "agency.marketing.instagram-curator",
+      "label": "Instagram Curator",
+      "lifecycle_state": "reference_only",
+      "risk_tier": "medium",
+      "source_audit_status": "REWRITE",
+      "type": "agent"
+    },
+    {
+      "division": "marketing",
+      "id": "agency.marketing.kuaishou-strategist",
+      "label": "Kuaishou Strategist",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "marketing",
+      "id": "agency.marketing.linkedin-content-creator",
+      "label": "LinkedIn Content Creator",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "marketing",
+      "id": "agency.marketing.livestream-commerce-coach",
+      "label": "Livestream Commerce Coach",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "marketing",
+      "id": "agency.marketing.multi-platform-publisher",
+      "label": "Multi-Platform Publisher",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "marketing",
+      "id": "agency.marketing.podcast-strategist",
+      "label": "Podcast Strategist",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "marketing",
+      "id": "agency.marketing.pr-communications-manager",
+      "label": "PR & Communications Manager",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "marketing",
+      "id": "agency.marketing.private-domain-operator",
+      "label": "Private Domain Operator",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "marketing",
+      "id": "agency.marketing.reddit-community-builder",
+      "label": "Reddit Community Builder",
+      "lifecycle_state": "reference_only",
+      "risk_tier": "medium",
+      "source_audit_status": "REWRITE",
+      "type": "agent"
+    },
+    {
+      "division": "marketing",
+      "id": "agency.marketing.seo-specialist",
+      "label": "SEO Specialist",
+      "lifecycle_state": "active",
+      "risk_tier": "medium",
+      "source_audit_status": "READY",
+      "type": "agent"
+    },
+    {
+      "division": "marketing",
+      "id": "agency.marketing.short-video-editing-coach",
+      "label": "Short-Video Editing Coach",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "marketing",
+      "id": "agency.marketing.social-media-strategist",
+      "label": "Social Media Strategist",
+      "lifecycle_state": "reference_only",
+      "risk_tier": "medium",
+      "source_audit_status": "REWRITE",
+      "type": "agent"
+    },
+    {
+      "division": "marketing",
+      "id": "agency.marketing.tiktok-strategist",
+      "label": "TikTok Strategist",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "marketing",
+      "id": "agency.marketing.twitter-engager",
+      "label": "Twitter Engager",
+      "lifecycle_state": "reference_only",
+      "risk_tier": "medium",
+      "source_audit_status": "REWRITE",
+      "type": "agent"
+    },
+    {
+      "division": "marketing",
+      "id": "agency.marketing.video-optimization-specialist",
+      "label": "Video Optimization Specialist",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "marketing",
+      "id": "agency.marketing.wechat-official-account-manager",
+      "label": "WeChat Official Account Manager",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "marketing",
+      "id": "agency.marketing.weibo-strategist",
+      "label": "Weibo Strategist",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "marketing",
+      "id": "agency.marketing.x-twitter-intelligence-analyst",
+      "label": "X/Twitter Intelligence Analyst",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "marketing",
+      "id": "agency.marketing.xiaohongshu-specialist",
+      "label": "Xiaohongshu Specialist",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "marketing",
+      "id": "agency.marketing.zhihu-strategist",
+      "label": "Zhihu Strategist",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "paid-media",
+      "id": "agency.paid_media.ad-creative-strategist",
+      "label": "Ad Creative Strategist",
+      "lifecycle_state": "reference_only",
+      "risk_tier": "high",
+      "source_audit_status": "REWRITE",
+      "type": "agent"
+    },
+    {
+      "division": "paid-media",
+      "id": "agency.paid_media.paid-media-auditor",
+      "label": "Paid Media Auditor",
+      "lifecycle_state": "reference_only",
+      "risk_tier": "high",
+      "source_audit_status": "REWRITE",
+      "type": "agent"
+    },
+    {
+      "division": "paid-media",
+      "id": "agency.paid_media.paid-social-strategist",
+      "label": "Paid Social Strategist",
+      "lifecycle_state": "reference_only",
+      "risk_tier": "high",
+      "source_audit_status": "REWRITE",
+      "type": "agent"
+    },
+    {
+      "division": "paid-media",
+      "id": "agency.paid_media.ppc-campaign-strategist",
+      "label": "PPC Campaign Strategist",
+      "lifecycle_state": "reference_only",
+      "risk_tier": "high",
+      "source_audit_status": "REWRITE",
+      "type": "agent"
+    },
+    {
+      "division": "paid-media",
+      "id": "agency.paid_media.programmatic-display-buyer",
+      "label": "Programmatic & Display Buyer",
+      "lifecycle_state": "reference_only",
+      "risk_tier": "high",
+      "source_audit_status": "REWRITE",
+      "type": "agent"
+    },
+    {
+      "division": "paid-media",
+      "id": "agency.paid_media.search-query-analyst",
+      "label": "Search Query Analyst",
+      "lifecycle_state": "reference_only",
+      "risk_tier": "high",
+      "source_audit_status": "REWRITE",
+      "type": "agent"
+    },
+    {
+      "division": "paid-media",
+      "id": "agency.paid_media.tracking-measurement-specialist",
+      "label": "Tracking & Measurement Specialist",
+      "lifecycle_state": "reference_only",
+      "risk_tier": "high",
+      "source_audit_status": "REWRITE",
+      "type": "agent"
+    },
+    {
+      "division": "product",
+      "id": "agency.product.behavioral-nudge-engine",
+      "label": "Behavioral Nudge Engine",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "product",
+      "id": "agency.product.feedback-synthesizer",
+      "label": "Feedback Synthesizer",
+      "lifecycle_state": "reference_only",
+      "risk_tier": "medium",
+      "source_audit_status": "REWRITE",
+      "type": "agent"
+    },
+    {
+      "division": "product",
+      "id": "agency.product.product-manager",
+      "label": "Product Manager",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "product",
+      "id": "agency.product.sprint-prioritizer",
+      "label": "Sprint Prioritizer",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "product",
+      "id": "agency.product.trend-researcher",
+      "label": "Trend Researcher",
+      "lifecycle_state": "reference_only",
+      "risk_tier": "medium",
+      "source_audit_status": "REWRITE",
+      "type": "agent"
+    },
+    {
+      "division": "project-management",
+      "id": "agency.project_management.experiment-tracker",
+      "label": "Experiment Tracker",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "project-management",
+      "id": "agency.project_management.jira-workflow-steward",
+      "label": "Jira Workflow Steward",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "project-management",
+      "id": "agency.project_management.meeting-notes-specialist",
+      "label": "Meeting Notes Specialist",
+      "lifecycle_state": "reference_only",
+      "risk_tier": "medium",
+      "source_audit_status": "REWRITE",
+      "type": "agent"
+    },
+    {
+      "division": "project-management",
+      "id": "agency.project_management.project-shepherd",
+      "label": "Project Shepherd",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "project-management",
+      "id": "agency.project_management.senior-project-manager",
+      "label": "Senior Project Manager",
+      "lifecycle_state": "reference_only",
+      "risk_tier": "medium",
+      "source_audit_status": "REWRITE",
+      "type": "agent"
+    },
+    {
+      "division": "project-management",
+      "id": "agency.project_management.studio-operations",
+      "label": "Studio Operations",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "project-management",
+      "id": "agency.project_management.studio-producer",
+      "label": "Studio Producer",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "sales",
+      "id": "agency.sales.account-strategist",
+      "label": "Account Strategist",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "sales",
+      "id": "agency.sales.deal-strategist",
+      "label": "Deal Strategist",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "sales",
+      "id": "agency.sales.discovery-coach",
+      "label": "Discovery Coach",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "sales",
+      "id": "agency.sales.offer-lead-gen-strategist",
+      "label": "Offer & Lead Gen Strategist",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "sales",
+      "id": "agency.sales.outbound-strategist",
+      "label": "Outbound Strategist",
+      "lifecycle_state": "reference_only",
+      "risk_tier": "medium",
+      "source_audit_status": "REWRITE",
+      "type": "agent"
+    },
+    {
+      "division": "sales",
+      "id": "agency.sales.pipeline-analyst",
+      "label": "Pipeline Analyst",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "sales",
+      "id": "agency.sales.proposal-strategist",
+      "label": "Proposal Strategist",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "sales",
+      "id": "agency.sales.sales-coach",
+      "label": "Sales Coach",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "sales",
+      "id": "agency.sales.sales-engineer",
+      "label": "Sales Engineer",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "security",
+      "id": "agency.security.ai-generated-code-security-auditor",
+      "label": "AI-Generated Code Security Auditor",
+      "lifecycle_state": "active",
+      "risk_tier": "high",
+      "source_audit_status": "READY",
+      "type": "agent"
+    },
+    {
+      "division": "security",
+      "id": "agency.security.application-security-engineer",
+      "label": "Application Security Engineer",
+      "lifecycle_state": "active",
+      "risk_tier": "high",
+      "source_audit_status": "READY",
+      "type": "agent"
+    },
+    {
+      "division": "security",
+      "id": "agency.security.blockchain-security-auditor",
+      "label": "Blockchain Security Auditor",
+      "lifecycle_state": "advisory",
+      "risk_tier": "high",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "security",
+      "id": "agency.security.cloud-security-architect",
+      "label": "Cloud Security Architect",
+      "lifecycle_state": "advisory",
+      "risk_tier": "high",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "security",
+      "id": "agency.security.compliance-auditor",
+      "label": "Compliance Auditor",
+      "lifecycle_state": "reference_only",
+      "risk_tier": "high",
+      "source_audit_status": "REWRITE",
+      "type": "agent"
+    },
+    {
+      "division": "security",
+      "id": "agency.security.incident-responder",
+      "label": "Incident Responder",
+      "lifecycle_state": "advisory",
+      "risk_tier": "high",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "security",
+      "id": "agency.security.penetration-tester",
+      "label": "Penetration Tester",
+      "lifecycle_state": "advisory",
+      "risk_tier": "high",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "security",
+      "id": "agency.security.secrets-credential-hygiene-engineer",
+      "label": "Secrets & Credential Hygiene Engineer",
+      "lifecycle_state": "reference_only",
+      "risk_tier": "high",
+      "source_audit_status": "REWRITE",
+      "type": "agent"
+    },
+    {
+      "division": "security",
+      "id": "agency.security.security-architect",
+      "label": "Security Architect",
+      "lifecycle_state": "advisory",
+      "risk_tier": "high",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "security",
+      "id": "agency.security.senior-secops-engineer",
+      "label": "Senior SecOps Engineer",
+      "lifecycle_state": "active",
+      "risk_tier": "high",
+      "source_audit_status": "READY",
+      "type": "agent"
+    },
+    {
+      "division": "security",
+      "id": "agency.security.threat-detection-engineer",
+      "label": "Threat Detection Engineer",
+      "lifecycle_state": "reference_only",
+      "risk_tier": "high",
+      "source_audit_status": "REWRITE",
+      "type": "agent"
+    },
+    {
+      "division": "security",
+      "id": "agency.security.threat-intelligence-analyst",
+      "label": "Threat Intelligence Analyst",
+      "lifecycle_state": "advisory",
+      "risk_tier": "high",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "spatial-computing",
+      "id": "agency.spatial_computing.macos-spatial-metal-engineer",
+      "label": "macOS Spatial/Metal Engineer",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "spatial-computing",
+      "id": "agency.spatial_computing.terminal-integration-specialist",
+      "label": "Terminal Integration Specialist",
+      "lifecycle_state": "reference_only",
+      "risk_tier": "medium",
+      "source_audit_status": "REWRITE",
+      "type": "agent"
+    },
+    {
+      "division": "spatial-computing",
+      "id": "agency.spatial_computing.visionos-spatial-engineer",
+      "label": "visionOS Spatial Engineer",
+      "lifecycle_state": "reference_only",
+      "risk_tier": "medium",
+      "source_audit_status": "REWRITE",
+      "type": "agent"
+    },
+    {
+      "division": "spatial-computing",
+      "id": "agency.spatial_computing.xr-cockpit-interaction-specialist",
+      "label": "XR Cockpit Interaction Specialist",
+      "lifecycle_state": "reference_only",
+      "risk_tier": "medium",
+      "source_audit_status": "REWRITE",
+      "type": "agent"
+    },
+    {
+      "division": "spatial-computing",
+      "id": "agency.spatial_computing.xr-immersive-developer",
+      "label": "XR Immersive Developer",
+      "lifecycle_state": "reference_only",
+      "risk_tier": "medium",
+      "source_audit_status": "REWRITE",
+      "type": "agent"
+    },
+    {
+      "division": "spatial-computing",
+      "id": "agency.spatial_computing.xr-interface-architect",
+      "label": "XR Interface Architect",
+      "lifecycle_state": "reference_only",
+      "risk_tier": "medium",
+      "source_audit_status": "REWRITE",
+      "type": "agent"
+    },
+    {
+      "division": "specialized",
+      "id": "agency.specialized.accounts-payable-agent",
+      "label": "Accounts Payable Agent",
+      "lifecycle_state": "advisory",
+      "risk_tier": "high",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "specialized",
+      "id": "agency.specialized.agentic-identity-trust-architect",
+      "label": "Agentic Identity & Trust Architect",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "specialized",
+      "id": "agency.specialized.agents-orchestrator",
+      "label": "Agents Orchestrator",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "specialized",
+      "id": "agency.specialized.aging-parent-care-companion",
+      "label": "Aging Parent Care Companion",
+      "lifecycle_state": "reference_only",
+      "risk_tier": "high",
+      "source_audit_status": "REWRITE",
+      "type": "agent"
+    },
+    {
+      "division": "specialized",
+      "id": "agency.specialized.automation-governance-architect",
+      "label": "Automation Governance Architect",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "specialized",
+      "id": "agency.specialized.business-strategist",
+      "label": "Business Strategist",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "specialized",
+      "id": "agency.specialized.change-management-consultant",
+      "label": "Change Management Consultant",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "specialized",
+      "id": "agency.specialized.chief-financial-officer",
+      "label": "Chief Financial Officer",
+      "lifecycle_state": "advisory",
+      "risk_tier": "high",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "specialized",
+      "id": "agency.specialized.chief-of-staff",
+      "label": "Chief of Staff",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "specialized",
+      "id": "agency.specialized.civil-engineer",
+      "label": "Civil Engineer",
+      "lifecycle_state": "reference_only",
+      "risk_tier": "high",
+      "source_audit_status": "REWRITE",
+      "type": "agent"
+    },
+    {
+      "division": "specialized",
+      "id": "agency.specialized.codebase-archaeologist",
+      "label": "Codebase Archaeologist",
+      "lifecycle_state": "advisory",
+      "risk_tier": "high",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "specialized",
+      "id": "agency.specialized.corporate-training-designer",
+      "label": "Corporate Training Designer",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "specialized",
+      "id": "agency.specialized.cultural-intelligence-strategist",
+      "label": "Cultural Intelligence Strategist",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "specialized",
+      "id": "agency.specialized.customer-service",
+      "label": "Customer Service",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "specialized",
+      "id": "agency.specialized.customer-success-manager",
+      "label": "Customer Success Manager",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "specialized",
+      "id": "agency.specialized.data-consolidation-agent",
+      "label": "Data Consolidation Agent",
+      "lifecycle_state": "reference_only",
+      "risk_tier": "medium",
+      "source_audit_status": "REWRITE",
+      "type": "agent"
+    },
+    {
+      "division": "specialized",
+      "id": "agency.specialized.data-privacy-officer",
+      "label": "Data Privacy Officer",
+      "lifecycle_state": "reference_only",
+      "risk_tier": "high",
+      "source_audit_status": "REWRITE",
+      "type": "agent"
+    },
+    {
+      "division": "specialized",
+      "id": "agency.specialized.developer-advocate",
+      "label": "Developer Advocate",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "specialized",
+      "id": "agency.specialized.document-generator",
+      "label": "Document Generator",
+      "lifecycle_state": "reference_only",
+      "risk_tier": "medium",
+      "source_audit_status": "REWRITE",
+      "type": "agent"
+    },
+    {
+      "division": "specialized",
+      "id": "agency.specialized.esg-sustainability-officer",
+      "label": "ESG & Sustainability Officer",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "specialized",
+      "id": "agency.specialized.fedramp-rmf-compliance-engineer",
+      "label": "FedRAMP & RMF Compliance Engineer",
+      "lifecycle_state": "advisory",
+      "risk_tier": "high",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "specialized",
+      "id": "agency.specialized.french-consulting-market-navigator",
+      "label": "French Consulting Market Navigator",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "specialized",
+      "id": "agency.specialized.government-digital-presales-consultant",
+      "label": "Government Digital Presales Consultant",
+      "lifecycle_state": "advisory",
+      "risk_tier": "high",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "specialized",
+      "id": "agency.specialized.grant-writer",
+      "label": "Grant Writer",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "specialized",
+      "id": "agency.specialized.healthcare-customer-service",
+      "label": "Healthcare Customer Service",
+      "lifecycle_state": "reference_only",
+      "risk_tier": "high",
+      "source_audit_status": "REWRITE",
+      "type": "agent"
+    },
+    {
+      "division": "specialized",
+      "id": "agency.specialized.healthcare-marketing-compliance-specialist",
+      "label": "Healthcare Marketing Compliance Specialist",
+      "lifecycle_state": "advisory",
+      "risk_tier": "high",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "specialized",
+      "id": "agency.specialized.hospitality-guest-services",
+      "label": "Hospitality Guest Services",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "specialized",
+      "id": "agency.specialized.hr-onboarding",
+      "label": "HR Onboarding",
+      "lifecycle_state": "reference_only",
+      "risk_tier": "high",
+      "source_audit_status": "REWRITE",
+      "type": "agent"
+    },
+    {
+      "division": "specialized",
+      "id": "agency.specialized.identity-graph-operator",
+      "label": "Identity Graph Operator",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "specialized",
+      "id": "agency.specialized.korean-business-navigator",
+      "label": "Korean Business Navigator",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "specialized",
+      "id": "agency.specialized.language-translator",
+      "label": "Language Translator",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "specialized",
+      "id": "agency.specialized.legal-billing-time-tracking",
+      "label": "Legal Billing & Time Tracking",
+      "lifecycle_state": "reference_only",
+      "risk_tier": "high",
+      "source_audit_status": "REWRITE",
+      "type": "agent"
+    },
+    {
+      "division": "specialized",
+      "id": "agency.specialized.legal-client-intake",
+      "label": "Legal Client Intake",
+      "lifecycle_state": "advisory",
+      "risk_tier": "high",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "specialized",
+      "id": "agency.specialized.legal-document-review",
+      "label": "Legal Document Review",
+      "lifecycle_state": "reference_only",
+      "risk_tier": "high",
+      "source_audit_status": "REWRITE",
+      "type": "agent"
+    },
+    {
+      "division": "specialized",
+      "id": "agency.specialized.loan-officer-assistant",
+      "label": "Loan Officer Assistant",
+      "lifecycle_state": "reference_only",
+      "risk_tier": "high",
+      "source_audit_status": "REWRITE",
+      "type": "agent"
+    },
+    {
+      "division": "specialized",
+      "id": "agency.specialized.lsp-index-engineer",
+      "label": "LSP/Index Engineer",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "specialized",
+      "id": "agency.specialized.m-a-integration-manager",
+      "label": "M&A Integration Manager",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "specialized",
+      "id": "agency.specialized.mcp-builder",
+      "label": "MCP Builder",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "specialized",
+      "id": "agency.specialized.medical-billing-coding-specialist",
+      "label": "Medical Billing & Coding Specialist",
+      "lifecycle_state": "advisory",
+      "risk_tier": "high",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "specialized",
+      "id": "agency.specialized.model-qa-specialist",
+      "label": "Model QA Specialist",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "specialized",
+      "id": "agency.specialized.operations-manager",
+      "label": "Operations Manager",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "specialized",
+      "id": "agency.specialized.organizational-psychologist",
+      "label": "Organizational Psychologist",
+      "lifecycle_state": "advisory",
+      "risk_tier": "high",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "specialized",
+      "id": "agency.specialized.personal-growth-mentor",
+      "label": "Personal Growth Mentor",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "specialized",
+      "id": "agency.specialized.pricing-analyst",
+      "label": "Pricing Analyst",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "specialized",
+      "id": "agency.specialized.real-estate-buyer-seller",
+      "label": "Real Estate Buyer & Seller",
+      "lifecycle_state": "reference_only",
+      "risk_tier": "high",
+      "source_audit_status": "REWRITE",
+      "type": "agent"
+    },
+    {
+      "division": "specialized",
+      "id": "agency.specialized.recruitment-specialist",
+      "label": "Recruitment Specialist",
+      "lifecycle_state": "reference_only",
+      "risk_tier": "high",
+      "source_audit_status": "REWRITE",
+      "type": "agent"
+    },
+    {
+      "division": "specialized",
+      "id": "agency.specialized.report-distribution-agent",
+      "label": "Report Distribution Agent",
+      "lifecycle_state": "reference_only",
+      "risk_tier": "medium",
+      "source_audit_status": "REWRITE",
+      "type": "agent"
+    },
+    {
+      "division": "specialized",
+      "id": "agency.specialized.resume-tailor",
+      "label": "Resume Tailor",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "specialized",
+      "id": "agency.specialized.retail-customer-returns",
+      "label": "Retail Customer Returns",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "specialized",
+      "id": "agency.specialized.sales-data-extraction-agent",
+      "label": "Sales Data Extraction Agent",
+      "lifecycle_state": "reference_only",
+      "risk_tier": "medium",
+      "source_audit_status": "REWRITE",
+      "type": "agent"
+    },
+    {
+      "division": "specialized",
+      "id": "agency.specialized.sales-outreach",
+      "label": "Sales Outreach",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "specialized",
+      "id": "agency.specialized.salesforce-architect",
+      "label": "Salesforce Architect",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "specialized",
+      "id": "agency.specialized.strategy-duel-agent",
+      "label": "Strategy Duel Agent",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "specialized",
+      "id": "agency.specialized.study-abroad-advisor",
+      "label": "Study Abroad Advisor",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "specialized",
+      "id": "agency.specialized.supply-chain-strategist",
+      "label": "Supply Chain Strategist",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "specialized",
+      "id": "agency.specialized.workflow-architect",
+      "label": "Workflow Architect",
+      "lifecycle_state": "active",
+      "risk_tier": "medium",
+      "source_audit_status": "READY",
+      "type": "agent"
+    },
+    {
+      "division": "specialized",
+      "id": "agency.specialized.zk-steward",
+      "label": "ZK Steward",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "support",
+      "id": "agency.support.analytics-reporter",
+      "label": "Analytics Reporter",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "support",
+      "id": "agency.support.executive-summary-generator",
+      "label": "Executive Summary Generator",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "support",
+      "id": "agency.support.finance-tracker",
+      "label": "Finance Tracker",
+      "lifecycle_state": "advisory",
+      "risk_tier": "high",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "support",
+      "id": "agency.support.infrastructure-maintainer",
+      "label": "Infrastructure Maintainer",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "support",
+      "id": "agency.support.legal-compliance-checker",
+      "label": "Legal Compliance Checker",
+      "lifecycle_state": "reference_only",
+      "risk_tier": "high",
+      "source_audit_status": "REWRITE",
+      "type": "agent"
+    },
+    {
+      "division": "support",
+      "id": "agency.support.support-responder",
+      "label": "Support Responder",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "testing",
+      "id": "agency.testing.accessibility-auditor",
+      "label": "Accessibility Auditor",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "testing",
+      "id": "agency.testing.api-tester",
+      "label": "API Tester",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "testing",
+      "id": "agency.testing.evidence-collector",
+      "label": "Evidence Collector",
+      "lifecycle_state": "reference_only",
+      "risk_tier": "medium",
+      "source_audit_status": "REWRITE",
+      "type": "agent"
+    },
+    {
+      "division": "testing",
+      "id": "agency.testing.performance-benchmarker",
+      "label": "Performance Benchmarker",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "testing",
+      "id": "agency.testing.reality-checker",
+      "label": "Reality Checker",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "testing",
+      "id": "agency.testing.test-automation-engineer",
+      "label": "Test Automation Engineer",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "testing",
+      "id": "agency.testing.test-results-analyzer",
+      "label": "Test Results Analyzer",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "testing",
+      "id": "agency.testing.tool-evaluator",
+      "label": "Tool Evaluator",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "division": "testing",
+      "id": "agency.testing.workflow-optimizer",
+      "label": "Workflow Optimizer",
+      "lifecycle_state": "advisory",
+      "risk_tier": "medium",
+      "source_audit_status": "HARDEN",
+      "type": "agent"
+    },
+    {
+      "id": "capability.academic",
+      "label": "academic",
+      "type": "capability"
+    },
+    {
+      "id": "capability.accessibility",
+      "label": "accessibility",
+      "type": "capability"
+    },
+    {
+      "id": "capability.ai_ml",
+      "label": "ai_ml",
+      "type": "capability"
+    },
+    {
+      "id": "capability.analytics",
+      "label": "analytics",
+      "type": "capability"
+    },
+    {
+      "id": "capability.architecture",
+      "label": "architecture",
+      "type": "capability"
+    },
+    {
+      "id": "capability.automation_workflow",
+      "label": "automation_workflow",
+      "type": "capability"
+    },
+    {
+      "id": "capability.backend",
+      "label": "backend",
+      "type": "capability"
+    },
+    {
+      "id": "capability.blockchain_web3",
+      "label": "blockchain_web3",
+      "type": "capability"
+    },
+    {
+      "id": "capability.civil_physical_systems",
+      "label": "civil_physical_systems",
+      "type": "capability"
+    },
+    {
+      "id": "capability.compliance_governance",
+      "label": "compliance_governance",
+      "type": "capability"
+    },
+    {
+      "id": "capability.content_generation",
+      "label": "content_generation",
+      "type": "capability"
+    },
+    {
+      "id": "capability.customer_support",
+      "label": "customer_support",
+      "type": "capability"
+    },
+    {
+      "id": "capability.data_engineering",
+      "label": "data_engineering",
+      "type": "capability"
+    },
+    {
+      "id": "capability.data_governance",
+      "label": "data_governance",
+      "type": "capability"
+    },
+    {
+      "id": "capability.database",
+      "label": "database",
+      "type": "capability"
+    },
+    {
+      "id": "capability.design",
+      "label": "design",
+      "type": "capability"
+    },
+    {
+      "id": "capability.devops",
+      "label": "devops",
+      "type": "capability"
+    },
+    {
+      "id": "capability.documentation",
+      "label": "documentation",
+      "type": "capability"
+    },
+    {
+      "id": "capability.education_training",
+      "label": "education_training",
+      "type": "capability"
+    },
+    {
+      "id": "capability.embedded_iot",
+      "label": "embedded_iot",
+      "type": "capability"
+    },
+    {
+      "id": "capability.engineering",
+      "label": "engineering",
+      "type": "capability"
+    },
+    {
+      "id": "capability.finance",
+      "label": "finance",
+      "type": "capability"
+    },
+    {
+      "id": "capability.frontend",
+      "label": "frontend",
+      "type": "capability"
+    },
+    {
+      "id": "capability.game_development",
+      "label": "game_development",
+      "type": "capability"
+    },
+    {
+      "id": "capability.gis",
+      "label": "gis",
+      "type": "capability"
+    },
+    {
+      "id": "capability.gis_spatial",
+      "label": "gis_spatial",
+      "type": "capability"
+    },
+    {
+      "id": "capability.git_version_control",
+      "label": "git_version_control",
+      "type": "capability"
+    },
+    {
+      "id": "capability.healthcare",
+      "label": "healthcare",
+      "type": "capability"
+    },
+    {
+      "id": "capability.identity_access",
+      "label": "identity_access",
+      "type": "capability"
+    },
+    {
+      "id": "capability.integration",
+      "label": "integration",
+      "type": "capability"
+    },
+    {
+      "id": "capability.investment",
+      "label": "investment",
+      "type": "capability"
+    },
+    {
+      "id": "capability.legal",
+      "label": "legal",
+      "type": "capability"
+    },
+    {
+      "id": "capability.llm_training",
+      "label": "llm_training",
+      "type": "capability"
+    },
+    {
+      "id": "capability.localization",
+      "label": "localization",
+      "type": "capability"
+    },
+    {
+      "id": "capability.marketing",
+      "label": "marketing",
+      "type": "capability"
+    },
+    {
+      "id": "capability.mobile",
+      "label": "mobile",
+      "type": "capability"
+    },
+    {
+      "id": "capability.multi_agent",
+      "label": "multi_agent",
+      "type": "capability"
+    },
+    {
+      "id": "capability.networking",
+      "label": "networking",
+      "type": "capability"
+    },
+    {
+      "id": "capability.operations",
+      "label": "operations",
+      "type": "capability"
+    },
+    {
+      "id": "capability.paid_media",
+      "label": "paid_media",
+      "type": "capability"
+    },
+    {
+      "id": "capability.payments_billing",
+      "label": "payments_billing",
+      "type": "capability"
+    },
+    {
+      "id": "capability.performance",
+      "label": "performance",
+      "type": "capability"
+    },
+    {
+      "id": "capability.privacy",
+      "label": "privacy",
+      "type": "capability"
+    },
+    {
+      "id": "capability.product",
+      "label": "product",
+      "type": "capability"
+    },
+    {
+      "id": "capability.product_management",
+      "label": "product_management",
+      "type": "capability"
+    },
+    {
+      "id": "capability.project_management",
+      "label": "project_management",
+      "type": "capability"
+    },
+    {
+      "id": "capability.research",
+      "label": "research",
+      "type": "capability"
+    },
+    {
+      "id": "capability.sales",
+      "label": "sales",
+      "type": "capability"
+    },
+    {
+      "id": "capability.search_retrieval",
+      "label": "search_retrieval",
+      "type": "capability"
+    },
+    {
+      "id": "capability.security",
+      "label": "security",
+      "type": "capability"
+    },
+    {
+      "id": "capability.seo_discovery",
+      "label": "seo_discovery",
+      "type": "capability"
+    },
+    {
+      "id": "capability.social_media",
+      "label": "social_media",
+      "type": "capability"
+    },
+    {
+      "id": "capability.spatial_computing",
+      "label": "spatial_computing",
+      "type": "capability"
+    },
+    {
+      "id": "capability.specialized",
+      "label": "specialized",
+      "type": "capability"
+    },
+    {
+      "id": "capability.sre_reliability",
+      "label": "sre_reliability",
+      "type": "capability"
+    },
+    {
+      "id": "capability.support",
+      "label": "support",
+      "type": "capability"
+    },
+    {
+      "id": "capability.tax",
+      "label": "tax",
+      "type": "capability"
+    },
+    {
+      "id": "capability.testing",
+      "label": "testing",
+      "type": "capability"
+    },
+    {
+      "id": "capability.xr_spatial_computing",
+      "label": "xr_spatial_computing",
+      "type": "capability"
+    },
+    {
+      "id": "division.academic",
+      "label": "academic",
+      "type": "division"
+    },
+    {
+      "id": "division.design",
+      "label": "design",
+      "type": "division"
+    },
+    {
+      "id": "division.engineering",
+      "label": "engineering",
+      "type": "division"
+    },
+    {
+      "id": "division.finance",
+      "label": "finance",
+      "type": "division"
+    },
+    {
+      "id": "division.game-development",
+      "label": "game-development",
+      "type": "division"
+    },
+    {
+      "id": "division.gis",
+      "label": "gis",
+      "type": "division"
+    },
+    {
+      "id": "division.healthcare",
+      "label": "healthcare",
+      "type": "division"
+    },
+    {
+      "id": "division.marketing",
+      "label": "marketing",
+      "type": "division"
+    },
+    {
+      "id": "division.paid-media",
+      "label": "paid-media",
+      "type": "division"
+    },
+    {
+      "id": "division.product",
+      "label": "product",
+      "type": "division"
+    },
+    {
+      "id": "division.project-management",
+      "label": "project-management",
+      "type": "division"
+    },
+    {
+      "id": "division.sales",
+      "label": "sales",
+      "type": "division"
+    },
+    {
+      "id": "division.security",
+      "label": "security",
+      "type": "division"
+    },
+    {
+      "id": "division.spatial-computing",
+      "label": "spatial-computing",
+      "type": "division"
+    },
+    {
+      "id": "division.specialized",
+      "label": "specialized",
+      "type": "division"
+    },
+    {
+      "id": "division.support",
+      "label": "support",
+      "type": "division"
+    },
+    {
+      "id": "division.testing",
+      "label": "testing",
+      "type": "division"
+    }
+  ],
+  "provider_id": "agency-agents",
+  "revision": "918283828f4472d6589b51096c2dd5d631ef364ed8237e67588d13880382d60f",
+  "schema_version": "2.0.0"
 }

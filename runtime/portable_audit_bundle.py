@@ -49,8 +49,8 @@ EXCLUDED_DIRECTORY_NAMES = frozenset(
     }
 )
 EXCLUDED_VOLATILE_PATHS = (
-    (".engineering-bootstrap", "operation-bus"),
-    (".engineering-bootstrap", "runtime"),
+    (".agentic_engineering_os_px", "operation-bus"),
+    (".agentic_engineering_os_px", "runtime"),
 )
 
 

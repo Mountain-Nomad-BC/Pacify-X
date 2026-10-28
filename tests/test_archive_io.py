@@ -122,7 +122,7 @@ def _manifest():
         "source_path": "runtime/example.py",
         "installed_path": "fixture/example.py",
         "artifact_type": "runtime-module",
-        "owner": "engineering-bootstrap-runtime",
+        "owner": "agentic-engineering-os-px-runtime",
         "source_sha256": hashlib.sha256(b"").hexdigest(),
         "source_size_bytes": 0,
         "required": True,
@@ -447,6 +447,61 @@ def test_projection_wildcard_work_is_limited_to_its_literal_prefix(
     assert set(calls) == set(paths[:100])
 
 
+def _glob_component_regex(component: str) -> str:
+    """Translate one glob component into a regex fragment (no slashes)."""
+    import re
+
+    out = []
+    i, n = 0, len(component)
+    while i < n:
+        c = component[i]
+        if c == "*":
+            out.append("[^/]*")
+            i += 1
+        elif c == "?":
+            out.append("[^/]")
+            i += 1
+        elif c == "[":
+            j = i + 1
+            if j < n and component[j] == "!":
+                j += 1
+            if j < n and component[j] == "]":
+                j += 1
+            while j < n and component[j] != "]":
+                j += 1
+            if j >= n:
+                out.append("\\[")
+                i += 1
+            else:
+                inner = component[i + 1 : j]
+                negate = "^" if inner.startswith("!") else ""
+                body = inner[1:] if inner.startswith("!") else inner
+                out.append("[" + negate + body.replace("\\", "\\\\") + "]")
+                i = j + 1
+        else:
+            out.append(re.escape(c))
+            i += 1
+    return "".join(out)
+
+
+def _glob_matches(pattern: str, path: str) -> bool:
+    """3.11-safe stand-in for PurePosixPath.full_match(case_sensitive=False).
+
+    Matches whole components: ``*``/``?`` never cross ``/``, ``**`` matches
+    zero or more whole components, and comparison is case-insensitive via
+    Unicode simple case folding — the same semantics the test relies on.
+    """
+    import re
+
+    regex = ""
+    for component in pattern.split("/"):
+        if component == "**":
+            regex += "(?:[^/]+/)*"
+        else:
+            regex += _glob_component_regex(component) + "/"
+    return re.fullmatch(regex, path + "/", flags=re.IGNORECASE) is not None
+
+
 def test_projection_matching_preserves_independent_component_glob_semantics(
     tmp_path, monkeypatch
 ):
@@ -479,7 +534,7 @@ def test_projection_matching_preserves_independent_component_glob_semantics(
             (
                 p
                 for p in paths
-                if PurePosixPath(p).full_match(pattern, case_sensitive=False)
+                if _glob_matches(pattern, p)
             ),
             key=lambda p: (p.casefold(), p),
         )

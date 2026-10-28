@@ -183,8 +183,8 @@ def test_copied_map_cannot_claim_freshness_for_different_project(tmp_path: Path)
     other.mkdir()
     (other / "service.py").write_text("def new(): return False\n", encoding="utf-8")
     shutil.copytree(
-        original / ".engineering-bootstrap" / "project-map",
-        other / ".engineering-bootstrap" / "project-map",
+        original / ".agentic_engineering_os_px" / "project-map",
+        other / ".agentic_engineering_os_px" / "project-map",
     )
 
     assert validate_project_map(other)["valid"]
@@ -193,7 +193,7 @@ def test_copied_map_cannot_claim_freshness_for_different_project(tmp_path: Path)
     assert not fresh["valid"]
     assert any("differs from requested project" in error for error in fresh["errors"])
     direct_fresh = validate_project_map(
-        other / ".engineering-bootstrap" / "project-map", check_freshness=True
+        other / ".agentic_engineering_os_px" / "project-map", check_freshness=True
     )
     assert not direct_fresh["valid"]
     assert any("differs from requested project" in error for error in direct_fresh["errors"])
@@ -210,7 +210,7 @@ def test_project_map_status_supports_honest_fast_projection_check(tmp_path: Path
     assert quick["validation_scope"] == "sealed-projection-metadata"
     assert quick["content_hashes_verified"] is False
 
-    receipt_path = project / ".engineering-bootstrap/project-map/map-receipt.json"
+    receipt_path = project / ".agentic_engineering_os_px/project-map/map-receipt.json"
     receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
     receipt["map_revision"] = "forged"
     receipt_path.write_text(json.dumps(receipt), encoding="utf-8")
@@ -253,7 +253,7 @@ def test_sensitive_sources_are_excluded_before_inventory_and_retrieval(tmp_path:
         "def development_mode(): return 'dev'\n", encoding="utf-8"
     )
     result = build_project_map(p)
-    map_dir = p / ".engineering-bootstrap/project-map"
+    map_dir = p / ".agentic_engineering_os_px/project-map"
     combined = b"\n".join(path.read_bytes() for path in map_dir.iterdir() if path.is_file())
     assert b"canary-secret-do-not-store" not in combined
     inventory = [
@@ -293,14 +293,14 @@ def test_caller_declared_prefixes_are_excluded_and_freshness_is_reproducible(
     assert result["valid"]
     assert validate_project_map(project, check_freshness=True)["valid"]
     manifest = json.loads(
-        (project / ".engineering-bootstrap/project-map/project-manifest.json").read_text(
+        (project / ".agentic_engineering_os_px/project-map/project-manifest.json").read_text(
             encoding="utf-8"
         )
     )
     assert manifest["caller_exclude_prefixes"] == ["external-references"]
     assert manifest["exclusion_counts"]["caller_declared"] == 1
     inventory = (
-        project / ".engineering-bootstrap/project-map/file-inventory.jsonl"
+        project / ".agentic_engineering_os_px/project-map/file-inventory.jsonl"
     ).read_text(encoding="utf-8")
     assert "dead-link-placeholder" not in inventory
 

@@ -33,8 +33,91 @@ REQUIRED_KINDS = frozenset(
         "source",
         "test",
         "workflow",
+        "semantic_generation", "provider_config", "tool_config", "policy", "authority",
+        "retrieval_index",
     }
 )
+
+
+class DependencyEventSubscription:
+    """Deterministic pull consumer over the canonical durable operation bus.
+
+    Cursor checkpoint custody belongs to the caller's existing durable owner.
+    This object never publishes events or installs a second event authority.
+    Unsubscribe fences late reads using a local generation.
+    """
+    def __init__(self, bus, consumer_id: str, route_ids, *, after_revision=0):
+        from .operational_event_bus import OperationalEventBus
+        if type(bus) is not OperationalEventBus:
+            raise TypeError("subscription requires the canonical operational bus")
+        self.consumer_id = dependency_identity(consumer_id)
+        if type(route_ids) is not tuple or not 1 <= len(route_ids) <= 128:
+            raise ValueError("subscription requires bounded explicit route identities")
+        routes = tuple(dependency_identity(route) for route in route_ids)
+        if len(set(routes)) != len(routes):
+            raise ValueError("subscription routes must be unique")
+        if type(after_revision) is not int or after_revision < 0:
+            raise ValueError("subscription requires an explicit nonnegative cursor")
+        from threading import RLock
+        self._lock = RLock()
+        self._bus, self._routes = bus, frozenset(routes)
+        self._cursor, self._generation, self._active = after_revision, 1, True
+
+    def descriptor(self):
+        import hashlib
+        from .json_io import bounded_canonical_json_bytes
+        body = {"schema_version": "px.dependency-event-subscription/1.0",
+                "consumer_id": self.consumer_id, "route_ids": sorted(self._routes),
+                "bus_relative": self._bus.root.relative_to(self._bus.allowed_root).as_posix()}
+        return {**body, "descriptor_sha256": hashlib.sha256(
+            bounded_canonical_json_bytes(body, max_bytes=65536)).hexdigest()}
+
+    def unsubscribe(self):
+        with self._lock:
+            self._active = False
+            self._generation += 1
+            return {"active": False, "generation": self._generation, "cursor": self._cursor}
+
+    def read(self, *, limit=100):
+        if type(limit) is not int or not 1 <= limit <= 1000:
+            raise ValueError("subscription page limit must be bounded")
+        with self._lock:
+            if not self._active:
+                raise ValueError("subscription is unsubscribed")
+            generation, cursor = self._generation, self._cursor
+        page = self._bus.replay(after_revision=cursor, limit=limit)
+        if page.get("valid") is not True or page.get("gap") is True:
+            raise ValueError("subscription refuses degraded event ancestry")
+        selected = [event for event in page["events"]
+                    if event["event"]["source"]["route_id"] in self._routes]
+        with self._lock:
+            if not self._active or self._generation != generation or self._cursor != cursor:
+                raise ValueError("subscription changed during page acquisition")
+            self._cursor = page["next_revision"]
+            return {"schema_version": "px.dependency-event-page/1.0",
+                    "consumer_id": self.consumer_id, "subscription_generation": generation,
+                    "after_revision": cursor, "next_revision": self._cursor,
+                    "bus_epoch": page["epoch"], "events": selected,
+                    "scanned_event_count": len(page["events"]), "has_more": page["has_more"],
+                    "authority_granted": False, "cursor_persisted": False}
+
+
+def subscribe_dependency_events(bus, consumer_id, route_ids, *, after_revision=0):
+    """Create a consumer whose events remain native bus envelopes and revision order."""
+    return DependencyEventSubscription(bus, consumer_id, route_ids, after_revision=after_revision)
+
+
+def restore_dependency_subscription(bus, descriptor, *, after_revision):
+    """Reconstruct the same consumer against the supplied canonical bus owner."""
+    if type(descriptor) is not dict or set(descriptor) != {"schema_version", "consumer_id",
+            "route_ids", "bus_relative", "descriptor_sha256"} or type(descriptor["route_ids"]) is not list:
+        raise ValueError("exact subscription descriptor required")
+    subscription = subscribe_dependency_events(bus, descriptor["consumer_id"],
+        tuple(descriptor["route_ids"]), after_revision=after_revision)
+    if subscription.descriptor() != descriptor:
+        subscription.unsubscribe()
+        raise ValueError("subscription descriptor differs from its canonical owner")
+    return subscription
 
 
 def context_vector_for_dependencies(project_id: str, scope: str,
@@ -85,7 +168,6 @@ def context_vector_for_dependencies(project_id: str, scope: str,
         components[component] = None if any(value is None for value in records.values()) else hashlib.sha256(
             bounded_canonical_json_bytes(records, max_bytes=16*1024**2)).hexdigest()
     return context_vector(project_id, scope, components, required_components=required_components)
-
 
 
 def load_dependency_authority(root: Path) -> dict[str, Any]:
@@ -212,6 +294,9 @@ def _graph_inputs(nodes, edges):
     for count, item in enumerate(node_iterator, 1):
         if count > MAX_NODES:
             raise ValueError("dependency node budget exceeded")
+        from .dependency_identity import DependencyIdentity
+        if type(item) is DependencyIdentity:
+            item = {"node_id": item.node_id, "kind": item.kind, "revision": item.revision}
         if type(item) is not dict or set(item) != {"node_id", "kind", "revision"}:
             raise ValueError("dependency node record is malformed")
         node_id, revision = identity(item["node_id"]), identity(item["revision"])
@@ -314,6 +399,13 @@ def compute_invalidation_cone(
     for count, (node_id, revision) in enumerate(current_revisions.items(), 1):
         if count > MAX_NODES:
             raise ValueError("current revision count budget exceeded")
+        from .dependency_identity import DependencyIdentity, read_dependency_identity
+        if type(revision) is dict:
+            revision = read_dependency_identity(revision)
+        if type(revision) is DependencyIdentity:
+            if revision.node_id != node_id:
+                raise ValueError("current typed revision belongs to another dependency")
+            revision = revision.revision
         node_id, revision = dependency_identity(node_id), dependency_identity(revision)
         revision_bytes += len(node_id.encode("utf-8")) + len(revision.encode("utf-8"))
         if revision_bytes > 32 * 1024 * 1024:

@@ -324,7 +324,7 @@ def test_wal_guard_rejects_before_journal_or_target_publication(tmp_path: Path) 
 
 
 def _write_startup_store(project: Path) -> tuple[dict[str, object], dict[str, object]]:
-    coordination = project / ".engineering-bootstrap" / "coordination"
+    coordination = project / ".agentic_engineering_os_px" / "coordination"
     coordination.mkdir(parents=True)
     state = {
         "schema_version": "1.2",
@@ -363,7 +363,7 @@ def _write_startup_store(project: Path) -> tuple[dict[str, object], dict[str, ob
 
 def test_startup_checks_event_ancestry_and_strict_memory_counts(tmp_path: Path) -> None:
     state, event = _write_startup_store(tmp_path)
-    memory = tmp_path / ".engineering-bootstrap" / "coordination" / "memory"
+    memory = tmp_path / ".agentic_engineering_os_px" / "coordination" / "memory"
     memory.mkdir()
     record = {
         "memory_id": "memory-a",
@@ -380,12 +380,12 @@ def test_startup_checks_event_ancestry_and_strict_memory_counts(tmp_path: Path) 
 
     state["memory"]["project_records"] = 1
     _seal_state(state)
-    state_path = tmp_path / ".engineering-bootstrap" / "coordination" / "state.json"
+    state_path = tmp_path / ".agentic_engineering_os_px" / "coordination" / "state.json"
     state_path.write_text(json.dumps(state), encoding="utf-8")
     event["after_hash"] = state["state_hash"]
     event.pop("event_sha256")
     event["event_sha256"] = _hash(event)
-    events_path = tmp_path / ".engineering-bootstrap" / "coordination" / "events.jsonl"
+    events_path = tmp_path / ".agentic_engineering_os_px" / "coordination" / "events.jsonl"
     events_path.write_text(json.dumps(event) + "\n", encoding="utf-8")
     assert validate_coordination_startup(tmp_path)["valid"] is True
 
@@ -395,7 +395,7 @@ def test_bounded_startup_fails_closed_on_hostile_coordination_state(
 ) -> None:
     state, _event = _write_startup_store(tmp_path)
     state["active_plan"] = "missing-plan"
-    state_path = tmp_path / ".engineering-bootstrap" / "coordination" / "state.json"
+    state_path = tmp_path / ".agentic_engineering_os_px" / "coordination" / "state.json"
     state_path.write_text(json.dumps(state), encoding="utf-8")
 
     with pytest.raises(StateInvariantError) as captured:

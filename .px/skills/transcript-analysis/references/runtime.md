@@ -1,6 +1,6 @@
 # Transcript runtime
 
-Use `engineering-bootstrap transcripts profile` to inspect resolved configuration. No workstation path is a committed default. An external adapter root may be supplied through an explicit profile stored in the active project or outside the repository.
+Use `agentic-engineering-os-px transcripts profile` to inspect resolved configuration. No workstation path is a committed default. An external adapter root may be supplied through an explicit profile stored in the active project or outside the repository.
 
 Use `transcripts adapter-plan` to produce a contained argv plan for an external runner. The plan records the runner hash, disables shell interpretation, and grants no execution authority.
 

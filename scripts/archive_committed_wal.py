@@ -45,7 +45,7 @@ def _journal(root, wal_root):
     _reject_nominal_link_chain(journal / 'committed', root, label='committed archive root')
     _reject_nominal_link_chain(journal / 'archives', root, label='archive custody root')
     relative = journal.relative_to(root)
-    if journal.name not in {'wal', '.wal'} or '.engineering-bootstrap' not in relative.parts:
+    if journal.name not in {'wal', '.wal'} or '.agentic_engineering_os_px' not in relative.parts:
         raise ValueError('WAL root is not an admitted PX journal')
     return root, JsonWal(journal, root)
 
@@ -115,7 +115,7 @@ def _plan(root, wal, keep_latest):
                 manifest_sha256=hashlib.sha256(_canonical(manifest)).hexdigest(), selected_count=len(selected))
 
 
-def plan(root, *, wal_root=Path('.engineering-bootstrap/operation-bus/wal'), keep_latest=200):
+def plan(root, *, wal_root=Path('.agentic_engineering_os_px/operation-bus/wal'), keep_latest=200):
     root, wal = _journal(root, wal_root)
     return _plan(root, wal, keep_latest)
 
@@ -146,7 +146,7 @@ def _pending_intent(archive_root):
     return found[0] if found else None
 
 
-def apply(root, *, wal_root=Path('.engineering-bootstrap/operation-bus/wal'), keep_latest=200):
+def apply(root, *, wal_root=Path('.agentic_engineering_os_px/operation-bus/wal'), keep_latest=200):
     from runtime.wal_transaction import _wal_lock
     root, wal = _journal(root, wal_root)
     if type(keep_latest) is not int or not 1 <= keep_latest <= 10000:
@@ -215,7 +215,7 @@ def apply(root, *, wal_root=Path('.engineering-bootstrap/operation-bus/wal'), ke
             reclaimed_bytes=manifest['size_bytes'] - target.stat().st_size,
             recovery='Restore verified exact before/after images and the bound generation authority in an owned fixture before replay; extraction into committed alone is not a recovery proof.',
             hard_delete_without_archive=False, cleanup_complete=True)
-        receipt_path = root / '.engineering-bootstrap/cleanup-receipts' / ('committed-wal-' + decision['manifest_sha256'] + '.json')
+        receipt_path = root / '.agentic_engineering_os_px/cleanup-receipts' / ('committed-wal-' + decision['manifest_sha256'] + '.json')
         _publish(receipt_path, receipt)
         _publish(intent_path, {**intent, 'state': 'complete'})
         return {**decision, 'apply': True, 'changed': True, 'archive': target.as_posix(),
@@ -227,7 +227,7 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--root", type=Path, default=Path.cwd())
     parser.add_argument(
-        "--wal-root", type=Path, default=Path(".engineering-bootstrap/operation-bus/wal")
+        "--wal-root", type=Path, default=Path(".agentic_engineering_os_px/operation-bus/wal")
     )
     parser.add_argument("--keep-latest", type=int, default=200)
     parser.add_argument("--apply", action="store_true")

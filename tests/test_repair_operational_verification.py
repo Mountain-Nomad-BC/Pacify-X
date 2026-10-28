@@ -21,10 +21,10 @@ def test_direct_script_entrypoint_imports_runtime_from_outside_project(tmp_path)
 
 
 def _project(tmp_path, *, phase="operational_verification", unresolved=None):
-    marker = tmp_path / ".engineering-bootstrap/project-record.json"
+    marker = tmp_path / ".agentic_engineering_os_px/project-record.json"
     marker.parent.mkdir(parents=True)
     marker.write_text(json.dumps({"project_id": "operational-test"}) + "\n", encoding="utf-8")
-    campaign = tmp_path / ".engineering-bootstrap/processing-order/repair-campaign.json"
+    campaign = tmp_path / ".agentic_engineering_os_px/processing-order/repair-campaign.json"
     campaign.parent.mkdir(parents=True)
     campaign.write_text(json.dumps({
         "schema_version": "px.repair-campaign/1.0",
@@ -55,7 +55,7 @@ def test_operational_producer_writes_independent_hash_bound_checks_accepted_by_f
         assert artifact.is_file()
         assert hashlib.sha256(artifact.read_bytes()).hexdigest() == check["artifact_sha256"]
     event_id = "gap-event:test:admitted"
-    campaign_path = (tmp_path / ".engineering-bootstrap/processing-order/repair-campaign.json").resolve().as_posix()
+    campaign_path = (tmp_path / ".agentic_engineering_os_px/processing-order/repair-campaign.json").resolve().as_posix()
     monkeypatch.setattr("runtime.operational_gap_ledger.read_snapshot", lambda _root: {
         "work_checkpoints": [{"event_id": "checkpoint:test", "active_gap_id": "PX-TEST"}],
         "work_admissions": [{
@@ -73,7 +73,7 @@ def test_operational_producer_rejects_open_or_unresolved_intake_without_receipt(
     _project(tmp_path, phase="repair", unresolved=["outstanding"])
     with pytest.raises(ProcessingOrderBlocked, match="closed zero-denominator"):
         produce_operational_verification(tmp_path)
-    assert not (tmp_path / ".engineering-bootstrap/processing-order/operational-verification").exists()
+    assert not (tmp_path / ".agentic_engineering_os_px/processing-order/operational-verification").exists()
 
 
 def test_operational_producer_retains_failing_artifact_and_freeze_rejects_it(tmp_path):

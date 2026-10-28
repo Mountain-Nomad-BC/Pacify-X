@@ -1,0 +1,62 @@
+============================= test session starts =============================
+platform win32 -- Python 3.14.7, pytest-9.1.1, pluggy-1.6.0 -- C:\Users\Ben\Documents\bootstrap_project\Pacify-X\Python\pythoncore-3.14-64\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\Ben\Documents\bootstrap_project\Pacify-X
+configfile: docs\repair\evidence\merge-2026-10-28\focused.ini
+collecting ... collected 52 items / 2 errors
+
+=================================== ERRORS ====================================
+______ ERROR collecting tests/test_prepared_group_operation_approval.py _______
+.venv-certify\Lib\site-packages\_pytest\python.py:508: in importtestmodule
+    mod = import_path(
+.venv-certify\Lib\site-packages\_pytest\pathlib.py:596: in import_path
+    importlib.import_module(module_name)
+Python\pythoncore-3.14-64\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1406: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1371: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1342: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:938: in _load_unlocked
+    ???
+.venv-certify\Lib\site-packages\_pytest\assertion\rewrite.py:188: in exec_module
+    exec(co, module.__dict__)
+tests\test_prepared_group_operation_approval.py:10: in <module>
+    from runtime.workflow_studio import WorkflowStudio
+E     File "C:\Users\Ben\Documents\bootstrap_project\Pacify-X\runtime\workflow_studio.py", line 1582
+E       execution_context=execution_context if prepared_effect_intents or group_worker else None,
+E       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   SyntaxError: keyword argument repeated: execution_context
+________ ERROR collecting tests/test_workflow_worker_import_custody.py ________
+.venv-certify\Lib\site-packages\_pytest\python.py:508: in importtestmodule
+    mod = import_path(
+.venv-certify\Lib\site-packages\_pytest\pathlib.py:596: in import_path
+    importlib.import_module(module_name)
+Python\pythoncore-3.14-64\Lib\importlib\__init__.py:88: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<frozen importlib._bootstrap>:1406: in _gcd_import
+    ???
+<frozen importlib._bootstrap>:1371: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1342: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:938: in _load_unlocked
+    ???
+.venv-certify\Lib\site-packages\_pytest\assertion\rewrite.py:188: in exec_module
+    exec(co, module.__dict__)
+tests\test_workflow_worker_import_custody.py:2: in <module>
+    from runtime.workflow_studio import WorkflowStudio
+E     File "C:\Users\Ben\Documents\bootstrap_project\Pacify-X\runtime\workflow_studio.py", line 1582
+E       execution_context=execution_context if prepared_effect_intents or group_worker else None,
+E       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   SyntaxError: keyword argument repeated: execution_context
+=========================== short test summary info ===========================
+ERROR tests/test_prepared_group_operation_approval.py
+ERROR tests/test_workflow_worker_import_custody.py
+!!!!!!!!!!!!!!!!!!! Interrupted: 2 errors during collection !!!!!!!!!!!!!!!!!!!
+============================== 2 errors in 1.08s ==============================
+

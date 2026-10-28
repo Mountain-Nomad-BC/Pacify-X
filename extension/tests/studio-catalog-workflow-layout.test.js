@@ -43,7 +43,7 @@ function fixture(t, { modern = true } = {}) {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'px-workflow-layout-catalog-'));
   t.after(() => fs.rmSync(root, { recursive: true, force: true }));
   const revision = path.join(
-    root, '.engineering-bootstrap', 'studios', 'workflows',
+    root, '.agentic_engineering_os_px', 'studios', 'workflows',
     'workflow-layout-demo-deadbeef', 'revisions', '1.0.0'
   );
   fs.mkdirSync(revision, { recursive: true });

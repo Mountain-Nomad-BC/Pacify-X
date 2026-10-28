@@ -136,7 +136,7 @@ def test_catalog_status_authenticates_rollback_and_disables_repeat_rollback(tmp_
     assert before["status"] == "promoted"
     assert before["rollback_available"] is True
     promotion_receipt = next(
-        (tmp_path / ".engineering-bootstrap/studios/skills").glob(
+        (tmp_path / ".agentic_engineering_os_px/studios/skills").glob(
             "*/revisions/1.1.0/promotion-receipt.json"
         )
     )

@@ -100,7 +100,7 @@ function fixture(t) {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'px-agent-builder-catalog-'));
   t.after(() => fs.rmSync(root, { recursive: true, force: true }));
   const revision = path.join(
-    root, '.engineering-bootstrap', 'studios', 'agents',
+    root, '.agentic_engineering_os_px', 'studios', 'agents',
     'agent-builder-demo-deadbeef', 'revisions', '1.0.0'
   );
   fs.mkdirSync(revision, { recursive: true });

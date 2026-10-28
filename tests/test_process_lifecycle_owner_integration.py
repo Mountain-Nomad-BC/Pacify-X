@@ -132,7 +132,7 @@ def test_supervisor_failure_matrix_closes_tree_and_drains(manager, tmp_path, mon
             raise failure
         monkeypatch.setattr(supervisor_module._WindowsContainedPopen, 'resume_owned', resume)
     elif fault == 'receipt':
-        def receipt(result):
+        def receipt(result, *, execution_context=None, **metadata):
             raise failure
         monkeypatch.setattr(supervisor, '_receipt', receipt)
     elif fault == 'disk':
@@ -182,7 +182,8 @@ def test_successful_supervision_uses_creation_time_job(manager, tmp_path, monkey
 
 
 @pytest.mark.parametrize('hostile', [False, True])
-def test_registration_oserror_is_not_reported_as_unstarted(manager, tmp_path, monkeypatch, hostile):
+@pytest.mark.parametrize('receipt_failure', [False, True])
+def test_registration_oserror_is_not_reported_as_unstarted(manager, tmp_path, monkeypatch, hostile, receipt_failure):
     original = manager.ledger.upsert
     class Hostile(OSError):
         def __setattr__(self, name, value):
@@ -196,6 +197,10 @@ def test_registration_oserror_is_not_reported_as_unstarted(manager, tmp_path, mo
             raise failure
         original(record)
     monkeypatch.setattr(manager.ledger, 'upsert', upsert)
+    if receipt_failure:
+        def unavailable_receipt(*args, **kwargs):
+            raise OSError('receipt publication unavailable')
+        monkeypatch.setattr(ProcessSupervisor, '_receipt', unavailable_receipt)
     with pytest.raises(OSError) as caught:
         ProcessSupervisor(manager).run([sys.executable, '-c', 'pass'], cwd=tmp_path,
             action=_action(tmp_path), project_id='fixture', run_id='oserror', lane_id='fixture', creator='fixture')

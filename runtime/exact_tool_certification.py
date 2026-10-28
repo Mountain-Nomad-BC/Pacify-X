@@ -857,7 +857,7 @@ def certify_exact_tools(
             )
 
     with tempfile.TemporaryDirectory(
-        prefix="engineering-bootstrap-tool-cert-"
+        prefix="agentic-engineering-os-px-tool-cert-"
     ) as directory:
         temp = Path(directory)
         fixtures = _prepare_fixtures(temp)

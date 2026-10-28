@@ -545,7 +545,7 @@ class ResourceManager:
             state_path = self.ledger.path.relative_to(root).as_posix()
         except ValueError as error:
             raise PermissionError("process closure state must belong to the canonical project") from error
-        if not state_path.startswith(".engineering-bootstrap/"):
+        if not state_path.startswith(".agentic_engineering_os_px/"):
             raise PermissionError("process closure requires native project resource state")
         custody = self.verify_owned_job(resource_id)
         record = self.ledger.get(resource_id)
@@ -563,7 +563,7 @@ class ResourceManager:
         from .studio_models import digest
         key = digest({"manager_state_path":identity["manager_state_path"],
             "resource_id":identity["resource_id"], "job_object_id":identity["job_object_id"]})
-        return root / ".engineering-bootstrap/runtime-core/process-tree-closures" / (key+".json")
+        return root / ".agentic_engineering_os_px/runtime-core/process-tree-closures" / (key+".json")
 
     def _publish_physical_process_tree_closure(self, resource_id: str) -> dict:
         """Publish only after the exact retained kernel Job reports zero members."""
@@ -610,7 +610,7 @@ class ResourceManager:
         reject_path_links(root)
         reject_path_links(self.ledger.path)
         state_path = self.ledger.path.relative_to(root).as_posix()
-        if not state_path.startswith(".engineering-bootstrap/"):
+        if not state_path.startswith(".agentic_engineering_os_px/"):
             raise PermissionError("physical closure requires native project state")
         identity = self._process_closure_identity(record, manager_state_path=state_path,
             job_object_id=job_object_id)

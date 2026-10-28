@@ -94,11 +94,7 @@ def _terms(value: str) -> set[str]:
     return set(WORD.findall(value.casefold()))
 
 
-def _stable(value: object) -> str:
-    rendered = json.dumps(
-        value, sort_keys=True, separators=(",", ":"), ensure_ascii=False
-    )
-    return hashlib.sha256(rendered.encode("utf-8")).hexdigest()
+from runtime.hash_utils import json_utf8_hash as _stable
 
 
 def _write_new(path: Path, value: str) -> None:

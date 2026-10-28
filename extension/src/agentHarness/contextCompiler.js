@@ -9,12 +9,18 @@ class ContextCompiler {
   constructor(options = {}) { this.retrievalProvider = options.retrievalProvider || null; }
 
   async compile(input) {
-    const budget = input.task.constraints.contextBudgetTokens;
-    if (!Number.isSafeInteger(budget) || budget < 1) throw new Error('context-budget-invalid');
-    if (!Array.isArray(input.explicitRefs || []) || (input.explicitRefs || []).length > 256) throw new Error('context-reference-count-budget');
+    const totalBudget = input.task.constraints.contextBudgetTokens;
+    if (!Number.isSafeInteger(totalBudget) || totalBudget < 1) throw new Error('context-budget-invalid');
+    const reservedTokens = input.requestReserveTokens === undefined ? 0 : input.requestReserveTokens;
+    if (!Number.isSafeInteger(reservedTokens) || reservedTokens < 0) throw new Error('provider-request-reserve-invalid');
+    const budget = totalBudget - reservedTokens;
+    if (budget < 1) throw new Error('provider-request-reserve-exceeds-context-budget');
+    for (const refs of [input.explicitRefs || [], input.experienceRefs || []]) {
+      if (!Array.isArray(refs) || refs.length > 256) throw new Error('context-reference-count-budget');
+    }
     const explicit = (input.explicitRefs || []).map((ref, i) => this._normalizeRef(ref, `explicit-${i + 1}`));
     const retrieved = this.retrievalProvider && input.librarian?.retrievalRequired
-      ? await this.retrievalProvider({ task: input.task, librarian: input.librarian, budgetTokens: budget })
+      ? await this.retrievalProvider({ task: input.task, librarian: input.librarian, budgetTokens: budget, signal: input.signal })
       : [];
     const instruction = [
       '[PX TASK STATE]', `Goal: ${input.task.goal}`, `Mode: ${input.task.mode}`, `Stage: ${input.task.stage}`,
@@ -23,9 +29,10 @@ class ContextCompiler {
     ].join('\n');
     const instructionTokens = roughTokens(instruction);
     if (instructionTokens > budget) throw new Error('context-instruction-exceeds-budget');
-    if (retrieved != null && !Array.isArray(retrieved)) throw new Error('context-retrieval-array-required');
+    if (!Array.isArray(retrieved)) throw new Error('context-retrieval-array-required');
+    if (retrieved.length > 120) throw new Error('retrieved-reference-count-exceeded');
     if ((retrieved || []).length + explicit.length > 256) throw new Error('context-reference-count-budget');
-    const considered = [...explicit, ...(Array.isArray(retrieved) ? retrieved.map((r, i) => this._normalizeRef(r, `retrieved-${i + 1}`)) : [])];
+    const considered = [...explicit, ...(input.experienceRefs || []).map((r, i) => this._normalizeRef(r, `experience-${i + 1}`)), ...(Array.isArray(retrieved) ? retrieved.map((r, i) => this._normalizeRef(r, `retrieved-${i + 1}`)) : [])];
     const seen = new Set(); const selected = []; let supplied = instructionTokens;
     for (const ref of considered) {
       const key = ref.sha256 || `${ref.kind}:${ref.source || ''}:${ref.label}`;

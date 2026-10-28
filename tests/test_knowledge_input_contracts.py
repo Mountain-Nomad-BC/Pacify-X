@@ -14,7 +14,7 @@ from tests.test_knowledge_core_controller import _project
 def controller(root):
     value = object.__new__(KnowledgeCoreController)
     value.project_root = root.resolve()
-    value.root = root / ".engineering-bootstrap/studios/knowledge"
+    value.root = root / ".agentic_engineering_os_px/studios/knowledge"
     value.authority = SimpleNamespace(verify_receipt=lambda payload: payload)
     return value
 
@@ -39,7 +39,10 @@ def fake_size(monkeypatch, target, size):
             return value
         fields = list(value)
         fields[6] = size
-        return type(value)(fields)
+        return type(value)(fields, {
+            "st_file_attributes": value.st_file_attributes,
+            "st_reparse_tag": value.st_reparse_tag,
+        })
 
     monkeypatch.setattr(Path, "stat", checked)
 
@@ -94,7 +97,7 @@ def test_knowledge_policy_bound_precedes_control_directory_write(tmp_path, monke
     forbid_body(monkeypatch, path)
     with pytest.raises((ValueError, PermissionError)):
         KnowledgeCoreController(root)
-    assert not (root / ".engineering-bootstrap").exists()
+    assert not (root / ".agentic_engineering_os_px").exists()
     assert not (root / "host-authority").exists()
 
 
@@ -134,7 +137,7 @@ def test_knowledge_original_junction_spelling_is_refused(
         monkeypatch.setenv("PX_STUDIO_KEY_ROOT", str(tmp_path / "host-authority"))
         with pytest.raises((ValueError, PermissionError)):
             KnowledgeCoreController(alias)
-        assert not (project / ".engineering-bootstrap").exists()
+        assert not (project / ".agentic_engineering_os_px").exists()
         assert not (tmp_path / "host-authority").exists()
 
 
@@ -182,7 +185,10 @@ def test_knowledge_complete_byte_preflight_precedes_first_body(
             return value
         fields = list(value)
         fields[6] = 64 * 1024 * 1024
-        return type(value)(fields)
+        return type(value)(fields, {
+            "st_file_attributes": value.st_file_attributes,
+            "st_reparse_tag": value.st_reparse_tag,
+        })
 
     def opened(path, *args, **kwargs):
         if path in paths:
@@ -261,7 +267,10 @@ def test_knowledge_history_total_is_checked_before_first_event_body(
             return value
         fields = list(value)
         fields[6] = 4 * 1024 * 1024
-        return type(value)(fields)
+        return type(value)(fields, {
+            "st_file_attributes": value.st_file_attributes,
+            "st_reparse_tag": value.st_reparse_tag,
+        })
 
     def opened(path, *args, **kwargs):
         if path in paths:
@@ -411,7 +420,7 @@ def test_knowledge_policy_limits_are_actual_integers_before_writes(
     monkeypatch.setenv("PX_STUDIO_KEY_ROOT", str(tmp_path / "host-authority"))
     with pytest.raises((ValueError, PermissionError)):
         KnowledgeCoreController(root)
-    assert not (root / ".engineering-bootstrap").exists()
+    assert not (root / ".agentic_engineering_os_px").exists()
 
 
 def test_knowledge_constructor_requires_actual_read_only_flag(tmp_path):
@@ -483,7 +492,10 @@ def test_knowledge_publication_refuses_to_exceed_retained_history(
             return value
         fields = list(value)
         fields[6] = 4 * 1024 * 1024
-        return type(value)(fields)
+        return type(value)(fields, {
+            "st_file_attributes": value.st_file_attributes,
+            "st_reparse_tag": value.st_reparse_tag,
+        })
 
     monkeypatch.setattr(Path, "stat", metadata)
     writes = []

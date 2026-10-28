@@ -36,9 +36,9 @@ from .studio_models import (
     CapabilityBinding,
     EffectGrant,
     WorkflowDefinition,
+    WorkflowEdge,
     WorkflowNode,
     WorkflowPort,
-    WorkflowEdge,
     canonical_bytes,
     digest,
     record as studio_record,
@@ -91,6 +91,43 @@ _WORKFLOW_EDITOR_COORDINATE_BOUND = 20_000
 _MAX_CREATE_CLEANUP_WARNINGS = 8
 _MAX_CREATE_CLEANUP_WARNING_CHARS = 240
 _MAX_WORKFLOW_REVISION_FILE_BYTES = 4 * 1024 * 1024
+
+
+def _python_startup_margin() -> float:
+    """Measured interpreter-start margin for child process startup budgets.
+
+    The child must import the full runtime worker before its first liveness
+    output, so the startup window scales with the actual interpreter start on
+    this host instead of a fixed two-second guess. The measurement is cached
+    after the first call; a failed probe falls back to the fixed floor.
+    """
+
+    global _PYTHON_STARTUP_MARGIN_CACHE
+    cached = _PYTHON_STARTUP_MARGIN_CACHE
+    if cached is not None:
+        return cached
+    import subprocess
+    import time
+
+    samples = []
+    for _ in range(2):
+        try:
+            started = time.monotonic()
+            subprocess.run(
+                [sys.executable, "-c", "pass"],
+                check=True, timeout=15,
+                stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+            )
+            samples.append(time.monotonic() - started)
+        except (OSError, subprocess.SubprocessError):
+            samples = []
+            break
+    value = max(2.0, max(samples) * 4.0) if samples else 2.0
+    _PYTHON_STARTUP_MARGIN_CACHE = value
+    return value
+
+
+_PYTHON_STARTUP_MARGIN_CACHE: float | None = None
 
 
 def _bounded_cleanup_warnings(errors: Sequence[object]) -> list[str]:
@@ -241,41 +278,6 @@ def _matches(value: object, data_type: str) -> bool:
     }.get(data_type, False)
 
 
-def _edge_enabled(condition: str, source: Mapping[str, object], port: str) -> bool:
-    if condition == "always":
-        return True
-    if condition == "never":
-        return False
-    if condition == "source-present":
-        return port in source
-    if condition == "source-truthy":
-        return bool(source.get(port))
-    if condition == "source-falsy":
-        return port in source and not bool(source.get(port))
-    raise ValueError(f"unsupported edge condition: {condition}")
-
-
-def _adapter_contract_reasons(node: WorkflowNode, adapter: str) -> list[str]:
-    inputs = {port.name: port.data_type for port in node.inputs}
-    outputs = {port.name: port.data_type for port in node.outputs}
-    numeric = {"integer", "number"}
-    if node.config.get("execution_mode") == "prepared-model-group":
-        return ["prepared_group_executor_not_integrated"]
-    if node.kind in {"branch", "join"} and adapter != "identity":
-        return [f"{node.kind}_requires_identity_adapter"]
-    if adapter == "identity":
-        return [] if inputs == outputs else ["identity_requires_matching_input_output_ports"]
-    if adapter == "increment":
-        return [] if set(inputs) == {"value"} and set(outputs) == {"value"} and inputs["value"] in numeric and outputs["value"] in numeric else ["increment_requires_numeric_value_input_and_output"]
-    if adapter == "double":
-        return [] if set(inputs) == {"value"} and set(outputs) == {"result"} and inputs["value"] in numeric and outputs["result"] in numeric else ["double_requires_numeric_value_input_and_result_output"]
-    if adapter == "sleep":
-        return [] if set(inputs) == {"seconds"} and set(outputs) == {"seconds"} and inputs["seconds"] in numeric and outputs["seconds"] in numeric else ["sleep_requires_numeric_seconds_input_and_output"]
-    if adapter == "fail":
-        return []
-    return ["executor_adapter_not_admitted"]
-
-
 def _definition_from_record(value: Mapping[str, object]) -> WorkflowDefinition:
     """Rebuild the exact typed WorkflowDefinition from its immutable record.
 
@@ -314,6 +316,43 @@ def _definition_from_record(value: Mapping[str, object]) -> WorkflowDefinition:
     )
 
 
+def _edge_enabled(condition: str, source: Mapping[str, object], port: str) -> bool:
+    if condition == "always":
+        return True
+    if condition == "never":
+        return False
+    if condition == "source-present":
+        return port in source
+    if condition == "source-truthy":
+        return bool(source.get(port))
+    if condition == "source-falsy":
+        return port in source and not bool(source.get(port))
+    raise ValueError(f"unsupported edge condition: {condition}")
+
+
+def _adapter_contract_reasons(node: WorkflowNode, adapter: str) -> list[str]:
+    inputs = {port.name: port.data_type for port in node.inputs}
+    outputs = {port.name: port.data_type for port in node.outputs}
+    numeric = {"integer", "number"}
+    if node.config.get("execution_mode") == "prepared-model-group":
+        return ["prepared_group_executor_not_integrated"]
+    if node.kind in {"branch", "join"} and adapter != "identity":
+        return [f"{node.kind}_requires_identity_adapter"]
+    if adapter == "identity":
+        return [] if inputs == outputs else ["identity_requires_matching_input_output_ports"]
+    if adapter == "increment":
+        return [] if set(inputs) == {"value"} and set(outputs) == {"value"} and inputs["value"] in numeric and outputs["value"] in numeric else ["increment_requires_numeric_value_input_and_output"]
+    if adapter == "double":
+        return [] if set(inputs) == {"value"} and set(outputs) == {"result"} and inputs["value"] in numeric and outputs["result"] in numeric else ["double_requires_numeric_value_input_and_result_output"]
+    if adapter == "sleep":
+        return [] if set(inputs) == {"seconds"} and set(outputs) == {"seconds"} and inputs["seconds"] in numeric and outputs["seconds"] in numeric else ["sleep_requires_numeric_seconds_input_and_output"]
+    if adapter == "fail":
+        return []
+    return ["executor_adapter_not_admitted"]
+
+
+
+
 
 class WorkflowStudio:
     MAX_PARALLEL_NODES = 4
@@ -328,7 +367,7 @@ class WorkflowStudio:
         if self.project_root == Path(self.project_root.anchor):
             raise ValueError("workflow root must be bounded")
         self.state_root = (
-            self.project_root / ".engineering-bootstrap" / "studios" / "workflows"
+            self.project_root / ".agentic_engineering_os_px" / "studios" / "workflows"
         )
         self.manager = ResourceManager(self.state_root / "resources.json")
         self.supervisor = ProcessSupervisor(self.manager)
@@ -1107,7 +1146,8 @@ class WorkflowStudio:
         return {
             "completed_nodes": sorted(completed_nodes),
             "results": ordered_results,
-            "node_receipts": ordered_receipts,
+            "node_receipts": [row for row in ordered_receipts if row.get("node_id") in completed_nodes],
+            "incomplete_node_receipts": [row for row in ordered_receipts if row.get("node_id") not in completed_nodes],
             "ready_nodes": ready,
             "next_node": ready[0] if ready else None,
         }
@@ -1301,6 +1341,14 @@ class WorkflowStudio:
             task_plan_receipt = {"plan_id": task_plan.plan_id, "plan_sha256": task_plan.plan_sha256,
                                  "path": (PLAN_DIRECTORY / (task_plan.plan_id + ".json")).as_posix()}
         configured_plan = node.config.get("task_execution_plan")
+        prepared_reference = node.config.get("prepared_group_reference")
+        if group_worker:
+            if node.config.get("execution_mode") != "prepared-model-group" or prepared_reference is None:
+                raise PermissionError("model-group executor requires its exact prepared-group task mode")
+            from .prepared_group_transport import resolve_prepared_group
+            configured_plan = resolve_prepared_group(self.project_root, prepared_reference).as_dict()
+        elif prepared_reference is not None:
+            raise PermissionError("prepared-group task mode requires the admitted model-group executor")
         if configured_plan is not None:
             if not isinstance(configured_plan, Mapping):
                 raise ValueError("workflow task execution plan must be an object")
@@ -1317,11 +1365,11 @@ class WorkflowStudio:
                 "plan_sha256": task_plan.plan_sha256,
                 "path": plan_path.relative_to(self.project_root).as_posix(),
             }
-        process_project_id = task_plan.project_id if task_plan is not None else definition.workflow_id
         node_component = hashlib.sha256(node.node_id.encode("utf-8")).hexdigest()[:16]
         task_root = self.state_root / "node-tasks"
         task_root.mkdir(parents=True, exist_ok=True)
         run_component = hashlib.sha256(run_id.encode("utf-8")).hexdigest()[:16]
+        process_project_id = task_plan.project_id if task_plan is not None else definition.workflow_id
         request_resource = self.manager.create_workspace(
             task_root,
             project_id=process_project_id,
@@ -1334,9 +1382,16 @@ class WorkflowStudio:
         request_path = request_dir / "request.json"
         timeout = float(node.timeout_seconds)
         budget = {
-            "startup_timeout_seconds": min(2.0, timeout),
+            # The worker must import the full runtime module before its first
+            # liveness line. A fixed 2-second window kills a healthy worker
+            # under host load, so the window uses the measured interpreter-
+            # start calibration. It is NOT capped by the node timeout: the
+            # total budget below absorbs the startup window so a healthy
+            # worker is never killed mid-import, while a genuinely silent
+            # worker is still bounded by startup + idle.
+            "startup_timeout_seconds": max(2.0, _python_startup_margin()),
             "idle_timeout_seconds": timeout,
-            "total_timeout_seconds": timeout,
+            "total_timeout_seconds": timeout + max(2.0, _python_startup_margin()),
             "graceful_shutdown_seconds": min(1.0, timeout),
             # The node timeout bounds execution. Physical process/output-pipe
             # settlement needs its own bounded allowance: tying it to a tiny
@@ -1359,7 +1414,8 @@ class WorkflowStudio:
             authority_reference_sha256=digest(authority_hashes), effect_budget_sha256=digest(budget),
             cancellation_scope_id=run_id,
             deadline_utc=(datetime.now(timezone.utc) + timedelta(seconds=timeout)).isoformat(),
-            actor_id=definition.owner, provider_id=None, trace_root_id=run_id)
+            actor_id=definition.owner, provider_id=None, trace_root_id=run_id,
+            workflow_adapter_revision=authority_hashes[f"executor:{node.executor_binding_id}"])
         request = self.authority.sign_receipt(
             {
                 "schema_version": "px.workflow-node-task/1.0",
@@ -1441,6 +1497,9 @@ class WorkflowStudio:
 
         task_cleanup = None
         task_error: Exception | None = None
+        enrollment = None
+        custody_resource_id = None
+
         try:
             write_json_atomic(request_path, request)
             if launch_progress is not None:
@@ -1589,8 +1648,10 @@ class WorkflowStudio:
             "task_content_retained": False,
             "task_cleanup_receipt": task_cleanup.cleanup_id,
             "response_sha256": digest(response) if response else None,
+            "execution_context": execution_context.as_dict(),
             "adapter_id": executor["adapter_id"],
             "adapter_admitted": response.get("adapter_admitted") is True,
+            "containment_enrollment": None if enrollment is None else enrollment.as_dict(),
             "node_kind": node.kind,
             "node_config_sha256": digest(dict(node.config)),
             "validation": response.get("validation"),
@@ -1728,6 +1789,9 @@ class WorkflowStudio:
             "attempts": attempts,
             "output_sha256": digest(output),
             "approval_execution": dict(approval_execution or {}),
+            "committed_effect_intents": (
+                attempts[-1].get("committed_effect_intents", []) if attempts else []
+            ),
         }
 
     def execute(
@@ -1785,7 +1849,30 @@ class WorkflowStudio:
                 run_id=run_id,
                 kind="workflow",
             )
+        from .effect_intent import EffectIntentLedger
+        from .workflow_resume import validate_workflow_resume
+
+        # A paused run must never carry an in-flight mutating effect into its
+        # next attempt: the interrupted worker has settled or lost its effect,
+        # so the fence must return the key to the safe retry state.
+        EffectIntentLedger(self.project_root).reclaim_in_flight(execution_id=run_id)
+
+        def revalidate_skipped(node_id, saved_results):
+            try:
+                self._node_inputs(definition, nodes[node_id], inputs, saved_results)
+            except _WorkflowBranchSkipped:
+                return True
+            return False
+
+        resume_decision = validate_workflow_resume(definition, self.run_control, run_id,
+            expected_revision_sha256=str(plan["revision_sha256"]),
+            expected_request_sha256=request_sha256,
+            expected_control_sequence=state["sequence"],
+            effect_intents=EffectIntentLedger(self.project_root),
+            revalidate_skipped=revalidate_skipped)
         checkpoint = dict(state["checkpoint"])
+        if digest(checkpoint) != resume_decision.checkpoint_sha256:
+            raise PermissionError("workflow checkpoint changed before hydration")
         raw_results = checkpoint.get("results", {})
         if not isinstance(raw_results, Mapping):
             raise PermissionError("workflow checkpoint results are invalid")
@@ -1818,6 +1905,7 @@ class WorkflowStudio:
             operation="workflow.start"
             if state["state"] == "queued"
             else "workflow.resume",
+            expected_sequence=resume_decision.control_sequence,
         )
         run_path = self.state_root / "runs" / f"{run_id}.json"
         receipt: dict[str, object] = {
@@ -1842,6 +1930,7 @@ class WorkflowStudio:
             "output_retention": "durable checkpoint results retained for downstream dataflow and resumable execution",
             "node_task_content_retained": False,
             "node_task_cleanup_policy": "registered ephemeral task envelopes are reclaimed after every node attempt",
+            "resume_decision": resume_decision.as_dict(),
             "execution_policy": {
                 "scheduler": "dependency-ready-batches",
                 "max_parallel_nodes": self.MAX_PARALLEL_NODES,
@@ -1975,7 +2064,11 @@ class WorkflowStudio:
                         if str(row.get("node_id", "")) != node_id
                     ]
                     receipt_nodes.append(node_receipt)
-                    completed_nodes.add(node_id)
+                    # Only reusable outcomes enter the resume denominator. A
+                    # failed-closed attempt remains diagnostic evidence and must
+                    # be retried after pause rather than masquerade as completed.
+                    if node_id not in failed_closed:
+                        completed_nodes.add(node_id)
                 next_ready = self._ready_node_ids(definition, completed_nodes)
                 self.run_control.heartbeat(
                     run_id,
@@ -2158,8 +2251,24 @@ class WorkflowStudio:
                 receipt["terminal_target"] = target if published_state == "finalizing" else None
                 if published_state == "finalizing":
                     receipt["completed_utc"] = None
+            from .work_disposition import workflow_boundary
+            receipt["work_disposition"] = workflow_boundary(definition, receipt)
+            write_json_atomic(run_path, self.authority.sign_receipt(receipt))
+            from .usage_memory import retain_studio_run_experience
+            receipt["tie_update"] = retain_studio_run_experience(self.project_root, "workflow",
+                definition.workflow_id, definition.version, run_id=run_id,
+                state=str(receipt.get("run_state") or receipt.get("status")),
+                evidence_ref=run_path.relative_to(self.project_root).as_posix())
             write_json_atomic(run_path, self.authority.sign_receipt(receipt))
             raise
+        from .work_disposition import workflow_boundary
+        receipt["work_disposition"] = workflow_boundary(definition, receipt)
+        write_json_atomic(run_path, self.authority.sign_receipt(receipt))
+        from .usage_memory import retain_studio_run_experience
+        receipt["tie_update"] = retain_studio_run_experience(self.project_root, "workflow",
+            definition.workflow_id, definition.version, run_id=run_id,
+            state=str(receipt.get("run_state") or receipt.get("status")),
+            evidence_ref=run_path.relative_to(self.project_root).as_posix())
         write_json_atomic(run_path, self.authority.sign_receipt(receipt))
         return self.authority.sign_receipt(receipt)
 

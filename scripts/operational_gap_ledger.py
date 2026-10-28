@@ -82,7 +82,7 @@ def _sequence_event_payload(value: str, *, root: Path) -> str:
             "active_gap_id": checkpoints[0].get("active_gap_id"),
             "learned": "A failed session must not author its own closing checkpoint.",
             "evidence": [{
-                "reference": ".engineering-bootstrap/test-evidence/px-os-1067-session-open-r97.json",
+                "reference": ".agentic_engineering_os_px/test-evidence/px-os-1067-session-open-r97.json",
                 "claim": "Session-open record for the bounded repair session that replaces the failed one.",
             }],
             "newly_discovered_gap_ids": [],
@@ -92,7 +92,7 @@ def _sequence_event_payload(value: str, *, root: Path) -> str:
             "admission_event_id": admissions[0].get("event_id"),
             "outcome": "superseded",
             "evidence": [{
-                "reference": ".engineering-bootstrap/test-evidence/px-os-1067-session-open-r97.json",
+                "reference": ".agentic_engineering_os_px/test-evidence/px-os-1067-session-open-r97.json",
                 "claim": "Session-open record superseding the earlier bounded repair session for the same active gap.",
             }],
         })
@@ -145,6 +145,9 @@ def main() -> int:
     guard = sub.add_parser("guard-work")
     _apply_guard_args(guard)
 
+    revalidate = sub.add_parser("revalidate-evidence")
+    revalidate.add_argument("--max-bytes", type=int, default=64 * 1024 * 1024)
+
     sub.add_parser("project")
     sub.add_parser("validate")
     sub.add_parser("progress")
@@ -175,6 +178,9 @@ def main() -> int:
             scope=args.scope,
             admission_event_id=args.admission_event_id,
         )
+    elif args.command == "revalidate-evidence":
+        from runtime.operational_gap_ledger import revalidate_evidence
+        result = revalidate_evidence(args.root, max_bytes=args.max_bytes)
     elif args.command in {
         "register-surface", "register-inventory", "revise-inventory", "register-surface-alias", "add-controls", "replace-controls", "dispose-control",
         "discover", "annotate", "transition", "examine",

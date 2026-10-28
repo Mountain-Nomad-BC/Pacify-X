@@ -21,7 +21,7 @@ def test_project_brief_uses_shared_wal_and_preserves_all_before_images(tmp_path)
         path = tmp_path / relative
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_bytes(raw)
-    state_path = tmp_path / '.engineering-bootstrap/project-management/state.json'
+    state_path = tmp_path / '.agentic_engineering_os_px/project-management/state.json'
     before = state_path.read_bytes()
     answers = {'schema_version': '1.0', 'mode': 'new',
         'answers': {key: 'confirmed' for key in ('goal', 'users', 'scope', 'data', 'accessibility', 'security', 'integrations', 'operations', 'cost_timeline', 'acceptance')},
@@ -29,9 +29,9 @@ def test_project_brief_uses_shared_wal_and_preserves_all_before_images(tmp_path)
         'human_acceptance': {key: True for key in ('scope', 'architecture', 'security_governance', 'accessibility', 'data_integrations', 'cost', 'execution_waves', 'acceptance_criteria')}}
     answer = tmp_path / 'answers.json'
     answer.write_text(json.dumps(answers))
-    journal = '.engineering-bootstrap/wal/cohesion-card-reconciliation'
+    journal = '.agentic_engineering_os_px/wal/cohesion-card-reconciliation'
     WalOwnership.activate(tmp_path, [dict(journal=journal, domains=[
-        dict(path='.engineering-bootstrap/project-management', kind='subtree'),
+        dict(path='.agentic_engineering_os_px/project-management', kind='subtree'),
         dict(path='PROJECT_MANAGEMENT.md', kind='exact')])])
     wal = JsonWal(tmp_path / journal, tmp_path)
     wal.activate_generation(tmp_path)
@@ -86,9 +86,9 @@ class CommissioningApplyTests(unittest.TestCase):
                 (project / "AGENTS.md").read_text(encoding="utf-8"),
                 "existing instructions",
             )
-            self.assertTrue((project / ".engineering-bootstrap/AGENTS.md").is_file())
+            self.assertTrue((project / ".agentic_engineering_os_px/AGENTS.md").is_file())
             self.assertTrue(
-                (project / ".engineering-bootstrap/adoption-plan.json").is_file()
+                (project / ".agentic_engineering_os_px/adoption-plan.json").is_file()
             )
 
     def test_second_apply_is_idempotent_except_receipt(self) -> None:
@@ -100,7 +100,7 @@ class CommissioningApplyTests(unittest.TestCase):
             self.assertEqual(result["create"], [])
             receipt = json.loads(
                 (
-                    project / ".engineering-bootstrap/commissioning-receipt.json"
+                    project / ".agentic_engineering_os_px/commissioning-receipt.json"
                 ).read_text(encoding="utf-8")
             )
             self.assertEqual(receipt["blocking_conflicts"], [])
@@ -109,7 +109,7 @@ class CommissioningApplyTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             project = Path(directory) / "project"
             commission(project, "new", apply=True, source_root=ROOT)
-            registry_path = project / ".engineering-bootstrap/project-registry.json"
+            registry_path = project / ".agentic_engineering_os_px/project-registry.json"
             registry = json.loads(registry_path.read_text(encoding="utf-8"))
             registry["skills"][0]["sha256"] = "0" * 64
             registry_path.write_text(json.dumps(registry), encoding="utf-8")

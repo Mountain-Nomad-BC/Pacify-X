@@ -21,13 +21,13 @@ def _import_target(target: str) -> Callable[..., Any]:
     try:
         module = importlib.import_module(module_name)
     except ModuleNotFoundError as error:
-        if not module_name.startswith("engineering_bootstrap.") or error.name not in {
-            "engineering_bootstrap",
+        if not module_name.startswith("agentic_engineering_os_px.") or error.name not in {
+            "agentic_engineering_os_px",
             module_name,
         }:
             raise
         module = importlib.import_module(
-            "runtime." + module_name.removeprefix("engineering_bootstrap.")
+            "runtime." + module_name.removeprefix("agentic_engineering_os_px.")
         )
     value = getattr(module, symbol, None)
     if not callable(value):

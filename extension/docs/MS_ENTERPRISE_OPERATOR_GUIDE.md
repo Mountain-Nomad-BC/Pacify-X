@@ -8,7 +8,7 @@ The **Settings → Billable execution guardrails** master switch defaults OFF. T
 
 `Target` records non-secret aliases for a pack, tenant, and environment. Authentication and billing are named as separate namespaces; secrets are never stored in the enterprise state file.
 
-`Run readiness doctor` verifies the separate state root, offline boot, denied egress and mutation, disabled billing, no credential reads on load, connector defaults, provider identity separation, and reviewed-only memory promotion. It writes a receipt under `.engineering-bootstrap/enterprise/evidence`.
+`Run readiness doctor` verifies the separate state root, offline boot, denied egress and mutation, disabled billing, no credential reads on load, connector defaults, provider identity separation, and reviewed-only memory promotion. It writes a receipt under `.agentic_engineering_os_px/enterprise/evidence`.
 
 The same operations are available to VS Code-compatible hosts through:
 

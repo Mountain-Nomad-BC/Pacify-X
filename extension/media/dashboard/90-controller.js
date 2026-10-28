@@ -2767,6 +2767,7 @@ app.addEventListener('click', event => {
   if (action === 'enterpriseTargetConfigure') { vscode.postMessage({ type: 'enterpriseTargetConfigure', packId: control.dataset.packId }); return; }
   if (action === 'enterpriseDoctor') { vscode.postMessage({ type: 'enterpriseDoctor' }); return; }
   if (action === 'toggleBillablePolicy') { vscode.postMessage({ type: 'toggleBillablePolicy', enabled: control.dataset.enabled === 'true' }); return; }
+    if (action === 'sandboxControl') { vscode.postMessage({ type: 'sandboxControl', mode: control.dataset.mode === 'ON' ? 'ON' : 'OFF' }); return; }
   if (action === 'refreshEnvironment') { state.environmentData = {}; state.environmentPending = {}; vscode.postMessage({ type: 'refreshEnvironment' }); return; }
   if (action === 'environmentScope') { state.environmentScope = control.dataset.scope; persistDashboardState(); render(); return; }
   if (action === 'environmentExtensionDetail') { vscode.postMessage({ type: 'environmentExtensionDetail', extensionId: control.dataset.extensionId }); return; }
@@ -3389,6 +3390,18 @@ window.addEventListener('message', event => {
     if (!preview?.allowed) { showInformationModal('Environment action blocked', 'FAIL-CLOSED LIFECYCLE GATE', preview || {}, `<p>${esc(preview?.reason || 'The resource cannot be managed by Pacify-X.')}</p><p>${esc(preview?.handoff || 'No mutation occurred.')}</p>`); return; }
     const consumers = preview.consumers || [];
     showModal('Confirm reversible environment disposition', 'EXACT TARGET · TWO SNAPSHOTS · IMMEDIATE REVALIDATION', `<p>The resource will be moved into project-owned quarantine. Nothing is permanently deleted.</p><dl class="modal-detail"><div><dt>Target</dt><dd class="mono">${esc(preview.target)}</dd></div><div><dt>Entries</dt><dd>${number(preview.entry_count)}</dd></div><div><dt>Consumers</dt><dd>${esc(consumers.join(', ') || 'None detected')}</dd></div><div><dt>Snapshot</dt><dd class="mono">${esc(preview.snapshot_sha256)}</dd></div></dl><label>Type or preserve the exact target<input id="environment-lifecycle-target" value="${esc(preview.target)}" autocomplete="off"></label>${preview.consumer_ack_required ? '<label class="policy-switch"><input id="environment-lifecycle-consumers" type="checkbox"><span>I reviewed and accept the listed consumer impact</span></label>' : ''}`, `<button data-action="closeModal">Cancel</button><button class="danger" data-action="executeEnvironmentLifecycle" data-token="${esc(preview.token)}">Move to quarantine</button>`); return;
+  }
+  if (message.type === 'sandboxResult') {
+    const published = message.runtimePublication === 'published';
+    showInformationModal(
+      published ? 'Sandbox policy published' : 'Sandbox policy publication failed',
+      published ? 'POLICY STORED · ENFORCEMENT UNVERIFIED' : 'SELECTION SAVED · RUNTIME PUBLICATION FAILED',
+      { sandbox: message.sandbox, runtimePolicySha256: message.runtimePolicySha256, error: message.error },
+      published
+        ? '<p>The runtime accepted and stored the policy image. This does not prove active process or network enforcement; protected execution still requires its canonical containment owners.</p>'
+        : `<p role="alert">${esc(message.error || 'The selected policy could not be published to the runtime.')}</p><p>The saved selection is not evidence of enforcement.</p>`
+    );
+    return;
   }
   if (message.type === 'environmentLifecycleResult') { showInformationModal('Environment resource quarantined', 'REVERSIBLE DISPOSITION RECEIPT', message.result, `<p>The exact target was moved into project-owned quarantine after immediate snapshot revalidation. The receipt contains no environment values.</p><button class="primary" data-action="previewEnvironmentLifecycleRestore" data-receipt-id="${esc(message.result?.receipt_id || '')}">Restore exact resource</button>`); return; }
   if (message.type === 'environmentLifecycleRestorePreview') { const preview = message.result; showModal('Restore quarantined environment resource', 'DURABLE RECEIPT · FRESH SNAPSHOTS · EXACT TARGET', `<p>The quarantined resource will be moved back to its exact original path. Restoration is refused if either side changed or the original path is occupied.</p><label>Exact original target<input id="environment-restore-target" value="${esc(preview.source)}" data-exact-target="${esc(preview.exact_confirmation)}"></label>`, `<button data-action="closeModal">Cancel</button><button class="primary" data-action="executeEnvironmentLifecycleRestore" data-token="${esc(preview.token)}">Restore resource</button>`); return; }

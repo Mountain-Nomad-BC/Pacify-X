@@ -16,7 +16,7 @@ from runtime.studio_worker_launch import finalize_studio_run_if_worker_exited
 def test_snapshot_read_waits_for_event_and_head_publication_window(
     tmp_path, monkeypatch
 ) -> None:
-    control = DurableRunControl(tmp_path, tmp_path / ".engineering-bootstrap/runs")
+    control = DurableRunControl(tmp_path, tmp_path / ".agentic_engineering_os_px/runs")
     state = control.create(
         kind="workflow",
         subject_id="workflow:publication-window",
@@ -66,7 +66,7 @@ def test_snapshot_read_waits_for_event_and_head_publication_window(
 def test_durable_run_control_is_approval_gated_hash_chained_and_tamper_evident(
     tmp_path,
 ) -> None:
-    control = DurableRunControl(tmp_path, tmp_path / ".engineering-bootstrap/runs")
+    control = DurableRunControl(tmp_path, tmp_path / ".agentic_engineering_os_px/runs")
     state = control.create(
         kind="agent",
         subject_id="agent:demo",
@@ -85,7 +85,7 @@ def test_durable_run_control_is_approval_gated_hash_chained_and_tamper_evident(
     assert running["state"] == "running" and running["sequence"] == 2
     head_path = (
         tmp_path
-        / ".engineering-bootstrap/runs"
+        / ".agentic_engineering_os_px/runs"
         / str(state["run_id"])
         / "head.json"
     )
@@ -108,7 +108,7 @@ def test_terminal_observer_retries_only_transient_finalize_failures() -> None:
 def test_stale_owned_run_is_reconciled_to_interrupted_not_claimed_complete(
     tmp_path, monkeypatch
 ) -> None:
-    control = DurableRunControl(tmp_path, tmp_path / ".engineering-bootstrap/runs")
+    control = DurableRunControl(tmp_path, tmp_path / ".agentic_engineering_os_px/runs")
     with monkeypatch.context() as context:
         context.setattr(run_control_module, "_now", lambda: "2020-01-01T00:00:00.000Z")
         state = control.create(
@@ -136,7 +136,7 @@ def test_stale_owned_run_is_reconciled_to_interrupted_not_claimed_complete(
 def test_exact_authenticated_trailing_event_repairs_crash_window_only_with_approval(
     tmp_path, monkeypatch
 ) -> None:
-    control = DurableRunControl(tmp_path, tmp_path / ".engineering-bootstrap/runs")
+    control = DurableRunControl(tmp_path, tmp_path / ".agentic_engineering_os_px/runs")
     state = control.create(
         kind="workflow",
         subject_id="workflow:crash",
@@ -173,7 +173,7 @@ def test_exact_authenticated_trailing_event_repairs_crash_window_only_with_appro
     receipt = next(
         (
             tmp_path
-            / ".engineering-bootstrap/runs"
+            / ".agentic_engineering_os_px/runs"
             / str(state["run_id"])
             / "recovery-receipts"
         ).glob("*.json")
@@ -188,7 +188,7 @@ def test_exact_authenticated_trailing_event_repairs_crash_window_only_with_appro
 def test_missing_initial_head_can_recover_from_exactly_one_signed_create_event(
     tmp_path, monkeypatch
 ) -> None:
-    control = DurableRunControl(tmp_path, tmp_path / ".engineering-bootstrap/runs")
+    control = DurableRunControl(tmp_path, tmp_path / ".agentic_engineering_os_px/runs")
     original_write = run_control_module.write_json_atomic
 
     def crash_before_initial_head(path, value):
@@ -209,7 +209,7 @@ def test_missing_initial_head_can_recover_from_exactly_one_signed_create_event(
                 revision_sha256="a" * 64,
                 request_sha256="b" * 64,
             )
-    run_root = next((tmp_path / ".engineering-bootstrap/runs").glob("run-*"))
+    run_root = next((tmp_path / ".agentic_engineering_os_px/runs").glob("run-*"))
     recovered = control.recover_projection(
         run_root.name, actor="human:owner", approved=True
     )
@@ -240,7 +240,7 @@ def test_projection_recovery_rejects_tampered_or_multiple_trailing_events(
     tamper_root = tmp_path / "tamper"
     tamper_root.mkdir()
     tamper = DurableRunControl(
-        tamper_root, tamper_root / ".engineering-bootstrap/runs"
+        tamper_root, tamper_root / ".agentic_engineering_os_px/runs"
     )
     tamper_state = tamper.create(
         kind="agent",
@@ -253,7 +253,7 @@ def test_projection_recovery_rejects_tampered_or_multiple_trailing_events(
     crash_transition(tamper, tamper_state)
     event = (
         tamper_root
-        / ".engineering-bootstrap/runs"
+        / ".agentic_engineering_os_px/runs"
         / str(tamper_state["run_id"])
         / "events/00000002.json"
     )
@@ -268,7 +268,7 @@ def test_projection_recovery_rejects_tampered_or_multiple_trailing_events(
     multiple_root = tmp_path / "multiple"
     multiple_root.mkdir()
     multiple = DurableRunControl(
-        multiple_root, multiple_root / ".engineering-bootstrap/runs"
+        multiple_root, multiple_root / ".agentic_engineering_os_px/runs"
     )
     multiple_state = multiple.create(
         kind="workflow",
@@ -281,7 +281,7 @@ def test_projection_recovery_rejects_tampered_or_multiple_trailing_events(
     crash_transition(multiple, multiple_state)
     events = (
         multiple_root
-        / ".engineering-bootstrap/runs"
+        / ".agentic_engineering_os_px/runs"
         / str(multiple_state["run_id"])
         / "events"
     )
@@ -302,7 +302,7 @@ def test_dead_worker_is_terminally_reconciled_from_every_live_launch_state(
     project = tmp_path / "project"
     project.mkdir()
     monkeypatch.setenv("PX_STUDIO_KEY_ROOT", str(tmp_path / "host-keys"))
-    state_root = project / ".engineering-bootstrap/studios/agents"
+    state_root = project / ".agentic_engineering_os_px/studios/agents"
     manager = ResourceManager(state_root / "resources.json")
     control = DurableRunControl(project, state_root / "run-control")
     state = control.create(

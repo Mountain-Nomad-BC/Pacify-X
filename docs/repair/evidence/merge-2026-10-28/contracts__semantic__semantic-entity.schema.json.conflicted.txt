@@ -1,0 +1,163 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:semantic:semantic-entity",
+<<<<<<< HEAD
+  "title": "Canonical semantic entity snapshot record",
+  "description": "One entity as emitted by runtime.semantic_entity.EntityRegistry.snapshot_bytes(). Identity is derived from the identity basis only; no filesystem location participates, which is why there is no path field. `qualifier` is required because the entity_id is derived from it: a record without a reproducible qualifier would carry an identity that cannot be re-derived and audited.",
+=======
+  "title": "PX Canonical Semantic Entity",
+  "description": "The one contract for every modeled object in Pacify-X. Identity is derived from stable intrinsic facts and never from a filesystem location, so an entity survives rename and move. Location is deliberately NOT part of identity and is owned separately by SEM-002 locator records.",
+>>>>>>> codex/rollout-day1-20261024
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "entity_id",
+    "entity_kind",
+    "identity_basis",
+    "lifecycle",
+    "provenance"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "px.semantic-entity/1.0"
+    },
+    "entity_id": {
+      "type": "string",
+<<<<<<< HEAD
+      "pattern": "^pxe1:[a-f0-9]{32}$"
+=======
+      "pattern": "^pxe1:[0-9a-f]{32}$",
+      "description": "Content-addressed identity. Stable across rename, move and reformat."
+>>>>>>> codex/rollout-day1-20261024
+    },
+    "entity_kind": {
+      "type": "string",
+      "enum": [
+        "declaration",
+        "contract",
+        "module",
+        "operation",
+        "symbol",
+        "surface",
+        "record",
+        "artifact",
+        "policy",
+        "relation_kind"
+      ]
+    },
+    "identity_basis": {
+      "type": "object",
+<<<<<<< HEAD
+=======
+      "description": "The exact facts the identity digest was computed from. Retained so identity is auditable and reproducible, not merely opaque.",
+>>>>>>> codex/rollout-day1-20261024
+      "additionalProperties": false,
+      "required": ["basis_kind", "qualifier"],
+      "properties": {
+        "basis_kind": {
+          "type": "string",
+          "enum": [
+            "intrinsic_name",
+            "intrinsic_content",
+            "declared_identifier",
+            "structural_signature"
+          ]
+        },
+        "qualifier": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^[\\s\\S]{1,512}$",
+          "description": "Basis-kind-specific input, normalized before hashing."
+        },
+        "content_sha256": {
+          "type": ["string", "null"],
+<<<<<<< HEAD
+          "pattern": "^[a-f0-9]{64}$"
+=======
+          "pattern": "^[0-9a-f]{64}$"
+>>>>>>> codex/rollout-day1-20261024
+        }
+      }
+    },
+    "lifecycle": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["state"],
+      "properties": {
+        "state": {
+          "type": "string",
+          "enum": ["proposed", "accepted", "retired"]
+        },
+<<<<<<< HEAD
+        "accepted_utc": {
+          "type": ["string", "null"],
+          "format": "date-time"
+        },
+        "retired_utc": {
+          "type": ["string", "null"],
+          "format": "date-time"
+        },
+        "retirement_reason": {
+          "type": ["string", "null"],
+          "minLength": 1,
+          "maxLength": 512
+        }
+=======
+        "accepted_utc": { "type": ["string", "null"] },
+        "retired_utc": { "type": ["string", "null"] },
+        "retirement_reason": { "type": ["string", "null"], "pattern": "^[\\s\\S]{0,1000}$" }
+>>>>>>> codex/rollout-day1-20261024
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["declared_by"],
+      "properties": {
+<<<<<<< HEAD
+        "declared_by": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "governing_contract": {
+          "type": ["string", "null"],
+          "maxLength": 256
+        },
+        "notes": {
+          "type": ["string", "null"],
+          "maxLength": 2048
+        },
+        "observed_utc": {
+          "type": ["string", "null"],
+          "format": "date-time"
+        }
+=======
+        "declared_by": { "type": "string", "minLength": 1, "pattern": "^[\\s\\S]{1,200}$" },
+        "observed_utc": { "type": ["string", "null"] },
+        "governing_contract": { "type": ["string", "null"], "pattern": "^[\\s\\S]{0,300}$" },
+        "notes": { "type": ["string", "null"], "pattern": "^[\\s\\S]{0,2000}$" }
+>>>>>>> codex/rollout-day1-20261024
+      }
+    },
+    "terms": {
+      "type": "array",
+<<<<<<< HEAD
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "^[\\s\\S]{1,300}$"
+      },
+=======
+      "items": { "type": "string", "minLength": 1, "pattern": "^[\\s\\S]{1,300}$" },
+>>>>>>> codex/rollout-day1-20261024
+      "maxItems": 256,
+      "description": "Search terms. Presentation only; never part of identity."
+    }
+  }
+<<<<<<< HEAD
+}
+=======
+}
+>>>>>>> codex/rollout-day1-20261024

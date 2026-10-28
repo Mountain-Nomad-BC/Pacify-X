@@ -1,6 +1,6 @@
 'use strict';
 
-const { ExecutionAdapter, sanitizeRemoteError } = require('./base');
+const { ExecutionAdapter, sanitizeRemoteError, providerHttpError } = require('./base');
 const { withStreamReader, errorPreview } = require('./streamCustody');
 const { compileMessages } = require('../pxProviderInvoker');
 
@@ -16,8 +16,13 @@ class OpenAICompatibleAdapter extends ExecutionAdapter {
     const key = await this.getApiKey?.(); if (!key) throw new Error('provider-credential-unavailable');
     const messages = compileMessages(input);
     const response = await fetch(`${this.baseUrl}/chat/completions`, { method: 'POST', signal: input.signal, headers: { 'content-type': 'application/json', authorization: `Bearer ${key}` },
-      body: JSON.stringify({ model: this.model, messages, stream: true, stream_options: { include_usage: true }, ...(this.options.request || {}) }) });
-    if (!response.ok || !response.body) throw new Error(`provider-http-${response.status}:${sanitizeRemoteError(await errorPreview(response, input.signal))}`);
+      body: JSON.stringify({ ...(this.options.request || {}), model: this.model, messages, stream: true, stream_options: { include_usage: true } }) });
+    if (!response.ok || !response.body) {
+      const detail = await errorPreview(response, input.signal);
+      const error = providerHttpError(response.status, detail);
+      try { const code = JSON.parse(detail)?.error?.code; if (typeof code === 'string') error.code = code; } catch {}
+      throw error;
+    }
     return withStreamReader(response.body, input.signal, async reader => {
     const decoder = new TextDecoder('utf-8', { fatal: true });
     let receivedBytes = 0;

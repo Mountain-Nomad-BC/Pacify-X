@@ -1,0 +1,7 @@
+{
+  "path": "runtime/resource_lifecycle.py",
+  "conflicts": 3,
+  "decision": "Retain actual legacy resource custody namespace. Namespace cutover is not yet authorized by verified migration/custody evidence. Preserve incoming unrelated non-conflicting changes.",
+  "before_sha256": "e1edbd236f08a3c0b9e5a14391b394ea8f9064c5e9740d374c0e0a4f7ca373a6",
+  "after_sha256": "b55c3919ad2996ed8e37a404a1363925ee0b760c64aff7e481b4d6ea25bc7a14"
+}

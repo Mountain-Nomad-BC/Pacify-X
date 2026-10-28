@@ -744,7 +744,7 @@ def test_structural_group_identity_rejects_new_scannable_file(tmp_path):
         json.dumps(index), encoding="utf-8"
     )
     assert resolve_test_groups(root)[0]["index_current"] is True
-    lock = root / ".engineering-bootstrap/test-evidence/.test-orchestration.lock"
+    lock = root / ".agentic_engineering_os_px/test-evidence/.test-orchestration.lock"
     lock.parent.mkdir(parents=True, exist_ok=True)
     lock.write_text("first owner\n", encoding="utf-8")
     assert resolve_test_groups(root)[0]["index_current"] is True
@@ -798,10 +798,10 @@ def test_processing_order_allows_focused_work_but_blocks_expensive_closure(tmp_p
 
 
 def _write_managed_repair_campaign(root: Path, **changes: object) -> Path:
-    marker = root / ".engineering-bootstrap/project-record.json"
+    marker = root / ".agentic_engineering_os_px/project-record.json"
     marker.parent.mkdir(parents=True, exist_ok=True)
     marker.write_text(json.dumps({"project_id": "prj_lifecycle"}) + "\n", encoding="utf-8")
-    path = root / ".engineering-bootstrap/processing-order/repair-campaign.json"
+    path = root / ".agentic_engineering_os_px/processing-order/repair-campaign.json"
     path.parent.mkdir(parents=True, exist_ok=True)
     value = {
         "schema_version": "px.repair-campaign/1.0",
@@ -817,7 +817,7 @@ def _write_managed_repair_campaign(root: Path, **changes: object) -> Path:
 
 def _admit_campaign_write(monkeypatch, root: Path) -> str:
     event_id = "gap-event:test:admitted"
-    campaign_scope = (root / ".engineering-bootstrap/processing-order/repair-campaign.json").resolve().as_posix()
+    campaign_scope = (root / ".agentic_engineering_os_px/processing-order/repair-campaign.json").resolve().as_posix()
     scope = [
         "C:/Users/Ben/Documents/bootstrap_project/Pacify-X/runtime/test_profiles.py",
         "C:/Users/Ben/Documents/bootstrap_project/Pacify-X/tests/test_test_profiles.py",
@@ -879,7 +879,7 @@ def test_close_repair_intake_requires_zero_denominator_and_records_user_authorit
     assert result["intake_open"] is False
     assert result["unresolved"] == []
     state = json.loads(
-        (tmp_path / ".engineering-bootstrap/processing-order/repair-campaign.json").read_text()
+        (tmp_path / ".agentic_engineering_os_px/processing-order/repair-campaign.json").read_text()
     )
     assert state["phase_history"][-1]["admission_event_id"] == admission
     assert state["intake_closure_authority"].startswith("user:")
@@ -1103,11 +1103,11 @@ def test_processing_order_absent_campaign_preserves_unmanaged_repository(tmp_pat
 
 
 def test_reopen_invalid_repair_campaign_preserves_predecessor_and_findings(tmp_path, monkeypatch):
-    marker = tmp_path / ".engineering-bootstrap/project-record.json"
+    marker = tmp_path / ".agentic_engineering_os_px/project-record.json"
     marker.parent.mkdir(parents=True)
     marker.write_text(json.dumps({"project_id": "prj_demo"}) + "\n", encoding="utf-8")
     initialize_project_repair_campaign(tmp_path)
-    path = tmp_path / ".engineering-bootstrap/processing-order/repair-campaign.json"
+    path = tmp_path / ".agentic_engineering_os_px/processing-order/repair-campaign.json"
     state = json.loads(path.read_text(encoding="utf-8"))
     state.update(phase="revision_reconciled", intake_open=False, unresolved=[])
     path.write_text(json.dumps(state) + "\n", encoding="utf-8")
@@ -1138,11 +1138,11 @@ def test_reopen_invalid_repair_campaign_preserves_predecessor_and_findings(tmp_p
 
 
 def test_reopen_invalid_repair_campaign_fails_closed_without_source_invalid_identity(tmp_path, monkeypatch):
-    marker = tmp_path / ".engineering-bootstrap/project-record.json"
+    marker = tmp_path / ".agentic_engineering_os_px/project-record.json"
     marker.parent.mkdir(parents=True)
     marker.write_text(json.dumps({"project_id": "prj_demo"}) + "\n", encoding="utf-8")
     initialize_project_repair_campaign(tmp_path)
-    path = tmp_path / ".engineering-bootstrap/processing-order/repair-campaign.json"
+    path = tmp_path / ".agentic_engineering_os_px/processing-order/repair-campaign.json"
     state = json.loads(path.read_text(encoding="utf-8"))
     state.update(phase="revision_reconciled", intake_open=False, unresolved=[])
     path.write_text(json.dumps(state) + "\n", encoding="utf-8")
@@ -1152,10 +1152,10 @@ def test_reopen_invalid_repair_campaign_fails_closed_without_source_invalid_iden
 
 
 def test_begin_repair_phase_preserves_open_intake_and_denominator(tmp_path, monkeypatch):
-    marker = tmp_path / ".engineering-bootstrap/project-record.json"
+    marker = tmp_path / ".agentic_engineering_os_px/project-record.json"
     marker.parent.mkdir(parents=True)
     marker.write_text(json.dumps({"project_id": "prj_demo"}) + "\n", encoding="utf-8")
-    path = tmp_path / ".engineering-bootstrap/processing-order/repair-campaign.json"
+    path = tmp_path / ".agentic_engineering_os_px/processing-order/repair-campaign.json"
     path.parent.mkdir(parents=True)
     path.write_text(json.dumps({
         "schema_version": "px.repair-campaign/1.0",
@@ -1176,10 +1176,10 @@ def test_begin_repair_phase_preserves_open_intake_and_denominator(tmp_path, monk
 
 
 def test_begin_repair_phase_fails_closed_without_open_denominator(tmp_path):
-    marker = tmp_path / ".engineering-bootstrap/project-record.json"
+    marker = tmp_path / ".agentic_engineering_os_px/project-record.json"
     marker.parent.mkdir(parents=True)
     marker.write_text(json.dumps({"project_id": "prj_demo"}) + "\n", encoding="utf-8")
-    path = tmp_path / ".engineering-bootstrap/processing-order/repair-campaign.json"
+    path = tmp_path / ".agentic_engineering_os_px/processing-order/repair-campaign.json"
     path.parent.mkdir(parents=True)
     path.write_text(json.dumps({
         "schema_version": "px.repair-campaign/1.0",
@@ -1193,10 +1193,10 @@ def test_begin_repair_phase_fails_closed_without_open_denominator(tmp_path):
 
 
 def test_resolve_repair_findings_retains_open_intake_and_evidence_history(tmp_path, monkeypatch):
-    marker = tmp_path / ".engineering-bootstrap/project-record.json"
+    marker = tmp_path / ".agentic_engineering_os_px/project-record.json"
     marker.parent.mkdir(parents=True)
     marker.write_text(json.dumps({"project_id": "prj_demo"}) + "\n", encoding="utf-8")
-    campaign = tmp_path / ".engineering-bootstrap/processing-order/repair-campaign.json"
+    campaign = tmp_path / ".agentic_engineering_os_px/processing-order/repair-campaign.json"
     campaign.parent.mkdir(parents=True)
     campaign.write_text(json.dumps({
         "schema_version": "px.repair-campaign/1.0", "campaign_id": "repair-demo",
@@ -1218,10 +1218,10 @@ def test_resolve_repair_findings_retains_open_intake_and_evidence_history(tmp_pa
 
 
 def test_resolve_repair_findings_rejects_missing_evidence_and_unknown_finding(tmp_path):
-    marker = tmp_path / ".engineering-bootstrap/project-record.json"
+    marker = tmp_path / ".agentic_engineering_os_px/project-record.json"
     marker.parent.mkdir(parents=True)
     marker.write_text(json.dumps({"project_id": "prj_demo"}) + "\n", encoding="utf-8")
-    campaign = tmp_path / ".engineering-bootstrap/processing-order/repair-campaign.json"
+    campaign = tmp_path / ".agentic_engineering_os_px/processing-order/repair-campaign.json"
     campaign.parent.mkdir(parents=True)
     campaign.write_text(json.dumps({
         "schema_version": "px.repair-campaign/1.0", "campaign_id": "repair-demo",
@@ -1236,7 +1236,7 @@ def test_resolve_repair_findings_rejects_missing_evidence_and_unknown_finding(tm
 def test_managed_project_missing_campaign_fails_closed_and_initializer_is_idempotent(
     tmp_path,
 ):
-    marker = tmp_path / ".engineering-bootstrap/project-record.json"
+    marker = tmp_path / ".agentic_engineering_os_px/project-record.json"
     marker.parent.mkdir(parents=True)
     marker.write_text(
         json.dumps({"project_id": "prj_demo"}) + "\n", encoding="utf-8"
@@ -1257,11 +1257,11 @@ def test_managed_project_missing_campaign_fails_closed_and_initializer_is_idempo
 def test_managed_revision_reconciliation_requires_a_cleared_release_identity(
     tmp_path,
 ):
-    marker = tmp_path / ".engineering-bootstrap/project-record.json"
+    marker = tmp_path / ".agentic_engineering_os_px/project-record.json"
     marker.parent.mkdir(parents=True)
     marker.write_text(json.dumps({"project_id": "prj_demo"}) + "\n", encoding="utf-8")
     initialize_project_repair_campaign(tmp_path)
-    campaign = tmp_path / ".engineering-bootstrap/processing-order/repair-campaign.json"
+    campaign = tmp_path / ".agentic_engineering_os_px/processing-order/repair-campaign.json"
     value = json.loads(campaign.read_text(encoding="utf-8"))
     value.update(phase="repair_frozen", intake_open=False, unresolved=[])
     campaign.write_text(json.dumps(value) + "\n", encoding="utf-8")
@@ -1276,7 +1276,7 @@ def test_managed_revision_reconciliation_requires_a_cleared_release_identity(
 def _release_repair_state(
     root: Path, phase: str, unresolved: list[str] | None = None
 ) -> None:
-    path = root / ".engineering-bootstrap/processing-order/repair-campaign.json"
+    path = root / ".agentic_engineering_os_px/processing-order/repair-campaign.json"
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(
         json.dumps(
@@ -1460,7 +1460,7 @@ def test_chained_preidentity_successor_requires_exact_terminal_failure_marker(
 def test_claimed_package_stage_remains_admitted_for_its_exact_command(
     tmp_path: Path, release_classification
 ) -> None:
-    marker = tmp_path / ".engineering-bootstrap/project-record.json"
+    marker = tmp_path / ".agentic_engineering_os_px/project-record.json"
     marker.parent.mkdir(parents=True, exist_ok=True)
     marker.write_text('{"project_id":"prj_demo"}\n', encoding="utf-8")
     _release_repair_state(tmp_path, "repair")
@@ -1532,7 +1532,7 @@ def test_release_status_rejects_identity_from_another_repair_campaign(
     _release_repair_state(tmp_path, "repair")
     clear_release_identity(tmp_path, campaign_id="certification-1")
     repair_path = (
-        tmp_path / ".engineering-bootstrap/processing-order/repair-campaign.json"
+        tmp_path / ".agentic_engineering_os_px/processing-order/repair-campaign.json"
     )
     repair = json.loads(repair_path.read_text(encoding="utf-8"))
     repair["campaign_id"] = "repair-2"

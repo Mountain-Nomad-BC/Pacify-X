@@ -1640,7 +1640,7 @@
   {
     "source": ".px/skills/govern-operating-kernel/scripts/authoritative_skill_compiler.py",
     "line": 144,
-    "import": "engineering_bootstrap.contracts",
+    "import": "agentic_engineering_os_px.contracts",
     "type": "external-or-unresolved"
   },
   {
@@ -2411,13 +2411,13 @@
   {
     "source": ".px/skills/operate-memory-retrieval-observability/scripts/authoritative_hybrid_retrieval.py",
     "line": 14,
-    "import": "engineering_bootstrap.retrieval",
+    "import": "agentic_engineering_os_px.retrieval",
     "type": "external-or-unresolved"
   },
   {
     "source": ".px/skills/operate-memory-retrieval-observability/scripts/authoritative_hybrid_retrieval.py",
     "line": 14,
-    "import": "engineering_bootstrap.retrieval",
+    "import": "agentic_engineering_os_px.retrieval",
     "type": "external-or-unresolved"
   },
   {
@@ -3056,7 +3056,7 @@
   {
     "source": ".px/skills/secure-agent-supply-chain/scripts/authoritative_secret_scanner.py",
     "line": 17,
-    "import": "engineering_bootstrap.secret_scanning",
+    "import": "agentic_engineering_os_px.secret_scanning",
     "type": "external-or-unresolved"
   },
   {
@@ -3449,7 +3449,7 @@
   {
     "source": "builders/orchestration_builder.py",
     "line": 9,
-    "import": "engineering_bootstrap.graphs",
+    "import": "agentic_engineering_os_px.graphs",
     "type": "external-or-unresolved"
   },
   {
@@ -5800,6 +5800,12 @@
   },
   {
     "source": "runtime/agent_runtime.py",
+    "line": 6,
+    "import": "datetime",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/agent_runtime.py",
     "line": 7,
     "import": "hashlib",
     "type": "external-or-unresolved"
@@ -6513,6 +6519,42 @@
     "type": "external-or-unresolved"
   },
   {
+    "source": "runtime/cancellation_scope.py",
+    "line": 15,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/cancellation_scope.py",
+    "line": 17,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/cancellation_scope.py",
+    "line": 18,
+    "import": "datetime",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/cancellation_scope.py",
+    "line": 18,
+    "import": "datetime",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/cancellation_scope.py",
+    "line": 19,
+    "import": "types",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/cancellation_scope.py",
+    "line": 20,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
     "source": "runtime/capability_assimilation.py",
     "line": 3,
     "import": "__future__",
@@ -6920,6 +6962,36 @@
     "type": "external-or-unresolved"
   },
   {
+    "source": "runtime/chat_context.py",
+    "line": 6,
+    "import": "datetime",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/chat_context.py",
+    "line": 6,
+    "import": "datetime",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/chat_context.py",
+    "line": 7,
+    "import": "hashlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/chat_context.py",
+    "line": 8,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/chat_context.py",
+    "line": 9,
+    "import": "re",
+    "type": "external-or-unresolved"
+  },
+  {
     "source": "runtime/classifier.py",
     "line": 3,
     "import": "__future__",
@@ -7035,43 +7107,43 @@
   },
   {
     "source": "runtime/cli.py",
-    "line": 1320,
+    "line": 1414,
     "import": "time",
     "type": "external-or-unresolved"
   },
   {
     "source": "runtime/cli.py",
-    "line": 2207,
+    "line": 2334,
     "import": "uuid",
     "type": "external-or-unresolved"
   },
   {
     "source": "runtime/cli.py",
-    "line": 2215,
+    "line": 2342,
     "import": "os",
     "type": "external-or-unresolved"
   },
   {
     "source": "runtime/cli.py",
-    "line": 2294,
+    "line": 2421,
     "import": "concurrent.futures",
     "type": "external-or-unresolved"
   },
   {
     "source": "runtime/cli.py",
-    "line": 2294,
+    "line": 2421,
     "import": "concurrent.futures",
     "type": "external-or-unresolved"
   },
   {
     "source": "runtime/cli.py",
-    "line": 2295,
+    "line": 2422,
     "import": "uuid",
     "type": "external-or-unresolved"
   },
   {
     "source": "runtime/cli.py",
-    "line": 2296,
+    "line": 2423,
     "import": "os",
     "type": "external-or-unresolved"
   },
@@ -7856,6 +7928,66 @@
     "type": "external-or-unresolved"
   },
   {
+    "source": "runtime/compact_address.py",
+    "line": 70,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/compact_address.py",
+    "line": 72,
+    "import": "hashlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/compact_address.py",
+    "line": 73,
+    "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/compact_address.py",
+    "line": 74,
+    "import": "re",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/compact_address.py",
+    "line": 75,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/compact_address.py",
+    "line": 76,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/compact_address.py",
+    "line": 77,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/compact_address.py",
+    "line": 77,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/compact_address.py",
+    "line": 77,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/compact_address.py",
+    "line": 77,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
     "source": "runtime/completion_controls.py",
     "line": 9,
     "import": "__future__",
@@ -7940,6 +8072,30 @@
     "type": "external-or-unresolved"
   },
   {
+    "source": "runtime/containment_invariants.py",
+    "line": 11,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/containment_invariants.py",
+    "line": 13,
+    "import": "tempfile",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/containment_invariants.py",
+    "line": 14,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/containment_invariants.py",
+    "line": 15,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
     "source": "runtime/context_checkpoint.py",
     "line": 7,
     "import": "__future__",
@@ -7997,6 +8153,42 @@
     "source": "runtime/context_checkpoint.py",
     "line": 13,
     "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/context_generation.py",
+    "line": 2,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/context_generation.py",
+    "line": 4,
+    "import": "collections.abc",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/context_generation.py",
+    "line": 4,
+    "import": "collections.abc",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/context_generation.py",
+    "line": 5,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/context_generation.py",
+    "line": 6,
+    "import": "hashlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/context_generation.py",
+    "line": 7,
+    "import": "types",
     "type": "external-or-unresolved"
   },
   {
@@ -8099,6 +8291,12 @@
     "source": "runtime/contracts.py",
     "line": 20,
     "import": "urllib.parse",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/contracts.py",
+    "line": 700,
+    "import": "re",
     "type": "external-or-unresolved"
   },
   {
@@ -8402,6 +8600,132 @@
     "type": "external-or-unresolved"
   },
   {
+    "source": "runtime/data_controls.py",
+    "line": 7,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/data_controls.py",
+    "line": 9,
+    "import": "collections.abc",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/data_controls.py",
+    "line": 10,
+    "import": "argparse",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/data_controls.py",
+    "line": 11,
+    "import": "hashlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/data_controls.py",
+    "line": 12,
+    "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/data_controls.py",
+    "line": 13,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/data_controls.py",
+    "line": 14,
+    "import": "sys",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/data_inventory.py",
+    "line": 18,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/data_inventory.py",
+    "line": 20,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/data_inventory.py",
+    "line": 21,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/data_inventory.py",
+    "line": 22,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/data_inventory.py",
+    "line": 22,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/data_inventory.py",
+    "line": 23,
+    "import": "hashlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/data_inventory.py",
+    "line": 211,
+    "import": "hashlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/data_inventory.py",
+    "line": 211,
+    "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/data_inventory.py",
+    "line": 223,
+    "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/data_inventory.py",
+    "line": 253,
+    "import": "itertools",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/data_inventory.py",
+    "line": 298,
+    "import": "hashlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/data_inventory.py",
+    "line": 298,
+    "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/data_inventory.py",
+    "line": 321,
+    "import": "datetime",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/data_inventory.py",
+    "line": 321,
+    "import": "datetime",
+    "type": "external-or-unresolved"
+  },
+  {
     "source": "runtime/declared_suite.py",
     "line": 8,
     "import": "__future__",
@@ -8540,6 +8864,30 @@
     "type": "external-or-unresolved"
   },
   {
+    "source": "runtime/dependency_identity.py",
+    "line": 6,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/dependency_identity.py",
+    "line": 8,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/dependency_identity.py",
+    "line": 9,
+    "import": "hashlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/dependency_identity.py",
+    "line": 10,
+    "import": "re",
+    "type": "external-or-unresolved"
+  },
+  {
     "source": "runtime/dependency_invalidation.py",
     "line": 3,
     "import": "__future__",
@@ -8579,6 +8927,24 @@
     "source": "runtime/dependency_invalidation.py",
     "line": 7,
     "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/dependency_invalidation.py",
+    "line": 131,
+    "import": "hashlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/dependency_invalidation.py",
+    "line": 61,
+    "import": "threading",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/dependency_invalidation.py",
+    "line": 67,
+    "import": "hashlib",
     "type": "external-or-unresolved"
   },
   {
@@ -8774,6 +9140,54 @@
     "type": "external-or-unresolved"
   },
   {
+    "source": "runtime/effect_intent.py",
+    "line": 14,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/effect_intent.py",
+    "line": 16,
+    "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/effect_intent.py",
+    "line": 17,
+    "import": "os",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/effect_intent.py",
+    "line": 18,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/effect_intent.py",
+    "line": 19,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/effect_intent.py",
+    "line": 20,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/effect_intent.py",
+    "line": 20,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/effect_intent.py",
+    "line": 225,
+    "import": "hashlib",
+    "type": "external-or-unresolved"
+  },
+  {
     "source": "runtime/effect_surface.py",
     "line": 3,
     "import": "__future__",
@@ -8915,6 +9329,30 @@
     "source": "runtime/engineering_lifecycle.py",
     "line": 7,
     "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/engineering_os_paths.py",
+    "line": 37,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/engineering_os_paths.py",
+    "line": 39,
+    "import": "os",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/engineering_os_paths.py",
+    "line": 40,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/engineering_os_paths.py",
+    "line": 40,
+    "import": "pathlib",
     "type": "external-or-unresolved"
   },
   {
@@ -9419,6 +9857,54 @@
     "source": "runtime/exact_tool_certification.py",
     "line": 18,
     "import": "zipfile",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/execution_context.py",
+    "line": 2,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/execution_context.py",
+    "line": 2,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/execution_context.py",
+    "line": 2,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/execution_context.py",
+    "line": 3,
+    "import": "datetime",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/execution_context.py",
+    "line": 3,
+    "import": "datetime",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/execution_context.py",
+    "line": 4,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/execution_context.py",
+    "line": 5,
+    "import": "hashlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/execution_context.py",
+    "line": 6,
+    "import": "re",
     "type": "external-or-unresolved"
   },
   {
@@ -10106,6 +10592,30 @@
     "type": "external-or-unresolved"
   },
   {
+    "source": "runtime/generation_bound_verdict.py",
+    "line": 2,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/generation_bound_verdict.py",
+    "line": 4,
+    "import": "hashlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/generation_bound_verdict.py",
+    "line": 5,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/generation_bound_verdict.py",
+    "line": 6,
+    "import": "collections.abc",
+    "type": "external-or-unresolved"
+  },
+  {
     "source": "runtime/global_skill_isolation.py",
     "line": 3,
     "import": "__future__",
@@ -10160,6 +10670,18 @@
     "type": "external-or-unresolved"
   },
   {
+    "source": "runtime/governed_exception.py",
+    "line": 2,
+    "import": "datetime",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/governed_exception.py",
+    "line": 2,
+    "import": "datetime",
+    "type": "external-or-unresolved"
+  },
+  {
     "source": "runtime/graph_registry.py",
     "line": 3,
     "import": "__future__",
@@ -10227,6 +10749,863 @@
   },
   {
     "source": "runtime/graphs.py",
+    "line": 11,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/__init__.py",
+    "line": 27,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/admin.py",
+    "line": 9,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/admin.py",
+    "line": 11,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/admin.py",
+    "line": 11,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/admin.py",
+    "line": 12,
+    "import": "datetime",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/admin.py",
+    "line": 12,
+    "import": "datetime",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/admin.py",
+    "line": 13,
+    "import": "hashlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/audit.py",
+    "line": 3,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/audit.py",
+    "line": 5,
+    "import": "datetime",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/audit.py",
+    "line": 6,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/audit.py",
+    "line": 7,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/authorization.py",
+    "line": 9,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/authorization.py",
+    "line": 11,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/authorization.py",
+    "line": 11,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/authorization.py",
+    "line": 12,
+    "import": "hashlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/authorization.py",
+    "line": 13,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/commissioning.py",
+    "line": 3,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/commissioning.py",
+    "line": 5,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/composition.py",
+    "line": 3,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/composition.py",
+    "line": 5,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/composition.py",
+    "line": 6,
+    "import": "datetime",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/composition.py",
+    "line": 7,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/composition.py",
+    "line": 71,
+    "import": "sys",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/containment.py",
+    "line": 26,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/containment.py",
+    "line": 28,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/containment.py",
+    "line": 29,
+    "import": "datetime",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/containment.py",
+    "line": 29,
+    "import": "datetime",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/containment.py",
+    "line": 30,
+    "import": "hashlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/containment.py",
+    "line": 31,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/containment.py",
+    "line": 32,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/containment.py",
+    "line": 32,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/containment.py",
+    "line": 32,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/deviation.py",
+    "line": 9,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/deviation.py",
+    "line": 11,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/deviation.py",
+    "line": 11,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/deviation.py",
+    "line": 11,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/deviation.py",
+    "line": 12,
+    "import": "hashlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/deviation.py",
+    "line": 13,
+    "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/deviation.py",
+    "line": 14,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/deviation.py",
+    "line": 15,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/deviation.py",
+    "line": 15,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/enrollment.py",
+    "line": 19,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/enrollment.py",
+    "line": 21,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/enrollment.py",
+    "line": 22,
+    "import": "datetime",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/enrollment.py",
+    "line": 22,
+    "import": "datetime",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/enrollment.py",
+    "line": 23,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/enrollment.py",
+    "line": 23,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/events.py",
+    "line": 9,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/events.py",
+    "line": 11,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/events.py",
+    "line": 11,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/events.py",
+    "line": 11,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/events.py",
+    "line": 12,
+    "import": "hashlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/events.py",
+    "line": 13,
+    "import": "itertools",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/events.py",
+    "line": 14,
+    "import": "re",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/events.py",
+    "line": 15,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/events.py",
+    "line": 15,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/health.py",
+    "line": 8,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/health.py",
+    "line": 10,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/health.py",
+    "line": 10,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/host_configuration.py",
+    "line": 6,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/host_configuration.py",
+    "line": 7,
+    "import": "re",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/host_configuration.py",
+    "line": 29,
+    "import": "importlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/host_configuration.py",
+    "line": 30,
+    "import": "os",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/host_configuration.py",
+    "line": 44,
+    "type": "computed-or-relative-dynamic-import"
+  },
+  {
+    "source": "runtime/gremlin/identity.py",
+    "line": 12,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/identity.py",
+    "line": 14,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/identity.py",
+    "line": 14,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/identity.py",
+    "line": 15,
+    "import": "hashlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/identity.py",
+    "line": 16,
+    "import": "re",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/intervention.py",
+    "line": 8,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/intervention.py",
+    "line": 10,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/intervention.py",
+    "line": 10,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/intervention.py",
+    "line": 10,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/intervention.py",
+    "line": 11,
+    "import": "datetime",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/intervention.py",
+    "line": 11,
+    "import": "datetime",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/intervention.py",
+    "line": 11,
+    "import": "datetime",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/intervention.py",
+    "line": 12,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/observers.py",
+    "line": 13,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/observers.py",
+    "line": 15,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/observers.py",
+    "line": 15,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/observers.py",
+    "line": 16,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/observers.py",
+    "line": 16,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/policy.py",
+    "line": 9,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/policy.py",
+    "line": 11,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/policy.py",
+    "line": 11,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/policy.py",
+    "line": 11,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/policy.py",
+    "line": 12,
+    "import": "hashlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/policy.py",
+    "line": 13,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/policy.py",
+    "line": 13,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/receipts.py",
+    "line": 12,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/receipts.py",
+    "line": 14,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/receipts.py",
+    "line": 14,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/receipts.py",
+    "line": 15,
+    "import": "hashlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/receipts.py",
+    "line": 16,
+    "import": "hmac",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/receipts.py",
+    "line": 17,
+    "import": "re",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/receipts.py",
+    "line": 18,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/receipts.py",
+    "line": 18,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/recovery_authority.py",
+    "line": 8,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/recovery_authority.py",
+    "line": 10,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/recovery_authority.py",
+    "line": 10,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/recovery_authority.py",
+    "line": 11,
+    "import": "datetime",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/recovery_authority.py",
+    "line": 11,
+    "import": "datetime",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/recovery_authority.py",
+    "line": 11,
+    "import": "datetime",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/recovery_authority.py",
+    "line": 12,
+    "import": "hashlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/recovery_authority.py",
+    "line": 13,
+    "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/recovery_authority.py",
+    "line": 14,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/recovery_authority.py",
+    "line": 15,
+    "import": "re",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/recovery_authority.py",
+    "line": 16,
+    "import": "secrets",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/recovery_authority.py",
+    "line": 17,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/recovery_authority.py",
+    "line": 17,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/recovery_authority.py",
+    "line": 17,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/recovery_authority.py",
+    "line": 18,
+    "import": "uuid",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/registry.py",
+    "line": 12,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/registry.py",
+    "line": 14,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/registry.py",
+    "line": 15,
+    "import": "hashlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/runtime_identity.py",
+    "line": 8,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/runtime_identity.py",
+    "line": 10,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/runtime_identity.py",
+    "line": 11,
+    "import": "datetime",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/runtime_identity.py",
+    "line": 11,
+    "import": "datetime",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/runtime_identity.py",
+    "line": 12,
+    "import": "ctypes",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/runtime_identity.py",
+    "line": 13,
+    "import": "ctypes",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/runtime_identity.py",
+    "line": 14,
+    "import": "hashlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/runtime_identity.py",
+    "line": 15,
+    "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/runtime_identity.py",
+    "line": 16,
+    "import": "os",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/runtime_identity.py",
+    "line": 17,
+    "import": "re",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/runtime_identity.py",
+    "line": 18,
+    "import": "secrets",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/runtime_identity.py",
+    "line": 19,
+    "import": "contextlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/runtime_identity.py",
+    "line": 20,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/runtime_identity.py",
+    "line": 20,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/runtime_identity.py",
+    "line": 20,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/runtime_identity.py",
+    "line": 20,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/runtime_identity.py",
+    "line": 20,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/runtime_identity.py",
+    "line": 21,
+    "import": "uuid",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/supervisor.py",
+    "line": 14,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/supervisor.py",
+    "line": 16,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/supervisor.py",
+    "line": 16,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/supervisor.py",
+    "line": 17,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/gremlin/supervisor.py",
+    "line": 17,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/group_provider_adapters.py",
+    "line": 7,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/group_provider_adapters.py",
+    "line": 9,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/group_provider_adapters.py",
+    "line": 10,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/group_provider_adapters.py",
+    "line": 11,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/group_provider_adapters.py",
     "line": 11,
     "import": "typing",
     "type": "external-or-unresolved"
@@ -10758,6 +12137,156 @@
     "type": "computed-or-relative-dynamic-import"
   },
   {
+    "source": "runtime/isolated_sandbox.py",
+    "line": 28,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/isolated_sandbox.py",
+    "line": 30,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/isolated_sandbox.py",
+    "line": 30,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/isolated_sandbox.py",
+    "line": 30,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/isolated_sandbox.py",
+    "line": 31,
+    "import": "datetime",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/isolated_sandbox.py",
+    "line": 31,
+    "import": "datetime",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/isolated_sandbox.py",
+    "line": 32,
+    "import": "hashlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/isolated_sandbox.py",
+    "line": 33,
+    "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/isolated_sandbox.py",
+    "line": 34,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/isolated_sandbox.py",
+    "line": 35,
+    "import": "stat",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/isolated_sandbox.py",
+    "line": 36,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/isolated_sandbox.py",
+    "line": 36,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/isolated_sandbox.py",
+    "line": 36,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/iterative_subgraph.py",
+    "line": 8,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/iterative_subgraph.py",
+    "line": 10,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/iterative_subgraph.py",
+    "line": 10,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/iterative_subgraph.py",
+    "line": 11,
+    "import": "datetime",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/iterative_subgraph.py",
+    "line": 11,
+    "import": "datetime",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/iterative_subgraph.py",
+    "line": 11,
+    "import": "datetime",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/iterative_subgraph.py",
+    "line": 12,
+    "import": "hashlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/iterative_subgraph.py",
+    "line": 13,
+    "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/iterative_subgraph.py",
+    "line": 14,
+    "import": "re",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/iterative_subgraph.py",
+    "line": 15,
+    "import": "time",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/iterative_subgraph.py",
+    "line": 16,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/iterative_subgraph.py",
+    "line": 16,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
     "source": "runtime/job_receipt.py",
     "line": 2,
     "import": "__future__",
@@ -11276,19 +12805,55 @@
   {
     "source": "runtime/librarian_semantic_map.py",
     "line": 40,
+    "import": "tomllib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/librarian_semantic_map.py",
+    "line": 41,
     "import": "dataclasses",
     "type": "external-or-unresolved"
   },
   {
     "source": "runtime/librarian_semantic_map.py",
     "line": 41,
-    "import": "pathlib",
+    "import": "dataclasses",
     "type": "external-or-unresolved"
   },
   {
     "source": "runtime/librarian_semantic_map.py",
     "line": 42,
+    "import": "datetime",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/librarian_semantic_map.py",
+    "line": 42,
+    "import": "datetime",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/librarian_semantic_map.py",
+    "line": 43,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/librarian_semantic_map.py",
+    "line": 44,
     "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/librarian_semantic_map.py",
+    "line": 44,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/librarian_semantic_map.py",
+    "line": 45,
+    "import": "types",
     "type": "external-or-unresolved"
   },
   {
@@ -11601,6 +13166,42 @@
     "source": "runtime/local_model_runtime.py",
     "line": 22,
     "import": "uuid",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/member_execution.py",
+    "line": 22,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/member_execution.py",
+    "line": 24,
+    "import": "datetime",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/member_execution.py",
+    "line": 24,
+    "import": "datetime",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/member_execution.py",
+    "line": 25,
+    "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/member_execution.py",
+    "line": 26,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/member_execution.py",
+    "line": 26,
+    "import": "typing",
     "type": "external-or-unresolved"
   },
   {
@@ -12264,6 +13865,66 @@
     "type": "external-or-unresolved"
   },
   {
+    "source": "runtime/metacognitive_evolution/runner.py",
+    "line": 18,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/metacognitive_evolution/runner.py",
+    "line": 20,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/metacognitive_evolution/runner.py",
+    "line": 21,
+    "import": "math",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/metacognitive_evolution/runner.py",
+    "line": 22,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/metacognitive_evolution/runner.py",
+    "line": 22,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/metacognitive_evolution/runner.py",
+    "line": 22,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/metacognitive_evolution/runner.py",
+    "line": 194,
+    "import": "itertools",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/metacognitive_evolution/runner.py",
+    "line": 225,
+    "import": "hashlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/metacognitive_evolution/runner.py",
+    "line": 226,
+    "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/metacognitive_evolution/runner.py",
+    "line": 147,
+    "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
     "source": "runtime/metacognitive_evolution/semantic_contracts/linter.py",
     "line": 1,
     "import": "__future__",
@@ -12378,6 +14039,66 @@
     "type": "external-or-unresolved"
   },
   {
+    "source": "runtime/model_branch_artifacts.py",
+    "line": 2,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/model_branch_artifacts.py",
+    "line": 3,
+    "import": "hashlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/model_branch_artifacts.py",
+    "line": 4,
+    "import": "os",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/model_branch_contracts.py",
+    "line": 18,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/model_branch_contracts.py",
+    "line": 20,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/model_branch_contracts.py",
+    "line": 21,
+    "import": "hashlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/model_branch_contracts.py",
+    "line": 22,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/model_branch_contracts.py",
+    "line": 22,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/model_branch_contracts.py",
+    "line": 22,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/model_branch_contracts.py",
+    "line": 22,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
     "source": "runtime/model_capacity.py",
     "line": 7,
     "import": "__future__",
@@ -12417,6 +14138,78 @@
     "source": "runtime/model_capacity.py",
     "line": 13,
     "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/model_convergence.py",
+    "line": 2,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/model_convergence.py",
+    "line": 4,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/model_convergence.py",
+    "line": 4,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/model_convergence.py",
+    "line": 5,
+    "import": "math",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/model_convergence.py",
+    "line": 134,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/model_convergence.py",
+    "line": 135,
+    "import": "hashlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/model_execution_group.py",
+    "line": 31,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/model_execution_group.py",
+    "line": 33,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/model_execution_group.py",
+    "line": 34,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/model_execution_group.py",
+    "line": 34,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/model_execution_group.py",
+    "line": 35,
+    "import": "hashlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/model_execution_group.py",
+    "line": 135,
+    "import": "dataclasses",
     "type": "external-or-unresolved"
   },
   {
@@ -12465,6 +14258,24 @@
     "source": "runtime/model_fabric_generation.py",
     "line": 14,
     "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/model_group_preparation.py",
+    "line": 2,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/model_group_preparation.py",
+    "line": 3,
+    "import": "hashlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/model_group_preparation.py",
+    "line": 4,
+    "import": "pathlib",
     "type": "external-or-unresolved"
   },
   {
@@ -12632,6 +14443,12 @@
   {
     "source": "runtime/model_profile.py",
     "line": 15,
+    "import": "re",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/model_profile.py",
+    "line": 16,
     "import": "typing",
     "type": "external-or-unresolved"
   },
@@ -12852,8 +14669,56 @@
     "type": "external-or-unresolved"
   },
   {
-    "source": "runtime/model_route_state.py",
+    "source": "runtime/model_router_preset.py",
+    "line": 8,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/model_router_preset.py",
+    "line": 10,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/model_router_preset.py",
+    "line": 10,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/model_router_preset.py",
+    "line": 11,
+    "import": "hashlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/model_router_preset.py",
+    "line": 12,
+    "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/model_router_preset.py",
+    "line": 13,
+    "import": "re",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/model_router_preset.py",
     "line": 14,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/model_router_preset.py",
+    "line": 15,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/model_router_preset.py",
+    "line": 15,
     "import": "typing",
     "type": "external-or-unresolved"
   },
@@ -12980,6 +14845,78 @@
   {
     "source": "runtime/models.py",
     "line": 11,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/mutating_producer_registry.py",
+    "line": 21,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/mutating_producer_registry.py",
+    "line": 23,
+    "import": "ast",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/mutating_producer_registry.py",
+    "line": 24,
+    "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/mutating_producer_registry.py",
+    "line": 25,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/mutating_producer_registry.py",
+    "line": 26,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/mutating_producer_registry.py",
+    "line": 26,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/mutation_queue.py",
+    "line": 18,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/mutation_queue.py",
+    "line": 20,
+    "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/mutation_queue.py",
+    "line": 21,
+    "import": "os",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/mutation_queue.py",
+    "line": 22,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/mutation_queue.py",
+    "line": 23,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/mutation_queue.py",
+    "line": 24,
     "import": "typing",
     "type": "external-or-unresolved"
   },
@@ -13428,6 +15365,12 @@
     "type": "external-or-unresolved"
   },
   {
+    "source": "runtime/operational_gap_ledger.py",
+    "line": 2156,
+    "import": "hashlib",
+    "type": "external-or-unresolved"
+  },
+  {
     "source": "runtime/operational_observers.py",
     "line": 10,
     "import": "__future__",
@@ -13848,6 +15791,108 @@
     "type": "external-or-unresolved"
   },
   {
+    "source": "runtime/plan_registry.py",
+    "line": 21,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/plan_registry.py",
+    "line": 23,
+    "import": "hashlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/plan_registry.py",
+    "line": 24,
+    "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/plan_registry.py",
+    "line": 25,
+    "import": "re",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/plan_registry.py",
+    "line": 26,
+    "import": "copy",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/plan_registry.py",
+    "line": 27,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/plan_registry.py",
+    "line": 27,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/plan_registry.py",
+    "line": 28,
+    "import": "datetime",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/plan_registry.py",
+    "line": 28,
+    "import": "datetime",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/plan_registry.py",
+    "line": 29,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/plan_registry.py",
+    "line": 30,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/plan_registry.py",
+    "line": 30,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/plan_registry.py",
+    "line": 30,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/plan_registry.py",
+    "line": 757,
+    "import": "tempfile",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/plan_registry.py",
+    "line": 758,
+    "import": "uuid",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/plan_registry.py",
+    "line": 1457,
+    "import": "os",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/plan_registry.py",
+    "line": 1458,
+    "import": "uuid",
+    "type": "external-or-unresolved"
+  },
+  {
     "source": "runtime/planner.py",
     "line": 3,
     "import": "__future__",
@@ -13995,6 +16040,18 @@
     "source": "runtime/portable_audit_bundle.py",
     "line": 12,
     "import": "zlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/prepared_group_transport.py",
+    "line": 6,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/prepared_group_transport.py",
+    "line": 7,
+    "import": "re",
     "type": "external-or-unresolved"
   },
   {
@@ -14150,150 +16207,162 @@
   {
     "source": "runtime/process_supervisor.py",
     "line": 11,
-    "import": "json",
+    "import": "hashlib",
     "type": "external-or-unresolved"
   },
   {
     "source": "runtime/process_supervisor.py",
     "line": 12,
-    "import": "os",
+    "import": "json",
     "type": "external-or-unresolved"
   },
   {
     "source": "runtime/process_supervisor.py",
     "line": 13,
-    "import": "pathlib",
+    "import": "os",
     "type": "external-or-unresolved"
   },
   {
     "source": "runtime/process_supervisor.py",
     "line": 14,
-    "import": "select",
+    "import": "pathlib",
     "type": "external-or-unresolved"
   },
   {
     "source": "runtime/process_supervisor.py",
     "line": 15,
-    "import": "shutil",
+    "import": "select",
     "type": "external-or-unresolved"
   },
   {
     "source": "runtime/process_supervisor.py",
     "line": 16,
-    "import": "signal",
+    "import": "shutil",
     "type": "external-or-unresolved"
   },
   {
     "source": "runtime/process_supervisor.py",
     "line": 17,
-    "import": "subprocess",
+    "import": "signal",
     "type": "external-or-unresolved"
   },
   {
     "source": "runtime/process_supervisor.py",
     "line": 18,
-    "import": "sys",
+    "import": "subprocess",
     "type": "external-or-unresolved"
   },
   {
     "source": "runtime/process_supervisor.py",
     "line": 19,
-    "import": "threading",
+    "import": "sys",
     "type": "external-or-unresolved"
   },
   {
     "source": "runtime/process_supervisor.py",
     "line": 20,
+    "import": "threading",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/process_supervisor.py",
+    "line": 21,
     "import": "time",
     "type": "external-or-unresolved"
   },
   {
     "source": "runtime/process_supervisor.py",
-    "line": 21,
-    "import": "typing",
-    "type": "external-or-unresolved"
-  },
-  {
-    "source": "runtime/process_supervisor.py",
-    "line": 21,
-    "import": "typing",
-    "type": "external-or-unresolved"
-  },
-  {
-    "source": "runtime/process_supervisor.py",
-    "line": 21,
+    "line": 22,
     "import": "typing",
     "type": "external-or-unresolved"
   },
   {
     "source": "runtime/process_supervisor.py",
     "line": 22,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/process_supervisor.py",
+    "line": 22,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/process_supervisor.py",
+    "line": 23,
     "import": "uuid",
     "type": "external-or-unresolved"
   },
   {
     "source": "runtime/process_supervisor.py",
-    "line": 310,
+    "line": 317,
     "import": "ctypes",
     "type": "external-or-unresolved"
   },
   {
     "source": "runtime/process_supervisor.py",
-    "line": 311,
+    "line": 318,
     "import": "ctypes",
     "type": "external-or-unresolved"
   },
   {
     "source": "runtime/process_supervisor.py",
-    "line": 364,
+    "line": 371,
     "import": "ctypes",
     "type": "external-or-unresolved"
   },
   {
     "source": "runtime/process_supervisor.py",
-    "line": 365,
+    "line": 372,
     "import": "ctypes",
     "type": "external-or-unresolved"
   },
   {
     "source": "runtime/process_supervisor.py",
-    "line": 488,
+    "line": 523,
     "import": "ctypes",
     "type": "external-or-unresolved"
   },
   {
     "source": "runtime/process_supervisor.py",
-    "line": 633,
+    "line": 590,
     "import": "ctypes",
     "type": "external-or-unresolved"
   },
   {
     "source": "runtime/process_supervisor.py",
-    "line": 646,
+    "line": 736,
     "import": "ctypes",
     "type": "external-or-unresolved"
   },
   {
     "source": "runtime/process_supervisor.py",
-    "line": 647,
+    "line": 750,
     "import": "ctypes",
     "type": "external-or-unresolved"
   },
   {
     "source": "runtime/process_supervisor.py",
-    "line": 648,
+    "line": 751,
+    "import": "ctypes",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/process_supervisor.py",
+    "line": 752,
     "import": "inspect",
     "type": "external-or-unresolved"
   },
   {
     "source": "runtime/process_supervisor.py",
-    "line": 649,
+    "line": 753,
     "import": "sys",
     "type": "external-or-unresolved"
   },
   {
     "source": "runtime/process_supervisor.py",
-    "line": 1195,
+    "line": 1346,
     "import": "math",
     "type": "external-or-unresolved"
   },
@@ -14910,6 +16979,30 @@
     "type": "external-or-unresolved"
   },
   {
+    "source": "runtime/projection_gate.py",
+    "line": 2,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/projection_gate.py",
+    "line": 4,
+    "import": "collections.abc",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/projection_gate.py",
+    "line": 4,
+    "import": "collections.abc",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/projection_gate.py",
+    "line": 5,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
     "source": "runtime/provider_budget.py",
     "line": 3,
     "import": "__future__",
@@ -15147,6 +17240,24 @@
     "source": "runtime/provider_gateway.py",
     "line": 15,
     "import": "urllib.request",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/provider_gateway.py",
+    "line": 16,
+    "import": "urllib.error",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/provider_gateway.py",
+    "line": 16,
+    "import": "urllib.error",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/provider_gateway.py",
+    "line": 17,
+    "import": "email.utils",
     "type": "external-or-unresolved"
   },
   {
@@ -15613,7 +17724,7 @@
   },
   {
     "source": "runtime/release_artifacts.py",
-    "line": 288,
+    "line": 365,
     "import": "concurrent.futures",
     "type": "external-or-unresolved"
   },
@@ -16320,6 +18431,18 @@
     "type": "external-or-unresolved"
   },
   {
+    "source": "runtime/release_repository_context.py",
+    "line": 22,
+    "import": "hashlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/release_repository_context.py",
+    "line": 23,
+    "import": "zipfile",
+    "type": "external-or-unresolved"
+  },
+  {
     "source": "runtime/release_signing.py",
     "line": 3,
     "import": "__future__",
@@ -16429,14 +18552,26 @@
   },
   {
     "source": "runtime/repository_scope.py",
-    "line": 3,
+    "line": 16,
     "import": "__future__",
     "type": "external-or-unresolved"
   },
   {
     "source": "runtime/repository_scope.py",
-    "line": 5,
+    "line": 18,
     "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/repository_scope.py",
+    "line": 92,
+    "import": "importlib.util",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/repository_scope.py",
+    "line": 93,
+    "import": "sys",
     "type": "external-or-unresolved"
   },
   {
@@ -17010,6 +19145,60 @@
     "type": "external-or-unresolved"
   },
   {
+    "source": "runtime/scope_lease.py",
+    "line": 21,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/scope_lease.py",
+    "line": 23,
+    "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/scope_lease.py",
+    "line": 24,
+    "import": "os",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/scope_lease.py",
+    "line": 25,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/scope_lease.py",
+    "line": 25,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/scope_lease.py",
+    "line": 26,
+    "import": "datetime",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/scope_lease.py",
+    "line": 26,
+    "import": "datetime",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/scope_lease.py",
+    "line": 27,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/scope_lease.py",
+    "line": 28,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
     "source": "runtime/secret_scanning.py",
     "line": 3,
     "import": "__future__",
@@ -17184,6 +19373,90 @@
     "type": "external-or-unresolved"
   },
   {
+    "source": "runtime/semantic_address_vocabulary.py",
+    "line": 27,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_address_vocabulary.py",
+    "line": 29,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_address_vocabulary.py",
+    "line": 30,
+    "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_address_vocabulary.py",
+    "line": 31,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_address_vocabulary.py",
+    "line": 32,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_address_vocabulary.py",
+    "line": 32,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_authored_sources.py",
+    "line": 24,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_authored_sources.py",
+    "line": 26,
+    "import": "configparser",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_authored_sources.py",
+    "line": 27,
+    "import": "hashlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_authored_sources.py",
+    "line": 28,
+    "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_authored_sources.py",
+    "line": 29,
+    "import": "re",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_authored_sources.py",
+    "line": 30,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_authored_sources.py",
+    "line": 31,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_authored_sources.py",
+    "line": 31,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
     "source": "runtime/semantic_authority_bridge.py",
     "line": 2,
     "import": "__future__",
@@ -17223,6 +19496,168 @@
     "source": "runtime/semantic_capability_projection.py",
     "line": 3,
     "import": "importlib.util",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_census.py",
+    "line": 48,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_census.py",
+    "line": 50,
+    "import": "ast",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_census.py",
+    "line": 51,
+    "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_census.py",
+    "line": 52,
+    "import": "re",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_census.py",
+    "line": 53,
+    "import": "collections",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_census.py",
+    "line": 53,
+    "import": "collections",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_census.py",
+    "line": 54,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_census.py",
+    "line": 54,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_census.py",
+    "line": 55,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_census.py",
+    "line": 56,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_census.py",
+    "line": 56,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_census_report.py",
+    "line": 10,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_census_report.py",
+    "line": 12,
+    "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_census_report.py",
+    "line": 13,
+    "import": "collections",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_census_report.py",
+    "line": 13,
+    "import": "collections",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_census_report.py",
+    "line": 14,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_census_report.py",
+    "line": 15,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_census_report.py",
+    "line": 53,
+    "import": "sklearn.cluster",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_census_report.py",
+    "line": 54,
+    "import": "sklearn.feature_extraction.text",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_census_report.py",
+    "line": 55,
+    "import": "sklearn.metrics",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_census_v2.py",
+    "line": 12,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_census_v2.py",
+    "line": 14,
+    "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_census_v2.py",
+    "line": 15,
+    "import": "math",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_census_v2.py",
+    "line": 16,
+    "import": "collections",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_census_v2.py",
+    "line": 16,
+    "import": "collections",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_census_v2.py",
+    "line": 17,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_census_v2.py",
+    "line": 18,
+    "import": "typing",
     "type": "external-or-unresolved"
   },
   {
@@ -17772,6 +20207,42 @@
     "type": "external-or-unresolved"
   },
   {
+    "source": "runtime/semantic_coverage.py",
+    "line": 46,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_coverage.py",
+    "line": 48,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_coverage.py",
+    "line": 48,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_coverage.py",
+    "line": 49,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_coverage.py",
+    "line": 49,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_coverage.py",
+    "line": 49,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
     "source": "runtime/semantic_cross_project.py",
     "line": 2,
     "import": "__future__",
@@ -17796,6 +20267,186 @@
     "type": "external-or-unresolved"
   },
   {
+    "source": "runtime/semantic_entity.py",
+    "line": 49,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_entity.py",
+    "line": 51,
+    "import": "hashlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_entity.py",
+    "line": 52,
+    "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_entity.py",
+    "line": 53,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_entity.py",
+    "line": 53,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_entity.py",
+    "line": 53,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_entity.py",
+    "line": 54,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_entity.py",
+    "line": 55,
+    "import": "types",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_entity.py",
+    "line": 56,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_entity.py",
+    "line": 56,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_entity.py",
+    "line": 56,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_entity.py",
+    "line": 561,
+    "import": "os",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_entity_worthiness.py",
+    "line": 24,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_entity_worthiness.py",
+    "line": 26,
+    "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_entity_worthiness.py",
+    "line": 27,
+    "import": "re",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_entity_worthiness.py",
+    "line": 28,
+    "import": "collections",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_entity_worthiness.py",
+    "line": 29,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_entity_worthiness.py",
+    "line": 30,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_entity_worthiness.py",
+    "line": 31,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_evidence.py",
+    "line": 32,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_evidence.py",
+    "line": 34,
+    "import": "ast",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_evidence.py",
+    "line": 35,
+    "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_evidence.py",
+    "line": 36,
+    "import": "re",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_evidence.py",
+    "line": 37,
+    "import": "collections",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_evidence.py",
+    "line": 37,
+    "import": "collections",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_evidence.py",
+    "line": 38,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_evidence.py",
+    "line": 38,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_evidence.py",
+    "line": 39,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_evidence.py",
+    "line": 40,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_evidence.py",
+    "line": 40,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
     "source": "runtime/semantic_evidence_bridge.py",
     "line": 2,
     "import": "__future__",
@@ -17811,6 +20462,126 @@
     "source": "runtime/semantic_evidence_bridge.py",
     "line": 4,
     "import": "datetime",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_evidence_graph.py",
+    "line": 26,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_evidence_graph.py",
+    "line": 28,
+    "import": "ast",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_evidence_graph.py",
+    "line": 29,
+    "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_evidence_graph.py",
+    "line": 30,
+    "import": "re",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_evidence_graph.py",
+    "line": 31,
+    "import": "collections",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_evidence_graph.py",
+    "line": 31,
+    "import": "collections",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_evidence_graph.py",
+    "line": 32,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_evidence_graph.py",
+    "line": 32,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_evidence_graph.py",
+    "line": 33,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_evidence_graph.py",
+    "line": 34,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_evidence_graph.py",
+    "line": 34,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_hierarchy.py",
+    "line": 31,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_hierarchy.py",
+    "line": 33,
+    "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_hierarchy.py",
+    "line": 34,
+    "import": "math",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_hierarchy.py",
+    "line": 35,
+    "import": "collections",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_hierarchy.py",
+    "line": 35,
+    "import": "collections",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_hierarchy.py",
+    "line": 36,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_hierarchy.py",
+    "line": 36,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_hierarchy.py",
+    "line": 37,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_hierarchy.py",
+    "line": 37,
+    "import": "typing",
     "type": "external-or-unresolved"
   },
   {
@@ -17991,6 +20762,90 @@
     "source": "runtime/semantic_local_rerank.py",
     "line": 11,
     "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_locator.py",
+    "line": 33,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_locator.py",
+    "line": 35,
+    "import": "hashlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_locator.py",
+    "line": 36,
+    "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_locator.py",
+    "line": 37,
+    "import": "math",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_locator.py",
+    "line": 38,
+    "import": "re",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_locator.py",
+    "line": 39,
+    "import": "datetime",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_locator.py",
+    "line": 40,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_locator.py",
+    "line": 40,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_locator.py",
+    "line": 41,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_locator.py",
+    "line": 42,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_locator.py",
+    "line": 42,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_locator.py",
+    "line": 42,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_locator.py",
+    "line": 43,
+    "import": "urllib.parse",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_locator.py",
+    "line": 43,
+    "import": "urllib.parse",
     "type": "external-or-unresolved"
   },
   {
@@ -18894,6 +21749,54 @@
     "type": "external-or-unresolved"
   },
   {
+    "source": "runtime/semantic_migration.py",
+    "line": 6,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_migration.py",
+    "line": 8,
+    "import": "ast",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_migration.py",
+    "line": 9,
+    "import": "hashlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_migration.py",
+    "line": 10,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_migration.py",
+    "line": 11,
+    "import": "re",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_migration.py",
+    "line": 12,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_migration.py",
+    "line": 178,
+    "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_migration.py",
+    "line": 135,
+    "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
     "source": "runtime/semantic_mode_profiles.py",
     "line": 2,
     "import": "__future__",
@@ -18908,6 +21811,42 @@
   {
     "source": "runtime/semantic_model_context.py",
     "line": 4,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_normalize.py",
+    "line": 29,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_normalize.py",
+    "line": 31,
+    "import": "re",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_normalize.py",
+    "line": 32,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_normalize.py",
+    "line": 32,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_normalize.py",
+    "line": 33,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_normalize.py",
+    "line": 33,
     "import": "typing",
     "type": "external-or-unresolved"
   },
@@ -18927,6 +21866,102 @@
     "source": "runtime/semantic_orchestration.py",
     "line": 5,
     "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_powershell_source.py",
+    "line": 2,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_powershell_source.py",
+    "line": 4,
+    "import": "base64",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_powershell_source.py",
+    "line": 5,
+    "import": "hashlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_powershell_source.py",
+    "line": 6,
+    "import": "math",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_powershell_source.py",
+    "line": 7,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_powershell_source.py",
+    "line": 8,
+    "import": "shutil",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_powershell_source.py",
+    "line": 9,
+    "import": "subprocess",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_powershell_source.py",
+    "line": 10,
+    "import": "uuid",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_prefreeze_census.py",
+    "line": 25,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_prefreeze_census.py",
+    "line": 27,
+    "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_prefreeze_census.py",
+    "line": 28,
+    "import": "math",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_prefreeze_census.py",
+    "line": 29,
+    "import": "random",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_prefreeze_census.py",
+    "line": 30,
+    "import": "collections",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_prefreeze_census.py",
+    "line": 30,
+    "import": "collections",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_prefreeze_census.py",
+    "line": 31,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_prefreeze_census.py",
+    "line": 32,
+    "import": "typing",
     "type": "external-or-unresolved"
   },
   {
@@ -19020,6 +22055,30 @@
     "type": "external-or-unresolved"
   },
   {
+    "source": "runtime/semantic_remap_transaction.py",
+    "line": 6,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_remap_transaction.py",
+    "line": 8,
+    "import": "hashlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_remap_transaction.py",
+    "line": 9,
+    "import": "os",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_remap_transaction.py",
+    "line": 10,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
     "source": "runtime/semantic_retrieval_fusion.py",
     "line": 2,
     "import": "__future__",
@@ -19077,6 +22136,288 @@
     "source": "runtime/semantic_revision.py",
     "line": 12,
     "import": "yaml",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_stability_diagnosis.py",
+    "line": 12,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_stability_diagnosis.py",
+    "line": 14,
+    "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_stability_diagnosis.py",
+    "line": 15,
+    "import": "random",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_stability_diagnosis.py",
+    "line": 16,
+    "import": "collections",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_stability_diagnosis.py",
+    "line": 16,
+    "import": "collections",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_stability_diagnosis.py",
+    "line": 17,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_stability_diagnosis.py",
+    "line": 18,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_stability_diagnosis.py",
+    "line": 18,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_stability_repair.py",
+    "line": 24,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_stability_repair.py",
+    "line": 26,
+    "import": "hashlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_stability_repair.py",
+    "line": 27,
+    "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_stability_repair.py",
+    "line": 28,
+    "import": "random",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_stability_repair.py",
+    "line": 29,
+    "import": "sys",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_stability_repair.py",
+    "line": 30,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_stability_repair.py",
+    "line": 30,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_surfaces.py",
+    "line": 13,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_surfaces.py",
+    "line": 15,
+    "import": "ast",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_surfaces.py",
+    "line": 16,
+    "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_surfaces.py",
+    "line": 17,
+    "import": "re",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_surfaces.py",
+    "line": 18,
+    "import": "hashlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_surfaces.py",
+    "line": 19,
+    "import": "tomllib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_surfaces.py",
+    "line": 20,
+    "import": "yaml",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_surfaces.py",
+    "line": 21,
+    "import": "copy",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_surfaces.py",
+    "line": 22,
+    "import": "fnmatch",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_surfaces.py",
+    "line": 23,
+    "import": "functools",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_surfaces.py",
+    "line": 24,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_surfaces.py",
+    "line": 24,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_surfaces.py",
+    "line": 25,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_surfaces.py",
+    "line": 26,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_taxonomy.py",
+    "line": 34,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_taxonomy.py",
+    "line": 36,
+    "import": "ast",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_taxonomy.py",
+    "line": 37,
+    "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_taxonomy.py",
+    "line": 38,
+    "import": "re",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_taxonomy.py",
+    "line": 39,
+    "import": "collections",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_taxonomy.py",
+    "line": 39,
+    "import": "collections",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_taxonomy.py",
+    "line": 40,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_taxonomy.py",
+    "line": 40,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_taxonomy.py",
+    "line": 41,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_taxonomy.py",
+    "line": 42,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_taxonomy.py",
+    "line": 42,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_taxonomy_census.py",
+    "line": 15,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_taxonomy_census.py",
+    "line": 17,
+    "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_taxonomy_census.py",
+    "line": 18,
+    "import": "math",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_taxonomy_census.py",
+    "line": 19,
+    "import": "collections",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_taxonomy_census.py",
+    "line": 19,
+    "import": "collections",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_taxonomy_census.py",
+    "line": 20,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/semantic_taxonomy_census.py",
+    "line": 21,
+    "import": "typing",
     "type": "external-or-unresolved"
   },
   {
@@ -19416,6 +22757,60 @@
     "type": "external-or-unresolved"
   },
   {
+    "source": "runtime/source_boundary.py",
+    "line": 35,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/source_boundary.py",
+    "line": 37,
+    "import": "hashlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/source_boundary.py",
+    "line": 38,
+    "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/source_boundary.py",
+    "line": 39,
+    "import": "re",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/source_boundary.py",
+    "line": 40,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/source_boundary.py",
+    "line": 40,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/source_boundary.py",
+    "line": 41,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/source_boundary.py",
+    "line": 42,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/source_boundary.py",
+    "line": 42,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
     "source": "runtime/source_coverage.py",
     "line": 3,
     "import": "__future__",
@@ -19442,6 +22837,66 @@
   {
     "source": "runtime/source_coverage.py",
     "line": 8,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/source_freeze.py",
+    "line": 29,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/source_freeze.py",
+    "line": 31,
+    "import": "hashlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/source_freeze.py",
+    "line": 32,
+    "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/source_freeze.py",
+    "line": 33,
+    "import": "platform",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/source_freeze.py",
+    "line": 34,
+    "import": "sys",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/source_freeze.py",
+    "line": 35,
+    "import": "tomllib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/source_freeze.py",
+    "line": 36,
+    "import": "zipfile",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/source_freeze.py",
+    "line": 37,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/source_freeze.py",
+    "line": 38,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/source_freeze.py",
+    "line": 39,
     "import": "typing",
     "type": "external-or-unresolved"
   },
@@ -19633,6 +23088,12 @@
   },
   {
     "source": "runtime/structural_integrity.py",
+    "line": 10,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/structural_integrity.py",
     "line": 11,
     "import": "re",
     "type": "external-or-unresolved"
@@ -19663,7 +23124,7 @@
   },
   {
     "source": "runtime/structural_integrity.py",
-    "line": 748,
+    "line": 896,
     "type": "computed-or-relative-dynamic-import"
   },
   {
@@ -20597,6 +24058,48 @@
     "type": "external-or-unresolved"
   },
   {
+    "source": "runtime/tie_experience.py",
+    "line": 23,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/tie_experience.py",
+    "line": 25,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/tie_experience.py",
+    "line": 26,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/tie_experience.py",
+    "line": 27,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/tie_experience.py",
+    "line": 27,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/tie_experience.py",
+    "line": 125,
+    "import": "hashlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/tie_experience.py",
+    "line": 126,
+    "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
     "source": "runtime/tiny_model_operator.py",
     "line": 7,
     "import": "__future__",
@@ -21289,31 +24792,85 @@
   {
     "source": "runtime/vscode_model_bridge.py",
     "line": 12,
-    "import": "pathlib",
+    "import": "os",
     "type": "external-or-unresolved"
   },
   {
     "source": "runtime/vscode_model_bridge.py",
     "line": 13,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/vscode_model_bridge.py",
+    "line": 14,
     "import": "sys",
     "type": "external-or-unresolved"
   },
   {
     "source": "runtime/vscode_model_bridge.py",
-    "line": 14,
-    "import": "typing",
-    "type": "external-or-unresolved"
-  },
-  {
-    "source": "runtime/vscode_model_bridge.py",
-    "line": 14,
+    "line": 15,
     "import": "typing",
     "type": "external-or-unresolved"
   },
   {
     "source": "runtime/vscode_model_bridge.py",
     "line": 15,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/vscode_model_bridge.py",
+    "line": 16,
     "import": "uuid",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/vscode_model_bridge.py",
+    "line": 241,
+    "import": "datetime",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/vscode_model_bridge.py",
+    "line": 241,
+    "import": "datetime",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/w1_exit_gate.py",
+    "line": 18,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/w1_exit_gate.py",
+    "line": 20,
+    "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/w1_exit_gate.py",
+    "line": 21,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/w1_exit_gate.py",
+    "line": 22,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/w1_exit_gate.py",
+    "line": 22,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/w1_exit_gate.py",
+    "line": 22,
+    "import": "typing",
     "type": "external-or-unresolved"
   },
   {
@@ -21599,6 +25156,48 @@
     "type": "external-or-unresolved"
   },
   {
+    "source": "runtime/work_disposition.py",
+    "line": 2,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/work_disposition.py",
+    "line": 2,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/workflow_group_config.py",
+    "line": 2,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/workflow_group_config.py",
+    "line": 4,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/workflow_group_config.py",
+    "line": 5,
+    "import": "collections.abc",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/workflow_group_config.py",
+    "line": 6,
+    "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/workflow_group_config.py",
+    "line": 7,
+    "import": "re",
+    "type": "external-or-unresolved"
+  },
+  {
     "source": "runtime/workflow_inputs.py",
     "line": 3,
     "import": "__future__",
@@ -21620,6 +25219,30 @@
     "source": "runtime/workflow_inputs.py",
     "line": 7,
     "import": "tomllib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/workflow_resume.py",
+    "line": 7,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/workflow_resume.py",
+    "line": 9,
+    "import": "collections.abc",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/workflow_resume.py",
+    "line": 9,
+    "import": "collections.abc",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/workflow_resume.py",
+    "line": 10,
+    "import": "dataclasses",
     "type": "external-or-unresolved"
   },
   {
@@ -21739,13 +25362,49 @@
   {
     "source": "runtime/workflow_worker.py",
     "line": 7,
-    "import": "pathlib",
+    "import": "os",
     "type": "external-or-unresolved"
   },
   {
     "source": "runtime/workflow_worker.py",
     "line": 8,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/workflow_worker.py",
+    "line": 9,
+    "import": "re",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/workflow_worker.py",
+    "line": 10,
     "import": "time",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/workflow_worker.py",
+    "line": 272,
+    "import": "os",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/workflow_worker.py",
+    "line": 387,
+    "import": "os",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/workflow_worker.py",
+    "line": 388,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "runtime/workflow_worker.py",
+    "line": 398,
+    "import": "os",
     "type": "external-or-unresolved"
   },
   {
@@ -21858,13 +25517,13 @@
   },
   {
     "source": "runtime/workspace_manager.py",
-    "line": 2097,
+    "line": 2173,
     "import": "collections",
     "type": "external-or-unresolved"
   },
   {
     "source": "runtime/workspace_manager.py",
-    "line": 2776,
+    "line": 2852,
     "import": "collections",
     "type": "external-or-unresolved"
   },
@@ -21925,6 +25584,54 @@
     "source": "runtime/world_state.py",
     "line": 12,
     "import": "uuid",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/admit_semantic_ownership.py",
+    "line": 8,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/admit_semantic_ownership.py",
+    "line": 10,
+    "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/admit_semantic_ownership.py",
+    "line": 11,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/advance_open_gap_cards.py",
+    "line": 13,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/advance_open_gap_cards.py",
+    "line": 15,
+    "import": "argparse",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/advance_open_gap_cards.py",
+    "line": 16,
+    "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/advance_open_gap_cards.py",
+    "line": 17,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/advance_open_gap_cards.py",
+    "line": 18,
+    "import": "sys",
     "type": "external-or-unresolved"
   },
   {
@@ -22278,66 +25985,84 @@
   {
     "source": "scripts/audit_source_archive.py",
     "line": 6,
-    "import": "collections.abc",
-    "type": "external-or-unresolved"
-  },
-  {
-    "source": "scripts/audit_source_archive.py",
-    "line": 6,
-    "import": "collections.abc",
+    "import": "hashlib",
     "type": "external-or-unresolved"
   },
   {
     "source": "scripts/audit_source_archive.py",
     "line": 7,
-    "import": "json",
+    "import": "io",
     "type": "external-or-unresolved"
   },
   {
     "source": "scripts/audit_source_archive.py",
     "line": 8,
-    "import": "pathlib",
+    "import": "collections.abc",
     "type": "external-or-unresolved"
   },
   {
     "source": "scripts/audit_source_archive.py",
     "line": 8,
-    "import": "pathlib",
+    "import": "collections.abc",
     "type": "external-or-unresolved"
   },
   {
     "source": "scripts/audit_source_archive.py",
     "line": 9,
-    "import": "shutil",
+    "import": "json",
     "type": "external-or-unresolved"
   },
   {
     "source": "scripts/audit_source_archive.py",
     "line": 10,
-    "import": "sys",
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/audit_source_archive.py",
+    "line": 10,
+    "import": "pathlib",
     "type": "external-or-unresolved"
   },
   {
     "source": "scripts/audit_source_archive.py",
     "line": 11,
-    "import": "tarfile",
+    "import": "shutil",
     "type": "external-or-unresolved"
   },
   {
     "source": "scripts/audit_source_archive.py",
     "line": 12,
-    "import": "tempfile",
+    "import": "sys",
     "type": "external-or-unresolved"
   },
   {
     "source": "scripts/audit_source_archive.py",
     "line": 13,
-    "import": "typing",
+    "import": "tarfile",
     "type": "external-or-unresolved"
   },
   {
     "source": "scripts/audit_source_archive.py",
     "line": 14,
+    "import": "tempfile",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/audit_source_archive.py",
+    "line": 15,
+    "import": "time",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/audit_source_archive.py",
+    "line": 16,
+    "import": "typing",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/audit_source_archive.py",
+    "line": 17,
     "import": "uuid",
     "type": "external-or-unresolved"
   },
@@ -23412,6 +27137,36 @@
   {
     "source": "scripts/build_integration_disposition.py",
     "line": 6,
+    "import": "sys",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/build_mutating_producer_registry.py",
+    "line": 10,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/build_mutating_producer_registry.py",
+    "line": 12,
+    "import": "argparse",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/build_mutating_producer_registry.py",
+    "line": 13,
+    "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/build_mutating_producer_registry.py",
+    "line": 14,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/build_mutating_producer_registry.py",
+    "line": 15,
     "import": "sys",
     "type": "external-or-unresolved"
   },
@@ -24408,54 +28163,66 @@
   {
     "source": "scripts/clean_source_export.py",
     "line": 8,
-    "import": "json",
+    "import": "fnmatch",
     "type": "external-or-unresolved"
   },
   {
     "source": "scripts/clean_source_export.py",
     "line": 9,
-    "import": "os",
+    "import": "tomllib",
     "type": "external-or-unresolved"
   },
   {
     "source": "scripts/clean_source_export.py",
     "line": 10,
-    "import": "pathlib",
+    "import": "json",
     "type": "external-or-unresolved"
   },
   {
     "source": "scripts/clean_source_export.py",
     "line": 11,
-    "import": "shutil",
+    "import": "os",
     "type": "external-or-unresolved"
   },
   {
     "source": "scripts/clean_source_export.py",
     "line": 12,
-    "import": "subprocess",
+    "import": "pathlib",
     "type": "external-or-unresolved"
   },
   {
     "source": "scripts/clean_source_export.py",
     "line": 13,
-    "import": "sys",
+    "import": "shutil",
     "type": "external-or-unresolved"
   },
   {
     "source": "scripts/clean_source_export.py",
     "line": 14,
-    "import": "uuid",
+    "import": "subprocess",
     "type": "external-or-unresolved"
   },
   {
     "source": "scripts/clean_source_export.py",
     "line": 15,
+    "import": "sys",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/clean_source_export.py",
+    "line": 16,
+    "import": "uuid",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/clean_source_export.py",
+    "line": 17,
     "import": "zipfile",
     "type": "external-or-unresolved"
   },
   {
     "source": "scripts/clean_source_export.py",
-    "line": 304,
+    "line": 403,
     "import": "docs.architecture.tools.build_atlas",
     "type": "external-or-unresolved"
   },
@@ -24514,6 +28281,42 @@
     "type": "external-or-unresolved"
   },
   {
+    "source": "scripts/close_out_gap_dispositions.py",
+    "line": 10,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/close_out_gap_dispositions.py",
+    "line": 12,
+    "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/close_out_gap_dispositions.py",
+    "line": 13,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/declare_plan_corpus_count_owners.py",
+    "line": 11,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/declare_plan_corpus_count_owners.py",
+    "line": 13,
+    "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/declare_plan_corpus_count_owners.py",
+    "line": 14,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
     "source": "scripts/deduplicate/cluster_near_duplicates.py",
     "line": 3,
     "import": "__future__",
@@ -24601,6 +28404,36 @@
     "source": "scripts/deduplicate/hash_exact_duplicates.py",
     "line": 12,
     "import": "pipeline_common",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/diagnose_receipt_policy.py",
+    "line": 7,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/diagnose_receipt_policy.py",
+    "line": 9,
+    "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/diagnose_receipt_policy.py",
+    "line": 10,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/diagnose_receipt_policy.py",
+    "line": 16,
+    "import": "sys",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/diagnose_receipt_policy.py",
+    "line": 35,
+    "import": "traceback",
     "type": "external-or-unresolved"
   },
   {
@@ -24637,6 +28470,18 @@
     "source": "scripts/extract_structured_text.py",
     "line": 15,
     "import": "pipeline_common",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/fix_boundary_rule_matching.py",
+    "line": 12,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/fix_boundary_rule_matching.py",
+    "line": 14,
+    "import": "pathlib",
     "type": "external-or-unresolved"
   },
   {
@@ -25132,6 +28977,66 @@
     "type": "external-or-unresolved"
   },
   {
+    "source": "scripts/measure_boundary_conformance.py",
+    "line": 9,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/measure_boundary_conformance.py",
+    "line": 11,
+    "import": "sys",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/measure_boundary_conformance.py",
+    "line": 12,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/measure_extension_bundle.py",
+    "line": 8,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/measure_extension_bundle.py",
+    "line": 10,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/measure_extension_bundle.py",
+    "line": 11,
+    "import": "re",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/measure_source_boundary_coverage.py",
+    "line": 11,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/measure_source_boundary_coverage.py",
+    "line": 13,
+    "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/measure_source_boundary_coverage.py",
+    "line": 14,
+    "import": "sys",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/measure_source_boundary_coverage.py",
+    "line": 15,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
     "source": "scripts/migrate_px_skills.py",
     "line": 3,
     "import": "__future__",
@@ -25199,7 +29104,7 @@
   },
   {
     "source": "scripts/migrate_px_skills.py",
-    "line": 579,
+    "line": 595,
     "import": "tomllib",
     "type": "external-or-unresolved"
   },
@@ -25672,6 +29577,30 @@
     "type": "external-or-unresolved"
   },
   {
+    "source": "scripts/phase0_inventory.py",
+    "line": 5,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/phase0_inventory.py",
+    "line": 7,
+    "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/phase0_inventory.py",
+    "line": 8,
+    "import": "re",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/phase0_inventory.py",
+    "line": 9,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
     "source": "scripts/pipeline_common.py",
     "line": 3,
     "import": "__future__",
@@ -25837,6 +29766,48 @@
     "source": "scripts/pre_candidate_hygiene.py",
     "line": 755,
     "import": "types",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/prove_envelope_count_invariant.py",
+    "line": 9,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/prove_envelope_count_invariant.py",
+    "line": 11,
+    "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/prove_envelope_count_invariant.py",
+    "line": 12,
+    "import": "shutil",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/prove_envelope_count_invariant.py",
+    "line": 13,
+    "import": "sys",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/prove_envelope_count_invariant.py",
+    "line": 14,
+    "import": "tempfile",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/prove_envelope_count_invariant.py",
+    "line": 15,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/prove_envelope_count_invariant.py",
+    "line": 16,
+    "import": "uuid",
     "type": "external-or-unresolved"
   },
   {
@@ -26716,6 +30687,162 @@
     "type": "external-or-unresolved"
   },
   {
+    "source": "scripts/record_custody_correction.py",
+    "line": 3,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/record_custody_correction.py",
+    "line": 5,
+    "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/record_custody_correction.py",
+    "line": 6,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/record_gap_0008_provenance.py",
+    "line": 8,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/record_gap_0008_provenance.py",
+    "line": 10,
+    "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/record_gap_0008_provenance.py",
+    "line": 11,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/record_gap_completion_evidence.py",
+    "line": 8,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/record_gap_completion_evidence.py",
+    "line": 10,
+    "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/record_gap_completion_evidence.py",
+    "line": 11,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/record_gap_completion_evidence_2.py",
+    "line": 6,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/record_gap_completion_evidence_2.py",
+    "line": 8,
+    "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/record_gap_completion_evidence_2.py",
+    "line": 9,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/record_gap_dispositions.py",
+    "line": 8,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/record_gap_dispositions.py",
+    "line": 10,
+    "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/record_gap_dispositions.py",
+    "line": 11,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/record_recovery_round.py",
+    "line": 9,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/record_recovery_round.py",
+    "line": 11,
+    "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/record_recovery_round.py",
+    "line": 12,
+    "import": "datetime",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/record_recovery_round.py",
+    "line": 12,
+    "import": "datetime",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/record_recovery_round.py",
+    "line": 13,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/regenerate_projections.py",
+    "line": 17,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/regenerate_projections.py",
+    "line": 19,
+    "import": "argparse",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/regenerate_projections.py",
+    "line": 20,
+    "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/regenerate_projections.py",
+    "line": 21,
+    "import": "subprocess",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/regenerate_projections.py",
+    "line": 22,
+    "import": "sys",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/regenerate_projections.py",
+    "line": 23,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
     "source": "scripts/register_card_control_resolution_review.py",
     "line": 3,
     "import": "__future__",
@@ -27006,6 +31133,24 @@
   {
     "source": "scripts/release_skip_preflight.py",
     "line": 6,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/report_packaged_evidence_presence.py",
+    "line": 7,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/report_packaged_evidence_presence.py",
+    "line": 9,
+    "import": "re",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/report_packaged_evidence_presence.py",
+    "line": 10,
     "import": "pathlib",
     "type": "external-or-unresolved"
   },
@@ -27574,6 +31719,42 @@
     "type": "external-or-unresolved"
   },
   {
+    "source": "scripts/show_extension_build_scripts.py",
+    "line": 3,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/show_extension_build_scripts.py",
+    "line": 5,
+    "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/show_extension_build_scripts.py",
+    "line": 6,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/split_gap_0010.py",
+    "line": 8,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/split_gap_0010.py",
+    "line": 10,
+    "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/split_gap_0010.py",
+    "line": 11,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
     "source": "scripts/split_operational_aggregate_cards.py",
     "line": 3,
     "import": "__future__",
@@ -27775,6 +31956,78 @@
     "source": "scripts/verify_encoding_integrity.py",
     "line": 182,
     "import": "yaml",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/verify_evidence_custody.py",
+    "line": 8,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/verify_evidence_custody.py",
+    "line": 10,
+    "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/verify_evidence_custody.py",
+    "line": 11,
+    "import": "shutil",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/verify_evidence_custody.py",
+    "line": 12,
+    "import": "sys",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/verify_evidence_custody.py",
+    "line": 13,
+    "import": "tempfile",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/verify_evidence_custody.py",
+    "line": 14,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/verify_evidence_custody.py",
+    "line": 15,
+    "import": "uuid",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/verify_evidence_custody.py",
+    "line": 200,
+    "import": "fnmatch",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/verify_evidence_custody.py",
+    "line": 172,
+    "import": "tomllib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/verify_gap_reconciliation.py",
+    "line": 8,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/verify_gap_reconciliation.py",
+    "line": 10,
+    "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "scripts/verify_gap_reconciliation.py",
+    "line": 11,
+    "import": "pathlib",
     "type": "external-or-unresolved"
   },
   {
@@ -28550,8 +32803,20 @@
   },
   {
     "source": "tests/test_agent_governed_integration.py",
-    "line": 47,
+    "line": 5,
+    "import": "pytest",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_agent_governed_integration.py",
+    "line": 94,
     "import": "hashlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_agent_governed_integration.py",
+    "line": 194,
+    "import": "dataclasses",
     "type": "external-or-unresolved"
   },
   {
@@ -28814,7 +33079,25 @@
   },
   {
     "source": "tests/test_architecture_atlas.py",
-    "line": 153,
+    "line": 9,
+    "import": "hashlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_architecture_atlas.py",
+    "line": 10,
+    "import": "pytest",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_architecture_atlas.py",
+    "line": 11,
+    "import": "docs.architecture.tools",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_architecture_atlas.py",
+    "line": 171,
     "import": "hashlib",
     "type": "external-or-unresolved"
   },
@@ -29293,6 +33576,18 @@
     "type": "external-or-unresolved"
   },
   {
+    "source": "tests/test_boundary_conformance.py",
+    "line": 18,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_boundary_conformance.py",
+    "line": 20,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
     "source": "tests/test_bounded_walk.py",
     "line": 1,
     "import": "__future__",
@@ -29572,6 +33867,24 @@
     "source": "tests/test_capability_assimilation.py",
     "line": 4,
     "import": "unittest",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_capability_assimilation.py",
+    "line": 38,
+    "import": "hashlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_capability_assimilation.py",
+    "line": 49,
+    "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_capability_assimilation.py",
+    "line": 61,
+    "import": "json",
     "type": "external-or-unresolved"
   },
   {
@@ -29948,13 +34261,31 @@
   },
   {
     "source": "tests/test_clean_source_export.py",
+    "line": 137,
+    "import": "hashlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_clean_source_export.py",
+    "line": 138,
+    "import": "io",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_clean_source_export.py",
+    "line": 139,
+    "import": "tarfile",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_clean_source_export.py",
     "line": 107,
     "import": "inspect",
     "type": "external-or-unresolved"
   },
   {
     "source": "tests/test_clean_source_export.py",
-    "line": 137,
+    "line": 171,
     "import": "pytest",
     "type": "external-or-unresolved"
   },
@@ -30583,6 +34914,30 @@
     "type": "external-or-unresolved"
   },
   {
+    "source": "tests/test_compact_address.py",
+    "line": 1,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_compact_address.py",
+    "line": 3,
+    "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_compact_address.py",
+    "line": 4,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_compact_address.py",
+    "line": 6,
+    "import": "pytest",
+    "type": "external-or-unresolved"
+  },
+  {
     "source": "tests/test_compiled_input_contracts.py",
     "line": 3,
     "import": "__future__",
@@ -30715,6 +35070,42 @@
     "type": "external-or-unresolved"
   },
   {
+    "source": "tests/test_containment_invariants.py",
+    "line": 8,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_containment_invariants.py",
+    "line": 10,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_containment_invariants.py",
+    "line": 12,
+    "import": "pytest",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_containment_invariants.py",
+    "line": 65,
+    "import": "datetime",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_containment_invariants.py",
+    "line": 65,
+    "import": "datetime",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_containment_invariants.py",
+    "line": 80,
+    "import": "inspect",
+    "type": "external-or-unresolved"
+  },
+  {
     "source": "tests/test_context_checkpoint.py",
     "line": 1,
     "import": "__future__",
@@ -30727,9 +35118,27 @@
     "type": "external-or-unresolved"
   },
   {
+    "source": "tests/test_context_generation.py",
+    "line": 1,
+    "import": "hashlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_context_generation.py",
+    "line": 3,
+    "import": "pytest",
+    "type": "external-or-unresolved"
+  },
+  {
     "source": "tests/test_contract_ownership_registry.py",
     "line": 1,
     "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_contract_ownership_registry.py",
+    "line": 10,
+    "import": "json",
     "type": "external-or-unresolved"
   },
   {
@@ -30764,7 +35173,7 @@
   },
   {
     "source": "tests/test_contract_runtime.py",
-    "line": 197,
+    "line": 233,
     "import": "ctypes",
     "type": "external-or-unresolved"
   },
@@ -31304,6 +35713,18 @@
   },
   {
     "source": "tests/test_dependency_contracts.py",
+    "line": 585,
+    "import": "builtins",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_dependency_contracts.py",
+    "line": 586,
+    "import": "tomllib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_dependency_contracts.py",
     "line": 539,
     "import": "_winapi",
     "type": "external-or-unresolved"
@@ -31573,6 +35994,24 @@
     "type": "external-or-unresolved"
   },
   {
+    "source": "tests/test_engineering_os_paths.py",
+    "line": 8,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_engineering_os_paths.py",
+    "line": 10,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_engineering_os_paths.py",
+    "line": 12,
+    "import": "pytest",
+    "type": "external-or-unresolved"
+  },
+  {
     "source": "tests/test_event_ledger_integrity.py",
     "line": 1,
     "import": "__future__",
@@ -31771,6 +36210,36 @@
     "type": "external-or-unresolved"
   },
   {
+    "source": "tests/test_evidence_revalidation.py",
+    "line": 6,
+    "import": "hashlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_evidence_revalidation.py",
+    "line": 7,
+    "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_evidence_revalidation.py",
+    "line": 8,
+    "import": "unittest",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_evidence_revalidation.py",
+    "line": 9,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_evidence_revalidation.py",
+    "line": 10,
+    "import": "tempfile",
+    "type": "external-or-unresolved"
+  },
+  {
     "source": "tests/test_exact_tool_certification.py",
     "line": 1,
     "import": "__future__",
@@ -31807,6 +36276,72 @@
     "type": "external-or-unresolved"
   },
   {
+    "source": "tests/test_execution_context.py",
+    "line": 2,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_execution_context.py",
+    "line": 3,
+    "import": "datetime",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_execution_context.py",
+    "line": 3,
+    "import": "datetime",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_execution_context.py",
+    "line": 3,
+    "import": "datetime",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_execution_context.py",
+    "line": 5,
+    "import": "pytest",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_execution_context_parity.py",
+    "line": 8,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_execution_context_parity.py",
+    "line": 10,
+    "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_execution_context_parity.py",
+    "line": 11,
+    "import": "subprocess",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_execution_context_parity.py",
+    "line": 12,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_execution_context_parity.py",
+    "line": 18,
+    "import": "shutil",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_execution_context_parity.py",
+    "line": 21,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
     "source": "tests/test_execution_contract.py",
     "line": 1,
     "import": "__future__",
@@ -31816,6 +36351,30 @@
     "source": "tests/test_execution_contract.py",
     "line": 3,
     "import": "unittest",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_execution_layers.py",
+    "line": 8,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_execution_layers.py",
+    "line": 10,
+    "import": "datetime",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_execution_layers.py",
+    "line": 10,
+    "import": "datetime",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_execution_layers.py",
+    "line": 12,
+    "import": "pytest",
     "type": "external-or-unresolved"
   },
   {
@@ -32257,6 +36816,150 @@
     "type": "external-or-unresolved"
   },
   {
+    "source": "tests/test_gremlin_audit.py",
+    "line": 1,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_gremlin_audit.py",
+    "line": 3,
+    "import": "datetime",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_gremlin_audit.py",
+    "line": 3,
+    "import": "datetime",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_gremlin_audit.py",
+    "line": 5,
+    "import": "pytest",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_gremlin_composition.py",
+    "line": 1,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_gremlin_composition.py",
+    "line": 3,
+    "import": "argparse",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_gremlin_composition.py",
+    "line": 4,
+    "import": "contextlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_gremlin_composition.py",
+    "line": 6,
+    "import": "pytest",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_gremlin_composition.py",
+    "line": 88,
+    "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_gremlin_composition.py",
+    "line": 89,
+    "import": "contextlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_gremlin_containment.py",
+    "line": 8,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_gremlin_containment.py",
+    "line": 10,
+    "import": "datetime",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_gremlin_containment.py",
+    "line": 10,
+    "import": "datetime",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_gremlin_containment.py",
+    "line": 10,
+    "import": "datetime",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_gremlin_containment.py",
+    "line": 11,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_gremlin_containment.py",
+    "line": 12,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_gremlin_containment.py",
+    "line": 14,
+    "import": "pytest",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_gremlin_recovery_authority.py",
+    "line": 1,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_gremlin_recovery_authority.py",
+    "line": 3,
+    "import": "datetime",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_gremlin_recovery_authority.py",
+    "line": 3,
+    "import": "datetime",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_gremlin_recovery_authority.py",
+    "line": 5,
+    "import": "pytest",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_gremlin_runtime_identity.py",
+    "line": 1,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_gremlin_runtime_identity.py",
+    "line": 3,
+    "import": "contextlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_gremlin_runtime_identity.py",
+    "line": 5,
+    "import": "pytest",
+    "type": "external-or-unresolved"
+  },
+  {
     "source": "tests/test_hardware_routing.py",
     "line": 1,
     "import": "__future__",
@@ -32623,6 +37326,42 @@
     "type": "external-or-unresolved"
   },
   {
+    "source": "tests/test_isolated_agent_sandbox.py",
+    "line": 9,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_isolated_agent_sandbox.py",
+    "line": 11,
+    "import": "datetime",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_isolated_agent_sandbox.py",
+    "line": 11,
+    "import": "datetime",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_isolated_agent_sandbox.py",
+    "line": 12,
+    "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_isolated_agent_sandbox.py",
+    "line": 13,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_isolated_agent_sandbox.py",
+    "line": 15,
+    "import": "pytest",
+    "type": "external-or-unresolved"
+  },
+  {
     "source": "tests/test_job_receipt.py",
     "line": 1,
     "import": "__future__",
@@ -32887,6 +37626,30 @@
     "type": "external-or-unresolved"
   },
   {
+    "source": "tests/test_librarian_semantic_map.py",
+    "line": 2,
+    "import": "hashlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_librarian_semantic_map.py",
+    "line": 3,
+    "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_librarian_semantic_map.py",
+    "line": 5,
+    "import": "pytest",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_librarian_semantic_map.py",
+    "line": 317,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
     "source": "tests/test_licensing.py",
     "line": 1,
     "import": "__future__",
@@ -32961,31 +37724,43 @@
   {
     "source": "tests/test_llama_cpp_capabilities.py",
     "line": 4,
-    "import": "hashlib",
+    "import": "dataclasses",
     "type": "external-or-unresolved"
   },
   {
     "source": "tests/test_llama_cpp_capabilities.py",
     "line": 5,
-    "import": "importlib.util",
+    "import": "hashlib",
     "type": "external-or-unresolved"
   },
   {
     "source": "tests/test_llama_cpp_capabilities.py",
     "line": 6,
+    "import": "importlib.util",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_llama_cpp_capabilities.py",
+    "line": 7,
     "import": "pathlib",
     "type": "external-or-unresolved"
   },
   {
     "source": "tests/test_llama_cpp_capabilities.py",
-    "line": 8,
+    "line": 9,
     "import": "pytest",
     "type": "external-or-unresolved"
   },
   {
     "source": "tests/test_llama_cpp_capabilities.py",
-    "line": 15,
+    "line": 18,
     "import": "sys",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_llama_cpp_capabilities.py",
+    "line": 134,
+    "import": "dataclasses",
     "type": "external-or-unresolved"
   },
   {
@@ -33523,6 +38298,18 @@
     "type": "external-or-unresolved"
   },
   {
+    "source": "tests/test_model_execution_group.py",
+    "line": 13,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_model_execution_group.py",
+    "line": 15,
+    "import": "pytest",
+    "type": "external-or-unresolved"
+  },
+  {
     "source": "tests/test_model_fabric_end_to_end.py",
     "line": 1,
     "import": "pathlib",
@@ -33544,6 +38331,36 @@
     "source": "tests/test_model_fabric_generation.py",
     "line": 5,
     "import": "pytest",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_model_group_preparation.py",
+    "line": 1,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_model_group_preparation.py",
+    "line": 3,
+    "import": "pytest",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_model_group_preparation.py",
+    "line": 50,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_model_group_preparation.py",
+    "line": 112,
+    "import": "datetime",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_model_group_preparation.py",
+    "line": 112,
+    "import": "datetime",
     "type": "external-or-unresolved"
   },
   {
@@ -33590,14 +38407,62 @@
   },
   {
     "source": "tests/test_model_pool.py",
-    "line": 212,
+    "line": 174,
     "import": "dataclasses",
     "type": "external-or-unresolved"
   },
   {
     "source": "tests/test_model_pool.py",
-    "line": 213,
+    "line": 174,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_model_pool.py",
+    "line": 175,
+    "import": "hashlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_model_pool.py",
+    "line": 237,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_model_pool.py",
+    "line": 237,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_model_pool.py",
+    "line": 337,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_model_pool.py",
+    "line": 338,
     "import": "types",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_model_pool.py",
+    "line": 492,
+    "import": "hashlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_model_pool.py",
+    "line": 493,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_model_pool.py",
+    "line": 493,
+    "import": "dataclasses",
     "type": "external-or-unresolved"
   },
   {
@@ -33759,6 +38624,24 @@
   {
     "source": "tests/test_model_routing_observability.py",
     "line": 3,
+    "import": "pytest",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_mutating_producer_registry.py",
+    "line": 8,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_mutating_producer_registry.py",
+    "line": 10,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_mutating_producer_registry.py",
+    "line": 12,
     "import": "pytest",
     "type": "external-or-unresolved"
   },
@@ -34195,6 +39078,36 @@
     "type": "external-or-unresolved"
   },
   {
+    "source": "tests/test_operational_gap_ledger_delta_lifecycle.py",
+    "line": 1,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_operational_gap_ledger_delta_lifecycle.py",
+    "line": 16,
+    "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_operational_gap_ledger_delta_lifecycle.py",
+    "line": 17,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_operational_gap_ledger_delta_lifecycle.py",
+    "line": 19,
+    "import": "pytest",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_operational_gap_ledger_delta_lifecycle.py",
+    "line": 252,
+    "import": "hashlib",
+    "type": "external-or-unresolved"
+  },
+  {
     "source": "tests/test_operational_gap_ledger_scaling.py",
     "line": 1,
     "import": "pathlib",
@@ -34209,6 +39122,12 @@
   {
     "source": "tests/test_operational_gap_ledger_scaling.py",
     "line": 3,
+    "import": "hashlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_operational_gap_ledger_scaling.py",
+    "line": 4,
     "import": "json",
     "type": "external-or-unresolved"
   },
@@ -34519,6 +39438,204 @@
     "type": "external-or-unresolved"
   },
   {
+    "source": "tests/test_plan_current_campaign.py",
+    "line": 1,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_plan_current_campaign.py",
+    "line": 3,
+    "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_plan_current_campaign.py",
+    "line": 4,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_plan_current_campaign.py",
+    "line": 6,
+    "import": "pytest",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_plan_foundation_authority.py",
+    "line": 2,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_plan_foundation_authority.py",
+    "line": 3,
+    "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_plan_foundation_authority.py",
+    "line": 5,
+    "import": "pytest",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_plan_registry.py",
+    "line": 1,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_plan_registry.py",
+    "line": 3,
+    "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_plan_registry.py",
+    "line": 4,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_plan_registry.py",
+    "line": 6,
+    "import": "pytest",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_plan_registry.py",
+    "line": 99,
+    "import": "hashlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_plan_registry.py",
+    "line": 296,
+    "import": "hashlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_plan_registry.py",
+    "line": 341,
+    "import": "hashlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_plan_registry.py",
+    "line": 364,
+    "import": "hashlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_plan_registry.py",
+    "line": 418,
+    "import": "hashlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_plan_registry.py",
+    "line": 466,
+    "import": "hashlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_plan_registry.py",
+    "line": 529,
+    "import": "hashlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_plan_registry_integrity.py",
+    "line": 2,
+    "import": "copy",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_plan_registry_integrity.py",
+    "line": 3,
+    "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_plan_registry_integrity.py",
+    "line": 5,
+    "import": "pytest",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_plan_status_authority.py",
+    "line": 2,
+    "import": "copy",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_plan_status_authority.py",
+    "line": 3,
+    "import": "hashlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_plan_status_authority.py",
+    "line": 4,
+    "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_plan_status_authority.py",
+    "line": 6,
+    "import": "pytest",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_plan_status_authority.py",
+    "line": 270,
+    "import": "hashlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_plan_status_authority.py",
+    "line": 360,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_plan_status_authority.py",
+    "line": 377,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_plan_waves.py",
+    "line": 1,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_plan_waves.py",
+    "line": 3,
+    "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_plan_waves.py",
+    "line": 4,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_plan_waves.py",
+    "line": 5,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_plan_waves.py",
+    "line": 7,
+    "import": "pytest",
+    "type": "external-or-unresolved"
+  },
+  {
     "source": "tests/test_platform_support.py",
     "line": 1,
     "import": "os",
@@ -34600,6 +39717,48 @@
     "source": "tests/test_portable_audit_bundle.py",
     "line": 178,
     "import": "os",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_powershell_campaign_controls.py",
+    "line": 2,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_powershell_campaign_controls.py",
+    "line": 3,
+    "import": "re",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_powershell_campaign_controls.py",
+    "line": 4,
+    "import": "shutil",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_powershell_campaign_controls.py",
+    "line": 5,
+    "import": "subprocess",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_powershell_campaign_controls.py",
+    "line": 6,
+    "import": "uuid",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_powershell_campaign_controls.py",
+    "line": 8,
+    "import": "pytest",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_powershell_campaign_controls.py",
+    "line": 93,
+    "import": "json",
     "type": "external-or-unresolved"
   },
   {
@@ -35509,6 +40668,12 @@
     "type": "external-or-unresolved"
   },
   {
+    "source": "tests/test_projection_gate.py",
+    "line": 1,
+    "import": "pytest",
+    "type": "external-or-unresolved"
+  },
+  {
     "source": "tests/test_provider_budget.py",
     "line": 1,
     "import": "__future__",
@@ -36037,6 +41202,42 @@
     "type": "external-or-unresolved"
   },
   {
+    "source": "tests/test_refines_generation_lineage.py",
+    "line": 1,
+    "import": "pytest",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_refines_generation_lineage.py",
+    "line": 6,
+    "import": "hashlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_refines_generation_lineage.py",
+    "line": 46,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_refines_mesh_integration.py",
+    "line": 1,
+    "import": "pytest",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_refines_mesh_integration.py",
+    "line": 116,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_refines_mesh_integration.py",
+    "line": 149,
+    "import": "collections",
+    "type": "external-or-unresolved"
+  },
+  {
     "source": "tests/test_registry_envelopes.py",
     "line": 1,
     "import": "copy",
@@ -36182,73 +41383,73 @@
   },
   {
     "source": "tests/test_release_artifacts.py",
-    "line": 816,
+    "line": 806,
     "import": "hashlib",
     "type": "external-or-unresolved"
   },
   {
     "source": "tests/test_release_artifacts.py",
-    "line": 857,
+    "line": 847,
     "import": "hashlib",
     "type": "external-or-unresolved"
   },
   {
     "source": "tests/test_release_artifacts.py",
-    "line": 858,
+    "line": 848,
     "import": "stat",
     "type": "external-or-unresolved"
   },
   {
     "source": "tests/test_release_artifacts.py",
-    "line": 884,
+    "line": 874,
     "import": "os",
     "type": "external-or-unresolved"
   },
   {
     "source": "tests/test_release_artifacts.py",
-    "line": 902,
+    "line": 892,
     "import": "os",
     "type": "external-or-unresolved"
   },
   {
     "source": "tests/test_release_artifacts.py",
-    "line": 963,
+    "line": 953,
     "import": "cProfile",
     "type": "external-or-unresolved"
   },
   {
     "source": "tests/test_release_artifacts.py",
-    "line": 964,
+    "line": 954,
     "import": "io",
     "type": "external-or-unresolved"
   },
   {
     "source": "tests/test_release_artifacts.py",
-    "line": 965,
+    "line": 955,
     "import": "pstats",
     "type": "external-or-unresolved"
   },
   {
     "source": "tests/test_release_artifacts.py",
-    "line": 990,
+    "line": 980,
     "import": "os",
     "type": "external-or-unresolved"
   },
   {
     "source": "tests/test_release_artifacts.py",
-    "line": 890,
+    "line": 880,
     "import": "_winapi",
     "type": "external-or-unresolved"
   },
   {
     "source": "tests/test_release_artifacts.py",
-    "line": 337,
+    "line": 324,
     "import": "json",
     "type": "external-or-unresolved"
   },
   {
     "source": "tests/test_release_artifacts.py",
-    "line": 479,
+    "line": 469,
     "import": "json",
     "type": "external-or-unresolved"
   },
@@ -36800,31 +42001,37 @@
   },
   {
     "source": "tests/test_release_preflight_inputs.py",
-    "line": 5,
+    "line": 4,
+    "import": "sys",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_release_preflight_inputs.py",
+    "line": 6,
     "import": "pytest",
     "type": "external-or-unresolved"
   },
   {
     "source": "tests/test_release_preflight_inputs.py",
-    "line": 181,
+    "line": 182,
     "import": "os",
     "type": "external-or-unresolved"
   },
   {
     "source": "tests/test_release_preflight_inputs.py",
-    "line": 206,
+    "line": 207,
     "import": "ast",
     "type": "external-or-unresolved"
   },
   {
     "source": "tests/test_release_preflight_inputs.py",
-    "line": 207,
+    "line": 208,
     "import": "inspect",
     "type": "external-or-unresolved"
   },
   {
     "source": "tests/test_release_preflight_inputs.py",
-    "line": 234,
+    "line": 266,
     "import": "os",
     "type": "external-or-unresolved"
   },
@@ -37445,6 +42652,42 @@
     "type": "external-or-unresolved"
   },
   {
+    "source": "tests/test_sandbox_bridge.py",
+    "line": 7,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_sandbox_bridge.py",
+    "line": 9,
+    "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_sandbox_bridge.py",
+    "line": 10,
+    "import": "subprocess",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_sandbox_bridge.py",
+    "line": 11,
+    "import": "sys",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_sandbox_bridge.py",
+    "line": 12,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_sandbox_bridge.py",
+    "line": 14,
+    "import": "pytest",
+    "type": "external-or-unresolved"
+  },
+  {
     "source": "tests/test_sanitation_assurance.py",
     "line": 1,
     "import": "__future__",
@@ -37621,6 +42864,30 @@
   {
     "source": "tests/test_selection_budget_contracts.py",
     "line": 249,
+    "import": "copy",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_semantic_authored_sources.py",
+    "line": 8,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_semantic_authored_sources.py",
+    "line": 10,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_semantic_authored_sources.py",
+    "line": 12,
+    "import": "pytest",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_semantic_authored_sources.py",
+    "line": 247,
     "import": "copy",
     "type": "external-or-unresolved"
   },
@@ -38009,6 +43276,30 @@
     "type": "external-or-unresolved"
   },
   {
+    "source": "tests/test_semantic_coverage.py",
+    "line": 8,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_semantic_coverage.py",
+    "line": 10,
+    "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_semantic_coverage.py",
+    "line": 11,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_semantic_coverage.py",
+    "line": 13,
+    "import": "pytest",
+    "type": "external-or-unresolved"
+  },
+  {
     "source": "tests/test_semantic_cross_project.py",
     "line": 1,
     "import": "pathlib",
@@ -38018,6 +43309,42 @@
     "source": "tests/test_semantic_cross_project.py",
     "line": 2,
     "import": "pytest",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_semantic_entity.py",
+    "line": 1,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_semantic_entity.py",
+    "line": 3,
+    "import": "hashlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_semantic_entity.py",
+    "line": 4,
+    "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_semantic_entity.py",
+    "line": 5,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_semantic_entity.py",
+    "line": 7,
+    "import": "pytest",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_semantic_entity.py",
+    "line": 97,
+    "import": "inspect",
     "type": "external-or-unresolved"
   },
   {
@@ -38084,6 +43411,36 @@
     "source": "tests/test_semantic_local_rerank.py",
     "line": 2,
     "import": "pytest",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_semantic_locator.py",
+    "line": 1,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_semantic_locator.py",
+    "line": 3,
+    "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_semantic_locator.py",
+    "line": 4,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_semantic_locator.py",
+    "line": 6,
+    "import": "pytest",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_semantic_locator.py",
+    "line": 162,
+    "import": "hashlib",
     "type": "external-or-unresolved"
   },
   {
@@ -38369,6 +43726,30 @@
     "type": "external-or-unresolved"
   },
   {
+    "source": "tests/test_semantic_powershell_source.py",
+    "line": 1,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_semantic_powershell_source.py",
+    "line": 3,
+    "import": "pytest",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_semantic_powershell_source.py",
+    "line": 23,
+    "import": "hashlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_semantic_powershell_source.py",
+    "line": 86,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
     "source": "tests/test_semantic_project_catalog.py",
     "line": 1,
     "import": "pathlib",
@@ -38438,6 +43819,66 @@
     "source": "tests/test_semantic_revision.py",
     "line": 3,
     "import": "pytest",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_semantic_surfaces.py",
+    "line": 1,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_semantic_surfaces.py",
+    "line": 3,
+    "import": "pytest",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_semantic_surfaces.py",
+    "line": 129,
+    "import": "hashlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_semantic_surfaces.py",
+    "line": 130,
+    "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_semantic_surfaces.py",
+    "line": 141,
+    "import": "copy",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_semantic_surfaces.py",
+    "line": 242,
+    "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_semantic_surfaces.py",
+    "line": 314,
+    "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_semantic_surfaces.py",
+    "line": 337,
+    "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_semantic_surfaces.py",
+    "line": 404,
+    "import": "pytest",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_semantic_surfaces.py",
+    "line": 480,
+    "import": "os",
     "type": "external-or-unresolved"
   },
   {
@@ -38810,6 +44251,96 @@
     "source": "tests/test_source_archive_audit.py",
     "line": 4,
     "import": "sys",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_source_boundary.py",
+    "line": 1,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_source_boundary.py",
+    "line": 3,
+    "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_source_boundary.py",
+    "line": 4,
+    "import": "shutil",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_source_boundary.py",
+    "line": 5,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_source_boundary.py",
+    "line": 7,
+    "import": "pytest",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_source_boundary.py",
+    "line": 178,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_source_boundary.py",
+    "line": 336,
+    "import": "hashlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_source_boundary_conformance.py",
+    "line": 6,
+    "import": "unittest",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_source_freeze.py",
+    "line": 1,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_source_freeze.py",
+    "line": 3,
+    "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_source_freeze.py",
+    "line": 4,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_source_freeze.py",
+    "line": 6,
+    "import": "pytest",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_source_freeze.py",
+    "line": 181,
+    "import": "zipfile",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_source_freeze.py",
+    "line": 241,
+    "import": "hashlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_source_freeze.py",
+    "line": 242,
+    "import": "zipfile",
     "type": "external-or-unresolved"
   },
   {
@@ -40564,6 +46095,60 @@
     "type": "external-or-unresolved"
   },
   {
+    "source": "tests/test_workflow_group_transport.py",
+    "line": 1,
+    "import": "__future__",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_workflow_group_transport.py",
+    "line": 3,
+    "import": "datetime",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_workflow_group_transport.py",
+    "line": 3,
+    "import": "datetime",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_workflow_group_transport.py",
+    "line": 3,
+    "import": "datetime",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_workflow_group_transport.py",
+    "line": 4,
+    "import": "pathlib",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_workflow_group_transport.py",
+    "line": 5,
+    "import": "types",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_workflow_group_transport.py",
+    "line": 7,
+    "import": "pytest",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_workflow_group_transport.py",
+    "line": 41,
+    "import": "dataclasses",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_workflow_group_transport.py",
+    "line": 195,
+    "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
     "source": "tests/test_workflow_studio.py",
     "line": 1,
     "import": "__future__",
@@ -40645,6 +46230,18 @@
     "source": "tests/test_workflow_studio.py",
     "line": 557,
     "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_workflow_worker.py",
+    "line": 1,
+    "import": "pytest",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_workflow_worker.py",
+    "line": 160,
+    "import": "os",
     "type": "external-or-unresolved"
   },
   {
@@ -40753,6 +46350,12 @@
     "source": "tests/test_world_state.py",
     "line": 1,
     "import": "json",
+    "type": "external-or-unresolved"
+  },
+  {
+    "source": "tests/test_world_state.py",
+    "line": 62,
+    "import": "pytest",
     "type": "external-or-unresolved"
   },
   {

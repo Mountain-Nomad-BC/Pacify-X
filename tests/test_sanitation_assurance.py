@@ -164,8 +164,8 @@ def test_preserved_user_custody_is_excluded_from_release_sanitation() -> None:
             "Python/runtime.txt",
             "node_modules/dependency.txt",
             ".tmp/host-cache.txt",
-            ".engineering-bootstrap/diagnostics/state.txt",
-            ".engineering-bootstrap/operation-bus/wal/state.txt",
+            ".agentic_engineering_os_px/diagnostics/state.txt",
+            ".agentic_engineering_os_px/operation-bus/wal/state.txt",
         ):
             generated = root / relative
             generated.parent.mkdir(parents=True, exist_ok=True)

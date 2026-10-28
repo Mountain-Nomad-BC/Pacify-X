@@ -1,0 +1,56 @@
+{
+  "schema_version": "px.merge-harness-reconciliation/1.0",
+  "date": "2026-10-28",
+  "scope": "three conflicted extension harness owners and dependent core/billing tests",
+  "source_boundary": {
+    "branch_head": "e4c6806f",
+    "merge_head": "5ebc7368",
+    "merge_active": true,
+    "source_intake_closed": false,
+    "freeze_taken": false
+  },
+  "resolutions": [
+    {
+      "path": "extension/src/agentHarness/budgetLedger.js",
+      "resolution": "Preserved integration worktree's durable cumulative reservations/receipts, snapshot integrity, immutable entries, async persistence error propagation, historical spend quarantine, and settled identity checks. Source stage images are retained in .audit-handoff/merge-2026-10-28/.",
+      "index_staged": true
+    },
+    {
+      "path": "extension/src/agentHarness/contextCompiler.js",
+      "resolution": "Combined strict total budget and request reserve validation, byte/digest-integrity checks and caller estimate non-discounting with explicit/experience/retrieved refs, retrieval cancellation signal, bounded count and content selection.",
+      "index_staged": true
+    },
+    {
+      "path": "extension/src/agentHarness/toolBroker.js",
+      "resolution": "Retained integrated broker source (durable task/run/active-worker custody, immutable bounded request, dispatch-time flush, approval, lazy bounded schema loading, native argument checks, execution context and current authority rechecks). No conflict markers; source corresponds to current reconciled worktree.",
+      "index_staged": true
+    },
+    {
+      "path": "extension/tests/agent-harness-core.test.js",
+      "resolution": "Kept integration branch context budget/dedupe test and incoming smaller-instruction-budget, request-reservation, over-budget, and invalid-reservation tests; test reconciliation is in worktree and not staged.",
+      "index_staged": false
+    },
+    {
+      "path": "extension/tests/billing-settlement-audit.test.js",
+      "resolution": "Retained both distinct host/native async settlement and incoming durable owner/restart tests, kept nonfinite test once, corrected wrapper closure and stale fixture assumptions. Focused batch pass.",
+      "index_staged": false
+    }
+  ],
+  "verification": {
+    "focused_command": "node --test extension/tests/agent-harness-core.test.js extension/tests/billing-settlement-audit.test.js extension/tests/agent-tool-broker.test.js extension/tests/tool-authority-audit.test.js",
+    "result": "45 passed, 0 failed",
+    "syntax": "node --check passed for reconciled harness owners, harness controller/view/registration, and target test files",
+    "scope_limit": "Focused source tests only; no governed section, installed host, group/provider, package or certification acceptance."
+  },
+  "remaining_index_conflicts": [
+    "registry/artifact_reachability.json",
+    "registry/build_claims.json",
+    "registry/contract_ownership.json"
+  ],
+  "prohibited_actions_not_taken": [
+    "No generated projection refresh while intake is open.",
+    "No merge commit, push, package, installation or certification.",
+    "No historical receipt or owner authority fabricated."
+  ],
+  "reviewed_closed": 0
+}

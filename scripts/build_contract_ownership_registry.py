@@ -19,6 +19,16 @@ ROOT_OWNERS = {
     'context-generation-vector.schema.json': ('runtime/context_generation.py', ['runtime/context_generation.py', 'runtime/dependency_invalidation.py'], 'typed_scoped_archivist_metadata_boundary', ['tests/test_contract_runtime.py', 'tests/test_context_generation.py', 'tests/test_contract_ownership_registry.py']),
     'dependency-identity.schema.json': ('runtime/dependency_identity.py', ['runtime/dependency_identity.py', 'runtime/dependency_invalidation.py'], 'canonical_dependency_observation_boundary', ['tests/test_contract_runtime.py', 'tests/test_dependency_invalidation.py', 'tests/test_dependency_contracts.py']),
     'execution-context.schema.json': ('runtime/execution_context.py', ['runtime/execution_context.py', 'runtime/vscode_model_bridge.py'], 'execution_identity_and_currentness_boundary', ['tests/test_contract_runtime.py', 'tests/test_execution_context.py', 'tests/test_agent_governed_integration.py']),
+    # Declared below by the merged tree but absent from this table, so `build()`
+    # refused to guess. Each owner was found from the contract's own
+    # `schema_version` const or filename stem in runtime/, not assumed:
+    #   px.context-generation-vector/2.0 -> runtime/context_generation.py
+    #   px.governed-exception/1.0       -> runtime/governed_exception.py
+    #   px.model-router-preset*/1.0     -> runtime/model_router_preset.py
+    'execution-generation-vector.schema.json': ('runtime/context_generation.py', ['runtime/context_generation.py'], 'typed_scoped_archivist_metadata_boundary', ['tests/test_contract_runtime.py', 'tests/test_context_generation.py']),
+    'governed-exception.schema.json': ('runtime/governed_exception.py', ['runtime/governed_exception.py'], 'runtime_enforced', ['tests/test_contract_runtime.py', 'tests/test_model_pool.py']),
+    'model-router-preset-format.schema.json': ('runtime/model_router_preset.py', ['runtime/model_router_preset.py'], 'runtime_enforced', ['tests/test_contract_runtime.py', 'tests/test_refines_mesh_integration.py']),
+    'model-router-preset.schema.json': ('runtime/model_router_preset.py', ['runtime/model_router_preset.py', 'runtime/local_model_runtime.py'], 'runtime_enforced', ['tests/test_contract_runtime.py', 'tests/test_refines_mesh_integration.py']),
     'gremlin-containment-proof.schema.json': ('runtime/gremlin/containment.py', ['runtime/gremlin/containment.py'], 'runtime_enforced', ['tests/test_contract_runtime.py', 'tests/test_gremlin_containment.py']),
     'gremlin-host-configuration.schema.json': ('runtime/gremlin/host_configuration.py', ['runtime/gremlin/host_configuration.py'], 'runtime_enforced', ['tests/test_contract_runtime.py', 'tests/test_gremlin_host_configuration.py']),
     'gremlin-recovery-authority.schema.json': ('runtime/gremlin/recovery_authority.py', ['runtime/gremlin/recovery_authority.py'], 'runtime_enforced', ['tests/test_contract_runtime.py', 'tests/test_gremlin_recovery_authority.py']),
@@ -587,6 +597,37 @@ SEMANTIC_DIR_OWNERS = {
         ["runtime/semantic_entity.py"],
         "runtime_enforced",
         ["tests/test_semantic_entity_contract.py"],
+    ),
+    # The remaining semantic surfaces were declared by the merged tree. Each
+    # owner below was located from the contract's own `schema_version` const in
+    # runtime/, so the rule is derived from source rather than assumed:
+    #   px.compact-address/1.0        -> runtime/compact_address.py
+    #   px.semantic-locator/2.0       -> runtime/semantic_locator.py
+    #   px.semantic-relation/1.0      -> runtime/semantic_locator.py
+    #   px.source-census-binding/1.0  -> runtime/semantic_surfaces.py
+    "compact-address-record.schema.json": (
+        "runtime/compact_address.py",
+        ["runtime/compact_address.py"],
+        "runtime_enforced",
+        ["tests/test_contract_runtime.py"],
+    ),
+    "locator-record.schema.json": (
+        "runtime/semantic_locator.py",
+        ["runtime/semantic_locator.py"],
+        "runtime_enforced",
+        ["tests/test_contract_runtime.py"],
+    ),
+    "relation-record.schema.json": (
+        "runtime/semantic_locator.py",
+        ["runtime/semantic_locator.py"],
+        "runtime_enforced",
+        ["tests/test_contract_runtime.py"],
+    ),
+    "source-census-binding.schema.json": (
+        "runtime/semantic_surfaces.py",
+        ["runtime/semantic_surfaces.py"],
+        "runtime_enforced",
+        ["tests/test_contract_runtime.py"],
     ),
 }
 

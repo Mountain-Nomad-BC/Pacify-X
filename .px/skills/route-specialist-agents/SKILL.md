@@ -5,8 +5,8 @@ description: Select and compile a bounded panel from PACIFY-X's local specialist
 
 # Route Specialist Agents
 
-1. Run `engineering-bootstrap agents status` before relying on the provider.
-2. Route the explicit task and constraints with `engineering-bootstrap agents route --task "..."`.
+1. Run `agentic-engineering-os-px agents status` before relying on the provider.
+2. Route the explicit task and constraints with `agentic-engineering-os-px agents route --task "..."`.
 3. Reject unresolved or low-confidence routes; do not activate from a lone keyword.
 4. Keep exactly one primary and no more than three functionally distinct reviewers.
 5. Require an accountable human plus an independent specialist for high-risk work.

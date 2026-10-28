@@ -2,6 +2,7 @@ import json
 from pathlib import Path
 import tempfile
 import unittest
+from unittest.mock import patch
 
 from runtime.commissioning import commission
 from runtime.engineering_lifecycle import lifecycle_status
@@ -37,7 +38,11 @@ class ToolIntakeTests(unittest.TestCase):
             project = Path(directory) / "project"
             commission(project, "new", apply=True, source_root=ROOT)
             result = record_tool_intake(project, ROOT, apply=True)
-            status = lifecycle_status(ROOT, project)
+            # This test owns tool-intake advancement, not the current source
+            # registry's generated-projection freshness (gated separately).
+            with patch("runtime.engineering_lifecycle.validate_registry",
+                       return_value={"valid": True, "errors": []}):
+                status = lifecycle_status(ROOT, project)
         self.assertTrue(result["applied"])
         self.assertEqual(result["decision"], "no_external_tooling")
         self.assertEqual(status["next_stage"], "architecture-and-planning")

@@ -9,6 +9,21 @@ from runtime.effect_surface import discover_effect_surfaces, validate_effect_sur
 
 
 ROOT = Path(__file__).parents[1]
+
+def test_link_publication_is_discovered_as_filesystem_mutation(tmp_path: Path) -> None:
+    (tmp_path / "publisher.py").write_text(
+        "import os\nfrom pathlib import Path\n"
+        "os.link('prepared', 'receipt')\nos.symlink('source', 'alias')\n"
+        "Path('receipt').hardlink_to('prepared')\nPath('alias').symlink_to('source')\n",
+        encoding="utf-8",
+    )
+    records = discover_effect_surfaces(tmp_path)
+    assert {record["call"] for record in records} == {
+        "os.link", "os.symlink", "hardlink_to", "symlink_to"
+    }
+    assert all(record["effect"] == "filesystem_mutation" for record in records)
+    assert all(not record["destructive"] for record in records)
+
 def _copy_effect_fixture(destination: Path) -> Path:
     root = destination / "framework"
     root.mkdir()
@@ -112,7 +127,7 @@ def test_discovery_prunes_external_custody_before_parsing() -> None:
     root = _copy_effect_fixture(Path(tempfile.mkdtemp()))
     hostile = (
         root
-        / ".engineering-bootstrap/test-evidence/adversarial-repair-gates"
+        / ".agentic_engineering_os_px/test-evidence/adversarial-repair-gates"
         / "unparseable.py"
     )
     hostile.parent.mkdir(parents=True)

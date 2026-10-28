@@ -1,0 +1,44 @@
+[
+  {
+    "path": "runtime/engineering_os_paths.py",
+    "hunks": 1,
+    "reason": "Retain bounded canonical write path API and read resolver; consumers already use these functions.",
+    "preimage_sha256": "1999976717123a73ff920660595968f522ba3bc44d211c429ce65fa67ba61054",
+    "result_sha256": "a6b4b3deb953ecdb150a3f33dd0c38932a65fb3378c0e02e7a48d701e8f50937"
+  },
+  {
+    "path": "runtime/gemini_protocol.py",
+    "hunks": 1,
+    "reason": "Preserve whitespace text deltas; incoming strip loses valid stream content.",
+    "preimage_sha256": "406470341a4666a460d12841cd105d5c90d1d794d76e890e2f86e81c2065b14e",
+    "result_sha256": "76535713e9546234ffa5a08ff25729b6db72debad00d4894a9655ffaf3e779ec"
+  },
+  {
+    "path": "runtime/generation_bound_verdict.py",
+    "hunks": 2,
+    "reason": "Retain bounded schema names and installed framework-root resolution.",
+    "preimage_sha256": "5a090123df893baf20178a0408779b843f5aaba5e3b71b12113e215c0c1d6b74",
+    "result_sha256": "004640a2191d8813579898f9101770d7fb172ebcfd9a505653a0afeb31122ad9"
+  },
+  {
+    "path": "runtime/model_convergence.py",
+    "hunks": 2,
+    "reason": "Require signed containment postconditions; caller-authored proven dictionaries cannot authorize convergence.",
+    "preimage_sha256": "6e375c2dad4687dfa06500988b713795090aed0c4d64bb33bccb052d651aabe9",
+    "result_sha256": "d9fb52ed8ecf2bad25c65eb2c3ce8f6cb021d577708295ff7a981c9f6cd61bd6"
+  },
+  {
+    "path": "runtime/model_protocol_translate.py",
+    "hunks": 1,
+    "reason": "Whitespace-only conflict; preserve repaired native streaming translator.",
+    "preimage_sha256": "3cee3a6b85457e0bbf2c6a06e89eda9d44ce3fc80571a86f107ea34086930608",
+    "result_sha256": "de7c1c2456a13fbfa7ba60d180241d7f4f84a8607549fd5878650419da049e6d"
+  },
+  {
+    "path": "runtime/workflow_group_config.py",
+    "hunks": 1,
+    "reason": "Retain exact persisted plan/placement bindings and complete provider-effect denominator.",
+    "preimage_sha256": "1e3244cc853929572210bd6db361e85b61ce5b765a7b020f39a295bedbed5412",
+    "result_sha256": "29f4857e21741f7e16044c8cd61381d81b258904671f27e1f30d6913891f7857"
+  }
+]

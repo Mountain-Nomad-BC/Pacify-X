@@ -52,13 +52,14 @@ const CONTRACTS = Object.freeze({
   extensionConflictQuery: ['requestId', 'extensionId'],
   extensionConflictResolutionPreview: ['requestId', 'extensionId', 'signalId', 'targetExtensionId', 'resolution'],
   extensionConflictResolutionExecute: ['requestId', 'token', 'exactTarget'],
-  environmentLifecycleExecute: ['token', 'exactTarget', 'consumerImpactAcknowledged'], openFile: ['requestId', 'path']
+  environmentLifecycleExecute: ['token', 'exactTarget', 'consumerImpactAcknowledged'], openFile: ['requestId', 'path'],
+  sandboxControl: ['mode', 'allowedEndpoints']
 });
 
 const HOST_ACTION_REQUEST_TYPES = new Set([
   'initializeProject', 'openCoordinationHandoff', 'openSettings', 'configureCanonicalMemory', 'disconnectCanonicalMemory', 'createContextSnapshot',
   'openExtensionsView', 'continueCodex', 'cancelCodex', 'setActivityPaused',
-  'copyTaskHandoff', 'copyText', 'exportRecordJson', 'openFile', 'reconcileStaleActivity', 'setupStudio'
+  'copyTaskHandoff', 'copyText', 'exportRecordJson', 'openFile', 'reconcileStaleActivity', 'setupStudio', 'sandboxControl'
 ]);
 
 function plainObject(value) {

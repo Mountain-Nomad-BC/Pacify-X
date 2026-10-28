@@ -177,11 +177,8 @@ def _canonical(value: object) -> bytes:
 
 
 def _sha256(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as stream:
-        for chunk in iter(lambda: stream.read(1024 * 1024), b""):
-            digest.update(chunk)
-    return digest.hexdigest()
+    from runtime.hash_utils import file_sha256
+    return file_sha256(path)
 
 
 def _is_reparse(path: Path) -> bool:
@@ -205,7 +202,7 @@ def _receipt_image(path):
 
 
 def _archived_boundary(root, name):
-    archive_root = root / '.engineering-bootstrap/project-map-history-archives'
+    archive_root = root / '.agentic_engineering_os_px/project-map-history-archives'
     if not archive_root.exists():
         return False
     _inventory_root_identity(archive_root)
@@ -240,12 +237,12 @@ def _plan_history(root, keep_latest, *, producer_lock_held=False):
         raise ValueError('keep_latest must be an actual integer between 1 and 20')
     root = Path(os.path.abspath(root))
     _inventory_root_identity(root)
-    history = root / '.engineering-bootstrap/project-map-history'
+    history = root / '.agentic_engineering_os_px/project-map-history'
     _inventory_root_identity(history)
-    lock = root / '.engineering-bootstrap/.project-map.lock'
+    lock = root / '.agentic_engineering_os_px/.project-map.lock'
     if not producer_lock_held and lock.exists():
         raise ValueError('project-map producer is active or requires recovery')
-    head_path = root / '.engineering-bootstrap/project-map/map-receipt.json'
+    head_path = root / '.agentic_engineering_os_px/project-map/map-receipt.json'
     head_raw, receipt = _receipt_image(head_path)
     present = {}
     with os.scandir(history) as entries:
@@ -294,7 +291,7 @@ def _plan_history(root, keep_latest, *, producer_lock_held=False):
     if _receipt_image(head_path)[0] != head_raw or (not producer_lock_held and lock.exists()):
         raise ValueError('project-map producer generation changed during planning')
     manifest = dict(schema_version='px.project-map-history-archive-manifest/2.0',
-        history_root='.engineering-bootstrap/project-map-history',
+        history_root='.agentic_engineering_os_px/project-map-history',
         producer_head_sha256=hashlib.sha256(head_raw).hexdigest(),
         chronology='linked-promoted-producer-receipts',
         retained_live_snapshots=[p.name for p in ordered[:keep_latest]],
@@ -402,7 +399,7 @@ def apply(root: Path, *, keep_latest: int = 2):
     _inventory_root_identity(root)
     if type(keep_latest) is not int or not 1 <= keep_latest <= 20:
         raise ValueError('keep_latest must be an actual bounded integer')
-    control = root / '.engineering-bootstrap'
+    control = root / '.agentic_engineering_os_px'
     history = control / 'project-map-history'
     _inventory_root_identity(history)
     lock = control / '.project-map.lock'
@@ -439,7 +436,7 @@ def apply(root: Path, *, keep_latest: int = 2):
                 raise ValueError('invalid project history disposition')
             manifest = intent['manifest']
             digest = hashlib.sha256(_canonical(manifest)).hexdigest()
-            if digest != intent['manifest_sha256'] or manifest['history_root'] != '.engineering-bootstrap/project-map-history':
+            if digest != intent['manifest_sha256'] or manifest['history_root'] != '.agentic_engineering_os_px/project-map-history':
                 raise ValueError('project history disposition binding mismatch')
             locator = intent['archive']
             if type(locator) is not str or Path(locator).name != locator:

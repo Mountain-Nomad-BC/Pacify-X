@@ -141,7 +141,7 @@ def _validate(contract: dict[str, Any]) -> None:
     try:
         from runtime.contracts import validate_instance
     except ModuleNotFoundError:
-        from engineering_bootstrap.contracts import validate_instance
+        from agentic_engineering_os_px.contracts import validate_instance
     validate_instance(contract, schema_path)
 
 

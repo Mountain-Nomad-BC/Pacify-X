@@ -4,7 +4,13 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 from pathlib import Path
+
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+from runtime.guarded_registry_projection import publish_guarded_registry_projection
 
 
 VERSIONLESS_ENVELOPE_SCHEMA = "shared registry-envelope invariant (versionless document)"
@@ -29,6 +35,7 @@ def record(
         "registry/current_evidence_index.json": "scripts/build_current_evidence_index.py",
         "registry/dependency_authority.json": "runtime/dependency_invalidation.py",
         "registry/effect_surface_ownership.json": "scripts/build_effect_surface_ownership.py",
+        "registry/mutating_producers.json": "scripts/build_mutating_producer_registry.py",
         "registry/evidence_type_policy.json": "runtime/evidence_claims.py",
         "registry/external_candidate_graph.json": "scripts/build_external_candidate_registry.py",
         "registry/external_capability_catalog.json": "scripts/build_external_candidate_registry.py",
@@ -43,13 +50,23 @@ def record(
         "registry/primitive_authority.json": "runtime/primitive_authority.py",
         "registry/px_world_state.json": "runtime/world_state.py",
         "registry/python_surface_ownership.json": "scripts/build_python_surface_ownership.py",
+        "registry/plan_corpus.json": "runtime/plan_registry.py",
+        "registry/source_freeze.json": "runtime/source_freeze.py",
+        "registry/punch_card_ledger.json": "runtime/plan_registry.py",
         "registry/reference_candidate_admission.json": "scripts/reconcile_reference_candidate_admission.py",
         "registry/semantic_capability_index.json": "scripts/build_semantic_capability_index.py",
         "registry/source_specialty_admission.json": "scripts/migration/admit_capability_mining_skills.py",
         "registry/specialty_map.json": "scripts/build_specialty_map.py",
         "registry/workflow_execution_bindings.json": "runtime/structural_integrity.py",
     }
-    producer = producers.get(path, "builders/last_round_assimilation_builder.py")
+    if path.startswith("registry/source-freeze/current-campaign/"):
+        producer = "runtime/source_freeze.py"
+    elif path.startswith("registry/planning/rev1xx/corpus-"):
+        producer = "runtime/plan_registry.py"
+    elif path.startswith("registry/planning/rev1xx/requirements-"):
+        producer = "runtime/plan_registry.py"
+    else:
+        producer = producers.get(path, "builders/last_round_assimilation_builder.py")
     return {
         "path": path,
         "count_key": count_key,
@@ -62,8 +79,34 @@ def record(
     }
 
 
-def build_inventory() -> dict[str, object]:
+def build_inventory(root: Path | None = None) -> dict[str, object]:
+    root = Path(root) if root is not None else Path(__file__).resolve().parents[1]
     rows = [
+        # BASE-003 corpus admission and the two identity/custody ledgers. These
+        # three documents carry count fields that were previously undeclared, so
+        # the envelope validator could not recompute them. Their builders are the
+        # runtime modules that actually derive the numbers, not a packaging
+        # script. expected_unique_payload_count is deliberately absent: it is a
+        # declared plan expectation rather than a derived collection count, and
+        # is exempted in runtime/registry_envelope.UNOWNED_COUNT_FIELDS.
+        record("registry/plan_corpus.json", "archive_count", "archives"),
+        record("registry/plan_corpus.json", "unique_payload_count", "admitted_sources"),
+        record(
+            "registry/plan_corpus.json",
+            "duplicate_payload_count",
+            "admitted_sources",
+            "nested_nonempty",
+            nested="duplicate_copies",
+        ),
+        record("registry/source_freeze.json", "file_count", "files"),
+        record(
+            "registry/source_freeze.json",
+            "byte_count",
+            "files",
+            "sum_bytes",
+            field="bytes",
+        ),
+        record("registry/punch_card_ledger.json", "card_count", "cards"),
         record("registry/admission_queue.json", "candidate_count", "candidates"),
         record("registry/agency_agent_registry.json", "agent_count", "agents"),
         record("registry/artifact_reachability.json", "record_count", "records"),
@@ -102,6 +145,7 @@ def build_inventory() -> dict[str, object]:
         ),
         record("registry/current_evidence_index.json", "record_count", "records"),
         record("registry/dependency_authority.json", "node_kind_count", "node_kinds"),
+        record("registry/mutating_producers.json", "producer_count", "producers"),
         record(
             "registry/corrective_release_ledger.json",
             "child_finding_count",
@@ -378,6 +422,21 @@ def build_inventory() -> dict[str, object]:
         ),
         record("registry/workflow_execution_bindings.json", "count", "bindings"),
     ]
+    for path in sorted((root / "registry/source-freeze/current-campaign").glob("*/receipt-*.json")):
+        relative = path.relative_to(root).as_posix()
+        rows.extend([
+            record(relative, "file_count", "files"),
+            record(relative, "byte_count", "files", "sum_bytes", field="bytes"),
+        ])
+    for path in sorted((root / "registry/planning/rev1xx").glob("corpus-*.json")):
+        relative = path.relative_to(root).as_posix()
+        rows.extend([
+            record(relative, "file_count", "files"),
+            record(relative, "byte_count", "files", "sum_bytes", field="bytes"),
+            record(relative, "unique_content_count", "content_sources"),
+        ])
+    for path in sorted((root / "registry/planning/rev1xx").glob("requirements-*.json")):
+        rows.append(record(path.relative_to(root).as_posix(), "record_count", "records"))
     return {
         "schema_version": "1.0",
         "policy": "Every count-bearing registry field is derived from its owned collection and validated before certification.",
@@ -389,19 +448,21 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--root", type=Path, default=Path("."))
     parser.add_argument("--check", action="store_true")
+    parser.add_argument("--admission-event-id")
     args = parser.parse_args()
     path = args.root.resolve() / "registry/registry_envelope_inventory.json"
-    rendered = json.dumps(build_inventory(), indent=2, sort_keys=True) + "\n"
+    rendered = json.dumps(build_inventory(args.root.resolve()), indent=2, sort_keys=True) + "\n"
     if args.check:
         if not path.is_file() or path.read_text(encoding="utf-8") != rendered:
             raise SystemExit("registry envelope inventory is stale")
     else:
-        path.write_text(rendered, encoding="utf-8", newline="\n")
+        publish_guarded_registry_projection(args.root.resolve(), "registry/registry_envelope_inventory.json",
+            build_inventory(args.root.resolve()), admission_event_id=args.admission_event_id)
     print(
         json.dumps(
             {
                 "valid": True,
-                "records": len(build_inventory()["records"]),
+                "records": len(build_inventory(args.root.resolve())["records"]),
                 "check": args.check,
             }
         )

@@ -586,12 +586,12 @@ def prepare_successor_event(
     }
 
 
-SUCCESSION_STATE_PATH = Path(".engineering-bootstrap/project-revision-succession/state.json")
-SUCCESSION_WAL_PATH = Path(".engineering-bootstrap/project-revision-succession/wal")
-SUCCESSION_LOCK_PATH = Path(".engineering-bootstrap/project-revision-succession/activation.lock")
-ACTIVE_REVISION_PATH = Path(".engineering-bootstrap/processing-order/active-revision.json")
-PROJECT_RECORD_PATH = Path(".engineering-bootstrap/project-record.json")
-PROJECT_CAMPAIGN_PATH = Path(".engineering-bootstrap/processing-order/repair-campaign.json")
+SUCCESSION_STATE_PATH = Path(".agentic_engineering_os_px/project-revision-succession/state.json")
+SUCCESSION_WAL_PATH = Path(".agentic_engineering_os_px/project-revision-succession/wal")
+SUCCESSION_LOCK_PATH = Path(".agentic_engineering_os_px/project-revision-succession/activation.lock")
+ACTIVE_REVISION_PATH = Path(".agentic_engineering_os_px/processing-order/active-revision.json")
+PROJECT_RECORD_PATH = Path(".agentic_engineering_os_px/project-record.json")
+PROJECT_CAMPAIGN_PATH = Path(".agentic_engineering_os_px/processing-order/repair-campaign.json")
 
 
 def current_revision_root(root: Path) -> Path | None:
@@ -613,7 +613,7 @@ def current_revision_root(root: Path) -> Path | None:
         revision = (root / relative).resolve(strict=True)
         if root not in revision.parents:
             raise ValueError("active revision is outside project root")
-        expected_relative = Path(".engineering-bootstrap/project-revisions") / str(pointer.get("project_id") or "")
+        expected_relative = Path(".agentic_engineering_os_px/project-revisions") / str(pointer.get("project_id") or "")
         if relative != expected_relative:
             raise ValueError("active revision pointer uses a non-canonical namespace")
         state = json.loads((root / SUCCESSION_STATE_PATH).read_text(encoding="utf-8"))
@@ -988,7 +988,7 @@ class SuccessionLedger:
                     and row.get("issuer") == verification["issuer"]
                 ),
             )["event"]
-            revision_root = Path(".engineering-bootstrap/project-revisions") / project_id
+            revision_root = Path(".agentic_engineering_os_px/project-revisions") / project_id
             predecessor_root = Path("evidence/project-revision-succession") / parent["campaign_id"] / parent_digest
             predecessor_campaign_archive = self.root / predecessor_root / "repair-campaign.json"
             predecessor_record_archive = self.root / predecessor_root / "project-record.json"

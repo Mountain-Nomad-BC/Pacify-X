@@ -51,7 +51,8 @@ class PxLanguageModelProvider {
   async provideLanguageModelChatInformation(_options, token) {
     let payload;
     try { payload = await this.bridge.listModels(token); } catch { return []; }
-    return (payload?.models || []).map(model => ({
+    const models = Array.isArray(payload?.models) ? payload.models : [];
+    return models.filter(model => model?.available === true && model.bridge_kind === 'local').map(model => ({
       id: model.profile_id,
       name: `${model.model_id} · ${model.lane}`,
       family: 'Pacify-X governed local',

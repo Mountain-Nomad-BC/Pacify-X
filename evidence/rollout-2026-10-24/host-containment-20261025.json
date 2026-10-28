@@ -1,0 +1,36 @@
+{
+  "timestamp_utc": "2026-10-25T06:32:43.581923+00:00",
+  "segment": "G03-containment-postconditions",
+  "cards": [
+    "PX-AUD-003",
+    "PX-AUD-004",
+    "PX-AUD-019",
+    "PX-AUD-020"
+  ],
+  "neighbor_tests": 65,
+  "gates": {
+    "host-containment": {
+      "valid": true,
+      "input_sha256": "7900f3cf8acbfcc9e12966855e43994c2b9bbdd16bc001cd0c9188ede889b0f0",
+      "exit_code": 0,
+      "receipt_published": true,
+      "duration_seconds": 6.692594
+    },
+    "secure-persistence": {
+      "valid": true,
+      "input_sha256": "bc958d5f6d6fe2839099cd9f9547454fd2785d70e78a64e001583686a1b854c8",
+      "exit_code": 0,
+      "receipt_published": true,
+      "duration_seconds": 6.45819
+    },
+    "release-lifecycle": {
+      "valid": true,
+      "input_sha256": "b26ca12718de5b00a4ad4aacd25bf6c5a990ef4a61f98699f5185829efb9ec32",
+      "exit_code": 0,
+      "receipt_published": true,
+      "duration_seconds": 19.428496
+    }
+  },
+  "status": "TESTED_INTEGRATION; review and large-Job host proof pending",
+  "newly_closed": 0
+}

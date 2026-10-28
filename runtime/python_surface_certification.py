@@ -65,9 +65,9 @@ def _role(relative: str) -> tuple[str, str, bool]:
     if parts[0] == "tests":
         return "release-test", "release-verification", True
     if parts[0] == "runtime":
-        return "installed-runtime", "engineering_bootstrap", True
+        return "installed-runtime", "agentic_engineering_os_px", True
     if parts[0] == "builders":
-        return "installed-builder", "engineering_bootstrap.builders", True
+        return "installed-builder", "agentic_engineering_os_px.builders", True
     if parts[0] == "templates" and len(parts) >= 2 and parts[1] == "generated":
         return "installed-generator-template", "generated-artifact-reconciliation", True
     if (
@@ -123,12 +123,12 @@ def certify_python_surfaces(
             role = str(record.get("role", ""))
             if role == "installed-runtime" and source_path.startswith("runtime/"):
                 installed = package_root / source_path.removeprefix("runtime/")
-                key = "engineering_bootstrap/" + source_path.removeprefix("runtime/")
+                key = "agentic_engineering_os_px/" + source_path.removeprefix("runtime/")
             elif role == "installed-builder" and source_path.startswith("builders/"):
                 installed = (
                     package_root / "builders" / source_path.removeprefix("builders/")
                 )
-                key = "engineering_bootstrap/builders/" + source_path.removeprefix(
+                key = "agentic_engineering_os_px/builders/" + source_path.removeprefix(
                     "builders/"
                 )
             elif role in {
@@ -136,7 +136,7 @@ def certify_python_surfaces(
                 "installed-generator-template",
             } and record.get("packaged"):
                 installed = root / source_path
-                key = "share/engineering-bootstrap/" + source_path
+                key = "share/agentic-engineering-os-px/" + source_path
             else:
                 continue
             expected[key] = (installed, record)
@@ -155,11 +155,11 @@ def certify_python_surfaces(
         for path in sorted(candidates, key=lambda item: item.as_posix().casefold()):
             if path.is_relative_to(package_root):
                 relative = (
-                    "engineering_bootstrap/" + path.relative_to(package_root).as_posix()
+                    "agentic_engineering_os_px/" + path.relative_to(package_root).as_posix()
                 )
             else:
                 relative = (
-                    "share/engineering-bootstrap/" + path.relative_to(root).as_posix()
+                    "share/agentic-engineering-os-px/" + path.relative_to(root).as_posix()
                 )
             projection = expected.get(relative)
             if projection is None:
@@ -178,9 +178,9 @@ def certify_python_surfaces(
                         "role": "installed-builder"
                         if is_builder
                         else "installed-runtime",
-                        "owner": "engineering_bootstrap.builders"
+                        "owner": "agentic_engineering_os_px.builders"
                         if is_builder
-                        else "engineering_bootstrap",
+                        else "agentic_engineering_os_px",
                         "packaged": True,
                         "validation_level": "wheel-record-and-artifact-manifest",
                         "evidence": ["wheel RECORD", "canonical artifact manifest"],

@@ -1712,6 +1712,48 @@
         "Native -P launch repair proven against actual hostile project package. Pure effect manifests fixed without changing write-grant lifecycle fixture.",
         "Parent native pre-release composition wired; protected group worker/provider operating acceptance remains unproved and registration stays closed."
       ]
+    },
+    {
+      "segment_id": "resume-merge-recovery-20261028",
+      "date": "2026-10-28",
+      "status": "partial_merge_reconciled",
+      "resolved_conflicts": 12,
+      "remaining_conflicts": 66,
+      "evidence": "docs/repair/evidence/resume10-merge-legacy-append-green.json",
+      "summary": "Ledger recovery and legacy append repair; 14 focused checks pass. No rollout/certification acceptance."
+    },
+    {
+      "segment_id": "merge-native-integration-20261028",
+      "status": "partial",
+      "resolved_conflicts": 35,
+      "remaining_conflicts": 43,
+      "operating_evidence": "docs/repair/evidence/resume10-merge-native-workflow-operating2.json",
+      "summary": "56 native checks pass;14 stream/provider checks pass; group-custody acceptance and missing historical evidence unresolved."
+    },
+    {
+      "segment_id": "merge-owner-compatibility-20261028",
+      "status": "partial",
+      "resolved_conflicts": 47,
+      "remaining_conflicts": 31,
+      "summary": "TIE71pass,adapter18pass,native durable restart proof;29-section required denominator union. Loopback fixture ran before separate admission, retained as procedural defect. No certification."
+    },
+    {
+      "segment_id": "merge-harness-reconciliation-20261028",
+      "date": "2026-10-28",
+      "status": "partial",
+      "resolved_conflicts": 3,
+      "remaining_conflicts": 3,
+      "evidence": "docs/repair/evidence/merge-2026-10-28/harness-reconciliation.json",
+      "summary": "Three extension harness owners reconciled with branch capabilities retained; core/billing tests reconciled. Focused Node 45/45. Generated registry conflicts intentionally remain unresolved pending freeze."
+    },
+    {
+      "date": "2026-10-28",
+      "segment": "git-unify-source-checkpoint",
+      "scope": "User-directed source-control reconciliation; no certification claim",
+      "remaining_git_conflicts": 0,
+      "reviewed_closed": 0,
+      "evidence": "docs/repair/evidence/merge-2026-10-28/git-unify-analysis.json",
+      "next": "Complete merge commit, fast-forward active branches, verify remote and final cleanliness; retain open product repair work."
     }
   ]
 }

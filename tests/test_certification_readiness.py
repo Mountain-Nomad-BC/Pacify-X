@@ -148,10 +148,10 @@ release = ["build==1.5.0"]
     def test_managed_late_phase_consumes_validation_state_without_rerun(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             engine, extension = self._fixture(Path(directory))
-            marker = engine / ".engineering-bootstrap" / "project-record.json"
+            marker = engine / ".agentic_engineering_os_px" / "project-record.json"
             campaign = (
                 engine
-                / ".engineering-bootstrap"
+                / ".agentic_engineering_os_px"
                 / "processing-order"
                 / "repair-campaign.json"
             )
@@ -215,10 +215,10 @@ release = ["build==1.5.0"]
     def test_managed_prevalidation_phase_fails_without_running_validate(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             engine, extension = self._fixture(Path(directory))
-            marker = engine / ".engineering-bootstrap" / "project-record.json"
+            marker = engine / ".agentic_engineering_os_px" / "project-record.json"
             campaign = (
                 engine
-                / ".engineering-bootstrap"
+                / ".agentic_engineering_os_px"
                 / "processing-order"
                 / "repair-campaign.json"
             )

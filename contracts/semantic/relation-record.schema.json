@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:semantic:relation-record",
+  "title": "PX Semantic Relation Record",
+  "description": "A typed graph edge between two canonical entity_ids. A relation is a separate record from its endpoints, so neither entity needs to know it exists. Both endpoints must resolve to live entities: a relation whose endpoint is missing or retired is dangling and is rejected rather than persisted.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "relation_id",
+    "source_entity_id",
+    "relation_kind",
+    "target_entity_id"
+  ],
+  "properties": {
+    "schema_version": { "const": "px.semantic-relation/1.0" },
+    "relation_id": {
+      "type": "string",
+      "pattern": "^pxr1:[0-9a-f]{32}$",
+      "description": "Derived from source, kind and target, so re-asserting the same edge is idempotent."
+    },
+    "source_entity_id": {
+      "type": "string",
+      "pattern": "^pxe1:[0-9a-f]{32}$"
+    },
+    "target_entity_id": {
+      "type": ["string", "null"],
+      "pattern": "^pxe1:[0-9a-f]{32}$",
+      "description": "Null only for a relation that targets a resource outside the entity graph. Such a relation may never be used as a graph edge for traversal or closure."
+    },
+    "relation_kind": {
+      "type": "string",
+      "enum": [
+        "defines",
+        "depends_on",
+        "implements",
+        "calls",
+        "imports",
+        "extends",
+        "owns",
+        "located_at",
+        "references",
+        "contradicts",
+        "supersedes"
+      ]
+    },
+    "directed": { "type": "boolean", "default": true },
+    "external_target": {
+      "type": ["string", "null"],
+      "pattern": "^[\\s\\S]{0,1024}$",
+                "description": "Required when target_entity_id is null so the edge remains inspectable."
+    },
+    "declared_by": { "type": ["string", "null"], "pattern": "^[\\s\\S]{0,200}$" },
+    "observed_utc": { "type": ["string", "null"] },
+    "notes": { "type": ["string", "null"], "pattern": "^[\\s\\S]{0,2000}$" }
+  }
+}

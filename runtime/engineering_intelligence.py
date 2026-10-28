@@ -17,10 +17,7 @@ from typing import Iterable, Mapping
 TOKEN = re.compile(r"[a-z0-9_]+")
 
 
-def _stable(value: object) -> str:
-    return hashlib.sha256(
-        json.dumps(value, sort_keys=True, separators=(",", ":"), default=str).encode()
-    ).hexdigest()
+from runtime.hash_utils import json_ascii_string_hash as _stable
 
 
 def architecture_drift(

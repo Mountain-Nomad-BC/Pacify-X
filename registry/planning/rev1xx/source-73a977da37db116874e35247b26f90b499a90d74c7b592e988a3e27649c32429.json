@@ -1,0 +1,1529 @@
+{
+  "schema_version": "px.external-mining-matrix/1.0",
+  "generated_date": "2026-09-29",
+  "target": {
+    "clean_repo_files": 5903,
+    "approx_code_doc_lines": 1898843,
+    "map_lines": 827190
+  },
+  "external_scan": {
+    "files": 41908,
+    "approx_code_doc_lines": 9810861,
+    "recursive_nested_archives": true,
+    "foreign_code_executed": false
+  },
+  "repositories": [
+    {
+      "repo": "LibreChat",
+      "files": 5577,
+      "lines": 1659079,
+      "license": "MIT",
+      "disposition": "Mine selected durability/checkpoint/budget mechanics; do not import app/provider stack."
+    },
+    {
+      "repo": "OpenHands",
+      "files": 2382,
+      "lines": 412105,
+      "license": "MIT",
+      "disposition": "Mine evidence-backed compaction and MCP health/redaction mechanics; no framework import."
+    },
+    {
+      "repo": "Dify",
+      "files": 14126,
+      "lines": 2631745,
+      "license": "Modified Apache 2.0",
+      "disposition": "Clean-room workflow architecture only unless license review explicitly permits direct reuse."
+    },
+    {
+      "repo": "LangGraph",
+      "files": 673,
+      "lines": 197600,
+      "license": "MIT",
+      "disposition": "Reference retry/interrupt semantics; do not replace PX workflow engine."
+    },
+    {
+      "repo": "Zoo Code",
+      "files": 2818,
+      "lines": 586961,
+      "license": "Apache-2.0",
+      "disposition": "Mine shadow Git checkpointing and destructive-command guard patterns."
+    },
+    {
+      "repo": "Laya",
+      "files": 46,
+      "lines": 10910,
+      "license": "Apache-2.0",
+      "disposition": "Mine deterministic tiny-router + lazy residency pattern; benchmark before admission."
+    },
+    {
+      "repo": "Octop",
+      "files": 3608,
+      "lines": 611932,
+      "license": "MIT",
+      "disposition": "Mine SSRF/DNS pinning, persisted cron, thread fork and MCP session fingerprinting."
+    },
+    {
+      "repo": "Engram",
+      "files": 499,
+      "lines": 208891,
+      "license": "MIT",
+      "disposition": "Mine deterministic lexical recall, serialized writes and repair/recovery semantics."
+    },
+    {
+      "repo": "OpenViking",
+      "files": 4444,
+      "lines": 1144099,
+      "license": "AGPL-3.0",
+      "disposition": "Clean-room architectural patterns only unless PX deliberately accepts AGPL obligations."
+    },
+    {
+      "repo": "AVA / Agentic Value Accelerator",
+      "files": 5230,
+      "lines": 1197905,
+      "license": "Apache-2.0",
+      "disposition": "Mine approval policy, observed-vs-declared drift and cost/governance projections."
+    },
+    {
+      "repo": "AWS Bedrock AgentCore Coding Agents",
+      "files": 457,
+      "lines": 87566,
+      "license": "MIT-0",
+      "disposition": "Mine artifact-grounded completion, role isolation and evidence rules."
+    },
+    {
+      "repo": "AWS Solutions Skills",
+      "files": 231,
+      "lines": 82194,
+      "license": "MIT-0",
+      "disposition": "Mine interoperability/export contracts and scenario-style skill evaluation."
+    },
+    {
+      "repo": "SageMaker Image Classification MLOps",
+      "files": 199,
+      "lines": 16106,
+      "license": "MIT-0",
+      "disposition": "Mine drift/promotion/quality-gate structure for PX model profiles."
+    },
+    {
+      "repo": "AWS Customer Playbook Framework",
+      "files": 191,
+      "lines": 47133,
+      "license": "Docs CC BY-SA 4.0; sample code MIT-0",
+      "disposition": "Use incident-response phase structure only; avoid copying prose unless share-alike is intended."
+    },
+    {
+      "repo": "mixture-of-experts-master",
+      "files": 8,
+      "lines": null,
+      "license": "MIT",
+      "disposition": "Use as MoE behavior/reference fixture, not a second runtime."
+    },
+    {
+      "repo": "MoE-Mixture-of-Experts-in-PyTorch",
+      "files": 11,
+      "lines": null,
+      "license": "No root LICENSE found",
+      "disposition": "Pattern/reference only; no code copy until provenance is resolved."
+    }
+  ],
+  "candidates": [
+    {
+      "id": "P0-01",
+      "priority": "P0",
+      "source": "LibreChat",
+      "license": "MIT",
+      "method": "adapt",
+      "source_paths": [
+        "LibreChat-main/LibreChat-main/packages/api/src/agents/queuedTurns.ts"
+      ],
+      "capability": "Durable ordered agent-turn queue with claim leases, predecessor fencing, dead-letter state, record-first outbox delivery and indeterminate-admission reconciliation.",
+      "why": "PX has durable job receipts and scheduling, but the target scan found no canonical dead-letter turn lane, claim-lease protocol, or explicit 'provider may have executed but durable receipt is missing' state.",
+      "px_extend": [
+        "runtime/agent_runtime.py",
+        "runtime/job_receipt.py",
+        "runtime/operational_event_bus.py",
+        "runtime/scheduler.py",
+        "extension/src/agentHarness/taskStore.js",
+        "extension/src/agentHarness/harnessController.js",
+        "extension/src/agentHarness/eventBus.js"
+      ],
+      "px_new": [
+        "runtime/agent_turn_queue.py",
+        "contracts/agents/agent-queued-turn.schema.json",
+        "contracts/agents/agent-turn-claim.schema.json",
+        "contracts/agents/agent-turn-dead-letter.schema.json"
+      ],
+      "implementation": "Keep conversation/turn ordering separate from worker scheduling. Reserve durable delivery identity before publish. A later turn cannot pass an unresolved earlier turn. Claim expiry permits recovery, but a crash after provider invocation and before receipt must enter an explicit indeterminate state rather than be blindly retried.",
+      "acceptance": [
+        "FIFO/predecessor fencing under concurrency",
+        "claim expiry and reclaim without double execution",
+        "duplicate enqueue idempotency",
+        "dead-letter stores bounded normalized failure",
+        "crash between invoke and durable receipt becomes indeterminate",
+        "outbox replay is safe until scheduling receipt commits",
+        "reconciliation is bounded and observable"
+      ],
+      "guardrails": "Do not create a second scheduler or second provider gateway; this is a durable admission/delivery layer above existing PX owners."
+    },
+    {
+      "id": "P0-02",
+      "priority": "P0",
+      "source": "Octop",
+      "license": "MIT",
+      "method": "adapt",
+      "source_paths": [
+        "Octop-main/Octop-main/src/octop/infra/utils/ssrf_guard.py"
+      ],
+      "capability": "Outbound URL policy that closes DNS-rebinding TOCTOU by validating all resolved addresses and pinning the approved IP while preserving TLS hostname/SNI.",
+      "why": "No canonical SSRF/DNS-rebinding implementation was found in target runtime/extension/contracts/tests.",
+      "px_extend": [
+        "runtime/external_toolchain.py",
+        "runtime/provider_gateway.py",
+        "runtime/process_supervisor.py",
+        "extension/src/agentHarness/toolBroker.js"
+      ],
+      "px_new": [
+        "runtime/outbound_url_policy.py",
+        "contracts/external_capabilities/outbound-request-policy.schema.json"
+      ],
+      "implementation": "Centralize network-target admission. Resolve host, reject mixed or forbidden address sets, connect to the admitted IP, preserve original hostname for TLS verification, and independently revalidate every redirect. Maintain a separately declared policy for intentionally local MCP endpoints instead of weakening the internet policy.",
+      "acceptance": [
+        "IPv4/IPv6 loopback/private/link-local/reserved/multicast denied",
+        "mixed public/private DNS denied",
+        "DNS rebinding cannot redirect the socket after validation",
+        "TLS verifies original hostname",
+        "redirect targets revalidated",
+        "explicit local-MCP exception is scope-bound"
+      ],
+      "guardrails": "Every network-capable adapter calls this owner; adapters do not invent local allowlists."
+    },
+    {
+      "id": "P0-03",
+      "priority": "P0",
+      "source": "Engram",
+      "license": "MIT",
+      "method": "adapt",
+      "source_paths": [
+        "engram-main/engram-main/internal/mcp/write_queue.go"
+      ],
+      "capability": "Bounded serialized mutation queue with deterministic cancellation semantics.",
+      "why": "PX gates mutation authority, but the external source exposes a subtle cancel-vs-start race: returning on caller cancellation after enqueue can lie about whether a write happened.",
+      "px_extend": [
+        "runtime/operation_authority.py",
+        "runtime/external_toolchain.py",
+        "extension/src/agentHarness/toolBroker.js"
+      ],
+      "px_new": [
+        "runtime/mutation_queue.py",
+        "contracts/operations/mutation-queue-receipt.schema.json"
+      ],
+      "implementation": "Once admitted into the bounded mutation queue, the worker owns cancellation. Cancellation before start skips the job; once started, the mutation runs to a definitive receipt. Queue-full is explicit and non-mutating.",
+      "acceptance": [
+        "cancel before worker start performs zero writes",
+        "cancel racing with start returns actual worker outcome",
+        "started job cannot report cancelled while mutating",
+        "queue-full fails before side effects",
+        "FIFO/serialization under load"
+      ],
+      "guardrails": "Authority is still decided by existing PX operation owners before enqueue."
+    },
+    {
+      "id": "P0-04",
+      "priority": "P0",
+      "source": "Engram",
+      "license": "MIT",
+      "method": "adapt",
+      "source_paths": [
+        "engram-main/engram-main/internal/store/store.go"
+      ],
+      "capability": "SQLite FTS5 trigram/BM25 lexical recall as deterministic local fallback and hybrid-retrieval leg.",
+      "why": "Target scan found no FTS5/trigram recall owner. PX already has semantic retrieval and fusion, so lexical retrieval fills a complementary failure mode rather than duplicating it.",
+      "px_extend": [
+        "runtime/memory_broker.py",
+        "runtime/semantic_retrieval_fusion.py",
+        "runtime/retrieval_generation.py",
+        "runtime/semantic_model_context.py"
+      ],
+      "px_new": [
+        "runtime/lexical_memory_index.py",
+        "contracts/memory/lexical-index-generation.schema.json"
+      ],
+      "implementation": "Build a project-scoped lexical generation over selected memory/knowledge fields. Return bounded BM25-ranked candidates with stable identity/provenance and fuse only through existing semantic retrieval authority. Treat lexical index generation like any other revisioned retrieval artifact.",
+      "acceptance": [
+        "works with embeddings unavailable",
+        "project isolation",
+        "stable deterministic ranking",
+        "stale generation is rejected",
+        "hybrid fusion preserves exact-evidence priority",
+        "bounded query/token/result limits"
+      ],
+      "guardrails": "Lexical similarity never grants authority and never silently replaces exact evidence."
+    },
+    {
+      "id": "P0-05",
+      "priority": "P0",
+      "source": "Engram",
+      "license": "MIT",
+      "method": "adapt",
+      "source_paths": [
+        "engram-main/engram-main/internal/store/session_identity_repair.go",
+        "engram-main/engram-main/plugin/pi/compaction-recovery.js"
+      ],
+      "capability": "Evidence-fingerprinted repair plans, pre-apply database backup, under-transaction reinspection, and explicit Confirmed/Failed/Unknown/Unavailable recovery outcomes.",
+      "why": "This directly strengthens PX's WAL/memory-remediation philosophy against stale repair plans and duplicate recovery after ambiguous completion.",
+      "px_extend": [
+        "runtime/memory_remediation.py",
+        "runtime/memory_operations.py",
+        "runtime/wal_transaction.py",
+        "runtime/context_checkpoint.py",
+        "runtime/persistent_memory_provider.py"
+      ],
+      "px_new": [
+        "contracts/memory/memory-repair-plan-v2.schema.json"
+      ],
+      "implementation": "Plan from a fingerprinted read-set, create recoverable backup before mutation, reopen/reinspect under the writer transaction, abort on changed evidence, require exact affected-row expectations, and publish corrected events only inside the valid lifecycle. For ambiguous compaction/archive outcomes, verify durable state before retrying.",
+      "acceptance": [
+        "stale plan aborts",
+        "backup exists even when apply fails",
+        "row-count mismatch rolls back",
+        "no corrected event before commit",
+        "Unknown recovery verifies state before retry",
+        "duplicate summary/archive cannot be produced by blind retry"
+      ],
+      "guardrails": "Backups are bounded/retained by existing resource lifecycle; repair never bypasses canonical memory/WAL owners."
+    },
+    {
+      "id": "P0-06",
+      "priority": "P0",
+      "source": "OpenViking",
+      "license": "AGPL-3.0",
+      "method": "clean-room",
+      "source_paths": [
+        "OpenViking-main/OpenViking-main/openviking/retrieve/context_assembler/budget.py"
+      ],
+      "capability": "Breadth-first-then-depth context budgeting with explicit tiers and per-entry caps.",
+      "why": "PX already bounds memory/context, but this pattern improves diversity and prevents one high-ranked item from consuming the entire context budget.",
+      "px_extend": [
+        "runtime/memory_broker.py",
+        "runtime/semantic_model_context.py",
+        "extension/src/agentHarness/contextCompiler.js"
+      ],
+      "px_new": [
+        "contracts/memory/context-materialization-tier.schema.json"
+      ],
+      "implementation": "Reimplement independently: every candidate first receives its category's minimum useful tier, then unused budget upgrades depth. Apply a per-entry cap, downgrade oversized tiers rather than truncating semantic units, dedupe on the body actually injected, and retain URI/pointer-only fallback.",
+      "acceptance": [
+        "multiple candidates survive narrow score clustering",
+        "single item cannot monopolize budget",
+        "oversized full text downgrades cleanly",
+        "dedupe is based on injected content",
+        "hard total token budget never exceeded"
+      ],
+      "guardrails": "Clean-room implementation only from the architectural idea unless AGPL adoption is explicitly chosen."
+    },
+    {
+      "id": "P0-07",
+      "priority": "P0",
+      "source": "OpenViking",
+      "license": "AGPL-3.0",
+      "method": "clean-room",
+      "source_paths": [
+        "OpenViking-main/OpenViking-main/openviking/resource/uri_mutation_coordinator.py"
+      ],
+      "capability": "Hierarchical prefix-overlap scope leases for mutation/read coordination.",
+      "why": "PX has semantic concurrency and repository claims, but no canonical generalized hierarchical scope-lease pattern was found.",
+      "px_extend": [
+        "runtime/semantic_code_concurrency.py",
+        "runtime/semantic_code_transaction.py",
+        "runtime/resource_lifecycle.py",
+        "runtime/operation_authority.py"
+      ],
+      "px_new": [
+        "runtime/scope_lease.py",
+        "contracts/scheduling/scope-lease.schema.json"
+      ],
+      "implementation": "Reimplement a durable PX version: non-overlapping scopes may proceed concurrently; reads can coexist unless an overlapping mutation exists; mutation excludes all overlapping reads/mutations. Bind lease identity to authority revision and workspace/project.",
+      "acceptance": [
+        "parent/child overlap conflicts",
+        "siblings can proceed",
+        "read/read overlap allowed",
+        "mutation/read overlap blocked",
+        "expired lease recovery",
+        "process restart cannot silently lose live durable lease"
+      ],
+      "guardrails": "Do not use the source's process-local implementation directly; PX needs durable/fail-closed semantics."
+    },
+    {
+      "id": "P0-08",
+      "priority": "P0",
+      "source": "Zoo Code",
+      "license": "Apache-2.0",
+      "method": "adapt",
+      "source_paths": [
+        "Zoo-Code-main/Zoo-Code-main/src/services/checkpoints/ShadowCheckpointService.ts"
+      ],
+      "capability": "Per-task shadow Git checkpoint/diff/restore with sanitized Git process environment.",
+      "why": "PX has semantic transactions and guarded change, but a task-scoped full-workspace reversible snapshot is useful for multi-file agent work and evidence generation.",
+      "px_extend": [
+        "runtime/semantic_code_transaction.py",
+        "runtime/process_supervisor.py",
+        "orchestration/workflows/project_stream/guarded_change.yaml",
+        "extension/src/agentHarness/harnessController.js"
+      ],
+      "px_new": [
+        "runtime/workspace_checkpoint.py",
+        "contracts/project_stream/workspace-checkpoint.schema.json"
+      ],
+      "implementation": "Use an isolated shadow repository or equivalent object store, stage all changes so untracked files appear in evidence, disable templates/signing/hooks, and scrub Git environment variables that can redirect repositories, inject config, invoke helpers or alter object stores. Receipt contains before/after tree IDs and restore target.",
+      "acceptance": [
+        "untracked files included",
+        "Git env cannot redirect repository/object/index/config/editor/SSH/diff behavior",
+        "restore is exact",
+        "newer checkpoint not deleted by old cleanup",
+        "checkpoint produces diff evidence"
+      ],
+      "guardrails": "Never execute target-repository hooks/templates while checkpointing."
+    },
+    {
+      "id": "P0-09",
+      "priority": "P0",
+      "source": "Zoo Code",
+      "license": "Apache-2.0",
+      "method": "adapt-pattern",
+      "source_paths": [
+        "Zoo-Code-main/Zoo-Code-main/src/services/destructive-command-guard/manager.ts",
+        "Zoo-Code-main/Zoo-Code-main/src/services/destructive-command-guard/runner.ts"
+      ],
+      "capability": "Deterministic pre-execution command-risk guard and safely managed optional external guard binary.",
+      "why": "PX authority recognizes destructive effects, but target scan found no canonical command-level destructive guard.",
+      "px_extend": [
+        "runtime/operation_authority.py",
+        "runtime/process_supervisor.py",
+        "runtime/external_toolchain.py",
+        "extension/src/agentHarness/toolBroker.js",
+        "extension/src/agentHarness/vscodeTools.js"
+      ],
+      "px_new": [
+        "runtime/command_risk.py",
+        "contracts/security_capabilities/command-risk-decision.schema.json"
+      ],
+      "implementation": "Native PX rule layer should classify shell/process requests before spawn. If an external scanner is later admitted, manage it as a pinned, hashed, bounded, shell=false tool with minimal environment, output-size/timeout limits, and agreement between exit status and JSON result.",
+      "acceptance": [
+        "known destructive constructs blocked or escalated",
+        "shell indirection cannot bypass tokenization policy",
+        "scanner download/redirect/hash bounded if enabled",
+        "tool timeout/output bounded",
+        "decision is receipted before spawn"
+      ],
+      "guardrails": "The guard narrows authority; it never upgrades a denied operation."
+    },
+    {
+      "id": "P0-10",
+      "priority": "P0",
+      "source": "OpenHands",
+      "license": "MIT",
+      "method": "adapt",
+      "source_paths": [
+        "OpenHands-main/OpenHands-main/src/api/mcp-health/probe-mcp-server-health.ts",
+        "OpenHands-main/OpenHands-main/src/utils/redact-mcp-secrets.ts"
+      ],
+      "capability": "Truthful MCP health states plus systematic secret redaction.",
+      "why": "Target scan found no canonical MCP health truth model. A TCP/session connection alone should not be displayed as verified tool operation.",
+      "px_extend": [
+        "runtime/external_toolchain.py",
+        "extension/src/mcpRuntimeObservation.js",
+        "extension/src/mcpActivityIntegration.js",
+        "extension/src/agentHarness/toolBroker.js"
+      ],
+      "px_new": [
+        "runtime/mcp_health.py",
+        "contracts/operations/mcp-health.schema.json"
+      ],
+      "implementation": "Separate configured, reachable/connectivity-only, authenticated, capability-advertised, probe-verified and degraded states. Use a harmless read-only advertised tool when available for verification. Redact known secret/header/env/url values longest-first plus common bearer/token patterns before persisting errors/events.",
+      "acceptance": [
+        "connectivity does not equal verified",
+        "auth failure is distinct",
+        "stale probe cannot overwrite newer probe",
+        "probe tool must be actually advertised",
+        "secret values absent from logs/events/error UI",
+        "overlapping secrets redact longest-first"
+      ],
+      "guardrails": "Never invent a synthetic 'healthy' result when no safe probe exists; report connectivity-only."
+    },
+    {
+      "id": "P0-11",
+      "priority": "P0",
+      "source": "PX Advanced Self Operations starter",
+      "license": "PX-owned/internal",
+      "method": "integrate-and-reconcile",
+      "source_paths": [
+        "PX_ADVANCED_SELF_OPERATIONS_STARTER/px-self-operations-starter/PX_ADVANCED_SELF_OPERATIONS_BUILD_PLAN.md",
+        "PX_ADVANCED_SELF_OPERATIONS_STARTER/px-self-operations-starter/extension/src/selfOperationsManager.js",
+        "PX_ADVANCED_SELF_OPERATIONS_STARTER/px-self-operations-starter/orchestration/workflows/self-operations-improvement.yaml"
+      ],
+      "capability": "Advanced Self Operations surface: observe -> diagnose -> challenge -> propose -> simulate -> approve -> bounded mutate -> validate -> compare -> promote/rollback -> re-observe.",
+      "why": "Unlike PXU and Agent Console starters, all 18 Self Operations starter files are absent from the clean target. Its design composes existing PX owners instead of introducing parallel authority.",
+      "px_extend": [
+        "extension/media/dashboard/47-advanced-surfaces.js",
+        "extension/src/studioDashboardHost.js",
+        "runtime/operational_observers.py",
+        "runtime/operational_projection.py",
+        "runtime/operation_authority.py"
+      ],
+      "px_new": [
+        "extension/src/selfOperationsManager.js",
+        "contracts/operations/self-diagnostic-request.schema.json",
+        "contracts/operations/self-diagnostic-result.schema.json",
+        "contracts/operations/self-improvement-run.schema.json",
+        "orchestration/workflows/self-operations-improvement.yaml"
+      ],
+      "implementation": "Integrate only the presentation/run-coordination layer and schemas after reconciling current contract versions. Default observe_only; candidate creation propose_only; every mutation flows through existing authority, approval, guarded-change, evidence, verification and rollback owners. Recursive behavior is allowed only for the governed whole cycle, never raw mutation.",
+      "acceptance": [
+        "observe-only default",
+        "no new mutation/certification/evidence/scheduler authority",
+        "candidate includes impact/rollback/validation",
+        "approval required according to current authority",
+        "regression rolls back/quarantines",
+        "recursion terminates on convergence/budget/stop/approval"
+      ],
+      "guardrails": "Do not copy old registry snapshots blindly; regenerate current canonical registry projections."
+    },
+    {
+      "id": "P1-01",
+      "priority": "P1",
+      "source": "Dify + LangGraph",
+      "license": "Dify modified Apache; LangGraph MIT",
+      "method": "clean-room architecture + MIT reference",
+      "source_paths": [
+        "dify-main/dify-main/api/core/workflow/node_factory.py",
+        "dify-main/dify-main/api/core/app/apps/workflow/stop_aware_ready_queue.py",
+        "dify-main/dify-main/api/core/app/workflow/layers/persistence.py",
+        "dify-main/dify-main/api/core/app/workflow/layers/observability.py",
+        "dify-main/dify-main/api/core/workflow/human_input_policy.py",
+        "langgraph-main/langgraph-main/libs/prebuilt/langgraph/prebuilt/interrupt.py",
+        "langgraph-main/langgraph-main/libs/langgraph/langgraph/pregel/_retry.py"
+      ],
+      "capability": "Governed workflow adapter registry, resumable node snapshots, stop-aware ready queue, Human-in-the-Loop node and consistent retry/interrupt semantics.",
+      "why": "PX intentionally uses a closed owned workflow worker. The right enhancement is to widen that boundary under versioned contracts, not replace it with another graph engine.",
+      "px_extend": [
+        "runtime/workflow_worker.py",
+        "runtime/workflow_studio.py",
+        "runtime/studio_approval.py",
+        "runtime/job_receipt.py",
+        "runtime/operational_event_bus.py"
+      ],
+      "px_new": [
+        "runtime/workflow_adapter_registry.py",
+        "contracts/workflow-node-adapter.schema.json",
+        "contracts/workflow-human-input.schema.json",
+        "contracts/workflow-node-snapshot.schema.json"
+      ],
+      "implementation": "Adapters are admitted by type+version+schema+effects. Persist node boundary snapshots, retries and interrupt reasons. Human input is a first-class paused state with scoped resumption token and timeout policy. Stop/cancel prevents new ready-node admission while letting already-started bounded work settle according to policy.",
+      "acceptance": [
+        "unknown adapter fails closed",
+        "adapter version mismatch fails closed",
+        "pause/resume survives restart",
+        "human response bound to workflow/node/run",
+        "cancel stops new admissions",
+        "retry classification is consistent",
+        "per-node trace links to durable job receipt"
+      ],
+      "guardrails": "No Dify graph engine import; no LangGraph StateGraph replacement."
+    },
+    {
+      "id": "P1-02",
+      "priority": "P1",
+      "source": "LibreChat",
+      "license": "MIT",
+      "method": "adapt",
+      "source_paths": [
+        "LibreChat-main/LibreChat-main/packages/api/src/agents/checkpointer.ts"
+      ],
+      "capability": "Generation-scoped checkpoint namespaces, safe fork and generation-aware cleanup.",
+      "why": "PX already checkpoints context, but branch/fork semantics and safe cleanup under replacement generations are separate concerns.",
+      "px_extend": [
+        "runtime/context_checkpoint.py",
+        "runtime/session_context_guard.py",
+        "runtime/agent_runtime.py"
+      ],
+      "px_new": [
+        "contracts/agents/agent-checkpoint-generation.schema.json"
+      ],
+      "implementation": "A fork captures an immutable source checkpoint generation; pending writes block fork; child branch receives an invocation-owned namespace; cleanup deletes only the captured generation and cannot erase a newer replacement.",
+      "acceptance": [
+        "pending write blocks fork",
+        "fork snapshot immutable",
+        "parent and child diverge safely",
+        "late cleanup cannot delete new generation",
+        "restart can recover namespace identity"
+      ],
+      "guardrails": "Conversation/thread identity stays separate from storage-generation identity."
+    },
+    {
+      "id": "P1-03",
+      "priority": "P1",
+      "source": "LibreChat",
+      "license": "MIT",
+      "method": "adapt",
+      "source_paths": [
+        "LibreChat-main/LibreChat-main/packages/api/src/agents/stepBudget.ts"
+      ],
+      "capability": "Reserve execution budget for a final answer and inject ephemeral convergence pressure near exhaustion.",
+      "why": "PX has budget/cost accounting, but a model can still consume every orchestration step on tools and leave no answer.",
+      "px_extend": [
+        "extension/src/agentHarness/budgetLedger.js",
+        "extension/src/agentHarness/completionEvaluator.js",
+        "extension/src/agentHarness/harnessController.js"
+      ],
+      "px_new": [],
+      "implementation": "Budget in tool-round units, always reserve final-answer capacity, and inject non-persistent context as the remaining tool runway approaches zero.",
+      "acceptance": [
+        "final answer always retains reserved step when topology allows",
+        "notice is ephemeral",
+        "tool-round count not raw tool-call count",
+        "hard step-limit still fails explicitly"
+      ],
+      "guardrails": "Do not persist the pressure notice into user memory/conversation history."
+    },
+    {
+      "id": "P1-04",
+      "priority": "P1",
+      "source": "OpenHands",
+      "license": "MIT",
+      "method": "adapt",
+      "source_paths": [
+        "OpenHands-main/OpenHands-main/src/hooks/use-await-context-compaction.ts"
+      ],
+      "capability": "Evidence-backed context compaction completion instead of treating request acknowledgement as success.",
+      "why": "A compaction API acknowledgement only proves that work started; PX should prove the durable event/result before freeing context assumptions.",
+      "px_extend": [
+        "runtime/context_checkpoint.py",
+        "runtime/operational_event_bus.py",
+        "extension/src/activityObservability.js"
+      ],
+      "px_new": [],
+      "implementation": "Capture pre-request event baseline to avoid fast-event races. Success requires the expected compaction event/receipt plus a demonstrable reduced context footprint; otherwise return no_change/timeout/failed.",
+      "acceptance": [
+        "fast completion between request and waiter registration is detected",
+        "ack alone not success",
+        "context usage actually decreases",
+        "timeout/no-change distinct"
+      ],
+      "guardrails": "Context/KV remains cache; durable checkpoint receipt remains authority."
+    },
+    {
+      "id": "P1-05",
+      "priority": "P1",
+      "source": "OpenViking",
+      "license": "AGPL-3.0",
+      "method": "clean-room",
+      "source_paths": [
+        "OpenViking-main/OpenViking-main/openviking/session/checkpoints.py"
+      ],
+      "capability": "Checkpoint schema evolution with cumulative-v2 authority and deterministic legacy-delta migration.",
+      "why": "PX will accumulate checkpoint formats over v1.x; deterministic migration avoids replay ambiguity.",
+      "px_extend": [
+        "runtime/context_checkpoint.py",
+        "runtime/wal_migration.py"
+      ],
+      "px_new": [
+        "contracts/checkpoint-migration-record.schema.json"
+      ],
+      "implementation": "New checkpoints are cumulative. Restore scans newest to oldest; first valid cumulative generation is authoritative. Legacy deltas below it are not replayed; purely legacy chains merge chronologically into one new cumulative generation.",
+      "acceptance": [
+        "mixed v1/v2 restores deterministically",
+        "corrupt newest checkpoint falls back only by declared policy",
+        "migration is idempotent",
+        "old deltas cannot double-apply"
+      ],
+      "guardrails": "Clean-room only."
+    },
+    {
+      "id": "P1-06",
+      "priority": "P1",
+      "source": "OpenViking",
+      "license": "AGPL-3.0",
+      "method": "clean-room",
+      "source_paths": [
+        "OpenViking-main/OpenViking-main/openviking/observability/usage_audit/README.md"
+      ],
+      "capability": "Separate bounded product usage/audit projection from operational metrics.",
+      "why": "PX has a durable event bus and operational projections; a bounded queryable usage view would improve diagnostics without turning every raw event into permanent telemetry.",
+      "px_extend": [
+        "runtime/operational_event_bus.py",
+        "runtime/operational_projection.py",
+        "runtime/usage_memory.py"
+      ],
+      "px_new": [
+        "runtime/usage_projection.py",
+        "contracts/operations/usage-projection-state.schema.json"
+      ],
+      "implementation": "Non-blocking subscriber -> bounded queue -> batched local persistence -> explicit dropped_count on overflow -> retention/compaction. Keep product semantic usage/audit distinct from Prometheus-style runtime metrics.",
+      "acceptance": [
+        "publisher never blocks on projection",
+        "overflow increments visible dropped_count",
+        "shutdown flush bounded",
+        "retention enforced",
+        "audit and performance metrics not conflated"
+      ],
+      "guardrails": "Respect existing telemetry/privacy defaults; local usage projection is not permission to export data."
+    },
+    {
+      "id": "P1-07",
+      "priority": "P1",
+      "source": "AVA",
+      "license": "Apache-2.0",
+      "method": "adapt-pattern",
+      "source_paths": [
+        "sample-agentic-value-accelerator-main/sample-agentic-value-accelerator-main/platform/control_plane/backend/src/services/approval_policy_engine.py"
+      ],
+      "capability": "Approval-policy resolution with deny/require-approval/auto modes, specificity, required role, quorum, SLA and immutable policy snapshot.",
+      "why": "PX has approval proof/authority, but no canonical queue/quorum/SLA policy layer was found.",
+      "px_extend": [
+        "runtime/operation_authority.py",
+        "runtime/studio_approval.py",
+        "extension/src/studioApprovalHost.js"
+      ],
+      "px_new": [
+        "runtime/approval_policy.py",
+        "contracts/approval-policy-decision.schema.json",
+        "contracts/approval-queue-record.schema.json"
+      ],
+      "implementation": "Policy evaluator produces evidence consumed by existing authority; it does not become an executor. Resolve conflicts deterministically, snapshot the exact policy revision into the approval record, support quorum/expiry/SLA. Unlike the source, PX must fail closed when policy storage is unavailable for an effect that requires policy.",
+      "acceptance": [
+        "deny outranks approval/allow",
+        "specific policy beats wildcard at same strictness",
+        "quorum enforced",
+        "expired approval unusable",
+        "policy snapshot immutable",
+        "missing required policy backend fails closed"
+      ],
+      "guardrails": "Do not adopt AVA's bootstrap auto-approve fallback."
+    },
+    {
+      "id": "P1-08",
+      "priority": "P1",
+      "source": "AVA",
+      "license": "Apache-2.0",
+      "method": "adapt-pattern",
+      "source_paths": [
+        "sample-agentic-value-accelerator-main/sample-agentic-value-accelerator-main/platform/control_plane/backend/src/services/govern_policy_drift_service.py"
+      ],
+      "capability": "Observed-vs-declared policy/capability drift detection, including unknown execution harnesses with false-positive suppression.",
+      "why": "PX has strong declared authority and observers; comparing what actually executed against what is admitted closes a different assurance loop.",
+      "px_extend": [
+        "runtime/operational_observers.py",
+        "runtime/operational_projection.py",
+        "runtime/authority_topology.py",
+        "registry/integrations.json"
+      ],
+      "px_new": [
+        "runtime/observed_policy_drift.py",
+        "contracts/operations/observed-policy-drift.schema.json"
+      ],
+      "implementation": "Project normalized operation events into observed actor/tool/provider/effect tuples, compare against admitted registry/policy, classify expected platform/service actors separately from unknown/unadmitted harnesses, and open evidence-backed drift findings.",
+      "acceptance": [
+        "known platform actor not falsely flagged",
+        "unknown executor/tool flagged",
+        "declared effect mismatch flagged",
+        "observation never grants authority",
+        "drift finding links source event and policy revision"
+      ],
+      "guardrails": "This is an independent assurance observer, not a second policy decision path."
+    },
+    {
+      "id": "P1-09",
+      "priority": "P1",
+      "source": "Laya",
+      "license": "Apache-2.0",
+      "method": "adapt-pattern",
+      "source_paths": [
+        "laya-main/laya-main/laya/router.py"
+      ],
+      "capability": "Deterministic tiny-model pre-router with explicit precedence and bounded model residency.",
+      "why": "PX already has capability/model routing; Laya's useful contribution is a simple, inspectable precedence ladder and lazy/LRU residency mechanics for a small control model.",
+      "px_extend": [
+        "runtime/tiny_model_operator.py",
+        "runtime/capability_routing.py",
+        "runtime/model_pool.py",
+        "models/routing-policy.json"
+      ],
+      "px_new": [],
+      "implementation": "Precedence: explicit model > explicit task > admitted typed workflow exact match > explicit language > detected language/script > default. Typed/specialized route never silently selected from weak detection. Lazy load, attach existing resident instance, bounded LRU eviction.",
+      "acceptance": [
+        "explicit selection always wins",
+        "weak language detection cannot select typed workflow",
+        "residency cap enforced",
+        "warm instance reused",
+        "cold-load latency measured",
+        "fallback to safe default deterministic"
+      ],
+      "guardrails": "Benchmark on PX workloads before changing canonical route policy."
+    },
+    {
+      "id": "P1-10",
+      "priority": "P1",
+      "source": "AWS Bedrock AgentCore Coding Agents",
+      "license": "MIT-0",
+      "method": "adapt-test-principles",
+      "source_paths": [
+        "sample-amazon-bedrock-agentcore-coding-agents-main/sample-amazon-bedrock-agentcore-coding-agents-main/README.md",
+        "sample-amazon-bedrock-agentcore-coding-agents-main/sample-amazon-bedrock-agentcore-coding-agents-main/orchestrator/roles.py",
+        "sample-amazon-bedrock-agentcore-coding-agents-main/sample-amazon-bedrock-agentcore-coding-agents-main/orchestrator/role_graph.py"
+      ],
+      "capability": "Artifact-grounded completion and independent maker/checker role evidence.",
+      "why": "The strongest lesson is operational: closed connection != successful command, configured telemetry != exported telemetry, service health != browser interaction health, and model prose != authoritative run state.",
+      "px_extend": [
+        "extension/src/agentHarness/completionEvaluator.js",
+        "runtime/agent_runtime.py",
+        "runtime/process_supervisor.py",
+        "tests"
+      ],
+      "px_new": [],
+      "implementation": "Completion evaluator must privilege durable recorded state/receipts/artifact hashes over model summaries. Add tests that explicitly separate transport close from exit success, backend smoke from UI behavior, configuration from observed sink delivery, and builder output from independent review.",
+      "acceptance": [
+        "nonzero exit cannot look successful",
+        "UI evidence required for UI claim",
+        "telemetry sink observation required for export claim",
+        "model summary cannot override receipt",
+        "reviewer context isolated from builder chat"
+      ],
+      "guardrails": "Do not import AWS deployment/runtime stack."
+    },
+    {
+      "id": "P1-11",
+      "priority": "P1",
+      "source": "Octop",
+      "license": "MIT",
+      "method": "adapt",
+      "source_paths": [
+        "Octop-main/Octop-main/src/octop/infra/connectors/mcp_tool_cache.py"
+      ],
+      "capability": "Normalized MCP tool-spec fingerprint and serialized shared-session/tool-wrapper reuse.",
+      "why": "MCP connection/session reuse can cut repeated discovery and setup cost, but only when configuration identity is exact.",
+      "px_extend": [
+        "extension/src/mcpRuntimeObservation.js",
+        "extension/src/mcpActivityIntegration.js",
+        "runtime/external_toolchain.py"
+      ],
+      "px_new": [
+        "runtime/mcp_session_cache.py"
+      ],
+      "implementation": "Fingerprint normalized command/args/env/header/url identity while excluding non-semantic metadata; sort maps deterministically. Cache only healthy sessions under exact fingerprint and serialize unsafe concurrent invokes when the underlying transport/tool wrapper is not concurrency-safe.",
+      "acceptance": [
+        "semantically identical configs share fingerprint",
+        "env/header change invalidates cache",
+        "secret values not persisted in fingerprint material",
+        "unhealthy session not reused",
+        "concurrent invoke serialized where required"
+      ],
+      "guardrails": "Never use a short fingerprint as security authentication; retain full canonical hash internally."
+    },
+    {
+      "id": "P1-12",
+      "priority": "P1",
+      "source": "Octop",
+      "license": "MIT",
+      "method": "adapt",
+      "source_paths": [
+        "Octop-main/Octop-main/src/octop/infra/cron/manager.py"
+      ],
+      "capability": "Persisted/audited scheduled operation registry with reload-after-restore semantics.",
+      "why": "PX has scheduling/admission, but target scan did not show a canonical user-defined durable cron owner.",
+      "px_extend": [
+        "runtime/scheduler.py",
+        "runtime/capability_scheduler.py",
+        "runtime/job_receipt.py",
+        "runtime/operational_event_bus.py"
+      ],
+      "px_new": [
+        "runtime/scheduled_operation_registry.py",
+        "contracts/scheduling/scheduled-operation.schema.json"
+      ],
+      "implementation": "Persist schedule definitions separately from active scheduler state; reload enabled schedules on boot/restore; every firing creates a normal PX job/authority/evidence path; schedule mutation is receipted. System schedules and user schedules are distinct.",
+      "acceptance": [
+        "restart preserves enabled schedules",
+        "restore reloads database truth",
+        "disabled job never fires",
+        "duplicate boot registration impossible",
+        "fire produces durable job receipt",
+        "missed-run policy explicit"
+      ],
+      "guardrails": "Do not let cron bypass operation authority or budget gates."
+    },
+    {
+      "id": "P1-13",
+      "priority": "P1",
+      "source": "SageMaker MLOps + AVA",
+      "license": "MIT-0 + Apache-2.0",
+      "method": "adapt-pattern",
+      "source_paths": [
+        "sample-sagemaker-image-classification-mlops-main/sample-sagemaker-image-classification-mlops-main/scripts/drift/compute_drift.py",
+        "sample-sagemaker-image-classification-mlops-main/sample-sagemaker-image-classification-mlops-main/scripts/evaluation/model_evaluator.py"
+      ],
+      "capability": "Model-profile drift, quality gates and champion/challenger promotion.",
+      "why": "PX already certifies model profiles. Adding explicit drift baselines and promotion gates makes ongoing local-model optimization measurable rather than anecdotal.",
+      "px_extend": [
+        "runtime/model_profile.py",
+        "runtime/provider_certification.py",
+        "runtime/model_health.py",
+        "models/benchmark-policy.json"
+      ],
+      "px_new": [
+        "contracts/operations/model-drift-report.schema.json"
+      ],
+      "implementation": "Freeze baseline metrics/data identity per certified profile, evaluate candidate against task-specific floors and guardrails, promote only with measured advantage plus correctness parity; maintain rollback to previous profile.",
+      "acceptance": [
+        "baseline identity frozen",
+        "candidate cannot promote on latency alone",
+        "quality/correctness floors enforced",
+        "drift threshold breach visible",
+        "rollback profile retained"
+      ],
+      "guardrails": "An LLM judge may contribute evidence but must not be sole certification authority."
+    },
+    {
+      "id": "P2-01",
+      "priority": "P2",
+      "source": "Octop",
+      "license": "MIT",
+      "method": "adapt",
+      "source_paths": [
+        "Octop-main/Octop-main/src/octop/infra/agents/thread_fork.py"
+      ],
+      "capability": "Conversation/agent-thread branch fork from a selected checkpoint/message branch.",
+      "why": "Useful for Agent Console experimentation and independent alternative plans after checkpoint generation semantics are hardened.",
+      "px_extend": [
+        "runtime/agent_runtime.py",
+        "runtime/context_checkpoint.py",
+        "extension/src/agentHarness/taskStore.js"
+      ],
+      "px_new": [
+        "contracts/agents/agent-thread-fork.schema.json"
+      ],
+      "implementation": "Fork a durable checkpoint prefix and associated tool traffic into a new thread identity, preserve parent lineage, and never mutate parent history.",
+      "acceptance": [
+        "branch starts from selected checkpoint",
+        "parent immutable",
+        "tool/event lineage retained",
+        "fork refuses unresolved/pending checkpoint writes"
+      ],
+      "guardrails": "Implement only after P1 checkpoint-generation semantics."
+    },
+    {
+      "id": "P2-02",
+      "priority": "P2",
+      "source": "AVA",
+      "license": "Apache-2.0",
+      "method": "adapt-projection",
+      "source_paths": [
+        "sample-agentic-value-accelerator-main/sample-agentic-value-accelerator-main/platform/control_plane/backend/src/services/approval_policy_engine.py"
+      ],
+      "capability": "FinOps/cost projection layered over existing provider budget receipts.",
+      "why": "PX already owns budget authority; the missing value is better trend/anomaly/forecast presentation, not another billing gate.",
+      "px_extend": [
+        "runtime/provider_budget.py",
+        "runtime/operational_projection.py",
+        "extension/media/dashboard/46-observability-surfaces.js"
+      ],
+      "px_new": [
+        "runtime/cost_projection.py"
+      ],
+      "implementation": "Project durable usage receipts into provider/model/task cost trends, anomaly bands and budget burn; no authority changes.",
+      "acceptance": [
+        "projection reconciles to durable receipts",
+        "unknown-price usage reported as coverage gap",
+        "local non-billable lanes remain non-billable",
+        "projection cannot authorize spend"
+      ],
+      "guardrails": "Projection only."
+    },
+    {
+      "id": "P2-03",
+      "priority": "P2",
+      "source": "AWS Solutions Skills",
+      "license": "MIT-0",
+      "method": "adapt-contracts",
+      "source_paths": [
+        "sample-aws-solutions-skills-main/sample-aws-solutions-skills-main"
+      ],
+      "capability": "PX skill interoperability/export adapters plus scenario-style evaluation fixtures.",
+      "why": "PX already has a large skill system; interoperability is more valuable than importing AWS domain skills.",
+      "px_extend": [
+        "builders/skill_builder.py",
+        "contracts/skill-package.schema.json",
+        "tests"
+      ],
+      "px_new": [
+        "runtime/skill_export.py",
+        "contracts/skill-export-profile.schema.json"
+      ],
+      "implementation": "Keep one canonical PX skill package; generate ecosystem-specific exports and validate required metadata/tool declarations. Add scenario fixtures that test behavior, not just package shape.",
+      "acceptance": [
+        "canonical source remains PX-owned",
+        "exports deterministic",
+        "round-trip does not silently lose authority/effect metadata",
+        "scenario eval covers positive/negative cases"
+      ],
+      "guardrails": "Do not bulk-import domain skill catalogs."
+    },
+    {
+      "id": "P2-04",
+      "priority": "P2",
+      "source": "MIT MoE repo + no-license MoE repo",
+      "license": "MIT / unresolved",
+      "method": "reference-and-tests-only",
+      "source_paths": [
+        "mixture-of-experts-master/mixture-of-experts-master",
+        "MoE-Mixture-of-Experts-in-PyTorch-main/MoE-Mixture-of-Experts-in-PyTorch-main"
+      ],
+      "capability": "Executable fixtures for capacity, load-balance, top-k gating and route-collapse tests.",
+      "why": "PX already has MoE knowledge/routing design. What helps now is adversarial executable testing of placement/routing assumptions, not a second MoE framework.",
+      "px_extend": [
+        "tests",
+        "knowledge/nsai/objects/moe"
+      ],
+      "px_new": [
+        "tests/fixtures/moe_reference/"
+      ],
+      "implementation": "Use permissively licensed implementation only as isolated test/reference fixture. Use unresolved-license repository only to identify concepts until provenance is cleared.",
+      "acceptance": [
+        "capacity overflow behavior measured",
+        "load-balance loss sanity",
+        "route-collapse vectors",
+        "deterministic fixture seeds",
+        "no production dependency"
+      ],
+      "guardrails": "No code copy from repository without a confirmed license."
+    },
+    {
+      "id": "P2-05",
+      "priority": "P2",
+      "source": "AWS Customer Playbook Framework",
+      "license": "CC BY-SA 4.0 docs / MIT-0 sample code",
+      "method": "structure-only",
+      "source_paths": [
+        "aws-customer-playbook-framework-main/aws-customer-playbook-framework-main"
+      ],
+      "capability": "Incident-response phase/checklist structure.",
+      "why": "PX already has incident/security contracts; the useful addition is operator flow completeness and handoff checkpoints.",
+      "px_extend": [
+        "docs/security/INCIDENT_RESPONSE.md",
+        "orchestration/workflows/cybersecurity-capability-operations.yaml",
+        "contracts/incident.schema.json"
+      ],
+      "px_new": [],
+      "implementation": "Independently structure phases: prepare -> detect/analyze -> contain -> eradicate -> recover -> lessons/evidence. Map each phase to existing PX owners and receipts.",
+      "acceptance": [
+        "each phase has entry/exit evidence",
+        "containment has rollback/recovery path",
+        "post-incident lessons become governed candidates, not silent mutation"
+      ],
+      "guardrails": "Do not copy CC BY-SA prose into PX unless share-alike obligations are deliberately accepted."
+    },
+    {
+      "id": "P0-12",
+      "priority": "P0",
+      "source": "Zoo Code + direct PX target gap",
+      "license": "Apache-2.0 / PX-owned",
+      "method": "adapt pattern + repair PX owner",
+      "source_paths": [
+        "Zoo-Code-main/Zoo-Code-main/src/core/task-persistence/__tests__/TaskHistoryStore.realConcurrency.spec.ts",
+        "Zoo-Code-main/Zoo-Code-main/src/core/task/__tests__/Task.resume-eviction-race.spec.ts",
+        "Zoo-Code-main/Zoo-Code-main/src/core/task/__tests__/Task.sticky-profile-race.spec.ts"
+      ],
+      "capability": "Ordered durable Agent Harness state writer with revision/generation fencing and hydration-safe resume/eviction.",
+      "why": "PX Agent Harness TaskStore launches asynchronous workspaceState.update() saves fire-and-forget, with no serialized writer, monotonic state revision, drain, or stale-completion fence. Rapid updates can therefore race at the persistence boundary. The same area also lacks an explicit hydration lifecycle preventing placeholder/partial state from being persisted during resume/eviction races.",
+      "px_extend": [
+        "extension/src/agentHarness/taskStore.js",
+        "extension/src/agentHarness/registerAgentConsole.js",
+        "extension/src/agentHarness/harnessController.js"
+      ],
+      "px_new": [
+        "extension/src/agentHarness/durableTaskState.js"
+      ],
+      "implementation": "Wrap Agent Harness persistence in one ordered writer. Every snapshot carries a monotonic stateRevision/generation; writes are serialized/coalesced and old completions cannot supersede newer state. Track hydration state explicitly. An abort/eviction/profile change that occurs while asynchronous state is loading must invalidate the old continuation and must not persist placeholders or stale initialization values. Provide a bounded flush/drain for host shutdown.",
+      "acceptance": [
+        "two rapid saves cannot leave the older snapshot durable",
+        "stale concurrent deltas preserve both independent changes or conflict explicitly",
+        "eviction during hydration cannot persist placeholder task metadata",
+        "late initialization cannot overwrite a newer operator/profile change",
+        "dispose drains or explicitly receipts unflushed state",
+        "stateRevision is monotonic across reload"
+      ],
+      "guardrails": "Do not create a new global persistence authority. This is the durable writer for existing Agent Harness state."
+    },
+    {
+      "id": "P0-13",
+      "priority": "P0",
+      "source": "LibreChat + direct PX target gap",
+      "license": "MIT / PX-owned",
+      "method": "adapt lifecycle pattern",
+      "source_paths": [
+        "LibreChat-main/LibreChat-main/packages/api/src/app/shutdown.ts",
+        "LibreChat-main/LibreChat-main/packages/api/src/agents/background.shutdown.spec.ts",
+        "LibreChat-main/LibreChat-main/packages/api/src/agents/handlers.shutdown.spec.ts"
+      ],
+      "capability": "Extension-host quiesce/drain coordinator with admission close, bounded settlement, event flush, straggler interruption and truthful unresolved-state receipts.",
+      "why": "PX extension deactivation currently disposes the lifecycle directly; Agent Harness aborts active work and the canonical event publisher can terminate its active child and discard queued unpublished events. There is no single host quiesce phase that stops new admissions, gives durable work a bounded chance to settle, flushes canonical events, then interrupts only remaining work.",
+      "px_extend": [
+        "extension/src/extension.js",
+        "extension/src/agentHarness/harnessController.js",
+        "extension/src/canonicalEventPublisher.js",
+        "extension/src/agentHarness/registerAgentConsole.js"
+      ],
+      "px_new": [
+        "extension/src/hostQuiesce.js"
+      ],
+      "implementation": "Introduce explicit phases: close admission -> run pre-drain tasks -> wait for active owned work to settle within a global remaining-time budget -> flush task state and canonical events -> interrupt stragglers -> persist interrupted/unconfirmed state -> final dispose. Cleanup tasks are ordered, idempotent, bounded, and one failure cannot prevent later independent cleanup. Repeated deactivate/signal paths join the same quiesce generation.",
+      "acceptance": [
+        "new work is rejected after quiesce begins",
+        "already-running bounded work may settle before forced abort",
+        "canonical event queue is flushed before publisher teardown when possible",
+        "uncooperative work becomes interrupted/unconfirmed rather than silently lost",
+        "one cleanup failure does not skip later cleanup",
+        "repeated shutdown/deactivate is idempotent and cannot clear a newer safety deadline"
+      ],
+      "guardrails": "Quiesce coordinates existing owners; it does not grant new execution authority."
+    },
+    {
+      "id": "P1-14",
+      "priority": "P1",
+      "source": "Dify + OpenViking",
+      "license": "Modified Apache 2.0 / AGPL-3.0",
+      "method": "clean-room policy composition",
+      "source_paths": [
+        "dify-main/dify-main/cli/src/http/rate-limit.ts",
+        "dify-main/dify-main/cli/src/http/retry.ts",
+        "OpenViking-main/OpenViking-main/tests/unit/test_model_retry.py"
+      ],
+      "capability": "Canonical retry schedule combining PX effect-safety with transient-error classification, Retry-After parsing, equal jitter and provider/endpoint cooldown.",
+      "why": "PX already classifies whether an effect is safe to retry, which must stay authoritative. The missing complement is a shared wait/transientness policy so adapters do not each improvise status handling, Retry-After, jitter, quota versus throttle semantics, or cooldown.",
+      "px_extend": [
+        "runtime/provider_gateway.py",
+        "runtime/provider_budget.py",
+        "runtime/capability_routing.py"
+      ],
+      "px_new": [
+        "runtime/retry_policy.py",
+        "contracts/retry-decision.schema.json"
+      ],
+      "implementation": "Compute RetryDecision from two independent gates: effect safety from existing PX provider/effect authority AND transientness/cooldown from the new policy. Parse Retry-After as delta seconds or HTTP date with a bounded maximum; otherwise use capped equal-jitter exponential delay. Distinguish throttling from exhausted quota/auth/content-safety/input-too-large. Input-size/policy errors must not poison endpoint health. Persist cooldown reason/expiry for routing visibility.",
+      "acceptance": [
+        "unsafe unreceipted effect never retries even on HTTP 429/503",
+        "Retry-After seconds and dates parse correctly and are capped",
+        "quota/auth/content-safety/input-too-large are not treated as transient throttles",
+        "equal-jitter fallback remains bounded",
+        "cooldown state is visible to routing and expires deterministically",
+        "adapter-specific retry logic cannot silently override canonical decision"
+      ],
+      "guardrails": "Do not copy Dify/OpenViking implementation code where license terms are undesirable; reproduce the behavior under PX contracts."
+    },
+    {
+      "id": "P1-15",
+      "priority": "P1",
+      "source": "Dify",
+      "license": "Modified Apache 2.0",
+      "method": "clean-room taxonomy",
+      "source_paths": [
+        "dify-main/dify-main/dify-agent-runtime/internal/snapshot/restore.go"
+      ],
+      "capability": "Environment/resource failure attribution that distinguishes bad input from host exhaustion or infrastructure failure.",
+      "why": "PX's failure-attribution contract has useful reasoning/tool/policy categories but no explicit host-resource causes for disk/quota/read-only filesystem/I/O/memory/file-descriptor exhaustion. Without them, an archive/index/model/restore operation can incorrectly blame the source artifact for an environmental failure.",
+      "px_extend": [
+        "contracts/failure-attribution.schema.json",
+        "runtime/archive_io.py",
+        "runtime/process_supervisor.py",
+        "runtime/model_health.py",
+        "runtime/retrieval_generation.py"
+      ],
+      "px_new": [],
+      "implementation": "Add a bounded environmental cause taxonomy such as storage_exhausted, storage_quota, readonly_filesystem, permission_environment, io_environment, memory_exhausted, descriptor_exhausted and network_environment. Preserve the original OS error/code as bounded evidence. Input-corrupt/malformed may be claimed only after the source itself is proven invalid, not merely because processing it failed.",
+      "acceptance": [
+        "ENOSPC/EDQUOT cannot be reported as corrupt archive",
+        "ENOMEM cannot be reported as malformed model/index",
+        "EMFILE/ENFILE are attributed to descriptor exhaustion",
+        "EACCES/EPERM distinguish environmental permission from content validity",
+        "root cause survives cleanup failure",
+        "UI/projections expose primary failure and environment cause separately"
+      ],
+      "guardrails": "PX archive intake is already safer than the external extractor because it avoids path extraction; keep that design. Adopt only the attribution discipline."
+    },
+    {
+      "id": "P1-16",
+      "priority": "P1",
+      "source": "OpenViking",
+      "license": "AGPL-3.0",
+      "method": "clean-room",
+      "source_paths": [
+        "OpenViking-main/OpenViking-main/openviking/models/embedder/base.py"
+      ],
+      "capability": "Cancellation-aware request-scoped shared-flight for expensive read-only work.",
+      "why": "PX has synchronous/cross-process single-flight primitives, but this external pattern adds waiter-aware cancellation semantics useful for async embedding/reranking/discovery: one cancelled waiter does not cancel work still needed by others; the final waiter leaving may cancel underlying work; failed/cancelled shared work is evicted so a fresh attempt can proceed.",
+      "px_extend": [
+        "runtime/semantic_code_concurrency.py",
+        "runtime/work_admission.py",
+        "runtime/retrieval.py",
+        "runtime/external_toolchain.py"
+      ],
+      "px_new": [
+        "runtime/shared_flight.py"
+      ],
+      "implementation": "Key only semantically identical read-only operations. Each shared task tracks waiter count and cancellation generation. A waiter may detach without cancelling the shared operation while other waiters remain. If all waiters leave, cancel underlying work if supported. Error/cancel removes the entry; success may be retained only according to the separate authoritative cache/generation policy.",
+      "acceptance": [
+        "concurrent identical embedding requests execute once",
+        "one caller cancellation does not cancel another caller's required result",
+        "last waiter cancellation cancels underlying work where supported",
+        "failed/cancelled flight cannot poison the next request",
+        "different project/generation/policy keys never share work",
+        "mutation/effectful requests are excluded"
+      ],
+      "guardrails": "Clean-room implementation; never share operations whose authority/effect identity differs."
+    },
+    {
+      "id": "P1-17",
+      "priority": "P1",
+      "source": "Zoo Code + direct PX target gap",
+      "license": "Apache-2.0 / PX-owned",
+      "method": "adapt algorithm",
+      "source_paths": [
+        "Zoo-Code-main/Zoo-Code-main/src/services/code-index/processors/file-watcher.ts"
+      ],
+      "capability": "Incremental semantic-code index maintenance with debounced path coalescing and atomic generation publication.",
+      "why": "PX already caches immutable per-file analyses, but SemanticProjectSession.refresh() still walks/reassembles the whole project and semantic writes invalidate the entire project index. The external watcher shows a mature changed-path/deleted-path batching pattern that can turn those cached analyses into a real incremental project index.",
+      "px_extend": [
+        "runtime/semantic_code_project.py",
+        "runtime/semantic_code_index.py",
+        "runtime/semantic_code_cache.py",
+        "runtime/semantic_code_service.py",
+        "runtime/project_intelligence.py"
+      ],
+      "px_new": [
+        "runtime/semantic_code_incremental.py"
+      ],
+      "implementation": "Feed existing PX file/activity observers into a bounded changed-path accumulator. Last event wins per path; debounce short bursts; re-read/fingerprint changed files; reanalyze only changed files; remove deleted-file symbols/references/imports/diagnostics; then publish one immutable new index generation atomically. Watcher overflow, missed-event suspicion, dependency-invariant break or unknown rename falls back to full rebuild.",
+      "acceptance": [
+        "single-file edit avoids full-project parse/reanalysis",
+        "delete removes all dependent records for that file",
+        "burst changes coalesce deterministically",
+        "queries see old or new complete generation, never half-applied index",
+        "watcher overflow/gap triggers full rebuild",
+        "incremental result hash/contents match a clean full rebuild"
+      ],
+      "guardrails": "Source files remain authority; the index stays disposable/rebuildable."
+    },
+    {
+      "id": "P1-18",
+      "priority": "P1",
+      "source": "LibreChat + direct PX target gap",
+      "license": "MIT / PX-owned",
+      "method": "adapt durability/backpressure pattern",
+      "source_paths": [
+        "LibreChat-main/LibreChat-main/packages/api/src/stream/GenerationJobManager.ts",
+        "LibreChat-main/LibreChat-main/packages/api/src/stream/internal/coalescing.ts",
+        "LibreChat-main/LibreChat-main/packages/api/src/stream/__tests__/deltaCoalescing.spec.ts"
+      ],
+      "capability": "Durable Agent Console run-event reconstruction with sequence frontiers, bounded early buffering, reconnect replay and delta coalescing/backpressure.",
+      "why": "PX's global operational event bus is durable, but Agent Harness has a separate in-memory detailed event bus that is bounded and disposed with the host; canonical publication carries coarser activity metadata. Detailed run/tool/step state therefore lacks a complete reconnect/replay contract.",
+      "px_extend": [
+        "extension/src/agentHarness/eventBus.js",
+        "extension/src/agentHarness/harnessController.js",
+        "extension/src/agentHarness/agentConsoleProjection.js",
+        "extension/src/canonicalEventPublisher.js",
+        "runtime/operational_event_bus.py"
+      ],
+      "px_new": [
+        "contracts/agents/agent-run-event.schema.json"
+      ],
+      "implementation": "Do not create another global event bus. Publish/refer detailed durable run artifacts through the canonical PX event owner with monotonic per-run sequence/revision. Keep only a bounded early in-memory buffer. If that buffer overflows, reconstruct from durable run events/snapshot rather than silently dropping history. Reconnect starts from an explicit sequence frontier/cursor. Coalesce only high-volume delta events within strict event/byte/time caps; control/terminal events remain immediate. Pace producers when durable publication receipts accumulate.",
+      "acceptance": [
+        "host/webview reconnect reconstructs exact current run",
+        "early-buffer overflow falls back to durable replay",
+        "out-of-order reconnect events reorder only within a bounded frontier then fail visibly",
+        "terminal publication failure is distinct from run failure",
+        "coalescing preserves event order/sequence and never merges control events",
+        "backpressure bounds outstanding durable publication work"
+      ],
+      "guardrails": "The canonical operational event system remains the durable owner."
+    },
+    {
+      "id": "P1-19",
+      "priority": "P1",
+      "source": "Dify + PX v1.x migration need",
+      "license": "Modified Apache 2.0 / PX-owned",
+      "method": "clean-room build-time tool",
+      "source_paths": [
+        "dify-main/dify-main/api/services/data_migration/dependency_discovery_service.py",
+        "dify-main/dify-main/api/services/data_migration/import_service.py",
+        "dify-main/dify-main/api/services/data_migration/package_service.py",
+        "dify-main/dify-main/api/services/data_migration/report_service.py"
+      ],
+      "capability": "Versioned dependency-aware migration compiler/package for major PX identity/map/schema restructuring.",
+      "why": "PX already has intake/assimilation and dependency invalidation, but the upcoming kind of structural migration benefits from a specialized source-ID -> target-ID rewrite tool with dependency preflight, dry-run, ordered application and per-resource unresolved reporting rather than ad-hoc bulk rename/rewrite scripts.",
+      "px_extend": [
+        "runtime/dependency_invalidation.py",
+        "runtime/project_intelligence.py",
+        "runtime/wal_transaction.py",
+        "builders"
+      ],
+      "px_new": [
+        "tools/px_migration/",
+        "contracts/migration-package.schema.json",
+        "contracts/migration-report.schema.json"
+      ],
+      "implementation": "Inventory old identities/paths/addresses and embedded references; freeze a versioned mapping; discover dependency edges; dry-run every rewrite; resolve providers/roots/dependencies before consumers; generate actionable unresolved references; apply in WAL-backed stages; re-scan for old references; rebuild derived maps/indexes; run graph/contract integrity; retain exact rollback mapping. Keep secrets out of packages by default.",
+      "acceptance": [
+        "dry-run performs zero target mutation",
+        "every rewritten identity has one source->target mapping",
+        "unresolved/collision references block apply or are explicitly dispositioned",
+        "dependencies apply before consumers",
+        "embedded references are rewritten consistently",
+        "post-apply scan finds no undispositioned old identity",
+        "rollback reconstructs the pre-migration tree"
+      ],
+      "guardrails": "Make this a temporary/reusable migration compiler, not a second runtime authority."
+    },
+    {
+      "id": "P1-20",
+      "priority": "P1",
+      "source": "OpenViking + PX retrieval seam",
+      "license": "AGPL-3.0",
+      "method": "clean-room optional backend",
+      "source_paths": [
+        "OpenViking-main/OpenViking-main/openviking/storage/vectordb/index/cuvs_index.py"
+      ],
+      "capability": "Optional cuVS/CUDA dense-retrieval fast lane behind existing PX retrieval-generation authority.",
+      "why": "PX already has the correct seam: TurboVec is explicitly a candidate accelerator and retrieval-generation activation remains authoritative. The external cuVS implementation contributes a mature GPU admission/build/filter/concurrency pattern that PX does not currently expose as a CUDA dense-index backend.",
+      "px_extend": [
+        "runtime/retrieval_generation.py",
+        "runtime/retrieval.py",
+        "runtime/turbovec_adapter.py",
+        "runtime/hardware_routing.py",
+        "models/retrieval-policy.json"
+      ],
+      "px_new": [
+        "runtime/cuvs_adapter.py",
+        "contracts/cuvs-manifest.schema.json"
+      ],
+      "implementation": "Implement independently. Durable corpus/scalar metadata stay authoritative on host storage; cuVS is a disposable generation-bound accelerator. Capability-detect the optional CUDA/cuVS dependency. Estimate peak VRAM (vectors + graph/build + filter cache + safety factor) before admission; serialize large index builds per device; support bounded brute-force/CAGRA profiles; bind filters to corpus/index generation; invalidate/rebuild on mutation; auto-route small highly-filtered queries back to CPU; expose low-cardinality queue/build/filter/search timings and VRAM estimate/free/usable values. Activation requires correctness/recall parity plus measured benefit and CPU fallback.",
+      "acceptance": [
+        "backend absent -> clean CPU fallback",
+        "insufficient safe VRAM -> no GPU admission",
+        "concurrent collections cannot over-admit the same GPU during build",
+        "mutation invalidates stale generation/filter cache",
+        "GPU and canonical CPU result quality meets declared parity floor",
+        "filtered-small query may route CPU when cheaper",
+        "OOM/build failure degrades without corrupting authoritative retrieval state"
+      ],
+      "guardrails": "Clean-room only because OpenViking is AGPL. Do not create a second corpus/retrieval authority."
+    },
+    {
+      "id": "P2-06",
+      "priority": "P2",
+      "source": "OpenViking + PX semantic backend seam",
+      "license": "AGPL-3.0 plus grammar/query-specific licenses",
+      "method": "clean-room optional backend",
+      "source_paths": [
+        "OpenViking-main/OpenViking-main/openviking/parse/parsers/code/ast/providers.py",
+        "OpenViking-main/OpenViking-main/openviking/parse/parsers/code/ast/aider_repomap.py",
+        "OpenViking-main/OpenViking-main/openviking/parse/parsers/code/ast/process_engine.py"
+      ],
+      "capability": "Optional process-free multi-language structural/Tree-sitter semantic backend for read-only symbol/skeleton coverage when no trusted LSP is available.",
+      "why": "PX's semantic contracts are already backend-neutral and its LSP stack is strong, but the built-in process-free structural backend is primarily Python AST. A Tree-sitter lane can provide deterministic local structure for additional languages without requiring an installed language server.",
+      "px_extend": [
+        "runtime/semantic_code_backend.py",
+        "runtime/semantic_code_registry.py",
+        "runtime/semantic_code_index.py",
+        "runtime/semantic_code_capabilities.py"
+      ],
+      "px_new": [
+        "runtime/semantic_tree_sitter_backend.py"
+      ],
+      "implementation": "Treat this as an optional read-only backend. Admit grammars/query packs individually with license/provenance inventory and deterministic language detection. Extract definitions/imports/basic references/skeletons into existing SemanticBackend records. Score/validate extraction usefulness; unsupported or low-quality cases fall through to admitted LSP or existing fallback rather than inventing structure. Do not initially grant rename/edit authority from approximate tag extraction.",
+      "acceptance": [
+        "works without launching an external language server",
+        "unsupported grammar fails cleanly",
+        "parse/query errors cannot create fabricated symbols",
+        "output normalizes into existing PX semantic records",
+        "read-only capability is separated from stronger LSP edit/rename capability",
+        "every bundled grammar/query has explicit provenance/license disposition"
+      ],
+      "guardrails": "Do not copy OpenViking AGPL implementation/query packs directly. Prefer independently sourced permissive Tree-sitter components and keep them optional."
+    }
+  ],
+  "rejected_or_deferred": [
+    {
+      "material": "PXU SOURCE overlay",
+      "disposition": "Do not import.",
+      "reason": "440 payload files are already present in target: 405 byte-identical and 35 have target-side revisions; importing would regress/smear current authority."
+    },
+    {
+      "material": "Agent Console starter drop-in",
+      "disposition": "Do not import.",
+      "reason": "30 drop-in files are already present: 25 byte-identical and 5 have target-side revisions."
+    },
+    {
+      "material": "1st_rnd_2 prior PX waves",
+      "disposition": "Reference only.",
+      "reason": "These are earlier integration waves/provenance and are superseded by current PXU/current target owners."
+    },
+    {
+      "material": "Dify full workflow engine",
+      "disposition": "Do not import.",
+      "reason": "Would create a parallel graph/runtime/authority stack; use clean-room adapter/HITL/persistence ideas only."
+    },
+    {
+      "material": "LangGraph StateGraph/Pregel runtime",
+      "disposition": "Do not import.",
+      "reason": "PX already owns workflow/agent execution; use retry/interrupt semantics only."
+    },
+    {
+      "material": "LibreChat/OpenHands app/provider stacks",
+      "disposition": "Do not import.",
+      "reason": "PX already has provider gateway, model routing, UI and authority; mine targeted mechanisms."
+    },
+    {
+      "material": "OpenViking main source",
+      "disposition": "No direct copy by default.",
+      "reason": "AGPL-3.0; use clean-room designs unless PX intentionally accepts AGPL."
+    },
+    {
+      "material": "AVA AWS/Terraform/cloud control plane",
+      "disposition": "Do not import.",
+      "reason": "Keep only portable policy/drift/projection mechanics."
+    },
+    {
+      "material": "Octop skill/plugin/memory subsystems",
+      "disposition": "Do not import wholesale.",
+      "reason": "They duplicate stronger PX owners; only selected edge mechanics survive."
+    },
+    {
+      "material": "No-license MoE repository",
+      "disposition": "No code copy.",
+      "reason": "Use as conceptual/reference material until provenance is cleared."
+    }
+  ],
+  "internal_bundle_diff": {
+    "PXU_SOURCE": {
+      "files": 440,
+      "byte_identical": 405,
+      "target_revised": 35,
+      "missing": 0
+    },
+    "agent_console_drop_in": {
+      "files": 30,
+      "byte_identical": 25,
+      "target_revised": 5,
+      "missing": 0
+    },
+    "advanced_self_operations": {
+      "files": 18,
+      "byte_identical": 0,
+      "target_revised": 0,
+      "missing": 18
+    }
+  },
+  "second_pass": {
+    "method": "negative-space audit",
+    "new_actionable_candidates": 10,
+    "refinements": [
+      {
+        "candidate": "P0-01",
+        "title": "Durable queue state machine refinement",
+        "details": "Add explicit pending -> processing/claimed -> ack/nack/terminal states, claim heartbeat/TTL, stale-processing recovery and a supersession/coalescing version for replaceable derived work. User-visible turns that must not be dropped are never coalesced. Probe/rate-limit machine retries before expensive durable-claim lookup to prevent retry storms."
+      },
+      {
+        "candidate": "P0-05 + P1-04",
+        "title": "Two-phase durable context/session compaction",
+        "details": "Phase 1 under lock freezes an immutable message/event prefix and durable archive/checkpoint metadata. Phase 2 summarizes/indexes outside the lock while new messages continue. Exactly one commit owns a prefix; crash resumes phase 2 from the immutable archive; unreadable archive becomes a durable terminal failure; dedupe uses durable message/event IDs."
+      },
+      {
+        "candidate": "P0-07",
+        "title": "Hierarchical lease fencing refinement",
+        "details": "Add monotonically changing fencing tokens/generations, atomic multi-scope acquisition, same-owner reentry policy, stale foreign-token replacement and failure-safe release. A writer whose lease was lost must be unable to commit a delayed write. Protocol-version migrations must stop incompatible old writers and wait out the old expiry horizon."
+      },
+      {
+        "candidate": "P1-11",
+        "title": "Remote MCP OAuth/reconnect is conditional, not current",
+        "details": "LibreChat/Zoo contain strong token-refresh single-flight, OAuth resource binding, authorization fences and negative compatibility caching. Do not add now unless PX admits remote HTTP/SSE MCP; if it does, make these mandatory design inputs."
+      },
+      {
+        "candidate": "P1-12",
+        "title": "Scheduled work must join host quiesce",
+        "details": "Persistent scheduled jobs should close new firing admission during quiesce, preserve already-created durable jobs, and reload exact schedule truth after restore/restart."
+      },
+      {
+        "candidate": "P1-17",
+        "title": "Incremental index should reuse existing LSP/file observers",
+        "details": "Do not add a separate filesystem watcher service if VS Code/LSP/project observers already provide reliable change signals. The new owner is change coalescing + generation publication, with full rebuild as truth-recovery."
+      },
+      {
+        "candidate": "P1-18",
+        "title": "Streaming delta backpressure/coalescing",
+        "details": "Coalesce only high-volume deltas under shared strict time/event/byte caps, limit outstanding unawaited publication receipts, and pace the producer if the durable sink stalls. Never coalesce terminal/control/approval events."
+      }
+    ],
+    "conditional_or_rejected": [
+      {
+        "title": "Database generation fence on live DB replacement",
+        "source": "Engram internal/store/generation_fence.go",
+        "disposition": "Conditional only",
+        "reason": "PX resource storage already uses short-lived SQLite connections and BEGIN IMMEDIATE and does not currently replace a live DB underneath active connections. If restore/backup later swaps DB/-wal/-shm live, add a file-generation fence before/after connect/begin/query/commit and require process/session restart on generation change."
+      },
+      {
+        "title": "Post-restore rehydration barrier",
+        "source": "Octop backup/restore tests",
+        "disposition": "Conditional only",
+        "reason": "If PX adds whole-state restore/replacement, reload providers/agents/schedules/caches against the new generation without requiring a process restart, and report independent rehydration lane failures separately."
+      },
+      {
+        "title": "Rooted archive extraction",
+        "source": "Dify snapshot restore",
+        "disposition": "Not needed today",
+        "reason": "PX archive_io is stronger for current intake because it validates archives without extracting archive-controlled paths. Use rooted extraction semantics only if a future restore feature truly needs extraction."
+      },
+      {
+        "title": "Generic SQLite BEGIN IMMEDIATE writer lesson",
+        "source": "Engram",
+        "disposition": "Duplicate",
+        "reason": "PX resource_storage.py already does this."
+      },
+      {
+        "title": "Generic event replay / generic single-flight",
+        "source": "Multiple repos",
+        "disposition": "Duplicate",
+        "reason": "PX already has durable operational-event replay and single-flight/work-admission owners. Only waiter-aware async cancellation and Agent Console detailed replay remain new."
+      },
+      {
+        "title": "Tree-sitter as replacement for LSP",
+        "source": "OpenViking",
+        "disposition": "Rejected",
+        "reason": "PX already has a substantial contained LSP stack. Tree-sitter is useful only as an optional local read-only coverage lane."
+      },
+      {
+        "title": "Redis/Celery/Qdrant/managed-vector infrastructure",
+        "source": "LibreChat/Dify/Zoo and manifests",
+        "disposition": "Rejected",
+        "reason": "These would duplicate PX-owned local scheduling/retrieval/state surfaces and inflate the dependency/service footprint without solving a missing core problem."
+      },
+      {
+        "title": "Hedged requests",
+        "source": "Scattered docs/tests",
+        "disposition": "Deferred",
+        "reason": "The corpus did not expose a sufficiently mature production mechanism to justify adding it as an independent PX candidate."
+      },
+      {
+        "title": "Generic partial-read honesty",
+        "source": "AVA tests",
+        "disposition": "Already substantially present",
+        "reason": "PX already models partial coverage/unknown denominator. Keep AVA's 'empty measured != unread/unavailable' cases as negative tests rather than a new subsystem."
+      }
+    ],
+    "consolidated_actionable_candidate_count": 39,
+    "notes": [
+      "Supersession audit found no useful capability present only in the 35 older PXU target-revised files or 5 older Agent Console target-revised files.",
+      "Manifest/dependency mining did not justify importing service-heavy Redis/Celery/Qdrant-style infrastructure into PX.",
+      "Target already owns generic durable event replay, single-flight/work admission, SQLite BEGIN IMMEDIATE writes, LSP containment, WAL, partial-coverage truth, process supervision and retry-effect safety; these were not double-counted."
+    ]
+  }
+}

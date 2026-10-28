@@ -1,0 +1,41 @@
+✔ provider advertises only bridge-admitted model metadata (0.5676ms)
+✔ mixed VS Code history is reduced to bounded canonical text without granting tool authority (0.2418ms)
+✔ provider streams text and tool calls while suppressing reasoning deltas (0.9349ms)
+✔ provider forwards the VS Code cancellation token to the PX bridge (0.2524ms)
+✖ provider hides unavailable, unqualified and remote catalog declarations from local dispatch (0.9225ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 4
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 135.2624
+
+✖ failing tests:
+
+test at extension\tests\px-language-model-provider.test.js:52:1
+✖ provider hides unavailable, unqualified and remote catalog declarations from local dispatch (0.9225ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+    [
+      'local',
+  +   'offline',
+  +   'remote',
+  +   'remote-ready',
+  +   'unknown',
+  +   'unknown-bridge'
+    ]
+  
+      at TestContext.<anonymous> (C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\tests\px-language-model-provider.test.js:60:10)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ 'local', 'offline', 'remote', 'remote-ready', 'unknown', 'unknown-bridge' ],
+    expected: [ 'local' ],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+

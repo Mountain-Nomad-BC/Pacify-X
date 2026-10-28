@@ -137,7 +137,7 @@ class DashboardApiTests(unittest.TestCase):
     def test_live_completion_selects_verified_exact_artifact_projection(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
-            runtime = root / ".engineering-bootstrap/runtime-core"
+            runtime = root / ".agentic_engineering_os_px/runtime-core"
             runtime.mkdir(parents=True)
             artifact_dir = root / "artifacts"
             artifact_dir.mkdir()
@@ -286,7 +286,7 @@ class DashboardApiTests(unittest.TestCase):
             root = Path(directory)
             cache = (
                 root
-                / ".engineering-bootstrap"
+                / ".agentic_engineering_os_px"
                 / "diagnostics"
                 / "hardware-dashboard-cache.json"
             )
@@ -318,7 +318,7 @@ class DashboardApiTests(unittest.TestCase):
             _hardware(root, now=1000.0)
             cache = (
                 root
-                / ".engineering-bootstrap"
+                / ".agentic_engineering_os_px"
                 / "diagnostics"
                 / "hardware-dashboard-cache.json"
             )
@@ -346,7 +346,7 @@ class DashboardApiTests(unittest.TestCase):
             for run_id, state in (("run-one", "succeeded"), ("run-two", "running")):
                 head = (
                     project
-                    / ".engineering-bootstrap"
+                    / ".agentic_engineering_os_px"
                     / "studios"
                     / "agents"
                     / "sessions"
@@ -364,19 +364,19 @@ class DashboardApiTests(unittest.TestCase):
             project = Path(directory)
             agent_receipt = (
                 project
-                / ".engineering-bootstrap/studios/agents/agent-demo/revisions/1.0.0/admission-receipt.json"
+                / ".agentic_engineering_os_px/studios/agents/agent-demo/revisions/1.0.0/admission-receipt.json"
             )
             workflow_receipt = (
                 project
-                / ".engineering-bootstrap/studios/workflows/workflow-demo/revisions/1.0.0/admission-receipt.json"
+                / ".agentic_engineering_os_px/studios/workflows/workflow-demo/revisions/1.0.0/admission-receipt.json"
             )
             workflow_run = (
                 project
-                / ".engineering-bootstrap/studios/workflows/workflow-demo/revisions/1.0.0/runs/run-one.json"
+                / ".agentic_engineering_os_px/studios/workflows/workflow-demo/revisions/1.0.0/runs/run-one.json"
             )
             agent_head = (
                 project
-                / ".engineering-bootstrap/studios/agents/sessions/run-one/head.json"
+                / ".agentic_engineering_os_px/studios/agents/sessions/run-one/head.json"
             )
             for path, payload in (
                 (agent_receipt, {"decision": "admitted"}),
@@ -616,7 +616,7 @@ class DashboardApiTests(unittest.TestCase):
     def test_existing_invalid_project_map_remains_attention(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             project = Path(directory) / "initialized-repository"
-            coordination = project / ".engineering-bootstrap" / "coordination"
+            coordination = project / ".agentic_engineering_os_px" / "coordination"
             coordination.mkdir(parents=True)
             (coordination / "state.json").write_text(
                 json.dumps({"claims": [], "tasks": []}), encoding="utf-8"
@@ -823,7 +823,7 @@ class DashboardApiTests(unittest.TestCase):
             project = Path(directory)
             graph = (
                 project
-                / ".engineering-bootstrap"
+                / ".agentic_engineering_os_px"
                 / "project-map"
                 / "architecture-graph.json"
             )
@@ -868,7 +868,7 @@ class DashboardApiTests(unittest.TestCase):
             project = Path(directory)
             graph = (
                 project
-                / ".engineering-bootstrap"
+                / ".agentic_engineering_os_px"
                 / "project-map"
                 / "architecture-graph.json"
             )
@@ -890,7 +890,7 @@ class DashboardApiTests(unittest.TestCase):
             project = Path(directory)
             graph = (
                 project
-                / ".engineering-bootstrap"
+                / ".agentic_engineering_os_px"
                 / "project-map"
                 / "architecture-graph.json"
             )
@@ -993,7 +993,7 @@ class DashboardApiTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             (root / "registry").mkdir()
-            ledger_root = root / ".engineering-bootstrap" / "provider-budget"
+            ledger_root = root / ".agentic_engineering_os_px" / "provider-budget"
             ledger_root.mkdir(parents=True)
             (root / "registry" / "provider_adapters.json").write_text(
                 json.dumps(

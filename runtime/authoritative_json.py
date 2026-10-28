@@ -20,6 +20,7 @@ from .input_files import (
 from .archive_io import reject_path_links, member_identity
 from .numeric_inputs import bounded_text, bounded_sequence
 from .json_io import decode_json_object, validate_json_value
+from .bounded_walk import _is_junction
 
 
 class AuthoritativeStateError(RuntimeError):
@@ -42,7 +43,7 @@ def _has_link_boundary(path: Path, root: Path) -> bool:
     cursor = path
     while True:
         if cursor.is_symlink() or (
-            hasattr(cursor, "is_junction") and cursor.is_junction()
+            _is_junction(cursor)
         ):
             return True
         if cursor == root:

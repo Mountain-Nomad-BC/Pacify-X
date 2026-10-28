@@ -137,7 +137,7 @@
         "absolute_runtime_imports.json",
         "installed_namespace_probe.log"
       ],
-      "observed": "The wheel namespace is engineering_bootstrap, but local_model_runtime, release_skip_policy, and the section runner branch import runtime.* absolutely. Five such import sites were found. Loading engineering_bootstrap.local_model_runtime in an isolated namespace fails immediately with No module named runtime.",
+      "observed": "The wheel namespace is agentic_engineering_os_px, but local_model_runtime, release_skip_policy, and the section runner branch import runtime.* absolutely. Five such import sites were found. Loading agentic_engineering_os_px.local_model_runtime in an isolated namespace fails immediately with No module named runtime.",
       "impact": "Checkout execution can hide an installed-distribution failure. Restoring the missing section_scheduler or input_files modules alone will not repair their installed namespace references.",
       "repair": "Use package-relative imports inside runtime owners, with any intentional source-checkout compatibility kept at explicit external entrypoints. Add an isolated namespace test that excludes the repository directory from sys.path.",
       "acceptance": "The installed namespace imports local model lifecycle, JUnit evidence inventory, and section scheduling without a runtime alias or accidental checkout PYTHONPATH.",

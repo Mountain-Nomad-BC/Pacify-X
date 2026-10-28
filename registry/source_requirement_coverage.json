@@ -240,8 +240,7 @@
       "release_role": "required",
       "owners": [
         "runtime/process_memory.py",
-        "registry/engineering_lifecycle.json",
-        "evidence/process-audit-intake-receipt.json"
+        "registry/engineering_lifecycle.json"
       ],
       "skills": [
         "trace-to-skill-compiler"
@@ -253,7 +252,9 @@
         "tests/test_process_memory.py",
         "tests/test_engineering_lifecycle.py"
       ],
-      "truth_rule": "Only verified outcomes and verified recoveries compile; similarity is checked before drafting; output remains inert until separate skill admission."
+      "truth_rule": "Only verified outcomes and verified recoveries compile; similarity is checked before drafting; output remains inert until separate skill admission.",
+      "validation_basis": "current_implementation",
+      "historical_reference": "evidence/process-audit-intake-receipt.json; reference only, not current validation authority"
     }
   ]
 }

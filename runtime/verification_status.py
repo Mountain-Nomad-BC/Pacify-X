@@ -18,7 +18,7 @@ INDEX = 'registry/test_group_index.json'
 INDEX_SCHEMA = 'px.test-group-index/1.2'
 PARSER_VERSION = 'px.static-local-import-closure/2'
 STRUCTURAL_CONTROL_OUTPUTS = frozenset({
-    '.engineering-bootstrap/test-evidence/.test-orchestration.lock',
+    '.agentic_engineering_os_px/test-evidence/.test-orchestration.lock',
 })
 
 
@@ -68,7 +68,7 @@ def section_status(root):
         rows.append({'section': name, 'dependencies': dependencies(definitions[name].get('dependencies', []), definitions, name),
                      'passed': passed, 'fresh': fresh, 'dependencies_current': False,
                      'current': False, 'input_sha256': section['input_sha256'],
-                     'receipt': (capture.root / '.engineering-bootstrap/test-evidence/sections' / (name + '.json')).as_posix()})
+                     'receipt': (capture.root / '.agentic_engineering_os_px/test-evidence/sections' / (name + '.json')).as_posix()})
     capture.verify()
     by_name = {row['section']: row for row in rows}
     pending = set(by_name)
@@ -265,7 +265,7 @@ def group_status(root, *, historical_index=False):
         rows.append({'group': name, 'member_count': group['member_count'], 'parallel_safe': group['parallel_safe'],
                      'passed': passed, 'fresh': fresh, 'current': passed and fresh and group['index_current'],
                      'input_sha256': group['input_sha256'],
-                     'receipt': (Path(root) / '.engineering-bootstrap/test-evidence/groups' / (name + '.json')).as_posix()})
+                     'receipt': (Path(root) / '.agentic_engineering_os_px/test-evidence/groups' / (name + '.json')).as_posix()})
     capture.verify()
     by_name = {row['group']: row for row in rows}
     return {'schema_version': 'px.test-group-status/1.0', 'valid': all(by_name[name]['current'] for name in names),

@@ -23,8 +23,8 @@
     },
     "revision_root": {
       "type": "string",
-      "pattern": "^\\.engineering-bootstrap/project-revisions/prj_[A-Za-z0-9_-]+$",
-      "default": ".engineering-bootstrap/project-revisions/prj_example"
+      "pattern": "^\\.agentic_engineering_os_px/project-revisions/prj_[A-Za-z0-9_-]+$",
+      "default": ".agentic_engineering_os_px/project-revisions/prj_example"
     },
     "event_sha256": {
       "type": "string",

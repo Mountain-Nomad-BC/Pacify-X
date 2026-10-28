@@ -1,6 +1,6 @@
 # Environment capability map
 
-The Environment Map is a separate project-owned discovery data model under `.engineering-bootstrap/environment`. It does not merge installed resources into Pacify-X admission registries, enterprise state, coordination leases, or canonical memory.
+The Environment Map is a separate project-owned discovery data model under `.agentic_engineering_os_px/environment`. It does not merge installed resources into Pacify-X admission registries, enterprise state, coordination leases, or canonical memory.
 
 The uniform semantic contract is:
 

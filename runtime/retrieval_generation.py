@@ -61,12 +61,7 @@ def _atomic_json(path: Path, value: object) -> None:
     os.replace(prepared, path)
 
 
-def _digest_file(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as stream:
-        for block in iter(lambda: stream.read(1024 * 1024), b""):
-            digest.update(block)
-    return digest.hexdigest()
+from runtime.hash_utils import file_sha256 as _digest_file
 
 
 @dataclass(frozen=True, slots=True)

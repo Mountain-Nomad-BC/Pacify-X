@@ -137,6 +137,61 @@ def _canonical_digest(records: list[dict[str, Any]]) -> str:
     return hashlib.sha256(payload).hexdigest()
 
 
+_DECLARED_CUSTODY_SHAPES = (
+    (".px", "skills"),
+    ("orchestration", "workflows"),
+    ("providers", "agency_agents", "agents"),
+)
+
+# Directories inside the dual-role control namespaces that the release policy
+# declares as mutable control-output subtrees. They stay visible to the release
+# walk so the files inside them can receive their explicit disposition instead
+# of disappearing into pruned runtime-state custody.
+_CONTROL_NAMESPACE_ROOTS = frozenset(
+    {".agentic_engineering_os_px", ".engineering-bootstrap"}
+)
+_CONTROL_NAMESPACE_DIRS = frozenset(
+    {
+        "admission-payloads",
+        "cleanup-receipts",
+        "processing-order",
+        "test-evidence",
+        "resource-lifecycle",
+        "wal",
+        "local-model-runtime",
+        "model-client-gateway",
+        "resources",
+    }
+)
+
+# Mutable governance projections that stay visible to the release walk so they
+# receive their explicit control-output disposition (declared in the release
+# policy's control_output_paths) instead of disappearing as runtime state.
+_RELEASE_VISIBLE_CONTROL_PROJECTIONS = frozenset(
+    {"registry/operational_gap_ledger.head.json"}
+)
+
+
+def _is_declared_custody_path(relative: str | Path) -> bool:
+    """Report whether a path is at or below a declared ``memory`` custody directory.
+
+    The shape is anchored level by level (``.px/skills/<id>/memory/...``), so an
+    unrelated directory named ``memory`` elsewhere is never caught. These paths
+    must stay visible to the release walk because the release policy gives them
+    an explicit ``derived_custody`` disposition instead of hashing them.
+    """
+
+    parts = Path(relative).parts
+    for shape in _DECLARED_CUSTODY_SHAPES:
+        if len(parts) < len(shape) + 2:
+            continue
+        if parts[: len(shape)] != shape:
+            continue
+        if parts[len(shape) + 1] == "memory":
+            return True
+    return False
+
+
 def _is_release_walk_excluded(relative: str | Path) -> bool:
     """Prune external custody without hiding policy-governed evidence.
 
@@ -144,8 +199,30 @@ def _is_release_walk_excluded(relative: str | Path) -> bool:
     source discovery.  Release classification has a different obligation: it
     must see evidence payloads so executable or unapproved files cannot hide in
     that namespace.  Evidence remains non-product and its content is not hashed.
+
+    Three further families must stay visible for the same reason: declared
+    derived-custody ``memory`` namespaces (explicitly dispositioned by the
+    release policy), lock files (declared control outputs), and ``*.egg-info``
+    packaging intermediates (classified as generated intermediates).
     """
     path = Path(relative)
+    if relative.casefold().replace("\\", "/") in _RELEASE_VISIBLE_CONTROL_PROJECTIONS:
+        return False
+    if _is_declared_custody_path(path):
+        return False
+    if path.suffix == ".lock" or any(
+        part.endswith(".lock") for part in path.parts
+    ):
+        return False
+    if any(part.endswith(".egg-info") for part in path.parts):
+        return False
+    parts = path.parts
+    if (
+        len(parts) >= 2
+        and parts[0] in _CONTROL_NAMESPACE_ROOTS
+        and any(part in _CONTROL_NAMESPACE_DIRS for part in parts[1:])
+    ):
+        return False
     folded = tuple(part.casefold() for part in path.parts)
     if len(folded) >= 5 and folded[:3] == (
         "docs",
@@ -188,10 +265,16 @@ def _source_file_in_checked_root(root: Path, relative: str):
 
 
 def _release_path_identity(info: os.stat_result) -> tuple[int, int, int, int, int]:
+    # Windows reports executable permission bits in lstat for files whose
+    # extension marks them executable (.bat, .cmd, .exe), but os.fstat on the
+    # open handle does not. The exec bits are not custody-relevant (write/lock
+    # bits stay compared), so they are normalized out to keep the identity
+    # check meaningful on both acquisition paths.
+    exec_mask = stat.S_IXUSR | stat.S_IXGRP | stat.S_IXOTH
     return (
         info.st_dev,
         info.st_ino,
-        info.st_mode,
+        info.st_mode & ~exec_mask,
         info.st_size,
         info.st_mtime_ns,
     )
@@ -486,43 +569,72 @@ def classify_tree(root: Path) -> dict[str, Any]:
             ):
                 classification = "generated_intermediate"
                 reason = "narrow generated-artifact exclusion"
-            elif folded in control_outputs or any(
-                folded.startswith(prefix) for prefix in control_output_prefixes
-            ):
-                classification = "control_output"
-                reason = "mutable release transaction, governance, or receipt control"
-            elif derived_custody_match(folded, derived_custody_namespaces):
-                # Derived local custody inside a declared product root: intentionally
-                # present, but never governed product source. It stays in the inventory
-                # with an explicit disposition and its content is not hashed.
-                classification = "derived_custody"
-                reason = "declared derived-custody namespace"
-            elif any(part in evidence_roots for part in folded_parts):
-                classification = "evidence_output"
-                reason = "non-executable evidence namespace"
-                if (
-                    suffix not in evidence_suffixes
-                    and path.name.casefold() not in evidence_names
-                ):
-                    errors.append(
-                        f"executable or unapproved evidence payload: {relative}"
-                    )
-            elif folded_parts[0] in audit_roots or (
-                len(parts) == 1 and folded in audit_root_files
-            ):
-                classification = "audit_artifact"
-                reason = "bounded final audit handoff surface"
-                if suffix not in audit_suffixes:
-                    errors.append(f"unapproved audit artifact payload: {relative}")
-            elif folded_parts[0] in product_roots or (
-                len(parts) == 1 and folded in product_files
-            ):
-                classification = "product_input"
-                reason = "declared product surface"
             else:
-                classification = "unclassified"
-                reason = "no release policy rule"
-                errors.append(f"unclassified release artifact: {relative}")
+                blanket_control_namespaces = {
+                    prefix[:-1]
+                    for prefix in control_output_prefixes
+                    if prefix.endswith("/") and prefix.count("/") == 1
+                }
+                is_control = folded in control_outputs or any(
+                    folded.startswith(prefix) for prefix in control_output_prefixes
+                )
+                if (
+                    is_control
+                    and suffix == ".py"
+                    and len(folded_parts) == 2
+                    and folded_parts[0] in blanket_control_namespaces
+                ):
+                    # A source module placed directly beside a control namespace is
+                    # neighbouring product source, not a mutable control output.
+                    is_control = False
+                if is_control:
+                    classification = "control_output"
+                    reason = "mutable release transaction, governance, or receipt control"
+                elif derived_custody_match(folded, derived_custody_namespaces):
+                    # Derived local custody inside a declared product root: intentionally
+                    # present, but never governed product source. It stays in the inventory
+                    # with an explicit disposition and its content is not hashed.
+                    classification = "derived_custody"
+                    reason = "declared derived-custody namespace"
+                elif not (
+                    # A top-level namespace that is also a declared product root
+                    # (e.g. ``.agentic_engineering_os_px``) is governed product
+                    # surface, not a blanket evidence namespace; its files fall
+                    # through to the more specific rules below.
+                    folded_parts[0] in evidence_roots
+                    and folded_parts[0] in product_roots
+                ) and any(part in evidence_roots for part in folded_parts):
+                    classification = "evidence_output"
+                    reason = "non-executable evidence namespace"
+                    if (
+                        suffix not in evidence_suffixes
+                        and path.name.casefold() not in evidence_names
+                    ):
+                        errors.append(
+                            f"executable or unapproved evidence payload: {relative}"
+                        )
+                elif (
+                    # A file placed directly inside a dual-role control namespace
+                    # (one that is also a product root) stays governed product
+                    # source; deeper audit-owned content is an audit artifact.
+                    folded_parts[0] in audit_roots
+                    and not (
+                        len(folded_parts) == 2 and folded_parts[0] in product_roots
+                    )
+                ) or (len(parts) == 1 and folded in audit_root_files):
+                    classification = "audit_artifact"
+                    reason = "bounded final audit handoff surface"
+                    if suffix not in audit_suffixes:
+                        errors.append(f"unapproved audit artifact payload: {relative}")
+                elif folded_parts[0] in product_roots or (
+                    len(parts) == 1 and folded in product_files
+                ):
+                    classification = "product_input"
+                    reason = "declared product surface"
+                else:
+                    classification = "unclassified"
+                    reason = "no release policy rule"
+                    errors.append(f"unclassified release artifact: {relative}")
             if path.is_file():
                 if classification in UNHASHED_CLASSIFICATIONS:
                     content_sha256 = None

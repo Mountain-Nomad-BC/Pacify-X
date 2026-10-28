@@ -25,11 +25,15 @@ function readObject(file) {
 }
 
 class DurableTaskState {
-  constructor(projectRoot) {
+  constructor(projectRoot, { kind = 'task' } = {}) {
+    if (!['task', 'budget'].includes(kind)) throw new Error('snapshot-owner-kind-invalid');
     rejectLinks(projectRoot);
     this.root = fs.realpathSync(projectRoot);
     this.directory = path.join(this.root, '.agentic_engineering_os_px', 'runtime-core', 'agent-console');
-    this.file = path.join(this.directory, 'task-state.json'); this.lock = path.join(this.directory, 'writer.lock');
+    this.schemaVersion = kind === 'budget' ? 'px.agent-budget-store/1.0' : 'px.agent-task-store/2.0';
+    this.leaseSchema = kind === 'budget' ? 'px.budget-state-lease/1.0' : 'px.task-state-lease/1.0';
+    this.file = path.join(this.directory, kind === 'budget' ? 'usage-ledger.json' : 'task-state.json');
+    this.lock = path.join(this.directory, kind === 'budget' ? 'usage-writer.lock' : 'writer.lock');
     this.revision = 0; this.epoch = 0; this.token = crypto.randomUUID();
     this.synchronous = true;
   }
@@ -37,7 +41,7 @@ class DurableTaskState {
   load() {
     const value = readObject(this.file);
     if (value) {
-      if (value.schemaVersion !== 'px.agent-task-store/2.0' || !Number.isSafeInteger(value.revision) || value.revision < 1 || !Number.isSafeInteger(value.epoch) || value.epoch < 1) throw new Error('task-state-invalid-generation');
+      if (value.schemaVersion !== this.schemaVersion || !Number.isSafeInteger(value.revision) || value.revision < 1 || !Number.isSafeInteger(value.epoch) || value.epoch < 1) throw new Error('task-state-invalid-generation');
       this.revision = value.revision; this.epoch = value.epoch;
     }
     return value;
@@ -48,13 +52,13 @@ class DurableTaskState {
     for (let attempt = 0; attempt < 2; attempt++) {
       try {
         const fd = fs.openSync(this.lock, 'wx');
-        try { fs.writeFileSync(fd, JSON.stringify({ schemaVersion: 'px.task-state-lease/1.0', pid: process.pid, token: this.token })); fs.fsyncSync(fd); }
+        try { fs.writeFileSync(fd, JSON.stringify({ schemaVersion: this.leaseSchema, pid: process.pid, token: this.token })); fs.fsyncSync(fd); }
         finally { fs.closeSync(fd); }
         return;
       } catch (error) {
         if (error.code !== 'EEXIST') throw error;
         const lease = readObject(this.lock);
-        if (lease?.schemaVersion !== 'px.task-state-lease/1.0' || !Number.isSafeInteger(lease.pid) || lease.pid < 1 || typeof lease.token !== 'string') throw new Error('task-state-unrecognized-writer-lease');
+        if (lease?.schemaVersion !== this.leaseSchema || !Number.isSafeInteger(lease.pid) || lease.pid < 1 || typeof lease.token !== 'string') throw new Error('task-state-unrecognized-writer-lease');
         let alive = true;
         try { process.kill(lease.pid, 0); } catch (probe) { if (probe.code === 'ESRCH') alive = false; }
         if (alive) throw new Error('task-state-writer-busy');
@@ -74,7 +78,7 @@ class DurableTaskState {
     try {
       const current = readObject(this.file);
       if ((current?.revision || 0) !== this.revision || (current?.epoch || 0) !== this.epoch) throw new Error('task-state-stale-writer');
-      if (value.schemaVersion !== 'px.agent-task-store/2.0' || value.revision !== this.revision + 1 || (value.epoch !== this.epoch && value.epoch !== this.epoch + 1)) throw new Error('task-state-invalid-write-generation');
+      if (value.schemaVersion !== this.schemaVersion || value.revision !== this.revision + 1 || (value.epoch !== this.epoch && value.epoch !== this.epoch + 1)) throw new Error('task-state-invalid-write-generation');
       const raw = Buffer.from(JSON.stringify(value), 'utf8'); if (raw.length > MAX_BYTES) throw new Error('task-state-byte-budget');
       prepared = path.join(this.directory, `.task-state-${crypto.randomUUID()}.prepared`);
       const fd = fs.openSync(prepared, 'wx');
@@ -94,4 +98,8 @@ class DurableTaskState {
   }
 }
 
-module.exports = { DurableTaskState };
+class DurableBudgetState extends DurableTaskState {
+  constructor(projectRoot) { super(projectRoot, { kind: 'budget' }); }
+}
+
+module.exports = { DurableTaskState, DurableBudgetState };

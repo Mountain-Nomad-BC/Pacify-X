@@ -18,7 +18,7 @@ Use this skill when two or more agents, IDEs, or execution harnesses may work on
 9. Update memory through the ladder: session observation → project candidate → verified state → system candidate.
 10. Never auto-promote a system-memory candidate or treat TurboVec/vector output as authority.
 
-The canonical operational artifacts are .engineering-bootstrap/coordination/state.json,
+The canonical operational artifacts are .agentic_engineering_os_px/coordination/state.json,
 events.jsonl, handoff.json, HANDOFF.md, receipts/, and memory/.
 
 Read/write access is exposed through the Pacify-X extension UI and narrow MCP tools.

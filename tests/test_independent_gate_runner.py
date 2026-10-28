@@ -45,8 +45,8 @@ def test_gate_input_digest_excludes_derived_custody_but_tracks_source_metadata(
     tmp_path: Path, monkeypatch
 ) -> None:
     root = tmp_path / "product"
-    source = root / ".engineering-bootstrap/project-management/state.json"
-    derived = root / ".engineering-bootstrap/operation-bus/event.json"
+    source = root / ".agentic_engineering_os_px/project-management/state.json"
+    derived = root / ".agentic_engineering_os_px/operation-bus/event.json"
     source.parent.mkdir(parents=True)
     derived.parent.mkdir(parents=True)
     source.write_text('{"state":"one"}', encoding="utf-8")
@@ -58,7 +58,7 @@ def test_gate_input_digest_excludes_derived_custody_but_tracks_source_metadata(
         {
             "structural": GateSpec(
                 "structural",
-                (".engineering-bootstrap/**/*.json",),
+                (".agentic_engineering_os_px/**/*.json",),
                 (),
                 lambda _: calls.append("structural") or {"valid": True},
             )

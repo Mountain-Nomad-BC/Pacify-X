@@ -1,0 +1,12 @@
+[
+  {
+    "path": "runtime/vscode_model_bridge.py",
+    "hunks": 4,
+    "reason": "Keep physical read owner, actual state-path resolver and sanitized local unavailable catalog; incoming would let local failure erase remote diagnostics."
+  },
+  {
+    "path": "runtime/remote_model_bridge.py",
+    "hunks": 2,
+    "reason": "Keep signed capability consumption at actual workflow owner and native group receipt reader; reject identity-string approval and wrong hardcoded state path."
+  }
+]

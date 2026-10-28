@@ -1,0 +1,160 @@
+============================= test session starts =============================
+platform win32 -- Python 3.14.7, pytest-9.1.1, pluggy-1.6.0 -- C:\Users\Ben\Documents\bootstrap_project\Pacify-X\Python\pythoncore-3.14-64\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\Ben\Documents\bootstrap_project\Pacify-X
+configfile: docs\repair\evidence\merge-2026-10-28\focused.ini
+collecting ... collected 51 items
+
+tests/test_gemini_protocol.py::test_blocked_gemini_is_not_success[SAFETY] PASSED [  1%]
+tests/test_gemini_protocol.py::test_blocked_gemini_is_not_success[RECITATION] PASSED [  3%]
+tests/test_gemini_protocol.py::test_blocked_gemini_is_not_success[OTHER] PASSED [  5%]
+tests/test_gemini_protocol.py::test_blocked_gemini_is_not_success[MALFORMED_FUNCTION_CALL] PASSED [  7%]
+tests/test_gemini_protocol.py::test_resource_path_cannot_escape[../escape] PASSED [  9%]
+tests/test_gemini_protocol.py::test_resource_path_cannot_escape[model?key=secret] PASSED [ 11%]
+tests/test_gemini_protocol.py::test_resource_path_cannot_escape[models/model] PASSED [ 13%]
+tests/test_gemini_protocol.py::test_resource_path_cannot_escape[a%2fb] PASSED [ 15%]
+tests/test_gemini_protocol.py::test_resource_path_cannot_escape[] PASSED [ 17%]
+tests/test_gemini_protocol.py::test_resource_path_cannot_escape[xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx] PASSED [ 19%]
+tests/test_gemini_protocol.py::test_native_terminal_and_exact_thought_usage PASSED [ 21%]
+tests/test_gemini_protocol.py::test_unsupported_or_unmetered_terminal_is_rejected[[DONE]] PASSED [ 23%]
+tests/test_gemini_protocol.py::test_unsupported_or_unmetered_terminal_is_rejected[payload1] PASSED [ 25%]
+tests/test_gemini_protocol.py::test_unsupported_or_unmetered_terminal_is_rejected[payload2] PASSED [ 27%]
+tests/test_gemini_protocol.py::test_unsupported_or_unmetered_terminal_is_rejected[payload3] PASSED [ 29%]
+tests/test_gemini_protocol.py::test_gemini_reaches_actual_prepared_group_custody FAILED [ 31%]
+tests/test_gemini_protocol.py::test_authored_protocol_matrix_matches_actual_adapter_denominator PASSED [ 33%]
+tests/test_model_protocol_translate.py::test_canonical_request_translates_to_exact_supported_wire_shapes PASSED [ 35%]
+tests/test_model_protocol_translate.py::test_sse_parser_is_chunk_boundary_independent_and_bounded PASSED [ 37%]
+tests/test_model_protocol_translate.py::test_openai_chat_stream_normalizes_tool_fragments_usage_and_terminal_order PASSED [ 39%]
+tests/test_model_protocol_translate.py::test_responses_stream_tracks_item_id_alias_and_normalizes_completion PASSED [ 41%]
+tests/test_model_protocol_translate.py::test_anthropic_stream_normalizes_text_tool_json_and_usage PASSED [ 43%]
+tests/test_model_protocol_translate.py::test_invalid_tool_json_fails_before_any_tool_can_be_executed PASSED [ 45%]
+tests/test_model_protocol_translate.py::test_safe_reverse_translation_refuses_stateless_tool_guessing PASSED [ 47%]
+tests/test_model_protocol_translate.py::test_responses_done_event_can_supply_full_arguments_but_cannot_disagree_with_deltas PASSED [ 49%]
+tests/test_model_protocol_translate.py::test_anthropic_complete_initial_tool_input_cannot_be_followed_by_json_deltas PASSED [ 50%]
+tests/test_model_protocol_translate.py::test_translators_reject_duplicate_tool_identity_and_index_state PASSED [ 52%]
+tests/test_model_protocol.py::test_request_round_trip_is_exact_and_rejects_bool_numeric_fields PASSED [ 54%]
+tests/test_model_protocol.py::test_stream_hash_is_independent_of_backend_text_chunk_boundaries PASSED [ 56%]
+tests/test_model_protocol.py::test_stream_state_enforces_tool_lifecycle_usage_and_terminal_order PASSED [ 58%]
+tests/test_model_protocol.py::test_model_protocol_binding_is_versioned_exact_and_cannot_invent_tool_support PASSED [ 60%]
+tests/test_model_protocol.py::test_request_mapping_does_not_coerce_identity_fields_and_tool_end_must_match_deltas PASSED [ 62%]
+tests/test_model_protocol.py::test_stream_state_bounds_total_tool_output_and_tool_count PASSED [ 64%]
+tests/test_engineering_os_paths.py::test_canonical_name_is_the_standard_going_forward PASSED [ 66%]
+tests/test_engineering_os_paths.py::test_new_state_targets_the_canonical_directory PASSED [ 68%]
+tests/test_engineering_os_paths.py::test_write_target_never_falls_back_to_legacy PASSED [ 70%]
+tests/test_engineering_os_paths.py::test_legacy_tree_still_resolves_so_preserved_evidence_is_reachable PASSED [ 72%]
+tests/test_engineering_os_paths.py::test_legacy_evidence_receipts_are_still_discoverable FAILED [ 74%]
+tests/test_engineering_os_paths.py::test_missing_path_returns_the_canonical_target_not_the_legacy_one PASSED [ 76%]
+tests/test_engineering_os_paths.py::test_canonical_directory_wins_when_both_exist PASSED [ 78%]
+tests/test_engineering_os_paths.py::test_legacy_is_used_only_when_canonical_is_absent PASSED [ 80%]
+tests/test_engineering_os_paths.py::test_exists_works_under_either_spelling PASSED [ 82%]
+tests/test_engineering_os_paths.py::test_control_relative_classification_accepts_both_spellings PASSED [ 84%]
+tests/test_engineering_os_paths.py::test_canonical_name_detection_distinguishes_spellings PASSED [ 86%]
+tests/test_engineering_os_paths.py::test_legacy_reference_detection_finds_old_spellings_in_literals PASSED [ 88%]
+tests/test_engineering_os_paths.py::test_traversal_and_unbounded_segments_are_refused PASSED [ 90%]
+tests/test_engineering_os_paths.py::test_resolution_never_escapes_the_repository_root PASSED [ 92%]
+tests/test_engineering_os_paths.py::test_owner_exposes_no_move_rename_or_delete_capability PASSED [ 94%]
+tests/test_secure_publish_operating.py::test_real_reader_contention_never_reexecutes_producer[True] PASSED [ 96%]
+tests/test_secure_publish_operating.py::test_real_reader_contention_never_reexecutes_producer[False] PASSED [ 98%]
+tests/test_secure_publish_operating.py::test_owned_crash_retains_uncommitted_image_and_restart_does_not_adopt_it PASSED [100%]
+
+================================== FAILURES ===================================
+______________ test_gemini_reaches_actual_prepared_group_custody ______________
+
+configured = (WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.tmp/resume10/owned/pacifyx-sf9getx3/pytest-of-Ben/pyt...e', 'request_id': 'fixture-run', 'client_session_id': 'fixture-session', 'correlation_id': 'fixture-correlation', ...})
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000023344077A80>
+
+    def test_gemini_reaches_actual_prepared_group_custody(configured, monkeypatch):
+        import io
+        from runtime.remote_provider_profiles import CONFIG, ROOT
+        from runtime.studio_models import EffectGrant
+>       import tests.test_remote_group_effect_owner as owner
+
+tests\test_gemini_protocol.py:45: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+<frozen importlib._bootstrap>:1371: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1342: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:938: in _load_unlocked
+    ???
+.venv-certify\Lib\site-packages\_pytest\assertion\rewrite.py:188: in exec_module
+    exec(co, module.__dict__)
+tests\test_remote_group_effect_owner.py:6: in <module>
+    from tests.test_remote_group_attachment import prepare_remote_fixture
+<frozen importlib._bootstrap>:1371: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1342: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:938: in _load_unlocked
+    ???
+.venv-certify\Lib\site-packages\_pytest\assertion\rewrite.py:188: in exec_module
+    exec(co, module.__dict__)
+tests\test_remote_group_attachment.py:7: in <module>
+    from tests.test_model_group_preparation import plan_for
+<frozen importlib._bootstrap>:1371: in _find_and_load
+    ???
+<frozen importlib._bootstrap>:1342: in _find_and_load_unlocked
+    ???
+<frozen importlib._bootstrap>:938: in _load_unlocked
+    ???
+.venv-certify\Lib\site-packages\_pytest\assertion\rewrite.py:179: in exec_module
+    source_stat, co = _rewrite_test(fn, self.config)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.venv-certify\Lib\site-packages\_pytest\assertion\rewrite.py:348: in _rewrite_test
+    tree = ast.parse(source, filename=strfn)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+source = b'from dataclasses import replace\n<<<<<<< HEAD\nfrom pathlib import Path\n=======\n>>>>>>> codex/rollout-day1-2026102...ValueError):\n        bind_tie_retrievals(Path("."), {}, ("binding",))\n=======\n>>>>>>> codex/rollout-day1-20261024\n'
+filename = 'C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\tests\\test_model_group_preparation.py'
+mode = 'exec', type_comments = False, feature_version = -1, optimize = -1
+
+    def parse(source, filename='<unknown>', mode='exec', *,
+              type_comments=False, feature_version=None, optimize=-1):
+        """
+        Parse the source into an AST node.
+        Equivalent to compile(source, filename, mode, PyCF_ONLY_AST).
+        Pass type_comments=True to get back type comments where the syntax allows.
+        """
+        flags = PyCF_ONLY_AST
+        if optimize > 0:
+            flags |= PyCF_OPTIMIZED_AST
+        if type_comments:
+            flags |= PyCF_TYPE_COMMENTS
+        if feature_version is None:
+            feature_version = -1
+        elif isinstance(feature_version, tuple):
+            major, minor = feature_version  # Should be a 2-tuple.
+            if major != 3:
+                raise ValueError(f"Unsupported major version: {major}")
+            feature_version = minor
+        # Else it should be an int giving the minor version for 3.x.
+>       return compile(source, filename, mode, flags,
+                       _feature_version=feature_version, optimize=optimize)
+E         File "C:\Users\Ben\Documents\bootstrap_project\Pacify-X\tests\test_model_group_preparation.py", line 2
+E           <<<<<<< HEAD
+E           ^^
+E       SyntaxError: invalid syntax
+
+Python\pythoncore-3.14-64\Lib\ast.py:46: SyntaxError
+____________ test_legacy_evidence_receipts_are_still_discoverable _____________
+
+    def test_legacy_evidence_receipts_are_still_discoverable():
+        evidence = resolve(REPO_ROOT, "test-evidence")
+    
+>       assert (evidence / "rev1xx-w1-project-map-bridge-identity" / "receipt.json").is_file()
+E       AssertionError: assert False
+E        +  where False = is_file()
+E        +    where is_file = ((WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.engineering-bootstrap/test-evidence') / 'rev1xx-w1-project-map-bridge-identity') / 'receipt.json').is_file
+
+tests\test_engineering_os_paths.py:80: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_gemini_protocol.py::test_gemini_reaches_actual_prepared_group_custody -   File "C:\Users\Ben\Documents\bootstrap_project\Pacify-X\tests\test_model_group_preparation.py", line 2
+    <<<<<<< HEAD
+    ^^
+SyntaxError: invalid syntax
+FAILED tests/test_engineering_os_paths.py::test_legacy_evidence_receipts_are_still_discoverable - AssertionError: assert False
+ +  where False = is_file()
+ +    where is_file = ((WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.engineering-bootstrap/test-evidence') / 'rev1xx-w1-project-map-bridge-identity') / 'receipt.json').is_file
+======================== 2 failed, 49 passed in 2.54s =========================
+

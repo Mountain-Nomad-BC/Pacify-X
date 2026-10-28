@@ -13,6 +13,8 @@ import time
 from typing import Callable, Iterable, Mapping, Protocol, Sequence
 from urllib.parse import urlsplit
 from urllib.request import ProxyHandler, Request, build_opener
+from urllib.error import HTTPError, URLError
+from email.utils import parsedate_to_datetime
 
 from .contracts import ContractValidationError, validate_instance
 from .instrumentation_sdk import SDK_VERSION, build_operation_event
@@ -63,6 +65,41 @@ class ProviderInvocationError(RuntimeError):
         super().__init__(f"provider invocation failed: {adapter_id} ({failure_type})")
         self.adapter_id = adapter_id
         self.failure_type = failure_type
+        self.failure_metadata = {"failure_class": "unknown", "upstream_status": None,
+                                 "retry_after_seconds": None, "retryable": False}
+
+
+def normalize_provider_failure(error: BaseException, *, now: datetime | None = None) -> dict[str, object]:
+    """Keep retry classification typed and bounded; never retain response bodies."""
+    category, status, delay = "unknown", None, None
+    if isinstance(error, HTTPError):
+        status = int(error.code)
+        category = "quota" if status == 429 else "http_5xx" if 500 <= status <= 599 else "invalid_request"
+        header = error.headers.get("Retry-After") if error.headers is not None else None
+        if isinstance(header, str) and len(header) <= 128:
+            try:
+                delay = float(header)
+            except ValueError:
+                try:
+                    target = parsedate_to_datetime(header)
+                    if target.tzinfo is not None:
+                        delay = (target - (now or datetime.now(timezone.utc))).total_seconds()
+                except (TypeError, ValueError, OverflowError):
+                    pass
+            if delay is not None:
+                delay = min(3600.0, max(0.0, delay)) if math.isfinite(delay) else None
+    elif isinstance(error, TimeoutError):
+        category = "timeout"
+    elif isinstance(error, URLError):
+        category = "transport"
+    elif isinstance(error, ProviderStreamControlError):
+        category = "cancelled" if error.reason == "cancelled" else "deadline"
+    elif isinstance(error, PermissionError):
+        category = "policy_denied"
+    elif isinstance(error, (ValueError, TypeError)):
+        category = "invalid_request"
+    return {"failure_class": category, "upstream_status": status, "retry_after_seconds": delay,
+            "retryable": category in {"quota", "http_5xx", "timeout", "transport"}}
 
 
 class ProviderAdapter(Protocol):
@@ -968,12 +1005,7 @@ def _scan_provider_file(path: Path, relative: str) -> list[dict[str, object]]:
     return violations
 
 
-def _file_sha256(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as stream:
-        for block in iter(lambda: stream.read(1024 * 1024), b""):
-            digest.update(block)
-    return digest.hexdigest()
+from runtime.hash_utils import file_sha256 as _file_sha256
 
 
 def _provider_source_paths(root: Path) -> list[Path]:
@@ -1002,28 +1034,14 @@ def _scan_direct_provider_routes(root: Path) -> dict[str, object]:
 
 def build_provider_route_index(root: Path) -> dict[str, object]:
     root = root.resolve()
-    index_path = root / "registry/provider_route_scan.json"
-    try:
-        previous = json.loads(index_path.read_text(encoding="utf-8"))
-    except (OSError, json.JSONDecodeError):
-        previous = {}
-    prior = {str(item.get("path")): item for item in previous.get("records", ()) if isinstance(item, dict)}
     records = []
     violations: list[dict[str, object]] = []
     for path in _provider_source_paths(root):
         relative = path.relative_to(root).as_posix()
         stat = path.stat()
         content_sha256 = _file_sha256(path)
-        old = prior.get(relative, {})
-        unchanged = (
-            old.get("bytes") == stat.st_size
-            and old.get("sha256") == content_sha256
-            and isinstance(old.get("violations"), list)
-        )
-        if unchanged:
-            file_violations = list(old["violations"])
-        else:
-            file_violations = [] if relative == "runtime/provider_gateway.py" else _scan_provider_file(path, relative)
+        # A source hash proves bytes, not a previous caller's scan conclusions.
+        file_violations = [] if relative == "runtime/provider_gateway.py" else _scan_provider_file(path, relative)
         violations.extend(file_violations)
         records.append({
             "path": relative,
@@ -1069,6 +1087,9 @@ def scan_direct_provider_routes(root: Path) -> dict[str, object]:
                 for path, record in expected.items()
             )
             if fresh:
+                native = build_provider_route_index(root)
+                if json.dumps(index, sort_keys=True) != json.dumps(native, sort_keys=True):
+                    raise ValueError("provider source index conclusions differ from native scan")
                 return {**dict(index["report"]), "index_used": True, "index_current": True}
             return {
                 "schema_version": "1.0",
@@ -1125,6 +1146,20 @@ class ProviderInvocationGateway:
                 f"provider adapter is not admitted and ready: {adapter_id}"
             )
         return row
+
+    @staticmethod
+    def _tie_lineage(request: ProviderRequest, record: Mapping[str, object], event_revision: str) -> dict[str, object]:
+        """Project actual durable provider custody, with no additional memory write."""
+        return {"schema_version": "px.tie-provider-lineage/1.0",
+                "provider_id": record["provider_id"], "adapter_id": request.adapter_id,
+                "model_id": request.model_id, "subject_revision": request.model_revision,
+                "execution_id": request.invocation_id, "effect_id": request.invocation_id,
+                "correlation_id": request.correlation_id, "task_id": request.task_id,
+                "session_id": request.session_id, "task_plan_sha256": request.task_plan_sha256,
+                "run_id": None, "run_lineage_status": "NOT_PROVIDED_BY_REQUEST_OWNER",
+                "evidence_revision": event_revision,
+                "capture_owner": "runtime.operational_event_bus", "extra_store_written": False,
+                "authority_granted": False}
 
     def _event(
         self,
@@ -1283,6 +1318,11 @@ class ProviderInvocationGateway:
                 )
             )
             failure = ProviderInvocationError(request.adapter_id, type(error).__name__)
+            normalized_failure = normalize_provider_failure(error)
+            failure.failure_metadata = {**normalized_failure, "retryable": normalized_failure["retryable"] is True and
+                classify_provider_retry(request_accepted=True, operation_mutates=True,
+                    billable_effect_possible=record["billing_state"] != "local_non_billable",
+                    receipt_proves_no_side_effect=False) != "unsafe_unreceipted_effect"}
             failure.add_note(f"durable_event_revision={failed['revision']}")
             failure.add_note(
                 f"budget_receipt_sha256={budget_receipt['receipt_sha256']}"
@@ -1366,6 +1406,7 @@ class ProviderInvocationGateway:
         }
         if adapter_binding_receipt_sha256 is not None:
             receipt["adapter_binding_receipt_sha256"] = adapter_binding_receipt_sha256
+        receipt["tie_lineage"] = self._tie_lineage(request, record, completed["revision"])
         return response.value, receipt
 
     def _protocol_record(self, adapter_id: str) -> tuple[dict[str, object], str]:
@@ -1587,9 +1628,10 @@ class ProviderInvocationGateway:
             output_sha256 = state.output_sha256
         except BaseException as error:
             control_reason = error.reason if isinstance(error, ProviderStreamControlError) else None
+            normalized_failure = normalize_provider_failure(error)
             if not consumer_failed:
                 code = control_reason or "provider_stream_failure"
-                retryable = False if control_reason is not None else classify_provider_retry(
+                retryable = False if control_reason is not None or normalized_failure["retryable"] is not True else classify_provider_retry(
                     request_accepted=request_accepted,
                     operation_mutates=False,
                     billable_effect_possible=record["billing_state"] != "local_non_billable",
@@ -1642,6 +1684,11 @@ class ProviderInvocationGateway:
                 type(error).__name__
             )
             failure = ProviderInvocationError(request.adapter_id, failure_type)
+            failure.failure_metadata = {**normalized_failure, "retryable": False if consumer_failed else
+                normalized_failure["retryable"] is True and classify_provider_retry(
+                    request_accepted=request_accepted, operation_mutates=bool(canonical.tools),
+                    billable_effect_possible=record["billing_state"] != "local_non_billable",
+                    receipt_proves_no_side_effect=False) != "unsafe_unreceipted_effect"}
             failure.add_note(f"durable_event_revision={failed['revision']}")
             if isinstance(budget_receipt, Mapping):
                 failure.add_note(f"budget_receipt_sha256={budget_receipt['receipt_sha256']}")
@@ -1759,6 +1806,7 @@ class ProviderInvocationGateway:
             "payload_retained": False,
             "raw_backend_stream_retained": False,
         }
+        receipt["tie_lineage"] = self._tie_lineage(request, record, completed["revision"])
         return {**receipt, "receipt_sha256": _digest(receipt, limit=MAX_RESPONSE_BYTES)}
 
     def invoke(
@@ -1807,6 +1855,9 @@ def execute_provider_request(
     adapter: ProviderAdapter,
     *,
     fallback_adapter: ProviderAdapter | None = None,
+    streaming: bool = False,
+    cancel_requested: Callable[[], bool] | None = None,
+    max_output_bytes: int = MAX_RESPONSE_BYTES,
 ) -> tuple[object, dict[str, object]]:
     """Execute only through an exact policy and return a policy-bound receipt."""
     request_view = {
@@ -1833,9 +1884,35 @@ def execute_provider_request(
     }
     if fallback_adapter is not None and fallback_adapter.adapter_id not in allowed_fallbacks:
         raise PermissionError("provider fallback is outside the immutable policy")
-    value, provider_receipt = gateway.invoke(
-        request, adapter, fallback_adapter=fallback_adapter
-    )
+    if type(streaming) is not bool:
+        raise ValueError("provider streaming selection must be boolean")
+    if type(max_output_bytes) is not int or not 1 <= max_output_bytes <= MAX_RESPONSE_BYTES:
+        raise ValueError("provider output byte budget must be bounded")
+    if streaming:
+        if fallback_adapter is not None:
+            raise PermissionError("streaming policy execution does not implicitly substitute a fallback")
+        text: list[str] = []
+        output_bytes = 0
+
+        def collect(event: CanonicalModelEvent) -> None:
+            nonlocal output_bytes
+            if event.kind == "text_delta":
+                delta = str(event.payload["text"])
+                output_bytes += len(delta.encode("utf-8"))
+                if output_bytes > max_output_bytes:
+                    raise ValueError("collected provider output exceeds its byte budget")
+                text.append(delta)
+            elif event.kind in {"tool_call_start", "tool_call_delta", "tool_call_end"}:
+                raise PermissionError("prepared group text execution has no tool execution grant")
+
+        provider_receipt = gateway.stream(request, adapter, collect, cancel_requested=cancel_requested)
+        value = "".join(text)
+    else:
+        if cancel_requested is not None:
+            raise PermissionError("non-streaming policy execution has no cooperative cancellation contract")
+        value, provider_receipt = gateway.invoke(
+            request, adapter, fallback_adapter=fallback_adapter
+        )
     if (
         provider_receipt.get("model_id") != request.model_id
         or provider_receipt.get("adapter_id")

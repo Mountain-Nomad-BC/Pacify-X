@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:semantic:compact-address-record",
+  "title": "PX Compact Semantic Address Record",
+  "description": "A compact, byte-addressable alias for a canonical entity, formatted Subject.Object.SemanticRole.Kind. Each of the four segments is a uint8 in the reserved-excluded range 1..254, and each is ALLOCATED FROM THE FROZEN CONTROLLED VOCABULARY in registry/semantic_address_vocabulary.json rather than derived from a digest, so the number carries the concept it names. The alias is a bound reference, not identity: entity_id remains the canonical authority, and an alias that cannot be resolved is stale rather than authoritative. A tombstoned address is retired permanently and is never reissued, including to its former entity, so no segment ever changes meaning over the life of the registry.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "alias",
+    "entity_id",
+    "address",
+    "generation"
+  ],
+  "properties": {
+    "schema_version": { "const": "px.compact-address/1.0" },
+    "alias": {
+      "type": "string",
+      "pattern": "^PXA1:[0-9a-f]{8}:[0-9]{1,9}$",
+      "description": "Subject.Object.SemanticRole.Kind as 4 packed bytes, plus the allocation generation."
+    },
+    "entity_id": {
+      "type": "string",
+      "pattern": "^pxe1:[0-9a-f]{32}$",
+      "description": "The canonical entity this alias resolves to."
+    },
+    "address": {
+      "type": "object",
+      "description": "The four segments. 0 and 255 are reserved in every segment and must never appear as a live value.",
+      "additionalProperties": false,
+      "required": ["subject", "object", "semantic_role", "kind"],
+      "properties": {
+        "subject": { "type": "integer", "minimum": 1, "maximum": 254 },
+        "object": { "type": "integer", "minimum": 1, "maximum": 254 },
+        "semantic_role": { "type": "integer", "minimum": 1, "maximum": 254 },
+        "kind": { "type": "integer", "minimum": 1, "maximum": 254 }
+      }
+    },
+    "generation": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Bound to the semantic generation that issued the address. It distinguishes a reissue under new semantics from the retired alias of the same address; it does NOT authorise recycling, because tombstoned addresses are never reissued."
+    },
+    "concepts": {
+      "type": "object",
+      "description": "The declared semantic concepts this address was allocated from. Present so a reader can confirm the segments mean what the issuer claimed.",
+      "additionalProperties": false,
+      "required": ["subject", "object", "semantic_role", "kind"],
+      "properties": {
+        "subject": { "type": "string", "minLength": 1 },
+        "object": { "type": "string", "minLength": 1 },
+        "semantic_role": { "type": "string", "minLength": 1 },
+        "kind": { "type": "string", "minLength": 1 }
+      }
+    },
+    "allocation": {
+      "type": "string",
+      "enum": ["exact_semantic_base", "allocated by disambiguation within the declared semantic base"],
+      "description": "Whether this address is the exact address its declared concepts imply, or a sibling within the same semantic base."
+    },
+    "lifecycle": {
+      "type": "string",
+      "enum": ["active", "tombstoned"],
+      "default": "active"
+    },
+    "tombstone_reason": { "type": ["string", "null"], "pattern": "^[\\s\\S]{0,500}$" },
+    "allocated_utc": { "type": ["string", "null"] }
+  },
+  "$defs": {
+    "reservedValues": {
+      "description": "0 denotes an unallocated or invalid slot; 255 denotes a tombstone. Both are forbidden as live segment values in every segment.",
+      "const": [0, 255]
+    },
+    "semanticAllocation": {
+      "description": "Segments are vocabulary numbers from registry/semantic_address_vocabulary.json, not digest bytes. A number outside the published vocabulary carries no reviewed meaning and is refused at allocation time; 0 and 255 stay reserved and the live segment range remains 1..254.",
+      "type": "string",
+      "const": "segments are frozen-vocabulary numbers, never digest bytes"
+    },
+    "noReuse": {
+      "description": "A tombstoned address is retired permanently. It is never reissued to another entity or returned to its former entity, because recycling would make a segment a different concept at a later time without any error at reissue.",
+      "const": true
+    }
+  }
+}

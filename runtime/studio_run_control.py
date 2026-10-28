@@ -530,13 +530,20 @@ class DurableRunControl:
         checkpoint: Mapping[str, object] | None = None,
         failure: Mapping[str, object] | None = None,
         operation: str | None = None,
+        expected_sequence: int | None = None,
     ) -> dict[str, object]:
         if not approved:
             raise PermissionError("durable run transition requires explicit host approval")
         if target not in RUN_STATES:
             raise ValueError("unsupported durable run state")
+        if expected_sequence is not None and (
+            type(expected_sequence) is not int or expected_sequence < 1
+        ):
+            raise ValueError("expected durable sequence must be a positive integer")
         with FileLock(self.lock_path, timeout_seconds=10):
             current = self._read_unlocked(run_id)
+            if expected_sequence is not None and current["sequence"] != expected_sequence:
+                raise PermissionError("durable run changed after checkpoint validation")
             if target not in TRANSITIONS[str(current["state"])]:
                 raise ValueError(
                     f"illegal durable run transition: {current['state']} -> {target}"

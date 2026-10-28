@@ -288,7 +288,7 @@ def _preserved_and_projection_profile(root: Path) -> dict[str, bool]:
     assert studio.validate(package_two)["passed"] is True
     assert studio.admit(package_two, approved=True, approver="px-owned-walker")["decision"] == "admitted"
     promotion_two = studio.promote(package_two, approved=True)
-    promotion_receipt = next((root / ".engineering-bootstrap/studios/skills").glob("*/revisions/1.1.0/promotion-receipt.json"))
+    promotion_receipt = next((root / ".agentic_engineering_os_px/studios/skills").glob("*/revisions/1.1.0/promotion-receipt.json"))
     rollback = studio.rollback(promotion_receipt, approved=True, approver="px-owned-walker", expected_skill_id=package_two.skill_id, expected_version=package_two.version)
     restored_tree = _tree_attestation(canonical)[1]
     manifest_path = root / promotion_two["lifecycle_transaction_relative"] / "manifest.json"

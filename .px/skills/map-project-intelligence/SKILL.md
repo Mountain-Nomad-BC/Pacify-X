@@ -21,7 +21,7 @@ Default to read-only discovery. Exclude sensitive files before inventory, hashin
 
 ## Required outputs
 
-The canonical map lives at `.engineering-bootstrap/project-map/` and must include all files listed in `references/project-map-contract.md`.
+The canonical map lives at `.agentic_engineering_os_px/project-map/` and must include all files listed in `references/project-map-contract.md`.
 
 ## Boundary
 

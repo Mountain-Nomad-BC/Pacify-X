@@ -93,13 +93,13 @@ def build_index(root: Path, *, artifacts: Iterable[Path] = ()) -> dict[str, obje
     limitations: list[str] = []
     records: list[dict[str, object]] = []
     candidates = sorted(
-        (root / ".engineering-bootstrap/test-evidence/sections").glob("*.json")
+        (root / ".agentic_engineering_os_px/test-evidence/sections").glob("*.json")
     )
     candidates += sorted(
-        (root / ".engineering-bootstrap/test-evidence/groups").glob("*.json")
+        (root / ".agentic_engineering_os_px/test-evidence/groups").glob("*.json")
     )
     candidates += sorted(
-        (root / ".engineering-bootstrap/test-evidence/profiles").glob("*.json")
+        (root / ".agentic_engineering_os_px/test-evidence/profiles").glob("*.json")
     )
     for supplied in artifacts:
         path = supplied.resolve(strict=True)

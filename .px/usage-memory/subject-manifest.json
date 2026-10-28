@@ -1,0 +1,3063 @@
+{
+  "authority_granted": false,
+  "generated_from": "px.yaml-subject-files/1.0",
+  "manifest_sha256": "0dc48aedfeed3453649c6e1a6966a355b34088932f1d71b208000294bdab5f4c",
+  "schema_version": "px.yaml-subject-manifest/1.0",
+  "subject_count": 132,
+  "subjects": [
+    {
+      "bindings": {
+        "skills": [
+          "enforce-governance-controls",
+          "execution-contract-enforcer",
+          "route-specialist-agents",
+          "verify-outcome"
+        ],
+        "workflow_steps": [
+          "authorize-effects",
+          "compile-selected",
+          "release-context",
+          "review-risk",
+          "route-metadata",
+          "validate-provider",
+          "verify-result"
+        ]
+      },
+      "files": {
+        "bindings": "orchestration/workflows/agency-specialist-routing/memory/bindings.json",
+        "memory_dir": "orchestration/workflows/agency-specialist-routing/memory",
+        "memory_md": "orchestration/workflows/agency-specialist-routing/memory/memory.md",
+        "stats": "orchestration/workflows/agency-specialist-routing/memory/stats.json",
+        "usage_log": "orchestration/workflows/agency-specialist-routing/memory/usage.jsonl"
+      },
+      "kind": "workflow",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "orchestration/workflows/agency-specialist-routing.yaml",
+      "subject_id": "agency-specialist-routing",
+      "title": "Route, review, hydrate, compile, authorize, verify, and release a bounded specialist panel without eager corpus loading or prompt-derived authority.",
+      "yaml_sha256": "5dd97ec8ef270ee0669187065d7de24387cf2d451be764339d626fd3bf830c8c"
+    },
+    {
+      "bindings": {
+        "skills": [
+          "audit-incomplete-implementations",
+          "audit-source-capabilities",
+          "enforce-source-import-boundaries",
+          "run-evidence-campaigns",
+          "synchronize-derived-architecture",
+          "validate-knowledge-relationships"
+        ],
+        "workflow_steps": [
+          "boundaries",
+          "certify",
+          "derive",
+          "incompleteness",
+          "inventory",
+          "reconcile-classified-assets",
+          "reconcile-inventory",
+          "reconcile-skill-identities",
+          "reconcile-staged-capabilities",
+          "relationships"
+        ]
+      },
+      "files": {
+        "bindings": "orchestration/workflows/source-capability-assimilation/memory/bindings.json",
+        "memory_dir": "orchestration/workflows/source-capability-assimilation/memory",
+        "memory_md": "orchestration/workflows/source-capability-assimilation/memory/memory.md",
+        "stats": "orchestration/workflows/source-capability-assimilation/memory/stats.json",
+        "usage_log": "orchestration/workflows/source-capability-assimilation/memory/usage.jsonl"
+      },
+      "kind": "workflow",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "orchestration/workflows/capability-assimilation.yaml",
+      "subject_id": "source-capability-assimilation",
+      "title": "Account, classify, admit, map, validate, and evidence reusable source mechanisms without copying private product identity.",
+      "yaml_sha256": "6c87576f83e467aa8b43a15a40f3b8571b61d32f53591cf812036d73924d4c75"
+    },
+    {
+      "bindings": {
+        "skills": [
+          "dynamic-service-discovery",
+          "govern-deployment-safety",
+          "harden-container-boundaries",
+          "inspect-live-contracts",
+          "orchestrate-security-validation",
+          "run-evidence-campaigns",
+          "validate-production-containers"
+        ],
+        "workflow_steps": [
+          "containers",
+          "contracts",
+          "discover",
+          "evidence",
+          "isolate",
+          "release",
+          "security"
+        ]
+      },
+      "files": {
+        "bindings": "orchestration/workflows/secure-service-release/memory/bindings.json",
+        "memory_dir": "orchestration/workflows/secure-service-release/memory",
+        "memory_md": "orchestration/workflows/secure-service-release/memory/memory.md",
+        "stats": "orchestration/workflows/secure-service-release/memory/stats.json",
+        "usage_log": "orchestration/workflows/secure-service-release/memory/usage.jsonl"
+      },
+      "kind": "workflow",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "orchestration/workflows/capability-assimilation.yaml",
+      "subject_id": "secure-service-release",
+      "title": "Validate isolated services from contract and discovery design through security aggregation and deployment evidence.",
+      "yaml_sha256": "6c87576f83e467aa8b43a15a40f3b8571b61d32f53591cf812036d73924d4c75"
+    },
+    {
+      "bindings": {
+        "skills": [
+          "engineer-hybrid-retrieval",
+          "evaluate-retrieval-readiness",
+          "repair-corrupted-text",
+          "run-evidence-campaigns",
+          "validate-knowledge-relationships"
+        ],
+        "workflow_steps": [
+          "evaluate",
+          "evidence",
+          "relationships",
+          "repair",
+          "retrieval"
+        ]
+      },
+      "files": {
+        "bindings": "orchestration/workflows/retrieval-readiness/memory/bindings.json",
+        "memory_dir": "orchestration/workflows/retrieval-readiness/memory",
+        "memory_md": "orchestration/workflows/retrieval-readiness/memory/memory.md",
+        "stats": "orchestration/workflows/retrieval-readiness/memory/stats.json",
+        "usage_log": "orchestration/workflows/retrieval-readiness/memory/usage.jsonl"
+      },
+      "kind": "workflow",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "orchestration/workflows/capability-assimilation.yaml",
+      "subject_id": "retrieval-readiness",
+      "title": "Repair and validate source knowledge before constructing and evaluating governed retrieval.",
+      "yaml_sha256": "6c87576f83e467aa8b43a15a40f3b8571b61d32f53591cf812036d73924d4c75"
+    },
+    {
+      "bindings": {
+        "skills": [
+          "certify-reversible-validation",
+          "govern-deployment-safety",
+          "run-resilience-drills",
+          "triage-cross-surface-failures"
+        ],
+        "workflow_steps": [
+          "drill",
+          "release",
+          "restore",
+          "triage"
+        ]
+      },
+      "files": {
+        "bindings": "orchestration/workflows/failure-and-recovery/memory/bindings.json",
+        "memory_dir": "orchestration/workflows/failure-and-recovery/memory",
+        "memory_md": "orchestration/workflows/failure-and-recovery/memory/memory.md",
+        "stats": "orchestration/workflows/failure-and-recovery/memory/stats.json",
+        "usage_log": "orchestration/workflows/failure-and-recovery/memory/usage.jsonl"
+      },
+      "kind": "workflow",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "orchestration/workflows/capability-assimilation.yaml",
+      "subject_id": "failure-and-recovery",
+      "title": "Triage cross-surface failure, prove reversible restoration, exercise bounded resilience, and retain release blockers.",
+      "yaml_sha256": "6c87576f83e467aa8b43a15a40f3b8571b61d32f53591cf812036d73924d4c75"
+    },
+    {
+      "bindings": {
+        "skills": [
+          "audit-source-capabilities",
+          "manage-mcp-lifecycle",
+          "quarantine-external-tools"
+        ],
+        "workflow_steps": [
+          "inventory",
+          "lifecycle",
+          "quarantine"
+        ]
+      },
+      "files": {
+        "bindings": "orchestration/workflows/external-tool-lifecycle/memory/bindings.json",
+        "memory_dir": "orchestration/workflows/external-tool-lifecycle/memory",
+        "memory_md": "orchestration/workflows/external-tool-lifecycle/memory/memory.md",
+        "stats": "orchestration/workflows/external-tool-lifecycle/memory/stats.json",
+        "usage_log": "orchestration/workflows/external-tool-lifecycle/memory/usage.jsonl"
+      },
+      "kind": "workflow",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "orchestration/workflows/capability-assimilation.yaml",
+      "subject_id": "external-tool-lifecycle",
+      "title": "Audit, quarantine, admit, lazily register, and protocol-certify external tool servers.",
+      "yaml_sha256": "6c87576f83e467aa8b43a15a40f3b8571b61d32f53591cf812036d73924d4c75"
+    },
+    {
+      "bindings": {
+        "skills": [
+          "run-evidence-campaigns",
+          "skill-bundle-resolver",
+          "skill-navigator"
+        ],
+        "workflow_steps": [
+          "certify",
+          "resolve",
+          "select"
+        ]
+      },
+      "files": {
+        "bindings": "orchestration/workflows/semantic-capability-query-certification/memory/bindings.json",
+        "memory_dir": "orchestration/workflows/semantic-capability-query-certification/memory",
+        "memory_md": "orchestration/workflows/semantic-capability-query-certification/memory/memory.md",
+        "stats": "orchestration/workflows/semantic-capability-query-certification/memory/stats.json",
+        "usage_log": "orchestration/workflows/semantic-capability-query-certification/memory/usage.jsonl"
+      },
+      "kind": "workflow",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "orchestration/workflows/capability-assimilation.yaml",
+      "subject_id": "semantic-capability-query-certification",
+      "title": "Select capabilities from metadata, resolve a bounded dependency bundle, and certify deterministic golden-query behavior without eager skill-body loading.",
+      "yaml_sha256": "6c87576f83e467aa8b43a15a40f3b8571b61d32f53591cf812036d73924d4c75"
+    },
+    {
+      "bindings": {
+        "skills": [
+          "evaluate-retrieval-readiness",
+          "gate-model-data-lifecycle",
+          "inspect-llm-architecture",
+          "plan-local-model-deployment",
+          "validate-engineering-outcomes"
+        ],
+        "workflow_steps": [
+          "data-gate",
+          "inspect",
+          "plan",
+          "retrieval-gate",
+          "validate"
+        ]
+      },
+      "files": {
+        "bindings": "orchestration/workflows/local-model-planning/memory/bindings.json",
+        "memory_dir": "orchestration/workflows/local-model-planning/memory",
+        "memory_md": "orchestration/workflows/local-model-planning/memory/memory.md",
+        "stats": "orchestration/workflows/local-model-planning/memory/stats.json",
+        "usage_log": "orchestration/workflows/local-model-planning/memory/usage.jsonl"
+      },
+      "kind": "workflow",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "orchestration/workflows/capability-assimilation.yaml",
+      "subject_id": "local-model-planning",
+      "title": "Inspect a model without importing it, rank feasible execution strategies, enforce data and retrieval gates, and validate the chosen plan.",
+      "yaml_sha256": "6c87576f83e467aa8b43a15a40f3b8571b61d32f53591cf812036d73924d4c75"
+    },
+    {
+      "bindings": {
+        "skills": [
+          "context-compactor",
+          "decision-wayfinding",
+          "dynamic-service-discovery",
+          "engineer-verification-lab",
+          "govern-memory-fabric",
+          "long-horizon-progress-ledger",
+          "manage-agent-session-fabric",
+          "orchestrate-agent-fleets",
+          "skill-admission-controller",
+          "tracer-bullet-planning"
+        ],
+        "workflow_steps": [
+          "backend-select",
+          "backend-validate",
+          "communication",
+          "delta",
+          "fleet",
+          "goal",
+          "inbox",
+          "memory",
+          "panel",
+          "shadow",
+          "specification",
+          "terminal"
+        ]
+      },
+      "files": {
+        "bindings": "orchestration/workflows/clean-room-capability-controls/memory/bindings.json",
+        "memory_dir": "orchestration/workflows/clean-room-capability-controls/memory",
+        "memory_md": "orchestration/workflows/clean-room-capability-controls/memory/memory.md",
+        "stats": "orchestration/workflows/clean-room-capability-controls/memory/stats.json",
+        "usage_log": "orchestration/workflows/clean-room-capability-controls/memory/usage.jsonl"
+      },
+      "kind": "workflow",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "orchestration/workflows/clean-room-capability-controls.yaml",
+      "subject_id": "clean-room-capability-controls",
+      "title": "Execute independently authored, authority-neutral controls discovered from reference requirements without importing reference implementation content.",
+      "yaml_sha256": "af90fe80eedb622a143402be93543f896ea0be97982b192b25257df553fd7bb6"
+    },
+    {
+      "bindings": {
+        "skills": [
+          "audit-source-capabilities",
+          "engineer-verification-lab",
+          "govern-candidate-resolution-pipeline"
+        ],
+        "workflow_steps": [
+          "compile",
+          "inventory",
+          "resolve",
+          "verify"
+        ]
+      },
+      "files": {
+        "bindings": "orchestration/workflows/candidate-pipeline/memory/bindings.json",
+        "memory_dir": "orchestration/workflows/candidate-pipeline/memory",
+        "memory_md": "orchestration/workflows/candidate-pipeline/memory/memory.md",
+        "stats": "orchestration/workflows/candidate-pipeline/memory/stats.json",
+        "usage_log": "orchestration/workflows/candidate-pipeline/memory/usage.jsonl"
+      },
+      "kind": "workflow",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "orchestration/workflows/completion-controls.yaml",
+      "subject_id": "candidate-pipeline",
+      "title": "Compile and resolve candidates through explicit membership and evidence boundaries.",
+      "yaml_sha256": "0f9be92fc694c56d48308db9343486745c1080adc666f4abdee0cfa8b316ac4a"
+    },
+    {
+      "bindings": {
+        "skills": [
+          "govern-distributed-work-runtime",
+          "govern-runtime-protocol-deployment",
+          "orchestrate-capability-scheduling",
+          "verify-outcome"
+        ],
+        "workflow_steps": [
+          "execute",
+          "place",
+          "reconcile",
+          "reserve",
+          "scope",
+          "verify"
+        ]
+      },
+      "files": {
+        "bindings": "orchestration/workflows/distributed-runtime/memory/bindings.json",
+        "memory_dir": "orchestration/workflows/distributed-runtime/memory",
+        "memory_md": "orchestration/workflows/distributed-runtime/memory/memory.md",
+        "stats": "orchestration/workflows/distributed-runtime/memory/stats.json",
+        "usage_log": "orchestration/workflows/distributed-runtime/memory/usage.jsonl"
+      },
+      "kind": "workflow",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "orchestration/workflows/completion-controls.yaml",
+      "subject_id": "distributed-runtime",
+      "title": "Reserve, place, execute, reconcile, and hand off project-scoped distributed work.",
+      "yaml_sha256": "0f9be92fc694c56d48308db9343486745c1080adc666f4abdee0cfa8b316ac4a"
+    },
+    {
+      "bindings": {
+        "skills": [
+          "govern-epistemic-skill-evolution",
+          "govern-memory-fabric",
+          "skill-admission-controller"
+        ],
+        "workflow_steps": [
+          "capture",
+          "experiment",
+          "invalidate",
+          "verify"
+        ]
+      },
+      "files": {
+        "bindings": "orchestration/workflows/epistemic-evolution/memory/bindings.json",
+        "memory_dir": "orchestration/workflows/epistemic-evolution/memory",
+        "memory_md": "orchestration/workflows/epistemic-evolution/memory/memory.md",
+        "stats": "orchestration/workflows/epistemic-evolution/memory/stats.json",
+        "usage_log": "orchestration/workflows/epistemic-evolution/memory/usage.jsonl"
+      },
+      "kind": "workflow",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "orchestration/workflows/completion-controls.yaml",
+      "subject_id": "epistemic-evolution",
+      "title": "Maintain temporal claims and evaluate quarantined skill improvements without live self-editing.",
+      "yaml_sha256": "0f9be92fc694c56d48308db9343486745c1080adc666f4abdee0cfa8b316ac4a"
+    },
+    {
+      "bindings": {
+        "skills": [
+          "validate-physical-media-deliverables",
+          "verify-outcome"
+        ],
+        "workflow_steps": [
+          "declare",
+          "inspect",
+          "verify"
+        ]
+      },
+      "files": {
+        "bindings": "orchestration/workflows/deliverable-validation/memory/bindings.json",
+        "memory_dir": "orchestration/workflows/deliverable-validation/memory",
+        "memory_md": "orchestration/workflows/deliverable-validation/memory/memory.md",
+        "stats": "orchestration/workflows/deliverable-validation/memory/stats.json",
+        "usage_log": "orchestration/workflows/deliverable-validation/memory/usage.jsonl"
+      },
+      "kind": "workflow",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "orchestration/workflows/completion-controls.yaml",
+      "subject_id": "deliverable-validation",
+      "title": "Prove physical and media deliverables against explicit promises and independent checks.",
+      "yaml_sha256": "0f9be92fc694c56d48308db9343486745c1080adc666f4abdee0cfa8b316ac4a"
+    },
+    {
+      "bindings": {
+        "skills": [
+          "govern-knowledge-refinery",
+          "operate-engineering-research-engine",
+          "run-evidence-campaigns"
+        ],
+        "workflow_steps": [
+          "admit",
+          "discover",
+          "fingerprint",
+          "synthesize",
+          "verify"
+        ]
+      },
+      "files": {
+        "bindings": "orchestration/workflows/research-engine/memory/bindings.json",
+        "memory_dir": "orchestration/workflows/research-engine/memory",
+        "memory_md": "orchestration/workflows/research-engine/memory/memory.md",
+        "stats": "orchestration/workflows/research-engine/memory/stats.json",
+        "usage_log": "orchestration/workflows/research-engine/memory/usage.jsonl"
+      },
+      "kind": "workflow",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "orchestration/workflows/completion-controls.yaml",
+      "subject_id": "research-engine",
+      "title": "Discover, fingerprint, compare, and admit engineering mechanisms without repository-level copying.",
+      "yaml_sha256": "0f9be92fc694c56d48308db9343486745c1080adc666f4abdee0cfa8b316ac4a"
+    },
+    {
+      "bindings": {
+        "skills": [
+          "secure-agent-supply-chain"
+        ],
+        "workflow_steps": [
+          "classify-assets-and-trust-boundaries",
+          "enumerate-threats-and-authority",
+          "release-or-quarantine-with-evidence",
+          "scan-and-contain",
+          "verify-provenance-and-reproducibility"
+        ]
+      },
+      "files": {
+        "bindings": "orchestration/workflows/audit-ai-supply-chain/memory/bindings.json",
+        "memory_dir": "orchestration/workflows/audit-ai-supply-chain/memory",
+        "memory_md": "orchestration/workflows/audit-ai-supply-chain/memory/memory.md",
+        "stats": "orchestration/workflows/audit-ai-supply-chain/memory/stats.json",
+        "usage_log": "orchestration/workflows/audit-ai-supply-chain/memory/usage.jsonl"
+      },
+      "kind": "workflow",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "orchestration/workflows/declared-suite.yaml",
+      "subject_id": "audit-ai-supply-chain",
+      "title": "Coordinate audit ai supply chain across explicit ordered dependencies within security boundaries, sandboxing, authority, supply-chain provenance, and incident response, with preconditions, budgets, fa",
+      "yaml_sha256": "17c911ec9776bf6ecbc185c50fd5de13f6416aafd0fa212811c15205ae0163f6"
+    },
+    {
+      "bindings": {
+        "skills": [
+          "manage-revocable-certification"
+        ],
+        "workflow_steps": [
+          "freeze-scope-and-denominators",
+          "issue-hash-bound-certificate",
+          "monitor-revoke-and-recertify",
+          "reconcile-owners-and-artifacts",
+          "run-independent-completion-gates"
+        ]
+      },
+      "files": {
+        "bindings": "orchestration/workflows/audit-pack-completeness/memory/bindings.json",
+        "memory_dir": "orchestration/workflows/audit-pack-completeness/memory",
+        "memory_md": "orchestration/workflows/audit-pack-completeness/memory/memory.md",
+        "stats": "orchestration/workflows/audit-pack-completeness/memory/stats.json",
+        "usage_log": "orchestration/workflows/audit-pack-completeness/memory/usage.jsonl"
+      },
+      "kind": "workflow",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "orchestration/workflows/declared-suite.yaml",
+      "subject_id": "audit-pack-completeness",
+      "title": "Coordinate audit pack completeness across explicit ordered dependencies within completeness, collision handling, revocable certification, recertification, and release trust, with preconditions, budget",
+      "yaml_sha256": "17c911ec9776bf6ecbc185c50fd5de13f6416aafd0fa212811c15205ae0163f6"
+    },
+    {
+      "bindings": {
+        "skills": [
+          "govern-runtime-protocol-deployment"
+        ],
+        "workflow_steps": [
+          "model-capacity-cost-and-quality",
+          "observe-decide-and-handoff",
+          "probe-live-capabilities",
+          "stage-canary-with-fallback",
+          "validate-contract-and-compatibility"
+        ]
+      },
+      "files": {
+        "bindings": "orchestration/workflows/benchmark-serving-backends/memory/bindings.json",
+        "memory_dir": "orchestration/workflows/benchmark-serving-backends/memory",
+        "memory_md": "orchestration/workflows/benchmark-serving-backends/memory/memory.md",
+        "stats": "orchestration/workflows/benchmark-serving-backends/memory/stats.json",
+        "usage_log": "orchestration/workflows/benchmark-serving-backends/memory/usage.jsonl"
+      },
+      "kind": "workflow",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "orchestration/workflows/declared-suite.yaml",
+      "subject_id": "benchmark-serving-backends",
+      "title": "Coordinate benchmark serving backends across explicit ordered dependencies within runtime compatibility, protocol governance, capacity, canary delivery, and safe degradation, with preconditions, budge",
+      "yaml_sha256": "17c911ec9776bf6ecbc185c50fd5de13f6416aafd0fa212811c15205ae0163f6"
+    },
+    {
+      "bindings": {
+        "skills": [
+          "secure-agent-supply-chain"
+        ],
+        "workflow_steps": [
+          "classify-assets-and-trust-boundaries",
+          "enumerate-threats-and-authority",
+          "release-or-quarantine-with-evidence",
+          "scan-and-contain",
+          "verify-provenance-and-reproducibility"
+        ]
+      },
+      "files": {
+        "bindings": "orchestration/workflows/build-sandbox-profile/memory/bindings.json",
+        "memory_dir": "orchestration/workflows/build-sandbox-profile/memory",
+        "memory_md": "orchestration/workflows/build-sandbox-profile/memory/memory.md",
+        "stats": "orchestration/workflows/build-sandbox-profile/memory/stats.json",
+        "usage_log": "orchestration/workflows/build-sandbox-profile/memory/usage.jsonl"
+      },
+      "kind": "workflow",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "orchestration/workflows/declared-suite.yaml",
+      "subject_id": "build-sandbox-profile",
+      "title": "Coordinate build sandbox profile across explicit ordered dependencies within security boundaries, sandboxing, authority, supply-chain provenance, and incident response, with preconditions, budgets, fa",
+      "yaml_sha256": "17c911ec9776bf6ecbc185c50fd5de13f6416aafd0fa212811c15205ae0163f6"
+    },
+    {
+      "bindings": {
+        "skills": [
+          "engineer-verification-lab"
+        ],
+        "workflow_steps": [
+          "define-observable-claim",
+          "generate-positive-and-adversarial-cases",
+          "run-and-minimize",
+          "score-and-promote-regressions",
+          "select-independent-oracle"
+        ]
+      },
+      "files": {
+        "bindings": "orchestration/workflows/build-verification-plan/memory/bindings.json",
+        "memory_dir": "orchestration/workflows/build-verification-plan/memory",
+        "memory_md": "orchestration/workflows/build-verification-plan/memory/memory.md",
+        "stats": "orchestration/workflows/build-verification-plan/memory/stats.json",
+        "usage_log": "orchestration/workflows/build-verification-plan/memory/usage.jsonl"
+      },
+      "kind": "workflow",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "orchestration/workflows/declared-suite.yaml",
+      "subject_id": "build-verification-plan",
+      "title": "Coordinate build verification plan across explicit ordered dependencies within verification design, adversarial evaluation, regression quality, and trajectory assessment, with preconditions, budgets, ",
+      "yaml_sha256": "17c911ec9776bf6ecbc185c50fd5de13f6416aafd0fa212811c15205ae0163f6"
+    },
+    {
+      "bindings": {
+        "skills": [
+          "engineer-verification-lab"
+        ],
+        "workflow_steps": [
+          "define-observable-claim",
+          "generate-positive-and-adversarial-cases",
+          "run-and-minimize",
+          "score-and-promote-regressions",
+          "select-independent-oracle"
+        ]
+      },
+      "files": {
+        "bindings": "orchestration/workflows/calibrate-llm-judge/memory/bindings.json",
+        "memory_dir": "orchestration/workflows/calibrate-llm-judge/memory",
+        "memory_md": "orchestration/workflows/calibrate-llm-judge/memory/memory.md",
+        "stats": "orchestration/workflows/calibrate-llm-judge/memory/stats.json",
+        "usage_log": "orchestration/workflows/calibrate-llm-judge/memory/usage.jsonl"
+      },
+      "kind": "workflow",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "orchestration/workflows/declared-suite.yaml",
+      "subject_id": "calibrate-llm-judge",
+      "title": "Coordinate calibrate llm judge across explicit ordered dependencies within verification design, adversarial evaluation, regression quality, and trajectory assessment, with preconditions, budgets, fail",
+      "yaml_sha256": "17c911ec9776bf6ecbc185c50fd5de13f6416aafd0fa212811c15205ae0163f6"
+    },
+    {
+      "bindings": {
+        "skills": [
+          "govern-operating-kernel"
+        ],
+        "workflow_steps": [
+          "authorize-effects",
+          "commit-evidence-and-state",
+          "establish-scope",
+          "execute-bounded-work",
+          "independently-verify"
+        ]
+      },
+      "files": {
+        "bindings": "orchestration/workflows/compile-and-register-skill/memory/bindings.json",
+        "memory_dir": "orchestration/workflows/compile-and-register-skill/memory",
+        "memory_md": "orchestration/workflows/compile-and-register-skill/memory/memory.md",
+        "stats": "orchestration/workflows/compile-and-register-skill/memory/stats.json",
+        "usage_log": "orchestration/workflows/compile-and-register-skill/memory/usage.jsonl"
+      },
+      "kind": "workflow",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "orchestration/workflows/declared-suite.yaml",
+      "subject_id": "compile-and-register-skill",
+      "title": "Coordinate compile and register skill across explicit ordered dependencies within governed execution, evidence, permission, recovery, and durable task control, with preconditions, budgets, failure pol",
+      "yaml_sha256": "17c911ec9776bf6ecbc185c50fd5de13f6416aafd0fa212811c15205ae0163f6"
+    },
+    {
+      "bindings": {
+        "skills": [
+          "engineer-verification-lab"
+        ],
+        "workflow_steps": [
+          "define-observable-claim",
+          "generate-positive-and-adversarial-cases",
+          "run-and-minimize",
+          "score-and-promote-regressions",
+          "select-independent-oracle"
+        ]
+      },
+      "files": {
+        "bindings": "orchestration/workflows/convert-incident-to-regression/memory/bindings.json",
+        "memory_dir": "orchestration/workflows/convert-incident-to-regression/memory",
+        "memory_md": "orchestration/workflows/convert-incident-to-regression/memory/memory.md",
+        "stats": "orchestration/workflows/convert-incident-to-regression/memory/stats.json",
+        "usage_log": "orchestration/workflows/convert-incident-to-regression/memory/usage.jsonl"
+      },
+      "kind": "workflow",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "orchestration/workflows/declared-suite.yaml",
+      "subject_id": "convert-incident-to-regression",
+      "title": "Coordinate convert incident to regression across explicit ordered dependencies within verification design, adversarial evaluation, regression quality, and trajectory assessment, with preconditions, bu",
+      "yaml_sha256": "17c911ec9776bf6ecbc185c50fd5de13f6416aafd0fa212811c15205ae0163f6"
+    },
+    {
+      "bindings": {
+        "skills": [
+          "operate-memory-retrieval-observability"
+        ],
+        "workflow_steps": [
+          "bind-project-and-subject-scope",
+          "record-trace-and-quality",
+          "retain-promote-or-purge-by-policy",
+          "retrieve-and-budget-context",
+          "validate-ingestion-and-provenance"
+        ]
+      },
+      "files": {
+        "bindings": "orchestration/workflows/curate-memory-from-runs/memory/bindings.json",
+        "memory_dir": "orchestration/workflows/curate-memory-from-runs/memory",
+        "memory_md": "orchestration/workflows/curate-memory-from-runs/memory/memory.md",
+        "stats": "orchestration/workflows/curate-memory-from-runs/memory/stats.json",
+        "usage_log": "orchestration/workflows/curate-memory-from-runs/memory/usage.jsonl"
+      },
+      "kind": "workflow",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "orchestration/workflows/declared-suite.yaml",
+      "subject_id": "curate-memory-from-runs",
+      "title": "Coordinate curate memory from runs across explicit ordered dependencies within isolated memory, grounded retrieval, telemetry, replay, retention, and quality drift, with preconditions, budgets, failur",
+      "yaml_sha256": "17c911ec9776bf6ecbc185c50fd5de13f6416aafd0fa212811c15205ae0163f6"
+    },
+    {
+      "bindings": {
+        "skills": [
+          "operate-memory-retrieval-observability"
+        ],
+        "workflow_steps": [
+          "bind-project-and-subject-scope",
+          "record-trace-and-quality",
+          "retain-promote-or-purge-by-policy",
+          "retrieve-and-budget-context",
+          "validate-ingestion-and-provenance"
+        ]
+      },
+      "files": {
+        "bindings": "orchestration/workflows/debug-retrieval-failure/memory/bindings.json",
+        "memory_dir": "orchestration/workflows/debug-retrieval-failure/memory",
+        "memory_md": "orchestration/workflows/debug-retrieval-failure/memory/memory.md",
+        "stats": "orchestration/workflows/debug-retrieval-failure/memory/stats.json",
+        "usage_log": "orchestration/workflows/debug-retrieval-failure/memory/usage.jsonl"
+      },
+      "kind": "workflow",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "orchestration/workflows/declared-suite.yaml",
+      "subject_id": "debug-retrieval-failure",
+      "title": "Coordinate debug retrieval failure across explicit ordered dependencies within isolated memory, grounded retrieval, telemetry, replay, retention, and quality drift, with preconditions, budgets, failur",
+      "yaml_sha256": "17c911ec9776bf6ecbc185c50fd5de13f6416aafd0fa212811c15205ae0163f6"
+    },
+    {
+      "bindings": {
+        "skills": [
+          "govern-runtime-protocol-deployment"
+        ],
+        "workflow_steps": [
+          "model-capacity-cost-and-quality",
+          "observe-decide-and-handoff",
+          "probe-live-capabilities",
+          "stage-canary-with-fallback",
+          "validate-contract-and-compatibility"
+        ]
+      },
+      "files": {
+        "bindings": "orchestration/workflows/degrade-safely/memory/bindings.json",
+        "memory_dir": "orchestration/workflows/degrade-safely/memory",
+        "memory_md": "orchestration/workflows/degrade-safely/memory/memory.md",
+        "stats": "orchestration/workflows/degrade-safely/memory/stats.json",
+        "usage_log": "orchestration/workflows/degrade-safely/memory/usage.jsonl"
+      },
+      "kind": "workflow",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "orchestration/workflows/declared-suite.yaml",
+      "subject_id": "degrade-safely",
+      "title": "Coordinate degrade safely across explicit ordered dependencies within runtime compatibility, protocol governance, capacity, canary delivery, and safe degradation, with preconditions, budgets, failure ",
+      "yaml_sha256": "17c911ec9776bf6ecbc185c50fd5de13f6416aafd0fa212811c15205ae0163f6"
+    },
+    {
+      "bindings": {
+        "skills": [
+          "govern-runtime-protocol-deployment"
+        ],
+        "workflow_steps": [
+          "model-capacity-cost-and-quality",
+          "observe-decide-and-handoff",
+          "probe-live-capabilities",
+          "stage-canary-with-fallback",
+          "validate-contract-and-compatibility"
+        ]
+      },
+      "files": {
+        "bindings": "orchestration/workflows/deploy-canary-and-compare/memory/bindings.json",
+        "memory_dir": "orchestration/workflows/deploy-canary-and-compare/memory",
+        "memory_md": "orchestration/workflows/deploy-canary-and-compare/memory/memory.md",
+        "stats": "orchestration/workflows/deploy-canary-and-compare/memory/stats.json",
+        "usage_log": "orchestration/workflows/deploy-canary-and-compare/memory/usage.jsonl"
+      },
+      "kind": "workflow",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "orchestration/workflows/declared-suite.yaml",
+      "subject_id": "deploy-canary-and-compare",
+      "title": "Coordinate deploy canary and compare across explicit ordered dependencies within runtime compatibility, protocol governance, capacity, canary delivery, and safe degradation, with preconditions, budget",
+      "yaml_sha256": "17c911ec9776bf6ecbc185c50fd5de13f6416aafd0fa212811c15205ae0163f6"
+    },
+    {
+      "bindings": {
+        "skills": [
+          "operate-memory-retrieval-observability"
+        ],
+        "workflow_steps": [
+          "bind-project-and-subject-scope",
+          "record-trace-and-quality",
+          "retain-promote-or-purge-by-policy",
+          "retrieve-and-budget-context",
+          "validate-ingestion-and-provenance"
+        ]
+      },
+      "files": {
+        "bindings": "orchestration/workflows/design-memory-system/memory/bindings.json",
+        "memory_dir": "orchestration/workflows/design-memory-system/memory",
+        "memory_md": "orchestration/workflows/design-memory-system/memory/memory.md",
+        "stats": "orchestration/workflows/design-memory-system/memory/stats.json",
+        "usage_log": "orchestration/workflows/design-memory-system/memory/usage.jsonl"
+      },
+      "kind": "workflow",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "orchestration/workflows/declared-suite.yaml",
+      "subject_id": "design-memory-system",
+      "title": "Coordinate design memory system across explicit ordered dependencies within isolated memory, grounded retrieval, telemetry, replay, retention, and quality drift, with preconditions, budgets, failure p",
+      "yaml_sha256": "17c911ec9776bf6ecbc185c50fd5de13f6416aafd0fa212811c15205ae0163f6"
+    },
+    {
+      "bindings": {
+        "skills": [
+          "manage-revocable-certification"
+        ],
+        "workflow_steps": [
+          "freeze-scope-and-denominators",
+          "issue-hash-bound-certificate",
+          "monitor-revoke-and-recertify",
+          "reconcile-owners-and-artifacts",
+          "run-independent-completion-gates"
+        ]
+      },
+      "files": {
+        "bindings": "orchestration/workflows/detect-and-plan-conflict-merges/memory/bindings.json",
+        "memory_dir": "orchestration/workflows/detect-and-plan-conflict-merges/memory",
+        "memory_md": "orchestration/workflows/detect-and-plan-conflict-merges/memory/memory.md",
+        "stats": "orchestration/workflows/detect-and-plan-conflict-merges/memory/stats.json",
+        "usage_log": "orchestration/workflows/detect-and-plan-conflict-merges/memory/usage.jsonl"
+      },
+      "kind": "workflow",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "orchestration/workflows/declared-suite.yaml",
+      "subject_id": "detect-and-plan-conflict-merges",
+      "title": "Coordinate detect and plan conflict merges across explicit ordered dependencies within completeness, collision handling, revocable certification, recertification, and release trust, with preconditions",
+      "yaml_sha256": "17c911ec9776bf6ecbc185c50fd5de13f6416aafd0fa212811c15205ae0163f6"
+    },
+    {
+      "bindings": {
+        "skills": [
+          "analyze-repository-intelligence"
+        ],
+        "workflow_steps": [
+          "form-testable-hypotheses",
+          "inventory-repository",
+          "measure-change-impact",
+          "propose-minimal-safe-action",
+          "trace-relationships"
+        ]
+      },
+      "files": {
+        "bindings": "orchestration/workflows/diagnose-root-cause/memory/bindings.json",
+        "memory_dir": "orchestration/workflows/diagnose-root-cause/memory",
+        "memory_md": "orchestration/workflows/diagnose-root-cause/memory/memory.md",
+        "stats": "orchestration/workflows/diagnose-root-cause/memory/stats.json",
+        "usage_log": "orchestration/workflows/diagnose-root-cause/memory/usage.jsonl"
+      },
+      "kind": "workflow",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "orchestration/workflows/declared-suite.yaml",
+      "subject_id": "diagnose-root-cause",
+      "title": "Coordinate diagnose root cause across explicit ordered dependencies within repository mapping, runtime tracing, impact analysis, reproduction, and safe change planning, with preconditions, budgets, fa",
+      "yaml_sha256": "17c911ec9776bf6ecbc185c50fd5de13f6416aafd0fa212811c15205ae0163f6"
+    },
+    {
+      "bindings": {
+        "skills": [
+          "engineer-verification-lab"
+        ],
+        "workflow_steps": [
+          "define-observable-claim",
+          "generate-positive-and-adversarial-cases",
+          "run-and-minimize",
+          "score-and-promote-regressions",
+          "select-independent-oracle"
+        ]
+      },
+      "files": {
+        "bindings": "orchestration/workflows/evaluate-agent-end-to-end/memory/bindings.json",
+        "memory_dir": "orchestration/workflows/evaluate-agent-end-to-end/memory",
+        "memory_md": "orchestration/workflows/evaluate-agent-end-to-end/memory/memory.md",
+        "stats": "orchestration/workflows/evaluate-agent-end-to-end/memory/stats.json",
+        "usage_log": "orchestration/workflows/evaluate-agent-end-to-end/memory/usage.jsonl"
+      },
+      "kind": "workflow",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "orchestration/workflows/declared-suite.yaml",
+      "subject_id": "evaluate-agent-end-to-end",
+      "title": "Coordinate evaluate agent end to end across explicit ordered dependencies within verification design, adversarial evaluation, regression quality, and trajectory assessment, with preconditions, budgets",
+      "yaml_sha256": "17c911ec9776bf6ecbc185c50fd5de13f6416aafd0fa212811c15205ae0163f6"
+    },
+    {
+      "bindings": {
+        "skills": [
+          "govern-operating-kernel"
+        ],
+        "workflow_steps": [
+          "authorize-effects",
+          "commit-evidence-and-state",
+          "establish-scope",
+          "execute-bounded-work",
+          "independently-verify"
+        ]
+      },
+      "files": {
+        "bindings": "orchestration/workflows/execute-controlled-capability/memory/bindings.json",
+        "memory_dir": "orchestration/workflows/execute-controlled-capability/memory",
+        "memory_md": "orchestration/workflows/execute-controlled-capability/memory/memory.md",
+        "stats": "orchestration/workflows/execute-controlled-capability/memory/stats.json",
+        "usage_log": "orchestration/workflows/execute-controlled-capability/memory/usage.jsonl"
+      },
+      "kind": "workflow",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "orchestration/workflows/declared-suite.yaml",
+      "subject_id": "execute-controlled-capability",
+      "title": "Coordinate execute controlled capability across explicit ordered dependencies within governed execution, evidence, permission, recovery, and durable task control, with preconditions, budgets, failure ",
+      "yaml_sha256": "17c911ec9776bf6ecbc185c50fd5de13f6416aafd0fa212811c15205ae0163f6"
+    },
+    {
+      "bindings": {
+        "skills": [
+          "manage-revocable-certification"
+        ],
+        "workflow_steps": [
+          "freeze-scope-and-denominators",
+          "issue-hash-bound-certificate",
+          "monitor-revoke-and-recertify",
+          "reconcile-owners-and-artifacts",
+          "run-independent-completion-gates"
+        ]
+      },
+      "files": {
+        "bindings": "orchestration/workflows/field-feedback-to-regression/memory/bindings.json",
+        "memory_dir": "orchestration/workflows/field-feedback-to-regression/memory",
+        "memory_md": "orchestration/workflows/field-feedback-to-regression/memory/memory.md",
+        "stats": "orchestration/workflows/field-feedback-to-regression/memory/stats.json",
+        "usage_log": "orchestration/workflows/field-feedback-to-regression/memory/usage.jsonl"
+      },
+      "kind": "workflow",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "orchestration/workflows/declared-suite.yaml",
+      "subject_id": "field-feedback-to-regression",
+      "title": "Coordinate field feedback to regression across explicit ordered dependencies within completeness, collision handling, revocable certification, recertification, and release trust, with preconditions, b",
+      "yaml_sha256": "17c911ec9776bf6ecbc185c50fd5de13f6416aafd0fa212811c15205ae0163f6"
+    },
+    {
+      "bindings": {
+        "skills": [
+          "manage-revocable-certification"
+        ],
+        "workflow_steps": [
+          "freeze-scope-and-denominators",
+          "issue-hash-bound-certificate",
+          "monitor-revoke-and-recertify",
+          "reconcile-owners-and-artifacts",
+          "run-independent-completion-gates"
+        ]
+      },
+      "files": {
+        "bindings": "orchestration/workflows/final-capability-certification/memory/bindings.json",
+        "memory_dir": "orchestration/workflows/final-capability-certification/memory",
+        "memory_md": "orchestration/workflows/final-capability-certification/memory/memory.md",
+        "stats": "orchestration/workflows/final-capability-certification/memory/stats.json",
+        "usage_log": "orchestration/workflows/final-capability-certification/memory/usage.jsonl"
+      },
+      "kind": "workflow",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "orchestration/workflows/declared-suite.yaml",
+      "subject_id": "final-capability-certification",
+      "title": "Coordinate final capability certification across explicit ordered dependencies within completeness, collision handling, revocable certification, recertification, and release trust, with preconditions,",
+      "yaml_sha256": "17c911ec9776bf6ecbc185c50fd5de13f6416aafd0fa212811c15205ae0163f6"
+    },
+    {
+      "bindings": {
+        "skills": [
+          "manage-revocable-certification"
+        ],
+        "workflow_steps": [
+          "freeze-scope-and-denominators",
+          "issue-hash-bound-certificate",
+          "monitor-revoke-and-recertify",
+          "reconcile-owners-and-artifacts",
+          "run-independent-completion-gates"
+        ]
+      },
+      "files": {
+        "bindings": "orchestration/workflows/freeze-foundational-scope/memory/bindings.json",
+        "memory_dir": "orchestration/workflows/freeze-foundational-scope/memory",
+        "memory_md": "orchestration/workflows/freeze-foundational-scope/memory/memory.md",
+        "stats": "orchestration/workflows/freeze-foundational-scope/memory/stats.json",
+        "usage_log": "orchestration/workflows/freeze-foundational-scope/memory/usage.jsonl"
+      },
+      "kind": "workflow",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "orchestration/workflows/declared-suite.yaml",
+      "subject_id": "freeze-foundational-scope",
+      "title": "Coordinate freeze foundational scope across explicit ordered dependencies within completeness, collision handling, revocable certification, recertification, and release trust, with preconditions, budg",
+      "yaml_sha256": "17c911ec9776bf6ecbc185c50fd5de13f6416aafd0fa212811c15205ae0163f6"
+    },
+    {
+      "bindings": {
+        "skills": [
+          "engineer-verification-lab"
+        ],
+        "workflow_steps": [
+          "define-observable-claim",
+          "generate-positive-and-adversarial-cases",
+          "run-and-minimize",
+          "score-and-promote-regressions",
+          "select-independent-oracle"
+        ]
+      },
+      "files": {
+        "bindings": "orchestration/workflows/fuzz-and-minimize/memory/bindings.json",
+        "memory_dir": "orchestration/workflows/fuzz-and-minimize/memory",
+        "memory_md": "orchestration/workflows/fuzz-and-minimize/memory/memory.md",
+        "stats": "orchestration/workflows/fuzz-and-minimize/memory/stats.json",
+        "usage_log": "orchestration/workflows/fuzz-and-minimize/memory/usage.jsonl"
+      },
+      "kind": "workflow",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "orchestration/workflows/declared-suite.yaml",
+      "subject_id": "fuzz-and-minimize",
+      "title": "Coordinate fuzz and minimize across explicit ordered dependencies within verification design, adversarial evaluation, regression quality, and trajectory assessment, with preconditions, budgets, failur",
+      "yaml_sha256": "17c911ec9776bf6ecbc185c50fd5de13f6416aafd0fa212811c15205ae0163f6"
+    },
+    {
+      "bindings": {
+        "skills": [
+          "secure-agent-supply-chain"
+        ],
+        "workflow_steps": [
+          "classify-assets-and-trust-boundaries",
+          "enumerate-threats-and-authority",
+          "release-or-quarantine-with-evidence",
+          "scan-and-contain",
+          "verify-provenance-and-reproducibility"
+        ]
+      },
+      "files": {
+        "bindings": "orchestration/workflows/handle-ai-security-incident/memory/bindings.json",
+        "memory_dir": "orchestration/workflows/handle-ai-security-incident/memory",
+        "memory_md": "orchestration/workflows/handle-ai-security-incident/memory/memory.md",
+        "stats": "orchestration/workflows/handle-ai-security-incident/memory/stats.json",
+        "usage_log": "orchestration/workflows/handle-ai-security-incident/memory/usage.jsonl"
+      },
+      "kind": "workflow",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "orchestration/workflows/declared-suite.yaml",
+      "subject_id": "handle-ai-security-incident",
+      "title": "Coordinate handle ai security incident across explicit ordered dependencies within security boundaries, sandboxing, authority, supply-chain provenance, and incident response, with preconditions, budge",
+      "yaml_sha256": "17c911ec9776bf6ecbc185c50fd5de13f6416aafd0fa212811c15205ae0163f6"
+    },
+    {
+      "bindings": {
+        "skills": [
+          "govern-runtime-protocol-deployment"
+        ],
+        "workflow_steps": [
+          "model-capacity-cost-and-quality",
+          "observe-decide-and-handoff",
+          "probe-live-capabilities",
+          "stage-canary-with-fallback",
+          "validate-contract-and-compatibility"
+        ]
+      },
+      "files": {
+        "bindings": "orchestration/workflows/human-review-and-handoff/memory/bindings.json",
+        "memory_dir": "orchestration/workflows/human-review-and-handoff/memory",
+        "memory_md": "orchestration/workflows/human-review-and-handoff/memory/memory.md",
+        "stats": "orchestration/workflows/human-review-and-handoff/memory/stats.json",
+        "usage_log": "orchestration/workflows/human-review-and-handoff/memory/usage.jsonl"
+      },
+      "kind": "workflow",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "orchestration/workflows/declared-suite.yaml",
+      "subject_id": "human-review-and-handoff",
+      "title": "Coordinate human review and handoff across explicit ordered dependencies within runtime compatibility, protocol governance, capacity, canary delivery, and safe degradation, with preconditions, budgets",
+      "yaml_sha256": "17c911ec9776bf6ecbc185c50fd5de13f6416aafd0fa212811c15205ae0163f6"
+    },
+    {
+      "bindings": {
+        "skills": [
+          "analyze-repository-intelligence"
+        ],
+        "workflow_steps": [
+          "form-testable-hypotheses",
+          "inventory-repository",
+          "measure-change-impact",
+          "propose-minimal-safe-action",
+          "trace-relationships"
+        ]
+      },
+      "files": {
+        "bindings": "orchestration/workflows/implement-verified-change/memory/bindings.json",
+        "memory_dir": "orchestration/workflows/implement-verified-change/memory",
+        "memory_md": "orchestration/workflows/implement-verified-change/memory/memory.md",
+        "stats": "orchestration/workflows/implement-verified-change/memory/stats.json",
+        "usage_log": "orchestration/workflows/implement-verified-change/memory/usage.jsonl"
+      },
+      "kind": "workflow",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "orchestration/workflows/declared-suite.yaml",
+      "subject_id": "implement-verified-change",
+      "title": "Coordinate implement verified change across explicit ordered dependencies within repository mapping, runtime tracing, impact analysis, reproduction, and safe change planning, with preconditions, budge",
+      "yaml_sha256": "17c911ec9776bf6ecbc185c50fd5de13f6416aafd0fa212811c15205ae0163f6"
+    },
+    {
+      "bindings": {
+        "skills": [
+          "govern-runtime-protocol-deployment"
+        ],
+        "workflow_steps": [
+          "model-capacity-cost-and-quality",
+          "observe-decide-and-handoff",
+          "probe-live-capabilities",
+          "stage-canary-with-fallback",
+          "validate-contract-and-compatibility"
+        ]
+      },
+      "files": {
+        "bindings": "orchestration/workflows/import-and-govern-tool/memory/bindings.json",
+        "memory_dir": "orchestration/workflows/import-and-govern-tool/memory",
+        "memory_md": "orchestration/workflows/import-and-govern-tool/memory/memory.md",
+        "stats": "orchestration/workflows/import-and-govern-tool/memory/stats.json",
+        "usage_log": "orchestration/workflows/import-and-govern-tool/memory/usage.jsonl"
+      },
+      "kind": "workflow",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "orchestration/workflows/declared-suite.yaml",
+      "subject_id": "import-and-govern-tool",
+      "title": "Coordinate import and govern tool across explicit ordered dependencies within runtime compatibility, protocol governance, capacity, canary delivery, and safe degradation, with preconditions, budgets, ",
+      "yaml_sha256": "17c911ec9776bf6ecbc185c50fd5de13f6416aafd0fa212811c15205ae0163f6"
+    },
+    {
+      "bindings": {
+        "skills": [
+          "govern-operating-kernel"
+        ],
+        "workflow_steps": [
+          "authorize-effects",
+          "commit-evidence-and-state",
+          "establish-scope",
+          "execute-bounded-work",
+          "independently-verify"
+        ]
+      },
+      "files": {
+        "bindings": "orchestration/workflows/independent-verify-result/memory/bindings.json",
+        "memory_dir": "orchestration/workflows/independent-verify-result/memory",
+        "memory_md": "orchestration/workflows/independent-verify-result/memory/memory.md",
+        "stats": "orchestration/workflows/independent-verify-result/memory/stats.json",
+        "usage_log": "orchestration/workflows/independent-verify-result/memory/usage.jsonl"
+      },
+      "kind": "workflow",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "orchestration/workflows/declared-suite.yaml",
+      "subject_id": "independent-verify-result",
+      "title": "Coordinate independent verify result across explicit ordered dependencies within governed execution, evidence, permission, recovery, and durable task control, with preconditions, budgets, failure poli",
+      "yaml_sha256": "17c911ec9776bf6ecbc185c50fd5de13f6416aafd0fa212811c15205ae0163f6"
+    },
+    {
+      "bindings": {
+        "skills": [
+          "operate-memory-retrieval-observability"
+        ],
+        "workflow_steps": [
+          "bind-project-and-subject-scope",
+          "record-trace-and-quality",
+          "retain-promote-or-purge-by-policy",
+          "retrieve-and-budget-context",
+          "validate-ingestion-and-provenance"
+        ]
+      },
+      "files": {
+        "bindings": "orchestration/workflows/ingest-and-index-corpus/memory/bindings.json",
+        "memory_dir": "orchestration/workflows/ingest-and-index-corpus/memory",
+        "memory_md": "orchestration/workflows/ingest-and-index-corpus/memory/memory.md",
+        "stats": "orchestration/workflows/ingest-and-index-corpus/memory/stats.json",
+        "usage_log": "orchestration/workflows/ingest-and-index-corpus/memory/usage.jsonl"
+      },
+      "kind": "workflow",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "orchestration/workflows/declared-suite.yaml",
+      "subject_id": "ingest-and-index-corpus",
+      "title": "Coordinate ingest and index corpus across explicit ordered dependencies within isolated memory, grounded retrieval, telemetry, replay, retention, and quality drift, with preconditions, budgets, failur",
+      "yaml_sha256": "17c911ec9776bf6ecbc185c50fd5de13f6416aafd0fa212811c15205ae0163f6"
+    },
+    {
+      "bindings": {
+        "skills": [
+          "operate-memory-retrieval-observability"
+        ],
+        "workflow_steps": [
+          "bind-project-and-subject-scope",
+          "record-trace-and-quality",
+          "retain-promote-or-purge-by-policy",
+          "retrieve-and-budget-context",
+          "validate-ingestion-and-provenance"
+        ]
+      },
+      "files": {
+        "bindings": "orchestration/workflows/instrument-agent-workflow/memory/bindings.json",
+        "memory_dir": "orchestration/workflows/instrument-agent-workflow/memory",
+        "memory_md": "orchestration/workflows/instrument-agent-workflow/memory/memory.md",
+        "stats": "orchestration/workflows/instrument-agent-workflow/memory/stats.json",
+        "usage_log": "orchestration/workflows/instrument-agent-workflow/memory/usage.jsonl"
+      },
+      "kind": "workflow",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "orchestration/workflows/declared-suite.yaml",
+      "subject_id": "instrument-agent-workflow",
+      "title": "Coordinate instrument agent workflow across explicit ordered dependencies within isolated memory, grounded retrieval, telemetry, replay, retention, and quality drift, with preconditions, budgets, fail",
+      "yaml_sha256": "17c911ec9776bf6ecbc185c50fd5de13f6416aafd0fa212811c15205ae0163f6"
+    },
+    {
+      "bindings": {
+        "skills": [
+          "analyze-repository-intelligence"
+        ],
+        "workflow_steps": [
+          "form-testable-hypotheses",
+          "inventory-repository",
+          "measure-change-impact",
+          "propose-minimal-safe-action",
+          "trace-relationships"
+        ]
+      },
+      "files": {
+        "bindings": "orchestration/workflows/issue-to-minimal-reproduction/memory/bindings.json",
+        "memory_dir": "orchestration/workflows/issue-to-minimal-reproduction/memory",
+        "memory_md": "orchestration/workflows/issue-to-minimal-reproduction/memory/memory.md",
+        "stats": "orchestration/workflows/issue-to-minimal-reproduction/memory/stats.json",
+        "usage_log": "orchestration/workflows/issue-to-minimal-reproduction/memory/usage.jsonl"
+      },
+      "kind": "workflow",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "orchestration/workflows/declared-suite.yaml",
+      "subject_id": "issue-to-minimal-reproduction",
+      "title": "Coordinate issue to minimal reproduction across explicit ordered dependencies within repository mapping, runtime tracing, impact analysis, reproduction, and safe change planning, with preconditions, b",
+      "yaml_sha256": "17c911ec9776bf6ecbc185c50fd5de13f6416aafd0fa212811c15205ae0163f6"
+    },
+    {
+      "bindings": {
+        "skills": [
+          "operate-memory-retrieval-observability"
+        ],
+        "workflow_steps": [
+          "bind-project-and-subject-scope",
+          "record-trace-and-quality",
+          "retain-promote-or-purge-by-policy",
+          "retrieve-and-budget-context",
+          "validate-ingestion-and-provenance"
+        ]
+      },
+      "files": {
+        "bindings": "orchestration/workflows/monitor-quality-drift/memory/bindings.json",
+        "memory_dir": "orchestration/workflows/monitor-quality-drift/memory",
+        "memory_md": "orchestration/workflows/monitor-quality-drift/memory/memory.md",
+        "stats": "orchestration/workflows/monitor-quality-drift/memory/stats.json",
+        "usage_log": "orchestration/workflows/monitor-quality-drift/memory/usage.jsonl"
+      },
+      "kind": "workflow",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "orchestration/workflows/declared-suite.yaml",
+      "subject_id": "monitor-quality-drift",
+      "title": "Coordinate monitor quality drift across explicit ordered dependencies within isolated memory, grounded retrieval, telemetry, replay, retention, and quality drift, with preconditions, budgets, failure ",
+      "yaml_sha256": "17c911ec9776bf6ecbc185c50fd5de13f6416aafd0fa212811c15205ae0163f6"
+    },
+    {
+      "bindings": {
+        "skills": [
+          "engineer-verification-lab"
+        ],
+        "workflow_steps": [
+          "define-observable-claim",
+          "generate-positive-and-adversarial-cases",
+          "run-and-minimize",
+          "score-and-promote-regressions",
+          "select-independent-oracle"
+        ]
+      },
+      "files": {
+        "bindings": "orchestration/workflows/mutation-quality-gate/memory/bindings.json",
+        "memory_dir": "orchestration/workflows/mutation-quality-gate/memory",
+        "memory_md": "orchestration/workflows/mutation-quality-gate/memory/memory.md",
+        "stats": "orchestration/workflows/mutation-quality-gate/memory/stats.json",
+        "usage_log": "orchestration/workflows/mutation-quality-gate/memory/usage.jsonl"
+      },
+      "kind": "workflow",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "orchestration/workflows/declared-suite.yaml",
+      "subject_id": "mutation-quality-gate",
+      "title": "Coordinate mutation quality gate across explicit ordered dependencies within verification design, adversarial evaluation, regression quality, and trajectory assessment, with preconditions, budgets, fa",
+      "yaml_sha256": "17c911ec9776bf6ecbc185c50fd5de13f6416aafd0fa212811c15205ae0163f6"
+    },
+    {
+      "bindings": {
+        "skills": [
+          "secure-agent-supply-chain"
+        ],
+        "workflow_steps": [
+          "classify-assets-and-trust-boundaries",
+          "enumerate-threats-and-authority",
+          "release-or-quarantine-with-evidence",
+          "scan-and-contain",
+          "verify-provenance-and-reproducibility"
+        ]
+      },
+      "files": {
+        "bindings": "orchestration/workflows/perform-security-review/memory/bindings.json",
+        "memory_dir": "orchestration/workflows/perform-security-review/memory",
+        "memory_md": "orchestration/workflows/perform-security-review/memory/memory.md",
+        "stats": "orchestration/workflows/perform-security-review/memory/stats.json",
+        "usage_log": "orchestration/workflows/perform-security-review/memory/usage.jsonl"
+      },
+      "kind": "workflow",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "orchestration/workflows/declared-suite.yaml",
+      "subject_id": "perform-security-review",
+      "title": "Coordinate perform security review across explicit ordered dependencies within security boundaries, sandboxing, authority, supply-chain provenance, and incident response, with preconditions, budgets, ",
+      "yaml_sha256": "17c911ec9776bf6ecbc185c50fd5de13f6416aafd0fa212811c15205ae0163f6"
+    },
+    {
+      "bindings": {
+        "skills": [
+          "architecture-deepening-audit",
+          "context-handoff-package",
+          "decision-wayfinding",
+          "deep-module-design",
+          "design-it-twice",
+          "domain-language-maintenance",
+          "dual-axis-code-review",
+          "frontier-questioning",
+          "guided-procedure-wizard",
+          "intent-preserving-merge-resolution",
+          "questionnaire-delegation",
+          "tracer-bullet-planning"
+        ],
+        "workflow_steps": [
+          "audit-depth",
+          "canonical-language",
+          "compare-designs",
+          "decision-map",
+          "delegate-authority",
+          "design-module",
+          "handoff",
+          "manual-transition",
+          "plan-slices",
+          "question-frontier",
+          "reconcile-intent",
+          "review-two-axes"
+        ]
+      },
+      "files": {
+        "bindings": "orchestration/workflows/engineering-reasoning-loop/memory/bindings.json",
+        "memory_dir": "orchestration/workflows/engineering-reasoning-loop/memory",
+        "memory_md": "orchestration/workflows/engineering-reasoning-loop/memory/memory.md",
+        "stats": "orchestration/workflows/engineering-reasoning-loop/memory/stats.json",
+        "usage_log": "orchestration/workflows/engineering-reasoning-loop/memory/usage.jsonl"
+      },
+      "kind": "workflow",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "orchestration/workflows/engineering-reasoning-loop.yaml",
+      "subject_id": "engineering-reasoning-loop",
+      "title": "Resolve consequential uncertainty, stabilize project language and interfaces, plan vertical slices, independently review results, and preserve continuation state.",
+      "yaml_sha256": "c97995222f5546164e26c331a2b9503161e560db94011f969aedf8c15e14f39b"
+    },
+    {
+      "bindings": {
+        "skills": [
+          "admit-capability",
+          "audit-source-capabilities",
+          "enforce-source-import-boundaries",
+          "govern-external-capability-intake",
+          "run-evidence-campaigns"
+        ],
+        "workflow_steps": [
+          "admission",
+          "certify",
+          "inventory",
+          "license",
+          "overlap",
+          "plan-stage",
+          "search-metadata"
+        ]
+      },
+      "files": {
+        "bindings": "orchestration/workflows/external-capability-intake/memory/bindings.json",
+        "memory_dir": "orchestration/workflows/external-capability-intake/memory",
+        "memory_md": "orchestration/workflows/external-capability-intake/memory/memory.md",
+        "stats": "orchestration/workflows/external-capability-intake/memory/stats.json",
+        "usage_log": "orchestration/workflows/external-capability-intake/memory/usage.jsonl"
+      },
+      "kind": "workflow",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "orchestration/workflows/external-capability-intake.yaml",
+      "subject_id": "external-capability-intake",
+      "title": "Inventory, search, reconcile, stage, admit, and certify external capability candidates without executing imported source or mutating active registries during staging.",
+      "yaml_sha256": "9977439caa9d09c3ef38b743a0a38aeea028d51e467f528a6f195a587e6969b9"
+    },
+    {
+      "bindings": {
+        "skills": [
+          "audit-source-capabilities",
+          "enforce-source-import-boundaries",
+          "govern-knowledge-refinery",
+          "run-evidence-campaigns",
+          "validate-knowledge-relationships"
+        ],
+        "workflow_steps": [
+          "admission",
+          "calibrate",
+          "certify",
+          "classify",
+          "extract",
+          "graph-audit",
+          "inventory",
+          "merge-plan",
+          "nsai-object-validation",
+          "simulate",
+          "stage-approved"
+        ]
+      },
+      "files": {
+        "bindings": "orchestration/workflows/knowledge-refinery/memory/bindings.json",
+        "memory_dir": "orchestration/workflows/knowledge-refinery/memory",
+        "memory_md": "orchestration/workflows/knowledge-refinery/memory/memory.md",
+        "stats": "orchestration/workflows/knowledge-refinery/memory/stats.json",
+        "usage_log": "orchestration/workflows/knowledge-refinery/memory/usage.jsonl"
+      },
+      "kind": "workflow",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "orchestration/workflows/knowledge-refinery.yaml",
+      "subject_id": "knowledge-refinery",
+      "title": "Convert untrusted source material, including individual NSAI JSON objects, into reviewed, graph-coherent, retrieval-tested, non-destructive canonical change proposals.",
+      "yaml_sha256": "faf4b2998817cdd5b0edb927e401479c5c7a7cf991173a8fc11ac17775498b10"
+    },
+    {
+      "bindings": {
+        "skills": [
+          "engineer-hybrid-retrieval",
+          "evaluate-retrieval-readiness",
+          "govern-memory-fabric",
+          "operate-memory-retrieval-observability"
+        ],
+        "workflow_steps": [
+          "assemble",
+          "build-scenes",
+          "checkpoint",
+          "compact",
+          "evaluate",
+          "extract-l1",
+          "observe",
+          "persist-l0",
+          "promote",
+          "rank",
+          "resolve-conflicts",
+          "resolve-loadout",
+          "sanitize-capture",
+          "tier-and-publish"
+        ]
+      },
+      "files": {
+        "bindings": "orchestration/workflows/layered-memory-lifecycle/memory/bindings.json",
+        "memory_dir": "orchestration/workflows/layered-memory-lifecycle/memory",
+        "memory_md": "orchestration/workflows/layered-memory-lifecycle/memory/memory.md",
+        "stats": "orchestration/workflows/layered-memory-lifecycle/memory/stats.json",
+        "usage_log": "orchestration/workflows/layered-memory-lifecycle/memory/usage.jsonl"
+      },
+      "kind": "workflow",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "orchestration/workflows/layered-memory-lifecycle.yaml",
+      "subject_id": "layered-memory-lifecycle",
+      "title": "Capture, distill, govern, tier, retrieve, assemble, checkpoint, compact and evaluate project-scoped memory without creating a parallel authority.",
+      "yaml_sha256": "ba37c4005866639a04dbf731d4476041bf2cf33c03859cf117c9e1ab4974ecdd"
+    },
+    {
+      "bindings": {
+        "workflow_steps": [
+          "admit_residency",
+          "execute_owned_task",
+          "lease_if_usage",
+          "plan_lane",
+          "record_evidence",
+          "release_and_reconcile",
+          "resolve_lane_models"
+        ]
+      },
+      "files": {
+        "bindings": "orchestration/workflows/local-model-lane-orchestration/memory/bindings.json",
+        "memory_dir": "orchestration/workflows/local-model-lane-orchestration/memory",
+        "memory_md": "orchestration/workflows/local-model-lane-orchestration/memory/memory.md",
+        "stats": "orchestration/workflows/local-model-lane-orchestration/memory/stats.json",
+        "usage_log": "orchestration/workflows/local-model-lane-orchestration/memory/usage.jsonl"
+      },
+      "kind": "workflow",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "orchestration/workflows/local-model-lane-orchestration.yaml",
+      "subject_id": "local-model-lane-orchestration",
+      "title": "local-model-lane-orchestration",
+      "yaml_sha256": "65514035f2bb388c5c750fcefa0d3b67b599bef826c1c7986ad16903533e4cf8"
+    },
+    {
+      "bindings": {},
+      "files": {
+        "bindings": "orchestration/workflows/reason-under-uncertainty/memory/bindings.json",
+        "memory_dir": "orchestration/workflows/reason-under-uncertainty/memory",
+        "memory_md": "orchestration/workflows/reason-under-uncertainty/memory/memory.md",
+        "stats": "orchestration/workflows/reason-under-uncertainty/memory/stats.json",
+        "usage_log": "orchestration/workflows/reason-under-uncertainty/memory/usage.jsonl"
+      },
+      "kind": "workflow",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "orchestration/workflows/metacognitive-evolution.yaml",
+      "subject_id": "reason-under-uncertainty",
+      "title": "reason-under-uncertainty",
+      "yaml_sha256": "564712160950fbe5810f9829bc2808900e393aca98e98b8c90713a50da05427c"
+    },
+    {
+      "bindings": {},
+      "files": {
+        "bindings": "orchestration/workflows/resolve-conflicting-evidence-forensically/memory/bindings.json",
+        "memory_dir": "orchestration/workflows/resolve-conflicting-evidence-forensically/memory",
+        "memory_md": "orchestration/workflows/resolve-conflicting-evidence-forensically/memory/memory.md",
+        "stats": "orchestration/workflows/resolve-conflicting-evidence-forensically/memory/stats.json",
+        "usage_log": "orchestration/workflows/resolve-conflicting-evidence-forensically/memory/usage.jsonl"
+      },
+      "kind": "workflow",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "orchestration/workflows/metacognitive-evolution.yaml",
+      "subject_id": "resolve-conflicting-evidence-forensically",
+      "title": "resolve-conflicting-evidence-forensically",
+      "yaml_sha256": "564712160950fbe5810f9829bc2808900e393aca98e98b8c90713a50da05427c"
+    },
+    {
+      "bindings": {},
+      "files": {
+        "bindings": "orchestration/workflows/manage-hypothesis-diagnostic-portfolio/memory/bindings.json",
+        "memory_dir": "orchestration/workflows/manage-hypothesis-diagnostic-portfolio/memory",
+        "memory_md": "orchestration/workflows/manage-hypothesis-diagnostic-portfolio/memory/memory.md",
+        "stats": "orchestration/workflows/manage-hypothesis-diagnostic-portfolio/memory/stats.json",
+        "usage_log": "orchestration/workflows/manage-hypothesis-diagnostic-portfolio/memory/usage.jsonl"
+      },
+      "kind": "workflow",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "orchestration/workflows/metacognitive-evolution.yaml",
+      "subject_id": "manage-hypothesis-diagnostic-portfolio",
+      "title": "manage-hypothesis-diagnostic-portfolio",
+      "yaml_sha256": "564712160950fbe5810f9829bc2808900e393aca98e98b8c90713a50da05427c"
+    },
+    {
+      "bindings": {},
+      "files": {
+        "bindings": "orchestration/workflows/design-and-verify-semantic-effect-contract/memory/bindings.json",
+        "memory_dir": "orchestration/workflows/design-and-verify-semantic-effect-contract/memory",
+        "memory_md": "orchestration/workflows/design-and-verify-semantic-effect-contract/memory/memory.md",
+        "stats": "orchestration/workflows/design-and-verify-semantic-effect-contract/memory/stats.json",
+        "usage_log": "orchestration/workflows/design-and-verify-semantic-effect-contract/memory/usage.jsonl"
+      },
+      "kind": "workflow",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "orchestration/workflows/metacognitive-evolution.yaml",
+      "subject_id": "design-and-verify-semantic-effect-contract",
+      "title": "design-and-verify-semantic-effect-contract",
+      "yaml_sha256": "564712160950fbe5810f9829bc2808900e393aca98e98b8c90713a50da05427c"
+    },
+    {
+      "bindings": {},
+      "files": {
+        "bindings": "orchestration/workflows/inspect-reasoning-brain-mri/memory/bindings.json",
+        "memory_dir": "orchestration/workflows/inspect-reasoning-brain-mri/memory",
+        "memory_md": "orchestration/workflows/inspect-reasoning-brain-mri/memory/memory.md",
+        "stats": "orchestration/workflows/inspect-reasoning-brain-mri/memory/stats.json",
+        "usage_log": "orchestration/workflows/inspect-reasoning-brain-mri/memory/usage.jsonl"
+      },
+      "kind": "workflow",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "orchestration/workflows/metacognitive-evolution.yaml",
+      "subject_id": "inspect-reasoning-brain-mri",
+      "title": "inspect-reasoning-brain-mri",
+      "yaml_sha256": "564712160950fbe5810f9829bc2808900e393aca98e98b8c90713a50da05427c"
+    },
+    {
+      "bindings": {},
+      "files": {
+        "bindings": "orchestration/workflows/reconstruct-and-repair-failed-decision/memory/bindings.json",
+        "memory_dir": "orchestration/workflows/reconstruct-and-repair-failed-decision/memory",
+        "memory_md": "orchestration/workflows/reconstruct-and-repair-failed-decision/memory/memory.md",
+        "stats": "orchestration/workflows/reconstruct-and-repair-failed-decision/memory/stats.json",
+        "usage_log": "orchestration/workflows/reconstruct-and-repair-failed-decision/memory/usage.jsonl"
+      },
+      "kind": "workflow",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "orchestration/workflows/metacognitive-evolution.yaml",
+      "subject_id": "reconstruct-and-repair-failed-decision",
+      "title": "reconstruct-and-repair-failed-decision",
+      "yaml_sha256": "564712160950fbe5810f9829bc2808900e393aca98e98b8c90713a50da05427c"
+    },
+    {
+      "bindings": {},
+      "files": {
+        "bindings": "orchestration/workflows/build-and-evolve-capability-genome/memory/bindings.json",
+        "memory_dir": "orchestration/workflows/build-and-evolve-capability-genome/memory",
+        "memory_md": "orchestration/workflows/build-and-evolve-capability-genome/memory/memory.md",
+        "stats": "orchestration/workflows/build-and-evolve-capability-genome/memory/stats.json",
+        "usage_log": "orchestration/workflows/build-and-evolve-capability-genome/memory/usage.jsonl"
+      },
+      "kind": "workflow",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "orchestration/workflows/metacognitive-evolution.yaml",
+      "subject_id": "build-and-evolve-capability-genome",
+      "title": "build-and-evolve-capability-genome",
+      "yaml_sha256": "564712160950fbe5810f9829bc2808900e393aca98e98b8c90713a50da05427c"
+    },
+    {
+      "bindings": {},
+      "files": {
+        "bindings": "orchestration/workflows/route-profiled-multi-agent-team/memory/bindings.json",
+        "memory_dir": "orchestration/workflows/route-profiled-multi-agent-team/memory",
+        "memory_md": "orchestration/workflows/route-profiled-multi-agent-team/memory/memory.md",
+        "stats": "orchestration/workflows/route-profiled-multi-agent-team/memory/stats.json",
+        "usage_log": "orchestration/workflows/route-profiled-multi-agent-team/memory/usage.jsonl"
+      },
+      "kind": "workflow",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "orchestration/workflows/metacognitive-evolution.yaml",
+      "subject_id": "route-profiled-multi-agent-team",
+      "title": "route-profiled-multi-agent-team",
+      "yaml_sha256": "564712160950fbe5810f9829bc2808900e393aca98e98b8c90713a50da05427c"
+    },
+    {
+      "bindings": {},
+      "files": {
+        "bindings": "orchestration/workflows/run-closed-loop-optimization-cycle/memory/bindings.json",
+        "memory_dir": "orchestration/workflows/run-closed-loop-optimization-cycle/memory",
+        "memory_md": "orchestration/workflows/run-closed-loop-optimization-cycle/memory/memory.md",
+        "stats": "orchestration/workflows/run-closed-loop-optimization-cycle/memory/stats.json",
+        "usage_log": "orchestration/workflows/run-closed-loop-optimization-cycle/memory/usage.jsonl"
+      },
+      "kind": "workflow",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "orchestration/workflows/metacognitive-evolution.yaml",
+      "subject_id": "run-closed-loop-optimization-cycle",
+      "title": "run-closed-loop-optimization-cycle",
+      "yaml_sha256": "564712160950fbe5810f9829bc2808900e393aca98e98b8c90713a50da05427c"
+    },
+    {
+      "bindings": {},
+      "files": {
+        "bindings": "orchestration/workflows/induce-and-certify-meta-capability/memory/bindings.json",
+        "memory_dir": "orchestration/workflows/induce-and-certify-meta-capability/memory",
+        "memory_md": "orchestration/workflows/induce-and-certify-meta-capability/memory/memory.md",
+        "stats": "orchestration/workflows/induce-and-certify-meta-capability/memory/stats.json",
+        "usage_log": "orchestration/workflows/induce-and-certify-meta-capability/memory/usage.jsonl"
+      },
+      "kind": "workflow",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "orchestration/workflows/metacognitive-evolution.yaml",
+      "subject_id": "induce-and-certify-meta-capability",
+      "title": "induce-and-certify-meta-capability",
+      "yaml_sha256": "564712160950fbe5810f9829bc2808900e393aca98e98b8c90713a50da05427c"
+    },
+    {
+      "bindings": {},
+      "files": {
+        "bindings": "orchestration/workflows/profile-and-transfer-engineering-dna/memory/bindings.json",
+        "memory_dir": "orchestration/workflows/profile-and-transfer-engineering-dna/memory",
+        "memory_md": "orchestration/workflows/profile-and-transfer-engineering-dna/memory/memory.md",
+        "stats": "orchestration/workflows/profile-and-transfer-engineering-dna/memory/stats.json",
+        "usage_log": "orchestration/workflows/profile-and-transfer-engineering-dna/memory/usage.jsonl"
+      },
+      "kind": "workflow",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "orchestration/workflows/metacognitive-evolution.yaml",
+      "subject_id": "profile-and-transfer-engineering-dna",
+      "title": "profile-and-transfer-engineering-dna",
+      "yaml_sha256": "564712160950fbe5810f9829bc2808900e393aca98e98b8c90713a50da05427c"
+    },
+    {
+      "bindings": {},
+      "files": {
+        "bindings": "orchestration/workflows/simulate-knowledge-ecosystem/memory/bindings.json",
+        "memory_dir": "orchestration/workflows/simulate-knowledge-ecosystem/memory",
+        "memory_md": "orchestration/workflows/simulate-knowledge-ecosystem/memory/memory.md",
+        "stats": "orchestration/workflows/simulate-knowledge-ecosystem/memory/stats.json",
+        "usage_log": "orchestration/workflows/simulate-knowledge-ecosystem/memory/usage.jsonl"
+      },
+      "kind": "workflow",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "orchestration/workflows/metacognitive-evolution.yaml",
+      "subject_id": "simulate-knowledge-ecosystem",
+      "title": "simulate-knowledge-ecosystem",
+      "yaml_sha256": "564712160950fbe5810f9829bc2808900e393aca98e98b8c90713a50da05427c"
+    },
+    {
+      "bindings": {},
+      "files": {
+        "bindings": "orchestration/workflows/schedule-risk-based-revalidation/memory/bindings.json",
+        "memory_dir": "orchestration/workflows/schedule-risk-based-revalidation/memory",
+        "memory_md": "orchestration/workflows/schedule-risk-based-revalidation/memory/memory.md",
+        "stats": "orchestration/workflows/schedule-risk-based-revalidation/memory/stats.json",
+        "usage_log": "orchestration/workflows/schedule-risk-based-revalidation/memory/usage.jsonl"
+      },
+      "kind": "workflow",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "orchestration/workflows/metacognitive-evolution.yaml",
+      "subject_id": "schedule-risk-based-revalidation",
+      "title": "schedule-risk-based-revalidation",
+      "yaml_sha256": "564712160950fbe5810f9829bc2808900e393aca98e98b8c90713a50da05427c"
+    },
+    {
+      "bindings": {},
+      "files": {
+        "bindings": "orchestration/workflows/integrate-metacognitive-pack-safely/memory/bindings.json",
+        "memory_dir": "orchestration/workflows/integrate-metacognitive-pack-safely/memory",
+        "memory_md": "orchestration/workflows/integrate-metacognitive-pack-safely/memory/memory.md",
+        "stats": "orchestration/workflows/integrate-metacognitive-pack-safely/memory/stats.json",
+        "usage_log": "orchestration/workflows/integrate-metacognitive-pack-safely/memory/usage.jsonl"
+      },
+      "kind": "workflow",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "orchestration/workflows/metacognitive-evolution.yaml",
+      "subject_id": "integrate-metacognitive-pack-safely",
+      "title": "integrate-metacognitive-pack-safely",
+      "yaml_sha256": "564712160950fbe5810f9829bc2808900e393aca98e98b8c90713a50da05427c"
+    },
+    {
+      "bindings": {},
+      "files": {
+        "bindings": "orchestration/workflows/certify-metacognitive-evolution-layer/memory/bindings.json",
+        "memory_dir": "orchestration/workflows/certify-metacognitive-evolution-layer/memory",
+        "memory_md": "orchestration/workflows/certify-metacognitive-evolution-layer/memory/memory.md",
+        "stats": "orchestration/workflows/certify-metacognitive-evolution-layer/memory/stats.json",
+        "usage_log": "orchestration/workflows/certify-metacognitive-evolution-layer/memory/usage.jsonl"
+      },
+      "kind": "workflow",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "orchestration/workflows/metacognitive-evolution.yaml",
+      "subject_id": "certify-metacognitive-evolution-layer",
+      "title": "certify-metacognitive-evolution-layer",
+      "yaml_sha256": "564712160950fbe5810f9829bc2808900e393aca98e98b8c90713a50da05427c"
+    },
+    {
+      "bindings": {
+        "skills": [
+          "govern-persistent-memory"
+        ],
+        "workflow_steps": [
+          "emit-advisory-evidence",
+          "graph-preview",
+          "list-memory",
+          "review-preview",
+          "validate-boundary"
+        ]
+      },
+      "files": {
+        "bindings": "orchestration/workflows/persistent-memory-review/memory/bindings.json",
+        "memory_dir": "orchestration/workflows/persistent-memory-review/memory",
+        "memory_md": "orchestration/workflows/persistent-memory-review/memory/memory.md",
+        "stats": "orchestration/workflows/persistent-memory-review/memory/stats.json",
+        "usage_log": "orchestration/workflows/persistent-memory-review/memory/usage.jsonl"
+      },
+      "kind": "workflow",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "orchestration/workflows/persistent-memory-review.yaml",
+      "subject_id": "persistent-memory-review",
+      "title": "Read and review an external persistent-memory repository as noncanonical evidence without mutating Pacify-X memory, the external repository, or any public projection.",
+      "yaml_sha256": "d326872dc1b180f11888737d5fdd3cdaa22df45de5709bf0b609a5fc2437e446"
+    },
+    {
+      "bindings": {},
+      "files": {
+        "bindings": "orchestration/workflows/ai-tool-access-review/memory/bindings.json",
+        "memory_dir": "orchestration/workflows/ai-tool-access-review/memory",
+        "memory_md": "orchestration/workflows/ai-tool-access-review/memory/memory.md",
+        "stats": "orchestration/workflows/ai-tool-access-review/memory/stats.json",
+        "usage_log": "orchestration/workflows/ai-tool-access-review/memory/usage.jsonl"
+      },
+      "kind": "workflow",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "orchestration/workflows/service-capability-operations.yaml",
+      "subject_id": "ai-tool-access-review",
+      "title": "ai-tool-access-review",
+      "yaml_sha256": "4e951e99abf84cd122a80f04fe6cadad6cf250b90ecea2f0baef5b1b9d89abe0"
+    },
+    {
+      "bindings": {},
+      "files": {
+        "bindings": "orchestration/workflows/n8n-install-commission/memory/bindings.json",
+        "memory_dir": "orchestration/workflows/n8n-install-commission/memory",
+        "memory_md": "orchestration/workflows/n8n-install-commission/memory/memory.md",
+        "stats": "orchestration/workflows/n8n-install-commission/memory/stats.json",
+        "usage_log": "orchestration/workflows/n8n-install-commission/memory/usage.jsonl"
+      },
+      "kind": "workflow",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "orchestration/workflows/service-capability-operations.yaml",
+      "subject_id": "n8n-install-commission",
+      "title": "n8n-install-commission",
+      "yaml_sha256": "4e951e99abf84cd122a80f04fe6cadad6cf250b90ecea2f0baef5b1b9d89abe0"
+    },
+    {
+      "bindings": {},
+      "files": {
+        "bindings": "orchestration/workflows/n8n-production-security-review/memory/bindings.json",
+        "memory_dir": "orchestration/workflows/n8n-production-security-review/memory",
+        "memory_md": "orchestration/workflows/n8n-production-security-review/memory/memory.md",
+        "stats": "orchestration/workflows/n8n-production-security-review/memory/stats.json",
+        "usage_log": "orchestration/workflows/n8n-production-security-review/memory/usage.jsonl"
+      },
+      "kind": "workflow",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "orchestration/workflows/service-capability-operations.yaml",
+      "subject_id": "n8n-production-security-review",
+      "title": "n8n-production-security-review",
+      "yaml_sha256": "4e951e99abf84cd122a80f04fe6cadad6cf250b90ecea2f0baef5b1b9d89abe0"
+    },
+    {
+      "bindings": {},
+      "files": {
+        "bindings": "orchestration/workflows/n8n-supabase-integration-release/memory/bindings.json",
+        "memory_dir": "orchestration/workflows/n8n-supabase-integration-release/memory",
+        "memory_md": "orchestration/workflows/n8n-supabase-integration-release/memory/memory.md",
+        "stats": "orchestration/workflows/n8n-supabase-integration-release/memory/stats.json",
+        "usage_log": "orchestration/workflows/n8n-supabase-integration-release/memory/usage.jsonl"
+      },
+      "kind": "workflow",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "orchestration/workflows/service-capability-operations.yaml",
+      "subject_id": "n8n-supabase-integration-release",
+      "title": "n8n-supabase-integration-release",
+      "yaml_sha256": "4e951e99abf84cd122a80f04fe6cadad6cf250b90ecea2f0baef5b1b9d89abe0"
+    },
+    {
+      "bindings": {},
+      "files": {
+        "bindings": "orchestration/workflows/n8n-supabase-rag-release/memory/bindings.json",
+        "memory_dir": "orchestration/workflows/n8n-supabase-rag-release/memory",
+        "memory_md": "orchestration/workflows/n8n-supabase-rag-release/memory/memory.md",
+        "stats": "orchestration/workflows/n8n-supabase-rag-release/memory/stats.json",
+        "usage_log": "orchestration/workflows/n8n-supabase-rag-release/memory/usage.jsonl"
+      },
+      "kind": "workflow",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "orchestration/workflows/service-capability-operations.yaml",
+      "subject_id": "n8n-supabase-rag-release",
+      "title": "n8n-supabase-rag-release",
+      "yaml_sha256": "4e951e99abf84cd122a80f04fe6cadad6cf250b90ecea2f0baef5b1b9d89abe0"
+    },
+    {
+      "bindings": {},
+      "files": {
+        "bindings": "orchestration/workflows/n8n-workflow-release/memory/bindings.json",
+        "memory_dir": "orchestration/workflows/n8n-workflow-release/memory",
+        "memory_md": "orchestration/workflows/n8n-workflow-release/memory/memory.md",
+        "stats": "orchestration/workflows/n8n-workflow-release/memory/stats.json",
+        "usage_log": "orchestration/workflows/n8n-workflow-release/memory/usage.jsonl"
+      },
+      "kind": "workflow",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "orchestration/workflows/service-capability-operations.yaml",
+      "subject_id": "n8n-workflow-release",
+      "title": "n8n-workflow-release",
+      "yaml_sha256": "4e951e99abf84cd122a80f04fe6cadad6cf250b90ecea2f0baef5b1b9d89abe0"
+    },
+    {
+      "bindings": {},
+      "files": {
+        "bindings": "orchestration/workflows/supabase-local-to-production/memory/bindings.json",
+        "memory_dir": "orchestration/workflows/supabase-local-to-production/memory",
+        "memory_md": "orchestration/workflows/supabase-local-to-production/memory/memory.md",
+        "stats": "orchestration/workflows/supabase-local-to-production/memory/stats.json",
+        "usage_log": "orchestration/workflows/supabase-local-to-production/memory/usage.jsonl"
+      },
+      "kind": "workflow",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "orchestration/workflows/service-capability-operations.yaml",
+      "subject_id": "supabase-local-to-production",
+      "title": "supabase-local-to-production",
+      "yaml_sha256": "4e951e99abf84cd122a80f04fe6cadad6cf250b90ecea2f0baef5b1b9d89abe0"
+    },
+    {
+      "bindings": {},
+      "files": {
+        "bindings": "orchestration/workflows/supabase-secure-application/memory/bindings.json",
+        "memory_dir": "orchestration/workflows/supabase-secure-application/memory",
+        "memory_md": "orchestration/workflows/supabase-secure-application/memory/memory.md",
+        "stats": "orchestration/workflows/supabase-secure-application/memory/stats.json",
+        "usage_log": "orchestration/workflows/supabase-secure-application/memory/usage.jsonl"
+      },
+      "kind": "workflow",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "orchestration/workflows/service-capability-operations.yaml",
+      "subject_id": "supabase-secure-application",
+      "title": "supabase-secure-application",
+      "yaml_sha256": "4e951e99abf84cd122a80f04fe6cadad6cf250b90ecea2f0baef5b1b9d89abe0"
+    },
+    {
+      "bindings": {
+        "skills": [
+          "transcript-analysis",
+          "validate-engineering-outcomes"
+        ],
+        "workflow_steps": [
+          "export",
+          "extract",
+          "ingest",
+          "normalize-queue-terms",
+          "profile",
+          "separate-lifecycle",
+          "validate"
+        ]
+      },
+      "files": {
+        "bindings": "orchestration/workflows/transcript-evidence-extraction/memory/bindings.json",
+        "memory_dir": "orchestration/workflows/transcript-evidence-extraction/memory",
+        "memory_md": "orchestration/workflows/transcript-evidence-extraction/memory/memory.md",
+        "stats": "orchestration/workflows/transcript-evidence-extraction/memory/stats.json",
+        "usage_log": "orchestration/workflows/transcript-evidence-extraction/memory/usage.jsonl"
+      },
+      "kind": "workflow",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "orchestration/workflows/transcript-evidence-extraction.yaml",
+      "subject_id": "transcript-evidence-extraction",
+      "title": "Ingest transcripts immutably, apply one queue-owned semantic boundary, validate evidence and outcome states, and export canonical source-traceable records.",
+      "yaml_sha256": "fb2f39a017570e48f424c113b2683913ee51372f21c91b0fde474862095f6c3f"
+    },
+    {
+      "bindings": {
+        "required_context": [
+          "agent_id",
+          "correlation_id",
+          "intent_id",
+          "session_id",
+          "workspace_id"
+        ],
+        "skills": [
+          "agent-identity-permissions"
+        ]
+      },
+      "files": {
+        "bindings": "orchestration/workflows/agent-create-validate/memory/bindings.json",
+        "memory_dir": "orchestration/workflows/agent-create-validate/memory",
+        "memory_md": "orchestration/workflows/agent-create-validate/memory/memory.md",
+        "stats": "orchestration/workflows/agent-create-validate/memory/stats.json",
+        "usage_log": "orchestration/workflows/agent-create-validate/memory/usage.jsonl"
+      },
+      "kind": "workflow",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "orchestration/workflows/project_stream/agent_create_validate.yaml",
+      "subject_id": "agent-create-validate",
+      "title": "Validate and record a supplied agent specification",
+      "yaml_sha256": "47154884c6e8cb19d3df95c780ee15f913a9b19c75b6037adfc80a25bac02350"
+    },
+    {
+      "bindings": {
+        "required_context": [
+          "agent_id",
+          "correlation_id",
+          "intent_id",
+          "session_id",
+          "workspace_id"
+        ],
+        "skills": [
+          "autonomous-benchmark-lab",
+          "chaos-architect",
+          "outcome-contract-validator",
+          "repository-digital-twin",
+          "reproducibility-manifest"
+        ]
+      },
+      "files": {
+        "bindings": "orchestration/workflows/chaos-resilience-cycle/memory/bindings.json",
+        "memory_dir": "orchestration/workflows/chaos-resilience-cycle/memory",
+        "memory_md": "orchestration/workflows/chaos-resilience-cycle/memory/memory.md",
+        "stats": "orchestration/workflows/chaos-resilience-cycle/memory/stats.json",
+        "usage_log": "orchestration/workflows/chaos-resilience-cycle/memory/usage.jsonl"
+      },
+      "kind": "workflow",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "orchestration/workflows/project_stream/chaos_resilience_cycle.yaml",
+      "subject_id": "chaos-resilience-cycle",
+      "title": "Design and run bounded resilience experiments",
+      "yaml_sha256": "14f200cdc78e34e7b435c7c26339eed216032e28600cf1329ebce69c4073249d"
+    },
+    {
+      "bindings": {
+        "required_context": [
+          "agent_id",
+          "correlation_id",
+          "intent_id",
+          "session_id",
+          "workspace_id"
+        ],
+        "skills": [
+          "capability-gap-skill-foundry",
+          "decision-graph",
+          "framework-dna",
+          "opportunity-miner",
+          "pattern-miner",
+          "skill-health-entropy"
+        ]
+      },
+      "files": {
+        "bindings": "orchestration/workflows/continuous-improvement/memory/bindings.json",
+        "memory_dir": "orchestration/workflows/continuous-improvement/memory",
+        "memory_md": "orchestration/workflows/continuous-improvement/memory/memory.md",
+        "stats": "orchestration/workflows/continuous-improvement/memory/stats.json",
+        "usage_log": "orchestration/workflows/continuous-improvement/memory/usage.jsonl"
+      },
+      "kind": "workflow",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "orchestration/workflows/project_stream/continuous_improvement.yaml",
+      "subject_id": "continuous-improvement",
+      "title": "Find measured opportunities and govern new skill creation",
+      "yaml_sha256": "84b5b063f9de006b8500328215c57a26da80900f46dd82642cdb24d1b40403c9"
+    },
+    {
+      "bindings": {
+        "required_context": [
+          "agent_id",
+          "correlation_id",
+          "intent_id",
+          "session_id",
+          "workspace_id"
+        ],
+        "skills": [
+          "cross-project-transfer-broker",
+          "engineering-receipts",
+          "human-approval-matrix",
+          "secret-boundary-manager",
+          "semantic-contamination-detector"
+        ]
+      },
+      "files": {
+        "bindings": "orchestration/workflows/cross-project-transfer/memory/bindings.json",
+        "memory_dir": "orchestration/workflows/cross-project-transfer/memory",
+        "memory_md": "orchestration/workflows/cross-project-transfer/memory/memory.md",
+        "stats": "orchestration/workflows/cross-project-transfer/memory/stats.json",
+        "usage_log": "orchestration/workflows/cross-project-transfer/memory/usage.jsonl"
+      },
+      "kind": "workflow",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "orchestration/workflows/project_stream/cross_project_transfer.yaml",
+      "subject_id": "cross-project-transfer",
+      "title": "Sanitize and import a reusable artifact across project boundaries",
+      "yaml_sha256": "e13a985e18da91452f13515e177ff38d76f358debe971ec56eb1eb83717acd3a"
+    },
+    {
+      "bindings": {
+        "required_context": [
+          "agent_id",
+          "correlation_id",
+          "intent_id",
+          "session_id",
+          "workspace_id"
+        ],
+        "skills": [
+          "acceptance-gate-controller",
+          "assumption-auditor",
+          "branch-worktree-manager",
+          "change-intent-ledger",
+          "engineering-receipts",
+          "outcome-contract-validator",
+          "side-effect-budgeter",
+          "why-evidence-gate"
+        ]
+      },
+      "files": {
+        "bindings": "orchestration/workflows/guarded-change/memory/bindings.json",
+        "memory_dir": "orchestration/workflows/guarded-change/memory",
+        "memory_md": "orchestration/workflows/guarded-change/memory/memory.md",
+        "stats": "orchestration/workflows/guarded-change/memory/stats.json",
+        "usage_log": "orchestration/workflows/guarded-change/memory/usage.jsonl"
+      },
+      "kind": "workflow",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "orchestration/workflows/project_stream/guarded_change.yaml",
+      "subject_id": "guarded-change",
+      "title": "Execute a bounded change with evidence and outcome validation",
+      "yaml_sha256": "7c3fca4c504df8e912c6b3ca9b50646a959683f8c1e79fa59c9fc42218192beb"
+    },
+    {
+      "bindings": {
+        "required_context": [
+          "agent_id",
+          "correlation_id",
+          "intent_id",
+          "session_id",
+          "workspace_id"
+        ],
+        "skills": [
+          "change-blast-radius-predictor",
+          "engineering-receipts",
+          "outcome-contract-validator",
+          "regression-causality-engine",
+          "repository-digital-twin",
+          "rollback-rehearsal"
+        ]
+      },
+      "files": {
+        "bindings": "orchestration/workflows/incident-diagnose-recover/memory/bindings.json",
+        "memory_dir": "orchestration/workflows/incident-diagnose-recover/memory",
+        "memory_md": "orchestration/workflows/incident-diagnose-recover/memory/memory.md",
+        "stats": "orchestration/workflows/incident-diagnose-recover/memory/stats.json",
+        "usage_log": "orchestration/workflows/incident-diagnose-recover/memory/usage.jsonl"
+      },
+      "kind": "workflow",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "orchestration/workflows/project_stream/incident_diagnose_recover.yaml",
+      "subject_id": "incident-diagnose-recover",
+      "title": "Diagnose regressions and execute a validated recovery",
+      "yaml_sha256": "acc4e2d3e988e6005472da5d936ace9b4d501d7144bd4dc3756d84106ee24c42"
+    },
+    {
+      "bindings": {
+        "required_context": [
+          "agent_id",
+          "correlation_id",
+          "intent_id",
+          "session_id",
+          "workspace_id"
+        ],
+        "skills": [
+          "adaptive-minimum-bit-sharder",
+          "context-budget-compiler",
+          "contradiction-engine",
+          "knowledge-distillation",
+          "memory-provenance",
+          "obsidian-memory-mapper"
+        ]
+      },
+      "files": {
+        "bindings": "orchestration/workflows/memory-ingest-distill/memory/bindings.json",
+        "memory_dir": "orchestration/workflows/memory-ingest-distill/memory",
+        "memory_md": "orchestration/workflows/memory-ingest-distill/memory/memory.md",
+        "stats": "orchestration/workflows/memory-ingest-distill/memory/stats.json",
+        "usage_log": "orchestration/workflows/memory-ingest-distill/memory/usage.jsonl"
+      },
+      "kind": "workflow",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "orchestration/workflows/project_stream/memory_ingest_distill.yaml",
+      "subject_id": "memory-ingest-distill",
+      "title": "Distill source material into minimal project memory",
+      "yaml_sha256": "79281713033ce70c6963c8f98650142d8e82e78be4b53d730e58dec2fec1cf60"
+    },
+    {
+      "bindings": {
+        "required_context": [
+          "agent_id",
+          "correlation_id",
+          "intent_id",
+          "session_id",
+          "workspace_id"
+        ],
+        "skills": [
+          "assumption-decay",
+          "continuous-knowledge-compression",
+          "evidence-freshness-verifier",
+          "knowledge-coverage",
+          "memory-self-healer"
+        ]
+      },
+      "files": {
+        "bindings": "orchestration/workflows/memory-maintenance/memory/bindings.json",
+        "memory_dir": "orchestration/workflows/memory-maintenance/memory",
+        "memory_md": "orchestration/workflows/memory-maintenance/memory/memory.md",
+        "stats": "orchestration/workflows/memory-maintenance/memory/stats.json",
+        "usage_log": "orchestration/workflows/memory-maintenance/memory/usage.jsonl"
+      },
+      "kind": "workflow",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "orchestration/workflows/project_stream/memory_maintenance.yaml",
+      "subject_id": "memory-maintenance",
+      "title": "Repair, compress, and validate memory without changing unsupported facts",
+      "yaml_sha256": "90c9769a4f4395def52f9d40b9860f19b9630c1d4ab7196117f28fd029173245"
+    },
+    {
+      "bindings": {
+        "required_context": [
+          "agent_id",
+          "correlation_id",
+          "intent_id",
+          "session_id",
+          "workspace_id"
+        ],
+        "skills": [
+          "agent-performance-health",
+          "drift-radar",
+          "evidence-freshness-verifier",
+          "project-health-scorecard",
+          "supply-chain-sentinel"
+        ]
+      },
+      "files": {
+        "bindings": "orchestration/workflows/nightly-project-health/memory/bindings.json",
+        "memory_dir": "orchestration/workflows/nightly-project-health/memory",
+        "memory_md": "orchestration/workflows/nightly-project-health/memory/memory.md",
+        "stats": "orchestration/workflows/nightly-project-health/memory/stats.json",
+        "usage_log": "orchestration/workflows/nightly-project-health/memory/usage.jsonl"
+      },
+      "kind": "workflow",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "orchestration/workflows/project_stream/nightly_project_health.yaml",
+      "subject_id": "nightly-project-health",
+      "title": "Evaluate drift, health, stale evidence, dependencies, and agent state",
+      "yaml_sha256": "b2818a1292469f8dff060d6aa3d04853c17f65663ffb1e0969dd6fc39cf3271f"
+    },
+    {
+      "bindings": {
+        "required_context": [
+          "agent_id",
+          "correlation_id",
+          "intent_id",
+          "session_id",
+          "workspace_id"
+        ],
+        "skills": [
+          "agent-retirement-handoff",
+          "framework-dna",
+          "project-closure-autopsy",
+          "project-dormancy-archive",
+          "shared-capability-promotion"
+        ]
+      },
+      "files": {
+        "bindings": "orchestration/workflows/project-close/memory/bindings.json",
+        "memory_dir": "orchestration/workflows/project-close/memory",
+        "memory_md": "orchestration/workflows/project-close/memory/memory.md",
+        "stats": "orchestration/workflows/project-close/memory/stats.json",
+        "usage_log": "orchestration/workflows/project-close/memory/usage.jsonl"
+      },
+      "kind": "workflow",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "orchestration/workflows/project_stream/project_close.yaml",
+      "subject_id": "project-close",
+      "title": "Close, learn from, and archive a completed project",
+      "yaml_sha256": "ed94412e23f4d9070f37b89d5d8055be4628f395efbfb19729008791aa5273fe"
+    },
+    {
+      "bindings": {
+        "required_context": [
+          "agent_id",
+          "correlation_id",
+          "intent_id",
+          "session_id",
+          "workspace_id"
+        ],
+        "skills": [
+          "multi-repo-tracker",
+          "project-registry",
+          "repo-onboarding-autodiscovery",
+          "secret-boundary-manager"
+        ]
+      },
+      "files": {
+        "bindings": "orchestration/workflows/project-onboard/memory/bindings.json",
+        "memory_dir": "orchestration/workflows/project-onboard/memory",
+        "memory_md": "orchestration/workflows/project-onboard/memory/memory.md",
+        "stats": "orchestration/workflows/project-onboard/memory/stats.json",
+        "usage_log": "orchestration/workflows/project-onboard/memory/usage.jsonl"
+      },
+      "kind": "workflow",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "orchestration/workflows/project_stream/project_onboard.yaml",
+      "subject_id": "project-onboard",
+      "title": "Discover and register a repository without modifying it",
+      "yaml_sha256": "624c1c7660caa16ea19a198259eaa0b4ef8109e3e1906e1aa337a7b24c2db959"
+    },
+    {
+      "bindings": {
+        "required_context": [
+          "agent_id",
+          "correlation_id",
+          "intent_id",
+          "session_id",
+          "workspace_id"
+        ],
+        "skills": [
+          "agent-lease-manager",
+          "checkpoint-resume-manager",
+          "concurrency-lock-manager",
+          "project-health-scorecard"
+        ]
+      },
+      "files": {
+        "bindings": "orchestration/workflows/project-pause-resume/memory/bindings.json",
+        "memory_dir": "orchestration/workflows/project-pause-resume/memory",
+        "memory_md": "orchestration/workflows/project-pause-resume/memory/memory.md",
+        "stats": "orchestration/workflows/project-pause-resume/memory/stats.json",
+        "usage_log": "orchestration/workflows/project-pause-resume/memory/usage.jsonl"
+      },
+      "kind": "workflow",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "orchestration/workflows/project_stream/project_pause_resume.yaml",
+      "subject_id": "project-pause-resume",
+      "title": "Checkpoint, release resources, and later restore a project workstream",
+      "yaml_sha256": "e1d04824f895644c5f31b19da8b5c8b32b852f028f1f89d8b5c729e937e3a0b8"
+    },
+    {
+      "bindings": {
+        "required_context": [
+          "agent_id",
+          "correlation_id",
+          "intent_id",
+          "session_id",
+          "workspace_id"
+        ],
+        "skills": [
+          "agent-lease-manager",
+          "checkpoint-resume-manager",
+          "project-session-router",
+          "semantic-context-firewall"
+        ]
+      },
+      "files": {
+        "bindings": "orchestration/workflows/project-switch/memory/bindings.json",
+        "memory_dir": "orchestration/workflows/project-switch/memory",
+        "memory_md": "orchestration/workflows/project-switch/memory/memory.md",
+        "stats": "orchestration/workflows/project-switch/memory/stats.json",
+        "usage_log": "orchestration/workflows/project-switch/memory/usage.jsonl"
+      },
+      "kind": "workflow",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "orchestration/workflows/project_stream/project_switch.yaml",
+      "subject_id": "project-switch",
+      "title": "Safely switch an agent session between projects",
+      "yaml_sha256": "ee4c96321af42857da5e70011cf87e20cdca67cc5651f40d1125588a29dd90ff"
+    },
+    {
+      "bindings": {
+        "required_context": [
+          "agent_id",
+          "correlation_id",
+          "intent_id",
+          "session_id",
+          "workspace_id"
+        ],
+        "skills": [
+          "artifact-lifecycle-manager",
+          "change-blast-radius-predictor",
+          "engineering-receipts",
+          "non-destructive-quarantine",
+          "rollback-rehearsal"
+        ]
+      },
+      "files": {
+        "bindings": "orchestration/workflows/safe-cleanup/memory/bindings.json",
+        "memory_dir": "orchestration/workflows/safe-cleanup/memory",
+        "memory_md": "orchestration/workflows/safe-cleanup/memory/memory.md",
+        "stats": "orchestration/workflows/safe-cleanup/memory/stats.json",
+        "usage_log": "orchestration/workflows/safe-cleanup/memory/usage.jsonl"
+      },
+      "kind": "workflow",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "orchestration/workflows/project_stream/safe_cleanup.yaml",
+      "subject_id": "safe-cleanup",
+      "title": "Classify and quarantine cleanup candidates reversibly",
+      "yaml_sha256": "e26e242258eee25fe29f5528881250cc1bcc36fe3a5bed306a07c949f88df0fd"
+    },
+    {
+      "bindings": {
+        "required_context": [
+          "agent_id",
+          "correlation_id",
+          "intent_id",
+          "session_id",
+          "workspace_id"
+        ],
+        "skills": [
+          "acceptance-gate-controller",
+          "autonomous-benchmark-lab",
+          "capability-graph",
+          "pattern-miner",
+          "shared-capability-promotion",
+          "skill-evolution-lineage"
+        ]
+      },
+      "files": {
+        "bindings": "orchestration/workflows/shared-capability-promote/memory/bindings.json",
+        "memory_dir": "orchestration/workflows/shared-capability-promote/memory",
+        "memory_md": "orchestration/workflows/shared-capability-promote/memory/memory.md",
+        "stats": "orchestration/workflows/shared-capability-promote/memory/stats.json",
+        "usage_log": "orchestration/workflows/shared-capability-promote/memory/usage.jsonl"
+      },
+      "kind": "workflow",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "orchestration/workflows/project_stream/shared_capability_promote.yaml",
+      "subject_id": "shared-capability-promote",
+      "title": "Promote a project pattern to a shared versioned capability",
+      "yaml_sha256": "d693e15a66a85a0ff62a3c1dad4786616077f16ef41421d486cd9d1da56dfdc9"
+    },
+    {
+      "bindings": {
+        "required_context": [
+          "agent_id",
+          "correlation_id",
+          "intent_id",
+          "session_id",
+          "workspace_id"
+        ],
+        "skills": [
+          "audit-event-ledger",
+          "non-destructive-quarantine",
+          "repository-constitution",
+          "workspace-bootstrap"
+        ]
+      },
+      "files": {
+        "bindings": "orchestration/workflows/workspace-bootstrap/memory/bindings.json",
+        "memory_dir": "orchestration/workflows/workspace-bootstrap/memory",
+        "memory_md": "orchestration/workflows/workspace-bootstrap/memory/memory.md",
+        "stats": "orchestration/workflows/workspace-bootstrap/memory/stats.json",
+        "usage_log": "orchestration/workflows/workspace-bootstrap/memory/usage.jsonl"
+      },
+      "kind": "workflow",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "orchestration/workflows/project_stream/workspace_bootstrap.yaml",
+      "subject_id": "workspace-bootstrap",
+      "title": "Bootstrap a new project-stream workspace",
+      "yaml_sha256": "6b72c03049bb944f390162d2cbbce6f6532e530f8b3c8f3796de1918293dcd65"
+    },
+    {
+      "bindings": {
+        "required_context": [
+          "agent_id",
+          "correlation_id",
+          "intent_id",
+          "session_id",
+          "workspace_id"
+        ],
+        "skills": [
+          "agent-team-composer",
+          "capability-graph",
+          "duplicate-effort-detector",
+          "orchestration-dependency-graph",
+          "workstream-dispatcher"
+        ]
+      },
+      "files": {
+        "bindings": "orchestration/workflows/workstream-plan-dispatch/memory/bindings.json",
+        "memory_dir": "orchestration/workflows/workstream-plan-dispatch/memory",
+        "memory_md": "orchestration/workflows/workstream-plan-dispatch/memory/memory.md",
+        "stats": "orchestration/workflows/workstream-plan-dispatch/memory/stats.json",
+        "usage_log": "orchestration/workflows/workstream-plan-dispatch/memory/usage.jsonl"
+      },
+      "kind": "workflow",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "orchestration/workflows/project_stream/workstream_plan_dispatch.yaml",
+      "subject_id": "workstream-plan-dispatch",
+      "title": "Decompose work and dispatch bounded packages",
+      "yaml_sha256": "8fd8a3f5c243ff69f33483a7f525ba5b271b116326d642879cf6efcdc2cd20a2"
+    },
+    {
+      "bindings": {},
+      "files": {
+        "bindings": ".px/skills/active-evaluation-selector/memory/bindings.json",
+        "memory_dir": ".px/skills/active-evaluation-selector/memory",
+        "memory_md": ".px/skills/active-evaluation-selector/memory/memory.md",
+        "stats": ".px/skills/active-evaluation-selector/memory/stats.json",
+        "usage_log": ".px/skills/active-evaluation-selector/memory/usage.jsonl"
+      },
+      "kind": "skill",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "registry/source_skill_manifests/active-evaluation-selector.yaml",
+      "subject_id": "active-evaluation-selector",
+      "title": "Choose the most informative evaluation cases under fixed time, compute, or review budget.",
+      "yaml_sha256": "a5b21e2a85ef174675ba7043f5530dac3c5cca9ac5273e1948328bb9911e0703"
+    },
+    {
+      "bindings": {},
+      "files": {
+        "bindings": ".px/skills/behavior-to-code-mapper/memory/bindings.json",
+        "memory_dir": ".px/skills/behavior-to-code-mapper/memory",
+        "memory_md": ".px/skills/behavior-to-code-mapper/memory/memory.md",
+        "stats": ".px/skills/behavior-to-code-mapper/memory/stats.json",
+        "usage_log": ".px/skills/behavior-to-code-mapper/memory/usage.jsonl"
+      },
+      "kind": "skill",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "registry/source_skill_manifests/behavior-to-code-mapper.yaml",
+      "subject_id": "behavior-to-code-mapper",
+      "title": "Map runtime behaviors to code, states, tools, policies, tests, telemetry, and dependencies.",
+      "yaml_sha256": "34f711f5f3a5ba33036f2916877ee811496e255bfc88a33d361de20c55daa2f3"
+    },
+    {
+      "bindings": {},
+      "files": {
+        "bindings": ".px/skills/benchmark-domain-adapter/memory/bindings.json",
+        "memory_dir": ".px/skills/benchmark-domain-adapter/memory",
+        "memory_md": ".px/skills/benchmark-domain-adapter/memory/memory.md",
+        "stats": ".px/skills/benchmark-domain-adapter/memory/stats.json",
+        "usage_log": ".px/skills/benchmark-domain-adapter/memory/usage.jsonl"
+      },
+      "kind": "skill",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "registry/source_skill_manifests/benchmark-domain-adapter.yaml",
+      "subject_id": "benchmark-domain-adapter",
+      "title": "Translate an academic benchmark into independent framework domain cases, outcomes, risks, and evidence requirements.",
+      "yaml_sha256": "60b9c32f8164505e8f8973d7d29d382a234b54133169d999e8b1f093748d2472"
+    },
+    {
+      "bindings": {},
+      "files": {
+        "bindings": ".px/skills/bounded-workflow-topology-selector/memory/bindings.json",
+        "memory_dir": ".px/skills/bounded-workflow-topology-selector/memory",
+        "memory_md": ".px/skills/bounded-workflow-topology-selector/memory/memory.md",
+        "stats": ".px/skills/bounded-workflow-topology-selector/memory/stats.json",
+        "usage_log": ".px/skills/bounded-workflow-topology-selector/memory/usage.jsonl"
+      },
+      "kind": "skill",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "registry/source_skill_manifests/bounded-workflow-topology-selector.yaml",
+      "subject_id": "bounded-workflow-topology-selector",
+      "title": "Select among approved workflow templates based on complexity, novelty, risk, and evidence conflict.",
+      "yaml_sha256": "74fce969522ffdda76ea5ebeb80f2accfbadf8d8a1b4fb0c76a1221ce903a66a"
+    },
+    {
+      "bindings": {},
+      "files": {
+        "bindings": ".px/skills/candidate-memory-promoter/memory/bindings.json",
+        "memory_dir": ".px/skills/candidate-memory-promoter/memory",
+        "memory_md": ".px/skills/candidate-memory-promoter/memory/memory.md",
+        "stats": ".px/skills/candidate-memory-promoter/memory/stats.json",
+        "usage_log": ".px/skills/candidate-memory-promoter/memory/usage.jsonl"
+      },
+      "kind": "skill",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "registry/source_skill_manifests/candidate-memory-promoter.yaml",
+      "subject_id": "candidate-memory-promoter",
+      "title": "Decide whether a trace-derived observation, claim, or procedure may enter a wider memory scope.",
+      "yaml_sha256": "a5c73384114b67acce4f7102b166c7149c7b0209a05a0ad4f8f0c478ceb712c7"
+    },
+    {
+      "bindings": {},
+      "files": {
+        "bindings": ".px/skills/context-compactor/memory/bindings.json",
+        "memory_dir": ".px/skills/context-compactor/memory",
+        "memory_md": ".px/skills/context-compactor/memory/memory.md",
+        "stats": ".px/skills/context-compactor/memory/stats.json",
+        "usage_log": ".px/skills/context-compactor/memory/usage.jsonl"
+      },
+      "kind": "skill",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "registry/source_skill_manifests/context-compactor.yaml",
+      "subject_id": "context-compactor",
+      "title": "Reduce active context while preserving goals, constraints, decisions, evidence, unresolved questions, and state.",
+      "yaml_sha256": "15ed4baeec1cc8c87f10c39507ebb18e1193cf726890a600e9bda03a85108d63"
+    },
+    {
+      "bindings": {},
+      "files": {
+        "bindings": ".px/skills/corpus-to-skill-tree-compiler/memory/bindings.json",
+        "memory_dir": ".px/skills/corpus-to-skill-tree-compiler/memory",
+        "memory_md": ".px/skills/corpus-to-skill-tree-compiler/memory/memory.md",
+        "stats": ".px/skills/corpus-to-skill-tree-compiler/memory/stats.json",
+        "usage_log": ".px/skills/corpus-to-skill-tree-compiler/memory/usage.jsonl"
+      },
+      "kind": "skill",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "registry/source_skill_manifests/corpus-to-skill-tree-compiler.yaml",
+      "subject_id": "corpus-to-skill-tree-compiler",
+      "title": "Compile large corpora into navigable hierarchical skill/knowledge trees with evidence-linked nodes.",
+      "yaml_sha256": "ca933d065ea491c0ac557afe891623bc8a2c2d159503d76cf19132b1772c026d"
+    },
+    {
+      "bindings": {},
+      "files": {
+        "bindings": ".px/skills/cross-paper-mechanism-fuser/memory/bindings.json",
+        "memory_dir": ".px/skills/cross-paper-mechanism-fuser/memory",
+        "memory_md": ".px/skills/cross-paper-mechanism-fuser/memory/memory.md",
+        "stats": ".px/skills/cross-paper-mechanism-fuser/memory/stats.json",
+        "usage_log": ".px/skills/cross-paper-mechanism-fuser/memory/usage.jsonl"
+      },
+      "kind": "skill",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "registry/source_skill_manifests/cross-paper-mechanism-fuser.yaml",
+      "subject_id": "cross-paper-mechanism-fuser",
+      "title": "Combine compatible research primitives into a stronger subsystem while exposing conflicts.",
+      "yaml_sha256": "3b2c3c7ed5fccdd07c556dd8491ec65ce806ec19482891dcb9219fcbaccdc3b1"
+    },
+    {
+      "bindings": {},
+      "files": {
+        "bindings": ".px/skills/dependency-impact-tracer/memory/bindings.json",
+        "memory_dir": ".px/skills/dependency-impact-tracer/memory",
+        "memory_md": ".px/skills/dependency-impact-tracer/memory/memory.md",
+        "stats": ".px/skills/dependency-impact-tracer/memory/stats.json",
+        "usage_log": ".px/skills/dependency-impact-tracer/memory/usage.jsonl"
+      },
+      "kind": "skill",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "registry/source_skill_manifests/dependency-impact-tracer.yaml",
+      "subject_id": "dependency-impact-tracer",
+      "title": "Predict downstream effects of changing a skill, tool, schema, state, model, policy, or data contract.",
+      "yaml_sha256": "55c5882e61e03ffb094b7051f72bce393f8fa44b0bed6e6ec6d821b36ca4f93c"
+    },
+    {
+      "bindings": {},
+      "files": {
+        "bindings": ".px/skills/dynamic-skill-detonator/memory/bindings.json",
+        "memory_dir": ".px/skills/dynamic-skill-detonator/memory",
+        "memory_md": ".px/skills/dynamic-skill-detonator/memory/memory.md",
+        "stats": ".px/skills/dynamic-skill-detonator/memory/stats.json",
+        "usage_log": ".px/skills/dynamic-skill-detonator/memory/usage.jsonl"
+      },
+      "kind": "skill",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "registry/source_skill_manifests/dynamic-skill-detonator.yaml",
+      "subject_id": "dynamic-skill-detonator",
+      "title": "Execute a skill in an instrumented sandbox with synthetic secrets and observe real behavior.",
+      "yaml_sha256": "4ed9922790fbb9292a365b2ab1f65c567c816937e60e465f56eeaa11578f6c83"
+    },
+    {
+      "bindings": {},
+      "files": {
+        "bindings": ".px/skills/evaluation-budget-allocator/memory/bindings.json",
+        "memory_dir": ".px/skills/evaluation-budget-allocator/memory",
+        "memory_md": ".px/skills/evaluation-budget-allocator/memory/memory.md",
+        "stats": ".px/skills/evaluation-budget-allocator/memory/stats.json",
+        "usage_log": ".px/skills/evaluation-budget-allocator/memory/usage.jsonl"
+      },
+      "kind": "skill",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "registry/source_skill_manifests/evaluation-budget-allocator.yaml",
+      "subject_id": "evaluation-budget-allocator",
+      "title": "Allocate automated and human review by risk, disagreement, novelty, impact, and evidence quality\u2014not self-confidence.",
+      "yaml_sha256": "b46ed5b2160cf6900789fc96e22388dd04343603c8ceeff5df9e232e2f41e846"
+    },
+    {
+      "bindings": {},
+      "files": {
+        "bindings": ".px/skills/evidence-assembler/memory/bindings.json",
+        "memory_dir": ".px/skills/evidence-assembler/memory",
+        "memory_md": ".px/skills/evidence-assembler/memory/memory.md",
+        "stats": ".px/skills/evidence-assembler/memory/stats.json",
+        "usage_log": ".px/skills/evidence-assembler/memory/usage.jsonl"
+      },
+      "kind": "skill",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "registry/source_skill_manifests/evidence-assembler.yaml",
+      "subject_id": "evidence-assembler",
+      "title": "Build a typed evidence package distinguishing measurement, source text, tool output, inference, assumption, and precedent.",
+      "yaml_sha256": "82e8634e3ec1e877cf5c6565864eb1bae0ec91a2e46ef40cf180f215c33b2d64"
+    },
+    {
+      "bindings": {},
+      "files": {
+        "bindings": ".px/skills/execution-contract-enforcer/memory/bindings.json",
+        "memory_dir": ".px/skills/execution-contract-enforcer/memory",
+        "memory_md": ".px/skills/execution-contract-enforcer/memory/memory.md",
+        "stats": ".px/skills/execution-contract-enforcer/memory/stats.json",
+        "usage_log": ".px/skills/execution-contract-enforcer/memory/usage.jsonl"
+      },
+      "kind": "skill",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "registry/source_skill_manifests/execution-contract-enforcer.yaml",
+      "subject_id": "execution-contract-enforcer",
+      "title": "Wrap every skill with validation, authorization, budget, idempotency, execution, verification, and trace controls.",
+      "yaml_sha256": "bf07a7ad1cbbeec5e1db135667cd059c94001f02454886bc2146a5325586b2c5"
+    },
+    {
+      "bindings": {},
+      "files": {
+        "bindings": ".px/skills/experience-reconstructor/memory/bindings.json",
+        "memory_dir": ".px/skills/experience-reconstructor/memory",
+        "memory_md": ".px/skills/experience-reconstructor/memory/memory.md",
+        "stats": ".px/skills/experience-reconstructor/memory/stats.json",
+        "usage_log": ".px/skills/experience-reconstructor/memory/usage.jsonl"
+      },
+      "kind": "skill",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "registry/source_skill_manifests/experience-reconstructor.yaml",
+      "subject_id": "experience-reconstructor",
+      "title": "Rebuild a current procedure from reusable principles rather than replaying old actions.",
+      "yaml_sha256": "95682c58f16db069a59010c0f6eb2bb3748c43ec7faed2d1aa9f0cc173fcc775"
+    },
+    {
+      "bindings": {},
+      "files": {
+        "bindings": ".px/skills/human-handoff-state-transfer/memory/bindings.json",
+        "memory_dir": ".px/skills/human-handoff-state-transfer/memory",
+        "memory_md": ".px/skills/human-handoff-state-transfer/memory/memory.md",
+        "stats": ".px/skills/human-handoff-state-transfer/memory/stats.json",
+        "usage_log": ".px/skills/human-handoff-state-transfer/memory/usage.jsonl"
+      },
+      "kind": "skill",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "registry/source_skill_manifests/human-handoff-state-transfer.yaml",
+      "subject_id": "human-handoff-state-transfer",
+      "title": "Transfer complete resumable operational state to a human or bounded agent.",
+      "yaml_sha256": "0384c9f7f0eb387d9050ee1be397dc9fc38f956c1b347e5171125d7474928476"
+    },
+    {
+      "bindings": {},
+      "files": {
+        "bindings": ".px/skills/long-horizon-progress-ledger/memory/bindings.json",
+        "memory_dir": ".px/skills/long-horizon-progress-ledger/memory",
+        "memory_md": ".px/skills/long-horizon-progress-ledger/memory/memory.md",
+        "stats": ".px/skills/long-horizon-progress-ledger/memory/stats.json",
+        "usage_log": ".px/skills/long-horizon-progress-ledger/memory/usage.jsonl"
+      },
+      "kind": "skill",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "registry/source_skill_manifests/long-horizon-progress-ledger.yaml",
+      "subject_id": "long-horizon-progress-ledger",
+      "title": "Represent long work as evidence-backed milestones with partial completion, blockers, regression, and recoverability.",
+      "yaml_sha256": "2af01448fd59da0a3008c14456ed53f2589c2242f5c56089e27f924ff28e4d90"
+    },
+    {
+      "bindings": {},
+      "files": {
+        "bindings": ".px/skills/memory-applicability-critic/memory/bindings.json",
+        "memory_dir": ".px/skills/memory-applicability-critic/memory",
+        "memory_md": ".px/skills/memory-applicability-critic/memory/memory.md",
+        "stats": ".px/skills/memory-applicability-critic/memory/stats.json",
+        "usage_log": ".px/skills/memory-applicability-critic/memory/usage.jsonl"
+      },
+      "kind": "skill",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "registry/source_skill_manifests/memory-applicability-critic.yaml",
+      "subject_id": "memory-applicability-critic",
+      "title": "Determine which parts of a retrieved case apply now and which must be rejected.",
+      "yaml_sha256": "3d5e2970bc7933d90709c83511c4cc415641a90fe82ddcfa40caaace890b095c"
+    },
+    {
+      "bindings": {},
+      "files": {
+        "bindings": ".px/skills/memory-injection-firewall/memory/bindings.json",
+        "memory_dir": ".px/skills/memory-injection-firewall/memory",
+        "memory_md": ".px/skills/memory-injection-firewall/memory/memory.md",
+        "stats": ".px/skills/memory-injection-firewall/memory/stats.json",
+        "usage_log": ".px/skills/memory-injection-firewall/memory/usage.jsonl"
+      },
+      "kind": "skill",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "registry/source_skill_manifests/memory-injection-firewall.yaml",
+      "subject_id": "memory-injection-firewall",
+      "title": "Quarantine retrieved memory that redirects intent, expands permissions, exposes secrets, or alters policy hierarchy.",
+      "yaml_sha256": "674bc9b1c8b4a2973643a396d4bd789c946714edf135be04b8608305b2b77784"
+    },
+    {
+      "bindings": {},
+      "files": {
+        "bindings": ".px/skills/outcome-verifier/memory/bindings.json",
+        "memory_dir": ".px/skills/outcome-verifier/memory",
+        "memory_md": ".px/skills/outcome-verifier/memory/memory.md",
+        "stats": ".px/skills/outcome-verifier/memory/stats.json",
+        "usage_log": ".px/skills/outcome-verifier/memory/usage.jsonl"
+      },
+      "kind": "skill",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "registry/source_skill_manifests/outcome-verifier.yaml",
+      "subject_id": "outcome-verifier",
+      "title": "Independently determine whether evidence, policy, and actual postconditions support the claimed result.",
+      "yaml_sha256": "a06c1ec822ded1f2e28e5fd8c02bae6c15daf8ff025d6c563590eef13c07c69c"
+    },
+    {
+      "bindings": {},
+      "files": {
+        "bindings": ".px/skills/paper-mechanism-extractor/memory/bindings.json",
+        "memory_dir": ".px/skills/paper-mechanism-extractor/memory",
+        "memory_md": ".px/skills/paper-mechanism-extractor/memory/memory.md",
+        "stats": ".px/skills/paper-mechanism-extractor/memory/stats.json",
+        "usage_log": ".px/skills/paper-mechanism-extractor/memory/usage.jsonl"
+      },
+      "kind": "skill",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "registry/source_skill_manifests/paper-mechanism-extractor.yaml",
+      "subject_id": "paper-mechanism-extractor",
+      "title": "Extract the actual mechanism, assumptions, data, evidence, and limitations from a paper.",
+      "yaml_sha256": "ec890263ca397f2cec0a8558d7efa8e44260a32e563eb413eea79604b726ae4f"
+    },
+    {
+      "bindings": {},
+      "files": {
+        "bindings": ".px/skills/permission-diff-auditor/memory/bindings.json",
+        "memory_dir": ".px/skills/permission-diff-auditor/memory",
+        "memory_md": ".px/skills/permission-diff-auditor/memory/memory.md",
+        "stats": ".px/skills/permission-diff-auditor/memory/stats.json",
+        "usage_log": ".px/skills/permission-diff-auditor/memory/usage.jsonl"
+      },
+      "kind": "skill",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "registry/source_skill_manifests/permission-diff-auditor.yaml",
+      "subject_id": "permission-diff-auditor",
+      "title": "Identify new permissions, scopes, side effects, and destinations between versions.",
+      "yaml_sha256": "6f70c62a3fa6a3f51ba2f2e6fbbcee6f65cd541ad0dfbf1c769c87a5e9d0572b"
+    },
+    {
+      "bindings": {},
+      "files": {
+        "bindings": ".px/skills/procedural-memory-compiler/memory/bindings.json",
+        "memory_dir": ".px/skills/procedural-memory-compiler/memory",
+        "memory_md": ".px/skills/procedural-memory-compiler/memory/memory.md",
+        "stats": ".px/skills/procedural-memory-compiler/memory/stats.json",
+        "usage_log": ".px/skills/procedural-memory-compiler/memory/usage.jsonl"
+      },
+      "kind": "skill",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "registry/source_skill_manifests/procedural-memory-compiler.yaml",
+      "subject_id": "procedural-memory-compiler",
+      "title": "Compile repeated successful patterns into candidate procedures with activation, execution, and termination.",
+      "yaml_sha256": "9b52c4d2044031b05e4ceedebd725534563a59a306de0fc1c503ab127d00ce2d"
+    },
+    {
+      "bindings": {},
+      "files": {
+        "bindings": ".px/skills/productization-gap-analyzer/memory/bindings.json",
+        "memory_dir": ".px/skills/productization-gap-analyzer/memory",
+        "memory_md": ".px/skills/productization-gap-analyzer/memory/memory.md",
+        "stats": ".px/skills/productization-gap-analyzer/memory/stats.json",
+        "usage_log": ".px/skills/productization-gap-analyzer/memory/usage.jsonl"
+      },
+      "kind": "skill",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "registry/source_skill_manifests/productization-gap-analyzer.yaml",
+      "subject_id": "productization-gap-analyzer",
+      "title": "Identify what a research prototype lacks before safe operational use.",
+      "yaml_sha256": "cb2eb671f74beeac7fabfe3e748caece9c6afcc77a11ede3358fa9da53d7324d"
+    },
+    {
+      "bindings": {},
+      "files": {
+        "bindings": ".px/skills/provenance-signature-verifier/memory/bindings.json",
+        "memory_dir": ".px/skills/provenance-signature-verifier/memory",
+        "memory_md": ".px/skills/provenance-signature-verifier/memory/memory.md",
+        "stats": ".px/skills/provenance-signature-verifier/memory/stats.json",
+        "usage_log": ".px/skills/provenance-signature-verifier/memory/usage.jsonl"
+      },
+      "kind": "skill",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "registry/source_skill_manifests/provenance-signature-verifier.yaml",
+      "subject_id": "provenance-signature-verifier",
+      "title": "Verify package identity, source, signature, hash, build chain, and owner.",
+      "yaml_sha256": "a2450c20aa92320db03fdc8e0af2c53cae77b10cf552079625ceb524cce5f054"
+    },
+    {
+      "bindings": {},
+      "files": {
+        "bindings": ".px/skills/read-only-speculation-controller/memory/bindings.json",
+        "memory_dir": ".px/skills/read-only-speculation-controller/memory",
+        "memory_md": ".px/skills/read-only-speculation-controller/memory/memory.md",
+        "stats": ".px/skills/read-only-speculation-controller/memory/stats.json",
+        "usage_log": ".px/skills/read-only-speculation-controller/memory/usage.jsonl"
+      },
+      "kind": "skill",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "registry/source_skill_manifests/read-only-speculation-controller.yaml",
+      "subject_id": "read-only-speculation-controller",
+      "title": "Predict and prefetch likely next read-only tool results into a quarantined cache.",
+      "yaml_sha256": "fb33ca711e9f391ba36481ccea98d449e6f2a2939cbcaffc9e121f09ae34ebdf"
+    },
+    {
+      "bindings": {},
+      "files": {
+        "bindings": ".px/skills/reasoning-utility-controller/memory/bindings.json",
+        "memory_dir": ".px/skills/reasoning-utility-controller/memory",
+        "memory_md": ".px/skills/reasoning-utility-controller/memory/memory.md",
+        "stats": ".px/skills/reasoning-utility-controller/memory/stats.json",
+        "usage_log": ".px/skills/reasoning-utility-controller/memory/usage.jsonl"
+      },
+      "kind": "skill",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "registry/source_skill_manifests/reasoning-utility-controller.yaml",
+      "subject_id": "reasoning-utility-controller",
+      "title": "Decide whether another reasoning, retrieval, verification, or tool step has enough expected value.",
+      "yaml_sha256": "57f76e21c78abaad10a556de6eb8de40cc9d3a2c716d4220b847c1c262d9fbbc"
+    },
+    {
+      "bindings": {},
+      "files": {
+        "bindings": ".px/skills/recovery-coordinator/memory/bindings.json",
+        "memory_dir": ".px/skills/recovery-coordinator/memory",
+        "memory_md": ".px/skills/recovery-coordinator/memory/memory.md",
+        "stats": ".px/skills/recovery-coordinator/memory/stats.json",
+        "usage_log": ".px/skills/recovery-coordinator/memory/usage.jsonl"
+      },
+      "kind": "skill",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "registry/source_skill_manifests/recovery-coordinator.yaml",
+      "subject_id": "recovery-coordinator",
+      "title": "Classify failures and choose retry, alternate path, rollback, escalation, or stop.",
+      "yaml_sha256": "a049c8b1f25b6a7e30d68a8562c10e61f5c465219084bbfd329fb6d6ee7fd1b0"
+    },
+    {
+      "bindings": {},
+      "files": {
+        "bindings": ".px/skills/research-to-operation-translator/memory/bindings.json",
+        "memory_dir": ".px/skills/research-to-operation-translator/memory",
+        "memory_md": ".px/skills/research-to-operation-translator/memory/memory.md",
+        "stats": ".px/skills/research-to-operation-translator/memory/stats.json",
+        "usage_log": ".px/skills/research-to-operation-translator/memory/usage.jsonl"
+      },
+      "kind": "skill",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "registry/source_skill_manifests/research-to-operation-translator.yaml",
+      "subject_id": "research-to-operation-translator",
+      "title": "Convert a validated research mechanism into a bounded skill, service, workflow, or evaluation.",
+      "yaml_sha256": "b0079c2590b15ad3e4c2f76e81b1bdac4989eedfad0e1e2abb4f1c1298935b27"
+    },
+    {
+      "bindings": {},
+      "files": {
+        "bindings": ".px/skills/scenario-audit-generator/memory/bindings.json",
+        "memory_dir": ".px/skills/scenario-audit-generator/memory",
+        "memory_md": ".px/skills/scenario-audit-generator/memory/memory.md",
+        "stats": ".px/skills/scenario-audit-generator/memory/stats.json",
+        "usage_log": ".px/skills/scenario-audit-generator/memory/usage.jsonl"
+      },
+      "kind": "skill",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "registry/source_skill_manifests/scenario-audit-generator.yaml",
+      "subject_id": "scenario-audit-generator",
+      "title": "Generate realistic pressure, injection, stale-data, conflict, permission, and deception scenarios.",
+      "yaml_sha256": "85fee03e977043416bf4af14b3e1de060dafee6a5132f40bad8307944248685c"
+    },
+    {
+      "bindings": {},
+      "files": {
+        "bindings": ".px/skills/skill-admission-controller/memory/bindings.json",
+        "memory_dir": ".px/skills/skill-admission-controller/memory",
+        "memory_md": ".px/skills/skill-admission-controller/memory/memory.md",
+        "stats": ".px/skills/skill-admission-controller/memory/stats.json",
+        "usage_log": ".px/skills/skill-admission-controller/memory/usage.jsonl"
+      },
+      "kind": "skill",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "registry/source_skill_manifests/skill-admission-controller.yaml",
+      "subject_id": "skill-admission-controller",
+      "title": "Control whether a skill may enter registry, sandbox, canary, or production.",
+      "yaml_sha256": "58bfb0cd74aacdd586d277fc835525abcc5550dfd228376ce21b399221db1664"
+    },
+    {
+      "bindings": {},
+      "files": {
+        "bindings": ".px/skills/skill-bundle-resolver/memory/bindings.json",
+        "memory_dir": ".px/skills/skill-bundle-resolver/memory",
+        "memory_md": ".px/skills/skill-bundle-resolver/memory/memory.md",
+        "stats": ".px/skills/skill-bundle-resolver/memory/stats.json",
+        "usage_log": ".px/skills/skill-bundle-resolver/memory/usage.jsonl"
+      },
+      "kind": "skill",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "registry/source_skill_manifests/skill-bundle-resolver.yaml",
+      "subject_id": "skill-bundle-resolver",
+      "title": "Select a compatible set of skills and tools that jointly satisfies all required outcomes.",
+      "yaml_sha256": "1855fec354c7e1487f21297c6a64d698f2f48c92fff1e7237f48dc6c657993a4"
+    },
+    {
+      "bindings": {},
+      "files": {
+        "bindings": ".px/skills/skill-coexecution-graph-builder/memory/bindings.json",
+        "memory_dir": ".px/skills/skill-coexecution-graph-builder/memory",
+        "memory_md": ".px/skills/skill-coexecution-graph-builder/memory/memory.md",
+        "stats": ".px/skills/skill-coexecution-graph-builder/memory/stats.json",
+        "usage_log": ".px/skills/skill-coexecution-graph-builder/memory/usage.jsonl"
+      },
+      "kind": "skill",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "registry/source_skill_manifests/skill-coexecution-graph-builder.yaml",
+      "subject_id": "skill-coexecution-graph-builder",
+      "title": "Build a typed graph of skills/tools used together, order, context, outcomes, cost, and latency.",
+      "yaml_sha256": "5cb0ba65bf24d99800f5afbb0b0fb524be2565207d64a22ce9859a1a099ff837"
+    },
+    {
+      "bindings": {},
+      "files": {
+        "bindings": ".px/skills/skill-navigator/memory/bindings.json",
+        "memory_dir": ".px/skills/skill-navigator/memory",
+        "memory_md": ".px/skills/skill-navigator/memory/memory.md",
+        "stats": ".px/skills/skill-navigator/memory/stats.json",
+        "usage_log": ".px/skills/skill-navigator/memory/usage.jsonl"
+      },
+      "kind": "skill",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "registry/source_skill_manifests/skill-navigator.yaml",
+      "subject_id": "skill-navigator",
+      "title": "Progressively locate the smallest relevant capability branch without loading the full catalog.",
+      "yaml_sha256": "521d446ff2c488df3a584697902070c748eca78751a0776c40a95aa00c3e0810"
+    },
+    {
+      "bindings": {},
+      "files": {
+        "bindings": ".px/skills/tool-loop-circuit-breaker/memory/bindings.json",
+        "memory_dir": ".px/skills/tool-loop-circuit-breaker/memory",
+        "memory_md": ".px/skills/tool-loop-circuit-breaker/memory/memory.md",
+        "stats": ".px/skills/tool-loop-circuit-breaker/memory/stats.json",
+        "usage_log": ".px/skills/tool-loop-circuit-breaker/memory/usage.jsonl"
+      },
+      "kind": "skill",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "registry/source_skill_manifests/tool-loop-circuit-breaker.yaml",
+      "subject_id": "tool-loop-circuit-breaker",
+      "title": "Detect cyclic tool calls, repeated no-op state, and cost amplification, then stop or isolate.",
+      "yaml_sha256": "56af9af21f05e9e09f264f2ad82e4227dd318006948f6e8a8462c0518db4b772"
+    },
+    {
+      "bindings": {},
+      "files": {
+        "bindings": ".px/skills/trace-to-skill-compiler/memory/bindings.json",
+        "memory_dir": ".px/skills/trace-to-skill-compiler/memory",
+        "memory_md": ".px/skills/trace-to-skill-compiler/memory/memory.md",
+        "stats": ".px/skills/trace-to-skill-compiler/memory/stats.json",
+        "usage_log": ".px/skills/trace-to-skill-compiler/memory/usage.jsonl"
+      },
+      "kind": "skill",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "registry/source_skill_manifests/trace-to-skill-compiler.yaml",
+      "subject_id": "trace-to-skill-compiler",
+      "title": "Convert repeated verified trajectories into candidate governed skill packages.",
+      "yaml_sha256": "6fdaad98f7ead356078aad0214a7850c49e390b244b46fc1d9de6bd94c108c47"
+    },
+    {
+      "bindings": {},
+      "files": {
+        "bindings": ".px/skills/trajectory-failure-sentinel/memory/bindings.json",
+        "memory_dir": ".px/skills/trajectory-failure-sentinel/memory",
+        "memory_md": ".px/skills/trajectory-failure-sentinel/memory/memory.md",
+        "stats": ".px/skills/trajectory-failure-sentinel/memory/stats.json",
+        "usage_log": ".px/skills/trajectory-failure-sentinel/memory/usage.jsonl"
+      },
+      "kind": "skill",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "registry/source_skill_manifests/trajectory-failure-sentinel.yaml",
+      "subject_id": "trajectory-failure-sentinel",
+      "title": "Detect failure onset early enough to recover before cost or state damage accumulates.",
+      "yaml_sha256": "4a27ceb3d9f3ad730e28f825955258cd323fc05ac6aae20c1e7d9e267e3d19aa"
+    },
+    {
+      "bindings": {},
+      "files": {
+        "bindings": ".px/skills/initialization-sequence/memory/bindings.json",
+        "memory_dir": ".px/skills/initialization-sequence/memory",
+        "memory_md": ".px/skills/initialization-sequence/memory/memory.md",
+        "stats": ".px/skills/initialization-sequence/memory/stats.json",
+        "usage_log": ".px/skills/initialization-sequence/memory/usage.jsonl"
+      },
+      "kind": "skill",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "registry/imported_research_ops/initialization_sequence.yaml",
+      "subject_id": "initialization-sequence",
+      "title": "initialization_sequence",
+      "yaml_sha256": "6d8e82fa72662ee8279c089983d0eb55a77ff118c0bc762b1f68749a191a3e7b"
+    },
+    {
+      "bindings": {},
+      "files": {
+        "bindings": ".px/skills/operational-opportunities/memory/bindings.json",
+        "memory_dir": ".px/skills/operational-opportunities/memory",
+        "memory_md": ".px/skills/operational-opportunities/memory/memory.md",
+        "stats": ".px/skills/operational-opportunities/memory/stats.json",
+        "usage_log": ".px/skills/operational-opportunities/memory/usage.jsonl"
+      },
+      "kind": "skill",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "registry/imported_research_ops/operational_opportunities.yaml",
+      "subject_id": "operational-opportunities",
+      "title": "operational_opportunities",
+      "yaml_sha256": "f0500fadc17461c03387f1f6c2df5e4ee74d49cd930407dd2de2a593cc1e680d"
+    },
+    {
+      "bindings": {},
+      "files": {
+        "bindings": ".px/skills/skills-registry-patch/memory/bindings.json",
+        "memory_dir": ".px/skills/skills-registry-patch/memory",
+        "memory_md": ".px/skills/skills-registry-patch/memory/memory.md",
+        "stats": ".px/skills/skills-registry-patch/memory/stats.json",
+        "usage_log": ".px/skills/skills-registry-patch/memory/usage.jsonl"
+      },
+      "kind": "skill",
+      "schema_version": "px.yaml-subject-files/1.0",
+      "source_yaml": "registry/imported_research_ops/skills_registry_patch.yaml",
+      "subject_id": "skills-registry-patch",
+      "title": "skills_registry_patch",
+      "yaml_sha256": "6148b1cd9ae5ca62415325a11702157baec3536b552a6e34790d2be73148e1b8"
+    }
+  ],
+  "yaml_file_count": 70
+}

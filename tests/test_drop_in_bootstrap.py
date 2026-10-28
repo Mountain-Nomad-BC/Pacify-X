@@ -47,7 +47,7 @@ class DropInBootstrapTests(unittest.TestCase):
                 self.assertNotIn("â†’", text)
             for mode in ("new", "existing"):
                 prompt = (
-                    project / f".engineering-bootstrap/prompts/{mode}-project.md"
+                    project / f".agentic_engineering_os_px/prompts/{mode}-project.md"
                 ).read_text(encoding="utf-8")
                 self.assertIn("working-set", prompt)
                 self.assertIn("hydrate --skill", prompt)
@@ -82,12 +82,12 @@ class DropInBootstrapTests(unittest.TestCase):
                 )
             inventory = json.loads(
                 (
-                    project / ".engineering-bootstrap/existing-project-inventory.json"
+                    project / ".agentic_engineering_os_px/existing-project-inventory.json"
                 ).read_text(encoding="utf-8")
             )
             self.assertEqual(inventory["mode"], "read_only")
             adoption = json.loads(
-                (project / ".engineering-bootstrap/adoption-plan.json").read_text(
+                (project / ".agentic_engineering_os_px/adoption-plan.json").read_text(
                     encoding="utf-8"
                 )
             )
@@ -109,12 +109,12 @@ class DropInBootstrapTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             project = Path(directory) / "project"
             commission(project, "new", apply=True, source_root=ROOT)
-            prompt = project / ".engineering-bootstrap/prompts/new-project.md"
+            prompt = project / ".agentic_engineering_os_px/prompts/new-project.md"
             prompt.write_text("tampered", encoding="utf-8")
             result = project_check(project, ROOT)
             self.assertFalse(result["valid"])
             self.assertIn(
-                "managed commissioning file drift: .engineering-bootstrap/prompts/new-project.md",
+                "managed commissioning file drift: .agentic_engineering_os_px/prompts/new-project.md",
                 result["errors"],
             )
 

@@ -1,0 +1,22 @@
+[
+  {
+    "path": "runtime/capability_scheduler.py",
+    "hunks": 1,
+    "reason": "Retain exact finite nonnegative cost bounds and OverflowError fail-closed handling."
+  },
+  {
+    "path": "runtime/dependency_invalidation.py",
+    "hunks": 2,
+    "reason": "Retain incoming bounded canonical-bus subscription with explicit caller cursor custody, unsubscribe generation and descriptor verification."
+  },
+  {
+    "path": "runtime/project_revision_succession.py",
+    "hunks": 11,
+    "reason": "Retain signed predecessor record/policy/source/nonrevocation binding and legacy snapshot shape support; align new revision namespace to canonical schema without rewriting historical authority."
+  },
+  {
+    "path": "runtime/revision_campaign_lifecycle.py",
+    "hunks": 4,
+    "reason": "Align lifecycle lock/WAL paths with canonical succession owner."
+  }
+]

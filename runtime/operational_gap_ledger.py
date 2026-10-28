@@ -52,6 +52,49 @@ MAX_BATCH_EVENTS = 1_000
 MAX_EVENTS = 100_000
 DELTA_CHECKPOINT_THRESHOLD_BYTES = 8 * 1024 * 1024
 MAX_DELTA_CHECKPOINT_BYTES = 16 * 1024 * 1024
+
+# ---------------------------------------------------------------------------
+# Operational gap ledger delta lifecycle invariant.
+#
+# A delta checkpoint is INCREMENTAL and EXPLICITLY PARENTED.  It contains only
+# the events appended since its parent, and the head records that parentage as
+# an ordered chain anchored to a base snapshot.  This is the whole point of the
+# invariant: a cumulative checkpoint (every prior checkpoint plus the new
+# append) makes retained storage grow quadratically with ledger length, because
+# each successive checkpoint is a superset of every earlier one and no earlier
+# one can ever be reclaimed.
+#
+# Two consequences the module now enforces rather than assumes:
+#
+# 1. Compaction is decided by AGGREGATE retained delta bytes and CHAIN DEPTH,
+#    never by the size of any single delta.  A single-delta ceiling is
+#    unreachable when appends are small, which is precisely how the previous
+#    implementation retained 502.7 MB across 906 checkpoints against a ledger
+#    holding only dozens of events.
+# 2. A successful compaction folds the whole chain into one snapshot, which
+#    makes every delta in that chain unreferenced.  Those deltas then become a
+#    governed reclaim set.  Compaction and reclamation are separate, receipted
+#    steps so that removal is always an explicit, auditable decision.
+#
+# Legacy compatibility: checkpoints written before this invariant carried
+# cumulative rows under a ``delta_projection`` head key.  Those are read through
+# an explicitly labelled legacy branch that preserves their cumulative
+# semantics.  They are never reinterpreted as incremental, and a head that
+# mixes the two shapes is rejected outright.
+# ---------------------------------------------------------------------------
+DELTA_SEMANTICS_INCREMENTAL = "px.operational-gap-ledger-delta/1.0-incremental"
+DELTA_SEMANTICS_LEGACY_CUMULATIVE = (
+    "px.operational-gap-ledger-delta/0.9-legacy-cumulative"
+)
+# Compaction thresholds. Both are aggregate properties of the whole chain, not
+# of one delta. The byte bound keeps snapshot reconstruction affordable; the
+# depth bound keeps chain verification and per-append I/O bounded even when
+# every individual delta is tiny.
+DELTA_RETAINED_BYTES_COMPACTION_THRESHOLD = 8 * 1024 * 1024
+DELTA_CHAIN_DEPTH_COMPACTION_THRESHOLD = 64
+# A single incremental segment must still be individually bounded so one
+# pathological append batch cannot produce an unbounded delta.
+MAX_INCREMENTAL_DELTA_SEGMENT_BYTES = 4 * 1024 * 1024
 # Retain the discovery anchor plus the latest predecessor/current pair.  A
 # two-row projection drops the exact closed/verified transition as soon as a
 # card is reopened, which makes the materialized history contradict the
@@ -2091,6 +2134,96 @@ def validate(root: Path) -> dict[str, Any]:
     return {"valid": True, "event_count": len(events), "head_event_sha256": snapshot["head_event_sha256"], "progress": snapshot["progress"]}
 
 
+#: Evidence-revalidation dispositions (PX-GAP-0013).
+REVALIDATION_MATCHING = "matching"
+REVALIDATION_STALE = "stale"
+REVALIDATION_MISSING = "missing"
+REVALIDATION_UNREADABLE = "unreadable"
+
+
+def revalidate_evidence(root: Path, *, max_bytes: int = 64 * 1024 * 1024) -> dict[str, Any]:
+    """Re-verify every recorded evidence reference against the current bytes.
+
+    Implements the PX-GAP-0013 expected behavior: an accepted evidence record
+    binds a hash that must still match the artifact it attests. Every evidence
+    reference carried by a card (discovery evidence, per-history-row evidence and
+    explicit attestations) is checked. A mismatch is reported ``stale`` (the
+    acceptance can no longer prove what it claims), a vanished artifact
+    ``missing``, and an unreadable/oversized one ``unreadable``. This is a
+    read-only bounded pass: it never mutates the ledger and never re-accepts
+    anything. The result names every stale card so a governed reopen can follow.
+    """
+    import hashlib
+
+    root = Path(root).resolve(strict=True)
+    snapshot = read_snapshot(root)
+    rows: list[dict[str, Any]] = []
+    stale_cards: list[str] = []
+    seen: set[tuple[str, str]] = set()
+
+    def _check(gap_id: str, origin: str, reference: str, recorded: str) -> None:
+        relative = str(reference or "")
+        key = (gap_id, relative)
+        if not relative or key in seen:
+            return
+        seen.add(key)
+        recorded = str(recorded or "").lower()
+        disposition = REVALIDATION_MATCHING
+        actual = None
+        candidate = (root / relative).resolve()
+        if not candidate.is_relative_to(root) or not candidate.is_file():
+            disposition = REVALIDATION_MISSING
+        elif candidate.stat().st_size > max_bytes:
+            disposition = REVALIDATION_UNREADABLE
+        else:
+            try:
+                actual = hashlib.sha256(candidate.read_bytes()).hexdigest()
+            except OSError:
+                disposition = REVALIDATION_UNREADABLE
+            else:
+                # Only a recorded digest can go stale; a reference without a
+                # recorded hash is reported as matching-by-absence, never stale.
+                if recorded and actual != recorded:
+                    disposition = REVALIDATION_STALE
+        if disposition == REVALIDATION_STALE:
+            stale_cards.append(gap_id)
+        rows.append({
+            "gap_id": gap_id,
+            "origin": origin,
+            "reference": relative,
+            "recorded_sha256": recorded or None,
+            "actual_sha256": actual,
+            "disposition": disposition,
+        })
+
+    for gap_id, card in sorted(snapshot.get("cards", {}).items()):
+        for evidence in card.get("discovery_evidence") or []:
+            if isinstance(evidence, Mapping):
+                _check(gap_id, "discovery", evidence.get("reference"), evidence.get("artifact_sha256"))
+        for row in card.get("history") or []:
+            if not isinstance(row, Mapping):
+                continue
+            for evidence in row.get("evidence") or []:
+                if isinstance(evidence, Mapping):
+                    _check(gap_id, "history", evidence.get("reference"), evidence.get("artifact_sha256"))
+        for attestation in card.get("evidence_attestations") or []:
+            if isinstance(attestation, Mapping):
+                _check(gap_id, "attestation",
+                       attestation.get("reference") or attestation.get("target"),
+                       attestation.get("artifact_sha256"))
+    body = {
+        "schema_version": "px.evidence-revalidation/1.0",
+        "evidence_reference_count": len(rows),
+        "stale_count": sum(1 for row in rows if row["disposition"] == REVALIDATION_STALE),
+        "missing_count": sum(1 for row in rows if row["disposition"] == REVALIDATION_MISSING),
+        "unreadable_count": sum(1 for row in rows if row["disposition"] == REVALIDATION_UNREADABLE),
+        "stale_cards": sorted(set(stale_cards)),
+        "rows": rows,
+        "authority_granted": False,
+    }
+    return body
+
+
 def _write_bytes_atomically(target: Path, data: bytes) -> None:
     prepared = target.with_name(f".{target.name}.{uuid4().hex}.prepared")
     try:
@@ -2359,6 +2492,173 @@ def _build_head(
     return body, encoded
 
 
+def _encoded_segment(rows: Sequence[Mapping[str, Any]]) -> bytes:
+    """Canonical on-disk encoding for an incremental delta segment."""
+    return b"".join(
+        json.dumps(row, sort_keys=True, ensure_ascii=False, separators=(",", ":")).encode(
+            "utf-8"
+        )
+        + b"\n"
+        for row in rows
+    )
+
+
+RECLAIM_SET_RELATIVE = Path("registry/operational_gap_ledger.reclaim.json")
+RECLAIM_RECEIPT_RELATIVE = Path("registry/operational_gap_ledger.reclaim-receipt.json")
+
+
+def _referenced_delta_paths(head: Mapping[str, Any]) -> set[str]:
+    """Every delta path the current head still depends on. Never reclaim these."""
+    referenced: set[str] = set()
+    chain = head.get("delta_chain")
+    if isinstance(chain, Mapping):
+        for segment in chain.get("segments") or []:
+            if isinstance(segment, Mapping) and str(segment.get("path") or "").strip():
+                referenced.add(str(segment["path"]))
+    legacy = head.get("delta_projection")
+    if isinstance(legacy, Mapping) and str(legacy.get("path") or "").strip():
+        referenced.add(str(legacy["path"]))
+    return referenced
+
+
+def _write_reclaim_set(root: Path, paths: Sequence[str], *, reason: str) -> Path:
+    """Record which checkpoints a compaction made unreferenced.
+
+    Writing the reclaim set is deliberately separate from removing anything, so
+    deletion always remains an explicit, authorized, receipted decision.
+    """
+    target = _inside(root, root / RECLAIM_SET_RELATIVE)
+    existing: dict[str, Any] = {}
+    if target.is_file():
+        try:
+            existing = json.loads(target.read_text(encoding="utf-8"))
+        except json.JSONDecodeError:
+            existing = {}
+    pending = dict(existing.get("pending") or {})
+    for path in paths:
+        pending[str(path)] = reason
+    body = {
+        "schema_version": "px.operational-gap-ledger-reclaim-set/1.0",
+        "pending": dict(sorted(pending.items())),
+    }
+    body["reclaim_set_sha256"] = _digest(body)
+    _write_bytes_atomically(target, _encoded_json(body))
+    return target
+
+
+def delta_reclaim_set(root: Path) -> dict[str, Any]:
+    """Classify every stored delta as live or reclaimable.
+
+    A delta is live only if the current head's chain still references it.
+    Anything else is unreferenced and therefore reclaimable, but never removed
+    without an explicit authorization.
+    """
+    root = root.resolve(strict=True)
+    _snapshot, head = _read_checkpoint(root, include_snapshot=False)
+    referenced = _referenced_delta_paths(head)
+    directory = _inside(root, root / DELTA_DIRECTORY_RELATIVE)
+    present: list[dict[str, Any]] = []
+    reclaimable: list[str] = []
+    live: list[str] = []
+    if directory.is_dir():
+        for candidate in sorted(directory.iterdir()):
+            if not candidate.is_file():
+                continue
+            relative = (DELTA_DIRECTORY_RELATIVE / candidate.name).as_posix()
+            present.append(
+                {"path": relative, "size_bytes": candidate.stat().st_size}
+            )
+            if relative in referenced:
+                live.append(relative)
+            else:
+                reclaimable.append(relative)
+    return {
+        "schema_version": "px.operational-gap-ledger-reclaim-set/1.0",
+        "semantics": head.get("delta_semantics"),
+        "chain_depth": len(referenced),
+        "present_count": len(present),
+        "live": live,
+        "reclaimable": reclaimable,
+        "live_bytes": sum(item["size_bytes"] for item in present if item["path"] in referenced),
+        "reclaimable_bytes": sum(
+            item["size_bytes"] for item in present if item["path"] in reclaimable
+        ),
+        "present": present,
+    }
+
+
+def reclaim_delta_checkpoints(
+    root: Path, *, authorization: str, expected_aggregate_sha256: str | None = None
+) -> dict[str, Any]:
+    """Remove unreferenced delta checkpoints under an explicit authorization.
+
+    Refuses to remove anything the current head references. Verifies every
+    candidate digest before removing it and retains a cleanup receipt recording
+    the pre-reclamation manifest, so any removed checkpoint is byte-restorable.
+    """
+    root = root.resolve(strict=True)
+    if not authorization.strip():
+        raise ValueError("delta reclamation requires an explicit authorization string")
+    report = delta_reclaim_set(root)
+    candidates = report["reclaimable"]
+    manifest: list[dict[str, Any]] = []
+    for relative in candidates:
+        path = _inside(root, root / relative)
+        data = path.read_bytes()
+        digest = hashlib.sha256(data).hexdigest()
+        if not relative.endswith(f"{digest}.jsonl"):
+            raise ValueError(
+                "operational gap ledger delta checkpoint name does not match its content digest"
+            )
+        manifest.append({"path": relative, "size_bytes": len(data), "sha256": digest})
+    aggregate = hashlib.sha256(
+        "\n".join(item["sha256"] for item in manifest).encode("utf-8")
+    ).hexdigest()
+    if expected_aggregate_sha256 and expected_aggregate_sha256 != aggregate:
+        raise ValueError("delta reclamation aggregate digest does not match the expectation")
+    removed_bytes = 0
+    for item in manifest:
+        path = _inside(root, root / item["path"])
+        current = path.read_bytes()
+        if hashlib.sha256(current).hexdigest() != item["sha256"]:
+            raise ValueError("delta reclamation refused to remove a changed checkpoint")
+        path.unlink()
+        removed_bytes += item["size_bytes"]
+    receipt = {
+        "schema_version": "px.operational-gap-ledger-reclaim-receipt/1.0",
+        "authorization": authorization,
+        "removed_count": len(manifest),
+        "removed_bytes": removed_bytes,
+        "pre_reclamation_aggregate_sha256": aggregate,
+        "live_paths_preserved": report["live"],
+        "removed": manifest,
+        "restorable": True,
+    }
+    receipt["receipt_sha256"] = _digest(receipt)
+    _write_bytes_atomically(
+        _inside(root, root / RECLAIM_RECEIPT_RELATIVE), _encoded_json(receipt)
+    )
+    # A satisfied reclaim set no longer describes pending work.
+    set_path = _inside(root, root / RECLAIM_SET_RELATIVE)
+    if set_path.is_file():
+        _write_bytes_atomically(
+            set_path,
+            _encoded_json(
+                {
+                    "schema_version": "px.operational-gap-ledger-reclaim-set/1.0",
+                    "pending": {},
+                    "reclaim_set_sha256": _digest(
+                        {
+                            "schema_version": "px.operational-gap-ledger-reclaim-set/1.0",
+                            "pending": {},
+                        }
+                    ),
+                }
+            ),
+        )
+    return receipt
+
+
 def _build_delta_head(
     current: Mapping[str, Any],
     current_bytes: bytes,
@@ -2372,7 +2672,20 @@ def _build_delta_head(
     tail_event: Mapping[str, Any],
     verification_basis: Mapping[str, Any],
     previous_checkpoint_sha256: str | None,
+    semantics: str = DELTA_SEMANTICS_INCREMENTAL,
+    segments: list[Mapping[str, Any]] | None = None,
+    base_snapshot_sha256: str | None = None,
 ) -> tuple[dict[str, Any], bytes]:
+    """Build a delta-backed head.
+
+    ``segments`` carries the explicit, ordered parentage of the delta chain.
+    Each segment is an INCREMENTAL slice of the event stream: it holds only the
+    events appended since the previous segment, or since the base snapshot for
+    the first segment. The chain is anchored to the base snapshot by digest, so
+    a reader can prove the chain replays onto exactly the snapshot the head
+    claims, and can never silently reinterpret a cumulative checkpoint as an
+    incremental one.
+    """
     head, _encoded = _build_head(
         current,
         base_bytes,
@@ -2382,17 +2695,52 @@ def _build_delta_head(
         previous_checkpoint_sha256=previous_checkpoint_sha256,
     )
     head.pop("checkpoint_sha256")
+    if semantics == DELTA_SEMANTICS_LEGACY_CUMULATIVE:
+        # Preserve the pre-invariant cumulative projection verbatim. It is
+        # labelled so a reader can tell cumulative semantics from incremental
+        # ones instead of inferring it from shape.
+        head.update(
+            {
+                "snapshot_event_count": base.get("event_count"),
+                "snapshot_head_event_sha256": base.get("head_event_sha256"),
+                "snapshot_ledger_size_bytes": base.get("ledger_size_bytes"),
+                "current_projection_sha256": hashlib.sha256(current_bytes).hexdigest(),
+                "delta_semantics": semantics,
+                "delta_projection": {
+                    "path": delta_relative,
+                    "event_count": delta_count,
+                    "size_bytes": len(delta_bytes),
+                    "sha256": hashlib.sha256(delta_bytes).hexdigest(),
+                    "authoritative": False,
+                    "cumulative": True,
+                },
+            }
+        )
+        head["checkpoint_sha256"] = _digest(head)
+        encoded = _encoded_json(head)
+        if len(encoded) > MAX_HEAD_BYTES:
+            raise ValueError("operational gap ledger compact head byte bound would be exceeded")
+        return head, encoded
+
+    resolved_segments = [dict(item) for item in (segments or [])]
+    if not resolved_segments:
+        raise ValueError("incremental delta head requires an explicit segment chain")
+    retained_bytes = sum(int(item.get("size_bytes") or 0) for item in resolved_segments)
     head.update(
         {
             "snapshot_event_count": base.get("event_count"),
             "snapshot_head_event_sha256": base.get("head_event_sha256"),
             "snapshot_ledger_size_bytes": base.get("ledger_size_bytes"),
             "current_projection_sha256": hashlib.sha256(current_bytes).hexdigest(),
-            "delta_projection": {
-                "path": delta_relative,
-                "event_count": delta_count,
-                "size_bytes": len(delta_bytes),
-                "sha256": hashlib.sha256(delta_bytes).hexdigest(),
+            "delta_semantics": semantics,
+            "delta_chain": {
+                "semantics": semantics,
+                "base_snapshot_sha256": (
+                    base_snapshot_sha256 or hashlib.sha256(base_bytes).hexdigest()
+                ),
+                "segment_count": len(resolved_segments),
+                "retained_bytes": retained_bytes,
+                "segments": resolved_segments,
                 "authoritative": False,
             },
         }
@@ -2402,6 +2750,41 @@ def _build_delta_head(
     if len(encoded) > MAX_HEAD_BYTES:
         raise ValueError("operational gap ledger compact head byte bound would be exceeded")
     return head, encoded
+
+
+def _incremental_segment(
+    rows: Sequence[Mapping[str, Any]],
+    *,
+    parent_sequence: int,
+    parent_event_sha256: str | None,
+) -> dict[str, Any]:
+    """Describe one incremental delta segment and its parent binding."""
+    if not rows:
+        raise ValueError("incremental delta segment requires at least one event")
+    data = b"".join(
+        json.dumps(row, sort_keys=True, ensure_ascii=False, separators=(",", ":")).encode(
+            "utf-8"
+        )
+        + b"\n"
+        for row in rows
+    )
+    if len(data) > MAX_INCREMENTAL_DELTA_SEGMENT_BYTES:
+        raise ValueError("incremental delta segment exceeds its individual byte bound")
+    first = rows[0]
+    if int(first.get("sequence") or 0) != parent_sequence + 1:
+        raise ValueError("incremental delta segment does not follow its parent sequence")
+    if first.get("previous_event_sha256") != parent_event_sha256:
+        raise ValueError("incremental delta segment is not bound to its parent event")
+    return {
+        "path": (DELTA_DIRECTORY_RELATIVE / f"{hashlib.sha256(data).hexdigest()}.jsonl").as_posix(),
+        "event_count": len(rows),
+        "size_bytes": len(data),
+        "sha256": hashlib.sha256(data).hexdigest(),
+        "first_sequence": int(first.get("sequence") or 0),
+        "last_sequence": int(rows[-1].get("sequence") or 0),
+        "first_previous_event_sha256": first.get("previous_event_sha256"),
+        "head_event_sha256": rows[-1].get("event_sha256"),
+    }
 
 
 def _last_event_unlocked(root: Path) -> dict[str, Any] | None:
@@ -2501,8 +2884,14 @@ def _read_checkpoint_once(
             or hashlib.sha256(snapshot_bytes).hexdigest() != head.get("snapshot_sha256")
         ):
             raise ValueError("operational gap ledger snapshot does not match its checkpoint")
-        delta = head.get("delta_projection")
-        if isinstance(delta, Mapping):
+        delta_chain = head.get("delta_chain")
+        delta_projection = head.get("delta_projection")
+        if isinstance(delta_chain, Mapping) and delta_projection is not None:
+            raise ValueError(
+                "operational gap ledger head mixes incremental and legacy delta shapes; "
+                "recompact the ledger to migrate"
+            )
+        if isinstance(delta_chain, Mapping) or isinstance(delta_projection, Mapping):
             if (
                 value.get("event_count") != head.get("snapshot_event_count")
                 or value.get("head_event_sha256") != head.get("snapshot_head_event_sha256")
@@ -2510,19 +2899,85 @@ def _read_checkpoint_once(
                 or value.get("ledger_id") != head.get("ledger_id")
             ):
                 raise ValueError("operational gap ledger base snapshot state is stale")
-            relative = str(delta.get("path") or "")
-            delta_path = _inside(root, root / relative)
-            delta_bytes = _read_bounded_regular(
-                delta_path, MAX_DELTA_CHECKPOINT_BYTES, "operational gap ledger delta projection"
-            )
-            if (
-                len(delta_bytes) != delta.get("size_bytes")
-                or hashlib.sha256(delta_bytes).hexdigest() != delta.get("sha256")
-            ):
-                raise ValueError("operational gap ledger delta projection hash is invalid")
-            rows = _parse_jsonl_bytes(delta_bytes)
-            if len(rows) != delta.get("event_count"):
-                raise ValueError("operational gap ledger delta projection count is invalid")
+            base_digest = hashlib.sha256(snapshot_bytes).hexdigest()
+            if isinstance(delta_chain, Mapping):
+                if head.get("delta_semantics") != DELTA_SEMANTICS_INCREMENTAL:
+                    raise ValueError(
+                        "operational gap ledger head declares non-incremental delta semantics"
+                    )
+                if delta_chain.get("semantics") != DELTA_SEMANTICS_INCREMENTAL:
+                    raise ValueError("operational gap ledger delta chain semantics are invalid")
+                if delta_chain.get("base_snapshot_sha256") != base_digest:
+                    raise ValueError("operational gap ledger delta chain is not bound to its base snapshot")
+                segments = delta_chain.get("segments")
+                if not isinstance(segments, list) or not segments:
+                    raise ValueError("operational gap ledger delta chain has no segments")
+                if len(segments) != delta_chain.get("segment_count"):
+                    raise ValueError("operational gap ledger delta chain segment count is invalid")
+                rows: list[dict[str, Any]] = []
+                parent_sequence = int(value.get("event_count") or 0)
+                parent_event = value.get("head_event_sha256")
+                retained = 0
+                for segment in segments:
+                    if not isinstance(segment, Mapping):
+                        raise ValueError("operational gap ledger delta segment is malformed")
+                    delta_path = _inside(root, root / str(segment.get("path") or ""))
+                    delta_bytes = _read_bounded_regular(
+                        delta_path,
+                        MAX_DELTA_CHECKPOINT_BYTES,
+                        "operational gap ledger delta segment",
+                    )
+                    if (
+                        len(delta_bytes) != segment.get("size_bytes")
+                        or hashlib.sha256(delta_bytes).hexdigest() != segment.get("sha256")
+                    ):
+                        raise ValueError("operational gap ledger delta segment hash is invalid")
+                    segment_rows = _parse_jsonl_bytes(delta_bytes)
+                    if len(segment_rows) != segment.get("event_count"):
+                        raise ValueError("operational gap ledger delta segment count is invalid")
+                    # Enforce parentage: each segment continues exactly where the
+                    # previous one ended. This is what makes the chain provably
+                    # incremental rather than cumulative.
+                    expected = _incremental_segment(
+                        segment_rows,
+                        parent_sequence=parent_sequence,
+                        parent_event_sha256=parent_event,
+                    )
+                    if (
+                        expected["sha256"] != segment.get("sha256")
+                        or expected["first_sequence"] != segment.get("first_sequence")
+                        or expected["last_sequence"] != segment.get("last_sequence")
+                    ):
+                        raise ValueError(
+                            "operational gap ledger delta segment breaks its parent chain"
+                        )
+                    rows.extend(segment_rows)
+                    parent_sequence = expected["last_sequence"]
+                    parent_event = segment.get("head_event_sha256")
+                    retained += int(segment.get("size_bytes") or 0)
+                if retained != delta_chain.get("retained_bytes"):
+                    raise ValueError("operational gap ledger delta chain retained bytes are invalid")
+            else:
+                # Legacy cumulative projection. Read with its original cumulative
+                # semantics preserved; never reinterpreted as incremental.
+                if head.get("delta_semantics") not in {
+                    DELTA_SEMANTICS_LEGACY_CUMULATIVE,
+                    None,
+                }:
+                    raise ValueError("operational gap ledger legacy delta semantics are invalid")
+                relative = str(delta_projection.get("path") or "")
+                delta_path = _inside(root, root / relative)
+                delta_bytes = _read_bounded_regular(
+                    delta_path, MAX_DELTA_CHECKPOINT_BYTES, "operational gap ledger delta projection"
+                )
+                if (
+                    len(delta_bytes) != delta_projection.get("size_bytes")
+                    or hashlib.sha256(delta_bytes).hexdigest() != delta_projection.get("sha256")
+                ):
+                    raise ValueError("operational gap ledger delta projection hash is invalid")
+                rows = _parse_jsonl_bytes(delta_bytes)
+                if len(rows) != delta_projection.get("event_count"):
+                    raise ValueError("operational gap ledger delta projection count is invalid")
             current = project_events(rows, base_snapshot=value)
             sealed, current_bytes = _seal_snapshot(
                 current, ledger_size_bytes=head["ledger_fingerprint"]["size_bytes"]
@@ -3413,19 +3868,56 @@ def append_events(
         existing_snapshot_bytes = snapshot_path.read_bytes() if snapshot_path.is_file() else b""
         if len(existing_snapshot_bytes) >= DELTA_CHECKPOINT_THRESHOLD_BYTES:
             base_snapshot = json.loads(existing_snapshot_bytes)
-            prior_delta = b""
-            prior_count = 0
-            if predecessor and isinstance(predecessor.get("delta_projection"), Mapping):
-                projection = predecessor["delta_projection"]
-                prior_path = _inside(root, root / str(projection.get("path") or ""))
-                prior_delta = _read_bounded_regular(
-                    prior_path, MAX_DELTA_CHECKPOINT_BYTES, "operational gap ledger prior delta"
-                )
-                prior_count = int(projection.get("event_count") or 0)
-            delta_bytes = prior_delta + appended
-            if len(delta_bytes) > MAX_DELTA_CHECKPOINT_BYTES:
+            # Continue an existing INCREMENTAL chain when the predecessor head
+            # carries one. A legacy cumulative predecessor is never extended as
+            # if it were incremental: its semantics are preserved and the next
+            # successful compaction migrates it.
+            prior_segments: list[dict[str, Any]] = []
+            prior_semantics = DELTA_SEMANTICS_INCREMENTAL
+            prior_retained_bytes = 0
+            legacy_predecessor: Mapping[str, Any] | None = None
+            if predecessor:
+                chain = predecessor.get("delta_chain")
+                legacy = predecessor.get("delta_projection")
+                if isinstance(chain, Mapping):
+                    prior_segments = [dict(item) for item in chain.get("segments") or []]
+                    prior_semantics = str(chain.get("semantics") or DELTA_SEMANTICS_INCREMENTAL)
+                    prior_retained_bytes = sum(
+                        int(item.get("size_bytes") or 0) for item in prior_segments
+                    )
+                elif isinstance(legacy, Mapping):
+                    prior_semantics = DELTA_SEMANTICS_LEGACY_CUMULATIVE
+                    legacy_predecessor = legacy
+            candidate_retained = prior_retained_bytes + len(appended)
+            candidate_depth = len(prior_segments) + 1
+            # Compaction is driven by aggregate retained bytes and chain depth,
+            # never by the size of a single delta.
+            compact = (
+                # A cumulative predecessor cannot parent a new incremental
+                # segment from its older base snapshot. Fold its verified
+                # projection once before starting the incremental chain.
+                legacy_predecessor is not None
+                or candidate_retained > DELTA_RETAINED_BYTES_COMPACTION_THRESHOLD
+                or candidate_depth > DELTA_CHAIN_DEPTH_COMPACTION_THRESHOLD
+                or len(appended) > MAX_INCREMENTAL_DELTA_SEGMENT_BYTES
+            )
+            if compact:
                 published = _write_snapshot_unlocked(root, current, predicted_size)
                 published_bytes = _encoded_json(published)
+                # Folding the chain into a snapshot makes every delta in the
+                # chain unreferenced. Those are the governed reclaim set; the
+                # actual removal stays a separate, receipted step.
+                superseded = [
+                    str(item.get("path"))
+                    for item in prior_segments
+                    if str(item.get("path") or "").strip()
+                ]
+                if legacy_predecessor is not None and str(
+                    legacy_predecessor.get("path") or ""
+                ).strip():
+                    superseded.append(str(legacy_predecessor["path"]))
+                if superseded:
+                    _write_reclaim_set(root, superseded, reason="superseded-by-snapshot-compaction")
                 _head, head_bytes = _build_head(
                     published,
                     published_bytes,
@@ -3435,25 +3927,44 @@ def append_events(
                     previous_checkpoint_sha256=previous_checkpoint,
                 )
             else:
-                delta_sha = hashlib.sha256(delta_bytes).hexdigest()
-                delta_relative = (DELTA_DIRECTORY_RELATIVE / f"{delta_sha}.jsonl").as_posix()
-                delta_path = _inside(root, root / delta_relative)
-                delta_path.parent.mkdir(parents=True, exist_ok=True)
-                if not delta_path.exists():
-                    _write_bytes_atomically(delta_path, delta_bytes)
-                published, published_bytes = _seal_snapshot(current, ledger_size_bytes=predicted_size)
+                parent_sequence = int(base_snapshot.get("event_count") or 0)
+                parent_event = base_snapshot.get("head_event_sha256")
+                if prior_segments:
+                    parent_sequence = int(prior_segments[-1].get("last_sequence") or 0)
+                    parent_event = prior_segments[-1].get("head_event_sha256")
+                segment = _incremental_segment(
+                    events,
+                    parent_sequence=parent_sequence,
+                    parent_event_sha256=parent_event,
+                )
+                segment_path = _inside(root, root / str(segment["path"]))
+                segment_path.parent.mkdir(parents=True, exist_ok=True)
+                if segment_path.exists():
+                    if segment_path.read_bytes() != _encoded_segment(events):
+                        raise RuntimeError("immutable incremental delta segment collision")
+                else:
+                    _write_bytes_atomically(segment_path, _encoded_segment(events))
+                segments = [*prior_segments, segment]
+                published, published_bytes = _seal_snapshot(
+                    current, ledger_size_bytes=predicted_size
+                )
                 _head, head_bytes = _build_delta_head(
                     published,
                     published_bytes,
                     base_snapshot,
                     existing_snapshot_bytes,
-                    delta_relative=delta_relative,
-                    delta_bytes=delta_bytes,
-                    delta_count=prior_count + len(events),
+                    delta_relative=str(segment["path"]),
+                    delta_bytes=segment_path.read_bytes(),
+                    delta_count=prior_segments and sum(
+                        int(item.get("event_count") or 0) for item in prior_segments
+                    ) or len(events),
                     fingerprint=actual_fingerprint,
                     tail_event=events[-1],
                     verification_basis=basis,
                     previous_checkpoint_sha256=previous_checkpoint,
+                    semantics=prior_semantics,
+                    segments=segments,
+                    base_snapshot_sha256=hashlib.sha256(existing_snapshot_bytes).hexdigest(),
                 )
         else:
             published = _write_snapshot_unlocked(root, current, predicted_size)

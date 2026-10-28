@@ -10,11 +10,7 @@ from typing import Mapping, Sequence
 TEMPORAL_TYPES = frozenset({"observed_at", "valid_from", "valid_until", "supersedes"})
 
 
-def _stable(value: object) -> str:
-    rendered = json.dumps(
-        value, sort_keys=True, separators=(",", ":"), ensure_ascii=False
-    )
-    return hashlib.sha256(rendered.encode("utf-8")).hexdigest()
+from runtime.hash_utils import json_utf8_hash as _stable
 
 
 def plan_memory_graph_remediation(

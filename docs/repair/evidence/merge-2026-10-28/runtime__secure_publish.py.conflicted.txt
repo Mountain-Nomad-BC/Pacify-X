@@ -1,0 +1,243 @@
+"""Exclusive same-directory publication with pinned physical ancestors.
+
+POSIX operations use a directory descriptor; Windows holds non-delete-shared
+directory handles throughout publication. This is byte publication only: callers
+retain responsibility for authority, record validation and multi-file transactions.
+"""
+
+from __future__ import annotations
+
+from contextlib import contextmanager
+import os
+from pathlib import Path
+import stat
+import time
+from uuid import uuid4
+from typing import BinaryIO, Callable
+
+
+def _target(path: Path) -> Path:
+    path = Path(path)
+    if ".." in path.parts:
+        raise ValueError("publication path contains traversal")
+    path = path.absolute()
+    for part in path.parts[1:]:
+        if (not part or part[-1:] in (".", " ") or ":" in part
+                or part.split(".", 1)[0].casefold() in {
+                    "con", "prn", "aux", "nul",
+                    *(f"com{i}" for i in range(1, 10)),
+                    *(f"lpt{i}" for i in range(1, 10)),
+                }):
+            raise ValueError("publication path is not portable")
+    if os.name == "nt" and (not path.drive or path.drive.startswith("\\")):
+        raise ValueError("publication requires a local drive")
+    return path
+
+
+@contextmanager
+<<<<<<< HEAD
+def _windows_parent(path: Path, *, create: bool = True):
+=======
+def _windows_parent(path: Path):
+>>>>>>> codex/rollout-day1-20261024
+    import ctypes
+    from ctypes import wintypes
+
+    class FileInfo(ctypes.Structure):
+        _fields_ = [
+            ("attributes", wintypes.DWORD),
+            ("created", wintypes.FILETIME), ("accessed", wintypes.FILETIME),
+            ("written", wintypes.FILETIME), ("volume", wintypes.DWORD),
+            ("size_high", wintypes.DWORD), ("size_low", wintypes.DWORD),
+            ("links", wintypes.DWORD), ("index_high", wintypes.DWORD),
+            ("index_low", wintypes.DWORD),
+        ]
+
+    api = ctypes.WinDLL("kernel32", use_last_error=True)
+    api.CreateFileW.argtypes = [wintypes.LPCWSTR, wintypes.DWORD, wintypes.DWORD,
+                               ctypes.c_void_p, wintypes.DWORD, wintypes.DWORD,
+                               wintypes.HANDLE]
+    api.CreateFileW.restype = wintypes.HANDLE
+    api.GetFileInformationByHandle.argtypes = [wintypes.HANDLE, ctypes.POINTER(FileInfo)]
+    api.GetFileInformationByHandle.restype = wintypes.BOOL
+    api.CloseHandle.argtypes = [wintypes.HANDLE]
+    api.CloseHandle.restype = wintypes.BOOL
+    handles = []
+    current = Path(path.anchor)
+    try:
+        for part in (None, *path.parent.parts[1:]):
+            if part is not None:
+                current /= part
+<<<<<<< HEAD
+            if part is not None and create:
+=======
+>>>>>>> codex/rollout-day1-20261024
+                try:
+                    current.mkdir()
+                except FileExistsError:
+                    pass
+            # GENERIC_READ; SHARE_READ|SHARE_WRITE (no SHARE_DELETE);
+            # OPEN_EXISTING; BACKUP_SEMANTICS|OPEN_REPARSE_POINT.
+            handle = api.CreateFileW(str(current), 0x80000000, 3, None, 3, 0x02200000, None)
+            if handle == ctypes.c_void_p(-1).value:
+                raise ctypes.WinError(ctypes.get_last_error())
+            handles.append(handle)
+            info = FileInfo()
+            if not api.GetFileInformationByHandle(handle, ctypes.byref(info)):
+                raise ctypes.WinError(ctypes.get_last_error())
+            if info.attributes & 0x400 or not info.attributes & 0x10:
+                raise ValueError("publication ancestor is a reparse point or not a directory")
+        yield None
+    finally:
+        for handle in reversed(handles):
+            api.CloseHandle(handle)
+
+
+@contextmanager
+<<<<<<< HEAD
+def _posix_parent(path: Path, *, create: bool = True):
+=======
+def _posix_parent(path: Path):
+>>>>>>> codex/rollout-day1-20261024
+    flags = os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW
+    descriptor = os.open(path.anchor, flags)
+    try:
+        for part in path.parent.parts[1:]:
+<<<<<<< HEAD
+            if create:
+                try:
+                    os.mkdir(part, mode=0o700, dir_fd=descriptor)
+                except FileExistsError:
+                    pass
+=======
+            try:
+                os.mkdir(part, mode=0o700, dir_fd=descriptor)
+            except FileExistsError:
+                pass
+>>>>>>> codex/rollout-day1-20261024
+            child = os.open(part, flags, dir_fd=descriptor)
+            os.close(descriptor)
+            descriptor = child
+        yield descriptor
+    finally:
+        os.close(descriptor)
+
+
+def atomic_write_bytes(path: Path, payload: bytes) -> None:
+    """Publish exact bytes, rejecting links/devices and never reusing staging names.
+
+    A failed pre-replace operation leaves the previous destination intact. Any
+    owned staging image is removed on handled failure. An OS crash may retain a
+    random prepared image, which is never treated as committed or retried in place.
+    """
+    if type(payload) is not bytes:
+        raise TypeError("publication payload must be bytes")
+    atomic_write_stream(path, lambda stream: stream.write(payload))
+
+
+def atomic_write_stream(path: Path, writer: Callable[[BinaryIO], object]) -> None:
+    """Stream into an exclusively owned image; publish only after writer succeeds."""
+    target = _target(path)
+    parent = _windows_parent if os.name == "nt" else _posix_parent
+    with parent(target) as directory:
+        kwargs = {} if directory is None else {"dir_fd": directory}
+        destination = target if directory is None else target.name
+
+        def check_destination():
+            try:
+                info = os.stat(destination, follow_symlinks=False, **kwargs)
+            except FileNotFoundError:
+                return
+            if (not stat.S_ISREG(info.st_mode) or info.st_nlink != 1
+                    or int(getattr(info, "st_file_attributes", 0)) & 0x400):
+                raise ValueError("publication target must be a physical single-link regular file")
+
+        check_destination()
+        name = f".{target.name}.{uuid4().hex}.prepared"
+        prepared = target.parent / name if directory is None else name
+        flags = os.O_WRONLY | os.O_CREAT | os.O_EXCL | int(getattr(os, "O_BINARY", 0))
+        descriptor = os.open(prepared, flags, 0o600, **kwargs)
+        try:
+            with os.fdopen(descriptor, "wb") as stream:
+                writer(stream)
+                stream.flush()
+                os.fsync(stream.fileno())
+            check_destination()
+            if directory is None:
+                deadline = time.monotonic() + 0.25
+                while True:
+                    try:
+                        os.replace(prepared, destination)
+                        break
+                    except PermissionError:
+                        if time.monotonic() >= deadline:
+                            raise
+                        # A concurrent short-lived reader can deny deletion on
+                        # Windows. Retry only this owned image, never a producer.
+                        time.sleep(0.005)
+                        check_destination()
+            else:
+                os.replace(prepared, destination, src_dir_fd=directory, dst_dir_fd=directory)
+                os.fsync(directory)
+        finally:
+            try:
+                os.unlink(prepared, **kwargs)
+            except FileNotFoundError:
+                pass
+<<<<<<< HEAD
+
+
+def read_physical_bytes(path: Path, *, max_bytes: int = 8 * 1024 * 1024) -> bytes:
+    """Read an existing single-link file under pinned physical ancestors.
+
+    No directories are created. Windows opens the leaf itself without following
+    reparse points and denies deletion for the life of the read handle.
+    """
+    if type(max_bytes) is not int or not 0 <= max_bytes <= 64 * 1024 * 1024:
+        raise ValueError("physical read byte budget invalid")
+    target = _target(path)
+    parent = _windows_parent if os.name == "nt" else _posix_parent
+    with parent(target, create=False) as directory:
+        if directory is None:
+            import ctypes
+            from ctypes import wintypes
+            import msvcrt
+            class AttributeTag(ctypes.Structure):
+                _fields_ = [("attributes", wintypes.DWORD), ("tag", wintypes.DWORD)]
+            api = ctypes.WinDLL("kernel32", use_last_error=True)
+            api.CreateFileW.argtypes = [wintypes.LPCWSTR, wintypes.DWORD, wintypes.DWORD,
+                ctypes.c_void_p, wintypes.DWORD, wintypes.DWORD, wintypes.HANDLE]
+            api.CreateFileW.restype = wintypes.HANDLE
+            api.GetFileInformationByHandleEx.argtypes = [wintypes.HANDLE, ctypes.c_int, ctypes.c_void_p, wintypes.DWORD]
+            api.GetFileInformationByHandleEx.restype = wintypes.BOOL
+            api.CloseHandle.argtypes = [wintypes.HANDLE]
+            handle = api.CreateFileW(str(target), 0x80000000, 3, None, 3, 0x00200000, None)
+            if handle == ctypes.c_void_p(-1).value:
+                raise ctypes.WinError(ctypes.get_last_error())
+            try:
+                info = AttributeTag()
+                if not api.GetFileInformationByHandleEx(handle, 9, ctypes.byref(info), ctypes.sizeof(info)):
+                    raise ctypes.WinError(ctypes.get_last_error())
+                if info.attributes & (0x400 | 0x10):
+                    raise ValueError("physical read refuses reparse points and directories")
+                descriptor = msvcrt.open_osfhandle(handle, os.O_RDONLY | os.O_BINARY)
+            except BaseException:
+                api.CloseHandle(handle)
+                raise
+        else:
+            descriptor = os.open(target.name, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK, dir_fd=directory)
+        with os.fdopen(descriptor, "rb") as stream:
+            before = os.fstat(stream.fileno())
+            if not stat.S_ISREG(before.st_mode) or before.st_nlink != 1:
+                raise ValueError("physical read requires a single-link regular file")
+            if before.st_size > max_bytes:
+                raise ValueError("physical read byte budget exceeded")
+            raw = stream.read(max_bytes + 1)
+            after = os.fstat(stream.fileno())
+            if len(raw) > max_bytes:
+                raise ValueError("physical read byte budget exceeded")
+            if (before.st_dev, before.st_ino, before.st_size, before.st_mtime_ns) != (after.st_dev, after.st_ino, after.st_size, after.st_mtime_ns):
+                raise ValueError("physical read changed during inventory")
+            return raw
+=======
+>>>>>>> codex/rollout-day1-20261024

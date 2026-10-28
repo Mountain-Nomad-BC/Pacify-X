@@ -4,7 +4,7 @@ The NSAI library uses one canonical object per JSON file under `knowledge/nsai/o
 
 ## Current corpus
 
-The implementation-wave closure corpus contains 74 canonical objects spanning model runtime/backend behavior, retrieval generations, MoE routing, memory/learning lineage, semantic/LSP intelligence, RIE/Remy operational mechanisms, cognitive generation, bounded librarian selection, durable coordination, context checkpointing and VS Code commissioning.
+The implementation-wave closure corpus contains 74 canonical objects spanning model runtime/backend behavior, retrieval generations, MoE routing, memory/learning lineage, semantic/LSP intelligence, operational reliability mechanisms, cognitive generation, bounded librarian selection, durable coordination, context checkpointing and VS Code commissioning.
 
 ## Admission lifecycle
 

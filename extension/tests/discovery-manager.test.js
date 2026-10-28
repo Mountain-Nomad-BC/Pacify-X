@@ -115,7 +115,7 @@ test('read-only discovery is memory-only and does not create project state', asy
   assert.equal(result.persistence, 'memory-only-read-discovery');
   assert.equal(result.event, null);
   assert.deepEqual(fs.readdirSync(root).sort(), before);
-  assert.equal(fs.existsSync(path.join(root, '.engineering-bootstrap')), false);
+  assert.equal(fs.existsSync(path.join(root, '.agentic_engineering_os_px')), false);
 });
 
 test('root inspection reports missing, alias, nested, and symlink ambiguity without escaping admitted roots', t => {
@@ -174,7 +174,7 @@ test('refresh generations expose moved and deleted environment identities withou
 
 test('legacy compact inventory is integrity-checked then migrated in memory to schema 2', t => {
   const root = fixture(); t.after(() => fs.rmSync(root, { recursive: true, force: true }));
-  const environmentRoot = path.join(root, '.engineering-bootstrap', 'environment'); fs.mkdirSync(environmentRoot, { recursive: true });
+  const environmentRoot = path.join(root, '.agentic_engineering_os_px', 'environment'); fs.mkdirSync(environmentRoot, { recursive: true });
   const stable = {
     schema_version: 'px.environment-capability-map/1.0', authority: 'legacy-test', boundaries: {}, ontology: {}, summary: {},
     storage: { mode: 'compact-index-with-hash-verified-lazy-shards' }, datasets: {}, content_hash: 'legacy-content'

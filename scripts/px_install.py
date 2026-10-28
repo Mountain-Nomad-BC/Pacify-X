@@ -8,7 +8,7 @@ It is non-destructive and idempotent:
 
 * ``--dry-run`` (default)  inspects and prints the plan; writes nothing.
 * ``--apply``              writes the local commissioning record under
-                           ``.engineering-bootstrap/commissioning/`` (gitignored custody).
+                           ``.agentic_engineering_os_px/commissioning/`` (gitignored custody).
 
 It never downloads models, never installs a runtime, and never enables a provider. It produces
 the decisions and the ordered plan; the user or the installing assistant performs the effects
@@ -37,7 +37,7 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-COMMISSIONING_DIR = ROOT / ".engineering-bootstrap" / "commissioning"
+COMMISSIONING_DIR = ROOT / ".agentic_engineering_os_px" / "commissioning"
 PLAN_SCHEMA = "px.commissioning-plan/1.0"
 
 # --- Profile catalogue ------------------------------------------------------
@@ -441,7 +441,7 @@ def main() -> int:
         if step.get("approval_reason"):
             print(f"       because: {step['approval_reason']}")
     print()
-    print("Re-run with --apply to record this plan under .engineering-bootstrap/commissioning/.")
+    print("Re-run with --apply to record this plan under .agentic_engineering_os_px/commissioning/.")
     return 0
 
 

@@ -45,7 +45,7 @@ CONTRACT_RELATIVE = "contracts/isolated-agent-sandbox.schema.json"
 MODES = ("OFF", "ON")
 MAX_SANDBOX_POLICY_BYTES = 262_144
 SANDBOX_POLICY_RELATIVE = Path(
-    ".engineering-bootstrap", "sandbox", "isolated-agent-sandbox.json"
+    ".agentic_engineering_os_px", "sandbox", "isolated-agent-sandbox.json"
 )
 
 # The components a coordinated activation must establish. Partial activation is a
@@ -222,8 +222,8 @@ def load_sandbox_policy(project_root: Path) -> SandboxPolicy | None:
     root = Path(project_root).resolve(strict=True)
     target = root / SANDBOX_POLICY_RELATIVE
     for candidate in (
-        root / ".engineering-bootstrap",
-        root / ".engineering-bootstrap" / "sandbox",
+        root / ".agentic_engineering_os_px",
+        root / ".agentic_engineering_os_px" / "sandbox",
         target,
     ):
         if candidate.is_symlink():

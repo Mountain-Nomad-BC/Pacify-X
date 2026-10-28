@@ -185,7 +185,7 @@ def run_test_command(
         if resource_manager is None:
             resource_manager = ResourceManager(
                 cwd.resolve(strict=True)
-                / ".engineering-bootstrap"
+                / ".agentic_engineering_os_px"
                 / "resource-lifecycle"
                 / "ledger.json"
             )

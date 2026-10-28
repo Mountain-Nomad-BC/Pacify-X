@@ -136,7 +136,7 @@ class StudioAuthorityStore:
     def __init__(self, project_root: Path) -> None:
         self.project_root = project_root.resolve(strict=True)
         self.root = (
-            self.project_root / ".engineering-bootstrap" / "studios" / "authority"
+            self.project_root / ".agentic_engineering_os_px" / "studios" / "authority"
         )
         verify_safe_ancestors(self.project_root, self.root / "placeholder")
         self.root.mkdir(parents=True, exist_ok=True)
@@ -215,7 +215,7 @@ class StudioAuthorityStore:
         instance.project_root = project_root.resolve(strict=True)
         instance.root = (
             instance.project_root
-            / ".engineering-bootstrap"
+            / ".agentic_engineering_os_px"
             / "studios"
             / "authority"
         )

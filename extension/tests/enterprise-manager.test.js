@@ -19,13 +19,13 @@ test('enterprise inspection can remain memory-only without initialization writes
   const root = fixture();
   const result = initializeEnterprise(root, catalog, { persist: false });
   assert.equal(result.state.execution_policy.master_enabled, false);
-  assert.equal(fs.existsSync(path.join(root, '.engineering-bootstrap')), false);
+  assert.equal(fs.existsSync(path.join(root, '.agentic_engineering_os_px')), false);
   fs.rmSync(root, { recursive: true, force: true });
 });
 
 test('enterprise state is stored below a separate project namespace', () => {
   const root = fixture(); const result = initializeEnterprise(root, catalog);
-  assert.match(result.paths.state, /\.engineering-bootstrap[\\/]enterprise[\\/]state\.json$/);
+  assert.match(result.paths.state, /\.agentic_engineering_os_px[\\/]enterprise[\\/]state\.json$/);
   assert.equal(result.state.defaults.billable_services, 'disabled');
   assert.equal(result.state.execution_policy.master_enabled, false);
   assert.equal(result.state.execution_policy.require_approval_before_billable_execution, true);

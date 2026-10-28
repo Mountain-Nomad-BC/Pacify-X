@@ -30,4 +30,6 @@ def test_missing_independent_verifier_cannot_create_host_state(tmp_path):
 
 
 def test_host_configuration_uses_bootstrap_project_namespace():
-    assert CONFIGURATION_RELATIVE.parts[0] == ".engineering-bootstrap"
+    # The control namespace is canonical; asserting the legacy spelling here
+    # would pin the migrated owner back to the pre-migration name.
+    assert CONFIGURATION_RELATIVE.parts[0] == ".agentic_engineering_os_px"

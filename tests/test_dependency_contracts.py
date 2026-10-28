@@ -579,3 +579,28 @@ def test_revision_complete_inventory_budget_precedes_payload_reads(
     monkeypatch.setattr(Path, "open", guarded)
     with pytest.raises(ValueError):
         revision_for_path(tmp_path, "tree", limits=limits)
+
+
+def test_semantic_clustering_is_optional_and_has_an_explicit_absence_result(monkeypatch):
+    import builtins
+    import tomllib
+    from runtime.semantic_census_report import cluster_stability
+
+    imports = build_imports(ROOT)
+    record = next(row for row in imports["records"] if row["module"] == "sklearn")
+    assert record["classification"] == "optional_gated"
+    assert record["distribution"] == "scikit-learn"
+    project = tomllib.loads((ROOT / "pyproject.toml").read_text())["project"]
+    assert "scikit-learn" in project["optional-dependencies"]["semantic-analysis"]
+    assert not any(name.startswith("scikit-learn") for name in project["dependencies"])
+    original_import = builtins.__import__
+
+    def without_optional_library(name, *args, **kwargs):
+        if name == "sklearn" or name.startswith("sklearn."):
+            raise ModuleNotFoundError("optional backend absent", name=name)
+        return original_import(name, *args, **kwargs)
+
+    monkeypatch.setattr(builtins, "__import__", without_optional_library)
+    assert cluster_stability([]) == {
+        "available": False, "reason": "scikit-learn is not importable"
+    }

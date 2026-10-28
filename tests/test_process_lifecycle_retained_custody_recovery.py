@@ -96,7 +96,13 @@ def test_liveness_close_failure_stays_visible_until_recovered(tmp_path, monkeypa
     result = manager.reconcile_retained_custody(apply=True)
     assert result['valid'] and owner.closed
     assert not manager._supervision_failures
-    assert len(list(manager.receipt_dir.glob('*.json'))) == 1
+    receipts = [json.loads(path.read_bytes()) for path in manager.receipt_dir.glob('*.json')]
+    cleanup = [receipt for receipt in receipts if 'cleanup_id' in receipt]
+    supervision = [receipt for receipt in receipts if 'receipt_id' in receipt]
+    assert len(cleanup) == 1 and len(supervision) == 1
+    assert supervision[0]['schema_version'] == 'px.process-supervision-receipt/1.1'
+    assert supervision[0]['status'] == 'supervision_failed'
+    assert supervision[0]['capture_counts_available'] is False
 
 
 @pytest.mark.parametrize('indirect', [False, True])
@@ -212,7 +218,14 @@ def test_recovery_retries_publication_once_per_physical_owner(tmp_path, monkeypa
     record = manager.ledger.get(custody['record'].resource_id)
     assert record.run_state == 'failed' and record.status == 'reclaimed'
     receipts = [json.loads(path.read_bytes()) for path in manager.receipt_dir.glob('*.json')]
-    assert len(receipts) == 1 and len(result['outcomes']) == 1
+    cleanup = [receipt for receipt in receipts if 'cleanup_id' in receipt]
+    supervision = [receipt for receipt in receipts if 'receipt_id' in receipt]
+    assert len(cleanup) == 1 and len(result['outcomes']) == 1
+    assert len(supervision) == 1
+    assert supervision[0]['schema_version'] == 'px.process-supervision-receipt/1.1'
+    assert supervision[0]['status'] == 'supervision_failed'
+    assert supervision[0]['failure_type'] == 'RuntimeError'
+    assert supervision[0]['capture_counts_available'] is False
 
 
 def test_remaining_recovery_deadline_reaches_each_blocking_wait(tmp_path, monkeypatch):

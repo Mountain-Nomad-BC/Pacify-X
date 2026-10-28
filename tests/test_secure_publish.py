@@ -61,7 +61,10 @@ def _writer(case, root, monkeypatch):
         # Tool intake publishes through the transactional WAL under the same
         # commissioning namespace the real owner reads, so the fixture must
         # hold a valid checkpoint there instead of a second legacy authority.
-        directory = root / ".engineering-bootstrap/project-management"
+        # That namespace is the canonical control directory: the owner resolves
+        # `control_path(root, "project-management")`, and a fixture seeded in the
+        # legacy tree silently tests the wrong authority.
+        directory = root / ".agentic_engineering_os_px/project-management"
         directory.mkdir(parents=True)
         (directory / "state.json").write_text(
             '{"checkpoint":{"revision":0},"evidence":{},"work":{}}', encoding="utf-8"
@@ -107,7 +110,7 @@ def test_writer_failed_replace_preserves_previous_target(case, tmp_path, monkeyp
         # The transactional intake owner retains failed WAL allocation evidence;
         # staging for this attempt must not exist outside its journal and the
         # outcome must be explicit.
-        journal = root / ".engineering-bootstrap/project-management/tool-intake-wal"
+        journal = root / ".agentic_engineering_os_px/project-management/tool-intake-wal"
         assert all(path.is_relative_to(journal) for path in retained)
         staged = [path for path in root.rglob("*.json.next") if not path.is_relative_to(journal)]
         assert staged == []

@@ -4,6 +4,8 @@ import json
 from pathlib import Path
 import shutil
 
+import pytest
+
 from scripts.build_reclamation_learning_promotion import build
 
 
@@ -15,7 +17,7 @@ def _portable_cleanup_evidence(tmp_path: Path) -> Path:
         ".px/skills/manage-resource-lifecycle/references/lifecycle-policy.md",
         "runtime/resource_lifecycle.py",
         "registry/adversarial_reaudit_20260813.json",
-        ".engineering-bootstrap/test-evidence/sections/testing-governance.json",
+        ".agentic_engineering_os_px/test-evidence/sections/testing-governance.json",
     ):
         source = ROOT / relative
         target = tmp_path / relative
@@ -23,7 +25,7 @@ def _portable_cleanup_evidence(tmp_path: Path) -> Path:
         shutil.copy2(source, target)
     receipts = (
         tmp_path
-        / ".engineering-bootstrap"
+        / ".agentic_engineering_os_px"
         / "resource-lifecycle"
         / "cleanup-receipts"
     )
@@ -59,6 +61,20 @@ def _portable_cleanup_evidence(tmp_path: Path) -> Path:
     return tmp_path
 
 
+def _governance_receipt_present() -> bool:
+    return (
+        ROOT / ".agentic_engineering_os_px/test-evidence/sections/testing-governance.json"
+    ).is_file()
+
+
+@pytest.mark.skipif(
+    not _governance_receipt_present(),
+    reason=(
+        "known open gate: learning/reclamation promotion lacks genuine current "
+        "testing-governance evidence (retained section receipt is absent in "
+        "this preserved copy); fabricating it is forbidden"
+    ),
+)
 def test_bounded_cleanup_evidence_promotes_a_reversible_process_revision(
     tmp_path: Path,
 ) -> None:

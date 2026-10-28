@@ -35,15 +35,159 @@ import json
 import math
 import os
 import re
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 from pathlib import Path
 from typing import Any, Mapping
 from uuid import uuid4
+from contextlib import contextmanager
+from .archive_io import portable_member_name, reject_path_links
+from .file_lock import FileLock
+from .json_io import load_json_object, read_bounded_bytes
+from .scope_lease import ScopeLeaseStore
+from .effect_intent import EffectIntentLedger
+from .resource_lifecycle import ResourceManager, RunState
+
+
+def _canonical(value):
+    return json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=False, allow_nan=False).encode("utf-8")
+
+
+def _sha(value):
+    return hashlib.sha256(_canonical(value)).hexdigest()
+
+
+def _note_failure(primary, phase, secondary):
+    try:
+        BaseException.add_note(primary, phase + " remains uncertain: " + type(secondary).__name__)
+    except BaseException:
+        pass
+
+
+@contextmanager
+def _tie_lock(path):
+    lock = FileLock(path, timeout_seconds=5)
+    lock.__enter__()
+    primary = None
+    try:
+        yield
+    except BaseException as error:
+        primary = error
+        raise
+    finally:
+        try:
+            lock.__exit__(None if primary is None else type(primary), primary,
+                          None if primary is None else primary.__traceback__)
+        except BaseException as secondary:
+            if primary is None:
+                raise
+            _note_failure(primary, "T.I.E. object lock release", secondary)
+
+
+def _mutate_memory(root, memory, key, execution_id, operation):
+    """Fence actual object-local writes, preserving uncertain attempts."""
+    reject_path_links(memory)
+    scopes = [memory.relative_to(root).as_posix()]
+    intents = EffectIntentLedger(root)
+    if intents.fence(key)["disposition"] != "new":
+        raise ValueError("T.I.E. effect requires reconciliation; blind retry refused")
+    leases = ScopeLeaseStore(root)
+    lease_id = "tie-" + uuid4().hex
+    leases.acquire(lease_id=lease_id, execution_id=execution_id, effect="write", scopes=scopes,
+                   reason="object-local T.I.E. experience custody",
+                   expires_utc=(datetime.now(timezone.utc) + timedelta(minutes=2)).isoformat())
+    intended = False
+    visibility = {"possible": False}
+    primary = None
+    def assert_live():
+        if any(row.get("lease_id") == lease_id and row.get("execution_id") == execution_id
+               and row.get("quarantine") for row in leases._load()):
+            raise ValueError("T.I.E. host mutation lease is quarantined; publication refused")
+        if not any(row.lease_id == lease_id and row.execution_id == execution_id
+                   and tuple(row.scopes) == tuple(scopes) for row in leases.active(effect="write")):
+            raise ValueError("T.I.E. native write lease is no longer live")
+        fence = intents.fence(key)
+        if (fence["disposition"] != "in_flight" or fence.get("execution_id") != execution_id
+                or fence.get("effect") != "write" or fence.get("scopes") != scopes):
+            raise ValueError("T.I.E. native effect intent ownership differs")
+    visibility["assert_live"] = assert_live
+    try:
+        intents.intend(idempotency_key=key, execution_id=execution_id, effect="write", scopes=scopes)
+        intended = True
+        assert_live()
+        reject_path_links(memory)
+        memory.mkdir(parents=True, exist_ok=True)
+        reject_path_links(memory / ".tie.lock")
+        with _tie_lock(memory / ".tie.lock"):
+            reject_path_links(memory)
+            result, digest = operation(visibility)
+        assert_live()
+        intents.commit(idempotency_key=key, execution_id=execution_id, result_sha256=digest)
+        return result
+    except BaseException as error:
+        primary = error
+        if intended and not visibility["possible"]:
+            try:
+                intents.fail(idempotency_key=key, execution_id=execution_id, failure_type=type(error).__name__)
+            except BaseException as secondary:
+                _note_failure(error, "T.I.E. intent settlement", secondary)
+        raise
+    finally:
+        try:
+            if not leases.release(lease_id=lease_id, execution_id=execution_id):
+                raise ValueError("T.I.E. native lease closure is missing")
+        except BaseException as secondary:
+            if primary is None:
+                raise
+            _note_failure(primary, "T.I.E. lease release", secondary)
+
+
+def _publish_stats(root, memory, body, visibility):
+    """Publish through a real native ephemeral workspace and prove cleanup."""
+    visibility["assert_live"]()
+    manager = ResourceManager(root / ".agentic_engineering_os_px/resource-lifecycle/resources.json",
+        receipt_dir=root / ".agentic_engineering_os_px/resource-lifecycle/cleanup-receipts")
+    workspace_root = root / ".agentic_engineering_os_px/resource-lifecycle/tie-workspaces"
+    reject_path_links(workspace_root)
+    workspace_root.mkdir(parents=True, exist_ok=True)
+    workspace = manager.create_workspace(workspace_root, project_id=str(root),
+        run_id="tie-stats-" + uuid4().hex, lane_id="tie-rollup", creator="runtime.usage_memory", prefix=".tie-stats-")
+    primary = None
+    published = False
+    try:
+        image = (json.dumps(body, indent=2, ensure_ascii=False) + "\n").encode("utf-8")
+        prepared = Path(workspace.path) / "stats.json"
+        with prepared.open("xb") as stream:
+            stream.write(image)
+            stream.flush()
+            os.fsync(stream.fileno())
+        if bytes(read_bounded_bytes(prepared, max_bytes=16 * 1024 * 1024)) != image:
+            raise ValueError("T.I.E. prepared rollup image differs")
+        target = memory / "stats.json"
+        reject_path_links(target)
+        visibility["assert_live"]()
+        visibility["possible"] = True
+        os.replace(prepared, target)
+        published = True
+        if bytes(read_bounded_bytes(target, max_bytes=16 * 1024 * 1024)) != image:
+            raise ValueError("T.I.E. promoted rollup image differs")
+    except BaseException as error:
+        primary = error
+        raise
+    finally:
+        try:
+            cleanup = manager.reclaim_ephemeral_path(workspace.resource_id,
+                reason="T.I.E. rollup publication settled", state=RunState.COMPLETED if published else RunState.FAILED)
+            if cleanup.resources_failed or cleanup.errors:
+                raise ValueError("T.I.E. temporary workspace custody did not close")
+        except BaseException as secondary:
+            if primary is None:
+                raise
+            _note_failure(primary, "T.I.E. temporary custody cleanup", secondary)
 
 USAGE_SCHEMA = "px.usage-memory/1.0"
 RECORD_SCHEMA = "px.usage-observation/1.0"
 
-SUBJECT_KINDS = ("skill", "agent", "workflow")
+SUBJECT_KINDS = ("skill", "agent", "workflow", "knowledge", "model")
 KIND_ROOT = {
     "skill": Path(".px/skills"),
     # Agents are owned by the agency-agent provider registry; their bodies live under
@@ -51,6 +195,10 @@ KIND_ROOT = {
     # authority, so memory is written beside the real agent body instead.
     "agent": Path("providers/agency_agents/agents"),
     "workflow": Path("orchestration/workflows"),
+    # Knowledge sources and models carry object-local T.I.E. experience under the
+    # studio root; their bodies live in the canonical registries.
+    "knowledge": Path("knowledge"),
+    "model": Path("registry/models"),
 }
 
 # Agent ids are dotted (agency.<domain>.<name>) and locate a body file rather than a directory.
@@ -94,11 +242,17 @@ def _subject_root(root: Path, kind: str, subject_id: str) -> Path:
         registry = root / AGENT_REGISTRY
         if not registry.is_file():
             raise ValueError("agency agent registry is missing; cannot resolve an agent subject")
-        payload = json.loads(registry.read_text(encoding="utf-8-sig"))
-        row = next((a for a in payload.get("agents", []) if a.get("agent_id") == subject_id), None)
-        if row is None:
+        reject_path_links(registry)
+        payload = load_json_object(registry, max_bytes=2 * 1024 * 1024)
+        matches = [a for a in payload.get("agents", []) if a.get("agent_id") == subject_id]
+        if len(matches) != 1:
             raise ValueError(f"agent {subject_id!r} is not declared in the agency agent registry")
-        body = root / str(row["path"])
+        row = matches[0]
+        relative = portable_member_name(row["path"], allow_directory=False, max_bytes=512)
+        if not relative.startswith("providers/agency_agents/agents/") or not relative.endswith(".md"):
+            raise ValueError("agent experience must be beside its canonical provider body")
+        body = root / relative
+        reject_path_links(body)
         if not body.is_file():
             raise ValueError(f"agent {subject_id!r} declares a missing body: {row['path']}")
         return body.parent
@@ -106,7 +260,29 @@ def _subject_root(root: Path, kind: str, subject_id: str) -> Path:
 
 
 def _memory_dir(root: Path, kind: str, subject_id: str) -> Path:
-    return _subject_root(root, kind, subject_id) / "memory"
+    directory = _subject_root(root, kind, subject_id) / "memory"
+    # Many agent bodies share a domain directory. Each object needs its own
+    # experience namespace; a shared domain log cannot establish attribution.
+    if kind == "agent": directory = directory / subject_id
+    reject_path_links(directory)
+    return directory
+
+
+def subject_memory_directory(root: Path, kind: str, subject_id: str) -> Path:
+    reject_path_links(Path(root))
+    return _memory_dir(Path(root).resolve(strict=True), kind, subject_id)
+
+
+def legacy_agent_experience_status(root: Path, subject_id: str) -> dict[str, Any]:
+    """Retain shared legacy bytes without assigning their experience to agents."""
+    reject_path_links(Path(root)); root = Path(root).resolve(strict=True)
+    log = _subject_root(root, "agent", subject_id) / "memory/usage.jsonl"
+    reject_path_links(log)
+    raw = bytes(read_bounded_bytes(log, max_bytes=16 * 1024 * 1024)) if log.is_file() else None
+    return {"subject_id": subject_id, "path": log.relative_to(root).as_posix(),
+            "present": raw is not None, "sha256": None if raw is None else hashlib.sha256(raw).hexdigest(),
+            "status": "UNATTRIBUTED_RETAINED" if raw is not None else "ABSENT",
+            "imported_into_object_experience": False, "authority_granted": False}
 
 
 def _validate_observation(observation: Mapping[str, Any]) -> dict[str, Any]:
@@ -115,7 +291,8 @@ def _validate_observation(observation: Mapping[str, Any]) -> dict[str, Any]:
     allowed = {
         "outcome", "task_id", "run_id", "correlation_id", "duration_ms", "tokens",
         "success_criteria_met", "gap", "shortcoming", "issue", "disposition", "evidence_ref",
-        "notes", "tags", "occurred_at", "subject_revision",
+        "notes", "tags", "occurred_at", "subject_revision", "provider_id", "effect_id",
+        "execution_id", "source_log_sha256", "migrated_from", "source_record_sha256",
     }
     extra = set(observation) - allowed
     if extra:
@@ -126,9 +303,16 @@ def _validate_observation(observation: Mapping[str, Any]) -> dict[str, Any]:
         raise ValueError(f"outcome must be one of {list(OUTCOMES)}")
 
     record: dict[str, Any] = {"schema_version": RECORD_SCHEMA, "outcome": outcome}
-    for name in ("task_id", "run_id", "correlation_id", "evidence_ref", "subject_revision"):
+    for name in ("task_id", "run_id", "correlation_id", "evidence_ref", "subject_revision",
+                 "provider_id", "effect_id", "execution_id", "migrated_from"):
         if observation.get(name) is not None:
             record[name] = _text(observation[name], name, 256)
+    for name in ("source_log_sha256", "source_record_sha256"):
+        if observation.get(name) is not None:
+            value = observation[name]
+            if type(value) is not str or re.fullmatch(r"[0-9a-f]{64}", value) is None:
+                raise ValueError(f"{name} must be an exact SHA-256 digest")
+            record[name] = value
     for name in ("gap", "shortcoming", "issue", "notes"):
         if observation.get(name) is not None:
             record[name] = _text(observation[name], name)
@@ -166,48 +350,324 @@ def record_observation(
 ) -> dict[str, Any]:
     """Append one observation to a subject's own memory and refresh its derived rollup."""
 
-    root = root.resolve(strict=True)
-    record = _validate_observation(observation)
+    reject_path_links(Path(root)); root = root.resolve(strict=True)
     memory = _memory_dir(root, subject_kind, subject_id)
-    memory.mkdir(parents=True, exist_ok=True)
+    return _append_observation(root, memory, subject_kind, subject_id, observation)
 
+
+def _read_committed_stats(root, memory, kind, identity):
+    reject_path_links(memory / "stats.json")
+    stats = load_json_object(memory / "stats.json", max_bytes=16 * 1024 * 1024)
+    unsigned = {k: v for k, v in stats.items() if k != "stats_sha256"}
+    log = memory / "usage.jsonl"
+    reject_path_links(log)
+    raw = bytes(read_bounded_bytes(log, max_bytes=16 * 1024 * 1024)) if log.is_file() else b""
+    _require_record_custody(root, memory, _load_records(root, kind, identity, memory=memory, log_image=raw, strict=True))
+    if (stats.get("stats_sha256") != _sha(unsigned) or stats.get("subject_kind") != kind
+            or stats.get("subject_id") != identity
+            or stats.get("experience_log_sha256") != hashlib.sha256(raw).hexdigest()
+            or stats.get("record_count") != len([line for line in raw.decode("utf-8-sig").splitlines() if line.strip()])):
+        raise ValueError("T.I.E. committed rollup requires explicit reconciliation")
+    return stats
+
+
+def _require_record_custody(root, memory, records):
+    """Old experience stays old; newly fenced records need actual settlement."""
+    ledger = EffectIntentLedger(root)
+    retained_leases = ScopeLeaseStore(root)._load()
+    for row in records:
+        key = row.get("tie_effect_key")
+        if key is None:
+            continue
+        if not isinstance(key, str) or re.fullmatch(r"tie-observation-[0-9a-f]{64}", key) is None:
+            raise ValueError("T.I.E. native observation custody identity is invalid")
+        fence = ledger.fence(key)
+        if (fence["disposition"] != "committed" or fence.get("result_sha256") != _sha(row)
+                or fence.get("effect") != "write"
+                or fence.get("scopes") != [memory.relative_to(root).as_posix()]
+                or fence.get("execution_id") != "tie-update-" + key.rsplit("-", 1)[-1]):
+            raise ValueError("T.I.E. observation custody remains uncertain; native reconciliation required")
+        execution_id = "tie-update-" + key.rsplit("-", 1)[-1]
+        if any(lease.get("execution_id") == execution_id
+               and (lease.get("quarantine") or {}).get("state") != "resolved" for lease in retained_leases):
+            raise ValueError("T.I.E. observation lease closure remains uncertain; native reconciliation required")
+
+
+def _append_observation(root, memory, subject_kind, subject_id, observation):
+    record = _validate_observation(observation)
+    record.update(subject_kind=subject_kind, subject_id=subject_id)
+    comparable = dict(record)
+    if not observation.get("occurred_at"):
+        comparable.pop("occurred_at", None)
+    observation_sha = _sha(comparable)
+    identity = {k: record.get(k) for k in ("run_id", "effect_id", "execution_id", "subject_revision",
+                "source_record_sha256", "migrated_from", "outcome", "tags")}
+    if not any(record.get(k) for k in ("run_id", "effect_id", "execution_id", "source_record_sha256")):
+        identity["unique_observation"] = uuid4().hex
+    key = "tie-observation-" + _sha({"memory": memory.relative_to(root).as_posix(), "identity": identity})
+    record["tie_effect_key"] = key
+    record["tie_observation_sha256"] = observation_sha
+    intents = EffectIntentLedger(root)
+    fence = intents.fence(key)
+    if fence["disposition"] == "committed":
+        old = _load_records(root, subject_kind, subject_id, memory=memory, strict=True)
+        matches = [row for row in old if row.get("tie_effect_key") == key]
+        if (len(matches) != 1 or matches[0].get("tie_observation_sha256") != observation_sha
+                or fence.get("result_sha256") != _sha(matches[0])
+                or fence.get("effect") != "write"
+                or fence.get("scopes") != [memory.relative_to(root).as_posix()]):
+            raise ValueError("T.I.E. committed observation identity/content differs")
+        return {"recorded": matches[0], "duplicate": True,
+                "stats": _read_committed_stats(root, memory, subject_kind, subject_id)}
+    if fence["disposition"] != "new":
+        raise ValueError("T.I.E. experience effect requires reconciliation; blind retry refused")
     log_path = memory / "usage.jsonl"
-    # Append-only: never rewrite a prior observation.
-    with log_path.open("a", encoding="utf-8", newline="\n") as stream:
-        stream.write(json.dumps(record, sort_keys=True, separators=(",", ":"), ensure_ascii=False) + "\n")
-        stream.flush()
-        os.fsync(stream.fileno())
+    reject_path_links(log_path)
+    # Preserve old migration attribution without manufacturing an old intent.
+    if record.get("source_record_sha256") and log_path.is_file():
+        old = _load_records(root, subject_kind, subject_id, memory=memory, strict=True)
+        duplicates = [row for row in old if row.get("source_record_sha256") == record["source_record_sha256"]
+                      and row.get("migrated_from") == record.get("migrated_from")]
+        if duplicates:
+            if len(duplicates) != 1:
+                raise ValueError("T.I.E. old migration attribution is ambiguous")
+            return {"recorded": duplicates[0], "duplicate": True,
+                    "historical_native_custody_backfilled": False,
+                    "stats": _reconcile_memory(root, memory, subject_kind, subject_id)}
+    execution_id = "tie-update-" + key.rsplit("-", 1)[-1]
+    def append(visibility):
+        reject_path_links(log_path)
+        before = bytes(read_bounded_bytes(log_path, max_bytes=16 * 1024 * 1024)) if log_path.is_file() else b""
+        if before and not before.endswith(b"\n"):
+            raise ValueError("T.I.E. log has an incomplete tail; explicit reconciliation required")
+        encoded = _canonical(record) + b"\n"
+        if len(before) + len(encoded) > 16 * 1024 * 1024:
+            raise ValueError("T.I.E. experience log byte budget exhausted; retention disposition required")
+        visibility["assert_live"]()
+        visibility["possible"] = True
+        with log_path.open("ab") as stream:
+            stream.write(encoded)
+            stream.flush()
+            os.fsync(stream.fileno())
+        if bytes(read_bounded_bytes(log_path, max_bytes=16 * 1024 * 1024)) != before + encoded:
+            raise ValueError("T.I.E. appended observation image differs")
+        stats = _rebuild_stats_at(root, subject_kind, subject_id, memory, visibility=visibility)
+        return {"recorded": record, "stats": stats}, _sha(record)
+    return _mutate_memory(root, memory, key, execution_id, append)
 
-    stats = rebuild_stats(root, subject_kind, subject_id)
-    return {"recorded": record, "stats": stats}
+
+def _reconcile_memory(root, memory, kind, identity, *, initialize_log=False):
+    key = "tie-rollup-" + uuid4().hex
+    def reconcile(visibility):
+        log = memory / "usage.jsonl"
+        reject_path_links(log)
+        if initialize_log and not log.exists():
+            visibility["assert_live"]()
+            visibility["possible"] = True
+            with log.open("xb") as stream:
+                stream.flush()
+                os.fsync(stream.fileno())
+            if bytes(read_bounded_bytes(log, max_bytes=16 * 1024 * 1024)) != b"":
+                raise ValueError("T.I.E. initial log image differs")
+        stats = _rebuild_stats_at(root, kind, identity, memory, visibility=visibility)
+        return stats, stats["stats_sha256"]
+    return _mutate_memory(root, memory, key, key, reconcile)
 
 
-def _load_records(root: Path, kind: str, subject_id: str) -> list[dict[str, Any]]:
-    log_path = _memory_dir(root, kind, subject_id) / "usage.jsonl"
-    if not log_path.is_file():
+def _studio_memory(root: Path, kind: str, identity: str, version: str) -> Path:
+    """Resolve experience through the actual immutable Studio object owner."""
+    from .studio_models import studio_revision_root, digest, CANONICAL_VERSION
+    if kind not in SUBJECT_KINDS or not isinstance(version, str) or CANONICAL_VERSION.fullmatch(version) is None:
+        raise ValueError("Studio experience requires a canonical kind and version")
+    revisions = studio_revision_root(root, kind, identity)
+    record_path = revisions / version / "record.json"
+    reject_path_links(record_path)
+    payload = load_json_object(record_path, max_bytes=4 * 1024 * 1024)
+    value = payload.get("record")
+    if not isinstance(value, dict) or value.get(kind + "_id") != identity or value.get("version") != version:
+        raise ValueError("Studio experience identity differs from its immutable owner")
+    if payload.get("sha256") != digest(value):
+        raise ValueError("Studio experience owner digest differs")
+    memory = revisions.parent / "memory"
+    reject_path_links(memory)
+    return memory
+
+
+def retrieve_studio_experience(root: Path, kind: str, identity: str, version: str, *, max_records: int | None = 20) -> dict[str, Any]:
+    """Read object-local outcome metadata without creating files or promoting authority."""
+    reject_path_links(Path(root)); root = Path(root).resolve(strict=True)
+    memory = _studio_memory(root, kind, identity, version)
+    log = memory / "usage.jsonl"
+    reject_path_links(log)
+    raw = bytes(read_bounded_bytes(log, max_bytes=16 * 1024 * 1024)) if log.is_file() else b""
+    records = _load_records(root, kind, identity, memory=memory, log_image=raw, strict=True)
+    _require_record_custody(root, memory, records)
+    if max_records is not None and (type(max_records) is not int or not 1 <= max_records <= 100):
+        raise ValueError("experience retrieval requires a bounded record count")
+    retained = records if max_records is None else records[-max_records:]
+    return {"schema_version": "px.tie-retrieval/1.0", "subject_kind": kind,
+            "subject_id": identity, "subject_revision": version, "record_count": len(records),
+            "experience_log_sha256": hashlib.sha256(raw).hexdigest(), "records": retained,
+            "returned_record_count": len(retained), "truncated": len(retained) < len(records),
+            "lineage_status": "NO_EXPERIENCE" if not records else "ATTRIBUTED" if all(
+                row.get("run_id") and row.get("effect_id") for row in records)
+                else "LEGACY_EFFECT_LINEAGE_UNAVAILABLE",
+            "authority_granted": False, "propagated": False}
+
+
+def record_studio_observation(root: Path, kind: str, identity: str, version: str, observation: Mapping[str, Any]) -> dict[str, Any]:
+    reject_path_links(Path(root)); root = Path(root).resolve(strict=True)
+    memory = _studio_memory(root, kind, identity, version)
+    return _append_observation(root, memory, kind, identity, {**dict(observation), "subject_revision": version})
+
+
+def retain_studio_run_experience(root: Path, kind: str, identity: str, version: str, *, run_id: str, state: str, evidence_ref: str,
+                                effect_id: str | None = None, provider_id: str | None = None,
+                                execution_id: str | None = None) -> dict[str, Any]:
+    """Keep persistence failure separate from the already observed execution result."""
+    if state not in {"succeeded", "failed", "cancelled", "paused", "interrupted"}:
+        return {"status": "NOT_TERMINAL", "recorded": False, "authority_granted": False}
+    try:
+        result = record_studio_observation(root, kind, identity, version,
+            {"run_id": run_id, "outcome": "success" if state == "succeeded" else "failure" if state == "failed" else "partial",
+             "evidence_ref": evidence_ref, "effect_id": effect_id, "provider_id": provider_id,
+             "execution_id": execution_id, "tags": ["runtime-observation", state]})
+        return {"status": "RECORDED", "recorded": True, "stats_sha256": result["stats"]["stats_sha256"], "authority_granted": False}
+    except Exception as error:
+        return {"status": "PERSISTENCE_FAILED", "recorded": False, "failure_type": type(error).__name__,
+                "reason": str(error)[:512], "authority_granted": False}
+
+
+def rebuild_studio_stats(root: Path, kind: str, identity: str, version: str) -> dict[str, Any]:
+    """Explicit writing reconciliation through the same owner as capture/retrieval."""
+    reject_path_links(Path(root)); root = Path(root).resolve(strict=True)
+    memory = _studio_memory(root, kind, identity, version)
+    return _reconcile_memory(root, memory, kind, identity)
+
+
+def read_subject_experience(root: Path, kind: str, identity: str, *, max_records: int = 20) -> dict[str, Any]:
+    """Read the existing non-Studio object owner without creating memory state.
+
+    Legacy observations stay visible as context with unavailable effect lineage.
+    Native observations must still prove their actual intent/lease custody.
+    """
+    if kind not in SUBJECT_KINDS:
+        raise ValueError("unknown experience subject kind: " + str(kind))
+    if type(max_records) is not int or not 1 <= max_records <= 100:
+        raise ValueError("experience retrieval requires a bounded record count")
+    reject_path_links(Path(root)); root = Path(root).resolve(strict=True)
+    subject = _subject_root(root, kind, identity)
+    if not subject.is_dir():
+        raise ValueError("experience subject owner is unavailable")
+    memory = _memory_dir(root, kind, identity)
+    log = memory / "usage.jsonl"
+    reject_path_links(log)
+    raw = bytes(read_bounded_bytes(log, max_bytes=16 * 1024 * 1024)) if log.is_file() else b""
+    records = _load_records(root, kind, identity, memory=memory, log_image=raw)
+    _require_record_custody(root, memory, records)
+    retained = records[-max_records:]
+    attributed = bool(records) and all(row.get("run_id") and row.get("tie_effect_key")
+        and row.get("subject_kind") == kind and row.get("subject_id") == identity for row in records)
+    return {"schema_version": "px.tie-retrieval/1.0", "subject_kind": kind,
+            "subject_id": identity, "record_count": len(records), "records": retained,
+            "returned_record_count": len(retained), "truncated": len(retained) < len(records),
+            "experience_log_sha256": hashlib.sha256(raw).hexdigest(),
+            "lineage_status": "NO_EXPERIENCE" if not records else "ATTRIBUTED" if attributed else "LEGACY_EFFECT_LINEAGE_UNAVAILABLE",
+            "authority_granted": False, "propagated": False}
+
+
+def fuse_tie_experience(root: Path, bindings, *, max_records_per_subject: int = 20) -> dict[str, Any]:
+    """Fuse bounded, attributed operational experience for normal plan preparation.
+
+    ``bindings`` uses exact ``{kind, identity}`` for non-Studio owners or adds
+    ``version`` to bind an immutable Studio revision. Neither creates authority.
+    Each subject is read through its own immutable Studio owner. A corrupt or
+    unattributed source is reported honestly as unavailable/corrupt; it is never
+    silently substituted with a fabricated or partial-but-claimed-complete record.
+    """
+    rows = tuple(bindings)
+    if len(rows) > 4:
+        raise ValueError("T.I.E. fusion requires at most four explicit object bindings")
+    if type(max_records_per_subject) is not int or not 1 <= max_records_per_subject <= 100:
+        raise ValueError("bounded per-subject record budget required")
+    subjects: list[dict[str, Any]] = []
+    for binding in rows:
+        if type(binding) is not dict or set(binding) not in ({"kind", "identity"}, {"kind", "identity", "version"}):
+            raise ValueError("T.I.E. fusion requires exact canonical object bindings")
+        kind = _text(binding["kind"], "experience kind", 256)
+        identity = _text(binding["identity"], "experience identity", 256)
+        version = _text(binding["version"], "experience version", 256) if "version" in binding else None
+        if kind not in SUBJECT_KINDS:
+            raise ValueError("unknown experience subject kind: " + kind)
+        try:
+            result = (retrieve_studio_experience(root, kind, identity, version, max_records=max_records_per_subject)
+                      if version is not None else read_subject_experience(root, kind, identity, max_records=max_records_per_subject))
+            subjects.append({
+                "kind": kind, "identity": identity, "version": version, "state": "available",
+                "experience_log_sha256": result["experience_log_sha256"],
+                "record_count": result["record_count"],
+                "returned_record_count": result["returned_record_count"],
+                "truncated": result["truncated"], "lineage_status": result["lineage_status"],
+                "records": result["records"][-max_records_per_subject:],
+            })
+        except (ValueError, OSError, KeyError) as error:
+            subjects.append({
+                "kind": kind, "identity": identity, "version": version,
+                "state": "corrupt_or_unavailable", "failure_type": type(error).__name__,
+                "reason": str(error)[:512], "records": [],
+            })
+    body = {
+        "schema_version": "px.tie-fusion/1.0",
+        "subject_count": len(subjects), "subjects": subjects,
+        "authority_granted": False, "propagated": False,
+    }
+    return {**body, "fusion_sha256": hashlib.sha256(
+        json.dumps(body, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode("utf-8")).hexdigest()}
+
+
+def _load_records(root: Path, kind: str, subject_id: str, *, memory=None, log_image=None, strict=False) -> list[dict[str, Any]]:
+    log_path = (memory if memory is not None else _memory_dir(root, kind, subject_id)) / "usage.jsonl"
+    reject_path_links(log_path)
+    if log_image is None and not log_path.is_file():
         return []
     records: list[dict[str, Any]] = []
-    for line in log_path.read_text(encoding="utf-8-sig").splitlines():
+    image = log_image if log_image is not None else bytes(read_bounded_bytes(log_path, max_bytes=16 * 1024 * 1024))
+    for line in image.decode("utf-8-sig").splitlines():
         line = line.strip()
         if not line:
             continue
         try:
             parsed = json.loads(line)
         except json.JSONDecodeError:
+            if strict:
+                raise ValueError("T.I.E. source contains a corrupt record; experience retrieval refused") from None
             # A corrupt line is surfaced by the rollup, not silently dropped.
             records.append({"schema_version": RECORD_SCHEMA, "outcome": "failure",
                             "issue": "unparseable usage-memory record", "disposition": "EVIDENCE_STALE_OR_INVALID"})
             continue
         if isinstance(parsed, dict):
+            if ((strict or kind == "agent" or "subject_id" in parsed or "subject_kind" in parsed)
+                    and (parsed.get("subject_id") != subject_id or parsed.get("subject_kind") != kind)):
+                raise ValueError("T.I.E. record is not attributed to this exact operational object")
             records.append(parsed)
+        elif strict:
+            raise ValueError("T.I.E. experience record must be an attributed object")
     return records
 
 
 def rebuild_stats(root: Path, subject_kind: str, subject_id: str) -> dict[str, Any]:
     """Derive the rollup from the append-only log. The rollup is never canonical."""
 
-    root = root.resolve(strict=True)
-    records = _load_records(root, subject_kind, subject_id)
+    reject_path_links(Path(root)); root = root.resolve(strict=True)
+    memory = _memory_dir(root, subject_kind, subject_id)
+    return _reconcile_memory(root, memory, subject_kind, subject_id)
+
+
+def _rebuild_stats_at(root, subject_kind, subject_id, memory, *, visibility):
+    log_path = memory / "usage.jsonl"
+    reject_path_links(log_path)
+    log_image = bytes(read_bounded_bytes(log_path, max_bytes=16 * 1024 * 1024)) if log_path.is_file() else b""
+    records = _load_records(root, subject_kind, subject_id, memory=memory, log_image=log_image)
 
     counts = {outcome: 0 for outcome in OUTCOMES}
     dispositions: dict[str, int] = {}
@@ -244,6 +704,7 @@ def rebuild_stats(root: Path, subject_kind: str, subject_id: str) -> dict[str, A
         "subject_kind": subject_kind,
         "subject_id": subject_id,
         "record_count": total,
+        "experience_log_sha256": hashlib.sha256(log_image).hexdigest(),
         "outcomes": counts,
         "success_rate": success_rate,
         "success_rate_basis": "successes / (success + partial + failure)",
@@ -266,34 +727,39 @@ def rebuild_stats(root: Path, subject_kind: str, subject_id: str) -> dict[str, A
     ).hexdigest()
     body["stats_sha256"] = digest
 
-    memory = _memory_dir(root, subject_kind, subject_id)
-    memory.mkdir(parents=True, exist_ok=True)
-    prepared = memory / f".stats.json.{uuid4().hex}.prepared"
-    prepared.write_text(json.dumps(body, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
-    os.replace(prepared, memory / "stats.json")
+    _publish_stats(root, memory, body, visibility)
     return body
 
 
 def read_stats(root: Path, subject_kind: str, subject_id: str) -> dict[str, Any]:
     """Read the rollup, rebuilding it if absent or stale against the log."""
 
-    root = root.resolve(strict=True)
+    reject_path_links(Path(root)); root = root.resolve(strict=True)
     memory = _memory_dir(root, subject_kind, subject_id)
     stats_path = memory / "stats.json"
+    reject_path_links(stats_path)
+    log_path = memory / "usage.jsonl"
+    reject_path_links(log_path)
+    log_image = bytes(read_bounded_bytes(log_path, max_bytes=16 * 1024 * 1024)) if log_path.is_file() else b""
+    _require_record_custody(root, memory, _load_records(root, subject_kind, subject_id,
+                           memory=memory, log_image=log_image))
     if not stats_path.is_file():
         return rebuild_stats(root, subject_kind, subject_id)
-    stats = json.loads(stats_path.read_text(encoding="utf-8-sig"))
-    log_path = memory / "usage.jsonl"
-    logged = len([row for row in log_path.read_text(encoding="utf-8-sig").splitlines() if row.strip()]) if log_path.is_file() else 0
-    if stats.get("record_count") != logged:
+    stats = load_json_object(stats_path, max_bytes=16 * 1024 * 1024)
+    logged = len([row for row in log_image.decode("utf-8-sig").splitlines() if row.strip()])
+    if stats.get("subject_kind") != subject_kind or stats.get("subject_id") != subject_id:
+        raise ValueError("T.I.E. rollup belongs to another operational object")
+    if stats.get("record_count") != logged or stats.get("experience_log_sha256") != hashlib.sha256(log_image).hexdigest():
         # The rollup lags the log: rebuild rather than serve a stale success rate.
         return rebuild_stats(root, subject_kind, subject_id)
+    if stats.get("stats_sha256") != _sha({k: v for k, v in stats.items() if k != "stats_sha256"}):
+        raise ValueError("T.I.E. rollup digest differs; explicit reconciliation required")
     return stats
 
 def list_subjects_with_memory(root: Path, subject_kind: str) -> list[str]:
     """Subject ids that already carry a usage-memory log."""
 
-    root = root.resolve(strict=True)
+    reject_path_links(Path(root)); root = root.resolve(strict=True)
     if subject_kind == "agent":
         registry = root / AGENT_REGISTRY
         if not registry.is_file():
@@ -305,8 +771,7 @@ def list_subjects_with_memory(root: Path, subject_kind: str) -> list[str]:
         found: list[str] = []
         for row in payload.get("agents", []):
             agent_id = row.get("agent_id")
-            body = root / str(row.get("path", ""))
-            if isinstance(agent_id, str) and (body.parent / "memory" / "usage.jsonl").is_file():
+            if isinstance(agent_id, str) and (_memory_dir(root, "agent", agent_id) / "usage.jsonl").is_file():
                 found.append(agent_id)
         return sorted(found)
     base = root / KIND_ROOT[subject_kind]
@@ -322,175 +787,9 @@ def list_subjects_with_memory(root: Path, subject_kind: str) -> list[str]:
 def ensure_subject_memory(root: Path, subject_kind: str, subject_id: str) -> dict[str, Any]:
     """Create the memory directory and an empty log for a subject that exists."""
 
-    root = root.resolve(strict=True)
+    reject_path_links(Path(root)); root = root.resolve(strict=True)
     subject_root = _subject_root(root, subject_kind, subject_id)
     if not subject_root.is_dir():
         raise ValueError(f"{subject_kind} {subject_id!r} does not resolve to a directory")
-    memory = subject_root / "memory"
-    memory.mkdir(parents=True, exist_ok=True)
-    log_path = memory / "usage.jsonl"
-    if not log_path.is_file():
-        log_path.write_text("", encoding="utf-8", newline="\n")
-    return rebuild_stats(root, subject_kind, subject_id)
-
-# ---------------------------------------------------------------------------
-# Object-local T.I.E. experience fusion
-# ---------------------------------------------------------------------------
-#
-# ``model_group_preparation`` binds operational experience into each member's
-# context before any role context is hashed. It previously imported
-# ``fuse_tie_experience`` from this module, which did not exist, so the path was
-# unreachable behind a lazily-triggered ImportError.
-#
-# This is the native implementation: it reads the *same* append-only
-# ``memory/usage.jsonl`` that ``record_observation`` writes, through the same
-# subject routing, and it never creates files or promotes authority. That
-# matters because a second storage format would let the fusion claim experience
-# that the recording owner never wrote.
-#
-# Honesty rule: a subject that cannot be read is reported as
-# ``corrupt_or_unavailable`` with its failure type and reason, never replaced by
-# an empty "available" subject. Legacy records whose effect lineage is missing
-# are surfaced as ``LEGACY_EFFECT_LINEAGE_UNAVAILABLE`` rather than silently
-# treated as attributed.
-
-TIE_FUSION_SCHEMA = "px.tie-fusion/1.0"
-MAX_TIE_BINDINGS = 4
-MAX_TIE_RECORDS_PER_SUBJECT = 100
-# Bounded read ceiling for one subject's experience log.
-MAX_EXPERIENCE_LOG_BYTES = 16 * 1024 * 1024
-
-
-def _bounded_binding_text(value: Any, field: str) -> str:
-    if type(value) is not str or not value.strip() or len(value) > 256:
-        raise ValueError(f"T.I.E. binding {field} must be bounded nonempty text")
-    return value
-
-
-def read_subject_experience(
-    root: Path, kind: str, identity: str, *, max_records: int = 20
-) -> dict[str, Any]:
-    """Read one object's retained experience without creating or mutating state."""
-
-    if kind not in SUBJECT_KINDS:
-        raise ValueError(f"unknown experience subject kind: {kind}")
-    if type(max_records) is not int or not 1 <= max_records <= MAX_TIE_RECORDS_PER_SUBJECT:
-        raise ValueError("experience retrieval requires a bounded record count")
-    resolved = Path(root).resolve(strict=True)
-    memory = _memory_dir(resolved, kind, identity)
-    log_path = memory / "usage.jsonl"
-    raw = b""
-    if log_path.is_file():
-        # The log is append-only evidence. Reading it through a symlink,
-        # junction or reparse point would let unrelated bytes be presented as
-        # this subject's history, so linked inputs are refused outright.
-        from .archive_io import reject_path_links
-        from .json_io import read_bounded_bytes
-
-        reject_path_links(log_path)
-        # Bounded read: an oversized or unreadable log must be reported, not
-        # loaded without limit.
-        raw = bytes(read_bounded_bytes(log_path, max_bytes=MAX_EXPERIENCE_LOG_BYTES))
-    records = _load_records(resolved, kind, identity)
-    retained = records[-max_records:]
-    # The recording owner stores run_id/correlation_id but no effect id, so
-    # lineage is judged on what the store really carries; nothing is invented.
-    attributed = bool(records) and all(row.get("run_id") for row in records)
-    return {
-        "schema_version": "px.tie-retrieval/1.0",
-        "subject_kind": kind,
-        "subject_id": identity,
-        "record_count": len(records),
-        "returned_record_count": len(retained),
-        "truncated": len(retained) < len(records),
-        "experience_log_sha256": hashlib.sha256(raw).hexdigest(),
-        "lineage_status": (
-            "NO_EXPERIENCE" if not records
-            else "ATTRIBUTED" if attributed
-            else "LEGACY_EFFECT_LINEAGE_UNAVAILABLE"
-        ),
-        "records": retained,
-    }
-
-
-def fuse_tie_experience(
-    root: Path, bindings, *, max_records_per_subject: int = 20
-) -> dict[str, Any]:
-    """Fuse bounded, attributed operational experience for plan preparation.
-
-    ``bindings`` is a bounded sequence of exact ``{kind, identity}`` objects, or
-    the three-field ``{kind, identity, version}`` form. Ordering is preserved so
-    the fusion digest is deterministic for equal inputs.
-
-    The result is *context*, never authority: ``authority_granted`` is always
-    false and ``propagated`` records that nothing was written back.
-    """
-
-    rows = tuple(bindings)
-    if len(rows) > MAX_TIE_BINDINGS:
-        raise ValueError(f"T.I.E. fusion requires at most {MAX_TIE_BINDINGS} explicit object bindings")
-    if type(max_records_per_subject) is not int or not 1 <= max_records_per_subject <= MAX_TIE_RECORDS_PER_SUBJECT:
-        raise ValueError("bounded per-subject record budget required")
-
-    resolved = Path(root).resolve(strict=True)
-    subjects: list[dict[str, Any]] = []
-    for binding in rows:
-        if type(binding) is not dict:
-            raise ValueError("T.I.E. fusion requires exact canonical object bindings")
-        keys = set(binding)
-        if keys not in ({"kind", "identity"}, {"kind", "identity", "version"}):
-            raise ValueError(
-                "T.I.E. fusion bindings must carry exactly kind/identity, or kind/identity/version"
-            )
-        kind = _bounded_binding_text(binding["kind"], "kind")
-        identity = _bounded_binding_text(binding["identity"], "identity")
-        version = (
-            _bounded_binding_text(binding["version"], "version")
-            if "version" in binding else None
-        )
-        # A caller error is not an unavailable subject: an unknown kind can
-        # never become available, so it must fail loudly here rather than be
-        # reported as "corrupt_or_unavailable" and quietly degraded to context.
-        if kind not in SUBJECT_KINDS:
-            raise ValueError(f"unknown experience subject kind: {kind}")
-        try:
-            result = read_subject_experience(
-                resolved, kind, identity, max_records=max_records_per_subject
-            )
-            subjects.append({
-                "kind": kind,
-                "identity": identity,
-                "version": version,
-                "state": "available",
-                "experience_log_sha256": result["experience_log_sha256"],
-                "record_count": result["record_count"],
-                "returned_record_count": result["returned_record_count"],
-                "truncated": result["truncated"],
-                "lineage_status": result["lineage_status"],
-                "records": result["records"],
-            })
-        except (ValueError, OSError, KeyError) as error:
-            # Reported, never fabricated, and never silently empty-but-available.
-            subjects.append({
-                "kind": kind,
-                "identity": identity,
-                "version": version,
-                "state": "corrupt_or_unavailable",
-                "failure_type": type(error).__name__,
-                "reason": str(error)[:512],
-                "records": [],
-            })
-
-    body = {
-        "schema_version": TIE_FUSION_SCHEMA,
-        "subject_count": len(subjects),
-        "subjects": subjects,
-        "authority_granted": False,
-        "propagated": False,
-    }
-    return {
-        **body,
-        "fusion_sha256": hashlib.sha256(
-            json.dumps(body, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
-        ).hexdigest(),
-    }
+    memory = _memory_dir(root, subject_kind, subject_id)
+    return _reconcile_memory(root, memory, subject_kind, subject_id, initialize_log=True)

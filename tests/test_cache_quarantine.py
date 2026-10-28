@@ -60,7 +60,7 @@ class CacheQuarantineTests(unittest.TestCase):
             root = Path(directory)
             hostile = (
                 root
-                / ".engineering-bootstrap/test-evidence/adversarial-repair-gates"
+                / ".agentic_engineering_os_px/test-evidence/adversarial-repair-gates"
                 / "__pycache__/fixture.pyc"
             )
             owned = root / "runtime/__pycache__/owned.pyc"
