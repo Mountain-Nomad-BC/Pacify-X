@@ -5,7 +5,7 @@ const fs = require('fs');
 const path = require('path');
 const { canonicalJson, keyId, signClaim } = require('./studioApprovalHost');
 
-const AUTHORITY_SCHEMA = 'px.mcp-launch-authority/1.0';
+const AUTHORITY_SCHEMA = 'px.mcp-launch-authority/2.0';
 const MAX_LIFETIME_MS = 24 * 60 * 60 * 1000;
 const MUTATING_TOOL_NAMES = Object.freeze([
   'pacify_enterprise_readiness',
@@ -33,9 +33,15 @@ function sha(value) {
 function physicalProjectIdentity(projectRoot) {
   if (!projectRoot) throw new Error('MCP project authority root is unavailable.');
   const resolved = fs.realpathSync.native(path.resolve(projectRoot));
-  const stat = fs.statSync(resolved);
+  const stat = fs.statSync(resolved, { bigint: true });
   if (!stat.isDirectory()) throw new Error('MCP project authority root is not a directory.');
-  return sha(process.platform === 'win32' ? resolved.toLowerCase() : resolved);
+  if (stat.ino <= 0n || stat.dev < 0n) throw new Error('MCP physical project identity is unavailable.');
+  // Bind the signed launch to the directory object, not just its reusable path.
+  // Decimal strings preserve native file IDs without Number precision loss.
+  return sha(canonicalJson({
+    path: process.platform === 'win32' ? resolved.toLowerCase() : resolved,
+    device: stat.dev.toString(), inode: stat.ino.toString()
+  }));
 }
 
 function encodeClaim(claim) {
@@ -107,8 +113,19 @@ function createMcpMutationAuthority(options) {
   try { claim = verifiedLaunchAuthority(options); } catch (error) { failure = error; }
   return {
     authorize(operation, input = {}) {
-      if (failure || Number(options.now?.() ?? Date.now()) >= Date.parse(claim?.expires_at) ||
-        !claim?.allowed_operations.includes(operation)) return { authorized: false, result: deniedResult() };
+      try {
+        const currentMs = Number(options.now?.() ?? Date.now());
+        if (failure || !Number.isFinite(currentMs) ||
+          currentMs < Date.parse(claim.issued_at) - 30_000 || currentMs >= Date.parse(claim.expires_at) ||
+          !claim.allowed_operations.includes(operation) ||
+          claim.project_sha256 !== physicalProjectIdentity(options.projectRoot)) {
+          return { authorized: false, result: deniedResult() };
+        }
+      } catch {
+        // A missing, replaced, or unreadable project must deny before activity
+        // instrumentation or a write handler touches the project filesystem.
+        return { authorized: false, result: deniedResult() };
+      }
       const sanitizedInput = {
         ...input,
         actor_id: claim.actor_id,

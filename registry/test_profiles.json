@@ -2960,7 +2960,7 @@
       "timeout_seconds": 180
     },
     "agent-tool-authority": {
-      "description": "Current durable host task/run/selected-worker authority and explicit approval at actual tool dispatch; rejects foreign evidence. No durable effect replay or installed sandbox claim.",
+      "description": "Current durable host task/run/selected-worker authority and explicit approval at actual tool dispatch; rejects foreign evidence. No durable effect replay or installed sandbox claim. MCP writes require current signed physical-project identity before instrumentation and handler dispatch.",
       "source_patterns": [
         "extension/src/agentHarness/toolBroker.js",
         "extension/src/agentHarness/registerAgentConsole.js",
@@ -2970,7 +2970,20 @@
         "extension/src/agentHarness/vscodeTools.js",
         "extension/tests/vscode-tool-workspace-audit.test.js",
         "extension/src/agentHarness/agentConsoleView.js",
-        "extension/tests/agent-console-messages.test.js"
+        "extension/tests/agent-console-messages.test.js",
+        "extension/src/mcpMutationAuthority.js",
+        "extension/src/mcpActivityIntegration.js",
+        "extension/src/studioApprovalHost.js",
+        "extension/src/coordinationManager.js",
+        "extension/server/source.mjs",
+        "extension/server/index.js",
+        "extension/scripts/build-mcp.js",
+        "extension/tests/mcp-mutation-authority.test.js",
+        "extension/tests/mcp-server.test.js",
+        "extension/tests/mcp-project-authority.test.js",
+        "extension/tests/mcp-activity-integration.test.js",
+        "extension/tests/mcp-bundle-currentness.test.js",
+        "extension/tests/agent-console-prepared-transport.test.js"
       ],
       "command": [
         "node",
@@ -2978,7 +2991,13 @@
         "tests/tool-authority-audit.test.js",
         "tests/agent-tool-broker.test.js",
         "tests/vscode-tool-workspace-audit.test.js",
-        "tests/agent-console-messages.test.js"
+        "tests/agent-console-messages.test.js",
+        "tests/mcp-mutation-authority.test.js",
+        "tests/mcp-server.test.js",
+        "tests/mcp-project-authority.test.js",
+        "tests/mcp-activity-integration.test.js",
+        "tests/mcp-bundle-currentness.test.js",
+        "tests/agent-console-prepared-transport.test.js"
       ],
       "cwd": "extension",
       "chunk_size": 0,

@@ -9,6 +9,8 @@ const { buildAgentConsoleProjection, redactEventPayload } = require('./agentCons
 
 class AgentConsoleViewProvider {
   constructor(vscode, context, options) { this.vscode = vscode; this.context = context; this.harness = options.harness; this.workspaceRootProvider = options.workspaceRootProvider; this.openControlPlane = options.openControlPlane; this.onDiagnostic = options.onDiagnostic || (() => {}); this.view = null; this.disposables = [];
+    this.inspectPreparedGroup = options.inspectPreparedGroup;
+    this.executePreparedGroup = options.executePreparedGroup;
     this.disposables.push(this.harness.eventBus.subscribe(event => Promise.all([this._post({ schemaVersion: MESSAGE_VERSION, type: 'event', event: { ...event, payload: redactEventPayload(event) } }), this.publish()]))); }
 
   resolveWebviewView(view) {
@@ -20,6 +22,37 @@ class AgentConsoleViewProvider {
   async _handle(raw) {
     let message; try { message = validateInbound(raw); } catch (error) { this.onDiagnostic(`agent-console-message-rejected:${error.message}`); return this._error('message-rejected', 'Agent Console message was rejected by the host contract.'); }
     try {
+      if (message.type === 'executePreparedGroup') {
+        if (typeof this.executePreparedGroup !== 'function') {
+          await this._error('prepared-group-execution-unavailable', 'Prepared-group execution is unavailable in this host.');
+          return this.publish();
+        }
+        try {
+          const result = await this.executePreparedGroup(message.reference);
+          this.harness.eventBus.emit('group.plan.dispatch.returned', {
+            status: 'info', summary: 'Prepared-group host request returned; native run evidence determines its outcome.', payload: result
+          });
+        } catch (error) {
+          await this._error('prepared-group-execution-rejected', String(error?.message || error).slice(0, 900));
+        }
+        return this.publish();
+      }
+      if (message.type === 'inspectPreparedGroup') {
+        if (typeof this.inspectPreparedGroup !== 'function') {
+          await this._error('prepared-group-inspection-unavailable', 'Prepared-group inspection is unavailable in this host.');
+          return this.publish();
+        }
+        const result = await this.inspectPreparedGroup(message.reference);
+        if (result?.schema_version !== 'px.prepared-group-inspection/1.0' ||
+          result.plan_id !== message.reference.plan_id || result.plan_sha256 !== message.reference.plan_sha256 ||
+          result.execution_authorized !== false || result.authority_granted !== false) {
+          throw new Error('prepared-group-inspection-contract-mismatch');
+        }
+        this.harness.eventBus.emit('group.plan.inspected', {
+          status: 'info', summary: 'Prepared group inspected; execution still requires host authority.', payload: result
+        });
+        return this.publish();
+      }
       if (message.type === 'ready' || message.type === 'refresh') return this.publish();
       if (message.type === 'openControlPlane') return this.openControlPlane?.();
       if (message.type === 'cancelRun') { await this.harness.cancelRun(message.runId); return this.publish(); }

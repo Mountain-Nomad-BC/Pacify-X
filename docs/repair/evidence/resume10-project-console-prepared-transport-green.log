@@ -1,0 +1,29 @@
+✔ agent console protocol rejects unknown fields and unsafe IDs (25.4632ms)
+✔ agent console never collects selected text outside its active project (42.7595ms)
+✔ agent console executePreparedGroup admits only the canonical reference (11.1412ms)
+✔ agent console reports unavailable prepared-group execution without downgrade (3.139ms)
+✔ agent console prepared-group execution failure is surfaced, never masked (3.1051ms)
+✔ registered console forwards only the canonical reference to its actual host callback (84.5899ms)
+✔ registered console preserves a native execution rejection and emits no completion (9.7437ms)
+✔ registered console refuses an inspection response that invents authority (8.5008ms)
+✔ actual task/run/selected worker may execute read-only tool (75.1488ms)
+✔ tool rejects foreign taskId before side effect (5.2646ms)
+✔ tool rejects foreign runId before side effect (4.0255ms)
+✔ tool rejects foreign workerId before side effect (3.7091ms)
+✔ caller cannot raise stored effect ceiling by forging task snapshot (5.2947ms)
+✔ truthy approval object is not explicit approval (5.3328ms)
+✔ cancellation while approval awaits fences dispatch (7.2415ms)
+✔ foreign tool evidence cannot publish successful receipt (17.8366ms)
+✔ missing current store authority fails closed (4.899ms)
+✔ tool dispatch waits for current task policy persistence acknowledgement (43.7112ms)
+✔ approval receives immutable request arguments and cannot substitute authority (5.9502ms)
+✔ tool refuses a missing execution context even with current stored authority (8.5428ms)
+ℹ tests 20
+ℹ suites 0
+ℹ pass 20
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1596.2231
+

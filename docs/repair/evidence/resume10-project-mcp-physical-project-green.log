@@ -1,0 +1,33 @@
+✔ MCP middleware emits canonical-contract start and completion for one correlation (23.0758ms)
+✔ error lifecycle is emitted without exception text or content hash (6.0472ms)
+✔ missing identity is explicitly unattested and reported correlation is only a parent (3.2509ms)
+✔ spoofable identity is labeled self-asserted, never verified (1.0385ms)
+✔ instrumentation drops degrade health but do not replace tool outcome (3.5426ms)
+✔ read-only MCP calls retain no activity events or project state (3.7261ms)
+✔ every registered tool is unique and appears in health inventory (1.4135ms)
+✔ signed host allowlist exactly covers registered MCP write tools (14.4819ms)
+✔ signed launch authority replaces self-asserted MCP identity (412.4278ms)
+✔ launch authority fails closed for replay in another project, changed token, and unadmitted operation (1137.9989ms)
+✔ signed launch refuses a replacement directory at the same project pathname (1249.0099ms)
+✔ each MCP write rechecks the physical project after successful launch (341.1211ms)
+✔ a live MCP capability cannot follow a retargeted project junction (2221.0248ms)
+✔ legacy path-only launch schema requires fresh host issuance (836.8568ms)
+✔ live MCP authority denies expiry, invalid time and rollback before issuance (1068.4853ms)
+✔ bundled MCP denies a write after its project root becomes another directory (2227.4037ms)
+✔ bundled MCP denies a write after its project root becomes another junction (2337.2266ms)
+✔ MCP enterprise read handlers do not initialize persistent state (9.7693ms)
+✔ MCP dashboard calls bind the open project rather than defaulting to engine root (2.8257ms)
+✔ MCP mailbox tools keep private payloads on trusted local recipient paths (3.4156ms)
+✔ MCP read instrumentation cannot quarantine corrupt activity and handoff ignores stored packets (3.9149ms)
+✔ MCP snapshot and readiness readers request the nonpersisting dashboard path (8.3867ms)
+✔ bundled MCP server rejects an unattested write before project state or activity changes (1373.8841ms)
+✔ bundled MCP server exposes first-class catalogs, activity traces, resume, claims, receipts, and layered memory (3280.9105ms)
+ℹ tests 24
+ℹ suites 0
+ℹ pass 24
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 8127.4287
+

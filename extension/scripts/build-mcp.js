@@ -9,6 +9,7 @@ const version = String(JSON.parse(fs.readFileSync(path.join(root, 'package.json'
 const output = path.join(root, 'server', 'index.js');
 const check = process.argv.includes('--check');
 const result = esbuild.buildSync({
+  absWorkingDir: root,
   entryPoints: [path.join(root, 'server', 'source.mjs')],
   outfile: output,
   bundle: true,

@@ -4582,7 +4582,7 @@ var require_mcpMutationAuthority = __commonJS({
     var fs2 = require("fs");
     var path2 = require("path");
     var { canonicalJson, keyId, signClaim } = require_studioApprovalHost();
-    var AUTHORITY_SCHEMA = "px.mcp-launch-authority/1.0";
+    var AUTHORITY_SCHEMA = "px.mcp-launch-authority/2.0";
     var MAX_LIFETIME_MS = 24 * 60 * 60 * 1e3;
     var MUTATING_TOOL_NAMES = Object.freeze([
       "pacify_enterprise_readiness",
@@ -4608,9 +4608,14 @@ var require_mcpMutationAuthority = __commonJS({
     function physicalProjectIdentity(projectRoot) {
       if (!projectRoot) throw new Error("MCP project authority root is unavailable.");
       const resolved = fs2.realpathSync.native(path2.resolve(projectRoot));
-      const stat = fs2.statSync(resolved);
+      const stat = fs2.statSync(resolved, { bigint: true });
       if (!stat.isDirectory()) throw new Error("MCP project authority root is not a directory.");
-      return sha(process.platform === "win32" ? resolved.toLowerCase() : resolved);
+      if (stat.ino <= 0n || stat.dev < 0n) throw new Error("MCP physical project identity is unavailable.");
+      return sha(canonicalJson({
+        path: process.platform === "win32" ? resolved.toLowerCase() : resolved,
+        device: stat.dev.toString(),
+        inode: stat.ino.toString()
+      }));
     }
     function encodeClaim(claim) {
       return Buffer.from(canonicalJson(claim), "utf8").toString("base64url");
@@ -4671,7 +4676,14 @@ var require_mcpMutationAuthority = __commonJS({
       }
       return {
         authorize(operation, input = {}) {
-          if (failure || Number(options.now?.() ?? Date.now()) >= Date.parse(claim?.expires_at) || !claim?.allowed_operations.includes(operation)) return { authorized: false, result: deniedResult() };
+          try {
+            const currentMs = Number(options.now?.() ?? Date.now());
+            if (failure || !Number.isFinite(currentMs) || currentMs < Date.parse(claim.issued_at) - 3e4 || currentMs >= Date.parse(claim.expires_at) || !claim.allowed_operations.includes(operation) || claim.project_sha256 !== physicalProjectIdentity(options.projectRoot)) {
+              return { authorized: false, result: deniedResult() };
+            }
+          } catch {
+            return { authorized: false, result: deniedResult() };
+          }
           const sanitizedInput = {
             ...input,
             actor_id: claim.actor_id,

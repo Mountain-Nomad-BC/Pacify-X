@@ -5,7 +5,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
-const { generateApprovalKey } = require('../src/studioApprovalHost');
+const { generateApprovalKey, signClaim } = require('../src/studioApprovalHost');
 const { createLaunchAuthority, createMcpMutationAuthority, verifiedLaunchAuthority, MUTATING_TOOL_NAMES } = require('../src/mcpMutationAuthority');
 
 test('signed host allowlist exactly covers registered MCP write tools', () => {
@@ -65,4 +65,72 @@ test('launch authority fails closed for replay in another project, changed token
     publicKeyJwk: keyMaterial.publicKeyJwk, trustedKeyId: keyMaterial.keyId, now: () => 1_800_000_001_000
   });
   assert.equal(authority.authorize('pacify_unadmitted_write', {}).authorized, false);
+});
+
+function displaceProject(t, projectRoot) {
+  const retained = `${projectRoot}-original`;
+  fs.renameSync(projectRoot, retained);
+  t.after(() => fs.rmSync(retained, { recursive: true, force: true }));
+}
+
+function authorityOptions(projectRoot, keyMaterial, launched) {
+  return {
+    projectRoot, claim: launched.claim, signature: launched.signature, token: launched.token,
+    publicKeyJwk: keyMaterial.publicKeyJwk, trustedKeyId: keyMaterial.keyId,
+    now: () => 1_800_000_001_000
+  };
+}
+
+test('signed launch refuses a replacement directory at the same project pathname', t => {
+  const { projectRoot, keyMaterial, launched } = fixture(t);
+  displaceProject(t, projectRoot);
+  fs.mkdirSync(projectRoot);
+  assert.throws(() => verifiedLaunchAuthority(authorityOptions(projectRoot, keyMaterial, launched)));
+});
+
+test('each MCP write rechecks the physical project after successful launch', t => {
+  const { projectRoot, keyMaterial, launched } = fixture(t);
+  const authority = createMcpMutationAuthority(authorityOptions(projectRoot, keyMaterial, launched));
+  assert.equal(authority.authorize('pacify_parallel_plan_create').authorized, true);
+  displaceProject(t, projectRoot);
+  assert.equal(authority.authorize('pacify_parallel_plan_create').authorized, false);
+  fs.mkdirSync(projectRoot);
+  assert.equal(authority.authorize('pacify_parallel_plan_create').authorized, false);
+  assert.deepEqual(fs.readdirSync(projectRoot), []);
+});
+
+test('a live MCP capability cannot follow a retargeted project junction', t => {
+  const { projectRoot, keyMaterial, launched } = fixture(t);
+  const authority = createMcpMutationAuthority(authorityOptions(projectRoot, keyMaterial, launched));
+  const otherRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'px-mcp-junction-target-'));
+  t.after(() => fs.rmSync(otherRoot, { recursive: true, force: true }));
+  displaceProject(t, projectRoot);
+  fs.symlinkSync(otherRoot, projectRoot, process.platform === 'win32' ? 'junction' : 'dir');
+  assert.equal(authority.authorize('pacify_parallel_plan_create').authorized, false);
+  assert.deepEqual(fs.readdirSync(otherRoot), []);
+});
+
+test('legacy path-only launch schema requires fresh host issuance', t => {
+  const { projectRoot, keyMaterial, launched } = fixture(t);
+  const legacy = JSON.parse(Buffer.from(launched.claim, 'base64url').toString('utf8'));
+  legacy.schema_version = 'px.mcp-launch-authority/1.0';
+  assert.throws(() => verifiedLaunchAuthority({
+    ...authorityOptions(projectRoot, keyMaterial, launched),
+    claim: Buffer.from(JSON.stringify(legacy)).toString('base64url'),
+    signature: signClaim(keyMaterial, legacy)
+  }));
+});
+
+test('live MCP authority denies expiry, invalid time and rollback before issuance', t => {
+  const { projectRoot, keyMaterial, launched } = fixture(t);
+  let currentMs = 1_800_000_001_000;
+  const authority = createMcpMutationAuthority({
+    ...authorityOptions(projectRoot, keyMaterial, launched), now: () => currentMs
+  });
+  assert.equal(authority.authorize('pacify_task_claim').authorized, true);
+  const claim = JSON.parse(Buffer.from(launched.claim, 'base64url').toString('utf8'));
+  for (const invalid of [NaN, Infinity, Date.parse(claim.issued_at) - 30_001, Date.parse(claim.expires_at)]) {
+    currentMs = invalid;
+    assert.equal(authority.authorize('pacify_task_claim').authorized, false);
+  }
 });

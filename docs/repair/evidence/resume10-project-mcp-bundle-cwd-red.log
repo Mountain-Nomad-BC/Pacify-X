@@ -1,0 +1,49 @@
+✔ MCP bundled source check agrees when invoked from Pacify-X (1505.5793ms)
+✖ MCP bundled source check agrees when invoked from extension (1036.3808ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 1
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3272.2103
+
+✖ failing tests:
+
+test at extension\tests\mcp-bundle-currentness.test.js:8:3
+✖ MCP bundled source check agrees when invoked from extension (1036.3808ms)
+  AssertionError [ERR_ASSERTION]: C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\scripts\build-mcp.js:27
+      throw new Error('MCP bundle is stale; run npm run build:mcp before release identity application.');
+      ^
+  
+  Error: MCP bundle is stale; run npm run build:mcp before release identity application.
+      at Object.<anonymous> (C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\scripts\build-mcp.js:27:11)
+      at Module._compile (node:internal/modules/cjs/loader:1854:14)
+      at Object..js (node:internal/modules/cjs/loader:1985:10)
+      at Module.load (node:internal/modules/cjs/loader:1577:32)
+      at Module._load (node:internal/modules/cjs/loader:1379:12)
+      at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+      at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)
+      at node:internal/main/run_main_module:33:47
+  
+  Node.js v24.16.0
+  
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\tests\mcp-bundle-currentness.test.js:12:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+

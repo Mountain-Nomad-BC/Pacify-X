@@ -1,0 +1,19 @@
+✔ signed host allowlist exactly covers registered MCP write tools (14.9433ms)
+✔ signed launch authority replaces self-asserted MCP identity (1658.439ms)
+✔ launch authority fails closed for replay in another project, changed token, and unadmitted operation (1738.9132ms)
+✔ MCP enterprise read handlers do not initialize persistent state (9.7374ms)
+✔ MCP dashboard calls bind the open project rather than defaulting to engine root (2.8718ms)
+✔ MCP mailbox tools keep private payloads on trusted local recipient paths (3.8414ms)
+✔ MCP read instrumentation cannot quarantine corrupt activity and handoff ignores stored packets (5.3592ms)
+✔ MCP snapshot and readiness readers request the nonpersisting dashboard path (8.1535ms)
+✔ bundled MCP server rejects an unattested write before project state or activity changes (1354.4245ms)
+✔ bundled MCP server exposes first-class catalogs, activity traces, resume, claims, receipts, and layered memory (6973.3304ms)
+ℹ tests 10
+ℹ suites 0
+ℹ pass 10
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 9023.4874
+
