@@ -15,6 +15,8 @@ def test_model_client_is_fail_closed_without_an_admitted_project_router(tmp_path
     assert list_models(ROOT, tmp_path) == {
         "schema_version": "px.vscode-model-list/1.0",
         "models": [],
+        "remote_catalog_status": "unconfigured",
+        "local_catalog_status": "unavailable",
         "authority_granted": False,
     }
 

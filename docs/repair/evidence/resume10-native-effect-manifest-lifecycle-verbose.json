@@ -1,0 +1,18 @@
+{
+  "command": [
+    "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\Python\\pythoncore-3.14-64\\python.exe",
+    "-m",
+    "pytest",
+    "tests/test_workflow_studio.py::test_workflow_pause_resume_cancel_and_checkpoint_recovery",
+    "tests/test_workflow_effect_custody.py",
+    "tests/test_workflow_worker_import_custody.py",
+    "-vv"
+  ],
+  "exit_code": 0,
+  "tree_closed": true,
+  "resource_inactive": true,
+  "receipt": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.tmp\\resume10\\owned\\cleanup-receipts\\process-cb16bac902234eddae69b5abc628b4e2.json",
+  "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.tmp\\resume10\\owned\\pacifyx-8q5_wrq7",
+  "log": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\docs\\repair\\evidence\\resume10-native-effect-manifest-lifecycle-verbose.log",
+  "log_sha256": "affcb3abf4bfa415671683bf6d44c36a2a653687f49968c962bf5c7c98d87783"
+}

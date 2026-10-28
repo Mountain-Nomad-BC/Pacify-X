@@ -1,0 +1,123 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:engineering-loop-bootstrap:contract:semantic:semantic-entity",
+  "title": "Canonical semantic entity snapshot record",
+  "description": "One entity as emitted by runtime.semantic_entity.EntityRegistry.snapshot_bytes(). Identity is derived from the identity basis only; no filesystem location participates, which is why there is no path field.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "entity_id",
+    "entity_kind",
+    "identity_basis",
+    "lifecycle",
+    "provenance",
+    "terms"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "px.semantic-entity/1.0"
+    },
+    "entity_id": {
+      "type": "string",
+      "pattern": "^pxe1:[a-f0-9]{32}$"
+    },
+    "entity_kind": {
+      "type": "string",
+      "enum": [
+        "declaration",
+        "contract",
+        "module",
+        "operation",
+        "symbol",
+        "surface",
+        "record",
+        "artifact",
+        "policy",
+        "relation_kind"
+      ]
+    },
+    "identity_basis": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["basis_kind"],
+      "properties": {
+        "basis_kind": {
+          "type": "string",
+          "enum": [
+            "intrinsic_name",
+            "intrinsic_content",
+            "declared_identifier",
+            "structural_signature"
+          ]
+        },
+        "qualifier": {
+          "type": ["string", "null"],
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "content_sha256": {
+          "type": ["string", "null"],
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      }
+    },
+    "lifecycle": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["state"],
+      "properties": {
+        "state": {
+          "type": "string",
+          "enum": ["proposed", "accepted", "retired"]
+        },
+        "accepted_utc": {
+          "type": ["string", "null"],
+          "format": "date-time"
+        },
+        "retired_utc": {
+          "type": ["string", "null"],
+          "format": "date-time"
+        },
+        "retirement_reason": {
+          "type": ["string", "null"],
+          "minLength": 1,
+          "maxLength": 512
+        }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["declared_by"],
+      "properties": {
+        "declared_by": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        },
+        "governing_contract": {
+          "type": ["string", "null"],
+          "maxLength": 256
+        },
+        "notes": {
+          "type": ["string", "null"],
+          "maxLength": 2048
+        },
+        "observed_utc": {
+          "type": ["string", "null"],
+          "format": "date-time"
+        }
+      }
+    },
+    "terms": {
+      "type": "array",
+      "maxItems": 256,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 256
+      }
+    }
+  }
+}

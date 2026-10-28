@@ -1,0 +1,79 @@
+# branch.oid 6174918aad1a1872d0017b8ccb226cd42cc9ff05
+# branch.head codex/repair-reconcile-20261025
+1 .M N... 100644 100644 100644 9c3959297df6aaa6d3da22319742c5a69660cc9f 9c3959297df6aaa6d3da22319742c5a69660cc9f docs/repair/SESSION_STATE.md
+1 .M N... 100644 100644 100644 bdf9e1fab9b635e2e9662561defd91fed26db9a3 bdf9e1fab9b635e2e9662561defd91fed26db9a3 extension/scripts/run-operational-ui-walk.js
+1 .M N... 100644 100644 100644 c385b9cec38e5575d57630935d53e84a499763a8 c385b9cec38e5575d57630935d53e84a499763a8 extension/src/agentHarness/adapters/ollama.js
+1 .M N... 100644 100644 100644 12477ce38f6e5f74219ae9ac6eb9dbc5e33c1be2 12477ce38f6e5f74219ae9ac6eb9dbc5e33c1be2 extension/src/agentHarness/adapters/openaiCompatible.js
+1 .M N... 100644 100644 100644 b0bbf42d9a01e46a94438b59ed068d37531208d4 b0bbf42d9a01e46a94438b59ed068d37531208d4 extension/src/agentHarness/agentConsoleProjection.js
+1 .M N... 100644 100644 100644 d5498147632dd2de6832d1c18b8b93ba33fb437a d5498147632dd2de6832d1c18b8b93ba33fb437a extension/src/agentHarness/agentConsoleView.js
+1 .M N... 100644 100644 100644 2068b5d565e3532ef3771e6c28339e1108e53093 2068b5d565e3532ef3771e6c28339e1108e53093 extension/src/agentHarness/budgetLedger.js
+1 .M N... 100644 100644 100644 e680fbb631bc78e6027050534a66aa4379a4d1cf e680fbb631bc78e6027050534a66aa4379a4d1cf extension/src/agentHarness/eventBus.js
+1 .M N... 100644 100644 100644 59b162dc08b7754065672ae64c68ea9292e2f1f0 59b162dc08b7754065672ae64c68ea9292e2f1f0 extension/src/agentHarness/harnessController.js
+1 .M N... 100644 100644 100644 ba53a7d1bf47e32a8e80c97bace35976c11c8d28 ba53a7d1bf47e32a8e80c97bace35976c11c8d28 extension/src/agentHarness/registerAgentConsole.js
+1 .M N... 100644 100644 100644 bfa0071cd679d2be1d0ab6bf07f4142634ce27be bfa0071cd679d2be1d0ab6bf07f4142634ce27be registry/test_profiles.json
+1 .M N... 100644 100644 100644 61f63a444db106af00c36a30f78b57376661de19 61f63a444db106af00c36a30f78b57376661de19 runtime/capability_scheduler.py
+1 .M N... 100644 100644 100644 c43dfc096c256312917c2ac7ecbb521becbf90e3 c43dfc096c256312917c2ac7ecbb521becbf90e3 runtime/cognitive_query.py
+1 .M N... 100644 100644 100644 d01c1ca134383e08b2db554894bca89b7f50cd4a d01c1ca134383e08b2db554894bca89b7f50cd4a runtime/context_checkpoint.py
+1 .M N... 100644 100644 100644 b21de772482619c1528231db71b9f6b69ce48613 b21de772482619c1528231db71b9f6b69ce48613 runtime/event_ledger.py
+1 .M N... 100644 100644 100644 a123e5cb90bac179f0200ad6d4c3e81df7e540eb a123e5cb90bac179f0200ad6d4c3e81df7e540eb runtime/memory_broker.py
+1 .M N... 100644 100644 100644 92819bcc8f37d4cb102d10a31773995d62449564 92819bcc8f37d4cb102d10a31773995d62449564 runtime/memory_intelligence.py
+1 .M N... 100644 100644 100644 6919d7f17f4d2c93c79ffbec669108e31b4d7ff1 6919d7f17f4d2c93c79ffbec669108e31b4d7ff1 runtime/memory_vault.py
+1 .M N... 100644 100644 100644 ed119411202c99872c2d3aaa86efd20b6c44d8ac ed119411202c99872c2d3aaa86efd20b6c44d8ac runtime/operational_event_bus.py
+1 .M N... 100644 100644 100644 d78e771181f01d15f049b3be6d150d47c8bd82de d78e771181f01d15f049b3be6d150d47c8bd82de runtime/query_planner.py
+1 .M N... 100644 100644 100644 c231a3a4d7ccdd123f490822bbca5b6c6fbe5b05 c231a3a4d7ccdd123f490822bbca5b6c6fbe5b05 runtime/recovery.py
+1 .M N... 100644 100644 100644 4eb6da5420b9349a5b24150074605c52af21692f 4eb6da5420b9349a5b24150074605c52af21692f runtime/retrieval.py
+1 .M N... 100644 100644 100644 c3b3e9729d9ca1c453ec22de153ec267a1176dee c3b3e9729d9ca1c453ec22de153ec267a1176dee runtime/scheduler.py
+1 .M N... 100644 100644 100644 7625081ba3a4ee5e8402537e591515477e2847eb 7625081ba3a4ee5e8402537e591515477e2847eb runtime/test_profiles.py
+1 .M N... 100644 100644 100644 8b140d5a52b50e532742535f72a60284eb3f3def 8b140d5a52b50e532742535f72a60284eb3f3def runtime/workflow_studio.py
+1 .M N... 100644 100644 100644 cd18c21c03f3f3c870532cd9c200a459aa6920aa cd18c21c03f3f3c870532cd9c200a459aa6920aa scripts/build_contract_ownership_registry.py
+1 .M N... 100644 100644 100644 48dae8986c3c1af35afd8be8b89a4235c0008f71 48dae8986c3c1af35afd8be8b89a4235c0008f71 tests/test_operational_event_bus.py
+1 .M N... 100644 100644 100644 fe9d862525cdcd18ef93ef5dfbb37fc9b98e424b fe9d862525cdcd18ef93ef5dfbb37fc9b98e424b tests/test_test_profiles.py
+? .audit-handoff/
+? REPAIR_HANDOFF.md
+? contracts/project_revision_succession/
+? docs/repair/SESSION_HANDOFF_2026-10-25.md
+? docs/repair/evidence/baseline-failures.txt
+? docs/repair/evidence/baseline-main-py-20261025.log
+? docs/repair/evidence/baseline-main-py-stderr.log
+? docs/repair/evidence/baseline-main-py-stdout.log
+? docs/repair/evidence/contract_ownership-built.json
+? docs/repair/evidence/ownership-registry-baseline.log
+? docs/repair/evidence/ownership-registry-derivation.log
+? docs/repair/evidence/resume3-activation-before.log
+? docs/repair/evidence/resume3-activation-causal-before.log
+? docs/repair/evidence/resume3-activation-green.log
+? docs/repair/evidence/resume3-activation-snapshot-green.log
+? docs/repair/evidence/resume3-hardlink-cascade-neighbors.log
+? docs/repair/evidence/resume3-stop-processes-before.json
+? docs/repair/evidence/resume3-succession-port-green.log
+? docs/repair/evidence/resume3-succession-port-manifest.json
+? docs/repair/evidence/resume3-succession-port-tests.log
+? docs/repair/evidence/triage-gen3-stderr.log
+? docs/repair/evidence/triage-gen3-stdout.log
+? docs/repair/evidence/triage-profiles.log
+? extension/tests/agent-harness-streaming.test.js
+? extension/tests/conclusion-hash-regression.test.js
+? extension/tests/path-containment-regression.test.js
+? extension/tests/zero-budget-regression.test.js
+? runtime/gremlin/
+? runtime/project_revision_succession.py
+? runtime/revision_campaign_lifecycle.py
+? tests/test_budget_regression.py
+? tests/test_capability_scheduler_regression.py
+? tests/test_context_checkpoint_regression.py
+? tests/test_dag_regression.py
+? tests/test_event_ledger_regression.py
+? tests/test_gremlin_regression.py
+? tests/test_hydration_regression.py
+? tests/test_memory_broker_regression.py
+? tests/test_project_revision_succession.py
+? tests/test_query_plan_regression.py
+? tests/test_recovery_regression.py
+? tests/test_revision_activation_e2e.py
+? tests/test_revision_campaign_lifecycle.py
+? tests/test_scheduler_path_regression.py
+? tests/test_scheduler_recovery_regression.py
+? tests/test_scheduler_regression.py
+? tests/test_scheduler_scaling_regression.py
+? tests/test_secret_sanitizer_regression.py
+? tests/test_workflow_timeout_regression.py

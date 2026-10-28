@@ -1,0 +1,22 @@
+{
+  "active_gap_id": "PX-OS-1067",
+  "evidence": [
+    {
+      "reference": "docs/repair/evidence/resume14-r08-memory.log",
+      "claim": "Memory/NSAI group: 50 passed.",
+      "artifact_sha256": "eb28161248d0bf1af1da00e61fbd2f0d7268363ffc943bd6489a64a17e5eed3f",
+      "artifact_size": 498
+    },
+    {
+      "reference": "docs/repair/evidence/resume14-tie-path.log",
+      "claim": "T.I.E. path now reports a named uncommissioned-owner error instead of a bare ImportError; regression test added and 11 tests pass in that suite.",
+      "artifact_sha256": "3ad1cc68027cae5fedf4778e85f1b04dc5fa6c93c424426dc248f70cefa2a4c9",
+      "artifact_size": 340
+    }
+  ],
+  "learned": "Verified R02/R03/R05/R06/R08/R09/R11 by execution rather than assumption: hostile-path attacks 94 pass, containment suites pass, billing 18 Python + 20 Node including cancellation accounting, lifecycle pass, memory 50 pass, scheduling pass, model resources pass, model-group 41 pass. Succession blocker is now precisely located and is NOT the phase gate older handoffs described: the September campaign is already closed with intake_open false and zero unresolved, so it passes the phase condition; it fails because predecessor project_id is null and, before that, because no signed owner policy issuer/verifier is configured (SuccessionProposalBlocked: no canonical verified project-revision-succession policy issuer is configured). Back-filling project_id into the predecessor campaign would edit historical campaign records and is not permitted.",
+  "newly_discovered_gap_ids": [],
+  "next_action": "Run the single revision/generated-projection reconciliation, make every governed section current, then execute exactly one full profile, validation, package, install, installed-system operational test, and certification in registered order.",
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000036235",
+  "unresolved_branch_gap_ids": []
+}

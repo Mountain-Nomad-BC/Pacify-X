@@ -1,0 +1,28 @@
+{
+  "active_gap_id": "PX-OS-1067",
+  "evidence": [
+    {
+      "reference": "docs/repair/evidence/runbook-tie-fusion-e2e.log",
+      "claim": "T.I.E. fusion implemented on the native store and proven end to end: experience recorded through record_observation fuses with ATTRIBUTED lineage, deterministic digest, authority_granted False, read-only (one log, unchanged bytes).",
+      "artifact_sha256": "9e2bbcd54cb5e17de868025961abf666193cedbbb147a0842304eb8096085d43",
+      "artifact_size": 390
+    },
+    {
+      "reference": "docs/repair/evidence/runbook-tie-fusion-tests.log",
+      "claim": "52 passed across model-group preparation, tie fusion and usage memory, including malformed-binding, unknown-kind, bounded-binding, corrupt-log and missing-subject cases.",
+      "artifact_sha256": "ea25bdedfd2f10b42019bb2734706b6a053eead557b05c1c0e306b476e28020f",
+      "artifact_size": 392
+    },
+    {
+      "reference": "docs/repair/evidence/runbook-tie-neighbours.log",
+      "claim": "41 passed across model-group execution, verdict, remote attachment and three memory suites: no regression.",
+      "artifact_sha256": "db07312ea6ac8d74de42f9e3d6ad5b9e2ee34d1f2b0b629fdb421149abf0e5a1",
+      "artifact_size": 519
+    }
+  ],
+  "learned": "Implemented real fuse_tie_experience on the native usage-memory store (not the reference dual-store design), so fusion evidence and reads share one format and the path is genuinely commissioned rather than a stub. Design points derived from actual code: subject kinds are skill/agent/workflow (not project), the store records run_id/correlation_id with no effect_id, dispositions are a closed enum, and read_bounded_bytes must be imported locally. Three defects in my own implementation were caught by running it: a wrong effect_id lineage assumption, a missing local import, and an unknown-kind error being swallowed as corrupt_or_unavailable. Also replaced the earlier test that asserted the stub, since recording a stub as expected behaviour would have cemented it.",
+  "newly_discovered_gap_ids": [],
+  "next_action": "Run the single revision/generated-projection reconciliation, make every governed section current, then execute exactly one full profile, validation, package, install, installed-system operational test, and certification in registered order.",
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000036237",
+  "unresolved_branch_gap_ids": []
+}

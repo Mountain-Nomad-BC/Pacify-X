@@ -73,12 +73,8 @@ def chat(engine_root, project_root, payload):
     current()
     studio = WorkflowStudio(root)
     owner = studio.resolve_prepared_group_owner(reference)
-    approval = authority.consume_host_operation_approval(proof, kind='remote-model', operation='chat',
-                                                         supplied_payload=selected)
-    current()
-    if studio.resolve_prepared_group_owner(reference) != owner:
-        raise PermissionError('prepared remote workflow owner changed')
-    signed = studio.execute_prepared_group_node(reference, approved_by=approval['approved_by'])
+    signed = studio.execute_prepared_group_node(reference, approval_capability=proof,
+                                               selection=selected, assert_current=current)
     workflow = authority.verify_receipt(signed)
     state = studio.run_control.read_snapshot(workflow['run_id'])
     results = state['checkpoint']['results']
@@ -92,8 +88,8 @@ def chat(engine_root, project_root, payload):
     group_sha = output['group_run_sha256']
     if type(group_sha) is not str or len(group_sha) != 64 or any(c not in '0123456789abcdef' for c in group_sha):
         raise ValueError('canonical remote group receipt digest required')
-    path, _ = contained_file(root, '.agentic_engineering_os_px/studios/agents/group-runs/' + group_sha + '.json')
-    group = authority.verify_receipt(load_json_object(path, max_bytes=4 * 1024 * 1024))
+    from .agent_runtime import AgentRuntimeController
+    group = AgentRuntimeController(root).read_governed_group_run(group_sha)
     node = next(r for r in state['checkpoint']['node_receipts'] if r['node_id'] == owner['node_id'])
     attempt = node['attempts'][-1]
     bindings = group.get('workflow_effect_bindings', [])

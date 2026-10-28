@@ -1,0 +1,22 @@
+{
+  "active_gap_id": "PX-OS-1067",
+  "evidence": [
+    {
+      "reference": "docs/repair/evidence/resume14-namespace-probe.log",
+      "claim": "Causal reproduction preserved: switching only the tool_intake consumer to control_path() made lifecycle routing lose the commissioned state (canonical empty, commissioning writes legacy). Reverted; current behavior recorded.",
+      "artifact_sha256": "bd8b4c7f45c99b7abcccce5647e8382f2af96916dac242198389b75822552d88",
+      "artifact_size": 524
+    },
+    {
+      "reference": "docs/repair/evidence/resume10-contract-adjudication.json",
+      "claim": "214-record source adjudication with 2 namespace-migration records still open; 188 exact, 2 JSON-equal, 1 stronger authorization, 9 component-tested/generated-pending, 12 dependency reviews.",
+      "artifact_sha256": "099275560d24f6dd20b21cdc43bc9d590368acfe9e9f163fa2a7be16568c2a7a",
+      "artifact_size": 238380
+    }
+  ],
+  "learned": "Ported from Resume13 and verified: certification_coverage is now structurally valid (43 suites, no missing files) although structural membership is not certification. The one open source failure is published-vs-source contract ownership (196 vs 203; the 7 missing are exactly the new model-group contracts) plus 9 registry errors from it. Do NOT regenerate before freeze. The namespace migration cannot be done per-consumer: commissioning writes the legacy tree and 61 of 1435 receipts embed that literal path, so a single-consumer switch splits the state (reproduced). Added control_path() plus a measured migration note; tool_intake deliberately unchanged.",
+  "newly_discovered_gap_ids": [],
+  "next_action": "Run the single revision/generated-projection reconciliation, make every governed section current, then execute exactly one full profile, validation, package, install, installed-system operational test, and certification in registered order.",
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000036231",
+  "unresolved_branch_gap_ids": []
+}

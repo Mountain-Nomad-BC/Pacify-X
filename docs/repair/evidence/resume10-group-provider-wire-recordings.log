@@ -1,0 +1,94 @@
+.F.F......F..........                                                    [100%]
+================================== FAILURES ===================================
+_ test_named_service_recording_wire_and_reported_usage[gemini-generate-content-gemini-frames1] _
+
+adapter = 'gemini-generate-content', provider = 'gemini'
+frames = [{'responseId': 'r', 'candidates': [{'index': 0, 'content': {'role': 'model', 'parts': [{...}]}, 'finishReason': 'STOP'}], 'usageMetadata': {'promptTokenCount': 3, 'candidatesTokenCount': 1}}]
+
+    @pytest.mark.parametrize("adapter,provider,frames", [
+        ("openai-responses", "openai", [{"type":"response.output_text.delta","delta":"hello"}, {"type":"response.completed","response":{"id":"r","usage":{"input_tokens":3,"output_tokens":1}}}]),
+        ("gemini-generate-content", "gemini", [{"responseId":"r","candidates":[{"index":0,"content":{"role":"model","parts":[{"text":"hello"}]},"finishReason":"STOP"}],"usageMetadata":{"promptTokenCount":3,"candidatesTokenCount":1}}]),
+        ("mistral-chat", "mistral", [{"id":"r","choices":[{"delta":{"content":"hello"},"finish_reason":None}]}, {"choices":[],"usage":{"prompt_tokens":3,"completion_tokens":1}}, "[DONE]"]),
+        ("claude-anthropic-messages", "claude", [{"type":"message_start","message":{"id":"r","usage":{"input_tokens":1,"cache_creation_input_tokens":2}}}, {"type":"content_block_delta","index":0,"delta":{"type":"text_delta","text":"hello"}}, {"type":"message_delta","usage":{"output_tokens":1}}, {"type":"message_stop"}]),
+    ])
+    def test_named_service_recording_wire_and_reported_usage(adapter, provider, frames):
+>       protocol = service_protocol(adapter, provider)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_group_remote_wire_recordings.py:17: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+runtime\remote_service_protocols.py:24: in service_protocol
+    validate_protocol_surface(row['surface'])
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+value = 'gemini_generate_content'
+
+    def validate_protocol_surface(value: object) -> str:
+        surface = _text(value, "protocol surface", limit=64)
+        if surface not in _ALLOWED_SURFACES:
+>           raise ValueError("protocol surface is unsupported")
+E           ValueError: protocol surface is unsupported
+
+runtime\model_protocol.py:498: ValueError
+_ test_named_service_recording_wire_and_reported_usage[claude-anthropic-messages-claude-frames3] _
+
+adapter = 'claude-anthropic-messages', provider = 'claude'
+frames = [{'type': 'message_start', 'message': {'id': 'r', 'usage': {'input_tokens': 1, 'cache_creation_input_tokens': 2}}}, {'...': 'text_delta', 'text': 'hello'}}, {'type': 'message_delta', 'usage': {'output_tokens': 1}}, {'type': 'message_stop'}]
+
+    @pytest.mark.parametrize("adapter,provider,frames", [
+        ("openai-responses", "openai", [{"type":"response.output_text.delta","delta":"hello"}, {"type":"response.completed","response":{"id":"r","usage":{"input_tokens":3,"output_tokens":1}}}]),
+        ("gemini-generate-content", "gemini", [{"responseId":"r","candidates":[{"index":0,"content":{"role":"model","parts":[{"text":"hello"}]},"finishReason":"STOP"}],"usageMetadata":{"promptTokenCount":3,"candidatesTokenCount":1}}]),
+        ("mistral-chat", "mistral", [{"id":"r","choices":[{"delta":{"content":"hello"},"finish_reason":None}]}, {"choices":[],"usage":{"prompt_tokens":3,"completion_tokens":1}}, "[DONE]"]),
+        ("claude-anthropic-messages", "claude", [{"type":"message_start","message":{"id":"r","usage":{"input_tokens":1,"cache_creation_input_tokens":2}}}, {"type":"content_block_delta","index":0,"delta":{"type":"text_delta","text":"hello"}}, {"type":"message_delta","usage":{"output_tokens":1}}, {"type":"message_stop"}]),
+    ])
+    def test_named_service_recording_wire_and_reported_usage(adapter, provider, frames):
+        protocol = service_protocol(adapter, provider)
+        class Transport:
+            def open(self, **request):
+                self.request = request
+                stream = "".join("data: " + (f if isinstance(f,str) else json.dumps(f)) + "\n\n" for f in frames)
+                return self, io.BytesIO(stream.encode())
+            def close(self): self.closed = True
+        transport = Transport()
+        profile = {"adapter_id":adapter,"provider_id":provider,"origin":protocol["origin"],"approved_addresses":["8.8.8.8"],"credential_reference":"FIXTURE_SECRET","model_id":"configured-model"}
+        native = remote_adapter_for(profile, credential_resolver=lambda _:"fixture-secret", validate_current=lambda:None, transport=transport)
+        request = CanonicalModelRequest(request_id="r",session_id="s",client_id="c",operation_id="o",privacy="policy_gated",route=adapter,messages=({"role":"system","content":"instruction"},{"role":"user","content":"question"}),tools=(),max_output_tokens=8,deadline_ms=30000)
+        events = list(native.stream(profile["model_id"],request,ProviderStreamControl(30000)))
+        assert [e.payload["text"] for e in events if e.kind == "text_delta"] == ["hello"]
+>       assert next(e.payload for e in events if e.kind == "usage")["input_tokens"] == 3
+E       assert 1 == 3
+
+tests\test_group_remote_wire_recordings.py:30: AssertionError
+_ test_actual_transport_exact_endpoint_headers_and_tls_pin[gemini-generate-content-gemini] _
+
+adapter = 'gemini-generate-content', provider = 'gemini'
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000017C88CA3CE0>
+
+    @pytest.mark.parametrize("adapter,provider", [("openai-responses","openai"),("mistral-chat","mistral"),("claude-anthropic-messages","claude"),("gemini-generate-content","gemini")])
+    def test_actual_transport_exact_endpoint_headers_and_tls_pin(adapter,provider,monkeypatch):
+        from runtime import remote_provider_adapters as module
+        from types import SimpleNamespace
+>       protocol = service_protocol(adapter,provider)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_group_remote_wire_recordings.py:54: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+runtime\remote_service_protocols.py:24: in service_protocol
+    validate_protocol_surface(row['surface'])
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+value = 'gemini_generate_content'
+
+    def validate_protocol_surface(value: object) -> str:
+        surface = _text(value, "protocol surface", limit=64)
+        if surface not in _ALLOWED_SURFACES:
+>           raise ValueError("protocol surface is unsupported")
+E           ValueError: protocol surface is unsupported
+
+runtime\model_protocol.py:498: ValueError
+=========================== short test summary info ===========================
+FAILED tests/test_group_remote_wire_recordings.py::test_named_service_recording_wire_and_reported_usage[gemini-generate-content-gemini-frames1]
+FAILED tests/test_group_remote_wire_recordings.py::test_named_service_recording_wire_and_reported_usage[claude-anthropic-messages-claude-frames3]
+FAILED tests/test_group_remote_wire_recordings.py::test_actual_transport_exact_endpoint_headers_and_tls_pin[gemini-generate-content-gemini]
+3 failed, 18 passed in 2.32s
+

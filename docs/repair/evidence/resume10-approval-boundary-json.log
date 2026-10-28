@@ -1,0 +1,71 @@
+........F....                                                            [100%]
+================================== FAILURES ===================================
+___________ test_signed_approval_runs_real_nodes_and_cannot_replay ____________
+
+isolated = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.tmp/resume10/owned/pacifyx-_ovcscff/pytest-of-Ben/pytest-0/test_signed_approval_runs_real0/project')
+
+    def test_signed_approval_runs_real_nodes_and_cannot_replay(isolated):
+        definition, bindings, grants = fixture()
+        studio = WorkflowStudio(isolated)
+        studio.save_revision(definition)
+        studio.register_authority(bindings, grants, {bindings[0].binding_id: "increment", bindings[1].binding_id: "double"})
+        studio.validate_and_admit(definition)
+        payload = {"definition": json.loads(json.dumps(asdict(definition))), "node_id": "node:two"}
+        proof = approval_proof(isolated, "workflow", "approve", payload)
+        request = {**payload, "approval_capability": proof}
+>       result = studio_operation(isolated, "workflow", "approve", request)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_workflow_approval_boundary.py:38: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+runtime\studio_api.py:1307: in studio_operation
+    definition = _workflow(value)
+                 ^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+value = {'definition': {'workflow_id': 'workflow:demo', 'version': '1.0.0', 'owner': 'owner', 'nodes': [{'node_id': 'node:one'...r', 'required': True}], ...}], ...}, 'node_id': 'node:two', 'approved': True, 'approved_by': 'human:vscode-local-user'}
+
+    def _workflow(value: Mapping[str, Any]) -> WorkflowDefinition:
+        value = _request(value)
+        nodes = tuple(
+            WorkflowNode(
+                _text(node["node_id"]),
+                _text(node["executor_binding_id"]),
+                tuple(_port(port) for port in node.get("inputs", [])),
+                tuple(_port(port) for port in node.get("outputs", [])),
+                _strings(node.get("effect_grant_ids", [])),
+                _text(node["failure_policy"]).strip().lower().replace("_", "-"),
+                node["timeout_seconds"],
+                _integer(node.get("retry_limit", 0)),
+                _boolean(node.get("approval_required", False)),
+                _text(node.get("kind", "task")),
+                dict(node.get("config", {})),
+            )
+            for node in value.get("nodes", [])
+        )
+        edges = tuple(
+            WorkflowEdge(
+                _text(edge.get("source_node", edge.get("source_node_id", ""))),
+                _text(edge["source_port"]),
+                _text(edge.get("target_node", edge.get("target_node_id", ""))),
+                _text(edge["target_port"]),
+                _text(edge.get("condition", "always")),
+            )
+            for edge in value.get("edges", [])
+        )
+        return WorkflowDefinition(
+>           _text(value["workflow_id"]),
+                  ^^^^^^^^^^^^^^^^^^^^
+            _text(value["version"]),
+            _text(value["owner"]),
+            nodes,
+            edges,
+            _text(value.get("lifecycle", "draft")),
+        )
+E       KeyError: 'workflow_id'
+
+runtime\studio_api.py:604: KeyError
+=========================== short test summary info ===========================
+FAILED tests/test_workflow_approval_boundary.py::test_signed_approval_runs_real_nodes_and_cannot_replay
+1 failed, 12 passed in 1.94s
+

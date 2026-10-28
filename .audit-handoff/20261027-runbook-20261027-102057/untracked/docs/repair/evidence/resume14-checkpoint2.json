@@ -1,0 +1,22 @@
+{
+  "active_gap_id": "PX-OS-1067",
+  "evidence": [
+    {
+      "reference": "docs/repair/evidence/resume14-dependency-review.json",
+      "claim": "All 12 DEPENDENCY_REVIEW_REQUIRED records reviewed against live tree and reference: 11 contracts exist only in the reference, 1 already present here. Of the 11, 10 owners are absent here and only semantic_entity exists (unreachable/unimportable by any tracked module).",
+      "artifact_sha256": "60d0a046d3843b384e3ac481138f306c3b853ce963bc542e4544fbbf1f1acc29",
+      "artifact_size": 5388
+    },
+    {
+      "reference": "docs/repair/evidence/resume14-entity-durability.log",
+      "claim": "semantic-entity publishes a registry and reports PUBLISHED while the owner's declared contract is absent; reloading then raises FileNotFoundError naming the missing schema, so the owner cannot read back what it wrote.",
+      "artifact_sha256": "d290557f96b3549fa2e7e35323a893529599ead0370819ceaf29fe4c2f1412df",
+      "artifact_size": 642
+    }
+  ],
+  "learned": "R01 dependency review complete for all 12 records. Porting the 10 absent owners would add unreachable modules to honour contracts nothing consumes in this checkout; the contracts/owners belong to a different product surface than the bootstrap runtime, so copying is the wrong default. The one present owner (semantic_entity) exposes a genuine durability defect: its validator path is resolved against the framework root rather than the project, publication succeeds, and reload of the published registry fails on the missing schema. Fix is a source repair that reproduces the defect first, not a contract copy.",
+  "newly_discovered_gap_ids": [],
+  "next_action": "Run the single revision/generated-projection reconciliation, make every governed section current, then execute exactly one full profile, validation, package, install, installed-system operational test, and certification in registered order.",
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000036232",
+  "unresolved_branch_gap_ids": []
+}

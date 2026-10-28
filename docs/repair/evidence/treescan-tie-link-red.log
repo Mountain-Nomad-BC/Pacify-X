@@ -1,0 +1,39 @@
+cmd: C:\Users\Ben\Documents\bootstrap_project\Pacify-X\.venv-repair\Scripts\python.exe -m pytest -q --no-header -p no:cacheprovider tests/test_tie_fusion.py
+exit: 1
+elapsed_seconds: 0.80
+--- stdout ---
+.............F..                                                         [100%]
+================================== FAILURES ===================================
+____________________ test_linked_experience_log_is_refused ____________________
+
+project = WindowsPath('C:/Users/Ben/AppData/Local/Temp/pytest-of-Ben/pytest-0/test_linked_experience_log_is_0')
+
+    def test_linked_experience_log_is_refused(project):
+        """A log reachable through a link must be reported, not read.
+    
+        The experience log is append-only evidence; reading it through a symlink or
+        junction would let unrelated bytes be presented as a subject's history.
+        """
+        victim = project / "outside.txt"
+        victim.write_text('{"outcome": "success", "run_id": "forged"}\n', encoding="utf-8")
+        log = project / "orchestration/workflows/wf_linked/memory/usage.jsonl"
+        log.parent.mkdir(parents=True)
+        try:
+            log.symlink_to(victim)
+        except (OSError, NotImplementedError):
+            pytest.skip("host cannot create symlinks for this check")
+        fused = um.fuse_tie_experience(project, ({"kind": "workflow", "identity": "wf_linked"},))
+        subject = fused["subjects"][0]
+>       assert subject["state"] == "corrupt_or_unavailable"
+E       AssertionError: assert 'available' == 'corrupt_or_unavailable'
+E         
+E         - corrupt_or_unavailable
+E         + available
+
+tests\test_tie_fusion.py:143: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_tie_fusion.py::test_linked_experience_log_is_refused - Asse...
+1 failed, 15 passed in 0.47s
+
+--- stderr ---
+

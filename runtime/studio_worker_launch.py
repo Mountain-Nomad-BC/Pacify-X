@@ -229,6 +229,7 @@ def _launch_terminal_observer(
     observer_run_id = f"studio-finalizer-{run_id}-{launch_nonce}"
     command = (
         sys.executable,
+        "-P",
         "-m",
         "runtime.studio_terminal_observer",
         "--root",
@@ -280,6 +281,7 @@ def launch_studio_worker(
     launch_nonce = uuid4().hex
     command = (
         sys.executable,
+        "-P",
         "-m",
         "runtime.studio_session_worker",
         "--root",

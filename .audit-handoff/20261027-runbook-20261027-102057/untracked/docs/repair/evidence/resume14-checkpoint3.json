@@ -1,0 +1,28 @@
+{
+  "active_gap_id": "PX-OS-1067",
+  "evidence": [
+    {
+      "reference": "docs/repair/evidence/resume14-entity-legacy-resolution.log",
+      "claim": "Before/after on one artifact: with the contract absent, legacy resolution let FileNotFoundError escape to a caller that only asked to load a registry; the fixed path raises SemanticEntityError naming the contract, and the published registry reloads as EntityRegistry.",
+      "artifact_sha256": "0f8756148b8e10ee728ecf906af10c6b6a1f07b56b4747ee6aa9fc911df3a357",
+      "artifact_size": 572
+    },
+    {
+      "reference": "docs/repair/evidence/resume14-contract-neighbours.log",
+      "claim": "108 passed, 1 failed after the repair; the single failure is the pre-existing model-group ownership drift (7 records), not the entity work.",
+      "artifact_sha256": "368522918194fded8f1b453f6934543e647687d7e8deb91969860527fea4c863",
+      "artifact_size": 2039
+    },
+    {
+      "reference": "docs/repair/evidence/resume14-corpus-roundtrip.log",
+      "claim": "Corpus round-trip 203 schemas, 0 failures after adding the semantic-entity contract and fixing the generator interior-quantifier derivation.",
+      "artifact_sha256": "35fd8b835eaae69a99befb4f5e5ebf4d927787946f8c9424689038dd165a4bc3",
+      "artifact_size": 70
+    }
+  ],
+  "learned": "Repaired the semantic-entity contract resolution: contract_path() now resolves through runtime.paths.framework_root and absence is a SemanticEntityError rather than a path traceback. Authored contracts/semantic/semantic-entity.schema.json from the owner actual emitted record (not a copy), declared it packaged in pyproject (semantic and project_revision_succession were both missing from package-data), and added its ownership record. Authoring the contract exposed a separate defect in the fixture generator: interior repetition constraints such as ^pxe1:[a-f0-9]{32}\\$ could never be satisfied because the repair only appended a suffix and then stripped character classes to a bare literal. Fixed with _pattern_class_member; corpus went from 1 failure to 0 at 203 schemas. My first generator attempt was also wrong (it dropped class contents) and was caught by running the corpus gate rather than by reading the diff.",
+  "newly_discovered_gap_ids": [],
+  "next_action": "Run the single revision/generated-projection reconciliation, make every governed section current, then execute exactly one full profile, validation, package, install, installed-system operational test, and certification in registered order.",
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000036233",
+  "unresolved_branch_gap_ids": []
+}

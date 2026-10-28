@@ -1,0 +1,33 @@
+...F.                                                                    [100%]
+================================== FAILURES ===================================
+_______ test_group_owner_fences_replay_and_refuses_missing_attestation ________
+
+admitted_member = (<runtime.agent_runtime.AgentRuntimeController object at 0x0000017421021CD0>, AgentSpec(agent_id='agent:demo', version...7090a4498c1476ce05dea', 'benchmark_revision': '3ab6d41449ec3dfdba743d7678774ce553a78b3c4c93c442ee4a5f0ab3defa72', ...})
+
+    def test_group_owner_fences_replay_and_refuses_missing_attestation(admitted_member):
+        from runtime.trusted_evidence import TrustedEvidenceResolver
+        from runtime.effect_intent import EffectIntentLedger
+        controller, spec, plan, placement = admitted_member
+        store = controller.project_root / "evidence-store"
+        store.mkdir()
+        policy = controller.project_root / "trust-policy.json"
+        policy.write_text("{}", encoding="utf-8")
+        resolver = TrustedEvidenceResolver(store, policy)
+        calls = []
+        def execute(invocation, **kwargs):
+            calls.append(invocation.model_id)
+            return {"answer": "group member output"}
+        kwargs = dict(task_plan=plan.as_dict(), placements={"model-0": placement}, approval=True, member_executor=execute, generation_observer=lambda: plan.context_generation, evidence_resolver=resolver, accepted_producers=set(), attestation_provider=None)
+        result = controller.execute_governed_group(spec, **kwargs)
+        assert calls == ["model-0"]
+>       assert result["control_state"] == "failed"
+E       AssertionError: assert 'succeeded' == 'failed'
+E         
+E         - failed
+E         + succeeded
+
+tests\test_governed_prepared_member.py:91: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_governed_prepared_member.py::test_group_owner_fences_replay_and_refuses_missing_attestation
+1 failed, 4 passed in 10.20s
+

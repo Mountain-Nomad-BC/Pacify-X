@@ -1,0 +1,523 @@
+EEEEEEE.............                                                     [100%]
+=================================== ERRORS ====================================
+______________ ERROR at setup of test_revision_decoder_roundtrip ______________
+
+tmp_path = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.tmp/resume10/owned/pacifyx-70xwquzb/pytest-of-Ben/pytest-0/test_revision_decoder_roundtri0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000020D09ADC9D0>
+
+    @pytest.fixture
+    def owner_case(tmp_path, monkeypatch):
+        monkeypatch.setenv("PX_STUDIO_KEY_ROOT", str(tmp_path / "host-keys"))
+        root = tmp_path / "project"
+        root.mkdir()
+        group, _, _, preparation = prepared(1, root)
+        plan = plan_for(group, preparation)
+        persist_task_execution_plan(root, plan)
+        reference = {"schema_version": "px.prepared-group-reference/1.0", "plan_id": plan.plan_id, "plan_sha256": plan.plan_sha256}
+        definition, bindings, grants = fixture()
+>       node = replace(definition.nodes[0], config={"execution_mode": "prepared-model-group", "prepared_group_reference": reference})
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_prepared_group_workflow_owner.py:21: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+..\..\..\AppData\Local\Temp\py3145t\Lib\dataclasses.py:1778: in replace
+    return _replace(obj, **changes)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\..\AppData\Local\Temp\py3145t\Lib\dataclasses.py:1812: in _replace
+    return self.__class__(**changes)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+<string>:14: in __init__
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WorkflowNode(node_id='node:one', executor_binding_id='binding:first', inputs=(WorkflowPort(name='value', data_type='in...sk-plan-6666315d9519d18918e4efea', 'plan_sha256': '810763444481489e6bdfcd1df3b4b68c652994e297b732159661c4c7e871816d'}})
+
+    def __post_init__(self) -> None:
+        object.__setattr__(self, "node_id", _identity(self.node_id, "node_id"))
+        object.__setattr__(
+            self,
+            "executor_binding_id",
+            _identity(self.executor_binding_id, "executor_binding_id"),
+        )
+        object.__setattr__(
+            self, "effect_grant_ids", _unique(self.effect_grant_ids, "effect_grant_ids")
+        )
+        if (
+            not self.inputs
+            or not self.outputs
+            or not self.effect_grant_ids
+            or not self.failure_policy
+        ):
+            raise ValueError("workflow node lacks contract, grant, or failure policy")
+        if not (0 < self.timeout_seconds <= 3600) or not (0 <= self.retry_limit <= 10):
+            raise ValueError("workflow node timeout or retry bound is invalid")
+        if self.failure_policy not in FAILURE_POLICIES:
+            raise ValueError("unsupported workflow failure policy")
+        kind = str(self.kind).strip().lower()
+        if kind not in WORKFLOW_NODE_KINDS:
+            raise ValueError("unsupported workflow node kind")
+        if kind == "approval" and not self.approval_required:
+            raise ValueError("approval workflow node must require approval")
+        if not isinstance(self.config, Mapping):
+            raise ValueError("workflow node config must be an object")
+        try:
+            normalized_config = json.loads(canonical_bytes(dict(self.config)))
+        except (TypeError, ValueError) as error:
+            raise ValueError("workflow node config must be canonical JSON") from error
+        if len(canonical_bytes(normalized_config)) > 16384:
+            raise ValueError("workflow node config exceeds 16384 bytes")
+        if kind != "validation" and normalized_config:
+>           raise ValueError(
+                f"{kind} workflow node config is closed and must be empty"
+            )
+E           ValueError: task workflow node config is closed and must be empty
+
+runtime\studio_models.py:949: ValueError
+_ ERROR at setup of test_existing_arithmetic_executor_cannot_impersonate_group _
+
+tmp_path = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.tmp/resume10/owned/pacifyx-70xwquzb/pytest-of-Ben/pytest-0/test_existing_arithmetic_execu0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000020D08510FC0>
+
+    @pytest.fixture
+    def owner_case(tmp_path, monkeypatch):
+        monkeypatch.setenv("PX_STUDIO_KEY_ROOT", str(tmp_path / "host-keys"))
+        root = tmp_path / "project"
+        root.mkdir()
+        group, _, _, preparation = prepared(1, root)
+        plan = plan_for(group, preparation)
+        persist_task_execution_plan(root, plan)
+        reference = {"schema_version": "px.prepared-group-reference/1.0", "plan_id": plan.plan_id, "plan_sha256": plan.plan_sha256}
+        definition, bindings, grants = fixture()
+>       node = replace(definition.nodes[0], config={"execution_mode": "prepared-model-group", "prepared_group_reference": reference})
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_prepared_group_workflow_owner.py:21: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+..\..\..\AppData\Local\Temp\py3145t\Lib\dataclasses.py:1778: in replace
+    return _replace(obj, **changes)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\..\AppData\Local\Temp\py3145t\Lib\dataclasses.py:1812: in _replace
+    return self.__class__(**changes)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+<string>:14: in __init__
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WorkflowNode(node_id='node:one', executor_binding_id='binding:first', inputs=(WorkflowPort(name='value', data_type='in...sk-plan-6666315d9519d18918e4efea', 'plan_sha256': '810763444481489e6bdfcd1df3b4b68c652994e297b732159661c4c7e871816d'}})
+
+    def __post_init__(self) -> None:
+        object.__setattr__(self, "node_id", _identity(self.node_id, "node_id"))
+        object.__setattr__(
+            self,
+            "executor_binding_id",
+            _identity(self.executor_binding_id, "executor_binding_id"),
+        )
+        object.__setattr__(
+            self, "effect_grant_ids", _unique(self.effect_grant_ids, "effect_grant_ids")
+        )
+        if (
+            not self.inputs
+            or not self.outputs
+            or not self.effect_grant_ids
+            or not self.failure_policy
+        ):
+            raise ValueError("workflow node lacks contract, grant, or failure policy")
+        if not (0 < self.timeout_seconds <= 3600) or not (0 <= self.retry_limit <= 10):
+            raise ValueError("workflow node timeout or retry bound is invalid")
+        if self.failure_policy not in FAILURE_POLICIES:
+            raise ValueError("unsupported workflow failure policy")
+        kind = str(self.kind).strip().lower()
+        if kind not in WORKFLOW_NODE_KINDS:
+            raise ValueError("unsupported workflow node kind")
+        if kind == "approval" and not self.approval_required:
+            raise ValueError("approval workflow node must require approval")
+        if not isinstance(self.config, Mapping):
+            raise ValueError("workflow node config must be an object")
+        try:
+            normalized_config = json.loads(canonical_bytes(dict(self.config)))
+        except (TypeError, ValueError) as error:
+            raise ValueError("workflow node config must be canonical JSON") from error
+        if len(canonical_bytes(normalized_config)) > 16384:
+            raise ValueError("workflow node config exceeds 16384 bytes")
+        if kind != "validation" and normalized_config:
+>           raise ValueError(
+                f"{kind} workflow node config is closed and must be empty"
+            )
+E           ValueError: task workflow node config is closed and must be empty
+
+runtime\studio_models.py:949: ValueError
+_____ ERROR at setup of test_real_persisted_owner_failures[missing-owner] _____
+
+tmp_path = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.tmp/resume10/owned/pacifyx-70xwquzb/pytest-of-Ben/pytest-0/test_real_persisted_owner_fail0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000020D09B515B0>
+
+    @pytest.fixture
+    def owner_case(tmp_path, monkeypatch):
+        monkeypatch.setenv("PX_STUDIO_KEY_ROOT", str(tmp_path / "host-keys"))
+        root = tmp_path / "project"
+        root.mkdir()
+        group, _, _, preparation = prepared(1, root)
+        plan = plan_for(group, preparation)
+        persist_task_execution_plan(root, plan)
+        reference = {"schema_version": "px.prepared-group-reference/1.0", "plan_id": plan.plan_id, "plan_sha256": plan.plan_sha256}
+        definition, bindings, grants = fixture()
+>       node = replace(definition.nodes[0], config={"execution_mode": "prepared-model-group", "prepared_group_reference": reference})
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_prepared_group_workflow_owner.py:21: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+..\..\..\AppData\Local\Temp\py3145t\Lib\dataclasses.py:1778: in replace
+    return _replace(obj, **changes)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\..\AppData\Local\Temp\py3145t\Lib\dataclasses.py:1812: in _replace
+    return self.__class__(**changes)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+<string>:14: in __init__
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WorkflowNode(node_id='node:one', executor_binding_id='binding:first', inputs=(WorkflowPort(name='value', data_type='in...sk-plan-6666315d9519d18918e4efea', 'plan_sha256': '810763444481489e6bdfcd1df3b4b68c652994e297b732159661c4c7e871816d'}})
+
+    def __post_init__(self) -> None:
+        object.__setattr__(self, "node_id", _identity(self.node_id, "node_id"))
+        object.__setattr__(
+            self,
+            "executor_binding_id",
+            _identity(self.executor_binding_id, "executor_binding_id"),
+        )
+        object.__setattr__(
+            self, "effect_grant_ids", _unique(self.effect_grant_ids, "effect_grant_ids")
+        )
+        if (
+            not self.inputs
+            or not self.outputs
+            or not self.effect_grant_ids
+            or not self.failure_policy
+        ):
+            raise ValueError("workflow node lacks contract, grant, or failure policy")
+        if not (0 < self.timeout_seconds <= 3600) or not (0 <= self.retry_limit <= 10):
+            raise ValueError("workflow node timeout or retry bound is invalid")
+        if self.failure_policy not in FAILURE_POLICIES:
+            raise ValueError("unsupported workflow failure policy")
+        kind = str(self.kind).strip().lower()
+        if kind not in WORKFLOW_NODE_KINDS:
+            raise ValueError("unsupported workflow node kind")
+        if kind == "approval" and not self.approval_required:
+            raise ValueError("approval workflow node must require approval")
+        if not isinstance(self.config, Mapping):
+            raise ValueError("workflow node config must be an object")
+        try:
+            normalized_config = json.loads(canonical_bytes(dict(self.config)))
+        except (TypeError, ValueError) as error:
+            raise ValueError("workflow node config must be canonical JSON") from error
+        if len(canonical_bytes(normalized_config)) > 16384:
+            raise ValueError("workflow node config exceeds 16384 bytes")
+        if kind != "validation" and normalized_config:
+>           raise ValueError(
+                f"{kind} workflow node config is closed and must be empty"
+            )
+E           ValueError: task workflow node config is closed and must be empty
+
+runtime\studio_models.py:949: ValueError
+______ ERROR at setup of test_real_persisted_owner_failures[stale-plan] _______
+
+tmp_path = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.tmp/resume10/owned/pacifyx-70xwquzb/pytest-of-Ben/pytest-0/test_real_persisted_owner_fail1')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000020D09A9D260>
+
+    @pytest.fixture
+    def owner_case(tmp_path, monkeypatch):
+        monkeypatch.setenv("PX_STUDIO_KEY_ROOT", str(tmp_path / "host-keys"))
+        root = tmp_path / "project"
+        root.mkdir()
+        group, _, _, preparation = prepared(1, root)
+        plan = plan_for(group, preparation)
+        persist_task_execution_plan(root, plan)
+        reference = {"schema_version": "px.prepared-group-reference/1.0", "plan_id": plan.plan_id, "plan_sha256": plan.plan_sha256}
+        definition, bindings, grants = fixture()
+>       node = replace(definition.nodes[0], config={"execution_mode": "prepared-model-group", "prepared_group_reference": reference})
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_prepared_group_workflow_owner.py:21: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+..\..\..\AppData\Local\Temp\py3145t\Lib\dataclasses.py:1778: in replace
+    return _replace(obj, **changes)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\..\AppData\Local\Temp\py3145t\Lib\dataclasses.py:1812: in _replace
+    return self.__class__(**changes)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+<string>:14: in __init__
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WorkflowNode(node_id='node:one', executor_binding_id='binding:first', inputs=(WorkflowPort(name='value', data_type='in...sk-plan-6666315d9519d18918e4efea', 'plan_sha256': '810763444481489e6bdfcd1df3b4b68c652994e297b732159661c4c7e871816d'}})
+
+    def __post_init__(self) -> None:
+        object.__setattr__(self, "node_id", _identity(self.node_id, "node_id"))
+        object.__setattr__(
+            self,
+            "executor_binding_id",
+            _identity(self.executor_binding_id, "executor_binding_id"),
+        )
+        object.__setattr__(
+            self, "effect_grant_ids", _unique(self.effect_grant_ids, "effect_grant_ids")
+        )
+        if (
+            not self.inputs
+            or not self.outputs
+            or not self.effect_grant_ids
+            or not self.failure_policy
+        ):
+            raise ValueError("workflow node lacks contract, grant, or failure policy")
+        if not (0 < self.timeout_seconds <= 3600) or not (0 <= self.retry_limit <= 10):
+            raise ValueError("workflow node timeout or retry bound is invalid")
+        if self.failure_policy not in FAILURE_POLICIES:
+            raise ValueError("unsupported workflow failure policy")
+        kind = str(self.kind).strip().lower()
+        if kind not in WORKFLOW_NODE_KINDS:
+            raise ValueError("unsupported workflow node kind")
+        if kind == "approval" and not self.approval_required:
+            raise ValueError("approval workflow node must require approval")
+        if not isinstance(self.config, Mapping):
+            raise ValueError("workflow node config must be an object")
+        try:
+            normalized_config = json.loads(canonical_bytes(dict(self.config)))
+        except (TypeError, ValueError) as error:
+            raise ValueError("workflow node config must be canonical JSON") from error
+        if len(canonical_bytes(normalized_config)) > 16384:
+            raise ValueError("workflow node config exceeds 16384 bytes")
+        if kind != "validation" and normalized_config:
+>           raise ValueError(
+                f"{kind} workflow node config is closed and must be empty"
+            )
+E           ValueError: task workflow node config is closed and must be empty
+
+runtime\studio_models.py:949: ValueError
+___ ERROR at setup of test_real_persisted_owner_failures[altered-revision] ____
+
+tmp_path = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.tmp/resume10/owned/pacifyx-70xwquzb/pytest-of-Ben/pytest-0/test_real_persisted_owner_fail2')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000020D09A9D9D0>
+
+    @pytest.fixture
+    def owner_case(tmp_path, monkeypatch):
+        monkeypatch.setenv("PX_STUDIO_KEY_ROOT", str(tmp_path / "host-keys"))
+        root = tmp_path / "project"
+        root.mkdir()
+        group, _, _, preparation = prepared(1, root)
+        plan = plan_for(group, preparation)
+        persist_task_execution_plan(root, plan)
+        reference = {"schema_version": "px.prepared-group-reference/1.0", "plan_id": plan.plan_id, "plan_sha256": plan.plan_sha256}
+        definition, bindings, grants = fixture()
+>       node = replace(definition.nodes[0], config={"execution_mode": "prepared-model-group", "prepared_group_reference": reference})
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_prepared_group_workflow_owner.py:21: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+..\..\..\AppData\Local\Temp\py3145t\Lib\dataclasses.py:1778: in replace
+    return _replace(obj, **changes)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\..\AppData\Local\Temp\py3145t\Lib\dataclasses.py:1812: in _replace
+    return self.__class__(**changes)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+<string>:14: in __init__
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WorkflowNode(node_id='node:one', executor_binding_id='binding:first', inputs=(WorkflowPort(name='value', data_type='in...sk-plan-6666315d9519d18918e4efea', 'plan_sha256': '810763444481489e6bdfcd1df3b4b68c652994e297b732159661c4c7e871816d'}})
+
+    def __post_init__(self) -> None:
+        object.__setattr__(self, "node_id", _identity(self.node_id, "node_id"))
+        object.__setattr__(
+            self,
+            "executor_binding_id",
+            _identity(self.executor_binding_id, "executor_binding_id"),
+        )
+        object.__setattr__(
+            self, "effect_grant_ids", _unique(self.effect_grant_ids, "effect_grant_ids")
+        )
+        if (
+            not self.inputs
+            or not self.outputs
+            or not self.effect_grant_ids
+            or not self.failure_policy
+        ):
+            raise ValueError("workflow node lacks contract, grant, or failure policy")
+        if not (0 < self.timeout_seconds <= 3600) or not (0 <= self.retry_limit <= 10):
+            raise ValueError("workflow node timeout or retry bound is invalid")
+        if self.failure_policy not in FAILURE_POLICIES:
+            raise ValueError("unsupported workflow failure policy")
+        kind = str(self.kind).strip().lower()
+        if kind not in WORKFLOW_NODE_KINDS:
+            raise ValueError("unsupported workflow node kind")
+        if kind == "approval" and not self.approval_required:
+            raise ValueError("approval workflow node must require approval")
+        if not isinstance(self.config, Mapping):
+            raise ValueError("workflow node config must be an object")
+        try:
+            normalized_config = json.loads(canonical_bytes(dict(self.config)))
+        except (TypeError, ValueError) as error:
+            raise ValueError("workflow node config must be canonical JSON") from error
+        if len(canonical_bytes(normalized_config)) > 16384:
+            raise ValueError("workflow node config exceeds 16384 bytes")
+        if kind != "validation" and normalized_config:
+>           raise ValueError(
+                f"{kind} workflow node config is closed and must be empty"
+            )
+E           ValueError: task workflow node config is closed and must be empty
+
+runtime\studio_models.py:949: ValueError
+___ ERROR at setup of test_real_persisted_owner_failures[missing-admission] ___
+
+tmp_path = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.tmp/resume10/owned/pacifyx-70xwquzb/pytest-of-Ben/pytest-0/test_real_persisted_owner_fail3')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000020D09B47750>
+
+    @pytest.fixture
+    def owner_case(tmp_path, monkeypatch):
+        monkeypatch.setenv("PX_STUDIO_KEY_ROOT", str(tmp_path / "host-keys"))
+        root = tmp_path / "project"
+        root.mkdir()
+        group, _, _, preparation = prepared(1, root)
+        plan = plan_for(group, preparation)
+        persist_task_execution_plan(root, plan)
+        reference = {"schema_version": "px.prepared-group-reference/1.0", "plan_id": plan.plan_id, "plan_sha256": plan.plan_sha256}
+        definition, bindings, grants = fixture()
+>       node = replace(definition.nodes[0], config={"execution_mode": "prepared-model-group", "prepared_group_reference": reference})
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_prepared_group_workflow_owner.py:21: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+..\..\..\AppData\Local\Temp\py3145t\Lib\dataclasses.py:1778: in replace
+    return _replace(obj, **changes)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\..\AppData\Local\Temp\py3145t\Lib\dataclasses.py:1812: in _replace
+    return self.__class__(**changes)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+<string>:14: in __init__
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WorkflowNode(node_id='node:one', executor_binding_id='binding:first', inputs=(WorkflowPort(name='value', data_type='in...sk-plan-6666315d9519d18918e4efea', 'plan_sha256': '810763444481489e6bdfcd1df3b4b68c652994e297b732159661c4c7e871816d'}})
+
+    def __post_init__(self) -> None:
+        object.__setattr__(self, "node_id", _identity(self.node_id, "node_id"))
+        object.__setattr__(
+            self,
+            "executor_binding_id",
+            _identity(self.executor_binding_id, "executor_binding_id"),
+        )
+        object.__setattr__(
+            self, "effect_grant_ids", _unique(self.effect_grant_ids, "effect_grant_ids")
+        )
+        if (
+            not self.inputs
+            or not self.outputs
+            or not self.effect_grant_ids
+            or not self.failure_policy
+        ):
+            raise ValueError("workflow node lacks contract, grant, or failure policy")
+        if not (0 < self.timeout_seconds <= 3600) or not (0 <= self.retry_limit <= 10):
+            raise ValueError("workflow node timeout or retry bound is invalid")
+        if self.failure_policy not in FAILURE_POLICIES:
+            raise ValueError("unsupported workflow failure policy")
+        kind = str(self.kind).strip().lower()
+        if kind not in WORKFLOW_NODE_KINDS:
+            raise ValueError("unsupported workflow node kind")
+        if kind == "approval" and not self.approval_required:
+            raise ValueError("approval workflow node must require approval")
+        if not isinstance(self.config, Mapping):
+            raise ValueError("workflow node config must be an object")
+        try:
+            normalized_config = json.loads(canonical_bytes(dict(self.config)))
+        except (TypeError, ValueError) as error:
+            raise ValueError("workflow node config must be canonical JSON") from error
+        if len(canonical_bytes(normalized_config)) > 16384:
+            raise ValueError("workflow node config exceeds 16384 bytes")
+        if kind != "validation" and normalized_config:
+>           raise ValueError(
+                f"{kind} workflow node config is closed and must be empty"
+            )
+E           ValueError: task workflow node config is closed and must be empty
+
+runtime\studio_models.py:949: ValueError
+____ ERROR at setup of test_real_persisted_owner_failures[ambiguous-owner] ____
+
+tmp_path = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.tmp/resume10/owned/pacifyx-70xwquzb/pytest-of-Ben/pytest-0/test_real_persisted_owner_fail4')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000020D099E0750>
+
+    @pytest.fixture
+    def owner_case(tmp_path, monkeypatch):
+        monkeypatch.setenv("PX_STUDIO_KEY_ROOT", str(tmp_path / "host-keys"))
+        root = tmp_path / "project"
+        root.mkdir()
+        group, _, _, preparation = prepared(1, root)
+        plan = plan_for(group, preparation)
+        persist_task_execution_plan(root, plan)
+        reference = {"schema_version": "px.prepared-group-reference/1.0", "plan_id": plan.plan_id, "plan_sha256": plan.plan_sha256}
+        definition, bindings, grants = fixture()
+>       node = replace(definition.nodes[0], config={"execution_mode": "prepared-model-group", "prepared_group_reference": reference})
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_prepared_group_workflow_owner.py:21: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+..\..\..\AppData\Local\Temp\py3145t\Lib\dataclasses.py:1778: in replace
+    return _replace(obj, **changes)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\..\AppData\Local\Temp\py3145t\Lib\dataclasses.py:1812: in _replace
+    return self.__class__(**changes)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+<string>:14: in __init__
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WorkflowNode(node_id='node:one', executor_binding_id='binding:first', inputs=(WorkflowPort(name='value', data_type='in...sk-plan-6666315d9519d18918e4efea', 'plan_sha256': '810763444481489e6bdfcd1df3b4b68c652994e297b732159661c4c7e871816d'}})
+
+    def __post_init__(self) -> None:
+        object.__setattr__(self, "node_id", _identity(self.node_id, "node_id"))
+        object.__setattr__(
+            self,
+            "executor_binding_id",
+            _identity(self.executor_binding_id, "executor_binding_id"),
+        )
+        object.__setattr__(
+            self, "effect_grant_ids", _unique(self.effect_grant_ids, "effect_grant_ids")
+        )
+        if (
+            not self.inputs
+            or not self.outputs
+            or not self.effect_grant_ids
+            or not self.failure_policy
+        ):
+            raise ValueError("workflow node lacks contract, grant, or failure policy")
+        if not (0 < self.timeout_seconds <= 3600) or not (0 <= self.retry_limit <= 10):
+            raise ValueError("workflow node timeout or retry bound is invalid")
+        if self.failure_policy not in FAILURE_POLICIES:
+            raise ValueError("unsupported workflow failure policy")
+        kind = str(self.kind).strip().lower()
+        if kind not in WORKFLOW_NODE_KINDS:
+            raise ValueError("unsupported workflow node kind")
+        if kind == "approval" and not self.approval_required:
+            raise ValueError("approval workflow node must require approval")
+        if not isinstance(self.config, Mapping):
+            raise ValueError("workflow node config must be an object")
+        try:
+            normalized_config = json.loads(canonical_bytes(dict(self.config)))
+        except (TypeError, ValueError) as error:
+            raise ValueError("workflow node config must be canonical JSON") from error
+        if len(canonical_bytes(normalized_config)) > 16384:
+            raise ValueError("workflow node config exceeds 16384 bytes")
+        if kind != "validation" and normalized_config:
+>           raise ValueError(
+                f"{kind} workflow node config is closed and must be empty"
+            )
+E           ValueError: task workflow node config is closed and must be empty
+
+runtime\studio_models.py:949: ValueError
+=========================== short test summary info ===========================
+ERROR tests/test_prepared_group_workflow_owner.py::test_revision_decoder_roundtrip
+ERROR tests/test_prepared_group_workflow_owner.py::test_existing_arithmetic_executor_cannot_impersonate_group
+ERROR tests/test_prepared_group_workflow_owner.py::test_real_persisted_owner_failures[missing-owner]
+ERROR tests/test_prepared_group_workflow_owner.py::test_real_persisted_owner_failures[stale-plan]
+ERROR tests/test_prepared_group_workflow_owner.py::test_real_persisted_owner_failures[altered-revision]
+ERROR tests/test_prepared_group_workflow_owner.py::test_real_persisted_owner_failures[missing-admission]
+ERROR tests/test_prepared_group_workflow_owner.py::test_real_persisted_owner_failures[ambiguous-owner]
+13 passed, 7 errors in 7.35s
+

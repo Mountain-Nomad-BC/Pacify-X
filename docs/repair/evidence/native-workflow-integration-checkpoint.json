@@ -1,0 +1,50 @@
+{
+  "schema_version": "px.operational-gap-ledger-event/1.0",
+  "sequence": 36247,
+  "event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000036247",
+  "event_type": "work_checkpoint",
+  "timestamp": "2026-10-27T21:37:40.140960Z",
+  "actor": "codex",
+  "previous_event_sha256": "6b54f81c91681e16a79010594be4e0ae16cff781515349b0ee19bf3137158f0e",
+  "payload": {
+    "active_gap_id": "PX-OS-1067",
+    "evidence": [
+      {
+        "artifact_sha256": "bf8e30492447acb01911324165a435fa0e229dea73751f4e25d1606225dc7635",
+        "artifact_size": 138106,
+        "claim": "Bounded integration and runtime recovery; release remains unfinished.",
+        "reference": "runtime/agent_runtime.py"
+      },
+      {
+        "artifact_sha256": "124874f7c104a29bc0789839884e4a4e336bab4c161e2df8af1cb99e8bbb0793",
+        "artifact_size": 100003,
+        "claim": "Bounded integration and runtime recovery; release remains unfinished.",
+        "reference": "runtime/workflow_studio.py"
+      },
+      {
+        "artifact_sha256": "a49b55e2790469c9a3f524978fc1ac3aff18f458e556721f5785c0e750695157",
+        "artifact_size": 19106,
+        "claim": "Bounded integration and runtime recovery; release remains unfinished.",
+        "reference": "runtime/workflow_worker.py"
+      },
+      {
+        "artifact_sha256": "bc12cac029c53159dde37f26802114478772575f31aa12da3022fa1e698a3f83",
+        "artifact_size": 19828,
+        "claim": "Bounded integration and runtime recovery; release remains unfinished.",
+        "reference": "docs/repair/WORKFLOW_APPROVAL_AND_REMOTE_INTEGRATION_2026-10-27.md"
+      },
+      {
+        "artifact_sha256": "842a845b4d970cc0f54d4662a32e791935ef2ca8ee794aac0019d8475e23191a",
+        "artifact_size": 821,
+        "claim": "Bounded integration and runtime recovery; release remains unfinished.",
+        "reference": "docs/repair/evidence/resume10-stable-runtime-check.json"
+      }
+    ],
+    "learned": "Native group controller, convergence/disposition, provider placement and parent/worker native intent/lease fences implemented with retained focused evidence. Temp base disappeared; recovered focused execution on existing stable Python3.14.7,17 checks pass; old free-threaded evidence retained. External group provider/suspended-worker composition still open.",
+    "newly_discovered_gap_ids": [],
+    "next_action": "Run the single revision/generated-projection reconciliation, make every governed section current, then execute exactly one full profile, validation, package, install, installed-system operational test, and certification in registered order.",
+    "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000036245",
+    "unresolved_branch_gap_ids": []
+  },
+  "event_sha256": "fee16dc41be30795aff8ff184021e5455f8592a74257f1d71913f7b7194358f3"
+}

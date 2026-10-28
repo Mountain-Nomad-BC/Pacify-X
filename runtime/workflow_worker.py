@@ -3,11 +3,154 @@
 from __future__ import annotations
 
 import argparse
+import os
+from .resource_lifecycle import ResourceManager
 import json
+import re
 from pathlib import Path
 import time
 
 from .studio_authority import StudioAuthorityStore
+from .remote_model_attachment import SCHEMA as REMOTE_ATTACHMENT_SCHEMA
+
+
+def _verify_prepared_effect_intents(project_root, task, grants, *, native_results=None):
+    """Validate signed host fences against native lease/intent owners before work."""
+    from .workflow_studio import _normalized_scope, _READ_ONLY_WORKFLOW_EFFECTS, _PURE_WORKFLOW_ADAPTERS
+    from .studio_models import digest
+    from .effect_intent import EffectIntentLedger
+    from .scope_lease import ScopeLeaseStore
+    from .execution_context import execution_context_from_dict
+    from .studio_run_control import DurableRunControl
+    import hashlib
+    claims = sorted({(str(effect).strip().casefold(), _normalized_scope(scope))
+        for grant in grants for effect in grant.get("effects", ())
+        if str(effect).strip().casefold() not in _READ_ONLY_WORKFLOW_EFFECTS
+        for scope in grant.get("scope_roots", ()) or ("*",)})
+    if task.get("adapter_id") in _PURE_WORKFLOW_ADAPTERS:
+        claims = []
+    bindings = task.get("prepared_effect_intents", [])
+    if type(bindings) is not list or len(bindings) != len(claims) or len(bindings) > 256:
+        raise PermissionError("workflow effect fences do not cover exact admitted claims")
+    if not claims:
+        return ()
+    if any(scope == "*" for _, scope in claims):
+        raise PermissionError("workflow mutation requires an exact declared scope")
+    context = execution_context_from_dict(task.get("execution_context"))
+    run_id, node_id = task.get("run_id"), task.get("node_id")
+    control = DurableRunControl(Path(project_root), Path(project_root) /
+        ".engineering-bootstrap/studios/workflows/sessions").read(run_id)
+    expected_context_id = "workflow-node-" + hashlib.sha256(
+        f"{run_id}\0{node_id}\0{task.get('attempt')}\0{context.epoch}".encode()).hexdigest()[:40]
+    if (context.root_execution_id != run_id or context.parent_execution_id != run_id
+            or context.session_id != run_id or context.execution_id != expected_context_id
+            or control["state"] != "running" or control["sequence"] != context.revision
+            or int(control["resume_count"]) + 1 != context.epoch
+            or control["subject_id"] != task.get("workflow_id")
+            or control["owner"] != context.actor_id
+            or context.authority_reference_sha256 != digest(task["authority_record_hashes"])):
+        raise PermissionError("workflow effect execution context is stale or differently bound")
+    context.assert_current(project_id=context.project_id, session_id=run_id,
+        epoch=context.epoch, generation_vector_sha256=context.generation_vector_sha256)
+    effect_execution_id = "workflow-effect-" + digest({
+        "run_id": run_id, "node_id": node_id, "workflow_version": control["version"],
+        "authority": task["authority_record_hashes"]})[:40]
+    ledger, leases = EffectIntentLedger(Path(project_root)), ScopeLeaseStore(Path(project_root))
+    seen = set()
+    for binding in bindings:
+        if type(binding) is not dict or set(binding) != {
+                "idempotency_key", "execution_id", "effect", "scopes", "lease_id"}:
+            raise PermissionError("workflow effect fence binding is malformed")
+        if type(binding["scopes"]) is not list or len(binding["scopes"]) != 1:
+            raise PermissionError("workflow effect fence requires exact single scope")
+        pair = (binding["effect"], binding["scopes"][0])
+        key = "workflow-node-effect:" + digest({"run_id": run_id, "node_id": node_id,
+            "effect": pair[0], "scope": pair[1]})
+        if (pair not in claims or pair in seen or binding["idempotency_key"] != key
+                or binding["execution_id"] != effect_execution_id):
+            raise PermissionError("workflow effect fence differs from run/node/grant binding")
+        seen.add(pair)
+        observed = ledger.fence(key)
+        settled = (native_results is not None and pair in native_results and observed["disposition"] == "committed"
+                   and observed.get("result_sha256") == native_results[pair])
+        if (observed["disposition"] != "in_flight" and not settled) or any(
+                observed.get(field) != binding[field] for field in ("execution_id", "effect", "scopes")):
+            raise PermissionError("workflow effect intent is not an exact native in-flight fence")
+        if not any(lease.lease_id == binding["lease_id"]
+                   and lease.execution_id == binding["execution_id"]
+                   and list(lease.scopes) == binding["scopes"]
+                   for lease in leases.active(effect=binding["effect"])):
+            raise PermissionError("workflow effect scope lease is absent, expired or differently owned")
+    return tuple(bindings)
+
+
+def _verify_group_workflow_effect_receipt(project_root, signed_task, *, task_plan, spec, placements, remote_outcomes=None):
+    """Revalidate signed workflow authority at the actual group owner boundary."""
+    authority = StudioAuthorityStore.open_existing(project_root)
+    task = authority.verify_receipt(signed_task)
+    if task.get("schema_version") != "px.workflow-node-task/1.0" or task.get("adapter_id") != "model-group":
+        raise PermissionError("group execution requires its exact signed workflow task")
+    _group_approval(task)
+    binding_id = str(task.get("executor_binding_id", ""))
+    executor, executor_sha = authority.resolve_executor(binding_id)
+    binding, binding_sha = authority.resolve_binding(binding_id, subject_kind="workflow", subject_id=str(task.get("workflow_id", "")))
+    hashes = task.get("authority_record_hashes", {})
+    if executor.get("adapter_id") != "model-group" or hashes.get(f"executor:{binding_id}") != executor_sha or hashes.get(f"binding:{binding_id}") != binding_sha:
+        raise PermissionError("group workflow admission changed")
+    grant_ids = task.get("effect_grant_ids", [])
+    if set(grant_ids) != set(binding.get("effect_grant_ids", [])):
+        raise PermissionError("group workflow grants changed")
+    grants = []
+    for grant_id in grant_ids:
+        grant, grant_sha = authority.resolve_grant(grant_id, subject_id=str(task.get("workflow_id", "")))
+        if hashes.get(f"grant:{grant_id}") != grant_sha:
+            raise PermissionError("group workflow grant admission changed")
+        grants.append(grant)
+    native_results = None
+    if remote_outcomes is not None:
+        from .remote_member_execution import verify_remote_workflow_effect_results
+        native_results = verify_remote_workflow_effect_results(project_root, task_plan.as_dict() if hasattr(task_plan, "as_dict") else task_plan, remote_outcomes, signed_task=signed_task)
+    bindings = _verify_prepared_effect_intents(project_root, task, grants, native_results=native_results)
+    from .workflow_group_config import required_group_effect_claims
+    claims = required_group_effect_claims(task_plan)
+    if {(row["effect"],row["scopes"][0]) for row in bindings} != claims:
+        raise PermissionError("model group requires exact native execute/origin/gateway effect fences")
+    plan_sha = task_plan.plan_sha256 if hasattr(task_plan, "plan_sha256") else task_plan.get("plan_sha256")
+    if (task.get("task_execution_plan", {}).get("plan_sha256") != plan_sha
+            or _spec_for_group(task) != spec or task.get("node_config", {}).get("placements") != placements):
+        raise PermissionError("workflow group execution differs from the signed prepared task")
+    return task, bindings
+
+
+def _group_approval(task: dict) -> bool:
+    """Accept only approval evidence consumed by the workflow host boundary."""
+    evidence = task.get("approval_execution")
+    if (
+        task.get("approval_required") is not True
+        or type(evidence) is not dict
+        or set(evidence) != {
+            "required", "host_consumed", "approved_by",
+            "approval_sha256", "approval_id_sha256",
+        }
+        or evidence.get("required") is not True
+        or evidence.get("host_consumed") is not True
+        or type(evidence.get("approved_by")) is not str
+        or not evidence["approved_by"].strip()
+        or any(
+            type(evidence.get(name)) is not str
+            or re.fullmatch(r"[0-9a-f]{64}", evidence[name]) is None
+            for name in ("approval_sha256", "approval_id_sha256")
+        )
+    ):
+        raise PermissionError("model-group adapter requires host-consumed approval evidence")
+    return True
+
+
+def _spec_for_group(task: dict):
+    from .workflow_group_config import validate_prepared_group_node_config, agent_spec_from_group_config
+    config = task.get("node_config")
+    canonical = validate_prepared_group_node_config(config)
+    return agent_spec_from_group_config(canonical["agent_spec"])
 
 
 def _matches(value: object, data_type: str) -> bool:
@@ -90,13 +233,388 @@ def _evaluate_validation(
     return {"passed": True, "check_count": len(rows), "checks": rows}
 
 
+def _run_model_group(project_root: Path, task: dict, *, signed_task=None, completed_effects=None) -> dict:
+    """Execute a prepared model group through the canonical controller.
+
+    Fails closed when any prerequisite is absent: a persisted plan, the group
+    preparation, exact admitted agent spec, host-consumed approval, placements,
+    an admitted provider gateway and an adapter resolver must all be present. An
+    unconfigured provider is reported as unavailable rather than silently
+    rerouted, and no group is executed without its prepared members.
+    """
+    plan_receipt = task.get("task_execution_plan")
+    if (type(plan_receipt) is not dict or set(plan_receipt) != {"plan_id", "plan_sha256", "path"}
+            or not plan_receipt.get("path")):
+        raise ValueError("model-group adapter requires a persisted task execution plan")
+    # Resolve only the canonical persisted owner; task paths are never authority.
+    from .prepared_group_transport import resolve_prepared_group
+    from .task_execution_plan import PLAN_DIRECTORY
+    relative = Path(str(plan_receipt["path"]))
+    plan_id = relative.stem
+    if relative != PLAN_DIRECTORY / (plan_id + ".json"):
+        raise ValueError("model-group receipt must reference the canonical plan directory")
+    typed = resolve_prepared_group(project_root, {
+        "schema_version": "px.prepared-group-reference/1.0",
+        "plan_id": plan_id, "plan_sha256": plan_receipt.get("plan_sha256"),
+    })
+    if plan_receipt["plan_id"] != typed.plan_id:
+        raise PermissionError("workflow plan receipt identity differs")
+    plan = typed.as_dict()
+    from .remote_provider_placement import require_complete_group_provider_custody
+    spec = _spec_for_group(task)
+    if spec.project_id != typed.project_id:
+        raise PermissionError("model-group agent spec and prepared plan project differ")
+    approval = _group_approval(task)
+    # The gateway/policy/adapter resolver are supplied through the node's admitted
+    # execution environment; absent them the adapter is explicitly unavailable.
+    placements = task.get("node_config", {}).get("placements")
+    if not isinstance(placements,dict):
+        raise ValueError("model-group adapter requires exact member placements")
+    if signed_task is None:
+        raise PermissionError("prepared group requires signed workflow effect authority")
+    _verify_group_workflow_effect_receipt(project_root, signed_task, task_plan=plan, spec=spec, placements=placements)
+    generation_observer = _group_generation_observer(typed, project_root=project_root)
+    if generation_observer is None:
+        raise RuntimeError("live host generation observer is unconfigured")
+    accepted_producers = _group_accepted_producers()
+    if not accepted_producers:
+        raise RuntimeError("accepted signed branch evidence producers are unconfigured")
+    attestation_provider = _group_attestation_provider(project_root, typed)
+    if attestation_provider is None:
+        raise RuntimeError("signed branch assessment host provider is unconfigured")
+    adapter_for = _group_adapter_resolver(project_root)
+    require_complete_group_provider_custody(plan, project_root=project_root, adapter_for=adapter_for)
+    native_policy = _group_policy(project_root)
+    if adapter_for is None:
+        raise RuntimeError("native group adapter resolver is unconfigured")
+    from .group_provider_adapters import RemoteGroupProviderBinding
+    def policy(model):
+        binding = adapter_for(model)
+        if type(binding) is RemoteGroupProviderBinding:
+            return binding.policy
+        selected = native_policy(model) if callable(native_policy) else native_policy
+        if selected is None:
+            raise PermissionError("native local group policy is unconfigured")
+        return selected
+    gateway = _group_remote_gateway(project_root)
+    if gateway is None:
+        raise RuntimeError("native group gateway engine binding is unconfigured")
+    evidence_resolver = _group_evidence_resolver()
+    if evidence_resolver is None:
+        raise RuntimeError(
+            "model-group evidence prerequisites are unconfigured; "
+            "an admitted evidence store and trust policy are required for convergence"
+        )
+    from .member_execution import build_provider_member_executor
+    executor = build_provider_member_executor(
+        gateway=gateway, policy=policy, adapter_for=adapter_for,
+        project_id=typed.project_id, actor_id=spec.owner,
+        accountable_owner=spec.owner,
+        output_bytes_for=lambda model: next(branch.work_contract.max_output_bytes
+            for branch in typed.model_execution_group.branches if branch.model_id == model),
+        project_root=project_root, workflow_effect_receipt=signed_task,
+        workflow_task_plan=plan, workflow_agent_spec=spec, workflow_placements=placements)
+    # Placements are the workflow node's admitted per-member placement mapping.
+    placements = task.get("node_config", {}).get("placements")
+    if not isinstance(placements, dict):
+        raise ValueError("model-group adapter requires exact member placements")
+    from .isolated_sandbox import load_sandbox_policy
+    # The worker process was created suspended by its caller's ProcessSupervisor.
+    # When that host binds this worker's supervisor resource identity, the worker
+    # can enroll itself under Gremlin custody through the canonical pre-release
+    # callback (the supervisor invokes it after Job assignment, before resume).
+    # A containment request without that host binding cannot be satisfied here and
+    # must fail closed rather than silently downgrade to non-contained execution.
+    containment_reference = _host_custody_parent_resource_id(task)
+    if containment_reference is None:
+        raise _GroupContainmentUnavailable(
+            "governed group containment requires the host to bind this worker's "
+            "supervisor Job custody before release; no supervisor resource identity "
+            "was supplied"
+        )
+    # Containment-before-release is only real when the group owner can re-prove
+    # this worker's custody through a canonical ResourceManager it actually holds.
+    # The host therefore also binds its exact ResourceManager state file and the
+    # protected enrollment execution id; the worker re-opens that ledger and the
+    # Gremlin enrollment is re-verified against its live OS state.
+    custody_state_path = _host_custody_state_path(task, project_root)
+    custody_execution_id = _host_custody_execution_id(task)
+    if custody_state_path is None or custody_execution_id is None:
+        raise _GroupContainmentUnavailable(
+            "governed group containment requires the host to bind its exact "
+            "ResourceManager state and the protected enrollment execution id"
+        )
+    from .gremlin.host_configuration import (
+        load_configured_gremlin_runtime,
+        resolve_recovery_verifier_from_environment,
+    )
+    recovery_verifier = resolve_recovery_verifier_from_environment()
+    if recovery_verifier is None:
+        raise _GroupContainmentUnavailable(
+            "governed group containment requires a configured independent "
+            "recovery verifier; the host must supply its real adapter"
+        )
+    try:
+        gremlin_runtime = load_configured_gremlin_runtime(
+            project_root, recovery_verifier=recovery_verifier)
+    except Exception as error:
+        raise _GroupContainmentUnavailable(
+            "the commissioned Gremlin runtime could not be loaded: "
+            + type(error).__name__
+        ) from error
+    controller = _group_controller(project_root)
+    result = controller.execute_governed_group(
+        spec, task_plan=plan, placements=placements, approval=approval,
+        member_executor=executor, generation_observer=generation_observer,
+        evidence_resolver=evidence_resolver,
+        accepted_producers=accepted_producers, attestation_provider=attestation_provider,
+        containment=gremlin_runtime.nanny,
+        worker_custody_resource_id=containment_reference,
+        worker_custody_manager=ResourceManager(custody_state_path),
+        worker_custody_execution_id=custody_execution_id,
+        workflow_effect_receipt=signed_task,
+        containment_required=True, sandbox_policy=load_sandbox_policy(project_root))
+    if signed_task is not None:
+        _, bindings = _verify_group_workflow_effect_receipt(project_root, signed_task, task_plan=plan, spec=spec, placements=placements) if result["control_state"] != "succeeded" else (task, result["workflow_effect_bindings"])
+        if result["control_state"] == "succeeded" and completed_effects is not None:
+            from .effect_intent import EffectIntentLedger
+            ledger = EffectIntentLedger(project_root)
+            retained = controller.read_governed_group_run(result["group_run_sha256"])
+            from .studio_models import digest
+            if digest(retained) != digest(result) or retained.get("workflow_execution_context") != task.get("execution_context"):
+                raise PermissionError("group workflow receipt binding changed")
+            remote_results = {row["idempotency_key"]: row["result_sha256"] for row in result.get("workflow_remote_effect_outcomes", [])}
+            for binding in bindings:
+                expected_result = result["group_run_sha256"] if (binding["effect"],binding["scopes"]) == ("execute",["runtime"]) else remote_results.get(binding["idempotency_key"])
+                observed = ledger.fence(binding["idempotency_key"])
+                if expected_result is None or observed["disposition"] != "committed" or observed.get("result_sha256") != expected_result:
+                    raise PermissionError("group native effect settlement is absent")
+                completed_effects.append({**binding, "result_sha256": expected_result})
+    return {"group_run_sha256": result["group_run_sha256"], "control_state": result["control_state"]}
+
+
+class _GroupContainmentUnavailable(RuntimeError):
+    """Raised when the group task requests containment that the host cannot provide.
+
+    The workflow worker is a supervised process, so its caller (the workflow host)
+    owns the supervisor callback that enrolls it under Gremlin custody. When the
+    host has not established an active supervisor-owned parent resource, the worker
+    cannot self-enroll: a process can never prove its own Job custody. Reporting this
+    distinctly keeps a missing host custody binding from being misreported as a
+    generic member failure.
+    """
+
+
+def _host_custody_parent_resource_id(task: dict) -> str | None:
+    """Return the host-supplied active supervisor resource id of this worker, if any.
+
+    The value is an admitted task field the caller controls; it is only a *reference*.
+    Actual custody is re-proven at enrollment through the canonical ``ResourceManager``,
+    so an unverifiable or stale reference fails closed rather than granting containment.
+    """
+    value = task.get("containment_parent_resource_id")
+    if type(value) is not str or not value.strip():
+        return None
+    return value.strip()
+
+
+def _host_custody_state_path(task: dict, project_root: Path) -> Path | None:
+    """Return the host-bound canonical ResourceManager state file, if admitted.
+
+    The worker cannot trust its own process to prove Job custody; it must re-open
+    the exact supervisor-owned resource ledger the host bound at enrollment. A
+    missing, non-canonical or link-bearing path fails closed at the caller.
+    """
+    value = task.get("containment_resource_state_path")
+    if type(value) is not str or not value.strip():
+        return None
+    from .archive_io import reject_path_links
+    path = Path(value.strip())
+    reject_path_links(path)
+    resolved = path.resolve(strict=True)
+    # The bound ledger must live inside the project's canonical workflow state;
+    # an arbitrary filesystem file is never an admitted custody authority.
+    canonical_root = (project_root /
+                      ".engineering-bootstrap/studios/workflows").resolve(strict=False)
+    if resolved != canonical_root / "resources.json":
+        raise ValueError("host custody state must be the canonical workflow resource ledger")
+    return resolved
+
+
+def _host_custody_execution_id(task: dict) -> str | None:
+    """Return the protected enrollment execution id the host bound for this worker."""
+    value = task.get("containment_execution_id")
+    if type(value) is not str or not value.strip():
+        return None
+    return value.strip()
+
+
+def _group_controller(project_root: Path):
+    """Build the canonical governed-group owner for this project root."""
+    from .agent_runtime import AgentRuntimeController
+    return AgentRuntimeController(project_root)
+
+
+def _group_gateway(project_root: Path):
+    """Build the canonical admitted gateway, or report missing engine binding."""
+    import os as _os
+    engine_root = _os.environ.get("PX_ENGINE_ROOT")
+    if not engine_root:
+        return None
+    from .vscode_model_bridge import _gateway
+    return _gateway(Path(engine_root).resolve(strict=True), project_root)
+
+
+def _group_remote_gateway(project_root):
+    """Only called after exact signed prepared network/write preflight above."""
+    engine=os.environ.get("PX_ENGINE_ROOT")
+    if not engine:
+        return None
+    from .remote_provider_profiles import ROOT
+    from .archive_io import reject_path_links
+    from .provider_gateway import ProviderInvocationGateway
+    from .operational_event_bus import OperationalEventBus
+    from .provider_budget import ProviderBudgetLedger
+    engine=Path(engine).resolve(strict=True)
+    state=Path(project_root)/ROOT/"gateway"
+    reject_path_links(state)
+    return ProviderInvocationGateway(engine,OperationalEventBus(engine,state/"events",Path(project_root)/ROOT),
+        ProviderBudgetLedger(engine,state/"budget",Path(project_root)/ROOT))
+
+
+def _group_policy(project_root=None):
+    """Load exact policies, optionally one immutable policy per prepared alias."""
+    path = os.environ.get("PX_PROVIDER_EXECUTION_POLICY")
+    if not path:
+        return None
+    from .archive_io import reject_path_links
+    from .json_io import load_json_object
+    source = Path(path)
+    reject_path_links(source)
+    document = load_json_object(source, max_bytes=4 * 1024 * 1024)
+    if project_root is not None:
+        document = StudioAuthorityStore.open_existing(Path(project_root)).verify_receipt(document)
+    if document.get("schema_version") != "px.group-provider-policies/1.0":
+        if not document.get("policy_sha256"):
+            raise ValueError("provider execution policy is missing its integrity digest")
+        return document
+    policies = document.get("policies")
+    if (set(document) != {"schema_version", "policies"} or type(policies) is not dict
+            or not 1 <= len(policies) <= 128
+            or any(type(key) is not str or not key or type(value) is not dict
+                   or not value.get("policy_sha256") for key, value in policies.items())):
+        raise ValueError("exact bounded per-member provider policies required")
+
+    def policy_for(model_id):
+        if model_id not in policies:
+            raise PermissionError("no immutable provider policy for member " + model_id)
+        return policies[model_id]
+
+    return policy_for
+
+
+def _group_adapter_resolver(project_root: Path):
+    """Build only native declaratively configured adapters, never JSON callables."""
+    source = os.environ.get("PX_PROVIDER_ADAPTER_REGISTRY")
+    if not source:
+        return None
+    engine = os.environ.get("PX_ENGINE_ROOT")
+    if not engine:
+        raise ValueError("group adapters require their admitted engine root")
+    from .archive_io import reject_path_links
+    from .json_io import load_json_object
+    from .group_provider_adapters import build_group_adapter_resolver
+    path = Path(source)
+    reject_path_links(path)
+    document = load_json_object(path, max_bytes=256 * 1024)
+    return build_group_adapter_resolver(Path(engine).resolve(strict=True), project_root, document)
+
+
+def _configured_group_host_callable(variable):
+    """Only trusted host environment may select code; task JSON never can."""
+    specification = os.environ.get(variable, "")
+    if not specification:
+        return None
+    module, separator, attribute = specification.partition(":")
+    if (len(specification) > 512 or not separator or not module or not attribute
+            or not all(re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*", part)
+                       for part in [*module.split("."), attribute])):
+        raise ValueError(variable + " must bind module:attribute")
+    import importlib
+    owner = getattr(importlib.import_module(module), attribute, None)
+    if not callable(owner):
+        raise TypeError(variable + " must bind a concrete host callable")
+    return owner
+
+
+def _group_generation_observer(plan, *, observe_current=None, project_root=None):
+    from .context_generation import ContextGenerationVector
+    if observe_current is None:
+        owner = _configured_group_host_callable("PX_GROUP_GENERATION_OBSERVER")
+        if owner is None:
+            return None
+        if project_root is None:
+            raise ValueError("configured generation observation requires the bounded project root")
+        root = Path(project_root).resolve(strict=True)
+        observe_current = lambda: owner(project_root=root, project_id=plan.project_id, scope=plan.context_generation.scope)
+    if not callable(observe_current):
+        raise TypeError("current generation owner must be callable")
+    def observe():
+        current = observe_current()
+        if (type(current) is not ContextGenerationVector
+                or current.project_id != plan.project_id
+                or current.scope != plan.context_generation.scope):
+            raise PermissionError("live generation owner returned a different project or scope")
+        return current
+    return observe
+
+
+def _group_attestation_provider(root, plan):
+    owner = _configured_group_host_callable("PX_GROUP_ATTESTATION_PROVIDER")
+    if owner is None:
+        return None
+    def attest(model_id, artifact):
+        reference = owner(project_root=Path(root).resolve(strict=True), project_id=plan.project_id,
+                          plan_id=plan.plan_id, model_id=model_id, artifact=dict(artifact))
+        if type(reference) is not str or re.fullmatch(r"evidence:[A-Za-z0-9._-]{1,128}", reference) is None:
+            raise ValueError("host assessment must return a bounded native evidence reference")
+        return reference
+    return attest
+
+
+def _group_evidence_resolver():
+    """Return the native trusted-evidence resolver, or None when unconfigured.
+
+    The resolver requires an evidence store and a trust policy; absent them the
+    group owner records containment as NOT_ADMITTED rather than inventing proof.
+    """
+    import os as _os
+    from pathlib import Path as _Path
+    store = _os.environ.get("PX_EVIDENCE_STORE")
+    policy = _os.environ.get("PX_EVIDENCE_TRUST_POLICY")
+    if not store or not policy:
+        return None
+    from .trusted_evidence import TrustedEvidenceResolver
+    return TrustedEvidenceResolver(_Path(store), _Path(policy))
+
+
+def _group_accepted_producers():
+    import os as _os
+    raw = _os.environ.get("PX_ACCEPTED_EVIDENCE_PRODUCERS", "")
+    values = {item.strip() for item in raw.split(",") if item.strip()}
+    if len(values) > 64 or any(len(item) > 256 for item in values):
+        raise ValueError("bounded accepted evidence producer identities required")
+    return values
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--project-root", type=Path, required=True)
     parser.add_argument("--task", type=Path, required=True)
     args = parser.parse_args()
     authority = StudioAuthorityStore(args.project_root)
-    task = authority.verify_receipt(json.loads(args.task.read_text(encoding="utf-8")))
+    signed_task = json.loads(args.task.read_text(encoding="utf-8"))
+    task = authority.verify_receipt(signed_task)
     if task.get("schema_version") != "px.workflow-node-task/1.0" or not isinstance(
         task.get("inputs"), dict
     ):
@@ -123,12 +641,26 @@ def main() -> int:
     grant_ids = tuple(map(str, task.get("effect_grant_ids", ())))
     if set(grant_ids) != set(map(str, binding.get("effect_grant_ids", ()))):
         raise PermissionError("workflow task grant binding changed")
+    admitted_grants = []
     for grant_id in grant_ids:
-        _, grant_sha256 = authority.resolve_grant(
+        admitted_grant, grant_sha256 = authority.resolve_grant(
             grant_id, subject_id=str(task.get("workflow_id", ""))
         )
         if authority_hashes.get(f"grant:{grant_id}") != grant_sha256:
             raise PermissionError("workflow task grant admission changed")
+        admitted_grants.append(admitted_grant)
+    _verify_prepared_effect_intents(args.project_root, task, admitted_grants)
+    node_kind = str(task.get("node_kind", "task"))
+    if node_kind not in {"task", "validation", "approval", "branch", "join"}:
+        raise ValueError("workflow node kind is not admitted")
+    if node_kind != "validation" and adapter != "model-group" and task.get("node_config") != {}:
+        raise ValueError("workflow node config is not admitted for this node kind")
+    approval_execution = task.get("approval_execution")
+    if node_kind == "approval" or task.get("approval_required") is True:
+        if not isinstance(approval_execution, dict) or approval_execution.get(
+            "host_consumed"
+        ) is not True:
+            raise PermissionError("workflow approval was not consumed by the host boundary")
     inputs = dict(task["inputs"])
     evidence_context = task.get("evidence_context", inputs.get("_evidence_context", {}))
     if evidence_context is None:
@@ -165,6 +697,7 @@ def main() -> int:
         ),
         flush=True,
     )
+    completed_effects = []
     if adapter == "identity":
         outputs = inputs
     elif adapter == "increment":
@@ -176,24 +709,15 @@ def main() -> int:
     elif adapter == "sleep":
         time.sleep(float(inputs["seconds"]))
         outputs = {"seconds": inputs["seconds"]}
+    elif adapter == "model-group":
+        outputs = _run_model_group(args.project_root, task, signed_task=signed_task, completed_effects=completed_effects)
     else:
         raise ValueError("workflow executor adapter is not admitted")
-    node_kind = str(task.get("node_kind", "task"))
-    if node_kind not in {"task", "validation", "approval", "branch", "join"}:
-        raise ValueError("workflow node kind is not admitted")
-    if node_kind != "validation" and task.get("node_config") != {}:
-        raise ValueError("workflow node config is not admitted for this node kind")
     validation = (
         _evaluate_validation(task.get("node_config"), inputs, outputs)
         if node_kind == "validation"
         else {"passed": True, "check_count": 0, "checks": []}
     )
-    approval_execution = task.get("approval_execution")
-    if node_kind == "approval" or task.get("approval_required") is True:
-        if not isinstance(approval_execution, dict) or approval_execution.get(
-            "host_consumed"
-        ) is not True:
-            raise PermissionError("workflow approval was not consumed by the host boundary")
     print(
         json.dumps(
             {
@@ -208,7 +732,7 @@ def main() -> int:
                 "evidence_context": evidence_projection,
                 "declared_effect_grants": task["effect_grant_ids"],
                 "attempted_effects": [],
-                "completed_effects": [],
+                "completed_effects": completed_effects,
             },
             sort_keys=True,
         ),

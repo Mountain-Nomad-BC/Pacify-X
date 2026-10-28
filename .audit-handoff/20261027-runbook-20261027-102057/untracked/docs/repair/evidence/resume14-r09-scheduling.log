@@ -1,0 +1,9 @@
+cmd: C:\Users\Ben\Documents\bootstrap_project\Pacify-X\.venv-repair\Scripts\python.exe -m pytest -q --no-header -p no:cacheprovider tests/test_capability_scheduler.py tests/test_capability_scheduler_regression.py tests/test_scheduler_recovery_regression.py tests/test_scheduler_scaling_regression.py
+exit: 0
+elapsed_seconds: 3.69
+--- stdout ---
+........................                                                 [100%]
+24 passed in 3.24s
+
+--- stderr ---
+

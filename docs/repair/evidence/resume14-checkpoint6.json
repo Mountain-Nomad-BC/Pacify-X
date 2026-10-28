@@ -1,0 +1,22 @@
+{
+  "active_gap_id": "PX-OS-1067",
+  "evidence": [
+    {
+      "reference": "docs/repair/evidence/runbook-pending9-review.log",
+      "claim": "All 9 PORTED_COMPONENT_TESTED_GENERATED_PENDING records: contract present, owner present, reachable from real callers, tests pass. Dispositioned IMPLEMENTED_AND_COMPONENT_TESTED (not closed; operating evidence and independent review still required).",
+      "artifact_sha256": "aa680e906556e49cde9ac7231da162ef5f5de7b005cca0c7d46e7c9e897a0df8",
+      "artifact_size": 3392
+    },
+    {
+      "reference": "docs/repair/evidence/runbook-dir-rules.log",
+      "claim": "contracts/semantic had no generator owner rule and fell through to a guess; SEMANTIC_DIR_OWNERS added and wired, and build() now refuses an undeclared semantic contract (proved by feeding it one).",
+      "artifact_sha256": "0294f6af2939e4d7dbf086d40b380d653e100bd850d3fcc278d15534fd4c2dd9",
+      "artifact_size": 690
+    }
+  ],
+  "learned": "Runbook initialization complete: snapshot taken at .audit-handoff/20261027-runbook-*, all 40 untracked files copied byte-for-byte, vscode_model_bridge.py confirmed as the prior owner catalog edit (preserved untouched). All 9 generated-pending records dispositioned as implemented+component-tested with real owners and callers; 7 had owner: none only because the adjudication lacked metadata, not because implementation was missing. Found and fixed a source-authentic ownership gap: contracts/semantic was unhandled by the ownership generator and silently received a guessed owner, so my earlier hand-edited record was a second source of truth. Added SEMANTIC_DIR_OWNERS + a fail-closed branch. Created BLOCKER_REGISTER.md and RECONCILIATION_MATRIX.csv as the runbook requires.",
+  "newly_discovered_gap_ids": [],
+  "next_action": "Run the single revision/generated-projection reconciliation, make every governed section current, then execute exactly one full profile, validation, package, install, installed-system operational test, and certification in registered order.",
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000036236",
+  "unresolved_branch_gap_ids": []
+}

@@ -532,6 +532,39 @@ def _pattern_example(pattern: str) -> str:
     return "example"
 
 
+def _pattern_class_member(source: str) -> str | None:
+    """Return one character accepted by the class that immediately precedes a
+    quantifier, so an interior repetition constraint can be filled exactly.
+
+    ``[a-f0-9]`` yields ``"a"`` and ``\\d`` yields ``"0"``. Returns ``None``
+    when the preceding token is a group or anything not character-like, in which
+    case the caller leaves construction to the gate rather than guessing.
+    """
+    if not source:
+        return None
+    if source.endswith("\\d"):
+        return "0"
+    if source.endswith("\\w"):
+        return "a"
+    if source.endswith("]"):
+        start = source.rfind("[")
+        if start == -1:
+            return None
+        body = source[start + 1:-1]
+        if not body or body.startswith("^"):
+            return None
+        for escaped, member in (("\\d", "0"), ("\\w", "a")):
+            if escaped in body:
+                return member
+        first = body[0]
+        if first.isalnum():
+            return first
+        return None
+    if source[-1].isalnum():
+        return source[-1]
+    return None
+
+
 def _minimal(
     rule: dict[str, Any],
     root_schema: dict[str, Any],
@@ -686,11 +719,34 @@ def _minimal(
         if "pattern" in rule and re.fullmatch(str(rule["pattern"]), result) is None:
             # A bounded nonce example must meet its repetition constraint.
             # The schema is unchanged; unsuccessful construction remains a gate failure.
+            pattern = str(rule["pattern"])
             for size in range(len(result) + 1, len(result) + 129):
                 candidate = result + "x" * (size - len(result))
-                if re.fullmatch(str(rule["pattern"]), candidate):
+                if re.fullmatch(pattern, candidate):
                     result = candidate
                     break
+            else:
+                # Constraints on an interior segment ("^pxe1:[a-f0-9]{32}$") can
+                # never be met by appending, so grow the interior instead. The
+                # literal prefix/suffix outside the first quantifier stays exact.
+                body = pattern[1:] if pattern.startswith("^") else pattern
+                body = body[:-1] if body.endswith("$") else body
+                for quantifier in re.finditer(r"\{([0-9]+)(?:,([0-9]*))?\}", body):
+                    minimum = int(quantifier.group(1))
+                    member = _pattern_class_member(body[:quantifier.start()])
+                    if member is None:
+                        continue
+                    head = re.sub(r"[.*+?(){}|^$]", "", body[:quantifier.start()])
+                    head = re.sub(r"\[[^\]]*\]|\\[dwsDWS]?", "", head)
+                    tail = re.sub(r"[.*+?(){}|^$]", "", body[quantifier.end():])
+                    tail = re.sub(r"\[[^\]]*\]|\\[dwsDWS]?", "", tail)
+                    for size in range(max(minimum, 1), max(minimum, 1) + 129):
+                        candidate = head + member * size + tail
+                        if re.fullmatch(pattern, candidate):
+                            result = candidate
+                            break
+                    if re.fullmatch(pattern, result):
+                        break
         minimum = int(rule.get("minLength", 0))
         result = result if len(result) >= minimum else result + "x" * (minimum - len(result))
         return result[:rule["maxLength"]] if "maxLength" in rule else result

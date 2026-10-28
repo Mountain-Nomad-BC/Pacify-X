@@ -1,7 +1,7 @@
 {
   "schema_version": "2.0",
   "policy": "Every shipped schema has one explicit owner and an honest enforcement classification.",
-  "contract_count": 196,
+  "contract_count": 197,
   "records": [
     {
       "path": "contracts/agent_handoff_packet.schema.json",
@@ -3517,6 +3517,26 @@
       "tests": [
         "tests/test_contract_runtime.py",
         "tests/test_cybersecurity_provider.py"
+      ]
+    },
+    {
+      "path": "contracts/semantic/semantic-entity.schema.json",
+      "contract_id": "urn:engineering-loop-bootstrap:contract:semantic:semantic-entity",
+      "contract_version": "1.0.0",
+      "title": "Canonical semantic entity snapshot record",
+      "owner": "runtime/semantic_entity.py",
+      "producers": [
+        "runtime/semantic_entity.py"
+      ],
+      "consumers": [
+        "runtime/semantic_entity.py",
+        "tests/test_secure_publish.py"
+      ],
+      "enforcement": "runtime_enforced",
+      "packaged": true,
+      "tests": [
+        "tests/test_semantic_entity_contract.py",
+        "tests/test_secure_publish.py"
       ]
     },
     {

@@ -1,0 +1,45 @@
+============================= test session starts =============================
+platform win32 -- Python 3.14.7, pytest-9.1.1, pluggy-1.6.0 -- C:\Users\Ben\Documents\bootstrap_project\Pacify-X\Python\pythoncore-3.14-64\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\Ben\Documents\bootstrap_project\Pacify-X
+configfile: pyproject.toml
+collecting ... collected 35 items
+
+tests/test_workflow_approval_boundary.py::test_caller_claims_never_reach_workflow_owner[fields0-approve] PASSED [  2%]
+tests/test_workflow_approval_boundary.py::test_caller_claims_never_reach_workflow_owner[fields0-run] PASSED [  5%]
+tests/test_workflow_approval_boundary.py::test_caller_claims_never_reach_workflow_owner[fields0-start] PASSED [  8%]
+tests/test_workflow_approval_boundary.py::test_caller_claims_never_reach_workflow_owner[fields0-cancel] PASSED [ 11%]
+tests/test_workflow_approval_boundary.py::test_caller_claims_never_reach_workflow_owner[fields1-approve] PASSED [ 14%]
+tests/test_workflow_approval_boundary.py::test_caller_claims_never_reach_workflow_owner[fields1-run] PASSED [ 17%]
+tests/test_workflow_approval_boundary.py::test_caller_claims_never_reach_workflow_owner[fields1-start] PASSED [ 20%]
+tests/test_workflow_approval_boundary.py::test_caller_claims_never_reach_workflow_owner[fields1-cancel] PASSED [ 22%]
+tests/test_workflow_approval_boundary.py::test_signed_approval_runs_real_nodes_and_cannot_replay PASSED [ 25%]
+tests/test_workflow_approval_boundary.py::test_signed_request_binding_denies_tampering[payload] PASSED [ 28%]
+tests/test_workflow_approval_boundary.py::test_signed_request_binding_denies_tampering[operation] PASSED [ 31%]
+tests/test_workflow_approval_boundary.py::test_signed_request_binding_denies_tampering[signature] PASSED [ 34%]
+tests/test_workflow_approval_boundary.py::test_signed_request_binding_denies_tampering[project] PASSED [ 37%]
+tests/test_workflow_effect_custody.py::test_exact_native_running_intent_and_scope_lease_are_required PASSED [ 40%]
+tests/test_workflow_effect_custody.py::test_workflow_effect_substitutions_fail_closed[missing] PASSED [ 42%]
+tests/test_workflow_effect_custody.py::test_workflow_effect_substitutions_fail_closed[scope] PASSED [ 45%]
+tests/test_workflow_effect_custody.py::test_workflow_effect_substitutions_fail_closed[lease] PASSED [ 48%]
+tests/test_workflow_effect_custody.py::test_workflow_effect_substitutions_fail_closed[context] PASSED [ 51%]
+tests/test_workflow_effect_custody.py::test_workflow_effect_substitutions_fail_closed[cancelled] PASSED [ 54%]
+tests/test_workflow_effect_custody.py::test_workflow_effect_substitutions_fail_closed[committed] PASSED [ 57%]
+tests/test_workflow_effect_custody.py::test_native_committed_effect_requires_exact_settlement_digest PASSED [ 60%]
+tests/test_workflow_effect_custody.py::test_parent_observes_native_commit_instead_of_manufacturing_one[None] PASSED [ 62%]
+tests/test_workflow_effect_custody.py::test_parent_observes_native_commit_instead_of_manufacturing_one[in-flight] PASSED [ 65%]
+tests/test_workflow_effect_custody.py::test_parent_observes_native_commit_instead_of_manufacturing_one[digest] PASSED [ 68%]
+tests/test_workflow_effect_custody.py::test_parent_observes_native_commit_instead_of_manufacturing_one[duplicate] PASSED [ 71%]
+tests/test_workflow_effect_custody.py::test_parent_observes_native_commit_instead_of_manufacturing_one[missing] PASSED [ 74%]
+tests/test_workflow_effect_custody.py::test_parent_records_intent_before_dispatch_and_fences_unknown_closure PASSED [ 77%]
+tests/test_workflow_effect_custody.py::test_unused_permission_is_not_a_fabricated_pure_adapter_effect PASSED [ 80%]
+tests/test_workflow_worker_import_custody.py::test_project_runtime_package_cannot_shadow_owned_workflow_worker PASSED [ 82%]
+tests/test_group_host_composition.py::test_worker_composition_has_no_unbound_owner_names PASSED [ 85%]
+tests/test_group_host_composition.py::test_saved_vector_is_not_an_implicit_live_observer PASSED [ 88%]
+tests/test_group_host_composition.py::test_host_observer_is_called_again_and_checked_against_project PASSED [ 91%]
+tests/test_group_host_composition.py::test_host_assessment_returns_reference_not_an_approval_boolean PASSED [ 94%]
+tests/test_group_host_composition.py::test_local_group_declares_loopback_and_shared_gateway_writes PASSED [ 97%]
+tests/test_group_host_composition.py::test_remote_group_declares_its_signed_origin_not_generic_network PASSED [100%]
+
+============================= 35 passed in 12.65s =============================
+

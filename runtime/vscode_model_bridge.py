@@ -173,7 +173,12 @@ def _available(engine_root: Path, project_root: Path) -> list[dict[str, object]]
 
 
 def list_models(engine_root: Path, project_root: Path) -> dict[str, object]:
-    models = _available(engine_root, project_root)
+    try:
+        models = _available(engine_root, project_root)
+        local_status = "available" if models else "unavailable"
+    except (OSError, ValueError, RuntimeError, KeyError, TypeError):
+        models = []
+        local_status = "runtime_unreachable_or_invalid"
     remote_status = "unconfigured"
     try:
         from .remote_model_bridge import list_models as remote_models
@@ -185,7 +190,7 @@ def list_models(engine_root: Path, project_root: Path) -> dict[str, object]:
         # Do not leak configuration contents or invalidate genuine local profiles.
         remote_status = "configuration_invalid"
     return {"schema_version": "px.vscode-model-list/1.0", "models": models,
-            "remote_catalog_status": remote_status, "authority_granted": False}
+            "remote_catalog_status": remote_status, "local_catalog_status": local_status, "authority_granted": False}
 
 
 def _model(engine_root: Path, project_root: Path, profile_id: str) -> tuple[dict[str, object], ModelRuntimeProfile, LocalModelRuntime]:

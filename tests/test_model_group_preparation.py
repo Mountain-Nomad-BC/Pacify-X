@@ -193,3 +193,18 @@ def test_interrupted_branch_publication_retains_recoverable_custody_and_denies_r
     assert not ScopeLeaseStore(tmp_path).active(effect="write")
     with pytest.raises(ValueError, match="reconciliation"):
         owner.commit_branch_artifact(tmp_path, plan.as_dict(), invocation, {"partial": True}, run_id="partial-run")
+
+
+def test_tie_path_requires_real_bound_experience():
+    """The T.I.E. path must reject malformed bindings instead of silently skipping.
+
+    This test previously asserted that `fuse_tie_experience` was absent, which
+    recorded a stub as the expected behaviour. The owner now exists
+    (`runtime.usage_memory.fuse_tie_experience`), so the assertion is that a
+    nonempty `tie_bindings` value reaches it and is validated there rather than
+    being treated as "no experience".
+    """
+    from runtime.model_group_preparation import bind_tie_retrievals
+
+    with pytest.raises(ValueError):
+        bind_tie_retrievals(Path("."), {}, ("binding",))

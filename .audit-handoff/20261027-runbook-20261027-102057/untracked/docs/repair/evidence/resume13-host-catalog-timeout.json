@@ -1,0 +1,23 @@
+{
+  "timestamp_utc": "2026-10-27T11:09:17.816380+00:00",
+  "segment": "resume13-host-metadata-and-catalog-timeout",
+  "source_sha256": {
+    "runtime/vscode_model_bridge.py": "dcf1620d348a9ef243ff50f2018385c054b6dac0013d93bad2e1c43e39f15122",
+    "tests/test_model_catalog_namespace.py": "7b1dd9b364138c1440ca89ad78cbe3495e6aec8b54889505326e33e5e95f5bb8",
+    "tests/test_model_fabric_end_to_end.py": "086515ddd94ada4db13ab35c95bcae38e0c4b29794a1cd31f03b8ea75a70e40e"
+  },
+  "observations": [
+    "Scoped host discovery: expected llama-server executable exists under C:/Users/Ben/.px/runtime/llama.cpp/build/bin. SSH public fingerprints inspected; none matched active repository release signers. No private key contents read/copied/printed, no trust edits or signing attempted. Matching signer may exist elsewhere; request its path or real signed successor artifacts.",
+    "Actual post-discovery catalog probe failed with native localhost URLError timeout; tree closed and resource inactive. This is failed operating evidence, not a passed model/inference test. It unexpectedly exercised a localhost health request not separately declared by the execute/read admission; timing/authority gap disclosed, no subsequent actual network attempt. Future health/service probes require exact single-effect admissions before launch.",
+    "Two causal timeout/invalid-runtime catalog tests reproduced. Native list now disables local models with sanitized runtime_unreachable_or_invalid instead of traceback while retaining independent remote configuration reporting. Controlled failures do not establish real router health.35catalog/protocol/profile neighbors passed; changed governed native section remains phaseblocked.",
+    "Existing 4B model/profile found; model path question withdrawn. Real runtime commissioning, signed successor activation, remaining source integrations and certification still unfinished. No service/restart, merge, package, install or VSIX."
+  ],
+  "evidence": [
+    "docs/repair/evidence/resume10-actual-catalog-post-discovery.json",
+    "docs/repair/evidence/resume10-catalog-timeout-red.json",
+    "docs/repair/evidence/resume10-catalog-timeout-green.json",
+    "docs/repair/evidence/resume10-governed-catalog-timeout.json"
+  ],
+  "closed": false,
+  "reviewer": "UNASSIGNED"
+}

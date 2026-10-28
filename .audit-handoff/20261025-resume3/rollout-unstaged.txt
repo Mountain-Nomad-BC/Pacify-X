@@ -1,0 +1,566 @@
+diff --git a/extension/src/agentHarness/adapters/pxProviderGateway.js b/extension/src/agentHarness/adapters/pxProviderGateway.js
+index cb3c1c5e..a2db7ef2 100644
+--- a/extension/src/agentHarness/adapters/pxProviderGateway.js
++++ b/extension/src/agentHarness/adapters/pxProviderGateway.js
+@@ -1,6 +1,48 @@
+ 'use strict';
+ 
+ const { ExecutionAdapter } = require('./base');
++const { sha256 } = require('../ids');
++
++function canonical(value, depth = 0) {
++  if (depth > 16) throw new Error('px-provider-receipt-depth');
++  if (value === null || typeof value === 'string' || typeof value === 'boolean') return JSON.stringify(value);
++  if (typeof value === 'number' && Number.isSafeInteger(value)) return JSON.stringify(value);
++  if (Array.isArray(value)) return `[${value.map(item => canonical(item, depth + 1)).join(',')}]`;
++  if (value && typeof value === 'object') return `{${Object.keys(value).sort().map(key => `${JSON.stringify(key)}:${canonical(value[key], depth + 1)}`).join(',')}}`;
++  throw new Error('px-provider-receipt-json-invalid');
++}
++
++function receiptDigest(receipt, field) {
++  const body = { ...receipt }; delete body[field];
++  const raw = canonical(body);
++  if (Buffer.byteLength(raw, 'utf8') > 64 * 1024) throw new Error('px-provider-receipt-size');
++  return sha256(raw);
++}
++
++function verifiedReceipt(value, worker, input) {
++  const hex = item => typeof item === 'string' && /^[a-f0-9]{64}$/.test(item);
++  if (!value || typeof value !== 'object' || Array.isArray(value)) throw new Error('px-provider-settlement-invalid');
++  let receipt = value;
++  if (value.schema_version === 'px.provider-execution-outcome/1.0') {
++    if (value.exact_receipt !== true || !hex(value.outcome_sha256) || receiptDigest(value, 'outcome_sha256') !== value.outcome_sha256) throw new Error('px-provider-receipt-integrity');
++    for (const key of ['policy_sha256', 'task_plan_sha256', 'model_attachment_sha256']) if (!hex(value[key])) throw new Error('px-provider-receipt-policy-binding');
++    receipt = value.provider_receipt;
++  } else if (value.schema_version !== 'px.provider-stream-receipt/1.0') throw new Error('px-provider-receipt-schema');
++  if (!receipt || !['px.provider-stream-receipt/1.0', 'px.provider-invocation-receipt/1.0'].includes(receipt.schema_version)) throw new Error('px-provider-receipt-schema');
++  if (receipt.schema_version === 'px.provider-stream-receipt/1.0' && (!hex(receipt.receipt_sha256) || receiptDigest(receipt, 'receipt_sha256') !== receipt.receipt_sha256)) throw new Error('px-provider-receipt-integrity');
++  for (const key of ['input_sha256', 'output_sha256', 'budget_receipt_sha256', 'budget_reservation_receipt_sha256']) if (!hex(receipt[key])) throw new Error('px-provider-receipt-binding');
++  for (const key of ['invocation_id', 'correlation_id', 'adapter_id', 'provider_id', 'model_id']) if (typeof receipt[key] !== 'string' || !receipt[key] || receipt[key].length > 512) throw new Error('px-provider-receipt-identity');
++  if (receipt.provider_id !== worker.providerId || receipt.model_id !== worker.modelId ||
++      (input.executionContext && receipt.invocation_id !== input.executionContext.execution_id) ||
++      (input.task?.taskId && receipt.correlation_id !== `corr-${input.task.taskId}`)) throw new Error('px-provider-receipt-owner-mismatch');
++  if (!Number.isSafeInteger(receipt.started_revision) || receipt.started_revision < 1 ||
++      !Number.isSafeInteger(receipt.completed_revision) || receipt.completed_revision <= receipt.started_revision ||
++      receipt.failed === true || receipt.exact_receipt === false || ['failed', 'cancelled', 'failure'].includes(receipt.status)) throw new Error('px-provider-settlement-not-completed');
++  if (!['actual', 'estimated', 'local_non_billable', 'unknown'].includes(receipt.billing_state) || receipt.currency !== 'USD') throw new Error('px-provider-settlement-billing-invalid');
++  for (const key of ['input_tokens', 'output_tokens', 'charge_microunits']) if (receipt[key] !== null && (!Number.isSafeInteger(receipt[key]) || receipt[key] < 0)) throw new Error('px-provider-settlement-number-invalid');
++  if (worker.costClass === 'local' && (receipt.billing_state !== 'local_non_billable' || receipt.charge_microunits !== 0)) throw new Error('px-provider-settlement-local-charge');
++  return receipt;
++}
+ 
+ // Preferred production boundary for providers already admitted by PX.
+ // The callback must invoke PX's canonical provider gateway / exact execution
+@@ -32,29 +74,31 @@ class PxProviderGatewayAdapter extends ExecutionAdapter {
+       onEvent: input.onEvent
+     });
+     if (!result || !result.receipt) throw new Error('px-provider-gateway-exact-receipt-missing');
++    const providerReceipt = verifiedReceipt(result.receipt, this.worker, input);
+     const text = typeof result.value === 'string' ? result.value : String(result.value?.text ?? result.value?.answer ?? '');
+     if (text && result.streamed !== true) input.onEvent({ type: 'worker.stream.delta', status: 'progress', summary: text.slice(0, 500), payload: { delta: text, terminal: true } });
+     const receipt = result.receipt;
+-    const providerReceipt = receipt.provider_receipt || receipt.providerReceipt || {};
+     return {
+       text,
+       usage: {
+         inputTokens: providerReceipt.input_tokens ?? providerReceipt.inputTokens ?? null,
+         outputTokens: providerReceipt.output_tokens ?? providerReceipt.outputTokens ?? null,
+         totalTokens: total(providerReceipt),
+-        actualChargeUsd: microunitsToUsd(providerReceipt.charge_microunits ?? providerReceipt.chargeMicrounits),
+-        billingIdentityKnown: typeof providerReceipt.billing_state === 'string' && providerReceipt.billing_state !== 'unknown',
++        actualChargeUsd: ['actual', 'local_non_billable'].includes(providerReceipt.billing_state) ? microunitsToUsd(providerReceipt.charge_microunits) : null,
++        projectedChargeUsd: providerReceipt.billing_state === 'estimated' ? microunitsToUsd(providerReceipt.charge_microunits) : null,
++        billingIdentityKnown: providerReceipt.billing_state !== 'unknown',
+         quotaRemaining: null
+       },
+-      exactReceipt: receipt
++      exactReceipt: receipt,
++      settlementId: providerReceipt.budget_receipt_sha256
+     };
+   }
+ }
+ 
+ function total(receipt) {
+   const i = receipt.input_tokens ?? receipt.inputTokens; const o = receipt.output_tokens ?? receipt.outputTokens;
+-  return Number.isInteger(i) && Number.isInteger(o) ? i + o : null;
++  return Number.isSafeInteger(i) && Number.isSafeInteger(o) && Number.isSafeInteger(i + o) ? i + o : null;
+ }
+-function microunitsToUsd(value) { return Number.isInteger(value) && value >= 0 ? value / 1_000_000 : null; }
++function microunitsToUsd(value) { return Number.isSafeInteger(value) && value >= 0 ? value / 1_000_000 : null; }
+ 
+-module.exports = { PxProviderGatewayAdapter };
++module.exports = { PxProviderGatewayAdapter, verifiedReceipt };
+diff --git a/extension/src/agentHarness/agentConsoleView.js b/extension/src/agentHarness/agentConsoleView.js
+index d0725baf..70ec21fc 100644
+--- a/extension/src/agentHarness/agentConsoleView.js
++++ b/extension/src/agentHarness/agentConsoleView.js
+@@ -79,7 +79,7 @@ class AgentConsoleViewProvider {
+     } catch (error) { this.onDiagnostic(`agent-console-handler:${error?.stack || error}`); return this._error('host-action-failed', String(error?.message || error).slice(0, 900)); }
+   }
+ 
+-  _defaults() { const s = this.harness.hostSettings?.() || {}; return { contextBudgetTokens: s.contextInjectionCapTokens || 12000, taskCostCeilingUsd: s.executionPolicy?.max_cost_per_task_usd || null, localFirst: s.executionPolicy?.local_first !== false, requireApprovalBeforeBillable: s.executionPolicy?.require_approval_before_billable_execution !== false }; }
++  _defaults() { const s = this.harness.hostSettings?.() || {}; return { contextBudgetTokens: s.contextInjectionCapTokens || 12000, taskCostCeilingUsd: s.executionPolicy?.max_cost_per_task_usd ?? null, localFirst: s.executionPolicy?.local_first !== false, requireApprovalBeforeBillable: s.executionPolicy?.require_approval_before_billable_execution !== false }; }
+   _editorRefs() {
+     const refs = []; const editor = this.vscode.window.activeTextEditor;
+     if (editor?.document?.uri?.scheme === 'file') {
+diff --git a/extension/src/agentHarness/budgetLedger.js b/extension/src/agentHarness/budgetLedger.js
+index 2068b5d5..1f15a68c 100644
+--- a/extension/src/agentHarness/budgetLedger.js
++++ b/extension/src/agentHarness/budgetLedger.js
+@@ -1,28 +1,128 @@
+ 'use strict';
+ 
+-const { nowIso } = require('./ids');
++const { nowIso, sha256, requireSafeId } = require('./ids');
+ const { UsageReceipt, parse } = require('./contracts');
++const STORE_VERSION = 'px.agent-budget-store/1.0';
++const MAX_ROWS = 5000;
++
++function microunits(value) {
++  if (typeof value !== 'number' || !Number.isFinite(value) || value < 0 || !Number.isSafeInteger(Math.ceil(value * 1e6))) throw new Error('task-cost-number-invalid');
++  return Math.ceil(value * 1e6);
++}
++function snapshotHash(value) { const { snapshotSha256, ...body } = value; return sha256(body); }
+ 
+ class BudgetLedger {
+-  constructor(policyProvider = () => ({})) { this.policyProvider = policyProvider; this.receipts = []; }
++  constructor(policyProvider = () => ({}), options = {}) {
++    this.policyProvider = policyProvider; this.persistence = options.persistence || null;
++    this.entries = []; this.reservations = new Map(); this.revision = 0; this.epoch = 1;
++    this.persistenceError = null; this.writes = Promise.resolve();
++    const loaded = this.persistence?.load?.();
++    if (loaded) {
++      if (loaded.schemaVersion !== STORE_VERSION || !Number.isSafeInteger(loaded.revision) || loaded.revision < 1 ||
++          !Number.isSafeInteger(loaded.epoch) || loaded.epoch < 1 || loaded.snapshotSha256 !== snapshotHash(loaded) ||
++          !Array.isArray(loaded.entries) || !Array.isArray(loaded.reservations) || loaded.entries.length + loaded.reservations.length > MAX_ROWS) throw new Error('budget-store-invalid');
++      this.revision = loaded.revision; this.epoch = loaded.epoch + 1;
++      const settlements = new Set();
++      for (const row of loaded.entries) {
++        parse(UsageReceipt, row.receipt, 'persisted-usage');
++        if (row.taskId !== null) requireSafeId(row.taskId, 'usage-task');
++        if (row.runId !== null) requireSafeId(row.runId, 'usage-run');
++        if (row.executionId !== null) requireSafeId(row.executionId, 'usage-execution');
++        if (row.settlementId !== null) {
++          requireSafeId(row.settlementId, 'usage-settlement');
++          if (settlements.has(row.settlementId)) throw new Error('budget-store-duplicate-settlement');
++          settlements.add(row.settlementId);
++        }
++        const { capturedAt, ...financial } = row.receipt;
++        if (row.identity !== sha256({ taskId: row.taskId, runId: row.runId, executionId: row.executionId, financial })) throw new Error('budget-store-identity-invalid');
++        this.entries.push(row);
++      }
++      for (const row of loaded.reservations) {
++        for (const field of ['executionId', 'taskId', 'runId', 'workerId', 'providerId']) requireSafeId(row[field], `reservation-${field}`);
++        if (!Number.isSafeInteger(row.microunits) || row.microunits < 0 || this.reservations.has(row.executionId)) throw new Error('budget-store-invalid-reservation');
++        this.reservations.set(row.executionId, row);
++      }
++    }
++    if (this.persistence) this._persist();
++  }
++
++  get receipts() { return this.entries.map(row => row.receipt); }
++  _healthy() { if (this.persistenceError) throw this.persistenceError; }
++  _persist() {
++    this._healthy(); this.revision += 1;
++    if (!this.persistence?.save) return;
++    const snapshot = { schemaVersion: STORE_VERSION, revision: this.revision, epoch: this.epoch,
++      entries: this.entries, reservations: [...this.reservations.values()] };
++    const image = JSON.parse(JSON.stringify({ ...snapshot, snapshotSha256: snapshotHash(snapshot) }));
++    if (this.persistence.synchronous === true) {
++      try { this.persistence.save(image); } catch (error) { this.persistenceError = error; throw error; }
++    } else {
++      this.writes = this.writes.then(() => { this._healthy(); return this.persistence.save(image); }).catch(error => { this.persistenceError = error; });
++    }
++  }
++  async flush() { await this.writes; this._healthy(); }
+ 
+   policy() { return this.policyProvider?.() || {}; }
+ 
+   canAdmit(worker, task, projectedChargeUsd = null) {
++    this._healthy();
+     const p = this.policy();
++    if (this.entries.length + this.reservations.size >= MAX_ROWS) return { allowed: false, reason: 'billing-ledger-capacity' };
++    if (worker.costClass === 'unknown') return { allowed: false, reason: 'billing-identity-unknown' };
+     if (worker.costClass === 'billable-api') {
+       if (p.master_enabled === false) return { allowed: false, reason: 'billable-disabled' };
+       if (task.constraints.requireApprovalBeforeBillable && p.require_approval_before_billable_execution !== false) return { allowed: false, reason: 'billable-approval-required' };
+       const ceiling = task.constraints.taskCostCeilingUsd;
+-      if (ceiling != null && projectedChargeUsd != null && projectedChargeUsd > ceiling) return { allowed: false, reason: 'task-cost-ceiling' };
++      if (projectedChargeUsd == null) return { allowed: false, reason: 'task-cost-estimate-missing' };
++      let estimate, maximum;
++      try { estimate = microunits(projectedChargeUsd); maximum = ceiling === null ? null : microunits(ceiling); }
++      catch { return { allowed: false, reason: 'task-cost-number-invalid' }; }
++      if (maximum === null && p.allow_unbounded_task_cost !== true) return { allowed: false, reason: 'task-cost-ceiling-required' };
++      if (!this.persistence?.save) return { allowed: false, reason: 'billing-persistence-unavailable' };
++      if (this.persistence.synchronous !== true) return { allowed: false, reason: 'billing-synchronous-persistence-required' };
++      let spent = 0;
++      for (const row of this.entries) {
++        if (row.receipt.costClass !== 'billable-api') continue;
++        if (row.taskId === null || (row.taskId === task.taskId && row.receipt.actualChargeUsd === null)) return { allowed: false, reason: 'task-settlement-unknown' };
++        if (row.taskId === task.taskId) spent += microunits(row.receipt.actualChargeUsd);
++      }
++      for (const row of this.reservations.values()) if (row.taskId === task.taskId) spent += row.microunits;
++      if (!Number.isSafeInteger(spent + estimate) || (maximum !== null && spent + estimate > maximum)) return { allowed: false, reason: 'task-cost-ceiling' };
++      if (this.entries.length + this.reservations.size >= MAX_ROWS) return { allowed: false, reason: 'billing-ledger-capacity' };
+     }
+     if (Array.isArray(p.provider_allowlist) && p.provider_allowlist.length && !p.provider_allowlist.includes(worker.providerId)) return { allowed: false, reason: 'provider-not-allowlisted' };
+     return { allowed: true, reason: 'admitted' };
+   }
+ 
++  reserve({ worker, task, runId, executionId, projectedChargeUsd = null }) {
++    this._healthy();
++    for (const value of [task.taskId, runId, executionId, worker.workerId, worker.providerId]) requireSafeId(value, 'billing-owner');
++    if (this.reservations.has(executionId) || this.entries.some(row => row.executionId === executionId)) throw new Error('billing-execution-already-recorded');
++    const admission = this.canAdmit(worker, task, projectedChargeUsd);
++    if (!admission.allowed) throw new Error(admission.reason);
++    const row = { taskId: task.taskId, runId, executionId, workerId: worker.workerId, providerId: worker.providerId,
++      costClass: worker.costClass, microunits: worker.costClass === 'billable-api' ? microunits(projectedChargeUsd) : 0 };
++    this.reservations.set(executionId, row); this._persist(); return row;
++  }
++
+   record(input) {
+-    const receipt = parse(UsageReceipt, { schemaVersion: 'px.usage-receipt/1.0', ...input, capturedAt: input.capturedAt || nowIso() }, 'usage-receipt');
+-    this.receipts.push(receipt); if (this.receipts.length > 5000) this.receipts.splice(0, this.receipts.length - 5000); return receipt;
++    this._healthy();
++    const { taskId = null, runId = null, executionId = null, settlementId = null, ...usage } = input;
++    for (const value of [taskId, runId, executionId]) if (value !== null) requireSafeId(value, 'usage-owner');
++    if (settlementId !== null) requireSafeId(settlementId, 'usage-settlement');
++    const receipt = parse(UsageReceipt, { schemaVersion: 'px.usage-receipt/1.0', ...usage, capturedAt: input.capturedAt || nowIso() }, 'usage-receipt');
++    const { capturedAt, ...financial } = receipt;
++    const identity = sha256({ taskId, runId, executionId, financial });
++    const prior = settlementId !== null && this.entries.find(row => row.settlementId === settlementId);
++    if (prior) { if (prior.identity !== identity) throw new Error('usage-settlement-conflict'); return prior.receipt; }
++    if (executionId !== null && this.entries.some(row => row.executionId === executionId)) throw new Error('usage-execution-already-settled');
++    const reservation = this.reservations.get(executionId);
++    if (reservation && (reservation.taskId !== taskId || reservation.runId !== runId || reservation.workerId !== receipt.workerId || reservation.providerId !== receipt.providerId || reservation.costClass !== receipt.costClass)) throw new Error('usage-reservation-owner-mismatch');
++    if (receipt.costClass === 'billable-api' && (!reservation || typeof settlementId !== 'string' || !/^[a-f0-9]{64}$/.test(settlementId))) throw new Error('billable-settlement-identity-required');
++    if (this.entries.length >= MAX_ROWS) throw new Error('billing-ledger-capacity');
++    this.entries.push({ taskId, runId, executionId, settlementId, identity, receipt });
++    if (reservation && (receipt.costClass !== 'billable-api' || receipt.actualChargeUsd !== null)) this.reservations.delete(executionId);
++    this._persist(); return receipt;
+   }
+ 
+   summary(taskWorkerIds = null) {
+diff --git a/extension/src/agentHarness/durableTaskState.js b/extension/src/agentHarness/durableTaskState.js
+index 9ed0828a..bcdca228 100644
+--- a/extension/src/agentHarness/durableTaskState.js
++++ b/extension/src/agentHarness/durableTaskState.js
+@@ -25,11 +25,15 @@ function readObject(file) {
+ }
+ 
+ class DurableTaskState {
+-  constructor(projectRoot) {
++  constructor(projectRoot, { kind = 'task' } = {}) {
++    if (!['task', 'budget'].includes(kind)) throw new Error('snapshot-owner-kind-invalid');
+     rejectLinks(projectRoot);
+     this.root = fs.realpathSync(projectRoot);
+     this.directory = path.join(this.root, '.agentic_engineering_os_px', 'runtime-core', 'agent-console');
+-    this.file = path.join(this.directory, 'task-state.json'); this.lock = path.join(this.directory, 'writer.lock');
++    this.schemaVersion = kind === 'budget' ? 'px.agent-budget-store/1.0' : 'px.agent-task-store/2.0';
++    this.leaseSchema = kind === 'budget' ? 'px.budget-state-lease/1.0' : 'px.task-state-lease/1.0';
++    this.file = path.join(this.directory, kind === 'budget' ? 'usage-ledger.json' : 'task-state.json');
++    this.lock = path.join(this.directory, kind === 'budget' ? 'usage-writer.lock' : 'writer.lock');
+     this.revision = 0; this.epoch = 0; this.token = crypto.randomUUID();
+     this.synchronous = true;
+   }
+@@ -37,7 +41,7 @@ class DurableTaskState {
+   load() {
+     const value = readObject(this.file);
+     if (value) {
+-      if (value.schemaVersion !== 'px.agent-task-store/2.0' || !Number.isSafeInteger(value.revision) || value.revision < 1 || !Number.isSafeInteger(value.epoch) || value.epoch < 1) throw new Error('task-state-invalid-generation');
++      if (value.schemaVersion !== this.schemaVersion || !Number.isSafeInteger(value.revision) || value.revision < 1 || !Number.isSafeInteger(value.epoch) || value.epoch < 1) throw new Error('task-state-invalid-generation');
+       this.revision = value.revision; this.epoch = value.epoch;
+     }
+     return value;
+@@ -48,13 +52,13 @@ class DurableTaskState {
+     for (let attempt = 0; attempt < 2; attempt++) {
+       try {
+         const fd = fs.openSync(this.lock, 'wx');
+-        try { fs.writeFileSync(fd, JSON.stringify({ schemaVersion: 'px.task-state-lease/1.0', pid: process.pid, token: this.token })); fs.fsyncSync(fd); }
++        try { fs.writeFileSync(fd, JSON.stringify({ schemaVersion: this.leaseSchema, pid: process.pid, token: this.token })); fs.fsyncSync(fd); }
+         finally { fs.closeSync(fd); }
+         return;
+       } catch (error) {
+         if (error.code !== 'EEXIST') throw error;
+         const lease = readObject(this.lock);
+-        if (lease?.schemaVersion !== 'px.task-state-lease/1.0' || !Number.isSafeInteger(lease.pid) || lease.pid < 1 || typeof lease.token !== 'string') throw new Error('task-state-unrecognized-writer-lease');
++        if (lease?.schemaVersion !== this.leaseSchema || !Number.isSafeInteger(lease.pid) || lease.pid < 1 || typeof lease.token !== 'string') throw new Error('task-state-unrecognized-writer-lease');
+         let alive = true;
+         try { process.kill(lease.pid, 0); } catch (probe) { if (probe.code === 'ESRCH') alive = false; }
+         if (alive) throw new Error('task-state-writer-busy');
+@@ -74,7 +78,7 @@ class DurableTaskState {
+     try {
+       const current = readObject(this.file);
+       if ((current?.revision || 0) !== this.revision || (current?.epoch || 0) !== this.epoch) throw new Error('task-state-stale-writer');
+-      if (value.schemaVersion !== 'px.agent-task-store/2.0' || value.revision !== this.revision + 1 || (value.epoch !== this.epoch && value.epoch !== this.epoch + 1)) throw new Error('task-state-invalid-write-generation');
++      if (value.schemaVersion !== this.schemaVersion || value.revision !== this.revision + 1 || (value.epoch !== this.epoch && value.epoch !== this.epoch + 1)) throw new Error('task-state-invalid-write-generation');
+       const raw = Buffer.from(JSON.stringify(value), 'utf8'); if (raw.length > MAX_BYTES) throw new Error('task-state-byte-budget');
+       prepared = path.join(this.directory, `.task-state-${crypto.randomUUID()}.prepared`);
+       const fd = fs.openSync(prepared, 'wx');
+@@ -94,4 +98,8 @@ class DurableTaskState {
+   }
+ }
+ 
+-module.exports = { DurableTaskState };
++class DurableBudgetState extends DurableTaskState {
++  constructor(projectRoot) { super(projectRoot, { kind: 'budget' }); }
++}
++
++module.exports = { DurableTaskState, DurableBudgetState };
+diff --git a/extension/src/agentHarness/harnessController.js b/extension/src/agentHarness/harnessController.js
+index 264d3c1b..cda527fa 100644
+--- a/extension/src/agentHarness/harnessController.js
++++ b/extension/src/agentHarness/harnessController.js
+@@ -99,6 +99,7 @@ class HarnessController {
+       const executionContext = createExecutionContext({ run, projectId: this.projectId || 'workspace', sessionId: run.runId,
+         providerId: route.selected.providerId, authoritySha256: sha256(task.constraints),
+         effectBudgetSha256: sha256({ maxEffectClass: task.constraints.maxEffectClass }), deadlineMs: task.deadlineMs || 300000 });
++      await this._reserveUsage(route.selected, task, run, executionContext, input.projectedChargeUsd?.[route.selected.workerId] ?? null);
+       this.eventBus.setExecutionContext(run.runId, executionContext);
+       this.eventBus.emit('worker.started', { taskId: task.taskId, runId: run.runId, turnId, roundId, workerId: route.selected.workerId, status: 'started', summary: route.selected.displayName });
+       let executionStarted = route.selected.supportedEffectClass !== 'READ_ONLY';
+@@ -132,9 +133,6 @@ class HarnessController {
+       break;
+       }
+       if (result?.sessionRef) this.taskStore.updateRun(run.runId, { providerSessionRef: String(result.sessionRef) });
+-      if (result?.usage) this.budgetLedger.record({ workerId: route.selected.workerId, providerId: route.selected.providerId, costClass: route.selected.costClass,
+-        inputTokens: result.usage.inputTokens ?? null, outputTokens: result.usage.outputTokens ?? null, totalTokens: result.usage.totalTokens ?? null,
+-        actualChargeUsd: result.usage.actualChargeUsd ?? null, projectedChargeUsd: result.usage.projectedChargeUsd ?? null, billingIdentityKnown: Boolean(result.usage.billingIdentityKnown), quotaRemaining: result.usage.quotaRemaining ?? null });
+       this.eventBus.emit('worker.completed', { taskId: task.taskId, runId: run.runId, turnId, roundId, workerId: route.selected.workerId, status: 'succeeded', summary: 'Worker turn completed.', payload: { text: String(result?.text || '').slice(0, 120000) } });
+       run = this.taskStore.updateRun(run.runId, { status: 'complete', round: run.round + 1 });
+       await this.taskStore.flush();
+@@ -257,6 +255,27 @@ class HarnessController {
+     } finally { this.active.delete(run.runId); }
+   }
+ 
++  async _reserveUsage(worker, task, run, executionContext, projectedChargeUsd) {
++    if (typeof this.budgetLedger.reserve !== 'function') {
++      if (worker.costClass === 'billable-api') throw new Error('billing-reservation-owner-required');
++      return;
++    }
++    this.budgetLedger.reserve({ worker, task, runId: run.runId, executionId: executionContext.execution_id, projectedChargeUsd });
++    await this.budgetLedger.flush?.();
++  }
++
++  async _recordUsage(worker, task, run, executionContext, result) {
++    if (!result?.usage) return; // An unsettled reservation remains held; absence is never zero cost.
++    this.budgetLedger.record({ taskId: task.taskId, runId: run.runId, executionId: executionContext.execution_id,
++      settlementId: result.settlementId || (worker.costClass === 'billable-api' ? null : executionContext.execution_id),
++      workerId: worker.workerId, providerId: worker.providerId, costClass: worker.costClass,
++      inputTokens: result.usage.inputTokens ?? null, outputTokens: result.usage.outputTokens ?? null,
++      totalTokens: result.usage.totalTokens ?? null, actualChargeUsd: result.usage.actualChargeUsd ?? null,
++      projectedChargeUsd: result.usage.projectedChargeUsd ?? null, billingIdentityKnown: result.usage.billingIdentityKnown === true,
++      quotaRemaining: result.usage.quotaRemaining ?? null });
++    await this.budgetLedger.flush?.();
++  }
++
+   async _runMeshBranch({ task, run, meshId, branchIndex, branchRequest, contextPack, requestReserveTokens, message }) {
+     const branchId = `${meshId}:branch-${branchIndex}`;
+     const generationId = newId('gen');
+@@ -280,6 +299,7 @@ class HarnessController {
+         const executionContext = createExecutionContext({ run, projectId: this.projectId || 'workspace', sessionId: `${run.runId}:${branchId}`, generationId,
+           providerId: route.selected.providerId, authoritySha256: sha256(task.constraints),
+           effectBudgetSha256: sha256({ maxEffectClass: task.constraints.maxEffectClass }), deadlineMs: task.deadlineMs || 300000 });
++        await this._reserveUsage(route.selected, task, run, executionContext, null);
+         this.eventBus.setExecutionContext(run.runId, executionContext, { branchId });
+         let executionStarted = false;
+         let attemptActive = true;
+diff --git a/extension/src/agentHarness/registerAgentConsole.js b/extension/src/agentHarness/registerAgentConsole.js
+index aed24786..3da6fc98 100644
+--- a/extension/src/agentHarness/registerAgentConsole.js
++++ b/extension/src/agentHarness/registerAgentConsole.js
+@@ -1,7 +1,7 @@
+ 'use strict';
+ const { CanonicalEventBus } = require('./eventBus');
+ const { TaskStore } = require('./taskStore');
+-const { DurableTaskState } = require('./durableTaskState');
++const { DurableTaskState, DurableBudgetState } = require('./durableTaskState');
+ const { migrateLegacyTaskState } = require('./legacyTaskMigration');
+ const { BudgetLedger } = require('./budgetLedger');
+ const { WorkerRegistry } = require('./workerRegistry');
+@@ -129,7 +129,9 @@ function registerAgentConsole(vscode, context, options = {}) {
+     }
+   }
+   const hostSettings = options.settingsProvider || (() => ({}));
+-  const budgetLedger = new BudgetLedger(() => hostSettings().executionPolicy || {}); const workerRegistry = new WorkerRegistry();
++  const budgetLedger = new BudgetLedger(() => hostSettings().executionPolicy || {}, {
++    persistence: projectRoot ? new DurableBudgetState(projectRoot) : null
++  }); const workerRegistry = new WorkerRegistry();
+   const contextCompiler = new ContextCompiler({ retrievalProvider: options.retrievalProvider || null });
+   const experienceKey = 'pacifyX.agentConsole.tieExperience.v1';
+   let experienceWrite = Promise.resolve();
+diff --git a/extension/tests/agent-harness-core.test.js b/extension/tests/agent-harness-core.test.js
+index 7c66b7e4..fd33b23d 100644
+--- a/extension/tests/agent-harness-core.test.js
++++ b/extension/tests/agent-harness-core.test.js
+@@ -64,7 +64,7 @@ test('local mesh refuses tasks with a non-read-only effect budget', async () =>
+ 
+ test('mesh cancellation reports worker interruption failures without undoing cancellation', async()=>{ let run={runId:'run-2',taskId:'task-2',status:'running'}; const events=[]; const controller=Object.create(HarnessController.prototype); controller.active=new Map([['run-2',{controllers:new Map(),branchWorkerIds:new Map([[0,'worker-failed']])}]]); controller.taskStore={requireRun:()=>run,updateRun:(_id,patch)=>{run={...run,...patch};return run;},flush:async()=>{}}; controller.workerRegistry={adapter:()=>({interrupt:async()=>{throw new Error('adapter-interrupt-error');}})}; controller.eventBus={emit:(type,event)=>events.push({type,...event})}; assert.equal(await controller.cancelRun('run-2'),true); assert.equal(run.status,'cancelled'); assert.equal(events.length,1); assert.equal(events[0].type,'worker.interrupt.result'); assert.equal(events[0].status,'failed'); assert.equal(events[0].payload.reason,'adapter-interrupt-error'); });
+ 
+-test('a mesh branch discards late provider output and events after cancellation', async()=>{ const abort=new AbortController(); let completeTurn; let onEvent; const emitted=[]; const descriptor={workerId:'worker-late',adapterId:'mock',providerId:'local',modelId:'m',displayName:'Late worker',costClass:'local',contextLimit:8192,locality:'local',capabilities:{coding:1,planning:1,review:1,classification:1,toolUse:false,vision:false,structuredOutput:false},supportedEffectClass:'READ_ONLY',enabled:true,reliability:1,latencyClass:'fast'}; const adapter={runTurn:async request=>{onEvent=request.onEvent;return new Promise(resolve=>{completeTurn=resolve;});}}; const contexts=[]; const controller=Object.create(HarnessController.prototype); controller.active=new Map([['run-3',{controllers:new Map([[0,abort]]),branchWorkerIds:new Map()}]]); controller.workerRegistry={list:()=>[descriptor],getHealth:()=>({status:'healthy'}),adapter:()=>adapter}; controller.budgetLedger={canAdmit:()=>({allowed:true})}; controller.eventBus={setExecutionContext:(_id,context)=>contexts.push(context),clearExecutionContext:()=>{},emit:(type,event)=>emitted.push({type,...event})}; controller.projectId='workspace'; const task={taskId:'task-3',mode:'DIAGNOSE',constraints:{maxEffectClass:'READ_ONLY',taskCostCeilingUsd:null,localFirst:true,requireApprovalBeforeBillable:true}}; const run={runId:'run-3',epoch:1,revision:1,round:0}; const branch=controller._runMeshBranch({task,run,meshId:'mesh-3',branchIndex:0,branchRequest:{workerId:'worker-late'},contextPack:{suppliedTokens:100},requestReserveTokens:100,message:'hello'}); await Promise.resolve(); abort.abort(); onEvent({type:'worker.stream.delta',payload:{delta:'late'}}); completeTurn({text:'late result'}); const result=await branch; assert.equal(result.state,'cancelled'); assert.equal(result.text,undefined); assert.equal(result.conclusion,''); assert.equal(contexts.length,1); assert.deepEqual(emitted,[]); });
++test('a mesh branch discards late provider output and events after cancellation', async()=>{ const abort=new AbortController(); let completeTurn; let onEvent; const emitted=[]; const descriptor={workerId:'worker-late',adapterId:'mock',providerId:'local',modelId:'m',displayName:'Late worker',costClass:'local',contextLimit:8192,locality:'local',capabilities:{coding:1,planning:1,review:1,classification:1,toolUse:false,vision:false,structuredOutput:false},supportedEffectClass:'READ_ONLY',enabled:true,reliability:1,latencyClass:'fast'}; const adapter={runTurn:async request=>{onEvent=request.onEvent;return new Promise(resolve=>{completeTurn=resolve;});}}; const contexts=[]; const controller=Object.create(HarnessController.prototype); controller.active=new Map([['run-3',{controllers:new Map([[0,abort]]),branchWorkerIds:new Map()}]]); controller.workerRegistry={list:()=>[descriptor],getHealth:()=>({status:'healthy'}),adapter:()=>adapter}; controller.budgetLedger=new BudgetLedger(); controller.eventBus={setExecutionContext:(_id,context)=>contexts.push(context),clearExecutionContext:()=>{},emit:(type,event)=>emitted.push({type,...event})}; controller.projectId='workspace'; const task={taskId:'task-3',mode:'DIAGNOSE',constraints:{maxEffectClass:'READ_ONLY',taskCostCeilingUsd:null,localFirst:true,requireApprovalBeforeBillable:true}}; const run={runId:'run-3',epoch:1,revision:1,round:0}; const branch=controller._runMeshBranch({task,run,meshId:'mesh-3',branchIndex:0,branchRequest:{workerId:'worker-late'},contextPack:{suppliedTokens:100},requestReserveTokens:100,message:'hello'}); await Promise.resolve(); abort.abort(); onEvent({type:'worker.stream.delta',payload:{delta:'late'}}); completeTurn({text:'late result',usage:{inputTokens:2,outputTokens:1,totalTokens:3,actualChargeUsd:0,billingIdentityKnown:true}}); const result=await branch; assert.equal(controller.budgetLedger.entries.length,1); assert.equal(controller.budgetLedger.entries[0].taskId,task.taskId); assert.equal(result.state,'cancelled'); assert.equal(result.text,undefined); assert.equal(result.conclusion,''); assert.equal(contexts.length,1); assert.deepEqual(emitted,[]); });
+ 
+ test('single-turn cancellation discards late provider output and events', async () => {
+   const taskStore = new TaskStore();
+@@ -114,10 +114,7 @@ test('single-turn cancellation discards late provider output and events', async
+         budgetTokens: 1200, refs: []
+       })
+     },
+-    budgetLedger: {
+-      canAdmit: () => ({ allowed: true }),
+-      summary: () => ({})
+-    },
++    budgetLedger: new BudgetLedger(),
+     projectId: 'project'
+   });
+   const pending = controller.sendTurn({
+@@ -130,9 +127,11 @@ test('single-turn cancellation discards late provider output and events', async
+ 
+   await controller.cancelRun(run.runId);
+   onEvent({ type: 'worker.stream.delta', payload: { delta: 'late' } });
+-  completeTurn({ text: 'late result' });
++  completeTurn({ text: 'late result', usage: { inputTokens: 2, outputTokens: 1, totalTokens: 3, actualChargeUsd: 0, billingIdentityKnown: true } });
+   await assert.rejects(pending, /turn-aborted/);
+ 
++  assert.equal(controller.budgetLedger.entries.length, 1);
++  assert.equal(controller.budgetLedger.entries[0].taskId, currentTask.taskId);
+   assert.equal(taskStore.requireRun(run.runId).status, 'cancelled');
+   assert.equal(events.some(event => event.type === 'worker.completed'), false);
+   assert.equal(events.some(event => event.payload?.delta === 'late'), false);
+diff --git a/registry/test_profiles.json b/registry/test_profiles.json
+index f6c91016..41615ce5 100644
+--- a/registry/test_profiles.json
++++ b/registry/test_profiles.json
+@@ -2547,6 +2547,56 @@
+       "max_parallel_chunks": 1,
+       "chunk_timeout_seconds": 120,
+       "timeout_seconds": 600
++    },
++    "billing-accounting": {
++      "description": "Durable reservations, cumulative ceilings, owner-bound idempotent settlement and exact provider receipt validation.",
++      "source_patterns": [
++        "extension/src/agentHarness/**",
++        "extension/tests/billing-settlement-audit.test.js",
++        "extension/tests/agent-harness-core.test.js",
++        "extension/tests/px-provider-invoker.test.js",
++        "registry/test_profiles.json"
++      ],
++      "command": [
++        "node",
++        "--test",
++        "tests/billing-settlement-audit.test.js",
++        "tests/agent-harness-core.test.js",
++        "tests/px-provider-invoker.test.js"
++      ],
++      "cwd": "extension",
++      "chunk_size": 1,
++      "max_parallel_chunks": 1,
++      "chunk_timeout_seconds": 120,
++      "timeout_seconds": 600
++    },
++    "billing-budget": {
++      "description": "Finite observe-only scheduler budgets and actual native Python to Node receipt compatibility.",
++      "source_patterns": [
++        "runtime/capability_scheduler.py",
++        "runtime/provider_gateway.py",
++        "runtime/provider_budget.py",
++        "extension/src/agentHarness/adapters/pxProviderGateway.js",
++        "tests/test_billing_budget_audit.py",
++        "tests/test_capability_scheduler.py",
++        "tests/test_provider_gateway_streaming.py",
++        "registry/test_profiles.json"
++      ],
++      "command": [
++        "python",
++        "-m",
++        "pytest",
++        "-q",
++        "-p",
++        "no:cacheprovider",
++        "tests/test_billing_budget_audit.py",
++        "tests/test_capability_scheduler.py",
++        "tests/test_provider_gateway_streaming.py"
++      ],
++      "chunk_size": 1,
++      "max_parallel_chunks": 1,
++      "chunk_timeout_seconds": 180,
++      "timeout_seconds": 600
+     }
+   },
+   "certification": {
+@@ -2562,7 +2612,9 @@
+       "secure-persistence",
+       "host-containment",
+       "event-integrity",
+-      "ui-event-integrity"
++      "ui-event-integrity",
++      "billing-accounting",
++      "billing-budget"
+     ],
+     "whole_suite_after_sections": true,
+     "required_groups": [
+diff --git a/runtime/capability_scheduler.py b/runtime/capability_scheduler.py
+index 61f63a44..33a474df 100644
+--- a/runtime/capability_scheduler.py
++++ b/runtime/capability_scheduler.py
+@@ -6,6 +6,7 @@ from dataclasses import dataclass, field
+ from datetime import datetime, timezone
+ import hashlib
+ import json
++import math
+ from typing import Any, Mapping
+ from pathlib import Path
+ 
+@@ -182,10 +183,14 @@ class Scheduler:
+             reasons.append("egress_policy_denied")
+         maximum_cost = task.budget.get("maximum_cost")
+         estimated_cost = task.budget.get("estimated_cost")
+-        if (
+-            maximum_cost is not None
+-            and estimated_cost is not None
+-            and float(estimated_cost) > float(maximum_cost)
++        if ("maximum_cost" in task.budget or "estimated_cost" in task.budget) and (
++            type(maximum_cost) not in (int, float)
++            or type(estimated_cost) not in (int, float)
++            or not math.isfinite(maximum_cost)
++            or not math.isfinite(estimated_cost)
++            or maximum_cost < 0
++            or estimated_cost < 0
++            or estimated_cost > maximum_cost
+         ):
+             reasons.append("budget_exhausted")
+         if task.attempt > 1 and not task.idempotency_key and not task.compensation:
+diff --git a/scripts/validate_certification_pipeline.py b/scripts/validate_certification_pipeline.py
+index 1b3126fa..9c647267 100644
+--- a/scripts/validate_certification_pipeline.py
++++ b/scripts/validate_certification_pipeline.py
+@@ -33,6 +33,7 @@ from scripts.run_release_stage_owner import Config as StageConfig  # noqa: E402
+ SCHEMA = "px.certification-pipeline-validation/1.0"
+ 
+ REQUIRED_LIFECYCLE_TESTS = (
++    "tests/test_billing_budget_audit.py",
+     "tests/test_event_integrity_audit.py",
+     "tests/test_event_ledger_regression.py",
+     "tests/test_host_enforcement_audit.py",
+@@ -47,7 +48,7 @@ REQUIRED_LIFECYCLE_TESTS = (
+     "tests/test_rollout_inventory.py",
+     "tests/test_certification_pipeline_readiness.py",
+ )
+-REQUIRED_NODE_TESTS = ("extension/tests/event-integrity-audit.test.js",)
++REQUIRED_NODE_TESTS = ("extension/tests/event-integrity-audit.test.js", "extension/tests/billing-settlement-audit.test.js")
+ 
+ 
+ def certification_coverage(root: Path) -> dict[str, Any]:
+diff --git a/tests/test_certification_pipeline_readiness.py b/tests/test_certification_pipeline_readiness.py
+index 98521621..2917802d 100644
+--- a/tests/test_certification_pipeline_readiness.py
++++ b/tests/test_certification_pipeline_readiness.py
+@@ -15,7 +15,7 @@ def fixture(root):
+         p.write_text('# disposable test', encoding='utf-8')
+     value = {'certification': {'required_sections': ['release-lifecycle', 'ui-event-integrity']},
+              'sections': {'release-lifecycle': {'command': ['python', '-m', 'pytest', *REQUIRED_LIFECYCLE_TESTS]},
+-                          'ui-event-integrity': {'cwd': 'extension', 'command': ['node', '--test', 'tests/event-integrity-audit.test.js']}}}
++                          'ui-event-integrity': {'cwd': 'extension', 'command': ['node', '--test', *[p.removeprefix('extension/') for p in REQUIRED_NODE_TESTS]]}}}
+     path = root / 'registry/test_profiles.json'
+     path.write_text(json.dumps(value), encoding='utf-8')
+     return path, value

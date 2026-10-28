@@ -332,3 +332,165 @@ def ensure_subject_memory(root: Path, subject_kind: str, subject_id: str) -> dic
     if not log_path.is_file():
         log_path.write_text("", encoding="utf-8", newline="\n")
     return rebuild_stats(root, subject_kind, subject_id)
+
+# ---------------------------------------------------------------------------
+# Object-local T.I.E. experience fusion
+# ---------------------------------------------------------------------------
+#
+# ``model_group_preparation`` binds operational experience into each member's
+# context before any role context is hashed. It previously imported
+# ``fuse_tie_experience`` from this module, which did not exist, so the path was
+# unreachable behind a lazily-triggered ImportError.
+#
+# This is the native implementation: it reads the *same* append-only
+# ``memory/usage.jsonl`` that ``record_observation`` writes, through the same
+# subject routing, and it never creates files or promotes authority. That
+# matters because a second storage format would let the fusion claim experience
+# that the recording owner never wrote.
+#
+# Honesty rule: a subject that cannot be read is reported as
+# ``corrupt_or_unavailable`` with its failure type and reason, never replaced by
+# an empty "available" subject. Legacy records whose effect lineage is missing
+# are surfaced as ``LEGACY_EFFECT_LINEAGE_UNAVAILABLE`` rather than silently
+# treated as attributed.
+
+TIE_FUSION_SCHEMA = "px.tie-fusion/1.0"
+MAX_TIE_BINDINGS = 4
+MAX_TIE_RECORDS_PER_SUBJECT = 100
+# Bounded read ceiling for one subject's experience log.
+MAX_EXPERIENCE_LOG_BYTES = 16 * 1024 * 1024
+
+
+def _bounded_binding_text(value: Any, field: str) -> str:
+    if type(value) is not str or not value.strip() or len(value) > 256:
+        raise ValueError(f"T.I.E. binding {field} must be bounded nonempty text")
+    return value
+
+
+def read_subject_experience(
+    root: Path, kind: str, identity: str, *, max_records: int = 20
+) -> dict[str, Any]:
+    """Read one object's retained experience without creating or mutating state."""
+
+    if kind not in SUBJECT_KINDS:
+        raise ValueError(f"unknown experience subject kind: {kind}")
+    if type(max_records) is not int or not 1 <= max_records <= MAX_TIE_RECORDS_PER_SUBJECT:
+        raise ValueError("experience retrieval requires a bounded record count")
+    resolved = Path(root).resolve(strict=True)
+    memory = _memory_dir(resolved, kind, identity)
+    log_path = memory / "usage.jsonl"
+    raw = b""
+    if log_path.is_file():
+        # The log is append-only evidence. Reading it through a symlink,
+        # junction or reparse point would let unrelated bytes be presented as
+        # this subject's history, so linked inputs are refused outright.
+        from .archive_io import reject_path_links
+        from .json_io import read_bounded_bytes
+
+        reject_path_links(log_path)
+        # Bounded read: an oversized or unreadable log must be reported, not
+        # loaded without limit.
+        raw = bytes(read_bounded_bytes(log_path, max_bytes=MAX_EXPERIENCE_LOG_BYTES))
+    records = _load_records(resolved, kind, identity)
+    retained = records[-max_records:]
+    # The recording owner stores run_id/correlation_id but no effect id, so
+    # lineage is judged on what the store really carries; nothing is invented.
+    attributed = bool(records) and all(row.get("run_id") for row in records)
+    return {
+        "schema_version": "px.tie-retrieval/1.0",
+        "subject_kind": kind,
+        "subject_id": identity,
+        "record_count": len(records),
+        "returned_record_count": len(retained),
+        "truncated": len(retained) < len(records),
+        "experience_log_sha256": hashlib.sha256(raw).hexdigest(),
+        "lineage_status": (
+            "NO_EXPERIENCE" if not records
+            else "ATTRIBUTED" if attributed
+            else "LEGACY_EFFECT_LINEAGE_UNAVAILABLE"
+        ),
+        "records": retained,
+    }
+
+
+def fuse_tie_experience(
+    root: Path, bindings, *, max_records_per_subject: int = 20
+) -> dict[str, Any]:
+    """Fuse bounded, attributed operational experience for plan preparation.
+
+    ``bindings`` is a bounded sequence of exact ``{kind, identity}`` objects, or
+    the three-field ``{kind, identity, version}`` form. Ordering is preserved so
+    the fusion digest is deterministic for equal inputs.
+
+    The result is *context*, never authority: ``authority_granted`` is always
+    false and ``propagated`` records that nothing was written back.
+    """
+
+    rows = tuple(bindings)
+    if len(rows) > MAX_TIE_BINDINGS:
+        raise ValueError(f"T.I.E. fusion requires at most {MAX_TIE_BINDINGS} explicit object bindings")
+    if type(max_records_per_subject) is not int or not 1 <= max_records_per_subject <= MAX_TIE_RECORDS_PER_SUBJECT:
+        raise ValueError("bounded per-subject record budget required")
+
+    resolved = Path(root).resolve(strict=True)
+    subjects: list[dict[str, Any]] = []
+    for binding in rows:
+        if type(binding) is not dict:
+            raise ValueError("T.I.E. fusion requires exact canonical object bindings")
+        keys = set(binding)
+        if keys not in ({"kind", "identity"}, {"kind", "identity", "version"}):
+            raise ValueError(
+                "T.I.E. fusion bindings must carry exactly kind/identity, or kind/identity/version"
+            )
+        kind = _bounded_binding_text(binding["kind"], "kind")
+        identity = _bounded_binding_text(binding["identity"], "identity")
+        version = (
+            _bounded_binding_text(binding["version"], "version")
+            if "version" in binding else None
+        )
+        # A caller error is not an unavailable subject: an unknown kind can
+        # never become available, so it must fail loudly here rather than be
+        # reported as "corrupt_or_unavailable" and quietly degraded to context.
+        if kind not in SUBJECT_KINDS:
+            raise ValueError(f"unknown experience subject kind: {kind}")
+        try:
+            result = read_subject_experience(
+                resolved, kind, identity, max_records=max_records_per_subject
+            )
+            subjects.append({
+                "kind": kind,
+                "identity": identity,
+                "version": version,
+                "state": "available",
+                "experience_log_sha256": result["experience_log_sha256"],
+                "record_count": result["record_count"],
+                "returned_record_count": result["returned_record_count"],
+                "truncated": result["truncated"],
+                "lineage_status": result["lineage_status"],
+                "records": result["records"],
+            })
+        except (ValueError, OSError, KeyError) as error:
+            # Reported, never fabricated, and never silently empty-but-available.
+            subjects.append({
+                "kind": kind,
+                "identity": identity,
+                "version": version,
+                "state": "corrupt_or_unavailable",
+                "failure_type": type(error).__name__,
+                "reason": str(error)[:512],
+                "records": [],
+            })
+
+    body = {
+        "schema_version": TIE_FUSION_SCHEMA,
+        "subject_count": len(subjects),
+        "subjects": subjects,
+        "authority_granted": False,
+        "propagated": False,
+    }
+    return {
+        **body,
+        "fusion_sha256": hashlib.sha256(
+            json.dumps(body, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
+        ).hexdigest(),
+    }

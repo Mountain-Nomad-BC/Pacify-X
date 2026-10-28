@@ -1,0 +1,29 @@
+{
+  "action_id": "actual-catalog-post-discovery",
+  "audit_record_hash": "204a5b63f202ebaae8429403ceecb8ddc0505c03f027a2aa8b8310334ae3b7fa",
+  "duration_seconds": 2.791671800000131,
+  "ended_at": "2026-10-27T11:06:41.157Z",
+  "exit_code": 1,
+  "failure_type": null,
+  "receipt_id": "process-390163361a744dedaad4266d6660cf55",
+  "resource_id": "process-f7d28834b0324403945b85024be656e4",
+  "schema_version": "px.process-supervision-receipt/1.0",
+  "shutdown_mode": "natural",
+  "started_at": "2026-10-27T11:06:38.365Z",
+  "status": "exited",
+  "stderr": {
+    "decode_error_count": 0,
+    "dropped_bytes": 0,
+    "retained_bytes": 4217,
+    "total_bytes": 4217,
+    "truncated": false
+  },
+  "stdout": {
+    "decode_error_count": 0,
+    "dropped_bytes": 0,
+    "retained_bytes": 0,
+    "total_bytes": 0,
+    "truncated": false
+  },
+  "tree_closed": true
+}

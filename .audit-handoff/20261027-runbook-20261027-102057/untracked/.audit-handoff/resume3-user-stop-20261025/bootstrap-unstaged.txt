@@ -1,0 +1,1367 @@
+diff --git a/docs/repair/SESSION_STATE.md b/docs/repair/SESSION_STATE.md
+index 9c395929..8d8b0b27 100644
+--- a/docs/repair/SESSION_STATE.md
++++ b/docs/repair/SESSION_STATE.md
+@@ -89,3 +89,7 @@ Prior unit-level CLOSED wording is superseded: ownership derivation has source-t
+ Tested checkpoint:19passed (`evidence/resume3-isolation-ownership.log`). Bootstrap branch now codex/repair-reconcile-20261025 @67827f97; inherited edits preserved. Clone isolation regression was moved into its own test file for a bounded mandatory gate; rerun required after that move. New ownership-source-independence tests currently RED/unverified. No registry builders executed in this session.
+ 
+ Source-authority checkpoint:27focused tests pass (`evidence/resume3-source-authority-focused-green.log`); corrupt previous-map RED preserved. Mandatory source-authority gate blocks before execution because historical September campaign is installed_operational. No state bypass or historical rewrite. New105-row REPAIR_STATUS.json tracks0reviewed-closed;7cards have14passing inherited Node checks but remain IMPLEMENTED_UNVERIFIED. Reconciliation inventory967paths is evidence only; no wholesale merge has occurred. Rollout billing controller now records usage before cancellation/status discard;32Node neighbors pass, governed billing gates running. Bootstrap cascade run remains active; do not claim it green.
++
++In-progress succession port: canonical runtime/lifecycle owners, selectors, tests and four native schemas imported with bootstrap state namespace; generator source now has explicit four-contract ownership/consumers, no fallback. Manifest: evidence/resume3-succession-port-manifest.json. First port script stopped after source copy on a generator-expression mismatch, so first diagnostic may carry incomplete-map failures; keep it. Corrected source requires a fresh focused rerun. Live campaign state remains UNCHANGED, no owner signature/activation fabricated.
++
++Production activation acceptance gap discovered after48port tests passed: signed envelope lacks fields required by planner/activation and actual September predecessor has no project_id. New real signed-policy + real WAL activation regression added (host admission/source-classification seams explicitly isolated); RED reproduction pending. Do not call successor activation complete.
+diff --git a/extension/scripts/run-operational-ui-walk.js b/extension/scripts/run-operational-ui-walk.js
+index bdf9e1fa..70cba492 100644
+--- a/extension/scripts/run-operational-ui-walk.js
++++ b/extension/scripts/run-operational-ui-walk.js
+@@ -11239,9 +11239,10 @@ async function settleInstalledCanonicalMemoryRecord(frameHost, timeoutMs = 30_00
+ function installedFilesystemPathIdentity(value, { platform = process.platform, realpath = fs.realpathSync.native } = {}) {
+   const supplied = String(value || '').trim();
+   if (!supplied) return '';
+-  const resolved = path.resolve(supplied);
++  const pathApi = platform === 'win32' ? path.win32 : path;
++  const resolved = pathApi.resolve(supplied);
+   let canonical = resolved;
+-  try { canonical = realpath(resolved); } catch { /* a missing path still has a deterministic resolved identity */ }
++  try { canonical = platform === 'win32' && process.platform !== 'win32' ? resolved : realpath(resolved); } catch { /* a missing path still has a deterministic resolved identity */ }
+   return platform === 'win32' ? canonical.toLowerCase() : canonical;
+ }
+ 
+@@ -11253,8 +11254,10 @@ function installedFilesystemPathWithin(root, target, options) {
+   const rootIdentity = installedFilesystemPathIdentity(root, options);
+   const targetIdentity = installedFilesystemPathIdentity(target, options);
+   if (!rootIdentity || !targetIdentity || rootIdentity === targetIdentity) return false;
+-  const relative = path.relative(rootIdentity, targetIdentity);
+-  return Boolean(relative) && relative !== '..' && !relative.startsWith(`..${path.sep}`) && !path.isAbsolute(relative);
++  const platform = (options && options.platform) || process.platform;
++  const pathApi = platform === 'win32' ? path.win32 : path;
++  const relative = pathApi.relative(rootIdentity, targetIdentity);
++  return Boolean(relative) && relative !== '..' && !relative.startsWith(`..${pathApi.sep}`) && !pathApi.isAbsolute(relative);
+ }
+ 
+ function isExternalVsCodeWillSaveTimeoutDiagnostic(diagnostic) {
+diff --git a/extension/src/agentHarness/adapters/ollama.js b/extension/src/agentHarness/adapters/ollama.js
+index c385b9ce..f7c42451 100644
+--- a/extension/src/agentHarness/adapters/ollama.js
++++ b/extension/src/agentHarness/adapters/ollama.js
+@@ -24,17 +24,30 @@ class OllamaAdapter extends ExecutionAdapter {
+         body: JSON.stringify({ model: this.model, stream: true, messages, options: this.options.options || {} }) });
+     } catch (error) { throw new Error(`ollama-request-failed:${sanitizeRemoteError(error)}`); }
+     if (!response.ok || !response.body) throw new Error(`ollama-http-${response.status}:${(await response.text()).slice(0, 500)}`);
+-    const reader = response.body.getReader(); const decoder = new TextDecoder(); let pending = ''; let text = ''; let usage = null;
++    const reader = response.body.getReader(); const decoder = new TextDecoder();
++    let pending = ''; let text = ''; let usage = null; let terminal = false;
++    const consume = line => {
++      if (!line.trim()) return;
++      if (terminal) throw new Error('ollama-stream-data-after-terminal');
++      const item = JSON.parse(line); const delta = item.message?.content || '';
++      if (delta) { text += delta; input.onEvent({ type: 'worker.stream.delta', status: 'progress', summary: delta.slice(0, 500), payload: { delta } }); }
++      if (item.done === true) {
++        terminal = true;
++        usage = { inputTokens: item.prompt_eval_count ?? null, outputTokens: item.eval_count ?? null, totalTokens: (item.prompt_eval_count != null && item.eval_count != null) ? item.prompt_eval_count + item.eval_count : null };
++      }
++    };
+     while (true) {
+-      const { done, value } = await reader.read(); if (done) break; pending += decoder.decode(value, { stream: true });
++      const { done, value } = await reader.read();
++      if (done) { pending += decoder.decode(); break; }
++      pending += decoder.decode(value, { stream: true });
+       let nl;
+       while ((nl = pending.indexOf('\n')) >= 0) {
+-        const line = pending.slice(0, nl).trim(); pending = pending.slice(nl + 1); if (!line) continue;
+-        const item = JSON.parse(line); const delta = item.message?.content || '';
+-        if (delta) { text += delta; input.onEvent({ type: 'worker.stream.delta', status: 'progress', summary: delta.slice(0, 500), payload: { delta } }); }
+-        if (item.done) usage = { inputTokens: item.prompt_eval_count ?? null, outputTokens: item.eval_count ?? null, totalTokens: (item.prompt_eval_count != null && item.eval_count != null) ? item.prompt_eval_count + item.eval_count : null };
++        consume(pending.slice(0, nl)); pending = pending.slice(nl + 1);
+       }
++      if (pending.length > 4 * 1024 * 1024) throw new Error('ollama-stream-frame-too-large');
+     }
++    if (pending.trim()) consume(pending);
++    if (!terminal) throw new Error('ollama-stream-incomplete');
+     return { text, usage };
+   }
+ }
+diff --git a/extension/src/agentHarness/adapters/openaiCompatible.js b/extension/src/agentHarness/adapters/openaiCompatible.js
+index 12477ce3..0b7a7c3a 100644
+--- a/extension/src/agentHarness/adapters/openaiCompatible.js
++++ b/extension/src/agentHarness/adapters/openaiCompatible.js
+@@ -18,20 +18,42 @@ class OpenAICompatibleAdapter extends ExecutionAdapter {
+     const response = await fetch(`${this.baseUrl}/chat/completions`, { method: 'POST', signal: input.signal, headers: { 'content-type': 'application/json', authorization: `Bearer ${key}` },
+       body: JSON.stringify({ model: this.model, messages, stream: true, stream_options: { include_usage: true }, ...(this.options.request || {}) }) });
+     if (!response.ok || !response.body) throw new Error(`provider-http-${response.status}:${sanitizeRemoteError(await response.text())}`);
+-    const reader = response.body.getReader(); const decoder = new TextDecoder(); let pending = ''; let text = ''; let usage = null;
++    const reader = response.body.getReader(); const decoder = new TextDecoder();
++    let pending = ''; let text = ''; let usage = null; let terminal = false;
++    const maxPendingChars = 4 * 1024 * 1024;
++    const handleFrame = frame => {
++      const data = frame.split('\n').filter(line => line.startsWith('data:'))
++        .map(line => line.slice(5).trimStart()).join('\n').trim();
++      if (!data) return;
++      if (data === '[DONE]') { terminal = true; return; }
++      const item = JSON.parse(data); const delta = item.choices?.[0]?.delta?.content || '';
++      if (delta) { text += delta; input.onEvent({ type: 'worker.stream.delta', status: 'progress', summary: delta.slice(0, 500), payload: { delta } }); }
++      if (item.usage) usage = { inputTokens: item.usage.prompt_tokens ?? null, outputTokens: item.usage.completion_tokens ?? null, totalTokens: item.usage.total_tokens ?? null };
++    };
+     while (true) {
+-      const { done, value } = await reader.read(); if (done) break; pending += decoder.decode(value, { stream: true });
++      const { done, value } = await reader.read();
++      if (done) { pending += decoder.decode(); break; }
++      pending += decoder.decode(value, { stream: true });
++      if (pending.endsWith('\r')) {
++        const tail = pending.slice(-1);
++        pending = pending.slice(0, -1).replace(/\r\n|\r/g, '\n') + tail;
++      } else pending = pending.replace(/\r\n|\r/g, '\n');
+       let split;
+       while ((split = pending.indexOf('\n\n')) >= 0) {
+         const frame = pending.slice(0, split); pending = pending.slice(split + 2);
+-        for (const raw of frame.split('\n')) {
+-          if (!raw.startsWith('data:')) continue; const data = raw.slice(5).trim(); if (!data || data === '[DONE]') continue;
+-          const item = JSON.parse(data); const delta = item.choices?.[0]?.delta?.content || '';
+-          if (delta) { text += delta; input.onEvent({ type: 'worker.stream.delta', status: 'progress', summary: delta.slice(0, 500), payload: { delta } }); }
+-          if (item.usage) usage = { inputTokens: item.usage.prompt_tokens ?? null, outputTokens: item.usage.completion_tokens ?? null, totalTokens: item.usage.total_tokens ?? null };
+-        }
++        if (terminal) throw new Error('openai-stream-data-after-terminal');
++        handleFrame(frame);
+       }
++      if (pending.length > maxPendingChars) throw new Error('openai-stream-frame-too-large');
+     }
++    pending = pending.replace(/\r\n|\r/g, '\n');
++    while (pending.includes('\n\n')) {
++      const split = pending.indexOf('\n\n');
++      const frame = pending.slice(0, split); pending = pending.slice(split + 2);
++      if (terminal) throw new Error('openai-stream-data-after-terminal');
++      handleFrame(frame);
++    }
++    if (!terminal || pending.trim()) throw new Error('openai-stream-incomplete');
+     return { text, usage };
+   }
+ }
+diff --git a/extension/src/agentHarness/agentConsoleProjection.js b/extension/src/agentHarness/agentConsoleProjection.js
+index b0bbf42d..e0cd5858 100644
+--- a/extension/src/agentHarness/agentConsoleProjection.js
++++ b/extension/src/agentHarness/agentConsoleProjection.js
+@@ -20,10 +20,49 @@ function buildAgentConsoleProjection(state) {
+   };
+ }
+ 
++const SECRET_KEY = /secret|api.?key|authorization|credential/i;
++const MAX_REDACT_DEPTH = 8;
++const MAX_REDACT_BYTES = 1_000_000;
++
++function redactValue(value, depth) {
++  if (depth > MAX_REDACT_DEPTH) return '[redacted]';
++  if (value === null || value === undefined || typeof value === 'boolean' || typeof value === 'number') return value;
++  if (typeof value === 'string') {
++    if (Buffer.byteLength(value, 'utf8') > 50_000) return value.slice(0, 50_000) + '...[truncated]';
++    return value;
++  }
++  if (Array.isArray(value)) {
++    return value.map(item => redactValue(item, depth + 1));
++  }
++  if (typeof value === 'object') {
++    const out = {};
++    let totalBytes = 0;
++    for (const key of Object.keys(value)) {
++      const isSecret = SECRET_KEY.test(key);
++      const redacted = isSecret ? '[redacted]' : redactValue(value[key], depth + 1);
++      const entry = isSecret ? `'${key}':${JSON.stringify(redacted)}` : `'${key}':${JSON.stringify(redacted)}`;
++      totalBytes += Buffer.byteLength(entry, 'utf8');
++      if (totalBytes > MAX_REDACT_BYTES) {
++        out[key] = '[redacted]';
++        continue;
++      }
++      out[key] = redacted;
++    }
++    return out;
++  }
++  return '[redacted]';
++}
++
+ function redactEventPayload(event) {
+   const payload = { ...(event.payload || {}) };
+   if (event.type === 'worker.completed' && typeof payload.text === 'string') payload.text = payload.text.slice(0, 120000);
+-  for (const key of Object.keys(payload)) if (/secret|api.?key|authorization|credential/i.test(key)) payload[key] = '[redacted]';
++  for (const key of Object.keys(payload)) {
++    if (SECRET_KEY.test(key)) {
++      payload[key] = '[redacted]';
++    } else {
++      payload[key] = redactValue(payload[key], 0);
++    }
++  }
+   return payload;
+ }
+ 
+diff --git a/extension/src/agentHarness/agentConsoleView.js b/extension/src/agentHarness/agentConsoleView.js
+index d5498147..a8b35fee 100644
+--- a/extension/src/agentHarness/agentConsoleView.js
++++ b/extension/src/agentHarness/agentConsoleView.js
+@@ -33,7 +33,7 @@ class AgentConsoleViewProvider {
+     } catch (error) { this.onDiagnostic(`agent-console-handler:${error?.stack || error}`); return this._error('host-action-failed', String(error?.message || error).slice(0, 900)); }
+   }
+ 
+-  _defaults() { const s = this.harness.hostSettings?.() || {}; return { contextBudgetTokens: s.contextInjectionCapTokens || 12000, taskCostCeilingUsd: s.executionPolicy?.max_cost_per_task_usd || null, localFirst: s.executionPolicy?.local_first !== false, requireApprovalBeforeBillable: s.executionPolicy?.require_approval_before_billable_execution !== false }; }
++  _defaults() { const s = this.harness.hostSettings?.() || {}; return { contextBudgetTokens: s.contextInjectionCapTokens || 12000, taskCostCeilingUsd: s.executionPolicy?.max_cost_per_task_usd ?? null, localFirst: s.executionPolicy?.local_first !== false, requireApprovalBeforeBillable: s.executionPolicy?.require_approval_before_billable_execution !== false }; }
+   _editorRefs() {
+     const refs = []; const editor = this.vscode.window.activeTextEditor;
+     if (editor?.document?.uri?.scheme === 'file') {
+diff --git a/extension/src/agentHarness/budgetLedger.js b/extension/src/agentHarness/budgetLedger.js
+index 2068b5d5..b6cc441b 100644
+--- a/extension/src/agentHarness/budgetLedger.js
++++ b/extension/src/agentHarness/budgetLedger.js
+@@ -4,7 +4,7 @@ const { nowIso } = require('./ids');
+ const { UsageReceipt, parse } = require('./contracts');
+ 
+ class BudgetLedger {
+-  constructor(policyProvider = () => ({})) { this.policyProvider = policyProvider; this.receipts = []; }
++  constructor(policyProvider = () => ({})) { this.policyProvider = policyProvider; this.receipts = []; this._taskSpend = new Map(); }
+ 
+   policy() { return this.policyProvider?.() || {}; }
+ 
+@@ -14,7 +14,10 @@ class BudgetLedger {
+       if (p.master_enabled === false) return { allowed: false, reason: 'billable-disabled' };
+       if (task.constraints.requireApprovalBeforeBillable && p.require_approval_before_billable_execution !== false) return { allowed: false, reason: 'billable-approval-required' };
+       const ceiling = task.constraints.taskCostCeilingUsd;
+-      if (ceiling != null && projectedChargeUsd != null && projectedChargeUsd > ceiling) return { allowed: false, reason: 'task-cost-ceiling' };
++      if (projectedChargeUsd == null) return { allowed: false, reason: 'task-cost-estimate-missing' };
++      const taskId = task.taskId || task.id;
++      const spent = this._taskSpend.get(taskId) || 0;
++      if (ceiling != null && spent + projectedChargeUsd > ceiling) return { allowed: false, reason: 'task-cost-ceiling' };
+     }
+     if (Array.isArray(p.provider_allowlist) && p.provider_allowlist.length && !p.provider_allowlist.includes(worker.providerId)) return { allowed: false, reason: 'provider-not-allowlisted' };
+     return { allowed: true, reason: 'admitted' };
+@@ -22,7 +25,12 @@ class BudgetLedger {
+ 
+   record(input) {
+     const receipt = parse(UsageReceipt, { schemaVersion: 'px.usage-receipt/1.0', ...input, capturedAt: input.capturedAt || nowIso() }, 'usage-receipt');
+-    this.receipts.push(receipt); if (this.receipts.length > 5000) this.receipts.splice(0, this.receipts.length - 5000); return receipt;
++    this.receipts.push(receipt); if (this.receipts.length > 5000) this.receipts.splice(0, this.receipts.length - 5000);
++    if (input.taskId && input.actualChargeUsd != null) {
++      const taskId = input.taskId;
++      this._taskSpend.set(taskId, (this._taskSpend.get(taskId) || 0) + input.actualChargeUsd);
++    }
++    return receipt;
+   }
+ 
+   summary(taskWorkerIds = null) {
+diff --git a/extension/src/agentHarness/eventBus.js b/extension/src/agentHarness/eventBus.js
+index e680fbb6..c06c60d3 100644
+--- a/extension/src/agentHarness/eventBus.js
++++ b/extension/src/agentHarness/eventBus.js
+@@ -1,9 +1,11 @@
+ 'use strict';
+ 
+ const { EventEmitter } = require('node:events');
+-const { newId, nowIso } = require('./ids');
++const { newId, nowIso, sha256 } = require('./ids');
+ const { PxEvent, parse } = require('./contracts');
+ 
++const MAX_PAYLOAD_BYTES = 64 * 1024;
++
+ class CanonicalEventBus {
+   constructor(options = {}) {
+     this.maxEvents = Math.max(50, Math.min(5000, Number(options.maxEvents || 800)));
+@@ -11,9 +13,21 @@ class CanonicalEventBus {
+     this.sequence = 0;
+     this.emitter = new EventEmitter();
+     this.emitter.setMaxListeners(100);
++    this._omissions = [];
+   }
+ 
+   emit(type, input = {}) {
++    let payload = input.payload || {};
++    let payloadRef = null;
++    if (payload !== null && payload !== undefined) {
++      const payloadStr = JSON.stringify(payload);
++      if (Buffer.byteLength(payloadStr, 'utf8') > MAX_PAYLOAD_BYTES) {
++        payloadRef = { sha256: sha256(payloadStr), bytes: Buffer.byteLength(payloadStr, 'utf8'), omitted: true };
++        payload = { _omitted: true, _ref: payloadRef };
++        this._omissions.push({ eventType: type, runId: input.runId || null, taskId: input.taskId || null, ref: payloadRef });
++        if (this._omissions.length > 1000) this._omissions.splice(0, this._omissions.length - 1000);
++      }
++    }
+     const event = parse(PxEvent, {
+       schemaVersion: 'px.agent-event/1.0',
+       eventId: newId('evt'), sequence: this.sequence++, type,
+@@ -21,7 +35,7 @@ class CanonicalEventBus {
+       turnId: input.turnId || null, roundId: input.roundId || null,
+       actor: input.actor || 'px-harness', workerId: input.workerId || null,
+       parentEventId: input.parentEventId || null, status: input.status || 'info',
+-      summary: String(input.summary || '').slice(0, 1000), payload: input.payload || {}
++      summary: String(input.summary || '').slice(0, 1000), payload
+     }, 'agent-event');
+     this.events.push(event);
+     if (this.events.length > this.maxEvents) this.events.splice(0, this.events.length - this.maxEvents);
+@@ -34,6 +48,7 @@ class CanonicalEventBus {
+     const taskId = options.taskId || null; const runId = options.runId || null;
+     return this.events.filter(e => (!taskId || e.taskId === taskId) && (!runId || e.runId === runId)).slice(-(options.limit || 200));
+   }
++  omissions() { return [...this._omissions]; }
+   dispose() { this.emitter.removeAllListeners(); this.events.length = 0; }
+ }
+ 
+diff --git a/extension/src/agentHarness/harnessController.js b/extension/src/agentHarness/harnessController.js
+index 59b162dc..f0b830c5 100644
+--- a/extension/src/agentHarness/harnessController.js
++++ b/extension/src/agentHarness/harnessController.js
+@@ -1,6 +1,6 @@
+ 'use strict';
+ 
+-const { newId } = require('./ids');
++const { newId, sha256 } = require('./ids');
+ const { chooseWorker } = require('./router');
+ const { evaluateCompletion } = require('./completionEvaluator');
+ 
+@@ -47,7 +47,7 @@ class HarnessController {
+       run = this.taskStore.updateRun(run.runId, { status: 'complete', round: run.round + 1 });
+       const verdict = evaluateCompletion(this.taskStore.requireTask(task.taskId), this.evidence.get(task.taskId) || []);
+       this.eventBus.emit('verification.completed', { taskId: task.taskId, runId: run.runId, turnId, roundId, status: verdict.complete ? 'succeeded' : 'info', summary: verdict.complete ? 'Completion contract satisfied.' : 'Worker turn finished; completion contract still has open requirements.', payload: verdict });
+-      return { task: this.taskStore.requireTask(task.taskId), run, text: result?.text || '', librarian, contextPack, route, verdict };
++      return { task: this.taskStore.requireTask(task.taskId), run, text: result?.text || '', conclusionSha256: sha256(String(result?.text || '')), librarian, contextPack, route, verdict };
+     } catch (error) {
+       const aborted = error?.name === 'AbortError' || abort.signal.aborted; run = this.taskStore.updateRun(run.runId, { status: aborted ? 'cancelled' : 'failed', lastError: String(error?.message || error).slice(0, 1000) });
+       this.eventBus.emit(aborted ? 'run.cancelled' : 'run.failed', { taskId: task.taskId, runId: run.runId, turnId, roundId, workerId: this.active.get(run.runId)?.workerId || null, status: aborted ? 'cancelled' : 'failed', summary: run.lastError || 'run failed' });
+diff --git a/extension/src/agentHarness/registerAgentConsole.js b/extension/src/agentHarness/registerAgentConsole.js
+index ba53a7d1..983631e5 100644
+--- a/extension/src/agentHarness/registerAgentConsole.js
++++ b/extension/src/agentHarness/registerAgentConsole.js
+@@ -48,7 +48,7 @@ function registerAgentConsole(vscode, context, options = {}) {
+   const view = new AgentConsoleViewProvider(vscode, context, { harness, openControlPlane: options.openControlPlane, onDiagnostic: options.onDiagnostic });
+   disposables.push(vscode.window.registerWebviewViewProvider('pacifyX.agentConsole', view, { webviewOptions: { retainContextWhenHidden: true } }), view);
+   disposables.push(vscode.commands.registerCommand('pacifyX.openAgentConsole', () => vscode.commands.executeCommand('pacifyX.agentConsole.focus')));
+-  disposables.push(vscode.commands.registerCommand('pacifyX.newAgentTask', async () => { const goal = await vscode.window.showInputBox({ title: 'New PX Agent Task', prompt: 'Task goal' }); if (goal) { harness.createTask({ goal, mode: 'ASK', maxEffectClass: 'READ_ONLY', contextBudgetTokens: settings.contextInjectionCapTokens || 12000, taskCostCeilingUsd: settings.executionPolicy?.max_cost_per_task_usd || null, localFirst: settings.executionPolicy?.local_first !== false, requireApprovalBeforeBillable: settings.executionPolicy?.require_approval_before_billable_execution !== false }); await vscode.commands.executeCommand('pacifyX.agentConsole.focus'); } }));
++  disposables.push(vscode.commands.registerCommand('pacifyX.newAgentTask', async () => { const goal = await vscode.window.showInputBox({ title: 'New PX Agent Task', prompt: 'Task goal' }); if (goal) { harness.createTask({ goal, mode: 'ASK', maxEffectClass: 'READ_ONLY', contextBudgetTokens: settings.contextInjectionCapTokens || 12000, taskCostCeilingUsd: settings.executionPolicy?.max_cost_per_task_usd ?? null, localFirst: settings.executionPolicy?.local_first !== false, requireApprovalBeforeBillable: settings.executionPolicy?.require_approval_before_billable_execution !== false }); await vscode.commands.executeCommand('pacifyX.agentConsole.focus'); } }));
+   void workerRegistry.refreshHealth().catch(() => {});
+ 
+   return { harness, dispose() { harness.dispose(); for (const d of disposables.splice(0)) d?.dispose?.(); } };
+diff --git a/registry/test_profiles.json b/registry/test_profiles.json
+index bfa0071c..6cc45b7d 100644
+--- a/registry/test_profiles.json
++++ b/registry/test_profiles.json
+@@ -2298,6 +2298,38 @@
+       "max_parallel_chunks": 1,
+       "chunk_timeout_seconds": 180,
+       "timeout_seconds": 600
++    },
++    "revision-lifecycle": {
++      "description": "Native successor contracts and real revision WAL transitions, predecessor custody, stale-input/crash and authority failures.",
++      "source_patterns": [
++        "runtime/project_revision_succession.py",
++        "runtime/revision_campaign_lifecycle.py",
++        "runtime/test_profiles.py",
++        "runtime/release_signing.py",
++        "runtime/wal_transaction.py",
++        "runtime/contracts.py",
++        "scripts/build_contract_ownership_registry.py",
++        "contracts/project_revision_succession/*.json",
++        "tests/test_project_revision_succession.py",
++        "tests/test_revision_campaign_lifecycle.py",
++        "registry/test_profiles.json",
++        "tests/test_revision_activation_e2e.py"
++      ],
++      "command": [
++        "python",
++        "-m",
++        "pytest",
++        "-q",
++        "-p",
++        "no:cacheprovider",
++        "tests/test_project_revision_succession.py",
++        "tests/test_revision_campaign_lifecycle.py",
++        "tests/test_revision_activation_e2e.py"
++      ],
++      "chunk_size": 1,
++      "max_parallel_chunks": 1,
++      "chunk_timeout_seconds": 180,
++      "timeout_seconds": 600
+     }
+   },
+   "certification": {
+@@ -2309,7 +2341,8 @@
+       "execution-placement",
+       "hardware-routing",
+       "runtime-domain-contracts",
+-      "source-authority"
++      "source-authority",
++      "revision-lifecycle"
+     ],
+     "whole_suite_after_sections": true,
+     "required_groups": [
+diff --git a/runtime/capability_scheduler.py b/runtime/capability_scheduler.py
+index 61f63a44..5077d729 100644
+--- a/runtime/capability_scheduler.py
++++ b/runtime/capability_scheduler.py
+@@ -6,6 +6,7 @@ from dataclasses import dataclass, field
+ from datetime import datetime, timezone
+ import hashlib
+ import json
++import math
+ from typing import Any, Mapping
+ from pathlib import Path
+ 
+@@ -45,9 +46,23 @@ class Resources:
+     def from_mapping(cls, value: Mapping[str, Any] | None) -> "Resources":
+         value = value or {}
+         fields = cls.__dataclass_fields__
+-        return cls(
+-            **{name: value.get(name, field.default) for name, field in fields.items()}
+-        )
++        numeric_fields = ("cpu_cores", "ram_gb", "gpu_count", "vram_gb", "disk_gb")
++        result: dict[str, Any] = {}
++        for name, field in fields.items():
++            val = value.get(name, field.default)
++            if name in numeric_fields:
++                if isinstance(val, bool):
++                    raise ValueError(f"{name} must be a non-negative number, not bool")
++                try:
++                    num = float(val)
++                except (TypeError, ValueError):
++                    raise ValueError(f"{name} must be a non-negative number")
++                if num < 0:
++                    raise ValueError(f"{name} must be non-negative")
++                result[name] = int(num) if name == "gpu_count" else num
++            else:
++                result[name] = val
++        return cls(**result)
+ 
+     def fits(self, requested: "Resources") -> bool:
+         return (
+@@ -125,6 +140,7 @@ class Scheduler:
+         self.failed: set[str] = set()
+         self.events: list[dict[str, Any]] = []
+         self._counter = 0
++        self._dependents: dict[str, set[str]] = {}
+ 
+     def add(self, task: Task) -> None:
+         if task.id in self.tasks:
+@@ -136,27 +152,36 @@ class Scheduler:
+         self._counter += 1
+         task.created_index = self._counter
+         self.tasks[task.id] = task
++        for dependency in task.dependencies:
++            self._dependents.setdefault(dependency, set()).add(task.id)
+         self.events.append({"event": "task_added", "task_id": task.id})
+ 
+     def validate_dag(self) -> None:
+         visiting: set[str] = set()
+         visited: set[str] = set()
+ 
+-        def visit(task_id: str) -> None:
+-            if task_id in visiting:
+-                raise ValueError(f"dependency cycle at {task_id}")
+-            if task_id in visited:
+-                return
+-            visiting.add(task_id)
+-            for dependency in self.tasks[task_id].dependencies:
+-                if dependency not in self.tasks:
+-                    raise ValueError(f"missing dependency {dependency} for {task_id}")
+-                visit(dependency)
+-            visiting.remove(task_id)
+-            visited.add(task_id)
+-
+-        for task_id in sorted(self.tasks):
+-            visit(task_id)
++        for start in sorted(self.tasks):
++            if start in visited:
++                continue
++            stack = [(start, iter(sorted(self.tasks[start].dependencies)))]
++            visiting.add(start)
++            while stack:
++                node, deps_iter = stack[-1]
++                advanced = False
++                for dep in deps_iter:
++                    if dep not in self.tasks:
++                        raise ValueError(f"missing dependency {dep} for {node}")
++                    if dep in visiting:
++                        raise ValueError(f"dependency cycle at {dep}")
++                    if dep not in visited:
++                        visiting.add(dep)
++                        stack.append((dep, iter(sorted(self.tasks[dep].dependencies))))
++                        advanced = True
++                        break
++                if not advanced:
++                    visiting.discard(node)
++                    visited.add(node)
++                    stack.pop()
+ 
+     def eligible(self, task: Task) -> tuple[bool, list[str]]:
+         reasons: list[str] = []
+@@ -182,12 +207,17 @@ class Scheduler:
+             reasons.append("egress_policy_denied")
+         maximum_cost = task.budget.get("maximum_cost")
+         estimated_cost = task.budget.get("estimated_cost")
+-        if (
+-            maximum_cost is not None
+-            and estimated_cost is not None
+-            and float(estimated_cost) > float(maximum_cost)
+-        ):
+-            reasons.append("budget_exhausted")
++        if maximum_cost is not None and estimated_cost is not None:
++            try:
++                max_cost = float(maximum_cost)
++                est_cost = float(estimated_cost)
++            except (TypeError, ValueError):
++                reasons.append("budget_exhausted")
++            else:
++                if not math.isfinite(max_cost) or not math.isfinite(est_cost):
++                    reasons.append("budget_exhausted")
++                elif est_cost > max_cost:
++                    reasons.append("budget_exhausted")
+         if task.attempt > 1 and not task.idempotency_key and not task.compensation:
+             reasons.append("retry_requires_idempotency_or_compensation")
+         return not reasons, sorted(reasons)
+@@ -195,9 +225,8 @@ class Scheduler:
+     def score(self, task: Task) -> tuple[float, dict[str, float]]:
+         downstream = sum(
+             1
+-            for candidate in self.tasks.values()
+-            if task.id in candidate.dependencies
+-            and candidate.state in {"pending", "ready"}
++            for candidate_id in self._dependents.get(task.id, ())
++            if self.tasks[candidate_id].state in {"pending", "ready"}
+         )
+         maximum_downstream = max(1, len(self.tasks) - 1)
+         deadline_pressure = 0.0
+diff --git a/runtime/cognitive_query.py b/runtime/cognitive_query.py
+index c43dfc09..cb1a6e96 100644
+--- a/runtime/cognitive_query.py
++++ b/runtime/cognitive_query.py
+@@ -251,7 +251,15 @@ def hydrate_selected(
+         pressure = pressure_action(int(context_used_tokens), int(context_max_tokens), pressure_policy)
+         if pressure in {"checkpoint-required-before-bulk-hydration", "hard-checkpoint-and-block-bulk-hydration"}:
+             receipt = dict(checkpoint_publication_receipt or {})
+-            if receipt.get("schema_version") != "px.context-checkpoint-publication/1.0" or receipt.get("compaction_permitted") is not True or not receipt.get("checkpoint_id") or not receipt.get("receipt_sha256"):
++            if receipt.get("schema_version") != "px.context-checkpoint-publication/1.0":
++                raise RuntimeError(f"context pressure blocks hydration until a published checkpoint exists: {pressure}")
++            if receipt.get("compaction_permitted") is not True:
++                raise RuntimeError(f"context pressure blocks hydration until a published checkpoint exists: {pressure}")
++            checkpoint_id = receipt.get("checkpoint_id")
++            if not isinstance(checkpoint_id, str) or not checkpoint_id.startswith("ctx-"):
++                raise RuntimeError(f"context pressure blocks hydration until a published checkpoint exists: {pressure}")
++            receipt_sha256 = receipt.get("receipt_sha256")
++            if not isinstance(receipt_sha256, str) or len(receipt_sha256) != 64 or any(c not in "0123456789abcdef" for c in receipt_sha256):
+                 raise RuntimeError(f"context pressure blocks hydration until a published checkpoint exists: {pressure}")
+     allowed = {category: {item.object_id: item for item in result.categories.get(category, ())} for category in CORE_CATEGORIES}
+     hydrated: list[dict[str, object]] = []
+diff --git a/runtime/context_checkpoint.py b/runtime/context_checkpoint.py
+index d01c1ca1..35c6cab9 100644
+--- a/runtime/context_checkpoint.py
++++ b/runtime/context_checkpoint.py
+@@ -129,9 +129,13 @@ def persist_and_publish_checkpoint(
+     storage_receipt = dict(persist(checkpoint))
+     if not storage_receipt:
+         raise RuntimeError("checkpoint persistence returned no receipt")
++    if storage_receipt.get("valid") is not True or storage_receipt.get("status") == "failed":
++        raise RuntimeError("checkpoint persistence receipt not valid")
+     generation_receipt = dict(publish(checkpoint, storage_receipt))
+     if not generation_receipt:
+         raise RuntimeError("checkpoint publication returned no receipt")
++    if generation_receipt.get("valid") is not True or generation_receipt.get("status") == "failed":
++        raise RuntimeError("checkpoint publication receipt not valid")
+     return {
+         "schema_version": "px.context-checkpoint-publication/1.0",
+         "checkpoint_id": checkpoint["checkpoint_id"],
+diff --git a/runtime/event_ledger.py b/runtime/event_ledger.py
+index b21de772..df202562 100644
+--- a/runtime/event_ledger.py
++++ b/runtime/event_ledger.py
+@@ -17,7 +17,8 @@ ZERO_SHA256 = "0" * 64
+ 
+ def _canonical(value: object) -> bytes:
+     return json.dumps(
+-        value, sort_keys=True, separators=(",", ":"), ensure_ascii=False
++        value, sort_keys=True, separators=(",", ":"), ensure_ascii=False,
++        allow_nan=False,
+     ).encode("utf-8")
+ 
+ 
+@@ -78,6 +79,12 @@ def validate_event_ledger(
+         previous = str(record.get("event_sha256", ""))
+         events.append(record)
+     head_path, anchors = _paths(ledger)
++    # An empty working event directory is not a clean ledger when a protected
++    # publication head or anchor still claims durable committed history.
++    if require_head and not event_paths and (
++        head_path.exists() or (anchors.is_dir() and any(anchors.glob("*.json")))
++    ):
++        errors.append("protected ledger history exists but no event files remain")
+     if require_head and event_paths:
+         try:
+             head = json.loads(head_path.read_text(encoding="utf-8"))
+@@ -114,15 +121,19 @@ def read_event_tail(
+     ledger = ledger.resolve()
+     event_paths = tuple(sorted(ledger.glob("*.json"))) if ledger.is_dir() else ()
+     if not event_paths:
++        head_path, anchors = _paths(ledger)
++        orphaned_head = head_path.exists() or (
++            anchors.is_dir() and any(anchors.glob("*.json"))
++        )
+         return {
+             "schema_version": "1.0",
+             "events": [],
+             "health": {
+-                "status": "missing",
++                "status": "degraded" if orphaned_head else "missing",
+                 "valid_prefix_count": 0,
+-                "failed_file": None,
++                "failed_file": head_path.name if orphaned_head else None,
+                 "ignored_suffix_files": 0,
+-                "reason": None,
++                "reason": "protected head without event history" if orphaned_head else None,
+                 "ancestry_head_sha256": ZERO_SHA256,
+             },
+         }
+@@ -249,7 +260,7 @@ def append_chained_event(
+     ledger.mkdir(parents=True, exist_ok=True)
+     with FileLock(ledger / ".event-ledger.lock"):
+         recover_event_ledger(ledger)
+-        current = validate_event_ledger(ledger, require_head=any(ledger.glob("*.json")))
++        current = validate_event_ledger(ledger, require_head=True)
+         if not current["valid"]:
+             raise ValueError(
+                 "event ledger integrity failure: " + "; ".join(current["errors"])
+diff --git a/runtime/memory_broker.py b/runtime/memory_broker.py
+index a123e5cb..fd5cbadc 100644
+--- a/runtime/memory_broker.py
++++ b/runtime/memory_broker.py
+@@ -72,6 +72,19 @@ class MemoryQueryPlan:
+         }
+ 
+ 
++def _validate_plan_quantities(max_items, max_bytes, max_tokens,
++                              trust_floor, max_age_seconds):
++    errors = []
++    for name, value in (('max_items', max_items), ('max_bytes', max_bytes),
++                        ('max_tokens', max_tokens), ('max_age_seconds', max_age_seconds)):
++        if type(value) is not int or value < 1:
++            errors.append(f'{name} must be a positive integer')
++    if (isinstance(trust_floor, bool) or not isinstance(trust_floor, (int, float))
++            or not math.isfinite(trust_floor) or not 0 <= trust_floor <= 1):
++        errors.append('trust_floor must be a finite number between zero and one')
++    return errors
++
++
+ def build_memory_query_plan(
+     *,
+     project_id: str,
+@@ -92,6 +105,10 @@ def build_memory_query_plan(
+     source_revision: str,
+     dependency_revisions: Mapping[str, object],
+ ) -> MemoryQueryPlan:
++    quantity_errors = _validate_plan_quantities(max_items, max_bytes, max_tokens,
++                                                 trust_floor, max_age_seconds)
++    if quantity_errors:
++        raise ValueError('invalid memory query plan: ' + '; '.join(quantity_errors))
+     base: dict[str, object] = {
+         "schema_version": SCHEMA_VERSION,
+         "project_id": project_id,
+@@ -157,12 +174,9 @@ def validate_memory_query_plan(
+             errors.append(f"{field} is required")
+     if not plan.binding_ids or not plan.memory_classes or not plan.tiers:
+         errors.append("binding IDs, memory classes, and tiers are required")
+-    if plan.max_items < 1 or plan.max_bytes < 1 or plan.max_tokens < 1:
+-        errors.append("memory budgets must be positive")
+-    if not 0 <= plan.trust_floor <= 1:
+-        errors.append("trust floor must be between zero and one")
+-    if plan.max_age_seconds < 1:
+-        errors.append("freshness budget must be positive")
++    errors.extend(_validate_plan_quantities(plan.max_items, plan.max_bytes,
++                                            plan.max_tokens, plan.trust_floor,
++                                            plan.max_age_seconds))
+     if plan.conflict_policy not in {"reject", "quarantine"}:
+         errors.append("conflict policy must reject or quarantine")
+     if plan.writeback_policy not in {"deny", "proposal_only"}:
+@@ -203,7 +217,12 @@ def materialize_memory_context(
+         if record is None:
+             violations.append(f"missing_memory:{memory_id}")
+             continue
+-        if record.project_id != plan.project_id or not can_access(caller, record):
++        if (isinstance(record.confidence, bool)
++                or not isinstance(record.confidence, (int, float))
++                or not math.isfinite(record.confidence)
++                or not 0 <= record.confidence <= 1):
++            violations.append(f"memory_invalid_confidence:{memory_id}")
++        elif record.project_id != plan.project_id or not can_access(caller, record):
+             violations.append(f"foreign_or_unauthorized_memory:{memory_id}")
+         elif record.memory_type not in plan.memory_classes or record.layer not in plan.tiers:
+             violations.append(f"memory_class_or_tier_mismatch:{memory_id}")
+diff --git a/runtime/memory_intelligence.py b/runtime/memory_intelligence.py
+index 92819bcc..2c2e72cd 100644
+--- a/runtime/memory_intelligence.py
++++ b/runtime/memory_intelligence.py
+@@ -58,6 +58,20 @@ SECRETS = (
+     ),
+     ("api_token", re.compile(r"\bsk-[A-Za-z0-9_-]{16,}\b")),
+     ("private_key", re.compile(r"-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----")),
++    (
++        "authorization_bearer",
++        re.compile(r"(?i)authorization\s*[:=]\s*bearer\s+[A-Za-z0-9._\-+/=]{16,}"),
++    ),
++    (
++        "aws_access_key_id",
++        re.compile(r"\bAKIA[0-9A-Z]{16}\b"),
++    ),
++    (
++        "aws_secret_access_key",
++        re.compile(
++            r"(?i)aws[_-]?secret[_-]?access[_-]?key\s*[:=]\s*['\"]?[A-Za-z0-9/+=]{40}"
++        ),
++    ),
+ )
+ INJECTIONS = (
+     (
+diff --git a/runtime/memory_vault.py b/runtime/memory_vault.py
+index 6919d7f1..0a4a42fb 100644
+--- a/runtime/memory_vault.py
++++ b/runtime/memory_vault.py
+@@ -695,6 +695,8 @@ class MemoryVault:
+     def search(
+         self, query: str, *, actor_id: str, limit: int = 5
+     ) -> tuple[MemoryRecord, ...]:
++        if type(limit) is not int or not 0 <= limit <= 10_000:
++            raise ValueError("memory search limit must be an integer between zero and 10000")
+         records = self.retrieval_records(actor_id=actor_id)
+         ids = candidate_memories(
+             query, records, project_id=self.project_id, actor_id=actor_id
+diff --git a/runtime/operational_event_bus.py b/runtime/operational_event_bus.py
+index ed119411..d7233e90 100644
+--- a/runtime/operational_event_bus.py
++++ b/runtime/operational_event_bus.py
+@@ -54,6 +54,15 @@ class OperationalEventBus:
+ 
+     def _state(self) -> dict[str, object]:
+         if not self._state_path.is_file():
++            # Never reinterpret a damaged nonempty bus as a pristine bus.
++            durable_artifacts = (
++                self._head_path.exists()
++                or any((self.root / "events").glob("*.json"))
++                or any((self.root / "receipts").glob("*.json"))
++                or any((self.root / ".authority" / "anchors").glob("*.json"))
++            )
++            if durable_artifacts:
++                raise ValueError("operational event bus state is missing despite durable history")
+             return {
+                 "schema_version": "px.operation-bus-state/1.0",
+                 "revision": 0,
+@@ -276,6 +285,15 @@ class OperationalEventBus:
+             }
+             suffix = hashlib.sha256(str(operation["event_id"]).encode()).hexdigest()[:12]
+             transaction_id = f"operation-{revision:08d}-{suffix}"
++            receipt_path = self.root / "receipts" / f"{operation['event_id']}.json"
++            if receipt_path.is_file():
++                try:
++                    existing_receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
++                    if existing_receipt.get("event_sha256") == event_sha256:
++                        return {**existing_receipt, "transaction": None}
++                except (OSError, UnicodeError, json.JSONDecodeError):
++                    pass
++                raise ValueError(f"duplicate event_id {operation['event_id']} with differing payload")
+             artifacts = (
+                 JsonArtifact("event", self.root / "events" / f"{revision:08d}.json", envelope),
+                 JsonArtifact("receipt", self.root / "receipts" / f"{operation['event_id']}.json", receipt),
+diff --git a/runtime/query_planner.py b/runtime/query_planner.py
+index d78e7711..5ac27a9d 100644
+--- a/runtime/query_planner.py
++++ b/runtime/query_planner.py
+@@ -64,12 +64,30 @@ class QueryPlan:
+     facets: Mapping[str, tuple[str, ...]]
+     direct_blockers: tuple[str, ...]
+     plan_sha256: str
++    lexicon_sha256: str = ""
+     authority_granted: bool = False
+ 
+     @property
+     def plan_hash(self) -> str:  # compatibility with source material terminology
+         return self.plan_sha256
+ 
++    @staticmethod
++    def validate(plan: "QueryPlan") -> None:
++        """Recompute the plan digest and confirm it matches the claimed plan_sha256."""
++        payload = {
++            "normalized_query": plan.normalized_query,
++            "exact_identifiers": sorted(plan.exact_identifiers),
++            "exact_keys": sorted(plan.exact_keys),
++            "aliases_resolved": [list(item) for item in sorted(plan.aliases_resolved)],
++            "expansions": sorted(plan.expansions),
++            "facets": {key: sorted(values) for key, values in sorted(plan.facets.items())},
++            "direct_blockers": sorted(plan.direct_blockers),
++            "lexicon_sha256": plan.lexicon_sha256,
++        }
++        expected = _sha(payload)
++        if plan.plan_sha256 != expected:
++            raise ValueError("query plan digest does not match claimed plan_sha256")
++
+ 
+ class QueryPlanner:
+     """Produces canonical query hints only; it never scores or retrieves data."""
+@@ -167,6 +185,7 @@ class QueryPlanner:
+             facets={key: tuple(values) for key, values in payload["facets"].items()},
+             direct_blockers=tuple(blockers),
+             plan_sha256=_sha(payload),
++            lexicon_sha256=self.lexicon_sha256,
+             authority_granted=False,
+         )
+ 
+diff --git a/runtime/recovery.py b/runtime/recovery.py
+index c231a3a4..0a865e7f 100644
+--- a/runtime/recovery.py
++++ b/runtime/recovery.py
+@@ -581,7 +581,7 @@ class RecoveryCoordinator:
+             for index, callback in enumerate(callbacks):
+                 try:
+                     detail = dict(callback(apply))
+-                    status = "healthy" if detail.get("valid", True) else "blocked"
++                    status = "healthy" if detail.get("valid") is True else "blocked"
+                     components.append(
+                         self._component(f"{label}[{index}]", status, detail=detail)
+                     )
+@@ -595,7 +595,7 @@ class RecoveryCoordinator:
+         for index, callback in enumerate(self.configuration.resource_reconcilers):
+             try:
+                 detail = dict(callback(apply))
+-                status = "healthy" if detail.get("valid", True) else "degraded"
++                status = "healthy" if detail.get("valid") is True else "degraded"
+                 if int(detail.get("cleanup_failures", 0)):
+                     status = "blocked"
+                 components.append(
+diff --git a/runtime/retrieval.py b/runtime/retrieval.py
+index 4eb6da54..b5307ae7 100644
+--- a/runtime/retrieval.py
++++ b/runtime/retrieval.py
+@@ -193,6 +193,7 @@ def retrieve(
+             raise ValueError("query_plan must be a typed QueryPlan")
+         if query_plan.authority_granted:
+             raise ValueError("query plans may not grant authority")
++        QueryPlan.validate(query_plan)
+         query_plan_sha256 = query_plan.plan_sha256
+         exact.update(query_plan.exact_identifiers)
+         effective_query = " ".join((query_plan.normalized_query, *query_plan.expansions)).strip() or query
+diff --git a/runtime/scheduler.py b/runtime/scheduler.py
+index c3b3e972..fefdc9ba 100644
+--- a/runtime/scheduler.py
++++ b/runtime/scheduler.py
+@@ -6,6 +6,22 @@ from dataclasses import dataclass
+ from datetime import datetime, timedelta, timezone
+ from typing import Mapping
+ 
++import math
++
++
++def _finite_pressure_value(value, field_name):
++    if value is None:
++        raise ValueError(f"{field_name} is required")
++    if isinstance(value, bool):
++        raise ValueError(f"{field_name} must be a number, not bool")
++    try:
++        num = float(value)
++    except (TypeError, ValueError):
++        raise ValueError(f"{field_name} must be a finite number")
++    if not math.isfinite(num):
++        raise ValueError(f"{field_name} must be finite")
++    return num
++
+ 
+ @dataclass(frozen=True, slots=True)
+ class ResourcePolicy:
+@@ -55,22 +71,39 @@ class ResourceScheduler:
+             return Admission(False, "unknown lane")
+         if work_id in self._lanes:
+             return Admission(False, "work is already admitted")
+-        if float(snapshot.get("memory_percent", 0)) >= self.policy.max_memory_percent:
++        memory_percent = _finite_pressure_value(snapshot.get("memory_percent"), "memory_percent")
++        gpu_percent = _finite_pressure_value(snapshot.get("gpu_percent"), "gpu_percent")
++        wsl_memory_percent = _finite_pressure_value(snapshot.get("wsl_memory_percent"), "wsl_memory_percent")
++        docker_memory_percent = _finite_pressure_value(snapshot.get("docker_memory_percent"), "docker_memory_percent")
++        _missing = object()
++        agents_raw = snapshot.get("agents", _missing)
++        if agents_raw is _missing:
++            agents = len(self._workers)
++        else:
++            agents = _finite_pressure_value(agents_raw, "agents")
++        if memory_percent >= self.policy.max_memory_percent:
+             return Admission(False, "memory pressure threshold reached")
+-        if float(snapshot.get("gpu_percent", 0)) >= self.policy.max_gpu_percent:
++        if gpu_percent >= self.policy.max_gpu_percent:
+             return Admission(False, "GPU pressure threshold reached")
+-        if (
+-            float(snapshot.get("wsl_memory_percent", 0))
+-            >= self.policy.max_wsl_memory_percent
+-        ):
++        if wsl_memory_percent >= self.policy.max_wsl_memory_percent:
+             return Admission(False, "WSL memory pressure threshold reached")
+-        if (
+-            float(snapshot.get("docker_memory_percent", 0))
+-            >= self.policy.max_docker_memory_percent
+-        ):
++        if docker_memory_percent >= self.policy.max_docker_memory_percent:
+             return Admission(False, "Docker memory pressure threshold reached")
++        def _normalize_path(path: str) -> str:
++            parts = path.replace("\\", "/").split("/")
++            resolved = []
++            for part in parts:
++                if part == "" or part == ".":
++                    continue
++                if part == "..":
++                    if resolved and resolved[-1] != "..":
++                        resolved.pop()
++                    continue
++                resolved.append(part)
++            return "/".join(resolved).casefold().rstrip("/")
++
+         normalized_paths = frozenset(
+-            path.replace("\\", "/").casefold().rstrip("/") for path in owned_paths
++            _normalize_path(path) for path in owned_paths
+         )
+         for owner, existing in self._ownership.items():
+             if any(
+@@ -88,7 +121,7 @@ class ResourceScheduler:
+         )
+         if sum(value == lane for value in self._lanes.values()) >= limit:
+             return Admission(False, f"{lane} lane is serialized")
+-        if int(snapshot.get("agents", len(self._workers))) >= self.policy.max_agents:
++        if agents >= self.policy.max_agents:
+             return Admission(False, "agent budget reached")
+         self._lanes[work_id] = lane
+         self._ownership[work_id] = normalized_paths
+@@ -132,8 +165,9 @@ class ResourceScheduler:
+             work_id = self._assignments.pop(worker, None)
+             self._workers.pop(worker, None)
+             if work_id is not None:
+-                self.release(work_id)
+-                recovered.append(work_id)
++                if not any(assigned == work_id for assigned in self._assignments.values()):
++                    self.release(work_id)
++                    recovered.append(work_id)
+         return tuple(sorted(recovered))
+ 
+     def snapshot(self, now: datetime | None = None) -> dict[str, object]:
+diff --git a/runtime/test_profiles.py b/runtime/test_profiles.py
+index 7625081b..75aef7ce 100644
+--- a/runtime/test_profiles.py
++++ b/runtime/test_profiles.py
+@@ -88,7 +88,7 @@ def _require_campaign_write_admission(root: Path, admission_event_id: str) -> No
+             ),
+             None,
+         ) if isinstance(scopes, list) else None
+-        campaign_path = (root / PROJECT_REPAIR_CAMPAIGN_PATH).resolve().as_posix()
++        campaign_path = _repair_campaign_path(root)[0].resolve().as_posix()
+         if (
+             not isinstance(write_scope, list)
+             or campaign_path not in {
+@@ -180,6 +180,10 @@ def governed_full_profile_timeout_envelope(root: Path) -> dict[str, int]:
+ 
+ 
+ def _repair_campaign_path(root: Path) -> tuple[Path, bool]:
++    from .project_revision_succession import current_revision_root
++    revision = current_revision_root(root)
++    if revision is not None:
++        return revision / "repair-campaign.json", True
+     repository_campaign = root / REPAIR_CAMPAIGN_PATH
+     if repository_campaign.is_file():
+         return repository_campaign, True
+@@ -192,6 +196,10 @@ def initialize_project_repair_campaign(root: Path) -> dict[str, Any]:
+     """Create mandatory local processing-order state for a managed project."""
+ 
+     root = root.resolve(strict=True)
++    from .project_revision_succession import current_revision_root
++    active_revision = current_revision_root(root)
++    if active_revision is not None:
++        raise ProcessingOrderBlocked("active successor revisions must use the append-only succession commissioning owner")
+     marker = root / MANAGED_PROJECT_MARKER
+     if not marker.is_file():
+         raise ProcessingOrderBlocked(
+@@ -201,7 +209,8 @@ def initialize_project_repair_campaign(root: Path) -> dict[str, Any]:
+     project_id = str(project_record.get("project_id") or "")
+     if not project_id.startswith("prj_"):
+         raise ProcessingOrderBlocked("managed-project record is malformed")
+-    path = root / PROJECT_REPAIR_CAMPAIGN_PATH
++    from .project_revision_succession import current_campaign_path
++    path = current_campaign_path(root)
+     if path.exists():
+         status = repair_campaign_status(root)
+         return {
+@@ -246,7 +255,10 @@ def reopen_invalid_repair_campaign(
+ 
+     root = root.resolve(strict=True)
+     marker = root / MANAGED_PROJECT_MARKER
+-    path = root / PROJECT_REPAIR_CAMPAIGN_PATH
++    from .project_revision_succession import current_revision_root, current_campaign_path
++    if current_revision_root(root) is not None:
++        raise ProcessingOrderBlocked("active successor revisions must reopen through their revision-scoped campaign owner")
++    path = current_campaign_path(root)
+     if not marker.is_file() or not path.is_file():
+         raise ProcessingOrderBlocked("repair reopen requires managed campaign state")
+     if (
+@@ -308,7 +320,10 @@ def reopen_pre_freeze_repair_campaign(
+ 
+     root = root.resolve(strict=True)
+     marker = root / MANAGED_PROJECT_MARKER
+-    path = root / PROJECT_REPAIR_CAMPAIGN_PATH
++    from .project_revision_succession import current_revision_root, current_campaign_path
++    if current_revision_root(root) is not None:
++        raise ProcessingOrderBlocked("active successor revisions must reopen through their revision-scoped campaign owner")
++    path = current_campaign_path(root)
+     if not marker.is_file() or not path.is_file():
+         raise ProcessingOrderBlocked("pre-freeze reopen requires managed campaign state")
+     if (
+@@ -362,7 +377,14 @@ def begin_repair_phase(root: Path, *, admission_event_id: str) -> dict[str, Any]
+ 
+     root = root.resolve(strict=True)
+     marker = root / MANAGED_PROJECT_MARKER
+-    path = root / PROJECT_REPAIR_CAMPAIGN_PATH
++    from .project_revision_succession import current_revision_root, current_campaign_path
++    if current_revision_root(root) is not None:
++        from .revision_campaign_lifecycle import RevisionCampaignBlocked, begin_repair
++        try:
++            return begin_repair(root, admission_event_id=admission_event_id)
++        except RevisionCampaignBlocked as error:
++            raise ProcessingOrderBlocked(str(error)) from error
++    path = current_campaign_path(root)
+     if not marker.is_file() or not path.is_file():
+         raise ProcessingOrderBlocked("repair phase transition requires managed campaign state")
+     if not isinstance(admission_event_id, str) or not admission_event_id.startswith("gap-event:"):
+@@ -401,7 +423,14 @@ def resolve_repair_findings(
+     """Resolve evidenced repair findings without closing staged intake."""
+     root = root.resolve(strict=True)
+     marker = root / MANAGED_PROJECT_MARKER
+-    path = root / PROJECT_REPAIR_CAMPAIGN_PATH
++    from .project_revision_succession import current_revision_root, current_campaign_path
++    if current_revision_root(root) is not None:
++        from .revision_campaign_lifecycle import RevisionCampaignBlocked, resolve_findings as revision_resolve_findings
++        try:
++            return revision_resolve_findings(root, evidence_by_finding=evidence_by_finding, admission_event_id=admission_event_id)
++        except RevisionCampaignBlocked as error:
++            raise ProcessingOrderBlocked(str(error)) from error
++    path = current_campaign_path(root)
+     if not marker.is_file() or not path.is_file():
+         raise ProcessingOrderBlocked("finding reconciliation requires managed campaign state")
+     if (not isinstance(admission_event_id, str) or not admission_event_id.startswith("gap-event:")
+@@ -444,7 +473,14 @@ def register_repair_findings(
+     """Add newly discovered findings while the repair intake remains open."""
+     root = root.resolve(strict=True)
+     marker = root / MANAGED_PROJECT_MARKER
+-    path = root / PROJECT_REPAIR_CAMPAIGN_PATH
++    from .project_revision_succession import current_revision_root, current_campaign_path
++    if current_revision_root(root) is not None:
++        from .revision_campaign_lifecycle import RevisionCampaignBlocked, register_findings as revision_register_findings
++        try:
++            return revision_register_findings(root, finding_ids=finding_ids, admission_event_id=admission_event_id)
++        except RevisionCampaignBlocked as error:
++            raise ProcessingOrderBlocked(str(error)) from error
++    path = current_campaign_path(root)
+     if not marker.is_file() or not path.is_file():
+         raise ProcessingOrderBlocked("finding registration requires managed campaign state")
+     if (
+@@ -486,19 +522,20 @@ def register_repair_findings(
+     return repair_campaign_status(root)
+ 
+ 
+-def close_repair_intake(
+-    root: Path, *, admission_event_id: str, closure_authority: str
+-) -> dict[str, Any]:
+-    """Close a zero-denominator repair intake and enter operational verification.
++def _prepared_campaign_state(previous_bytes: bytes) -> dict[str, Any]:
++    state = json.loads(previous_bytes)
++    if (not isinstance(state, dict) or state.get("schema_version") != "px.repair-campaign/1.0"
++            or state.get("phase") not in PROCESSING_PHASES
++            or type(state.get("intake_open")) is not bool
++            or type(state.get("unresolved")) is not list
++            or any(type(item) is not str or not item.strip() for item in state["unresolved"])
++            or len(state["unresolved"]) != len(set(state["unresolved"]))):
++        raise ProcessingOrderBlocked("repair campaign is malformed")
++    return state
+ 
+-    This transition deliberately does not freeze repair. A separate, evidence-
+-    bound operational verification must succeed before the freeze boundary.
+-    """
+-    root = root.resolve(strict=True)
+-    marker = root / MANAGED_PROJECT_MARKER
+-    path = root / PROJECT_REPAIR_CAMPAIGN_PATH
+-    if not marker.is_file() or not path.is_file():
+-        raise ProcessingOrderBlocked("intake closure requires managed campaign state")
++
++def prepare_intake_closure(previous_bytes: bytes, *, admission_event_id: str, closure_authority: str) -> dict[str, Any]:
++    """Validate and prepare closure without publishing any campaign state."""
+     if (
+         not isinstance(admission_event_id, str)
+         or not admission_event_id.startswith("gap-event:")
+@@ -506,13 +543,12 @@ def close_repair_intake(
+         or not closure_authority.strip()
+     ):
+         raise ProcessingOrderBlocked("intake closure requires explicit authority and admission")
+-    status = repair_campaign_status(root)
++    state = _prepared_campaign_state(previous_bytes)
++    status = state
+     if status["phase"] != "repair" or not status["intake_open"] or status["unresolved"]:
+         raise ProcessingOrderBlocked(
+             "intake closure requires open repair intake with a zero unresolved denominator"
+         )
+-    previous_bytes = path.read_bytes()
+-    state = json.loads(previous_bytes)
+     history = state.get("phase_history", [])
+     if not isinstance(history, list):
+         raise ProcessingOrderBlocked("repair phase history is malformed")
+@@ -531,6 +567,30 @@ def close_repair_intake(
+     state["intake_closed_at"] = datetime.now(timezone.utc).isoformat()
+     state["intake_closure_authority"] = closure_authority.strip()
+     state["phase"] = "operational_verification"
++    return state
++
++
++def close_repair_intake(
++    root: Path, *, admission_event_id: str, closure_authority: str
++) -> dict[str, Any]:
++    """Close a zero-denominator repair intake and enter operational verification.
++
++    This transition deliberately does not freeze repair. A separate, evidence-
++    bound operational verification must succeed before the freeze boundary.
++    """
++    root = root.resolve(strict=True)
++    marker = root / MANAGED_PROJECT_MARKER
++    from .project_revision_succession import current_revision_root, current_campaign_path
++    if current_revision_root(root) is not None:
++        from .revision_campaign_lifecycle import close_intake
++        return close_intake(root, admission_event_id=admission_event_id,
++                            closure_authority=closure_authority)
++    path = current_campaign_path(root)
++    if not marker.is_file() or not path.is_file():
++        raise ProcessingOrderBlocked("intake closure requires managed campaign state")
++    previous_bytes = path.read_bytes()
++    state = prepare_intake_closure(previous_bytes, admission_event_id=admission_event_id,
++                                  closure_authority=closure_authority)
+     _require_campaign_write_admission(root, admission_event_id)
+     temporary = path.with_name(path.name + ".close-intake.new")
+     with temporary.open("x", encoding="utf-8", newline="\n") as stream:
+@@ -542,18 +602,12 @@ def close_repair_intake(
+     return repair_campaign_status(root)
+ 
+ 
+-def freeze_repair_campaign(
+-    root: Path, *, admission_event_id: str, evidence_path: str
+-) -> dict[str, Any]:
+-    """Freeze only after a current, hash-bound operational-verification receipt."""
+-    root = root.resolve(strict=True)
+-    marker = root / MANAGED_PROJECT_MARKER
+-    path = root / PROJECT_REPAIR_CAMPAIGN_PATH
+-    if not marker.is_file() or not path.is_file():
+-        raise ProcessingOrderBlocked("repair freeze requires managed campaign state")
++def prepare_repair_freeze(root: Path, path: Path, previous_bytes: bytes, *, admission_event_id: str, evidence_path: str) -> dict[str, Any]:
++    """Validate independent operational evidence and prepare an unpublished freeze."""
+     if not isinstance(admission_event_id, str) or not admission_event_id.startswith("gap-event:"):
+         raise ProcessingOrderBlocked("repair freeze requires a ledger admission reference")
+-    status = repair_campaign_status(root)
++    state = _prepared_campaign_state(previous_bytes)
++    status = state
+     if (
+         status["phase"] != "operational_verification"
+         or status["intake_open"]
+@@ -563,6 +617,8 @@ def freeze_repair_campaign(
+             "repair freeze requires closed zero-denominator operational verification"
+         )
+     supplied = root / evidence_path
++    from .archive_io import reject_path_links
++    reject_path_links(supplied)
+     if supplied.is_symlink():
+         raise ProcessingOrderBlocked("operational evidence cannot be a symbolic link")
+     candidate = supplied.resolve(strict=True)
+@@ -573,8 +629,6 @@ def freeze_repair_campaign(
+     if not candidate.is_file():
+         raise ProcessingOrderBlocked("operational evidence must be an exact regular file")
+     receipt = json.loads(candidate.read_text(encoding="utf-8"))
+-    previous_bytes = path.read_bytes()
+-    state = json.loads(previous_bytes)
+     campaign_id = str(state.get("campaign_id") or "")
+     if (
+         not isinstance(receipt, dict)
+@@ -582,6 +636,7 @@ def freeze_repair_campaign(
+         or receipt.get("valid") is not True
+         or receipt.get("campaign_id") != campaign_id
+         or receipt.get("campaign_state_sha256") != hashlib.sha256(previous_bytes).hexdigest()
++        or type(receipt.get("unresolved_count")) is not int
+         or receipt.get("unresolved_count") != 0
+         or not isinstance(receipt.get("checks"), list)
+         or not receipt["checks"]
+@@ -596,7 +651,8 @@ def freeze_repair_campaign(
+         digest = check.get("artifact_sha256")
+         if (
+             not isinstance(name, str) or not name.strip() or name in seen_checks
+-            or check.get("passed") is not True or check.get("exit_code") != 0
++            or check.get("passed") is not True
++            or type(check.get("exit_code")) is not int or check.get("exit_code") != 0
+             or not isinstance(artifact_path, str) or not artifact_path.strip()
+             or not isinstance(digest, str) or len(digest) != 64
+             or any(character not in "0123456789abcdef" for character in digest)
+@@ -604,6 +660,7 @@ def freeze_repair_campaign(
+             raise ProcessingOrderBlocked("operational verification check lacks passing artifact evidence")
+         seen_checks.add(name)
+         source = root / artifact_path
++        reject_path_links(source)
+         if source.is_symlink():
+             raise ProcessingOrderBlocked("operational verification artifact cannot be a symbolic link")
+         try:
+@@ -640,6 +697,25 @@ def freeze_repair_campaign(
+         "evidence_sha256": evidence_sha256,
+         "governed_failure_nodes": [],
+     }
++    return state
++
++
++def freeze_repair_campaign(
++    root: Path, *, admission_event_id: str, evidence_path: str
++) -> dict[str, Any]:
++    """Freeze only after a current, hash-bound operational-verification receipt."""
++    root = root.resolve(strict=True)
++    marker = root / MANAGED_PROJECT_MARKER
++    from .project_revision_succession import current_revision_root, current_campaign_path
++    if current_revision_root(root) is not None:
++        from .revision_campaign_lifecycle import freeze_repair
++        return freeze_repair(root, admission_event_id=admission_event_id, evidence_path=evidence_path)
++    path = current_campaign_path(root)
++    if not marker.is_file() or not path.is_file():
++        raise ProcessingOrderBlocked("repair freeze requires managed campaign state")
++    previous_bytes = path.read_bytes()
++    state = prepare_repair_freeze(root, path, previous_bytes,
++                                 admission_event_id=admission_event_id, evidence_path=evidence_path)
+     _require_campaign_write_admission(root, admission_event_id)
+     temporary = path.with_name(path.name + ".freeze-repair.new")
+     with temporary.open("x", encoding="utf-8", newline="\n") as stream:
+@@ -695,7 +771,7 @@ def repair_campaign_status(root: Path) -> dict[str, Any]:
+     blocked = [stage for stage in STAGE_MINIMUM_PHASE if not processing_stage_allowed(phase, intake_open, unresolved, stage)]
+     return {
+         "schema_version": "px.processing-order-status/1.0", "valid": True,
+-        "managed": True, "campaign_id": value.get("campaign_id"), "phase": phase,
++        "managed": True, "campaign_id": value.get("campaign_id"), "project_id": value.get("project_id"), "phase": phase,
+         "intake_open": intake_open, "unresolved": list(unresolved),
+         "unresolved_count": len(unresolved), "blocked_stages": blocked,
+         "next_required_phase": PROCESSING_PHASES[min(PROCESSING_PHASES.index(phase) + 1, len(PROCESSING_PHASES) - 1)],
+diff --git a/runtime/workflow_studio.py b/runtime/workflow_studio.py
+index 8b140d5a..e38f8380 100644
+--- a/runtime/workflow_studio.py
++++ b/runtime/workflow_studio.py
+@@ -1612,15 +1612,24 @@ class WorkflowStudio:
+             failure_correlation_id = hashlib.sha256(
+                 f"{run_id}\0workflow.failure".encode("utf-8")
+             ).hexdigest()[:24]
++            admission_expired = isinstance(error, ProcessAdmissionExpired)
++            settlement = getattr(error, "supervision_outcome", {}) or {}
++            settled = (
++                settlement.get("tree_closed") is True
++                and settlement.get("custody_retained") is False
++                and settlement.get("cleanup_errors") == []
++            )
++            failure_status = "total_timeout" if admission_expired and settled else "failed"
+             receipt.update(
+                 {
+-                    "run_state": "failed",
+-                    "status": "failed",
++                    "run_state": failure_status,
++                    "status": failure_status,
+                     "completed_utc": _now(),
+                     "failure_type": type(error).__name__,
+                     "failure_message": str(error)[:500],
+                     "failure_correlation_id": failure_correlation_id,
+                     "node_count": len(completed_nodes),
++                    "supervision_outcome": settlement,
+                 }
+             )
+             current = self.run_control.read(run_id)
+diff --git a/scripts/build_contract_ownership_registry.py b/scripts/build_contract_ownership_registry.py
+index cd18c21c..f884a2e1 100644
+--- a/scripts/build_contract_ownership_registry.py
++++ b/scripts/build_contract_ownership_registry.py
+@@ -704,6 +704,13 @@ def build(root: Path) -> dict[str, object]:
+                 "tests/test_contract_runtime.py",
+                 "tests/test_research_contract_admission.py",
+             ]
++        elif path.parent.name == "project_revision_succession":
++            owner, enforcement = (
++                "runtime/project_revision_succession.py",
++                "revision_succession_runtime_boundary",
++            )
++            producers = [owner, "runtime/revision_campaign_lifecycle.py"]
++            tests = ["tests/test_project_revision_succession.py"]
+         elif name in DECLARED_SUITE_OWNERS:
+             owner, enforcement = (
+                 "runtime/declared_suite.py",
+@@ -747,7 +754,10 @@ def build(root: Path) -> dict[str, object]:
+                 "title": schema.get("title", name),
+                 "owner": owner,
+                 "producers": producers,
+-                "consumers": ["runtime/contracts.py"],
++                "consumers": (["runtime/contracts.py", "runtime/project_revision_succession.py",
++                               "runtime/revision_campaign_lifecycle.py", "runtime/test_profiles.py"]
++                              if path.parent.name == "project_revision_succession"
++                              else ["runtime/contracts.py"]),
+                 "enforcement": enforcement,
+                 "packaged": True,
+                 "tests": list(
+diff --git a/tests/test_operational_event_bus.py b/tests/test_operational_event_bus.py
+index 48dae898..1d46efaa 100644
+--- a/tests/test_operational_event_bus.py
++++ b/tests/test_operational_event_bus.py
+@@ -3,6 +3,8 @@ from __future__ import annotations
+ from concurrent.futures import ThreadPoolExecutor
+ import io
+ import json
++import tempfile
++import unittest
+ from pathlib import Path
+ 
+ from runtime.operational_event_bus import OperationalEventBus
+@@ -178,3 +180,45 @@ def test_replay_rejects_cursor_ahead_of_head(tmp_path: Path) -> None:
+     assert result["valid"] is False
+     assert result["gap"] is True
+     assert "ahead" in result["errors"][0]
++
++
++class PXAUD084_DuplicateEventId(unittest.TestCase):
++    """PX-AUD-084: duplicate event_id cannot overwrite earlier receipt."""
++
++    def setUp(self) -> None:
++        self.tmp = tempfile.mkdtemp(prefix="px-aud-084-")
++        self.bus = OperationalEventBus(ROOT, Path(self.tmp) / "bus", Path(self.tmp))
++
++    def test_same_event_id_always_rejected_after_first_publish(self) -> None:
++        first = self.bus.publish(_event("evt-dup", None))
++        # Same event_id, same content — but chain position differs, so it's a
++        # differing payload from the bus's perspective.
++        try:
++            self.bus.publish(_event("evt-dup", str(first["event_sha256"])))
++        except ValueError as error:
++            self.assertIn("duplicate event_id", str(error))
++        else:
++            raise AssertionError("duplicate event_id was admitted")
++        # Bus head unchanged — no new revision
++        head = self.bus.head()
++        self.assertEqual(head["revision"], 1)
++
++    def test_same_event_id_differing_content_is_rejected(self) -> None:
++        first = self.bus.publish(_event("evt-dup2", None))
++        different = _event("evt-dup2", str(first["event_sha256"]))
++        different["operation"]["name"] = "tampered"
++        with self.assertRaises(ValueError) as ctx:
++            self.bus.publish(different)
++        self.assertIn("duplicate event_id", str(ctx.exception))
++        head = self.bus.head()
++        self.assertEqual(head["revision"], 1)
++
++    def test_distinct_event_ids_both_admitted(self) -> None:
++        first = self.bus.publish(_event("evt-a", None))
++        second = self.bus.publish(_event("evt-b", str(first["event_sha256"])))
++        self.assertEqual(first["event_id"], "evt-a")
++        self.assertEqual(second["event_id"], "evt-b")
++        self.assertEqual(second["revision"], 2)
++        replay = self.bus.replay()
++        self.assertTrue(replay["valid"])
++        self.assertEqual(replay["revision"], 2)
+diff --git a/tests/test_test_profiles.py b/tests/test_test_profiles.py
+index fe9d8625..f1e84245 100644
+--- a/tests/test_test_profiles.py
++++ b/tests/test_test_profiles.py
+@@ -628,6 +628,7 @@ def test_section_status_refuses_missing_or_stale_receipts(monkeypatch):
+         "hardware-routing",
+         "runtime-domain-contracts",
+         "source-authority",
++        "revision-lifecycle",
+     }
+ 
+ 

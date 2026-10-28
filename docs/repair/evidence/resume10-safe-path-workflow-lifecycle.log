@@ -1,0 +1,145 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+__________ test_workflow_pause_resume_cancel_and_checkpoint_recovery __________
+
+tmp_path = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.tmp/resume10/owned/pacifyx-6oibks22/pytest-of-Ben/pytest-0/test_workflow_pause_resume_can0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002AF5EB44C30>
+
+    def test_workflow_pause_resume_cancel_and_checkpoint_recovery(
+        tmp_path, monkeypatch
+    ) -> None:
+        monkeypatch.setenv(
+            "PX_STUDIO_KEY_ROOT", str(tmp_path.parent / f"{tmp_path.name}-host-keys")
+        )
+        grant = EffectGrant(
+            "grant:lifecycle",
+            "workflow:lifecycle",
+            ("write",),
+            ("workspace:demo",),
+            "human:owner",
+            ("receipt:grant",),
+            state="admitted",
+        )
+        first_binding = CapabilityBinding(
+            "binding:lifecycle-first",
+            "workflow",
+            "workflow:lifecycle",
+            "capability:increment",
+            "1.0.0",
+            (grant.grant_id,),
+            None,
+            "non-billable",
+            "deny",
+            "admitted",
+            ("receipt:first",),
+        )
+        slow_binding = CapabilityBinding(
+            "binding:lifecycle-slow",
+            "workflow",
+            "workflow:lifecycle",
+            "capability:sleep",
+            "1.0.0",
+            (grant.grant_id,),
+            None,
+            "non-billable",
+            "deny",
+            "admitted",
+            ("receipt:slow",),
+        )
+        first = WorkflowNode(
+            "node:first",
+            first_binding.binding_id,
+            (WorkflowPort("value", "integer"),),
+            (WorkflowPort("value", "integer"),),
+            (grant.grant_id,),
+            "fail-closed",
+            5,
+        )
+        slow = WorkflowNode(
+            "node:slow",
+            slow_binding.binding_id,
+            (WorkflowPort("seconds", "number"),),
+            (WorkflowPort("seconds", "number"),),
+            (grant.grant_id,),
+            "fail-closed",
+            10,
+        )
+        definition = WorkflowDefinition(
+            "workflow:lifecycle", "1.0.0", "human:owner", (first, slow), ()
+        )
+        studio = WorkflowStudio(tmp_path)
+        studio.save_revision(definition)
+        studio.register_authority(
+            [first_binding, slow_binding],
+            [grant],
+            {
+                first_binding.binding_id: "increment",
+                slow_binding.binding_id: "sleep",
+            },
+        )
+        studio.validate_and_admit(definition)
+        # Keep a real pause/cancel window after a clean-room status subprocess
+        # starts on Windows, below the admitted node deadline.
+        inputs = {"node:first.value": 1, "node:slow.seconds": 4.0}
+        start_payload = {**asdict(definition), "run_inputs": inputs, "approvals": {}}
+        approval = approval_proof(tmp_path, "workflow", "start", start_payload)
+        started = _one_shot(tmp_path, "workflow", "start", {**start_payload, "approval_capability": approval})
+        assert _one_shot(tmp_path, "workflow", "status", {"run_id": started["run_id"]})["state"] != "queued"
+        state = _wait_for_workflow_state(studio, started["run_id"], {"running"})
+        while "node:first" not in state["checkpoint"]["completed_nodes"]:
+            time.sleep(0.02)
+            state = studio.status(started["run_id"])
+        with pytest.raises(PermissionError, match="explicit host approval"):
+            studio.request_lifecycle(
+                started["run_id"],
+                "pause",
+                approved=False,
+                approved_by="human:owner",
+            )
+>       studio.request_lifecycle(
+            started["run_id"],
+            "pause",
+            approved=True,
+            approved_by="human:owner",
+        )
+
+tests\test_workflow_studio.py:909: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+runtime\workflow_studio.py:2082: in request_lifecycle
+    return self.run_control.transition(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <runtime.studio_run_control.DurableRunControl object at 0x000002AF5ECAF4D0>
+run_id = 'run-19294aeee25b45ef89aad09576c3d104', target = 'pause_requested'
+actor = 'human:owner', approved = True
+checkpoint = {'completed_nodes': ['node:first'], 'next_node': 'node:slow', 'node_receipts': [{'approval_execution': {}, 'attempts':...ffectReconciliationRequired', ...}], 'kind': 'task', 'node_id': 'node:first', ...}], 'ready_nodes': ['node:slow'], ...}
+failure = None, operation = 'workflow.request.pause'
+
+    def transition(
+        self,
+        run_id: str,
+        target: str,
+        *,
+        actor: str,
+        approved: bool,
+        checkpoint: Mapping[str, object] | None = None,
+        failure: Mapping[str, object] | None = None,
+        operation: str | None = None,
+    ) -> dict[str, object]:
+        if not approved:
+            raise PermissionError("durable run transition requires explicit host approval")
+        if target not in RUN_STATES:
+            raise ValueError("unsupported durable run state")
+        with FileLock(self.lock_path, timeout_seconds=10):
+            current = self._read_unlocked(run_id)
+            if target not in TRANSITIONS[str(current["state"])]:
+>               raise ValueError(
+                    f"illegal durable run transition: {current['state']} -> {target}"
+                )
+E               ValueError: illegal durable run transition: finalizing -> pause_requested
+
+runtime\studio_run_control.py:541: ValueError
+=========================== short test summary info ===========================
+FAILED tests/test_workflow_studio.py::test_workflow_pause_resume_cancel_and_checkpoint_recovery
+1 failed in 3.92s
+

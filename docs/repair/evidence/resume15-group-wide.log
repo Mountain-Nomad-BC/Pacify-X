@@ -1,0 +1,9 @@
+cmd: C:\Users\Ben\Documents\bootstrap_project\Pacify-X\Python\pythoncore-3.14-64\python.exe -m pytest -q --no-header -p no:cacheprovider tests/test_governed_prepared_member.py tests/test_group_local_custody_fence.py tests/test_group_host_composition.py tests/test_group_provider_bindings.py tests/test_group_convergence_boundary.py tests/test_remote_provider_placement.py tests/test_remote_attachment_identity.py
+exit: 0
+elapsed_seconds: 19.31
+--- stdout ---
+............................................                             [100%]
+44 passed in 18.81s
+
+--- stderr ---
+

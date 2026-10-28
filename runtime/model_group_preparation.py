@@ -201,6 +201,7 @@ def prepare_group_plan(
         if root is None:
             raise ValueError("T.I.E. fusion requires the canonical project root")
         from .usage_memory import fuse_tie_experience
+
         tie_fusion = fuse_tie_experience(root, tie_bindings)
     preparation = prepare_model_group(group, attachments, retrievals, root=root)
     if tie_fusion is not None:

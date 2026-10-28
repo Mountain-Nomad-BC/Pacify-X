@@ -1,0 +1,10 @@
+cmd: C:\Users\Ben\Documents\bootstrap_project\Pacify-X\Python\pythoncore-3.14-64\python.exe -m pytest -q --no-header -p no:cacheprovider tests/test_agent_runtime.py tests/test_prepared_group_operation_approval.py tests/test_prepared_group_workflow_owner.py tests/test_model_group_preparation.py tests/test_workflow_worker_import_custody.py tests/test_workflow_worker_pre_dispatch.py tests/test_workflow_group_config.py
+exit: 0
+elapsed_seconds: 41.65
+--- stdout ---
+........................................................................ [ 80%]
+..................                                                       [100%]
+90 passed in 41.14s
+
+--- stderr ---
+

@@ -1,0 +1,56 @@
+{
+  "schema_version": "px.operational-gap-ledger-event/1.0",
+  "sequence": 36248,
+  "event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000036248",
+  "event_type": "work_checkpoint",
+  "timestamp": "2026-10-27T21:56:24.858783Z",
+  "actor": "codex",
+  "previous_event_sha256": "fee16dc41be30795aff8ff184021e5455f8592a74257f1d71913f7b7194358f3",
+  "payload": {
+    "active_gap_id": "PX-OS-1067",
+    "evidence": [
+      {
+        "artifact_sha256": "c2352d5e36d62b7da4dbf145080399573d2a893fc3e8543e8d5f8f8b02521955",
+        "artifact_size": 106644,
+        "claim": "Bounded W2f source and causal/native fixture evidence; not release certification.",
+        "reference": "runtime/workflow_studio.py"
+      },
+      {
+        "artifact_sha256": "4bb89d538ac7993f283b6909b0bb1e7ea8dc3ebfaeb30879e4b4710b6754ae0e",
+        "artifact_size": 38722,
+        "claim": "Bounded W2f source and causal/native fixture evidence; not release certification.",
+        "reference": "runtime/workflow_worker.py"
+      },
+      {
+        "artifact_sha256": "b7ca848a3fab5ac71eb27c4f923271d04744f50f9557dc81b11232840b079824",
+        "artifact_size": 138414,
+        "claim": "Bounded W2f source and causal/native fixture evidence; not release certification.",
+        "reference": "runtime/agent_runtime.py"
+      },
+      {
+        "artifact_sha256": "8079bd7019c91512335e55c6e40684fce549bd8c269755ac500132d5d15300fa",
+        "artifact_size": 33792,
+        "claim": "Bounded W2f source and causal/native fixture evidence; not release certification.",
+        "reference": "runtime/model_protocol_translate.py"
+      },
+      {
+        "artifact_sha256": "6ed07f0d64d7f8e4b939bec0723c6cf5113fb049df6466cb525538d3edeb2294",
+        "artifact_size": 23492,
+        "claim": "Bounded W2f source and causal/native fixture evidence; not release certification.",
+        "reference": "docs/repair/WORKFLOW_APPROVAL_AND_REMOTE_INTEGRATION_2026-10-27.md"
+      },
+      {
+        "artifact_sha256": "e8700bdb7b1cb15ba13b322bc7850dc38bc82287b23a0e254760caa447bf66d3",
+        "artifact_size": 941,
+        "claim": "Bounded W2f source and causal/native fixture evidence; not release certification.",
+        "reference": "docs/repair/evidence/resume10-native-effect-manifest-lifecycle-verbose.json"
+      }
+    ],
+    "learned": "Provider/member/wire owners and native parent/worker composition integrated; Gemini/Claude mismatches, hostile project import and pure-effect permission/attempt regression repaired with retained proofs. Group registry still closed: actual protected group/provider operating acceptance unfinished; next signed prepared-group entrypoint/bridge source consistency.",
+    "newly_discovered_gap_ids": [],
+    "next_action": "Run the single revision/generated-projection reconciliation, make every governed section current, then execute exactly one full profile, validation, package, install, installed-system operational test, and certification in registered order.",
+    "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000036247",
+    "unresolved_branch_gap_ids": []
+  },
+  "event_sha256": "b8501a760929bcbad01204ba00112f10f405cee21b8814bc1fb1a5a82ebc36cd"
+}

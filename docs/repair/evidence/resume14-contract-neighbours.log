@@ -1,0 +1,23 @@
+cmd: C:\Users\Ben\Documents\bootstrap_project\Pacify-X\.venv-repair\Scripts\python.exe -m pytest -q --no-header -p no:cacheprovider tests/test_contract_runtime.py tests/test_certificate_input_contracts.py tests/test_contract_length_bounds.py tests/test_semantic_entity_contract.py
+exit: 1
+elapsed_seconds: 4.02
+--- stdout ---
+............F.................................................................. [ 72%]
+..............................                                           [100%]
+================================== FAILURES ===================================
+_ ContractRuntimeTests.test_every_shipped_contract_is_valid_owned_and_resolvable _
+
+self = <tests.test_contract_runtime.ContractRuntimeTests testMethod=test_every_shipped_contract_is_valid_owned_and_resolvable>
+
+    def test_every_shipped_contract_is_valid_owned_and_resolvable(self) -> None:
+        result = validate_contract_corpus(ROOT)
+>       self.assertTrue(result["valid"], result["errors"])
+E       AssertionError: False is not true : ['contracts/models/generation-bound-verdict.schema.json: missing explicit ownership record', 'contracts/models/member-execution-input.schema.json: missing explicit ownership record', 'contracts/models/model-branch-artifact.schema.json: missing explicit ownership record', 'contracts/models/model-execution-group.schema.json: missing explicit ownership record', 'contracts/models/model-group-preparation.schema.json: missing explicit ownership record', 'contracts/operations/remote-provider-profile.schema.json: missing explicit ownership record', 'contracts/remote_model_attachment.schema.json: missing explicit ownership record', 'contract ownership count does not match corpus']
+
+tests\test_contract_runtime.py:95: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_contract_runtime.py::ContractRuntimeTests::test_every_shipped_contract_is_valid_owned_and_resolvable
+1 failed, 108 passed, 425 subtests passed in 3.56s
+
+--- stderr ---
+

@@ -1,0 +1,114 @@
+[
+  {
+    "label": "T.I.E. fusion owner",
+    "path": "runtime/usage_memory.py",
+    "purpose": "fuse_tie_experience reference",
+    "MUSIC": "39891:4574f4999bdb6aea",
+    "VIDEOS": "39891:4574f4999bdb6aea",
+    "CANONICAL": "21773:f9781e3214936e62"
+  },
+  {
+    "label": "T.I.E. caller",
+    "path": "runtime/model_group_preparation.py",
+    "purpose": "tie_bindings path",
+    "MUSIC": "13878:ee2aeafff2cc3290",
+    "VIDEOS": "13878:ee2aeafff2cc3290",
+    "CANONICAL": "13880:69b5d3a18f33244c"
+  },
+  {
+    "label": "semantic entity owner",
+    "path": "runtime/semantic_entity.py",
+    "purpose": "contract resolution",
+    "MUSIC": "26329:8ecd0e19dd469bf5",
+    "VIDEOS": "26329:8ecd0e19dd469bf5",
+    "CANONICAL": "27507:92258bece569cfd8"
+  },
+  {
+    "label": "semantic entity contract",
+    "path": "contracts/semantic/semantic-entity.schema.json",
+    "purpose": "missing contract",
+    "MUSIC": "3263:e8100dc83a61ddef",
+    "VIDEOS": "3263:e8100dc83a61ddef",
+    "CANONICAL": "3055:1157dc845f9ae81e"
+  },
+  {
+    "label": "semantic locator contract",
+    "path": "contracts/semantic/locator-record.schema.json",
+    "purpose": "reference-only",
+    "MUSIC": "3468:14c4e46ef39de2f9",
+    "VIDEOS": "3468:14c4e46ef39de2f9",
+    "CANONICAL": "ABSENT"
+  },
+  {
+    "label": "ownership generator",
+    "path": "scripts/build_contract_ownership_registry.py",
+    "purpose": "source-authentic owners",
+    "MUSIC": "33716:aa908ed0b5f0566b",
+    "VIDEOS": "33105:a83bebc1f37296b9",
+    "CANONICAL": "37980:964dc1f89be23852"
+  },
+  {
+    "label": "succession contracts",
+    "path": "contracts/project_revision_succession/active-revision.schema.json",
+    "purpose": "packaging",
+    "MUSIC": "1261:ca5e2646354d73bf",
+    "VIDEOS": "943:e9e3394f2c4fbb7a",
+    "CANONICAL": "1207:0a86341d36417c6c"
+  },
+  {
+    "label": "succession owner",
+    "path": "runtime/project_revision_succession.py",
+    "purpose": "project_id gate",
+    "MUSIC": "79004:effbdb543f6a845b",
+    "VIDEOS": "77606:ef31941cf4e6128a",
+    "CANONICAL": "81534:59ef8547ee6ab8c9"
+  },
+  {
+    "label": "DurableBudgetState",
+    "path": "extension/src/agentHarness/durableTaskState.js",
+    "purpose": "Node billing",
+    "MUSIC": "4892:1da38a73f284a5af",
+    "VIDEOS": "4892:1da38a73f284a5af",
+    "CANONICAL": "ABSENT"
+  },
+  {
+    "label": "rollout compare_trees",
+    "path": "scripts/rollout/compare_trees.py",
+    "purpose": "source inventory",
+    "MUSIC": "4208:6deb03ab8443c830",
+    "VIDEOS": "ABSENT",
+    "CANONICAL": "4186:18a17842e667ee09"
+  },
+  {
+    "label": "rollout integration_plan",
+    "path": "scripts/rollout/integration_plan.py",
+    "purpose": "overlay plan",
+    "MUSIC": "5539:11657734a4262fcd",
+    "VIDEOS": "ABSENT",
+    "CANONICAL": "7998:4d38e05afdd6673a"
+  },
+  {
+    "label": "rollout inventory test",
+    "path": "tests/test_rollout_inventory.py",
+    "purpose": "required suite",
+    "MUSIC": "2873:f5c330a3f2d57482",
+    "VIDEOS": "ABSENT",
+    "CANONICAL": "8432:91e8fe43c83cb240"
+  },
+  {
+    "label": "billing settlement test",
+    "path": "extension/tests/billing-settlement-audit.test.js",
+    "purpose": "required suite",
+    "MUSIC": "ABSENT",
+    "VIDEOS": "ABSENT",
+    "CANONICAL": "14358:f4caff2c582be17a"
+  },
+  {
+    "label": "studio experience",
+    "path": "runtime/usage_memory.py",
+    "purpose": "retrieve_studio_experience",
+    "MUSIC": "39891:4574f4999bdb6aea",
+    "VIDEOS": "39891:4574f4999bdb6aea",
+    "CANONICAL": "21773:f9781e3214936e62"
+  }
+]

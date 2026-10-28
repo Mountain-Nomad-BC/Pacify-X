@@ -1,0 +1,22 @@
+{
+  "active_gap_id": "PX-OS-1067",
+  "evidence": [
+    {
+      "reference": "docs/repair/evidence/resume14-r02-attack-suites.log",
+      "claim": "R02 path controls hold: 94 passed across verification-input boundaries, WAL transaction and WAL ownership, covering junction/symlink/hardlink/traversal attacks.",
+      "artifact_sha256": "470cde73ee7c8d208a05a2d90e0065fee2f0c5bfe9b3c4b754d6380a1a370ece",
+      "artifact_size": 487
+    },
+    {
+      "reference": ".tmp/resume9/tie-path.log",
+      "claim": "11 passed after replacing a bare ImportError on the T.I.E. fusion path with a named NotImplementedError; pre-fix ImportError and post-fix domain error demonstrated in one run.",
+      "artifact_sha256": "3ad1cc68027cae5fedf4778e85f1b04dc5fa6c93c424426dc248f70cefa2a4c9",
+      "artifact_size": 340
+    }
+  ],
+  "learned": "Verified rather than assumed: R02 hostile-path controls hold (94 tests), R03 containment suites pass, R06 lifecycle suites pass, model-group suites 41 pass. Found a third real defect: model_group_preparation imports fuse_tie_experience lazily in two places, but that function does not exist in usage_memory, so any caller passing tie_bindings got a bare ImportError from inside plan compilation and nothing detected it because no test exercised the path. Reference has a 50+ line implementation with its own dependencies (retrieve_studio_experience, reject_path_links), so implementing it is a real feature port needing its own review, not a repair. The honest interim state is a named NotImplementedError plus a regression test.",
+  "newly_discovered_gap_ids": [],
+  "next_action": "Run the single revision/generated-projection reconciliation, make every governed section current, then execute exactly one full profile, validation, package, install, installed-system operational test, and certification in registered order.",
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000036234",
+  "unresolved_branch_gap_ids": []
+}

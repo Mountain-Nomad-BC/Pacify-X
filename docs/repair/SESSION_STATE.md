@@ -371,3 +371,172 @@ Reviewed6new owners and actual plan/compiler/hardware/member-execution consumers
 ### Resume13 - actual native model discovery
 
 Actual LocalModelRuntime writes legacy event log while bridge only read canonical name.2causal failures reproduced: native-owner event invisible and canonical tamper accepted. Bridge now resolves declared file compatibility, canonical file wins, never merges/falls back from invalid current history, pinned bounded read and exact native chain digest enforced. 98native discovery/runtime/profile/protocol/preflight neighbors pass.8old bridge tests expected whitespace discarded, contradicting intentional existing wire-exact protocol repair; updated to assert exact preserved nonterminal reasoning/text deltas. Production protocol behavior unchanged; original failure retained. Actual ignored model store contains Qwen3.5-4B-Q6_K.gguf for certified control-qwen35-4b-cpu-q6 and Qwen3-30B-A3B-Q5_K_M.gguf. Historical0.8B file is absent. Earlier model-path request was premature; existing profile/local asset can be used for future native commissioning without asking user to locate it. Finding files/discovery is not fresh GGUF admission, current router health, provider operation, service or installed acceptance. No service started and no live model request. Private signing keys remain repository-external by trust policy; real successor evidence/authorization still not found in admitted roots. Historical succession report is not new owner authorization. 43mandatory suites structurally covered;28sections. Changed native governed attempt phaseblocked; no speculative generated reconciliation, full profile, package, install, VSIX, merge or certification. Evidence: docs/repair/evidence/resume13-catalog-discovery.json.
+
+
+### Resume13 - host metadata and real catalog timeout
+
+Scoped host discovery: expected llama-server executable exists under C:/Users/Ben/.px/runtime/llama.cpp/build/bin. SSH public fingerprints inspected; none matched active repository release signers. No private key contents read/copied/printed, no trust edits or signing attempted. Matching signer may exist elsewhere; request its path or real signed successor artifacts. Actual post-discovery catalog probe failed with native localhost URLError timeout; tree closed and resource inactive. This is failed operating evidence, not a passed model/inference test. It unexpectedly exercised a localhost health request not separately declared by the execute/read admission; timing/authority gap disclosed, no subsequent actual network attempt. Future health/service probes require exact single-effect admissions before launch. Two causal timeout/invalid-runtime catalog tests reproduced. Native list now disables local models with sanitized runtime_unreachable_or_invalid instead of traceback while retaining independent remote configuration reporting. Controlled failures do not establish real router health.35catalog/protocol/profile neighbors passed; changed governed native section remains phaseblocked. Existing 4B model/profile found; model path question withdrawn. Real runtime commissioning, signed successor activation, remaining source integrations and certification still unfinished. No service/restart, merge, package, install or VSIX. Evidence: docs/repair/evidence/resume13-host-catalog-timeout.json.
+
+### Resume14 segment 1 — namespace review (2026-10-27)
+
+Handoff written: `HANDOFF_RESUME14_2026-10-27.md`. **Read `AGENTS.md` first — it is present and authoritative** (it outranks the handoff). Latest ledger checkpoint `…36232`.
+
+Verified: `certification_coverage` valid, 43 suites, no missing files. Open source failure is published-vs-source contract ownership (196 vs 203; the 7 missing are exactly the new model-group contracts) causing 9 registry errors; preserved until freeze, do **not** regenerate now.
+
+Added `control_path()` / `resolve_project_management()` to `runtime/engineering_os_paths.py`. Tried migrating `tool_intake.py` to it: reproduced a state split (commissioning writes legacy, canonical stayed empty, lifecycle routing lost state), reverted with the reason recorded inline. 61/1435 receipts embed the legacy path, so migration is atomic. The 2 namespace records stay open on purpose.
+
+**Current task:** R01 dependency reviews (12 open).
+**Next exact command:**
+```powershell
+Set-Location 'C:\Users\Ben\Documents\bootstrap_project\Pacify-X'
+.\.venv-repair\Scripts\python.exe -c "import json;d=json.load(open('docs/repair/evidence/resume10-contract-adjudication.json',encoding='utf-8'));[print(r['path'],'|',r.get('reason','')[:120]) for r in d['records'] if r.get('state')=='DEPENDENCY_REVIEW_REQUIRED']"
+```
+Then review each listed contract's real producer/consumer imports before changing any state.
+
+### Resume14 segment 2 — R01 dependency review complete (2026-10-27)
+
+All 12 `DEPENDENCY_REVIEW_REQUIRED` records reviewed (`evidence/resume14-dependency-review.py|.log|.json`): 11 contracts reference-only, 1 already here; 10 of 11 owners absent; only `semantic_entity` present. **Not ported** — they would be unreachable modules honouring contracts nothing consumes here.
+
+**Real defect reproduced:** `runtime/semantic_entity.py` resolves its contract as `Path(__file__).parents[1]/SCHEMA_RELATIVE` (framework checkout, no `contract_root`). `publish_registry()` reports PUBLISHED, then `load_published_registry()` raises `FileNotFoundError` on the missing `semantic-entity.schema.json` — the owner cannot read what it wrote. Evidence `evidence/resume14-entity-durability.py|.log`. NOT yet repaired: it needs its own red/green with the secure-publish/entity neighbours.
+
+**Rejected this session:** creating `contracts/semantic/semantic-entity.schema.json` to make reload pass. That authorises a contract I did not review and hides the wrong-root resolution. Source fix only.
+
+**Next exact command (repair the entity contract resolution):**
+```powershell
+Set-Location 'C:\Users\Ben\Documents\bootstrap_project\Pacify-X'
+.\.venv-repair\Scripts\python.exe -m pytest tests/test_secure_publish.py -k entity -q --no-header -p no:cacheprovider
+.\.venv-repair\Scripts\python.exe docs\repair\evidence\resume14-entity-durability.py
+```
+Add a failing test that asserts publication fails closed (or that reload succeeds) with the contract resolved from the framework root; then change the resolution and re-run both plus `tests/test_contract_length_bounds.py`.
+
+### Resume14 segment 3 — entity contract repaired (2026-10-27)
+
+**Fixed:** `semantic_entity.contract_path()` resolves via `runtime.paths.framework_root()`; absence is `SemanticEntityError`, not `FileNotFoundError`. Authored `contracts/semantic/semantic-entity.schema.json` from the owner's real emitted record; declared `contracts/semantic` + `contracts/project_revision_succession` in `pyproject.toml` package-data (both were missing); added its ownership record. Found and fixed a second defect in `runtime/contracts.py`: the fixture generator could not satisfy an interior repetition constraint (`^pxe1:[a-f0-9]{32}$`) — new `_pattern_class_member`. Corpus: **203 schemas, 0 failures**. Suites: 108 passed, 1 failed (pre-existing model-group ownership drift only). New permanent test: `tests/test_semantic_entity_contract.py` (9 tests, includes adversarial records and the missing-contract domain-error case).
+
+**Remaining known source failure (unchanged, do not "fix" before freeze):** published contract ownership 196/197 vs source 203 — the 7 missing are the new model-group contracts, causing 7 corpus errors, failed `test_build_needs_no_published_registry`, `validate_registry` red, and `tests/test_tool_intake.py` blocked at `environment-and-planning`.
+
+**Next exact command (R02 secure persistence — hostile path/reparse/hardlink):**
+```powershell
+Set-Location 'C:\Users\Ben\Documents\bootstrap_project\Pacify-X'
+.\.venv-repair\Scripts\python.exe -m pytest tests/test_secure_publish.py tests/test_hostile_paths.py -q --no-header -p no:cacheprovider
+```
+If `tests/test_hostile_paths.py` is absent, enumerate path-boundary owners first (`runtime/path_boundary*.py`, `runtime/safe_paths*.py`, reparse checks) before writing any test.
+
+### Resume14 segment 4 — groups verified, T.I.E. defect, real blocker located (2026-10-27)
+
+Verified by execution (not assumption): R02 **94 pass**, R03, R05 **18 Py + 20 Node**, R06, R08 **50 pass**, R09, R11, model-group **41 pass**. These groups' component owners are healthy; none are "unimplemented", which contradicts a blanket "R02–R11 incomplete" reading.
+
+**Repaired:** `model_group_preparation` imported a non-existent `fuse_tie_experience` lazily, so callers passing `tie_bindings` got a bare `ImportError` from inside plan compilation. Now `NotImplementedError` naming the owner + uncommissioned status, with a regression test (11 pass).
+
+**Not implemented:** `fuse_tie_experience` itself. Reference needs `retrieve_studio_experience` + `reject_path_links` + a different `_load_records`; a feature port needing its own review.
+
+**Blockers, precisely:**
+1. `missing_owner_policy_authority` — no signed owner policy issuer/verifier configured. Requires the owner to supply signing authority.
+2. Predecessor campaign `project_id` is `null` (campaign is otherwise closed/terminal and passes the phase gate). Back-filling it would edit historical campaign records — refused.
+
+**Remaining source failure (preserve until freeze):** contract ownership 196 vs 203 → 7 corpus errors → `validate_registry` red → `test_tool_intake` blocked at `architecture-and-planning`.
+
+**Next exact command (only remaining engineering work that needs no authority):** finish the R01 source adjudication by dispositioning the 9 `PORTED_COMPONENT_TESTED_GENERATED_PENDING` records:
+```powershell
+Set-Location 'C:\Users\Ben\Documents\bootstrap_project\Pacify-X'
+.\.venv-repair\Scripts\python.exe -c "import json;d=json.load(open('docs/repair/evidence/resume10-contract-adjudication.json',encoding='utf-8'));[print(r['path']) for r in d['records'] if r.get('state')=='PORTED_COMPONENT_TESTED_GENERATED_PENDING']"
+```
+
+### Runbook Lane A segment 5 (2026-10-27)
+
+**HEAD `9583fcd9`** · branch `codex/repair-reconcile-20261025` · ledger valid · coverage `True / 43 / []` · no processes running.
+
+Done: initialization snapshot with all 40 untracked files backed up (`.audit-handoff/20261027-runbook-*`); 9 generated-pending records dispositioned `IMPLEMENTED_AND_COMPONENT_TESTED`; ownership generator rule added for `contracts/semantic` and now fails closed on undeclared semantic contracts; **`fuse_tie_experience` implemented** on the native store with end-to-end proof; new `BLOCKER_REGISTER.md` and `RECONCILIATION_MATRIX.csv`.
+
+Current source failure, unchanged and intentional: published ownership 196 vs source 203 → 7 corpus errors → `validate_registry` red → `test_tool_intake` blocked. Resolves only at the freeze.
+
+**Next exact action (Lane A, no authority needed):** trace the WorkflowStudio approval producers/consumers (runbook §5B) — inventory every place a group/effect approval is created or consumed and prove `approved_by` alone cannot grant an effect.
+
+```powershell
+Set-Location 'C:\Users\Ben\Documents\bootstrap_project\Pacify-X'
+Select-String -Path runtime\*.py,extension\src\**\*.js -Pattern 'approved_by|approval' | Select-Object -ExpandProperty Filename | Sort-Object -Unique
+```
+
+
+### Workflow approval boundary segment (2026-10-27)
+Preserved inherited work in registered retained workspace `.tmp/resume10/owned/pacifyx-x_4zoe2a` (84 paths). Added `tests/test_workflow_approval_boundary.py`: 13 passed through the actual native Studio API, including real increment/double execution, node-approval consumption, unsigned caller-field denial before workflow construction, payload/operation/signature/project binding, operation replay and node-approval replay denial. Host neighbors: 41 passed. All owned child trees closed and resources inactive.
+
+Two initial test-authoring failures are retained: dataclass tuples were not JSON, then the test nested a definition although the API expects its fields at the top level. Neither was a production defect. Green evidence: `docs/repair/evidence/resume10-approval-boundary-wire.json` and `resume10-approval-host-neighbors.json`.
+
+Producer/consumer trace: extension.js studioOperation handler obtains host modal authorization (or explicit owned-host environment authorization), pxBridge.issueStudioApproval signs exact project/kind/operation/payload with nonce/expiry; studio_api.studio_operation verifies and consumes before dispatch; workflow_studio.issue_approval issues a revision/node/effects-bound approval; StudioAuthorityStore.consume_approval enforces one use. Direct lower-level issue_approval is a trusted owner API, not an external identity check. The new tests exercise native ingress, not an installed webview or production signer. No production authority issued or changed.
+
+Next: inventory prepared-group/remote/mesh approval and outcome paths against this boundary; remaining operating scenarios and namespace dry-run remain open. No independent closures, certification, merge, rollout or VSIX claimed.
+
+
+### Prepared-group owner segment (2026-10-27)
+W1a implemented and tested; W1 overall partial pending W2 positive group admission. See WORKFLOW_APPROVAL_AND_REMOTE_INTEGRATION_2026-10-27.md for exact dependencies and evidence. 66 model/approval neighbors passed; final physical path suite 13 passed including native hardlink and symlink rejection. Actual group execution remains unsupported and explicitly rejected, not admitted by a broadened allowlist. Governed studio-memory-graph attempt phaseblocked. W2 worker/authority/effect-custody dependency audit started; W3/W4 open. No independently reviewed closure or release claim.
+
+
+### W2a: closed execution declaration integrated (2026-10-27)
+Ported runtime/workflow_group_config.py after reviewing its native AgentSpec dependency. WorkflowNode now invokes the exact four-field parser (mode, prepared reference, agent spec, placements); the earlier reference-only declaration remains non-executable. Parser accepts no caller approval fields or path references. This does not admit a model-group adapter. Arithmetic executors refuse both group declaration forms.
+
+Final combined suite: **79 passed**, evidence `docs/repair/evidence/resume10-group-declaration-key-isolation.json`; owned tree closed and resource inactive. Eleven parser/declaration tests include a real persisted workflow and native rejected admission. An earlier test used a key directory inside its project and correctly failed the authority boundary; its original log remains in `resume10-group-declaration-integrated.log`. The test now uses sibling project/key paths. This was a test isolation error, not a production bypass.
+
+W1a and W2a substeps are complete; W1/W2 overall remain partial. Next: W2b integrate commissioned host composition and exact persisted-plan handoff into parent/worker with native effect-intent fencing and cancellation/recovery; only then enable adapter admission and prove W1 positive. W3/W4 remain open. Governed section attempt remains phaseblocked (`resume10-group-declaration-section.json`). No generated refresh, full profile, service, production remote request, package, install, certificate, push, merge or VSIX.
+
+
+### W2b progress: worker pre-dispatch repair and persisted-plan binding (2026-10-27)
+
+**Completed W2b.1:** the native workflow worker now checks node kind, closed non-validation configuration and consumed approval before invoking any adapter. Three real signed-task reproductions showed the sleep adapter being invoked before denial; all three original failures are retained in `resume10-worker-pre-dispatch-red.log`. The repaired checks and real native workflow approval/run neighbors passed (27 checks, `resume10-worker-pre-dispatch-green.json`). These tests use the actual worker entry point and native signed task authority, with an observed adapter callback; they are not production group effects.
+
+**Completed W2b.2:** added `resolve_workflow_group_plan` and wired it into full-config prepared-group owner resolution. It reads the actual persisted plan/preparation, decodes the native AgentSpec and verifies exact project/member denominator, native placement digest, plan digest, attachment digest and member context digest. It grants no execution authority or live generation/capacity/provider admission. A three-member persisted-plan success case and independently rehashed stale project/member/plan/attachment/context/digest cases are covered. Combined suite **47 passed** (`resume10-group-plan-binding.json`); all owned children closed and resource records inactive.
+
+Required changed-section attempts remain phaseblocked (`resume10-worker-pre-dispatch-section.json`, `resume10-group-plan-binding-section.json`). No passed governed receipt is claimed. The reference group execution depends on `AgentRuntimeController.execute_governed_group`, which is also absent from this checkout; W2 is a controller/worker/host integration, not just two missing WorkflowStudio methods. The reference's generation observer is unavailable without a real host observer, so saved context vectors cannot be substituted as fresh authority.
+
+**Next W2b.3:** integrate native governed group controller with parent/worker signed task-plan handoff, current generation owner, commissioned suspended worker custody and durable effect intents. Keep model-group out of the authority allowlists until this coherent path exists and has success/failure/cancel/restart/uncertain-effect proofs. Then finish W1 positive admission, proceed to W3 remote outcomes and W4 installed host. W1/W2 overall remain partial; no reviewed closures, certification, Git merge, package or VSIX.
+
+
+### W2c dependency closure: convergence and terminal dispositions (2026-10-27)
+Ported runtime/model_convergence.py and runtime/work_disposition.py with contracts/models/work-disposition.schema.json and an explicit source ownership rule. Published ownership is intentionally not regenerated during intake; the previously reported missing-contract denominator is now historical and will increase by this newly added schema.
+
+37 focused checks passed (`resume10-group-committed-convergence.json`). Typed quorum checks cover correlated origins, dissent, missing/duplicate/failed members and uncontained observations. The committed boundary consumes native branch artifact custody and the native trusted-evidence resolver. A real committed artifact without an attestation remains blocked, including when a caller supplies proven=True. No independent reviewer, certificate or native containment authority is fabricated.
+
+Reference adaptation: removed the ability for caller-provided containment_proofs dictionaries to replace false signed postconditions. All required isolation/containment/commit postconditions must be present in verified signed assessment; live native custody remains an additional execution requirement. Full positive signed-attestation integration still needs exercising and is not claimed here. These new owners are controller dependencies; execute_governed_group is not yet integrated.
+
+Next dependency: remote provider placement and local/remote member outcome custody, then the group controller and parent/worker integration. Group authority allowlists remain closed.
+
+
+### W2d dependency and native controller integration (2026-10-27)
+
+Completed the remote placement owner and native governed member/controller path. Remote placements are derived from actual signed profiles and native grants; service/origin/plan/context substitution is denied even after rehashing (10 checks with attachment neighbors, `resume10-remote-placement-binding.json`). No remote request or network operation ran. Mixed local/remote custody remains unavailable until the missing local outcome verifier is integrated; ordinary local-only groups do not import that missing owner.
+
+AgentRuntimeController now resolves exact prepared members in preview, accepts current context generation and explicit member executors, builds parent/child execution contexts and propagates cancellation before output commitment. The existing signed receipt publication semantics were retained; the reference's later advisory receipt rewrite was not copied. Three real disposable Studio member checks passed (`resume10-studio-prepared-member.json`), and 12 existing governed/member neighbors passed. The cancellation assertion was then corrected to inspect the actual canonical model-artifacts/commitment.json owner, not a nonexistent legacy directory.
+
+Added execute_governed_group through the real durable run controller, current-generation observer, capacity/branch custody, member effect-intent fencing and convergence owner. A real group test exposed a reference defect: missing signed assessment gave INDETERMINATE convergence but a succeeded root. Original failing evidence retained in `resume10-native-group-owner.log`; success now requires PASS convergence. Added post-member generation reobservation to halt on drift before group acceptance. Committed and uncertain-failure intents refuse blind retry. Native required containment denies before execution when unavailable.
+
+Real OpenSSH-signed, scoped branch-assessment fixtures now exercise success and negative containment through the native evidence resolver. Disposable fixture keys are not release authority and were not enrolled into production trust. The fixture attests controlled test conditions; it does not prove real native process/network containment. A caller-supplied proven dictionary cannot override false signed containment postconditions. Combined result: 25 passed (`resume10-native-group-signed-containment.json`). Earlier 26 checks cover replay, uncertain failure, native worker guards and placement/convergence neighbors (`resume10-native-group-uncertain-replay.json`). Existing trust fixture signing helpers create OpenSSH descendants inside the owned runner Job; separate per-descendant creation records are not asserted. These receipts are focused repair evidence, not certification closure.
+
+The current native group implementation is reachable as a trusted library owner. It is NOT yet connected to the external WorkflowStudio prepared-group run route. Missing workflow effect verifier, suspended worker host composition, provider adapter/member outcome settlement and live generation transport remain W2e; keep model-group out of StudioAuthorityStore allowlists until those paths are integrated. W1 positive external admission, W3 and W4 remain open. Required governed attempts remain processing-order blocked; published projections were not regenerated. Newly ported work-disposition schema has an explicit source owner and existing models wildcard package inclusion, but published ownership count is deliberately stale.
+
+
+### W2e parent/worker effect boundary and resumed runtime (2026-10-27)
+
+Completed native workflow effect verification: exact running root, revision/epoch/node authority, deadline, in-flight intent and active scope lease are checked before worker adapter dispatch. Group signed-task verification also requires consumed approval evidence and exact agent/placement/plan bindings. The current legacy workflow session owner is retained consistently; no namespace cutover was performed.
+
+Completed parent preparation/observation plumbing: scope leases and intents precede worker launch; stable run/node effect keys survive retries; uncertainty retains quarantined scope exclusion and prevents automatic replay. Parent settlement only observes exact native committed results and never manufactures commits from worker assertions. Exception text containing tree_closed=true is explicitly not physical closure proof. Native supervisor launch progress controls closure evidence. Focused receipts: worker-effect-boundary-integrated (23 pass), worker-native-settlement-observation (11 pass), parent-native-effect-settlement (26 pass), parent-fence-native-workflow (26 pass), parent-effect-quarantine (27 pass). Counts overlap and are not summed.
+
+Before these changes the combined native controller/approval/member/declaration suites passed 74 checks (group-controller-final-neighbors). Native group cleanup denial passed 10 controller checks; reconciliation failures are propagated instead of silently swallowed. Production model-group executor registration remains closed until suspended worker composition and provider/native outcome paths are coherent. W1 overall, W2 overall, W3, W4 remain open.
+
+On resume, both old virtual environments failed because their Temp/py3145t base was gone. Python3.11 ran the ledger; expired session36231 was closed at36244, checkpoint36245 created, and fresh exact-scope admission36246 opened. A first closure payload omitted its gap/session fields and was rejected before append; corrected through the native ledger. Existing repository Python/pythoncore-3.14-64/python.exe is Python3.14.7 with GIL enabled. The retained focused runner now uses its invoking interpreter instead of the vanished path; original runner preimage is registered at .tmp/resume10/owned/pacifyx-8l9uakj1. Old runtimes and receipts are untouched. Compatible existing .venv-certify site-packages are selected via PYTHONPATH with PYTHONNOUSERSITE=1 for the focused runner. No installation/download occurred. Stable-runtime-check passed 17 checks with closed process tree/inactive resource. This does not reproduce prior free-threaded Python3.14.5 concurrency evidence.
+
+Next: complete configured provider adapter/member settlement dependencies and the suspended group worker composition. Do not enable group admission simply to make W1 positive. Production provider health, native containment/generation transport and independent review remain unproved; no certificate/package/merge/VSIX claim.
+
+
+### W2f provider, wire and worker composition integration (2026-10-27)
+
+Ported the native provider binding/stream/member/outcome owners: remote_provider_adapters, group_provider_adapters, member_execution and remote_member_execution. Remote bindings use actual signed profile/grant/policy and recheck native registry/policy currentness; three controlled binding tests pass with socket creation forbidden. Named service recordings exposed Gemini surface rejection and missing Claude cached input accounting (three original failures retained). Added Gemini text-only request/stream translation and strict reported usage aggregation while preserving incremental UTF-8, whitespace and unsuccessful-terminal fixes. Protocol/gateway neighbors: 36 passed; no live connection was made.
+
+Ported configured group-worker composition, exact legacy workflow resource-ledger references, native recovery/custody reconstruction and host-only generation/assessment adapters. Saved vectors are not live observers, task JSON cannot select code, assessment callbacks return only native evidence references, and native trusted evidence still verifies signatures/scopes/postconditions. A composition audit caught two unbound callback names in my integration; corrected before enabling group registration. Dedicated host/composition/binding/wire checks: 20 passed. Native parent pre-release enrollment and resource quarantine/closure are wired; 35 workflow/custody/import/host neighbors passed. Group registration is still closed pending genuine protected worker/provider operating proof.
+
+Corrected local-only provider effects: production group plans declare exact loopback/origin plus owned gateway event/budget writes as well as execute/runtime. Local-only and mixed groups use the same signed workflow custody and native provider outcome settlement; production member execution explicitly requires provider custody. Direct library controlled callbacks remain separate from production provider proof. Native group/controller/declaration/fence/placement checks: 49 passed.
+
+Actual hostile managed-project reproduction showed runtime/__init__.py shadowing the engine before worker checks. Original marker failure retained. Added Python safe-path (-P) to workflow, session worker, terminal observer and agent harness launches. Actual native workflow and boundary neighbors then passed 28 checks. Agent owned pause/resume/cancel lifecycle passed. Workflow lifecycle exposed my incorrect treatment of every grant permission as an attempted effect: pure closed arithmetic adapters may hold broader scheduling grants without pretending to perform writes. Native effect manifests now distinguish that case; group mutations still need all exact fences. Original fixture was not weakened. Verbose workflow/custody/hostile-import scenario: 17 passed in47.71s. Its prior silent run was stopped at the focused runner's20s startup-output bound, exit0xC000013A; retained as a stopped run, not source success.
+
+Changed section attempts: studio-memory-graph/native-provider-protocol/billing-budget remain phaseblocked. I first ran them concurrently and two hit the shared orchestration lock; original receipts retained. Sequential retries reached the actual processing-order blocker. No passed section, full profile, generated reconciliation, install, certificate or release artifact is claimed.
+
+Next: finish the prepared-group approval execution entry point and bridge receipt-owner consistency; obtain actual commissioned host/generation/assessment/provider evidence before enabling group admission and marking W1/W2 operating acceptance. W3/W4 and independent review remain open.

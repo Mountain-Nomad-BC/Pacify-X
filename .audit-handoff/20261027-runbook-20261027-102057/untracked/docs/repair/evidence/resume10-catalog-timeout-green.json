@@ -1,0 +1,21 @@
+{
+  "command": [
+    "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.venv-repair\\Scripts\\python.exe",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "tests/test_model_catalog_namespace.py",
+    "tests/test_model_fabric_end_to_end.py",
+    "tests/test_remote_profile_catalog.py",
+    "tests/test_bridge_stream_regressions.py"
+  ],
+  "exit_code": 0,
+  "tree_closed": true,
+  "resource_inactive": true,
+  "receipt": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.tmp\\resume10\\owned\\cleanup-receipts\\process-6d306e56f95c4df1b1ab260005ebd5cb.json",
+  "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.tmp\\resume10\\owned\\pacifyx-5x4jv472",
+  "log": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\docs\\repair\\evidence\\resume10-catalog-timeout-green.log",
+  "log_sha256": "e1a8e8006c320bc37ea68ecadefb2d4c70cf5d76b1706e3e0449b116b2ca29c9"
+}

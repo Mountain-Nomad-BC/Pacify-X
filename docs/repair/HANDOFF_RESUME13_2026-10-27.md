@@ -4,6 +4,16 @@ Full rollout, certification, merge and VSIX are **not complete**. Continue R01â€
 
 Canonical checkout: `C:/Users/Ben/Documents/bootstrap_project/Pacify-X`, branch `codex/repair-reconcile-20261025`; starting HEAD3abc1af8. Resolve newer checkpoints with Git log. Reference worktree5ebc7368 is unchanged. All user/beta/custody material is retained; no generated refresh, full profile, network, package, install, service, VSIX, certification or merge in this implementation segment.
 
+## Latest host discovery and failed operating probe
+
+Source group/discovery checkpoint9583fcd9 is local. A subsequent checkpoint contains the timeout fix and this update; resolve exact SHA in Git log. Expected native executable exists at `C:/Users/Ben/.px/runtime/llama.cpp/build/bin/llama-server.exe`. Existing SSH public keys did not match repository release-trust fingerprints; no private key contents were read or copied. Real trusted signer may exist elsewhere. A more specific async request asks for that path or existing signed successor artifacts; local model paths no longer need user input.
+
+**Real catalog probe failed** with a localhost URLError timeout after discovering native state. Do not claim catalog/inference operating success. This unexpectedly made a localhost health request without a separately declared network effect; the gap is recorded in resume13-host-catalog-timeout.json. No further real network probe was performed. Next health/restart/inference reproduction needs exact network/service admissions and owned process custody. No existing runtime was terminated or restarted.
+
+Two causal controlled failures were then repaired: catalog now reports sanitized `local_catalog_status: runtime_unreachable_or_invalid` with no local available models rather than crashing or leaking exception details.35catalog/protocol/profile neighbors passed; actual health has **not** been re-proved after that fix. Failed operating receipt and source tests remain distinct. Governed native section still phaseblocked. All remaining work below applies.
+
+Session36228 was superseded at36230 after material checkpoint36229. Expanded read-only host metadata session36231 (`repair-resume13-host-discovery`) additionally admits `.ssh` and `.px/runtime`; same source/tracking write scopes. Check final ledger for its closure and latest checkpoint before reuse. No private signer, service, network, install or merge authority is implied by a generic read admission.
+
 ## New implemented source
 
 - Six owners: model_execution_group, model_branch_contracts, generation_bound_verdict, model_group_preparation, remote_model_attachment and model_branch_artifacts.

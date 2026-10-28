@@ -1,0 +1,1419 @@
+============================= test session starts =============================
+platform win32 -- Python 3.14.7, pytest-9.1.1, pluggy-1.6.0 -- C:\Users\Ben\Documents\bootstrap_project\Pacify-X\Python\pythoncore-3.14-64\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\Ben\Documents\bootstrap_project\Pacify-X
+configfile: pyproject.toml
+collecting ... collected 13 items
+
+tests/test_prepared_group_operation_approval.py::test_signed_operation_is_consumed_once_in_execution_owner ERROR [  7%]
+tests/test_prepared_group_operation_approval.py::test_caller_identity_string_cannot_authorize_prepared_execution ERROR [ 15%]
+tests/test_prepared_group_operation_approval.py::test_group_only_capability_does_not_execute_additional_workflow_nodes ERROR [ 23%]
+tests/test_governed_prepared_member.py::test_studio_runs_exact_prepared_member_and_retains_native_artifact PASSED [ 30%]
+tests/test_governed_prepared_member.py::test_missing_generation_denies_before_member_dispatch PASSED [ 38%]
+tests/test_governed_prepared_member.py::test_parent_cancellation_prevents_member_output_commit PASSED [ 46%]
+tests/test_governed_prepared_member.py::test_group_owner_fences_replay_and_refuses_missing_attestation FAILED [ 53%]
+tests/test_governed_prepared_member.py::test_required_native_containment_denies_group_before_member PASSED [ 61%]
+tests/test_governed_prepared_member.py::test_group_reobserves_generation_after_member_returns PASSED [ 69%]
+tests/test_governed_prepared_member.py::test_uncertain_member_failure_never_blindly_retries PASSED [ 76%]
+tests/test_governed_prepared_member.py::test_group_success_requires_real_signed_scoped_branch_assessment[True] PASSED [ 84%]
+tests/test_governed_prepared_member.py::test_group_success_requires_real_signed_scoped_branch_assessment[False] PASSED [ 92%]
+tests/test_governed_prepared_member.py::test_group_cannot_report_closed_when_member_reconciliation_fails PASSED [100%]
+
+=================================== ERRORS ====================================
+_ ERROR at setup of test_signed_operation_is_consumed_once_in_execution_owner _
+
+profile_config = (WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.tmp/resume10/owned/pacifyx-syxtwz5y/pytest-of-Ben/pyt...pytest-0/test_signed_operation_is_consu0/project/.agentic_engineering_os_px/runtime-core/remote-models/profiles.json'))
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001136F80C510>
+
+    @pytest.fixture
+    def boundary(profile_config, monkeypatch):
+        root, *_ = profile_config
+        plan, attached = remote_plan(profile_config)
+        persist_task_execution_plan(root, plan)
+        reference = {"schema_version": "px.prepared-group-reference/1.0", "plan_id": plan.plan_id, "plan_sha256": plan.plan_sha256}
+        spec = replace(fixtures("bounded instructions")[0], project_id=plan.project_id)
+        config = {"execution_mode": "prepared-model-group", "prepared_group_reference": reference, "agent_spec": json.loads(json.dumps(asdict(spec))), "placements": {attached.model_id: {"model_id": attached.model_id}}}
+>       node = WorkflowNode("node:group", "binding:group", (), (WorkflowPort("group_run_sha256", "string"), WorkflowPort("control_state", "string")), ("grant:group",), "fail-closed", 30, approval_required=True, config=config)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_prepared_group_operation_approval.py:22: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+<string>:14: in __init__
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WorkflowNode(node_id='node:group', executor_binding_id='binding:group', inputs=(), outputs=(WorkflowPort(name='group_r...e56df482e7e30e6a210c': {'model_id': 'remote-model-d7556ab8544d17367bf31287ed9f05e6f12cc00d5493e56df482e7e30e6a210c'}}})
+
+    def __post_init__(self) -> None:
+        object.__setattr__(self, "node_id", _identity(self.node_id, "node_id"))
+        object.__setattr__(
+            self,
+            "executor_binding_id",
+            _identity(self.executor_binding_id, "executor_binding_id"),
+        )
+        object.__setattr__(
+            self, "effect_grant_ids", _unique(self.effect_grant_ids, "effect_grant_ids")
+        )
+        if (
+            not self.inputs
+            or not self.outputs
+            or not self.effect_grant_ids
+            or not self.failure_policy
+        ):
+>           raise ValueError("workflow node lacks contract, grant, or failure policy")
+E           ValueError: workflow node lacks contract, grant, or failure policy
+
+runtime\studio_models.py:930: ValueError
+_ ERROR at setup of test_caller_identity_string_cannot_authorize_prepared_execution _
+
+profile_config = (WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.tmp/resume10/owned/pacifyx-syxtwz5y/pytest-of-Ben/pyt...pytest-0/test_caller_identity_string_ca0/project/.agentic_engineering_os_px/runtime-core/remote-models/profiles.json'))
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001136E36E520>
+
+    @pytest.fixture
+    def boundary(profile_config, monkeypatch):
+        root, *_ = profile_config
+        plan, attached = remote_plan(profile_config)
+        persist_task_execution_plan(root, plan)
+        reference = {"schema_version": "px.prepared-group-reference/1.0", "plan_id": plan.plan_id, "plan_sha256": plan.plan_sha256}
+        spec = replace(fixtures("bounded instructions")[0], project_id=plan.project_id)
+        config = {"execution_mode": "prepared-model-group", "prepared_group_reference": reference, "agent_spec": json.loads(json.dumps(asdict(spec))), "placements": {attached.model_id: {"model_id": attached.model_id}}}
+>       node = WorkflowNode("node:group", "binding:group", (), (WorkflowPort("group_run_sha256", "string"), WorkflowPort("control_state", "string")), ("grant:group",), "fail-closed", 30, approval_required=True, config=config)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_prepared_group_operation_approval.py:22: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+<string>:14: in __init__
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WorkflowNode(node_id='node:group', executor_binding_id='binding:group', inputs=(), outputs=(WorkflowPort(name='group_r...e56df482e7e30e6a210c': {'model_id': 'remote-model-d7556ab8544d17367bf31287ed9f05e6f12cc00d5493e56df482e7e30e6a210c'}}})
+
+    def __post_init__(self) -> None:
+        object.__setattr__(self, "node_id", _identity(self.node_id, "node_id"))
+        object.__setattr__(
+            self,
+            "executor_binding_id",
+            _identity(self.executor_binding_id, "executor_binding_id"),
+        )
+        object.__setattr__(
+            self, "effect_grant_ids", _unique(self.effect_grant_ids, "effect_grant_ids")
+        )
+        if (
+            not self.inputs
+            or not self.outputs
+            or not self.effect_grant_ids
+            or not self.failure_policy
+        ):
+>           raise ValueError("workflow node lacks contract, grant, or failure policy")
+E           ValueError: workflow node lacks contract, grant, or failure policy
+
+runtime\studio_models.py:930: ValueError
+_ ERROR at setup of test_group_only_capability_does_not_execute_additional_workflow_nodes _
+
+profile_config = (WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.tmp/resume10/owned/pacifyx-syxtwz5y/pytest-of-Ben/pyt...pytest-0/test_group_only_capability_doe0/project/.agentic_engineering_os_px/runtime-core/remote-models/profiles.json'))
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001136F7E8950>
+
+    @pytest.fixture
+    def boundary(profile_config, monkeypatch):
+        root, *_ = profile_config
+        plan, attached = remote_plan(profile_config)
+        persist_task_execution_plan(root, plan)
+        reference = {"schema_version": "px.prepared-group-reference/1.0", "plan_id": plan.plan_id, "plan_sha256": plan.plan_sha256}
+        spec = replace(fixtures("bounded instructions")[0], project_id=plan.project_id)
+        config = {"execution_mode": "prepared-model-group", "prepared_group_reference": reference, "agent_spec": json.loads(json.dumps(asdict(spec))), "placements": {attached.model_id: {"model_id": attached.model_id}}}
+>       node = WorkflowNode("node:group", "binding:group", (), (WorkflowPort("group_run_sha256", "string"), WorkflowPort("control_state", "string")), ("grant:group",), "fail-closed", 30, approval_required=True, config=config)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_prepared_group_operation_approval.py:22: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+<string>:14: in __init__
+    ???
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WorkflowNode(node_id='node:group', executor_binding_id='binding:group', inputs=(), outputs=(WorkflowPort(name='group_r...e56df482e7e30e6a210c': {'model_id': 'remote-model-d7556ab8544d17367bf31287ed9f05e6f12cc00d5493e56df482e7e30e6a210c'}}})
+
+    def __post_init__(self) -> None:
+        object.__setattr__(self, "node_id", _identity(self.node_id, "node_id"))
+        object.__setattr__(
+            self,
+            "executor_binding_id",
+            _identity(self.executor_binding_id, "executor_binding_id"),
+        )
+        object.__setattr__(
+            self, "effect_grant_ids", _unique(self.effect_grant_ids, "effect_grant_ids")
+        )
+        if (
+            not self.inputs
+            or not self.outputs
+            or not self.effect_grant_ids
+            or not self.failure_policy
+        ):
+>           raise ValueError("workflow node lacks contract, grant, or failure policy")
+E           ValueError: workflow node lacks contract, grant, or failure policy
+
+runtime\studio_models.py:930: ValueError
+================================== FAILURES ===================================
+_______ test_group_owner_fences_replay_and_refuses_missing_attestation ________
+
+admitted_member = (<runtime.agent_runtime.AgentRuntimeController object at 0x000001136F80F950>, AgentSpec(agent_id='agent:demo', version...0dac302a4fc18b10c2590', 'benchmark_revision': '49797bebbbab572d8a097fe1ae982f3966a87040a0900420a336604816a03ae6', ...})
+
+    def test_group_owner_fences_replay_and_refuses_missing_attestation(admitted_member):
+        from runtime.trusted_evidence import TrustedEvidenceResolver
+        from runtime.effect_intent import EffectIntentLedger
+        controller, spec, plan, placement = admitted_member
+        store = controller.project_root / "evidence-store"
+        store.mkdir()
+        policy = controller.project_root / "trust-policy.json"
+        policy.write_text("{}", encoding="utf-8")
+        resolver = TrustedEvidenceResolver(store, policy)
+        calls = []
+        def execute(invocation, **kwargs):
+            calls.append(invocation.model_id)
+            return {"answer": "group member output"}
+        kwargs = dict(task_plan=plan.as_dict(), placements={"model-0": placement}, approval=True, member_executor=execute, generation_observer=lambda: plan.context_generation, evidence_resolver=resolver, accepted_producers=set(), attestation_provider=None)
+        result = controller.execute_governed_group(spec, **kwargs)
+        assert calls == ["model-0"]
+        assert result["control_state"] == "failed"
+>       assert controller.read_governed_group_run(result["group_run_sha256"]) == result
+E       AssertionError: assert {'assessment': {'assessment_sha256': 'b0299dbc138b8d22df357cbc985dfe854e01691c0a6ae670596cda688f32ca72', 'authority_granted': False, 'boundary': {'boundary_sha256': '1c2a6b343112d77fc0ae2b6d369e75b4e637030ea384c973c7e86cfb25187584', 'dispositions': [{'reason': 'committed artifact or signed attestation unavailable', 'state': 'blocked', 'target_id': 'signed-current-branch-assessment:model-0', 'work_id': 'model-0'}], 'schema_version': 'px.work-disposition/1.0'}, 'branch_assessments': [{'admitted': False, 'attestation': None, 'model_id': 'model-0', 'reasons': ['committed artifact or signed attestation unavailable']}], 'convergence': {'authority_granted': False, 'conclusion': None, 'convergence_sha256': 'dfd488b0707ec7cd6f35ddd373df2f19c6f9ed2c950b963df7059923ba5927df', 'critique_edges': [], 'declared_count': 1, 'dissent': ['model-0'], 'effective_independent_count': 0, 'eligible_count': 0, 'group_id': 'mesh', 'group_sha256': '9b56ac64d1dd1dc6a111f5e2bf5b0cce096a50d1faf9e665c96f7c9e424265da', 'not_admitted': ['model-0'], 'observations': [{'artifact_sha256': None, 'conclusion': 'not admitted', 'containment_proven': False, 'evidence': [], 'isolation_proven': False, 'model_id': 'model-0', 'state': 'not_admitted'}], 'schema_version': 'px.independent-convergence/1.0', 'status': 'INDETERMINATE', 'support': 0}, 'verdict': {'authority_granted': False, 'candidate_sha256': 'f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2', 'dependencies': {'context_generation': '75f94a581c333da5b286d95dad28f58f84f212e5623b8bfa7ba63143ed413875', 'model_contract_set': '857555103b60ff536179dc4595dc228ba79fa2a2c1750556d6443a5abc97c964', 'model_execution_group': '9b56ac64d1dd1dc6a111f5e2bf5b0cce096a50d1faf9e665c96f7c9e424265da', 'task_plan': 'f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2'}, 'evidence_sha256': ['1c2a6b343112d77fc0ae2b6d369e75b4e637030ea384c973c7e86cfb25187584', 'dfd488b0707ec7cd6f35ddd373df2f19c6f9ed2c950b963df7059923ba5927df'], 'schema_version': 'px.generation-bound-verdict/1.0', 'status': 'INDETERMINATE', 'verdict_sha256': '7d7ab883513ce48c75246aaa132e2be16c606eeb058d15486a478586ff60a72f', 'verifier_revision': 'source-sha256:6a91641e1311282deadf3009541a93f4b675b262f865cec783c9dde8e2fdd85b'}}, 'authority_granted': False, 'containment_proofs': None, 'control_state': 'failed', 'execution_context': {'actor_id': 'human:owner', 'authority_granted': False, 'authority_reference_sha256': 'f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2', 'cancellation_scope_id': 'run-d2f15885d1d448fb9a39f115c306ce1b', 'context_sha256': '85e92314a7a9c23fd06942b4acb367d4c3eae8f80d6e583676b324e1a22debec', 'contract_set_revision': None, 'deadline_utc': '2026-10-27T22:03:09.790745+00:00', 'effect_budget_sha256': 'f9318d9bd409729b69b6bb4e5a797f74549c5d2c668ae80dc36a6cdfa2ff2d4a', 'effect_intent_id': None, 'epoch': 1, 'execution_id': 'run-d2f15885d1d448fb9a39f115c306ce1b', 'generation_vector_sha256': '75f94a581c333da5b286d95dad28f58f84f212e5623b8bfa7ba63143ed413875', 'gremlin_revision': None, 'lease_id': None, 'model_execution_group_revision': None, 'network_policy_revision': None, 'parent_execution_id': None, 'project_id': 'px', 'provider_id': None, 'revision': 2, 'root_execution_id': 'run-d2f15885d1d448fb9a39f115c306ce1b', 'schema_version': 'px.execution-context/1.0', 'session_id': 'run-d2f15885d1d448fb9a39f115c306ce1b', 'trace_root_id': 'run-d2f15885d1d448fb9a39f115c306ce1b', 'workflow_adapter_revision': None}, 'group_run_id': 'run-d2f15885d1d448fb9a39f115c306ce1b', 'group_run_sha256': 'ef50f27deffee8dbc921d592cb1820de4018159f4127c090bbcee9de0f5f792b', 'group_sha256': '9b56ac64d1dd1dc6a111f5e2bf5b0cce096a50d1faf9e665c96f7c9e424265da', 'member_failures': {}, 'member_receipts': {'model-0': {'agent_id': 'agent:demo', 'agent_revision_sha256': '8ca727f949f1a52bc3dfc11c5ce7b6205fd1ecbe89981c1390f7799a15a1b8fb', 'authentication': {'algorithm': 'hmac-sha256', 'issuer': 'px-project-studio-authority', 'mac': '954a8599fa301e39e8be6e8590c01d4cb6b076b19874ec2eb887804b95c0d5a6', 'payload_sha256': 'e4fa5a27c86fefbc5d8ca8d2b0ea2f3170b9cb1ee58b9549134a5db7f5517dfa', 'project_identity': 'px-project-1a035b6c94e049faaa0e516ab72cd2dc'}, 'control_sequence': 3, 'effects_studio_admitted': True, 'execution_context': {'actor_id': 'human:owner', 'authority_granted': False, 'authority_reference_sha256': 'f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2', 'cancellation_scope_id': 'run-d2f15885d1d448fb9a39f115c306ce1b', 'context_sha256': '9d120cf2188b21c20cdade351908a928449fcb5773dadf74044613727aaa2343', 'contract_set_revision': None, 'deadline_utc': '2026-10-27T22:03:09.790745+00:00', 'effect_budget_sha256': 'f9318d9bd409729b69b6bb4e5a797f74549c5d2c668ae80dc36a6cdfa2ff2d4a', 'effect_intent_id': None, 'epoch': 1, 'execution_id': 'run-d3ec21ceca4c4fa78c5f7fe302484dd3', 'generation_vector_sha256': '75f94a581c333da5b286d95dad28f58f84f212e5623b8bfa7ba63143ed413875', 'gremlin_revision': None, 'lease_id': None, 'model_execution_group_revision': None, 'network_policy_revision': None, 'parent_execution_id': 'run-d2f15885d1d448fb9a39f115c306ce1b', 'project_id': 'px', 'provider_id': None, 'revision': 2, 'root_execution_id': 'run-d2f15885d1d448fb9a39f115c306ce1b', 'schema_version': 'px.execution-context/1.0', 'session_id': 'run-d2f15885d1d448fb9a39f115c306ce1b', 'trace_root_id': 'run-d2f15885d1d448fb9a39f115c306ce1b', 'workflow_adapter_revision': None}, 'handoff_packet_sha256': [], 'host_authority_retained': True, 'memory_context_receipt_sha256': None, 'model_attachment_sha256': '7f7fd254b9f37751c727cc3f48a4cbf30fb2db3ffe90dac302a4fc18b10c2590', 'outcome': {'branch_artifact': {'agent_generation_id': 'generation-0', 'artifact_sha256': '75c6068c02110a3f8caf0801f021b8fb8bfa582292dd55d43aa26e0d7406cef8', 'attachment_sha256': '7f7fd254b9f37751c727cc3f48a4cbf30fb2db3ffe90dac302a4fc18b10c2590', 'authority_granted': False, 'context_sha256': 'c22db62eb89f2e0be18634c2eac933d81735b74de21991147e94575f07a27cfa', 'group_sha256': '9b56ac64d1dd1dc6a111f5e2bf5b0cce096a50d1faf9e665c96f7c9e424265da', 'manifest_path': '.agentic_engineering_os_px/runtime-core/model-artifacts/f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2/ea79a5f6d2eea2cda84a0950f378424dc54899f720e24b948c6463f30e2f5cff/db81642bf6d41f87a8dc8506c429097de3fdd3d6413e93f6b16329d21f059023/commitment.json', 'model_id': 'model-0', 'output_bytes': 33, 'output_path': '.agentic_engineering_os_px/runtime-core/model-artifacts/f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2/ea79a5f6d2eea2cda84a0950f378424dc54899f720e24b948c6463f30e2f5cff/db81642bf6d41f87a8dc8506c429097de3fdd3d6413e93f6b16329d21f059023/output.json', 'output_sha256': '6ca00d3ba72455c64085ff6af0723d297f9ca00fc1cfdd0173138ee75e886846', 'project_id': 'px', 'resource_id': 'path-b39e9db26005493187b516ed5623f567', 'run_id': 'run-d3ec21ceca4c4fa78c5f7fe302484dd3', 'schema_version': 'px.model-branch-artifact/1.0', 'task_plan_id': 'task-plan-05195b53cf1f33afb273a58e', 'task_plan_sha256': 'f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2'}, 'capacity_release': {'outcome_sha256': 'bdb442708d0abbbdb1d16955723ca159050f8a4c8b563f1fad0533688f2a3950', 'release_sha256': '01063fee773694f17fc2ca1bf1e05bfec8a43e8c40ed46fc659af9a55c994e2f', 'released': True, 'reservation_id': 'placement-reserve-9f71564dd0e748f89dccddb442348c7e', 'reservation_sha256': 'a9c1d33db0b1655897aaa3ccf67e06d43b08a69d3627706403daf34d740f6ac9', 'schema_version': 'px.placement-capacity-release/1.0'}, 'context_sha256': 'c22db62eb89f2e0be18634c2eac933d81735b74de21991147e94575f07a27cfa', 'execution_context': {'actor_id': 'human:owner', 'authority_granted': False, 'authority_reference_sha256': 'f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2', 'cancellation_scope_id': 'run-d2f15885d1d448fb9a39f115c306ce1b', 'context_sha256': '9d120cf2188b21c20cdade351908a928449fcb5773dadf74044613727aaa2343', 'contract_set_revision': None, 'deadline_utc': '2026-10-27T22:03:09.790745+00:00', 'effect_budget_sha256': 'f9318d9bd409729b69b6bb4e5a797f74549c5d2c668ae80dc36a6cdfa2ff2d4a', 'effect_intent_id': None, 'epoch': 1, 'execution_id': 'run-d3ec21ceca4c4fa78c5f7fe302484dd3', 'generation_vector_sha256': '75f94a581c333da5b286d95dad28f58f84f212e5623b8bfa7ba63143ed413875', 'gremlin_revision': None, 'lease_id': None, 'model_execution_group_revision': None, 'network_policy_revision': None, 'parent_execution_id': 'run-d2f15885d1d448fb9a39f115c306ce1b', 'project_id': 'px', 'provider_id': None, 'revision': 2, 'root_execution_id': 'run-d2f15885d1d448fb9a39f115c306ce1b', 'schema_version': 'px.execution-context/1.0', 'session_id': 'run-d2f15885d1d448fb9a39f115c306ce1b', 'trace_root_id': 'run-d2f15885d1d448fb9a39f115c306ce1b', 'workflow_adapter_revision': None}, 'model_execution_group_sha256': '9b56ac64d1dd1dc6a111f5e2bf5b0cce096a50d1faf9e665c96f7c9e424265da', 'model_id': 'model-0', 'outcome_sha256': 'bdb442708d0abbbdb1d16955723ca159050f8a4c8b563f1fad0533688f2a3950', 'placement_sha256': '54d6ceea470da37fbd0fb329fa987b99db47c6fbe761bc0bb8a129d8b85ce46e', 'reservation_sha256': 'a9c1d33db0b1655897aaa3ccf67e06d43b08a69d3627706403daf34d740f6ac9', 'run_id': 'run-d3ec21ceca4c4fa78c5f7fe302484dd3', 'schema_version': 'px.governed-agent-placement-outcome/1.0', 'status': 'succeeded', 'task_plan_sha256': 'f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2', 'telemetry': {'actual_device': 'cpu', 'device_index': None, 'duration_seconds': 3.499999365885742e-06, 'executor_backend': None, 'fallback': False, 'process_parallelism': 0, 'routing_reason': 'CUDA is unavailable; using declared CPU fallback', 'selected_device': 'cpu'}}, 'placement_sha256': '54d6ceea470da37fbd0fb329fa987b99db47c6fbe761bc0bb8a129d8b85ce46e', 'result_sha256': 'dd5f37e6b01a4a17c2c685f8b769852091ee12ad3f2604b9bbd91237aaf52cc1', 'run_id': 'run-d3ec21ceca4c4fa78c5f7fe302484dd3', 'schema_version': 'px.agent-governed-execution-receipt/1.0', 'task_plan_sha256': 'f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2'}}, 'physical_scheduler': 'bounded-sequential-members', 'sandbox_policy_sha256': None, 'sandbox_provenance': None, 'schema_version': 'px.governed-model-group-run/1.0', 'task_plan_sha256': 'f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2'} == {'schema_version': 'px.governed-model-group-run/1.0', 'task_plan_sha256': 'f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2', 'group_run_id': 'run-d2f15885d1d448fb9a39f115c306ce1b', 'execution_context': {'schema_version': 'px.execution-context/1.0', 'execution_id': 'run-d2f15885d1d448fb9a39f115c306ce1b', 'parent_execution_id': None, 'root_execution_id': 'run-d2f15885d1d448fb9a39f115c306ce1b', 'project_id': 'px', 'session_id': 'run-d2f15885d1d448fb9a39f115c306ce1b', 'revision': 2, 'epoch': 1, 'generation_vector_sha256': '75f94a581c333da5b286d95dad28f58f84f212e5623b8bfa7ba63143ed413875', 'authority_reference_sha256': 'f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2', 'effect_budget_sha256': 'f9318d9bd409729b69b6bb4e5a797f74549c5d2c668ae80dc36a6cdfa2ff2d4a', 'cancellation_scope_id': 'run-d2f15885d1d448fb9a39f115c306ce1b', 'deadline_utc': '2026-10-27T22:03:09.790745+00:00', 'actor_id': 'human:owner', 'provider_id': None, 'trace_root_id': 'run-d2f15885d1d448fb9a39f115c306ce1b', 'model_execution_group_revision': None, 'contract_set_revision': None, 'gremlin_revision': None, 'network_policy_revision': None, 'workflow_adapter_revision': None, 'lease_id': None, 'effect_intent_id': None, 'authority_granted': False, 'context_sha256': '85e92314a7a9c23fd06942b4acb367d4c3eae8f80d6e583676b324e1a22debec'}, 'control_state': 'failed', 'group_sha256': '9b56ac64d1dd1dc6a111f5e2bf5b0cce096a50d1faf9e665c96f7c9e424265da', 'member_receipts': {'model-0': {'schema_version': 'px.agent-governed-execution-receipt/1.0', 'run_id': 'run-d3ec21ceca4c4fa78c5f7fe302484dd3', 'agent_id': 'agent:demo', 'agent_revision_sha256': '8ca727f949f1a52bc3dfc11c5ce7b6205fd1ecbe89981c1390f7799a15a1b8fb', 'task_plan_sha256': 'f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2', 'model_attachment_sha256': '7f7fd254b9f37751c727cc3f48a4cbf30fb2db3ffe90dac302a4fc18b10c2590', 'placement_sha256': '54d6ceea470da37fbd0fb329fa987b99db47c6fbe761bc0bb8a129d8b85ce46e', 'memory_context_receipt_sha256': None, 'handoff_packet_sha256': [], 'outcome': {'schema_version': 'px.governed-agent-placement-outcome/1.0', 'run_id': 'run-d3ec21ceca4c4fa78c5f7fe302484dd3', 'task_plan_sha256': 'f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2', 'placement_sha256': '54d6ceea470da37fbd0fb329fa987b99db47c6fbe761bc0bb8a129d8b85ce46e', 'reservation_sha256': 'a9c1d33db0b1655897aaa3ccf67e06d43b08a69d3627706403daf34d740f6ac9', 'status': 'succeeded', 'execution_context': {'schema_version': 'px.execution-context/1.0', 'execution_id': 'run-d3ec21ceca4c4fa78c5f7fe302484dd3', 'parent_execution_id': 'run-d2f15885d1d448fb9a39f115c306ce1b', 'root_execution_id': 'run-d2f15885d1d448fb9a39f115c306ce1b', 'project_id': 'px', 'session_id': 'run-d2f15885d1d448fb9a39f115c306ce1b', 'revision': 2, 'epoch': 1, 'generation_vector_sha256': '75f94a581c333da5b286d95dad28f58f84f212e5623b8bfa7ba63143ed413875', 'authority_reference_sha256': 'f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2', 'effect_budget_sha256': 'f9318d9bd409729b69b6bb4e5a797f74549c5d2c668ae80dc36a6cdfa2ff2d4a', 'cancellation_scope_id': 'run-d2f15885d1d448fb9a39f115c306ce1b', 'deadline_utc': '2026-10-27T22:03:09.790745+00:00', 'actor_id': 'human:owner', 'provider_id': None, 'trace_root_id': 'run-d2f15885d1d448fb9a39f115c306ce1b', 'model_execution_group_revision': None, 'contract_set_revision': None, 'gremlin_revision': None, 'network_policy_revision': None, 'workflow_adapter_revision': None, 'lease_id': None, 'effect_intent_id': None, 'authority_granted': False, 'context_sha256': '9d120cf2188b21c20cdade351908a928449fcb5773dadf74044613727aaa2343'}, 'model_id': 'model-0', 'context_sha256': 'c22db62eb89f2e0be18634c2eac933d81735b74de21991147e94575f07a27cfa', 'model_execution_group_sha256': '9b56ac64d1dd1dc6a111f5e2bf5b0cce096a50d1faf9e665c96f7c9e424265da', 'branch_artifact': {'schema_version': 'px.model-branch-artifact/1.0', 'project_id': 'px', 'run_id': 'run-d3ec21ceca4c4fa78c5f7fe302484dd3', 'task_plan_id': 'task-plan-05195b53cf1f33afb273a58e', 'task_plan_sha256': 'f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2', 'group_sha256': '9b56ac64d1dd1dc6a111f5e2bf5b0cce096a50d1faf9e665c96f7c9e424265da', 'model_id': 'model-0', 'agent_generation_id': 'generation-0', 'attachment_sha256': '7f7fd254b9f37751c727cc3f48a4cbf30fb2db3ffe90dac302a4fc18b10c2590', 'context_sha256': 'c22db62eb89f2e0be18634c2eac933d81735b74de21991147e94575f07a27cfa', 'output_sha256': '6ca00d3ba72455c64085ff6af0723d297f9ca00fc1cfdd0173138ee75e886846', 'output_bytes': 33, 'output_path': '.agentic_engineering_os_px/runtime-core/model-artifacts/f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2/ea79a5f6d2eea2cda84a0950f378424dc54899f720e24b948c6463f30e2f5cff/db81642bf6d41f87a8dc8506c429097de3fdd3d6413e93f6b16329d21f059023/output.json', 'resource_id': 'path-b39e9db26005493187b516ed5623f567', 'authority_granted': False, 'artifact_sha256': '75c6068c02110a3f8caf0801f021b8fb8bfa582292dd55d43aa26e0d7406cef8', 'manifest_path': '.agentic_engineering_os_px/runtime-core/model-artifacts/f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2/ea79a5f6d2eea2cda84a0950f378424dc54899f720e24b948c6463f30e2f5cff/db81642bf6d41f87a8dc8506c429097de3fdd3d6413e93f6b16329d21f059023/commitment.json'}, 'telemetry': {'selected_device': 'cpu', 'actual_device': 'cpu', 'fallback': False, 'executor_backend': None, 'device_index': None, 'process_parallelism': 0, 'duration_seconds': 3.499999365885742e-06, 'routing_reason': 'CUDA is unavailable; using declared CPU fallback'}, 'outcome_sha256': 'bdb442708d0abbbdb1d16955723ca159050f8a4c8b563f1fad0533688f2a3950', 'capacity_release': {'schema_version': 'px.placement-capacity-release/1.0', 'reservation_id': 'placement-reserve-9f71564dd0e748f89dccddb442348c7e', 'reservation_sha256': 'a9c1d33db0b1655897aaa3ccf67e06d43b08a69d3627706403daf34d740f6ac9', 'outcome_sha256': 'bdb442708d0abbbdb1d16955723ca159050f8a4c8b563f1fad0533688f2a3950', 'released': True, 'release_sha256': '01063fee773694f17fc2ca1bf1e05bfec8a43e8c40ed46fc659af9a55c994e2f'}}, 'result_sha256': 'dd5f37e6b01a4a17c2c685f8b769852091ee12ad3f2604b9bbd91237aaf52cc1', 'control_sequence': 3, 'effects_studio_admitted': True, 'execution_context': {'schema_version': 'px.execution-context/1.0', 'execution_id': 'run-d3ec21ceca4c4fa78c5f7fe302484dd3', 'parent_execution_id': 'run-d2f15885d1d448fb9a39f115c306ce1b', 'root_execution_id': 'run-d2f15885d1d448fb9a39f115c306ce1b', 'project_id': 'px', 'session_id': 'run-d2f15885d1d448fb9a39f115c306ce1b', 'revision': 2, 'epoch': 1, 'generation_vector_sha256': '75f94a581c333da5b286d95dad28f58f84f212e5623b8bfa7ba63143ed413875', 'authority_reference_sha256': 'f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2', 'effect_budget_sha256': 'f9318d9bd409729b69b6bb4e5a797f74549c5d2c668ae80dc36a6cdfa2ff2d4a', 'cancellation_scope_id': 'run-d2f15885d1d448fb9a39f115c306ce1b', 'deadline_utc': '2026-10-27T22:03:09.790745+00:00', 'actor_id': 'human:owner', 'provider_id': None, 'trace_root_id': 'run-d2f15885d1d448fb9a39f115c306ce1b', 'model_execution_group_revision': None, 'contract_set_revision': None, 'gremlin_revision': None, 'network_policy_revision': None, 'workflow_adapter_revision': None, 'lease_id': None, 'effect_intent_id': None, 'authority_granted': False, 'context_sha256': '9d120cf2188b21c20cdade351908a928449fcb5773dadf74044613727aaa2343'}, 'host_authority_retained': True, 'authentication': {'algorithm': 'hmac-sha256', 'issuer': 'px-project-studio-authority', 'project_identity': 'px-project-1a035b6c94e049faaa0e516ab72cd2dc', 'payload_sha256': 'e4fa5a27c86fefbc5d8ca8d2b0ea2f3170b9cb1ee58b9549134a5db7f5517dfa', 'mac': '954a8599fa301e39e8be6e8590c01d4cb6b076b19874ec2eb887804b95c0d5a6'}}}, 'member_failures': {}, 'assessment': {'convergence': {'schema_version': 'px.independent-convergence/1.0', 'group_id': 'mesh', 'group_sha256': '9b56ac64d1dd1dc6a111f5e2bf5b0cce096a50d1faf9e665c96f7c9e424265da', 'status': 'INDETERMINATE', 'conclusion': None, 'declared_count': 1, 'eligible_count': 0, 'effective_independent_count': 0, 'support': 0, 'observations': [{'model_id': 'model-0', 'conclusion': 'not admitted', 'artifact_sha256': None, 'evidence': (), 'isolation_proven': False, 'containment_proven': False, 'state': 'not_admitted'}], 'dissent': ['model-0'], 'not_admitted': ['model-0'], 'critique_edges': [], 'authority_granted': False, 'convergence_sha256': 'dfd488b0707ec7cd6f35ddd373df2f19c6f9ed2c950b963df7059923ba5927df'}, 'boundary': {'schema_version': 'px.work-disposition/1.0', 'dispositions': [{'work_id': 'model-0', 'state': 'blocked', 'reason': 'committed artifact or signed attestation unavailable', 'target_id': 'signed-current-branch-assessment:model-0'}], 'boundary_sha256': '1c2a6b343112d77fc0ae2b6d369e75b4e637030ea384c973c7e86cfb25187584'}, 'verdict': {'schema_version': 'px.generation-bound-verdict/1.0', 'candidate_sha256': 'f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2', 'dependencies': {'context_generation': '75f94a581c333da5b286d95dad28f58f84f212e5623b8bfa7ba63143ed413875', 'model_contract_set': '857555103b60ff536179dc4595dc228ba79fa2a2c1750556d6443a5abc97c964', 'model_execution_group': '9b56ac64d1dd1dc6a111f5e2bf5b0cce096a50d1faf9e665c96f7c9e424265da', 'task_plan': 'f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2'}, 'verifier_revision': 'source-sha256:6a91641e1311282deadf3009541a93f4b675b262f865cec783c9dde8e2fdd85b', 'evidence_sha256': ['1c2a6b343112d77fc0ae2b6d369e75b4e637030ea384c973c7e86cfb25187584', 'dfd488b0707ec7cd6f35ddd373df2f19c6f9ed2c950b963df7059923ba5927df'], 'status': 'INDETERMINATE', 'authority_granted': False, 'verdict_sha256': '7d7ab883513ce48c75246aaa132e2be16c606eeb058d15486a478586ff60a72f'}, 'branch_assessments': [{'model_id': 'model-0', 'admitted': False, 'reasons': ['committed artifact or signed attestation unavailable'], 'attestation': None}], 'authority_granted': False, 'assessment_sha256': 'b0299dbc138b8d22df357cbc985dfe854e01691c0a6ae670596cda688f32ca72'}, 'sandbox_provenance': None, 'sandbox_policy_sha256': None, 'containment_proofs': None, 'physical_scheduler': 'bounded-sequential-members', 'authority_granted': False, 'group_run_sha256': 'ef50f27deffee8dbc921d592cb1820de4018159f4127c090bbcee9de0f5f792b'}
+E         
+E         Common items:
+E         {'authority_granted': False,
+E          'containment_proofs': None,
+E          'control_state': 'failed',
+E          'execution_context': {'actor_id': 'human:owner',
+E                                'authority_granted': False,
+E                                'authority_reference_sha256': 'f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2',
+E                                'cancellation_scope_id': 'run-d2f15885d1d448fb9a39f115c306ce1b',
+E                                'context_sha256': '85e92314a7a9c23fd06942b4acb367d4c3eae8f80d6e583676b324e1a22debec',
+E                                'contract_set_revision': None,
+E                                'deadline_utc': '2026-10-27T22:03:09.790745+00:00',
+E                                'effect_budget_sha256': 'f9318d9bd409729b69b6bb4e5a797f74549c5d2c668ae80dc36a6cdfa2ff2d4a',
+E                                'effect_intent_id': None,
+E                                'epoch': 1,
+E                                'execution_id': 'run-d2f15885d1d448fb9a39f115c306ce1b',
+E                                'generation_vector_sha256': '75f94a581c333da5b286d95dad28f58f84f212e5623b8bfa7ba63143ed413875',
+E                                'gremlin_revision': None,
+E                                'lease_id': None,
+E                                'model_execution_group_revision': None,
+E                                'network_policy_revision': None,
+E                                'parent_execution_id': None,
+E                                'project_id': 'px',
+E                                'provider_id': None,
+E                                'revision': 2,
+E                                'root_execution_id': 'run-d2f15885d1d448fb9a39f115c306ce1b',
+E                                'schema_version': 'px.execution-context/1.0',
+E                                'session_id': 'run-d2f15885d1d448fb9a39f115c306ce1b',
+E                                'trace_root_id': 'run-d2f15885d1d448fb9a39f115c306ce1b',
+E                                'workflow_adapter_revision': None},
+E          'group_run_id': 'run-d2f15885d1d448fb9a39f115c306ce1b',
+E          'group_run_sha256': 'ef50f27deffee8dbc921d592cb1820de4018159f4127c090bbcee9de0f5f792b',
+E          'group_sha256': '9b56ac64d1dd1dc6a111f5e2bf5b0cce096a50d1faf9e665c96f7c9e424265da',
+E          'member_failures': {},
+E          'member_receipts': {'model-0': {'agent_id': 'agent:demo',
+E                                          'agent_revision_sha256': '8ca727f949f1a52bc3dfc11c5ce7b6205fd1ecbe89981c1390f7799a15a1b8fb',
+E                                          'authentication': {'algorithm': 'hmac-sha256',
+E                                                             'issuer': 'px-project-studio-authority',
+E                                                             'mac': '954a8599fa301e39e8be6e8590c01d4cb6b076b19874ec2eb887804b95c0d5a6',
+E                                                             'payload_sha256': 'e4fa5a27c86fefbc5d8ca8d2b0ea2f3170b9cb1ee58b9549134a5db7f5517dfa',
+E                                                             'project_identity': 'px-project-1a035b6c94e049faaa0e516ab72cd2dc'},
+E                                          'control_sequence': 3,
+E                                          'effects_studio_admitted': True,
+E                                          'execution_context': {'actor_id': 'human:owner',
+E                                                                'authority_granted': False,
+E                                                                'authority_reference_sha256': 'f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2',
+E                                                                'cancellation_scope_id': 'run-d2f15885d1d448fb9a39f115c306ce1b',
+E                                                                'context_sha256': '9d120cf2188b21c20cdade351908a928449fcb5773dadf74044613727aaa2343',
+E                                                                'contract_set_revision': None,
+E                                                                'deadline_utc': '2026-10-27T22:03:09.790745+00:00',
+E                                                                'effect_budget_sha256': 'f9318d9bd409729b69b6bb4e5a797f74549c5d2c668ae80dc36a6cdfa2ff2d4a',
+E                                                                'effect_intent_id': None,
+E                                                                'epoch': 1,
+E                                                                'execution_id': 'run-d3ec21ceca4c4fa78c5f7fe302484dd3',
+E                                                                'generation_vector_sha256': '75f94a581c333da5b286d95dad28f58f84f212e5623b8bfa7ba63143ed413875',
+E                                                                'gremlin_revision': None,
+E                                                                'lease_id': None,
+E                                                                'model_execution_group_revision': None,
+E                                                                'network_policy_revision': None,
+E                                                                'parent_execution_id': 'run-d2f15885d1d448fb9a39f115c306ce1b',
+E                                                                'project_id': 'px',
+E                                                                'provider_id': None,
+E                                                                'revision': 2,
+E                                                                'root_execution_id': 'run-d2f15885d1d448fb9a39f115c306ce1b',
+E                                                                'schema_version': 'px.execution-context/1.0',
+E                                                                'session_id': 'run-d2f15885d1d448fb9a39f115c306ce1b',
+E                                                                'trace_root_id': 'run-d2f15885d1d448fb9a39f115c306ce1b',
+E                                                                'workflow_adapter_revision': None},
+E                                          'handoff_packet_sha256': [],
+E                                          'host_authority_retained': True,
+E                                          'memory_context_receipt_sha256': None,
+E                                          'model_attachment_sha256': '7f7fd254b9f37751c727cc3f48a4cbf30fb2db3ffe90dac302a4fc18b10c2590',
+E                                          'outcome': {'branch_artifact': {'agent_generation_id': 'generation-0',
+E                                                                          'artifact_sha256': '75c6068c02110a3f8caf0801f021b8fb8bfa582292dd55d43aa26e0d7406cef8',
+E                                                                          'attachment_sha256': '7f7fd254b9f37751c727cc3f48a4cbf30fb2db3ffe90dac302a4fc18b10c2590',
+E                                                                          'authority_granted': False,
+E                                                                          'context_sha256': 'c22db62eb89f2e0be18634c2eac933d81735b74de21991147e94575f07a27cfa',
+E                                                                          'group_sha256': '9b56ac64d1dd1dc6a111f5e2bf5b0cce096a50d1faf9e665c96f7c9e424265da',
+E                                                                          'manifest_path': '.agentic_engineering_os_px/runtime-core/model-artifacts/f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2/ea79a5f6d2eea2cda84a0950f378424dc54899f720e24b948c6463f30e2f5cff/db81642bf6d41f87a8dc8506c429097de3fdd3d6413e93f6b16329d21f059023/commitment.json',
+E                                                                          'model_id': 'model-0',
+E                                                                          'output_bytes': 33,
+E                                                                          'output_path': '.agentic_engineering_os_px/runtime-core/model-artifacts/f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2/ea79a5f6d2eea2cda84a0950f378424dc54899f720e24b948c6463f30e2f5cff/db81642bf6d41f87a8dc8506c429097de3fdd3d6413e93f6b16329d21f059023/output.json',
+E                                                                          'output_sha256': '6ca00d3ba72455c64085ff6af0723d297f9ca00fc1cfdd0173138ee75e886846',
+E                                                                          'project_id': 'px',
+E                                                                          'resource_id': 'path-b39e9db26005493187b516ed5623f567',
+E                                                                          'run_id': 'run-d3ec21ceca4c4fa78c5f7fe302484dd3',
+E                                                                          'schema_version': 'px.model-branch-artifact/1.0',
+E                                                                          'task_plan_id': 'task-plan-05195b53cf1f33afb273a58e',
+E                                                                          'task_plan_sha256': 'f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2'},
+E                                                      'capacity_release': {'outcome_sha256': 'bdb442708d0abbbdb1d16955723ca159050f8a4c8b563f1fad0533688f2a3950',
+E                                                                           'release_sha256': '01063fee773694f17fc2ca1bf1e05bfec8a43e8c40ed46fc659af9a55c994e2f',
+E                                                                           'released': True,
+E                                                                           'reservation_id': 'placement-reserve-9f71564dd0e748f89dccddb442348c7e',
+E                                                                           'reservation_sha256': 'a9c1d33db0b1655897aaa3ccf67e06d43b08a69d3627706403daf34d740f6ac9',
+E                                                                           'schema_version': 'px.placement-capacity-release/1.0'},
+E                                                      'context_sha256': 'c22db62eb89f2e0be18634c2eac933d81735b74de21991147e94575f07a27cfa',
+E                                                      'execution_context': {'actor_id': 'human:owner',
+E                                                                            'authority_granted': False,
+E                                                                            'authority_reference_sha256': 'f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2',
+E                                                                            'cancellation_scope_id': 'run-d2f15885d1d448fb9a39f115c306ce1b',
+E                                                                            'context_sha256': '9d120cf2188b21c20cdade351908a928449fcb5773dadf74044613727aaa2343',
+E                                                                            'contract_set_revision': None,
+E                                                                            'deadline_utc': '2026-10-27T22:03:09.790745+00:00',
+E                                                                            'effect_budget_sha256': 'f9318d9bd409729b69b6bb4e5a797f74549c5d2c668ae80dc36a6cdfa2ff2d4a',
+E                                                                            'effect_intent_id': None,
+E                                                                            'epoch': 1,
+E                                                                            'execution_id': 'run-d3ec21ceca4c4fa78c5f7fe302484dd3',
+E                                                                            'generation_vector_sha256': '75f94a581c333da5b286d95dad28f58f84f212e5623b8bfa7ba63143ed413875',
+E                                                                            'gremlin_revision': None,
+E                                                                            'lease_id': None,
+E                                                                            'model_execution_group_revision': None,
+E                                                                            'network_policy_revision': None,
+E                                                                            'parent_execution_id': 'run-d2f15885d1d448fb9a39f115c306ce1b',
+E                                                                            'project_id': 'px',
+E                                                                            'provider_id': None,
+E                                                                            'revision': 2,
+E                                                                            'root_execution_id': 'run-d2f15885d1d448fb9a39f115c306ce1b',
+E                                                                            'schema_version': 'px.execution-context/1.0',
+E                                                                            'session_id': 'run-d2f15885d1d448fb9a39f115c306ce1b',
+E                                                                            'trace_root_id': 'run-d2f15885d1d448fb9a39f115c306ce1b',
+E                                                                            'workflow_adapter_revision': None},
+E                                                      'model_execution_group_sha256': '9b56ac64d1dd1dc6a111f5e2bf5b0cce096a50d1faf9e665c96f7c9e424265da',
+E                                                      'model_id': 'model-0',
+E                                                      'outcome_sha256': 'bdb442708d0abbbdb1d16955723ca159050f8a4c8b563f1fad0533688f2a3950',
+E                                                      'placement_sha256': '54d6ceea470da37fbd0fb329fa987b99db47c6fbe761bc0bb8a129d8b85ce46e',
+E                                                      'reservation_sha256': 'a9c1d33db0b1655897aaa3ccf67e06d43b08a69d3627706403daf34d740f6ac9',
+E                                                      'run_id': 'run-d3ec21ceca4c4fa78c5f7fe302484dd3',
+E                                                      'schema_version': 'px.governed-agent-placement-outcome/1.0',
+E                                                      'status': 'succeeded',
+E                                                      'task_plan_sha256': 'f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2',
+E                                                      'telemetry': {'actual_device': 'cpu',
+E                                                                    'device_index': None,
+E                                                                    'duration_seconds': 3.499999365885742e-06,
+E                                                                    'executor_backend': None,
+E                                                                    'fallback': False,
+E                                                                    'process_parallelism': 0,
+E                                                                    'routing_reason': 'CUDA '
+E                                                                                      'is '
+E                                                                                      'unavailable; '
+E                                                                                      'using '
+E                                                                                      'declared '
+E                                                                                      'CPU '
+E                                                                                      'fallback',
+E                                                                    'selected_device': 'cpu'}},
+E                                          'placement_sha256': '54d6ceea470da37fbd0fb329fa987b99db47c6fbe761bc0bb8a129d8b85ce46e',
+E                                          'result_sha256': 'dd5f37e6b01a4a17c2c685f8b769852091ee12ad3f2604b9bbd91237aaf52cc1',
+E                                          'run_id': 'run-d3ec21ceca4c4fa78c5f7fe302484dd3',
+E                                          'schema_version': 'px.agent-governed-execution-receipt/1.0',
+E                                          'task_plan_sha256': 'f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2'}},
+E          'physical_scheduler': 'bounded-sequential-members',
+E          'sandbox_policy_sha256': None,
+E          'sandbox_provenance': None,
+E          'schema_version': 'px.governed-model-group-run/1.0',
+E          'task_plan_sha256': 'f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2'}
+E         Differing items:
+E         {'assessment': {'assessment_sha256': 'b0299dbc138b8d22df357cbc985dfe854e01691c0a6ae670596cda688f32ca72', 'authority_gr...attestation': None, 'model_id': 'model-0', 'reasons': ['committed artifact or signed attestation unavailable']}], ...}} != {'assessment': {'convergence': {'schema_version': 'px.independent-convergence/1.0', 'group_id': 'mesh', 'group_sha256'...', 'admitted': False, 'reasons': ['committed artifact or signed attestation unavailable'], 'attestation': None}], ...}}
+E         
+E         Full diff:
+E           {
+E         +     'assessment': {
+E         +         'assessment_sha256': 'b0299dbc138b8d22df357cbc985dfe854e01691c0a6ae670596cda688f32ca72',
+E         -     'schema_version': 'px.governed-model-group-run/1.0',
+E         -     'task_plan_sha256': 'f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2',
+E         -     'group_run_id': 'run-d2f15885d1d448fb9a39f115c306ce1b',
+E         -     'execution_context': {
+E         -         'schema_version': 'px.execution-context/1.0',
+E         -         'execution_id': 'run-d2f15885d1d448fb9a39f115c306ce1b',
+E         -         'parent_execution_id': None,
+E         -         'root_execution_id': 'run-d2f15885d1d448fb9a39f115c306ce1b',
+E         -         'project_id': 'px',
+E         -         'session_id': 'run-d2f15885d1d448fb9a39f115c306ce1b',
+E         -         'revision': 2,
+E         -         'epoch': 1,
+E         -         'generation_vector_sha256': '75f94a581c333da5b286d95dad28f58f84f212e5623b8bfa7ba63143ed413875',
+E         -         'authority_reference_sha256': 'f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2',
+E         -         'effect_budget_sha256': 'f9318d9bd409729b69b6bb4e5a797f74549c5d2c668ae80dc36a6cdfa2ff2d4a',
+E         -         'cancellation_scope_id': 'run-d2f15885d1d448fb9a39f115c306ce1b',
+E         -         'deadline_utc': '2026-10-27T22:03:09.790745+00:00',
+E         -         'actor_id': 'human:owner',
+E         -         'provider_id': None,
+E         -         'trace_root_id': 'run-d2f15885d1d448fb9a39f115c306ce1b',
+E         -         'model_execution_group_revision': None,
+E         -         'contract_set_revision': None,
+E         -         'gremlin_revision': None,
+E         -         'network_policy_revision': None,
+E         -         'workflow_adapter_revision': None,
+E         -         'lease_id': None,
+E         -         'effect_intent_id': None,
+E                   'authority_granted': False,
+E         -         'context_sha256': '85e92314a7a9c23fd06942b4acb367d4c3eae8f80d6e583676b324e1a22debec',
+E         +         'boundary': {
+E         +             'boundary_sha256': '1c2a6b343112d77fc0ae2b6d369e75b4e637030ea384c973c7e86cfb25187584',
+E         +             'dispositions': [
+E         +                 {
+E         +                     'reason': 'committed artifact or signed attestation unavailable',
+E         +                     'state': 'blocked',
+E         +                     'target_id': 'signed-current-branch-assessment:model-0',
+E         +                     'work_id': 'model-0',
+E         +                 },
+E         +             ],
+E         +             'schema_version': 'px.work-disposition/1.0',
+E         -     },
+E         +         },
+E         ? ++++
+E         +         'branch_assessments': [
+E         +             {
+E         +                 'admitted': False,
+E         +                 'attestation': None,
+E         -     'control_state': 'failed',
+E         -     'group_sha256': '9b56ac64d1dd1dc6a111f5e2bf5b0cce096a50d1faf9e665c96f7c9e424265da',
+E         -     'member_receipts': {
+E         -         'model-0': {
+E         -             'schema_version': 'px.agent-governed-execution-receipt/1.0',
+E         -             'run_id': 'run-d3ec21ceca4c4fa78c5f7fe302484dd3',
+E         -             'agent_id': 'agent:demo',
+E         -             'agent_revision_sha256': '8ca727f949f1a52bc3dfc11c5ce7b6205fd1ecbe89981c1390f7799a15a1b8fb',
+E         -             'task_plan_sha256': 'f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2',
+E         -             'model_attachment_sha256': '7f7fd254b9f37751c727cc3f48a4cbf30fb2db3ffe90dac302a4fc18b10c2590',
+E         -             'placement_sha256': '54d6ceea470da37fbd0fb329fa987b99db47c6fbe761bc0bb8a129d8b85ce46e',
+E         -             'memory_context_receipt_sha256': None,
+E         -             'handoff_packet_sha256': [],
+E         -             'outcome': {
+E         -                 'schema_version': 'px.governed-agent-placement-outcome/1.0',
+E         -                 'run_id': 'run-d3ec21ceca4c4fa78c5f7fe302484dd3',
+E         -                 'task_plan_sha256': 'f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2',
+E         -                 'placement_sha256': '54d6ceea470da37fbd0fb329fa987b99db47c6fbe761bc0bb8a129d8b85ce46e',
+E         -                 'reservation_sha256': 'a9c1d33db0b1655897aaa3ccf67e06d43b08a69d3627706403daf34d740f6ac9',
+E         -                 'status': 'succeeded',
+E         -                 'execution_context': {
+E         -                     'schema_version': 'px.execution-context/1.0',
+E         -                     'execution_id': 'run-d3ec21ceca4c4fa78c5f7fe302484dd3',
+E         -                     'parent_execution_id': 'run-d2f15885d1d448fb9a39f115c306ce1b',
+E         -                     'root_execution_id': 'run-d2f15885d1d448fb9a39f115c306ce1b',
+E         -                     'project_id': 'px',
+E         -                     'session_id': 'run-d2f15885d1d448fb9a39f115c306ce1b',
+E         -                     'revision': 2,
+E         -                     'epoch': 1,
+E         -                     'generation_vector_sha256': '75f94a581c333da5b286d95dad28f58f84f212e5623b8bfa7ba63143ed413875',
+E         -                     'authority_reference_sha256': 'f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2',
+E         -                     'effect_budget_sha256': 'f9318d9bd409729b69b6bb4e5a797f74549c5d2c668ae80dc36a6cdfa2ff2d4a',
+E         -                     'cancellation_scope_id': 'run-d2f15885d1d448fb9a39f115c306ce1b',
+E         -                     'deadline_utc': '2026-10-27T22:03:09.790745+00:00',
+E         -                     'actor_id': 'human:owner',
+E         -                     'provider_id': None,
+E         -                     'trace_root_id': 'run-d2f15885d1d448fb9a39f115c306ce1b',
+E         -                     'model_execution_group_revision': None,
+E         -                     'contract_set_revision': None,
+E         -                     'gremlin_revision': None,
+E         -                     'network_policy_revision': None,
+E         -                     'workflow_adapter_revision': None,
+E         -                     'lease_id': None,
+E         -                     'effect_intent_id': None,
+E         -                     'authority_granted': False,
+E         -                     'context_sha256': '9d120cf2188b21c20cdade351908a928449fcb5773dadf74044613727aaa2343',
+E         -                 },
+E                           'model_id': 'model-0',
+E         +                 'reasons': [
+E         +                     'committed artifact or signed attestation unavailable',
+E         +                 ],
+E         +             },
+E         +         ],
+E         -                 'context_sha256': 'c22db62eb89f2e0be18634c2eac933d81735b74de21991147e94575f07a27cfa',
+E         -                 'model_execution_group_sha256': '9b56ac64d1dd1dc6a111f5e2bf5b0cce096a50d1faf9e665c96f7c9e424265da',
+E         -                 'branch_artifact': {
+E         -                     'schema_version': 'px.model-branch-artifact/1.0',
+E         -                     'project_id': 'px',
+E         -                     'run_id': 'run-d3ec21ceca4c4fa78c5f7fe302484dd3',
+E         -                     'task_plan_id': 'task-plan-05195b53cf1f33afb273a58e',
+E         -                     'task_plan_sha256': 'f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2',
+E         -                     'group_sha256': '9b56ac64d1dd1dc6a111f5e2bf5b0cce096a50d1faf9e665c96f7c9e424265da',
+E         -                     'model_id': 'model-0',
+E         -                     'agent_generation_id': 'generation-0',
+E         -                     'attachment_sha256': '7f7fd254b9f37751c727cc3f48a4cbf30fb2db3ffe90dac302a4fc18b10c2590',
+E         -                     'context_sha256': 'c22db62eb89f2e0be18634c2eac933d81735b74de21991147e94575f07a27cfa',
+E         -                     'output_sha256': '6ca00d3ba72455c64085ff6af0723d297f9ca00fc1cfdd0173138ee75e886846',
+E         -                     'output_bytes': 33,
+E         -                     'output_path': '.agentic_engineering_os_px/runtime-core/model-artifacts/f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2/ea79a5f6d2eea2cda84a0950f378424dc54899f720e24b948c6463f30e2f5cff/db81642bf6d41f87a8dc8506c429097de3fdd3d6413e93f6b16329d21f059023/output.json',
+E         -                     'resource_id': 'path-b39e9db26005493187b516ed5623f567',
+E         -                     'authority_granted': False,
+E         -                     'artifact_sha256': '75c6068c02110a3f8caf0801f021b8fb8bfa582292dd55d43aa26e0d7406cef8',
+E         -                     'manifest_path': '.agentic_engineering_os_px/runtime-core/model-artifacts/f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2/ea79a5f6d2eea2cda84a0950f378424dc54899f720e24b948c6463f30e2f5cff/db81642bf6d41f87a8dc8506c429097de3fdd3d6413e93f6b16329d21f059023/commitment.json',
+E         -                 },
+E         -                 'telemetry': {
+E         -                     'selected_device': 'cpu',
+E         -                     'actual_device': 'cpu',
+E         -                     'fallback': False,
+E         -                     'executor_backend': None,
+E         -                     'device_index': None,
+E         -                     'process_parallelism': 0,
+E         -                     'duration_seconds': 3.499999365885742e-06,
+E         -                     'routing_reason': 'CUDA is unavailable; using declared CPU fallback',
+E         -                 },
+E         -                 'outcome_sha256': 'bdb442708d0abbbdb1d16955723ca159050f8a4c8b563f1fad0533688f2a3950',
+E         -                 'capacity_release': {
+E         -                     'schema_version': 'px.placement-capacity-release/1.0',
+E         -                     'reservation_id': 'placement-reserve-9f71564dd0e748f89dccddb442348c7e',
+E         -                     'reservation_sha256': 'a9c1d33db0b1655897aaa3ccf67e06d43b08a69d3627706403daf34d740f6ac9',
+E         -                     'outcome_sha256': 'bdb442708d0abbbdb1d16955723ca159050f8a4c8b563f1fad0533688f2a3950',
+E         -                     'released': True,
+E         -                     'release_sha256': '01063fee773694f17fc2ca1bf1e05bfec8a43e8c40ed46fc659af9a55c994e2f',
+E         -                 },
+E         -             },
+E         -             'result_sha256': 'dd5f37e6b01a4a17c2c685f8b769852091ee12ad3f2604b9bbd91237aaf52cc1',
+E         -             'control_sequence': 3,
+E         -             'effects_studio_admitted': True,
+E         -             'execution_context': {
+E         -                 'schema_version': 'px.execution-context/1.0',
+E         -                 'execution_id': 'run-d3ec21ceca4c4fa78c5f7fe302484dd3',
+E         -                 'parent_execution_id': 'run-d2f15885d1d448fb9a39f115c306ce1b',
+E         -                 'root_execution_id': 'run-d2f15885d1d448fb9a39f115c306ce1b',
+E         -                 'project_id': 'px',
+E         -                 'session_id': 'run-d2f15885d1d448fb9a39f115c306ce1b',
+E         -                 'revision': 2,
+E         -                 'epoch': 1,
+E         -                 'generation_vector_sha256': '75f94a581c333da5b286d95dad28f58f84f212e5623b8bfa7ba63143ed413875',
+E         -                 'authority_reference_sha256': 'f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2',
+E         -                 'effect_budget_sha256': 'f9318d9bd409729b69b6bb4e5a797f74549c5d2c668ae80dc36a6cdfa2ff2d4a',
+E         -                 'cancellation_scope_id': 'run-d2f15885d1d448fb9a39f115c306ce1b',
+E         -                 'deadline_utc': '2026-10-27T22:03:09.790745+00:00',
+E         -                 'actor_id': 'human:owner',
+E         -                 'provider_id': None,
+E         -                 'trace_root_id': 'run-d2f15885d1d448fb9a39f115c306ce1b',
+E         -                 'model_execution_group_revision': None,
+E         -                 'contract_set_revision': None,
+E         -                 'gremlin_revision': None,
+E         -                 'network_policy_revision': None,
+E         -                 'workflow_adapter_revision': None,
+E         -                 'lease_id': None,
+E         -                 'effect_intent_id': None,
+E         -                 'authority_granted': False,
+E         -                 'context_sha256': '9d120cf2188b21c20cdade351908a928449fcb5773dadf74044613727aaa2343',
+E         -             },
+E         -             'host_authority_retained': True,
+E         -             'authentication': {
+E         -                 'algorithm': 'hmac-sha256',
+E         -                 'issuer': 'px-project-studio-authority',
+E         -                 'project_identity': 'px-project-1a035b6c94e049faaa0e516ab72cd2dc',
+E         -                 'payload_sha256': 'e4fa5a27c86fefbc5d8ca8d2b0ea2f3170b9cb1ee58b9549134a5db7f5517dfa',
+E         -                 'mac': '954a8599fa301e39e8be6e8590c01d4cb6b076b19874ec2eb887804b95c0d5a6',
+E         -             },
+E         -         },
+E         -     },
+E         -     'member_failures': {},
+E         -     'assessment': {
+E                   'convergence': {
+E         -             'schema_version': 'px.independent-convergence/1.0',
+E         +             'authority_granted': False,
+E         +             'conclusion': None,
+E         +             'convergence_sha256': 'dfd488b0707ec7cd6f35ddd373df2f19c6f9ed2c950b963df7059923ba5927df',
+E         +             'critique_edges': [],
+E         +             'declared_count': 1,
+E         +             'dissent': [
+E         +                 'model-0',
+E         +             ],
+E         +             'effective_independent_count': 0,
+E         +             'eligible_count': 0,
+E                       'group_id': 'mesh',
+E                       'group_sha256': '9b56ac64d1dd1dc6a111f5e2bf5b0cce096a50d1faf9e665c96f7c9e424265da',
+E         +             'not_admitted': [
+E         +                 'model-0',
+E         +             ],
+E         -             'status': 'INDETERMINATE',
+E         -             'conclusion': None,
+E         -             'declared_count': 1,
+E         -             'eligible_count': 0,
+E         -             'effective_independent_count': 0,
+E         -             'support': 0,
+E                       'observations': [
+E                           {
+E         +                     'artifact_sha256': None,
+E         +                     'conclusion': 'not admitted',
+E         +                     'containment_proven': False,
+E         +                     'evidence': [],
+E         +                     'isolation_proven': False,
+E                               'model_id': 'model-0',
+E         -                     'conclusion': 'not admitted',
+E         -                     'artifact_sha256': None,
+E         -                     'evidence': (),
+E         -                     'isolation_proven': False,
+E         -                     'containment_proven': False,
+E                               'state': 'not_admitted',
+E                           },
+E                       ],
+E         -             'dissent': [
+E         -                 'model-0',
+E         +             'schema_version': 'px.independent-convergence/1.0',
+E         +             'status': 'INDETERMINATE',
+E         +             'support': 0,
+E         -             ],
+E         ?         ^^^^^
+E         +         },
+E         ?         ^
+E         +         'verdict': {
+E         -             'not_admitted': [
+E         -                 'model-0',
+E         -             ],
+E         -             'critique_edges': [],
+E                       'authority_granted': False,
+E         -             'convergence_sha256': 'dfd488b0707ec7cd6f35ddd373df2f19c6f9ed2c950b963df7059923ba5927df',
+E         -         },
+E         -         'boundary': {
+E         -             'schema_version': 'px.work-disposition/1.0',
+E         -             'dispositions': [
+E         -                 {
+E         -                     'work_id': 'model-0',
+E         -                     'state': 'blocked',
+E         -                     'reason': 'committed artifact or signed attestation unavailable',
+E         -                     'target_id': 'signed-current-branch-assessment:model-0',
+E         -                 },
+E         -             ],
+E         -             'boundary_sha256': '1c2a6b343112d77fc0ae2b6d369e75b4e637030ea384c973c7e86cfb25187584',
+E         -         },
+E         -         'verdict': {
+E         -             'schema_version': 'px.generation-bound-verdict/1.0',
+E                       'candidate_sha256': 'f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2',
+E                       'dependencies': {
+E                           'context_generation': '75f94a581c333da5b286d95dad28f58f84f212e5623b8bfa7ba63143ed413875',
+E                           'model_contract_set': '857555103b60ff536179dc4595dc228ba79fa2a2c1750556d6443a5abc97c964',
+E                           'model_execution_group': '9b56ac64d1dd1dc6a111f5e2bf5b0cce096a50d1faf9e665c96f7c9e424265da',
+E                           'task_plan': 'f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2',
+E                       },
+E         -             'verifier_revision': 'source-sha256:6a91641e1311282deadf3009541a93f4b675b262f865cec783c9dde8e2fdd85b',
+E                       'evidence_sha256': [
+E                           '1c2a6b343112d77fc0ae2b6d369e75b4e637030ea384c973c7e86cfb25187584',
+E                           'dfd488b0707ec7cd6f35ddd373df2f19c6f9ed2c950b963df7059923ba5927df',
+E                       ],
+E         +             'schema_version': 'px.generation-bound-verdict/1.0',
+E                       'status': 'INDETERMINATE',
+E         -             'authority_granted': False,
+E                       'verdict_sha256': '7d7ab883513ce48c75246aaa132e2be16c606eeb058d15486a478586ff60a72f',
+E         +             'verifier_revision': 'source-sha256:6a91641e1311282deadf3009541a93f4b675b262f865cec783c9dde8e2fdd85b',
+E                   },
+E         -         'branch_assessments': [
+E         -             {
+E         +     },
+E         +     'authority_granted': False,
+E         +     'containment_proofs': None,
+E         +     'control_state': 'failed',
+E         +     'execution_context': {
+E         +         'actor_id': 'human:owner',
+E         +         'authority_granted': False,
+E         +         'authority_reference_sha256': 'f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2',
+E         +         'cancellation_scope_id': 'run-d2f15885d1d448fb9a39f115c306ce1b',
+E         +         'context_sha256': '85e92314a7a9c23fd06942b4acb367d4c3eae8f80d6e583676b324e1a22debec',
+E         +         'contract_set_revision': None,
+E         +         'deadline_utc': '2026-10-27T22:03:09.790745+00:00',
+E         +         'effect_budget_sha256': 'f9318d9bd409729b69b6bb4e5a797f74549c5d2c668ae80dc36a6cdfa2ff2d4a',
+E         +         'effect_intent_id': None,
+E         +         'epoch': 1,
+E         +         'execution_id': 'run-d2f15885d1d448fb9a39f115c306ce1b',
+E         +         'generation_vector_sha256': '75f94a581c333da5b286d95dad28f58f84f212e5623b8bfa7ba63143ed413875',
+E         +         'gremlin_revision': None,
+E         +         'lease_id': None,
+E         +         'model_execution_group_revision': None,
+E         +         'network_policy_revision': None,
+E         +         'parent_execution_id': None,
+E         +         'project_id': 'px',
+E         +         'provider_id': None,
+E         +         'revision': 2,
+E         +         'root_execution_id': 'run-d2f15885d1d448fb9a39f115c306ce1b',
+E         +         'schema_version': 'px.execution-context/1.0',
+E         +         'session_id': 'run-d2f15885d1d448fb9a39f115c306ce1b',
+E         +         'trace_root_id': 'run-d2f15885d1d448fb9a39f115c306ce1b',
+E         +         'workflow_adapter_revision': None,
+E         +     },
+E         +     'group_run_id': 'run-d2f15885d1d448fb9a39f115c306ce1b',
+E         +     'group_run_sha256': 'ef50f27deffee8dbc921d592cb1820de4018159f4127c090bbcee9de0f5f792b',
+E         +     'group_sha256': '9b56ac64d1dd1dc6a111f5e2bf5b0cce096a50d1faf9e665c96f7c9e424265da',
+E         +     'member_failures': {},
+E         +     'member_receipts': {
+E         +         'model-0': {
+E         +             'agent_id': 'agent:demo',
+E         +             'agent_revision_sha256': '8ca727f949f1a52bc3dfc11c5ce7b6205fd1ecbe89981c1390f7799a15a1b8fb',
+E         +             'authentication': {
+E         +                 'algorithm': 'hmac-sha256',
+E         +                 'issuer': 'px-project-studio-authority',
+E         +                 'mac': '954a8599fa301e39e8be6e8590c01d4cb6b076b19874ec2eb887804b95c0d5a6',
+E         +                 'payload_sha256': 'e4fa5a27c86fefbc5d8ca8d2b0ea2f3170b9cb1ee58b9549134a5db7f5517dfa',
+E         +                 'project_identity': 'px-project-1a035b6c94e049faaa0e516ab72cd2dc',
+E         +             },
+E         +             'control_sequence': 3,
+E         +             'effects_studio_admitted': True,
+E         +             'execution_context': {
+E         +                 'actor_id': 'human:owner',
+E         +                 'authority_granted': False,
+E         +                 'authority_reference_sha256': 'f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2',
+E         +                 'cancellation_scope_id': 'run-d2f15885d1d448fb9a39f115c306ce1b',
+E         +                 'context_sha256': '9d120cf2188b21c20cdade351908a928449fcb5773dadf74044613727aaa2343',
+E         +                 'contract_set_revision': None,
+E         +                 'deadline_utc': '2026-10-27T22:03:09.790745+00:00',
+E         +                 'effect_budget_sha256': 'f9318d9bd409729b69b6bb4e5a797f74549c5d2c668ae80dc36a6cdfa2ff2d4a',
+E         +                 'effect_intent_id': None,
+E         +                 'epoch': 1,
+E         +                 'execution_id': 'run-d3ec21ceca4c4fa78c5f7fe302484dd3',
+E         +                 'generation_vector_sha256': '75f94a581c333da5b286d95dad28f58f84f212e5623b8bfa7ba63143ed413875',
+E         +                 'gremlin_revision': None,
+E         +                 'lease_id': None,
+E         +                 'model_execution_group_revision': None,
+E         +                 'network_policy_revision': None,
+E         +                 'parent_execution_id': 'run-d2f15885d1d448fb9a39f115c306ce1b',
+E         +                 'project_id': 'px',
+E         +                 'provider_id': None,
+E         +                 'revision': 2,
+E         +                 'root_execution_id': 'run-d2f15885d1d448fb9a39f115c306ce1b',
+E         +                 'schema_version': 'px.execution-context/1.0',
+E         +                 'session_id': 'run-d2f15885d1d448fb9a39f115c306ce1b',
+E         +                 'trace_root_id': 'run-d2f15885d1d448fb9a39f115c306ce1b',
+E         +                 'workflow_adapter_revision': None,
+E         +             },
+E         +             'handoff_packet_sha256': [],
+E         +             'host_authority_retained': True,
+E         +             'memory_context_receipt_sha256': None,
+E         +             'model_attachment_sha256': '7f7fd254b9f37751c727cc3f48a4cbf30fb2db3ffe90dac302a4fc18b10c2590',
+E         +             'outcome': {
+E         +                 'branch_artifact': {
+E         +                     'agent_generation_id': 'generation-0',
+E         +                     'artifact_sha256': '75c6068c02110a3f8caf0801f021b8fb8bfa582292dd55d43aa26e0d7406cef8',
+E         +                     'attachment_sha256': '7f7fd254b9f37751c727cc3f48a4cbf30fb2db3ffe90dac302a4fc18b10c2590',
+E         +                     'authority_granted': False,
+E         +                     'context_sha256': 'c22db62eb89f2e0be18634c2eac933d81735b74de21991147e94575f07a27cfa',
+E         +                     'group_sha256': '9b56ac64d1dd1dc6a111f5e2bf5b0cce096a50d1faf9e665c96f7c9e424265da',
+E         +                     'manifest_path': '.agentic_engineering_os_px/runtime-core/model-artifacts/f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2/ea79a5f6d2eea2cda84a0950f378424dc54899f720e24b948c6463f30e2f5cff/db81642bf6d41f87a8dc8506c429097de3fdd3d6413e93f6b16329d21f059023/commitment.json',
+E         +                     'model_id': 'model-0',
+E         +                     'output_bytes': 33,
+E         +                     'output_path': '.agentic_engineering_os_px/runtime-core/model-artifacts/f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2/ea79a5f6d2eea2cda84a0950f378424dc54899f720e24b948c6463f30e2f5cff/db81642bf6d41f87a8dc8506c429097de3fdd3d6413e93f6b16329d21f059023/output.json',
+E         +                     'output_sha256': '6ca00d3ba72455c64085ff6af0723d297f9ca00fc1cfdd0173138ee75e886846',
+E         +                     'project_id': 'px',
+E         +                     'resource_id': 'path-b39e9db26005493187b516ed5623f567',
+E         +                     'run_id': 'run-d3ec21ceca4c4fa78c5f7fe302484dd3',
+E         +                     'schema_version': 'px.model-branch-artifact/1.0',
+E         +                     'task_plan_id': 'task-plan-05195b53cf1f33afb273a58e',
+E         +                     'task_plan_sha256': 'f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2',
+E         +                 },
+E         +                 'capacity_release': {
+E         +                     'outcome_sha256': 'bdb442708d0abbbdb1d16955723ca159050f8a4c8b563f1fad0533688f2a3950',
+E         +                     'release_sha256': '01063fee773694f17fc2ca1bf1e05bfec8a43e8c40ed46fc659af9a55c994e2f',
+E         +                     'released': True,
+E         +                     'reservation_id': 'placement-reserve-9f71564dd0e748f89dccddb442348c7e',
+E         +                     'reservation_sha256': 'a9c1d33db0b1655897aaa3ccf67e06d43b08a69d3627706403daf34d740f6ac9',
+E         +                     'schema_version': 'px.placement-capacity-release/1.0',
+E         +                 },
+E         +                 'context_sha256': 'c22db62eb89f2e0be18634c2eac933d81735b74de21991147e94575f07a27cfa',
+E         +                 'execution_context': {
+E         +                     'actor_id': 'human:owner',
+E         +                     'authority_granted': False,
+E         +                     'authority_reference_sha256': 'f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2',
+E         +                     'cancellation_scope_id': 'run-d2f15885d1d448fb9a39f115c306ce1b',
+E         +                     'context_sha256': '9d120cf2188b21c20cdade351908a928449fcb5773dadf74044613727aaa2343',
+E         +                     'contract_set_revision': None,
+E         +                     'deadline_utc': '2026-10-27T22:03:09.790745+00:00',
+E         +                     'effect_budget_sha256': 'f9318d9bd409729b69b6bb4e5a797f74549c5d2c668ae80dc36a6cdfa2ff2d4a',
+E         +                     'effect_intent_id': None,
+E         +                     'epoch': 1,
+E         +                     'execution_id': 'run-d3ec21ceca4c4fa78c5f7fe302484dd3',
+E         +                     'generation_vector_sha256': '75f94a581c333da5b286d95dad28f58f84f212e5623b8bfa7ba63143ed413875',
+E         +                     'gremlin_revision': None,
+E         +                     'lease_id': None,
+E         +                     'model_execution_group_revision': None,
+E         +                     'network_policy_revision': None,
+E         +                     'parent_execution_id': 'run-d2f15885d1d448fb9a39f115c306ce1b',
+E         +                     'project_id': 'px',
+E         +                     'provider_id': None,
+E         +                     'revision': 2,
+E         +                     'root_execution_id': 'run-d2f15885d1d448fb9a39f115c306ce1b',
+E         +                     'schema_version': 'px.execution-context/1.0',
+E         +                     'session_id': 'run-d2f15885d1d448fb9a39f115c306ce1b',
+E         +                     'trace_root_id': 'run-d2f15885d1d448fb9a39f115c306ce1b',
+E         +                     'workflow_adapter_revision': None,
+E         +                 },
+E         +                 'model_execution_group_sha256': '9b56ac64d1dd1dc6a111f5e2bf5b0cce096a50d1faf9e665c96f7c9e424265da',
+E                           'model_id': 'model-0',
+E         -                 'admitted': False,
+E         -                 'reasons': [
+E         -                     'committed artifact or signed attestation unavailable',
+E         -                 ],
+E         -                 'attestation': None,
+E         -             },
+E         -         ],
+E         -         'authority_granted': False,
+E         -         'assessment_sha256': 'b0299dbc138b8d22df357cbc985dfe854e01691c0a6ae670596cda688f32ca72',
+E         +                 'outcome_sha256': 'bdb442708d0abbbdb1d16955723ca159050f8a4c8b563f1fad0533688f2a3950',
+E         +                 'placement_sha256': '54d6ceea470da37fbd0fb329fa987b99db47c6fbe761bc0bb8a129d8b85ce46e',
+E         +                 'reservation_sha256': 'a9c1d33db0b1655897aaa3ccf67e06d43b08a69d3627706403daf34d740f6ac9',
+E         +                 'run_id': 'run-d3ec21ceca4c4fa78c5f7fe302484dd3',
+E         +                 'schema_version': 'px.governed-agent-placement-outcome/1.0',
+E         +                 'status': 'succeeded',
+E         +                 'task_plan_sha256': 'f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2',
+E         +                 'telemetry': {
+E         +                     'actual_device': 'cpu',
+E         +                     'device_index': None,
+E         +                     'duration_seconds': 3.499999365885742e-06,
+E         +                     'executor_backend': None,
+E         +                     'fallback': False,
+E         +                     'process_parallelism': 0,
+E         +                     'routing_reason': 'CUDA is unavailable; using declared CPU fallback',
+E         +                     'selected_device': 'cpu',
+E         +                 },
+E         +             },
+E         +             'placement_sha256': '54d6ceea470da37fbd0fb329fa987b99db47c6fbe761bc0bb8a129d8b85ce46e',
+E         +             'result_sha256': 'dd5f37e6b01a4a17c2c685f8b769852091ee12ad3f2604b9bbd91237aaf52cc1',
+E         +             'run_id': 'run-d3ec21ceca4c4fa78c5f7fe302484dd3',
+E         +             'schema_version': 'px.agent-governed-execution-receipt/1.0',
+E         +             'task_plan_sha256': 'f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2',
+E         +         },
+E               },
+E         +     'physical_scheduler': 'bounded-sequential-members',
+E         +     'sandbox_policy_sha256': None,
+E               'sandbox_provenance': None,
+E         +     'schema_version': 'px.governed-model-group-run/1.0',
+E         +     'task_plan_sha256': 'f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2',
+E         -     'sandbox_policy_sha256': None,
+E         -     'containment_proofs': None,
+E         -     'physical_scheduler': 'bounded-sequential-members',
+E         -     'authority_granted': False,
+E         -     'group_run_sha256': 'ef50f27deffee8dbc921d592cb1820de4018159f4127c090bbcee9de0f5f792b',
+E           }
+
+tests\test_governed_prepared_member.py:92: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_governed_prepared_member.py::test_group_owner_fences_replay_and_refuses_missing_attestation - AssertionError: assert {'assessment': {'assessment_sha256': 'b0299dbc138b8d22df357cbc985dfe854e01691c0a6ae670596cda688f32ca72', 'authority_granted': False, 'boundary': {'boundary_sha256': '1c2a6b343112d77fc0ae2b6d369e75b4e637030ea384c973c7e86cfb25187584', 'dispositions': [{'reason': 'committed artifact or signed attestation unavailable', 'state': 'blocked', 'target_id': 'signed-current-branch-assessment:model-0', 'work_id': 'model-0'}], 'schema_version': 'px.work-disposition/1.0'}, 'branch_assessments': [{'admitted': False, 'attestation': None, 'model_id': 'model-0', 'reasons': ['committed artifact or signed attestation unavailable']}], 'convergence': {'authority_granted': False, 'conclusion': None, 'convergence_sha256': 'dfd488b0707ec7cd6f35ddd373df2f19c6f9ed2c950b963df7059923ba5927df', 'critique_edges': [], 'declared_count': 1, 'dissent': ['model-0'], 'effective_independent_count': 0, 'eligible_count': 0, 'group_id': 'mesh', 'group_sha256': '9b56ac64d1dd1dc6a111f5e2bf5b0cce096a50d1faf9e665c96f7c9e424265da', 'not_admitted': ['model-0'], 'observations': [{'artifact_sha256': None, 'conclusion': 'not admitted', 'containment_proven': False, 'evidence': [], 'isolation_proven': False, 'model_id': 'model-0', 'state': 'not_admitted'}], 'schema_version': 'px.independent-convergence/1.0', 'status': 'INDETERMINATE', 'support': 0}, 'verdict': {'authority_granted': False, 'candidate_sha256': 'f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2', 'dependencies': {'context_generation': '75f94a581c333da5b286d95dad28f58f84f212e5623b8bfa7ba63143ed413875', 'model_contract_set': '857555103b60ff536179dc4595dc228ba79fa2a2c1750556d6443a5abc97c964', 'model_execution_group': '9b56ac64d1dd1dc6a111f5e2bf5b0cce096a50d1faf9e665c96f7c9e424265da', 'task_plan': 'f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2'}, 'evidence_sha256': ['1c2a6b343112d77fc0ae2b6d369e75b4e637030ea384c973c7e86cfb25187584', 'dfd488b0707ec7cd6f35ddd373df2f19c6f9ed2c950b963df7059923ba5927df'], 'schema_version': 'px.generation-bound-verdict/1.0', 'status': 'INDETERMINATE', 'verdict_sha256': '7d7ab883513ce48c75246aaa132e2be16c606eeb058d15486a478586ff60a72f', 'verifier_revision': 'source-sha256:6a91641e1311282deadf3009541a93f4b675b262f865cec783c9dde8e2fdd85b'}}, 'authority_granted': False, 'containment_proofs': None, 'control_state': 'failed', 'execution_context': {'actor_id': 'human:owner', 'authority_granted': False, 'authority_reference_sha256': 'f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2', 'cancellation_scope_id': 'run-d2f15885d1d448fb9a39f115c306ce1b', 'context_sha256': '85e92314a7a9c23fd06942b4acb367d4c3eae8f80d6e583676b324e1a22debec', 'contract_set_revision': None, 'deadline_utc': '2026-10-27T22:03:09.790745+00:00', 'effect_budget_sha256': 'f9318d9bd409729b69b6bb4e5a797f74549c5d2c668ae80dc36a6cdfa2ff2d4a', 'effect_intent_id': None, 'epoch': 1, 'execution_id': 'run-d2f15885d1d448fb9a39f115c306ce1b', 'generation_vector_sha256': '75f94a581c333da5b286d95dad28f58f84f212e5623b8bfa7ba63143ed413875', 'gremlin_revision': None, 'lease_id': None, 'model_execution_group_revision': None, 'network_policy_revision': None, 'parent_execution_id': None, 'project_id': 'px', 'provider_id': None, 'revision': 2, 'root_execution_id': 'run-d2f15885d1d448fb9a39f115c306ce1b', 'schema_version': 'px.execution-context/1.0', 'session_id': 'run-d2f15885d1d448fb9a39f115c306ce1b', 'trace_root_id': 'run-d2f15885d1d448fb9a39f115c306ce1b', 'workflow_adapter_revision': None}, 'group_run_id': 'run-d2f15885d1d448fb9a39f115c306ce1b', 'group_run_sha256': 'ef50f27deffee8dbc921d592cb1820de4018159f4127c090bbcee9de0f5f792b', 'group_sha256': '9b56ac64d1dd1dc6a111f5e2bf5b0cce096a50d1faf9e665c96f7c9e424265da', 'member_failures': {}, 'member_receipts': {'model-0': {'agent_id': 'agent:demo', 'agent_revision_sha256': '8ca727f949f1a52bc3dfc11c5ce7b6205fd1ecbe89981c1390f7799a15a1b8fb', 'authentication': {'algorithm': 'hmac-sha256', 'issuer': 'px-project-studio-authority', 'mac': '954a8599fa301e39e8be6e8590c01d4cb6b076b19874ec2eb887804b95c0d5a6', 'payload_sha256': 'e4fa5a27c86fefbc5d8ca8d2b0ea2f3170b9cb1ee58b9549134a5db7f5517dfa', 'project_identity': 'px-project-1a035b6c94e049faaa0e516ab72cd2dc'}, 'control_sequence': 3, 'effects_studio_admitted': True, 'execution_context': {'actor_id': 'human:owner', 'authority_granted': False, 'authority_reference_sha256': 'f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2', 'cancellation_scope_id': 'run-d2f15885d1d448fb9a39f115c306ce1b', 'context_sha256': '9d120cf2188b21c20cdade351908a928449fcb5773dadf74044613727aaa2343', 'contract_set_revision': None, 'deadline_utc': '2026-10-27T22:03:09.790745+00:00', 'effect_budget_sha256': 'f9318d9bd409729b69b6bb4e5a797f74549c5d2c668ae80dc36a6cdfa2ff2d4a', 'effect_intent_id': None, 'epoch': 1, 'execution_id': 'run-d3ec21ceca4c4fa78c5f7fe302484dd3', 'generation_vector_sha256': '75f94a581c333da5b286d95dad28f58f84f212e5623b8bfa7ba63143ed413875', 'gremlin_revision': None, 'lease_id': None, 'model_execution_group_revision': None, 'network_policy_revision': None, 'parent_execution_id': 'run-d2f15885d1d448fb9a39f115c306ce1b', 'project_id': 'px', 'provider_id': None, 'revision': 2, 'root_execution_id': 'run-d2f15885d1d448fb9a39f115c306ce1b', 'schema_version': 'px.execution-context/1.0', 'session_id': 'run-d2f15885d1d448fb9a39f115c306ce1b', 'trace_root_id': 'run-d2f15885d1d448fb9a39f115c306ce1b', 'workflow_adapter_revision': None}, 'handoff_packet_sha256': [], 'host_authority_retained': True, 'memory_context_receipt_sha256': None, 'model_attachment_sha256': '7f7fd254b9f37751c727cc3f48a4cbf30fb2db3ffe90dac302a4fc18b10c2590', 'outcome': {'branch_artifact': {'agent_generation_id': 'generation-0', 'artifact_sha256': '75c6068c02110a3f8caf0801f021b8fb8bfa582292dd55d43aa26e0d7406cef8', 'attachment_sha256': '7f7fd254b9f37751c727cc3f48a4cbf30fb2db3ffe90dac302a4fc18b10c2590', 'authority_granted': False, 'context_sha256': 'c22db62eb89f2e0be18634c2eac933d81735b74de21991147e94575f07a27cfa', 'group_sha256': '9b56ac64d1dd1dc6a111f5e2bf5b0cce096a50d1faf9e665c96f7c9e424265da', 'manifest_path': '.agentic_engineering_os_px/runtime-core/model-artifacts/f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2/ea79a5f6d2eea2cda84a0950f378424dc54899f720e24b948c6463f30e2f5cff/db81642bf6d41f87a8dc8506c429097de3fdd3d6413e93f6b16329d21f059023/commitment.json', 'model_id': 'model-0', 'output_bytes': 33, 'output_path': '.agentic_engineering_os_px/runtime-core/model-artifacts/f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2/ea79a5f6d2eea2cda84a0950f378424dc54899f720e24b948c6463f30e2f5cff/db81642bf6d41f87a8dc8506c429097de3fdd3d6413e93f6b16329d21f059023/output.json', 'output_sha256': '6ca00d3ba72455c64085ff6af0723d297f9ca00fc1cfdd0173138ee75e886846', 'project_id': 'px', 'resource_id': 'path-b39e9db26005493187b516ed5623f567', 'run_id': 'run-d3ec21ceca4c4fa78c5f7fe302484dd3', 'schema_version': 'px.model-branch-artifact/1.0', 'task_plan_id': 'task-plan-05195b53cf1f33afb273a58e', 'task_plan_sha256': 'f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2'}, 'capacity_release': {'outcome_sha256': 'bdb442708d0abbbdb1d16955723ca159050f8a4c8b563f1fad0533688f2a3950', 'release_sha256': '01063fee773694f17fc2ca1bf1e05bfec8a43e8c40ed46fc659af9a55c994e2f', 'released': True, 'reservation_id': 'placement-reserve-9f71564dd0e748f89dccddb442348c7e', 'reservation_sha256': 'a9c1d33db0b1655897aaa3ccf67e06d43b08a69d3627706403daf34d740f6ac9', 'schema_version': 'px.placement-capacity-release/1.0'}, 'context_sha256': 'c22db62eb89f2e0be18634c2eac933d81735b74de21991147e94575f07a27cfa', 'execution_context': {'actor_id': 'human:owner', 'authority_granted': False, 'authority_reference_sha256': 'f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2', 'cancellation_scope_id': 'run-d2f15885d1d448fb9a39f115c306ce1b', 'context_sha256': '9d120cf2188b21c20cdade351908a928449fcb5773dadf74044613727aaa2343', 'contract_set_revision': None, 'deadline_utc': '2026-10-27T22:03:09.790745+00:00', 'effect_budget_sha256': 'f9318d9bd409729b69b6bb4e5a797f74549c5d2c668ae80dc36a6cdfa2ff2d4a', 'effect_intent_id': None, 'epoch': 1, 'execution_id': 'run-d3ec21ceca4c4fa78c5f7fe302484dd3', 'generation_vector_sha256': '75f94a581c333da5b286d95dad28f58f84f212e5623b8bfa7ba63143ed413875', 'gremlin_revision': None, 'lease_id': None, 'model_execution_group_revision': None, 'network_policy_revision': None, 'parent_execution_id': 'run-d2f15885d1d448fb9a39f115c306ce1b', 'project_id': 'px', 'provider_id': None, 'revision': 2, 'root_execution_id': 'run-d2f15885d1d448fb9a39f115c306ce1b', 'schema_version': 'px.execution-context/1.0', 'session_id': 'run-d2f15885d1d448fb9a39f115c306ce1b', 'trace_root_id': 'run-d2f15885d1d448fb9a39f115c306ce1b', 'workflow_adapter_revision': None}, 'model_execution_group_sha256': '9b56ac64d1dd1dc6a111f5e2bf5b0cce096a50d1faf9e665c96f7c9e424265da', 'model_id': 'model-0', 'outcome_sha256': 'bdb442708d0abbbdb1d16955723ca159050f8a4c8b563f1fad0533688f2a3950', 'placement_sha256': '54d6ceea470da37fbd0fb329fa987b99db47c6fbe761bc0bb8a129d8b85ce46e', 'reservation_sha256': 'a9c1d33db0b1655897aaa3ccf67e06d43b08a69d3627706403daf34d740f6ac9', 'run_id': 'run-d3ec21ceca4c4fa78c5f7fe302484dd3', 'schema_version': 'px.governed-agent-placement-outcome/1.0', 'status': 'succeeded', 'task_plan_sha256': 'f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2', 'telemetry': {'actual_device': 'cpu', 'device_index': None, 'duration_seconds': 3.499999365885742e-06, 'executor_backend': None, 'fallback': False, 'process_parallelism': 0, 'routing_reason': 'CUDA is unavailable; using declared CPU fallback', 'selected_device': 'cpu'}}, 'placement_sha256': '54d6ceea470da37fbd0fb329fa987b99db47c6fbe761bc0bb8a129d8b85ce46e', 'result_sha256': 'dd5f37e6b01a4a17c2c685f8b769852091ee12ad3f2604b9bbd91237aaf52cc1', 'run_id': 'run-d3ec21ceca4c4fa78c5f7fe302484dd3', 'schema_version': 'px.agent-governed-execution-receipt/1.0', 'task_plan_sha256': 'f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2'}}, 'physical_scheduler': 'bounded-sequential-members', 'sandbox_policy_sha256': None, 'sandbox_provenance': None, 'schema_version': 'px.governed-model-group-run/1.0', 'task_plan_sha256': 'f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2'} == {'schema_version': 'px.governed-model-group-run/1.0', 'task_plan_sha256': 'f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2', 'group_run_id': 'run-d2f15885d1d448fb9a39f115c306ce1b', 'execution_context': {'schema_version': 'px.execution-context/1.0', 'execution_id': 'run-d2f15885d1d448fb9a39f115c306ce1b', 'parent_execution_id': None, 'root_execution_id': 'run-d2f15885d1d448fb9a39f115c306ce1b', 'project_id': 'px', 'session_id': 'run-d2f15885d1d448fb9a39f115c306ce1b', 'revision': 2, 'epoch': 1, 'generation_vector_sha256': '75f94a581c333da5b286d95dad28f58f84f212e5623b8bfa7ba63143ed413875', 'authority_reference_sha256': 'f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2', 'effect_budget_sha256': 'f9318d9bd409729b69b6bb4e5a797f74549c5d2c668ae80dc36a6cdfa2ff2d4a', 'cancellation_scope_id': 'run-d2f15885d1d448fb9a39f115c306ce1b', 'deadline_utc': '2026-10-27T22:03:09.790745+00:00', 'actor_id': 'human:owner', 'provider_id': None, 'trace_root_id': 'run-d2f15885d1d448fb9a39f115c306ce1b', 'model_execution_group_revision': None, 'contract_set_revision': None, 'gremlin_revision': None, 'network_policy_revision': None, 'workflow_adapter_revision': None, 'lease_id': None, 'effect_intent_id': None, 'authority_granted': False, 'context_sha256': '85e92314a7a9c23fd06942b4acb367d4c3eae8f80d6e583676b324e1a22debec'}, 'control_state': 'failed', 'group_sha256': '9b56ac64d1dd1dc6a111f5e2bf5b0cce096a50d1faf9e665c96f7c9e424265da', 'member_receipts': {'model-0': {'schema_version': 'px.agent-governed-execution-receipt/1.0', 'run_id': 'run-d3ec21ceca4c4fa78c5f7fe302484dd3', 'agent_id': 'agent:demo', 'agent_revision_sha256': '8ca727f949f1a52bc3dfc11c5ce7b6205fd1ecbe89981c1390f7799a15a1b8fb', 'task_plan_sha256': 'f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2', 'model_attachment_sha256': '7f7fd254b9f37751c727cc3f48a4cbf30fb2db3ffe90dac302a4fc18b10c2590', 'placement_sha256': '54d6ceea470da37fbd0fb329fa987b99db47c6fbe761bc0bb8a129d8b85ce46e', 'memory_context_receipt_sha256': None, 'handoff_packet_sha256': [], 'outcome': {'schema_version': 'px.governed-agent-placement-outcome/1.0', 'run_id': 'run-d3ec21ceca4c4fa78c5f7fe302484dd3', 'task_plan_sha256': 'f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2', 'placement_sha256': '54d6ceea470da37fbd0fb329fa987b99db47c6fbe761bc0bb8a129d8b85ce46e', 'reservation_sha256': 'a9c1d33db0b1655897aaa3ccf67e06d43b08a69d3627706403daf34d740f6ac9', 'status': 'succeeded', 'execution_context': {'schema_version': 'px.execution-context/1.0', 'execution_id': 'run-d3ec21ceca4c4fa78c5f7fe302484dd3', 'parent_execution_id': 'run-d2f15885d1d448fb9a39f115c306ce1b', 'root_execution_id': 'run-d2f15885d1d448fb9a39f115c306ce1b', 'project_id': 'px', 'session_id': 'run-d2f15885d1d448fb9a39f115c306ce1b', 'revision': 2, 'epoch': 1, 'generation_vector_sha256': '75f94a581c333da5b286d95dad28f58f84f212e5623b8bfa7ba63143ed413875', 'authority_reference_sha256': 'f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2', 'effect_budget_sha256': 'f9318d9bd409729b69b6bb4e5a797f74549c5d2c668ae80dc36a6cdfa2ff2d4a', 'cancellation_scope_id': 'run-d2f15885d1d448fb9a39f115c306ce1b', 'deadline_utc': '2026-10-27T22:03:09.790745+00:00', 'actor_id': 'human:owner', 'provider_id': None, 'trace_root_id': 'run-d2f15885d1d448fb9a39f115c306ce1b', 'model_execution_group_revision': None, 'contract_set_revision': None, 'gremlin_revision': None, 'network_policy_revision': None, 'workflow_adapter_revision': None, 'lease_id': None, 'effect_intent_id': None, 'authority_granted': False, 'context_sha256': '9d120cf2188b21c20cdade351908a928449fcb5773dadf74044613727aaa2343'}, 'model_id': 'model-0', 'context_sha256': 'c22db62eb89f2e0be18634c2eac933d81735b74de21991147e94575f07a27cfa', 'model_execution_group_sha256': '9b56ac64d1dd1dc6a111f5e2bf5b0cce096a50d1faf9e665c96f7c9e424265da', 'branch_artifact': {'schema_version': 'px.model-branch-artifact/1.0', 'project_id': 'px', 'run_id': 'run-d3ec21ceca4c4fa78c5f7fe302484dd3', 'task_plan_id': 'task-plan-05195b53cf1f33afb273a58e', 'task_plan_sha256': 'f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2', 'group_sha256': '9b56ac64d1dd1dc6a111f5e2bf5b0cce096a50d1faf9e665c96f7c9e424265da', 'model_id': 'model-0', 'agent_generation_id': 'generation-0', 'attachment_sha256': '7f7fd254b9f37751c727cc3f48a4cbf30fb2db3ffe90dac302a4fc18b10c2590', 'context_sha256': 'c22db62eb89f2e0be18634c2eac933d81735b74de21991147e94575f07a27cfa', 'output_sha256': '6ca00d3ba72455c64085ff6af0723d297f9ca00fc1cfdd0173138ee75e886846', 'output_bytes': 33, 'output_path': '.agentic_engineering_os_px/runtime-core/model-artifacts/f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2/ea79a5f6d2eea2cda84a0950f378424dc54899f720e24b948c6463f30e2f5cff/db81642bf6d41f87a8dc8506c429097de3fdd3d6413e93f6b16329d21f059023/output.json', 'resource_id': 'path-b39e9db26005493187b516ed5623f567', 'authority_granted': False, 'artifact_sha256': '75c6068c02110a3f8caf0801f021b8fb8bfa582292dd55d43aa26e0d7406cef8', 'manifest_path': '.agentic_engineering_os_px/runtime-core/model-artifacts/f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2/ea79a5f6d2eea2cda84a0950f378424dc54899f720e24b948c6463f30e2f5cff/db81642bf6d41f87a8dc8506c429097de3fdd3d6413e93f6b16329d21f059023/commitment.json'}, 'telemetry': {'selected_device': 'cpu', 'actual_device': 'cpu', 'fallback': False, 'executor_backend': None, 'device_index': None, 'process_parallelism': 0, 'duration_seconds': 3.499999365885742e-06, 'routing_reason': 'CUDA is unavailable; using declared CPU fallback'}, 'outcome_sha256': 'bdb442708d0abbbdb1d16955723ca159050f8a4c8b563f1fad0533688f2a3950', 'capacity_release': {'schema_version': 'px.placement-capacity-release/1.0', 'reservation_id': 'placement-reserve-9f71564dd0e748f89dccddb442348c7e', 'reservation_sha256': 'a9c1d33db0b1655897aaa3ccf67e06d43b08a69d3627706403daf34d740f6ac9', 'outcome_sha256': 'bdb442708d0abbbdb1d16955723ca159050f8a4c8b563f1fad0533688f2a3950', 'released': True, 'release_sha256': '01063fee773694f17fc2ca1bf1e05bfec8a43e8c40ed46fc659af9a55c994e2f'}}, 'result_sha256': 'dd5f37e6b01a4a17c2c685f8b769852091ee12ad3f2604b9bbd91237aaf52cc1', 'control_sequence': 3, 'effects_studio_admitted': True, 'execution_context': {'schema_version': 'px.execution-context/1.0', 'execution_id': 'run-d3ec21ceca4c4fa78c5f7fe302484dd3', 'parent_execution_id': 'run-d2f15885d1d448fb9a39f115c306ce1b', 'root_execution_id': 'run-d2f15885d1d448fb9a39f115c306ce1b', 'project_id': 'px', 'session_id': 'run-d2f15885d1d448fb9a39f115c306ce1b', 'revision': 2, 'epoch': 1, 'generation_vector_sha256': '75f94a581c333da5b286d95dad28f58f84f212e5623b8bfa7ba63143ed413875', 'authority_reference_sha256': 'f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2', 'effect_budget_sha256': 'f9318d9bd409729b69b6bb4e5a797f74549c5d2c668ae80dc36a6cdfa2ff2d4a', 'cancellation_scope_id': 'run-d2f15885d1d448fb9a39f115c306ce1b', 'deadline_utc': '2026-10-27T22:03:09.790745+00:00', 'actor_id': 'human:owner', 'provider_id': None, 'trace_root_id': 'run-d2f15885d1d448fb9a39f115c306ce1b', 'model_execution_group_revision': None, 'contract_set_revision': None, 'gremlin_revision': None, 'network_policy_revision': None, 'workflow_adapter_revision': None, 'lease_id': None, 'effect_intent_id': None, 'authority_granted': False, 'context_sha256': '9d120cf2188b21c20cdade351908a928449fcb5773dadf74044613727aaa2343'}, 'host_authority_retained': True, 'authentication': {'algorithm': 'hmac-sha256', 'issuer': 'px-project-studio-authority', 'project_identity': 'px-project-1a035b6c94e049faaa0e516ab72cd2dc', 'payload_sha256': 'e4fa5a27c86fefbc5d8ca8d2b0ea2f3170b9cb1ee58b9549134a5db7f5517dfa', 'mac': '954a8599fa301e39e8be6e8590c01d4cb6b076b19874ec2eb887804b95c0d5a6'}}}, 'member_failures': {}, 'assessment': {'convergence': {'schema_version': 'px.independent-convergence/1.0', 'group_id': 'mesh', 'group_sha256': '9b56ac64d1dd1dc6a111f5e2bf5b0cce096a50d1faf9e665c96f7c9e424265da', 'status': 'INDETERMINATE', 'conclusion': None, 'declared_count': 1, 'eligible_count': 0, 'effective_independent_count': 0, 'support': 0, 'observations': [{'model_id': 'model-0', 'conclusion': 'not admitted', 'artifact_sha256': None, 'evidence': (), 'isolation_proven': False, 'containment_proven': False, 'state': 'not_admitted'}], 'dissent': ['model-0'], 'not_admitted': ['model-0'], 'critique_edges': [], 'authority_granted': False, 'convergence_sha256': 'dfd488b0707ec7cd6f35ddd373df2f19c6f9ed2c950b963df7059923ba5927df'}, 'boundary': {'schema_version': 'px.work-disposition/1.0', 'dispositions': [{'work_id': 'model-0', 'state': 'blocked', 'reason': 'committed artifact or signed attestation unavailable', 'target_id': 'signed-current-branch-assessment:model-0'}], 'boundary_sha256': '1c2a6b343112d77fc0ae2b6d369e75b4e637030ea384c973c7e86cfb25187584'}, 'verdict': {'schema_version': 'px.generation-bound-verdict/1.0', 'candidate_sha256': 'f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2', 'dependencies': {'context_generation': '75f94a581c333da5b286d95dad28f58f84f212e5623b8bfa7ba63143ed413875', 'model_contract_set': '857555103b60ff536179dc4595dc228ba79fa2a2c1750556d6443a5abc97c964', 'model_execution_group': '9b56ac64d1dd1dc6a111f5e2bf5b0cce096a50d1faf9e665c96f7c9e424265da', 'task_plan': 'f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2'}, 'verifier_revision': 'source-sha256:6a91641e1311282deadf3009541a93f4b675b262f865cec783c9dde8e2fdd85b', 'evidence_sha256': ['1c2a6b343112d77fc0ae2b6d369e75b4e637030ea384c973c7e86cfb25187584', 'dfd488b0707ec7cd6f35ddd373df2f19c6f9ed2c950b963df7059923ba5927df'], 'status': 'INDETERMINATE', 'authority_granted': False, 'verdict_sha256': '7d7ab883513ce48c75246aaa132e2be16c606eeb058d15486a478586ff60a72f'}, 'branch_assessments': [{'model_id': 'model-0', 'admitted': False, 'reasons': ['committed artifact or signed attestation unavailable'], 'attestation': None}], 'authority_granted': False, 'assessment_sha256': 'b0299dbc138b8d22df357cbc985dfe854e01691c0a6ae670596cda688f32ca72'}, 'sandbox_provenance': None, 'sandbox_policy_sha256': None, 'containment_proofs': None, 'physical_scheduler': 'bounded-sequential-members', 'authority_granted': False, 'group_run_sha256': 'ef50f27deffee8dbc921d592cb1820de4018159f4127c090bbcee9de0f5f792b'}
+  
+  Common items:
+  {'authority_granted': False,
+   'containment_proofs': None,
+   'control_state': 'failed',
+   'execution_context': {'actor_id': 'human:owner',
+                         'authority_granted': False,
+                         'authority_reference_sha256': 'f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2',
+                         'cancellation_scope_id': 'run-d2f15885d1d448fb9a39f115c306ce1b',
+                         'context_sha256': '85e92314a7a9c23fd06942b4acb367d4c3eae8f80d6e583676b324e1a22debec',
+                         'contract_set_revision': None,
+                         'deadline_utc': '2026-10-27T22:03:09.790745+00:00',
+                         'effect_budget_sha256': 'f9318d9bd409729b69b6bb4e5a797f74549c5d2c668ae80dc36a6cdfa2ff2d4a',
+                         'effect_intent_id': None,
+                         'epoch': 1,
+                         'execution_id': 'run-d2f15885d1d448fb9a39f115c306ce1b',
+                         'generation_vector_sha256': '75f94a581c333da5b286d95dad28f58f84f212e5623b8bfa7ba63143ed413875',
+                         'gremlin_revision': None,
+                         'lease_id': None,
+                         'model_execution_group_revision': None,
+                         'network_policy_revision': None,
+                         'parent_execution_id': None,
+                         'project_id': 'px',
+                         'provider_id': None,
+                         'revision': 2,
+                         'root_execution_id': 'run-d2f15885d1d448fb9a39f115c306ce1b',
+                         'schema_version': 'px.execution-context/1.0',
+                         'session_id': 'run-d2f15885d1d448fb9a39f115c306ce1b',
+                         'trace_root_id': 'run-d2f15885d1d448fb9a39f115c306ce1b',
+                         'workflow_adapter_revision': None},
+   'group_run_id': 'run-d2f15885d1d448fb9a39f115c306ce1b',
+   'group_run_sha256': 'ef50f27deffee8dbc921d592cb1820de4018159f4127c090bbcee9de0f5f792b',
+   'group_sha256': '9b56ac64d1dd1dc6a111f5e2bf5b0cce096a50d1faf9e665c96f7c9e424265da',
+   'member_failures': {},
+   'member_receipts': {'model-0': {'agent_id': 'agent:demo',
+                                   'agent_revision_sha256': '8ca727f949f1a52bc3dfc11c5ce7b6205fd1ecbe89981c1390f7799a15a1b8fb',
+                                   'authentication': {'algorithm': 'hmac-sha256',
+                                                      'issuer': 'px-project-studio-authority',
+                                                      'mac': '954a8599fa301e39e8be6e8590c01d4cb6b076b19874ec2eb887804b95c0d5a6',
+                                                      'payload_sha256': 'e4fa5a27c86fefbc5d8ca8d2b0ea2f3170b9cb1ee58b9549134a5db7f5517dfa',
+                                                      'project_identity': 'px-project-1a035b6c94e049faaa0e516ab72cd2dc'},
+                                   'control_sequence': 3,
+                                   'effects_studio_admitted': True,
+                                   'execution_context': {'actor_id': 'human:owner',
+                                                         'authority_granted': False,
+                                                         'authority_reference_sha256': 'f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2',
+                                                         'cancellation_scope_id': 'run-d2f15885d1d448fb9a39f115c306ce1b',
+                                                         'context_sha256': '9d120cf2188b21c20cdade351908a928449fcb5773dadf74044613727aaa2343',
+                                                         'contract_set_revision': None,
+                                                         'deadline_utc': '2026-10-27T22:03:09.790745+00:00',
+                                                         'effect_budget_sha256': 'f9318d9bd409729b69b6bb4e5a797f74549c5d2c668ae80dc36a6cdfa2ff2d4a',
+                                                         'effect_intent_id': None,
+                                                         'epoch': 1,
+                                                         'execution_id': 'run-d3ec21ceca4c4fa78c5f7fe302484dd3',
+                                                         'generation_vector_sha256': '75f94a581c333da5b286d95dad28f58f84f212e5623b8bfa7ba63143ed413875',
+                                                         'gremlin_revision': None,
+                                                         'lease_id': None,
+                                                         'model_execution_group_revision': None,
+                                                         'network_policy_revision': None,
+                                                         'parent_execution_id': 'run-d2f15885d1d448fb9a39f115c306ce1b',
+                                                         'project_id': 'px',
+                                                         'provider_id': None,
+                                                         'revision': 2,
+                                                         'root_execution_id': 'run-d2f15885d1d448fb9a39f115c306ce1b',
+                                                         'schema_version': 'px.execution-context/1.0',
+                                                         'session_id': 'run-d2f15885d1d448fb9a39f115c306ce1b',
+                                                         'trace_root_id': 'run-d2f15885d1d448fb9a39f115c306ce1b',
+                                                         'workflow_adapter_revision': None},
+                                   'handoff_packet_sha256': [],
+                                   'host_authority_retained': True,
+                                   'memory_context_receipt_sha256': None,
+                                   'model_attachment_sha256': '7f7fd254b9f37751c727cc3f48a4cbf30fb2db3ffe90dac302a4fc18b10c2590',
+                                   'outcome': {'branch_artifact': {'agent_generation_id': 'generation-0',
+                                                                   'artifact_sha256': '75c6068c02110a3f8caf0801f021b8fb8bfa582292dd55d43aa26e0d7406cef8',
+                                                                   'attachment_sha256': '7f7fd254b9f37751c727cc3f48a4cbf30fb2db3ffe90dac302a4fc18b10c2590',
+                                                                   'authority_granted': False,
+                                                                   'context_sha256': 'c22db62eb89f2e0be18634c2eac933d81735b74de21991147e94575f07a27cfa',
+                                                                   'group_sha256': '9b56ac64d1dd1dc6a111f5e2bf5b0cce096a50d1faf9e665c96f7c9e424265da',
+                                                                   'manifest_path': '.agentic_engineering_os_px/runtime-core/model-artifacts/f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2/ea79a5f6d2eea2cda84a0950f378424dc54899f720e24b948c6463f30e2f5cff/db81642bf6d41f87a8dc8506c429097de3fdd3d6413e93f6b16329d21f059023/commitment.json',
+                                                                   'model_id': 'model-0',
+                                                                   'output_bytes': 33,
+                                                                   'output_path': '.agentic_engineering_os_px/runtime-core/model-artifacts/f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2/ea79a5f6d2eea2cda84a0950f378424dc54899f720e24b948c6463f30e2f5cff/db81642bf6d41f87a8dc8506c429097de3fdd3d6413e93f6b16329d21f059023/output.json',
+                                                                   'output_sha256': '6ca00d3ba72455c64085ff6af0723d297f9ca00fc1cfdd0173138ee75e886846',
+                                                                   'project_id': 'px',
+                                                                   'resource_id': 'path-b39e9db26005493187b516ed5623f567',
+                                                                   'run_id': 'run-d3ec21ceca4c4fa78c5f7fe302484dd3',
+                                                                   'schema_version': 'px.model-branch-artifact/1.0',
+                                                                   'task_plan_id': 'task-plan-05195b53cf1f33afb273a58e',
+                                                                   'task_plan_sha256': 'f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2'},
+                                               'capacity_release': {'outcome_sha256': 'bdb442708d0abbbdb1d16955723ca159050f8a4c8b563f1fad0533688f2a3950',
+                                                                    'release_sha256': '01063fee773694f17fc2ca1bf1e05bfec8a43e8c40ed46fc659af9a55c994e2f',
+                                                                    'released': True,
+                                                                    'reservation_id': 'placement-reserve-9f71564dd0e748f89dccddb442348c7e',
+                                                                    'reservation_sha256': 'a9c1d33db0b1655897aaa3ccf67e06d43b08a69d3627706403daf34d740f6ac9',
+                                                                    'schema_version': 'px.placement-capacity-release/1.0'},
+                                               'context_sha256': 'c22db62eb89f2e0be18634c2eac933d81735b74de21991147e94575f07a27cfa',
+                                               'execution_context': {'actor_id': 'human:owner',
+                                                                     'authority_granted': False,
+                                                                     'authority_reference_sha256': 'f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2',
+                                                                     'cancellation_scope_id': 'run-d2f15885d1d448fb9a39f115c306ce1b',
+                                                                     'context_sha256': '9d120cf2188b21c20cdade351908a928449fcb5773dadf74044613727aaa2343',
+                                                                     'contract_set_revision': None,
+                                                                     'deadline_utc': '2026-10-27T22:03:09.790745+00:00',
+                                                                     'effect_budget_sha256': 'f9318d9bd409729b69b6bb4e5a797f74549c5d2c668ae80dc36a6cdfa2ff2d4a',
+                                                                     'effect_intent_id': None,
+                                                                     'epoch': 1,
+                                                                     'execution_id': 'run-d3ec21ceca4c4fa78c5f7fe302484dd3',
+                                                                     'generation_vector_sha256': '75f94a581c333da5b286d95dad28f58f84f212e5623b8bfa7ba63143ed413875',
+                                                                     'gremlin_revision': None,
+                                                                     'lease_id': None,
+                                                                     'model_execution_group_revision': None,
+                                                                     'network_policy_revision': None,
+                                                                     'parent_execution_id': 'run-d2f15885d1d448fb9a39f115c306ce1b',
+                                                                     'project_id': 'px',
+                                                                     'provider_id': None,
+                                                                     'revision': 2,
+                                                                     'root_execution_id': 'run-d2f15885d1d448fb9a39f115c306ce1b',
+                                                                     'schema_version': 'px.execution-context/1.0',
+                                                                     'session_id': 'run-d2f15885d1d448fb9a39f115c306ce1b',
+                                                                     'trace_root_id': 'run-d2f15885d1d448fb9a39f115c306ce1b',
+                                                                     'workflow_adapter_revision': None},
+                                               'model_execution_group_sha256': '9b56ac64d1dd1dc6a111f5e2bf5b0cce096a50d1faf9e665c96f7c9e424265da',
+                                               'model_id': 'model-0',
+                                               'outcome_sha256': 'bdb442708d0abbbdb1d16955723ca159050f8a4c8b563f1fad0533688f2a3950',
+                                               'placement_sha256': '54d6ceea470da37fbd0fb329fa987b99db47c6fbe761bc0bb8a129d8b85ce46e',
+                                               'reservation_sha256': 'a9c1d33db0b1655897aaa3ccf67e06d43b08a69d3627706403daf34d740f6ac9',
+                                               'run_id': 'run-d3ec21ceca4c4fa78c5f7fe302484dd3',
+                                               'schema_version': 'px.governed-agent-placement-outcome/1.0',
+                                               'status': 'succeeded',
+                                               'task_plan_sha256': 'f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2',
+                                               'telemetry': {'actual_device': 'cpu',
+                                                             'device_index': None,
+                                                             'duration_seconds': 3.499999365885742e-06,
+                                                             'executor_backend': None,
+                                                             'fallback': False,
+                                                             'process_parallelism': 0,
+                                                             'routing_reason': 'CUDA '
+                                                                               'is '
+                                                                               'unavailable; '
+                                                                               'using '
+                                                                               'declared '
+                                                                               'CPU '
+                                                                               'fallback',
+                                                             'selected_device': 'cpu'}},
+                                   'placement_sha256': '54d6ceea470da37fbd0fb329fa987b99db47c6fbe761bc0bb8a129d8b85ce46e',
+                                   'result_sha256': 'dd5f37e6b01a4a17c2c685f8b769852091ee12ad3f2604b9bbd91237aaf52cc1',
+                                   'run_id': 'run-d3ec21ceca4c4fa78c5f7fe302484dd3',
+                                   'schema_version': 'px.agent-governed-execution-receipt/1.0',
+                                   'task_plan_sha256': 'f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2'}},
+   'physical_scheduler': 'bounded-sequential-members',
+   'sandbox_policy_sha256': None,
+   'sandbox_provenance': None,
+   'schema_version': 'px.governed-model-group-run/1.0',
+   'task_plan_sha256': 'f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2'}
+  Differing items:
+  {'assessment': {'assessment_sha256': 'b0299dbc138b8d22df357cbc985dfe854e01691c0a6ae670596cda688f32ca72', 'authority_gr...attestation': None, 'model_id': 'model-0', 'reasons': ['committed artifact or signed attestation unavailable']}], ...}} != {'assessment': {'convergence': {'schema_version': 'px.independent-convergence/1.0', 'group_id': 'mesh', 'group_sha256'...', 'admitted': False, 'reasons': ['committed artifact or signed attestation unavailable'], 'attestation': None}], ...}}
+  
+  Full diff:
+    {
+  +     'assessment': {
+  +         'assessment_sha256': 'b0299dbc138b8d22df357cbc985dfe854e01691c0a6ae670596cda688f32ca72',
+  -     'schema_version': 'px.governed-model-group-run/1.0',
+  -     'task_plan_sha256': 'f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2',
+  -     'group_run_id': 'run-d2f15885d1d448fb9a39f115c306ce1b',
+  -     'execution_context': {
+  -         'schema_version': 'px.execution-context/1.0',
+  -         'execution_id': 'run-d2f15885d1d448fb9a39f115c306ce1b',
+  -         'parent_execution_id': None,
+  -         'root_execution_id': 'run-d2f15885d1d448fb9a39f115c306ce1b',
+  -         'project_id': 'px',
+  -         'session_id': 'run-d2f15885d1d448fb9a39f115c306ce1b',
+  -         'revision': 2,
+  -         'epoch': 1,
+  -         'generation_vector_sha256': '75f94a581c333da5b286d95dad28f58f84f212e5623b8bfa7ba63143ed413875',
+  -         'authority_reference_sha256': 'f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2',
+  -         'effect_budget_sha256': 'f9318d9bd409729b69b6bb4e5a797f74549c5d2c668ae80dc36a6cdfa2ff2d4a',
+  -         'cancellation_scope_id': 'run-d2f15885d1d448fb9a39f115c306ce1b',
+  -         'deadline_utc': '2026-10-27T22:03:09.790745+00:00',
+  -         'actor_id': 'human:owner',
+  -         'provider_id': None,
+  -         'trace_root_id': 'run-d2f15885d1d448fb9a39f115c306ce1b',
+  -         'model_execution_group_revision': None,
+  -         'contract_set_revision': None,
+  -         'gremlin_revision': None,
+  -         'network_policy_revision': None,
+  -         'workflow_adapter_revision': None,
+  -         'lease_id': None,
+  -         'effect_intent_id': None,
+            'authority_granted': False,
+  -         'context_sha256': '85e92314a7a9c23fd06942b4acb367d4c3eae8f80d6e583676b324e1a22debec',
+  +         'boundary': {
+  +             'boundary_sha256': '1c2a6b343112d77fc0ae2b6d369e75b4e637030ea384c973c7e86cfb25187584',
+  +             'dispositions': [
+  +                 {
+  +                     'reason': 'committed artifact or signed attestation unavailable',
+  +                     'state': 'blocked',
+  +                     'target_id': 'signed-current-branch-assessment:model-0',
+  +                     'work_id': 'model-0',
+  +                 },
+  +             ],
+  +             'schema_version': 'px.work-disposition/1.0',
+  -     },
+  +         },
+  ? ++++
+  +         'branch_assessments': [
+  +             {
+  +                 'admitted': False,
+  +                 'attestation': None,
+  -     'control_state': 'failed',
+  -     'group_sha256': '9b56ac64d1dd1dc6a111f5e2bf5b0cce096a50d1faf9e665c96f7c9e424265da',
+  -     'member_receipts': {
+  -         'model-0': {
+  -             'schema_version': 'px.agent-governed-execution-receipt/1.0',
+  -             'run_id': 'run-d3ec21ceca4c4fa78c5f7fe302484dd3',
+  -             'agent_id': 'agent:demo',
+  -             'agent_revision_sha256': '8ca727f949f1a52bc3dfc11c5ce7b6205fd1ecbe89981c1390f7799a15a1b8fb',
+  -             'task_plan_sha256': 'f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2',
+  -             'model_attachment_sha256': '7f7fd254b9f37751c727cc3f48a4cbf30fb2db3ffe90dac302a4fc18b10c2590',
+  -             'placement_sha256': '54d6ceea470da37fbd0fb329fa987b99db47c6fbe761bc0bb8a129d8b85ce46e',
+  -             'memory_context_receipt_sha256': None,
+  -             'handoff_packet_sha256': [],
+  -             'outcome': {
+  -                 'schema_version': 'px.governed-agent-placement-outcome/1.0',
+  -                 'run_id': 'run-d3ec21ceca4c4fa78c5f7fe302484dd3',
+  -                 'task_plan_sha256': 'f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2',
+  -                 'placement_sha256': '54d6ceea470da37fbd0fb329fa987b99db47c6fbe761bc0bb8a129d8b85ce46e',
+  -                 'reservation_sha256': 'a9c1d33db0b1655897aaa3ccf67e06d43b08a69d3627706403daf34d740f6ac9',
+  -                 'status': 'succeeded',
+  -                 'execution_context': {
+  -                     'schema_version': 'px.execution-context/1.0',
+  -                     'execution_id': 'run-d3ec21ceca4c4fa78c5f7fe302484dd3',
+  -                     'parent_execution_id': 'run-d2f15885d1d448fb9a39f115c306ce1b',
+  -                     'root_execution_id': 'run-d2f15885d1d448fb9a39f115c306ce1b',
+  -                     'project_id': 'px',
+  -                     'session_id': 'run-d2f15885d1d448fb9a39f115c306ce1b',
+  -                     'revision': 2,
+  -                     'epoch': 1,
+  -                     'generation_vector_sha256': '75f94a581c333da5b286d95dad28f58f84f212e5623b8bfa7ba63143ed413875',
+  -                     'authority_reference_sha256': 'f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2',
+  -                     'effect_budget_sha256': 'f9318d9bd409729b69b6bb4e5a797f74549c5d2c668ae80dc36a6cdfa2ff2d4a',
+  -                     'cancellation_scope_id': 'run-d2f15885d1d448fb9a39f115c306ce1b',
+  -                     'deadline_utc': '2026-10-27T22:03:09.790745+00:00',
+  -                     'actor_id': 'human:owner',
+  -                     'provider_id': None,
+  -                     'trace_root_id': 'run-d2f15885d1d448fb9a39f115c306ce1b',
+  -                     'model_execution_group_revision': None,
+  -                     'contract_set_revision': None,
+  -                     'gremlin_revision': None,
+  -                     'network_policy_revision': None,
+  -                     'workflow_adapter_revision': None,
+  -                     'lease_id': None,
+  -                     'effect_intent_id': None,
+  -                     'authority_granted': False,
+  -                     'context_sha256': '9d120cf2188b21c20cdade351908a928449fcb5773dadf74044613727aaa2343',
+  -                 },
+                    'model_id': 'model-0',
+  +                 'reasons': [
+  +                     'committed artifact or signed attestation unavailable',
+  +                 ],
+  +             },
+  +         ],
+  -                 'context_sha256': 'c22db62eb89f2e0be18634c2eac933d81735b74de21991147e94575f07a27cfa',
+  -                 'model_execution_group_sha256': '9b56ac64d1dd1dc6a111f5e2bf5b0cce096a50d1faf9e665c96f7c9e424265da',
+  -                 'branch_artifact': {
+  -                     'schema_version': 'px.model-branch-artifact/1.0',
+  -                     'project_id': 'px',
+  -                     'run_id': 'run-d3ec21ceca4c4fa78c5f7fe302484dd3',
+  -                     'task_plan_id': 'task-plan-05195b53cf1f33afb273a58e',
+  -                     'task_plan_sha256': 'f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2',
+  -                     'group_sha256': '9b56ac64d1dd1dc6a111f5e2bf5b0cce096a50d1faf9e665c96f7c9e424265da',
+  -                     'model_id': 'model-0',
+  -                     'agent_generation_id': 'generation-0',
+  -                     'attachment_sha256': '7f7fd254b9f37751c727cc3f48a4cbf30fb2db3ffe90dac302a4fc18b10c2590',
+  -                     'context_sha256': 'c22db62eb89f2e0be18634c2eac933d81735b74de21991147e94575f07a27cfa',
+  -                     'output_sha256': '6ca00d3ba72455c64085ff6af0723d297f9ca00fc1cfdd0173138ee75e886846',
+  -                     'output_bytes': 33,
+  -                     'output_path': '.agentic_engineering_os_px/runtime-core/model-artifacts/f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2/ea79a5f6d2eea2cda84a0950f378424dc54899f720e24b948c6463f30e2f5cff/db81642bf6d41f87a8dc8506c429097de3fdd3d6413e93f6b16329d21f059023/output.json',
+  -                     'resource_id': 'path-b39e9db26005493187b516ed5623f567',
+  -                     'authority_granted': False,
+  -                     'artifact_sha256': '75c6068c02110a3f8caf0801f021b8fb8bfa582292dd55d43aa26e0d7406cef8',
+  -                     'manifest_path': '.agentic_engineering_os_px/runtime-core/model-artifacts/f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2/ea79a5f6d2eea2cda84a0950f378424dc54899f720e24b948c6463f30e2f5cff/db81642bf6d41f87a8dc8506c429097de3fdd3d6413e93f6b16329d21f059023/commitment.json',
+  -                 },
+  -                 'telemetry': {
+  -                     'selected_device': 'cpu',
+  -                     'actual_device': 'cpu',
+  -                     'fallback': False,
+  -                     'executor_backend': None,
+  -                     'device_index': None,
+  -                     'process_parallelism': 0,
+  -                     'duration_seconds': 3.499999365885742e-06,
+  -                     'routing_reason': 'CUDA is unavailable; using declared CPU fallback',
+  -                 },
+  -                 'outcome_sha256': 'bdb442708d0abbbdb1d16955723ca159050f8a4c8b563f1fad0533688f2a3950',
+  -                 'capacity_release': {
+  -                     'schema_version': 'px.placement-capacity-release/1.0',
+  -                     'reservation_id': 'placement-reserve-9f71564dd0e748f89dccddb442348c7e',
+  -                     'reservation_sha256': 'a9c1d33db0b1655897aaa3ccf67e06d43b08a69d3627706403daf34d740f6ac9',
+  -                     'outcome_sha256': 'bdb442708d0abbbdb1d16955723ca159050f8a4c8b563f1fad0533688f2a3950',
+  -                     'released': True,
+  -                     'release_sha256': '01063fee773694f17fc2ca1bf1e05bfec8a43e8c40ed46fc659af9a55c994e2f',
+  -                 },
+  -             },
+  -             'result_sha256': 'dd5f37e6b01a4a17c2c685f8b769852091ee12ad3f2604b9bbd91237aaf52cc1',
+  -             'control_sequence': 3,
+  -             'effects_studio_admitted': True,
+  -             'execution_context': {
+  -                 'schema_version': 'px.execution-context/1.0',
+  -                 'execution_id': 'run-d3ec21ceca4c4fa78c5f7fe302484dd3',
+  -                 'parent_execution_id': 'run-d2f15885d1d448fb9a39f115c306ce1b',
+  -                 'root_execution_id': 'run-d2f15885d1d448fb9a39f115c306ce1b',
+  -                 'project_id': 'px',
+  -                 'session_id': 'run-d2f15885d1d448fb9a39f115c306ce1b',
+  -                 'revision': 2,
+  -                 'epoch': 1,
+  -                 'generation_vector_sha256': '75f94a581c333da5b286d95dad28f58f84f212e5623b8bfa7ba63143ed413875',
+  -                 'authority_reference_sha256': 'f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2',
+  -                 'effect_budget_sha256': 'f9318d9bd409729b69b6bb4e5a797f74549c5d2c668ae80dc36a6cdfa2ff2d4a',
+  -                 'cancellation_scope_id': 'run-d2f15885d1d448fb9a39f115c306ce1b',
+  -                 'deadline_utc': '2026-10-27T22:03:09.790745+00:00',
+  -                 'actor_id': 'human:owner',
+  -                 'provider_id': None,
+  -                 'trace_root_id': 'run-d2f15885d1d448fb9a39f115c306ce1b',
+  -                 'model_execution_group_revision': None,
+  -                 'contract_set_revision': None,
+  -                 'gremlin_revision': None,
+  -                 'network_policy_revision': None,
+  -                 'workflow_adapter_revision': None,
+  -                 'lease_id': None,
+  -                 'effect_intent_id': None,
+  -                 'authority_granted': False,
+  -                 'context_sha256': '9d120cf2188b21c20cdade351908a928449fcb5773dadf74044613727aaa2343',
+  -             },
+  -             'host_authority_retained': True,
+  -             'authentication': {
+  -                 'algorithm': 'hmac-sha256',
+  -                 'issuer': 'px-project-studio-authority',
+  -                 'project_identity': 'px-project-1a035b6c94e049faaa0e516ab72cd2dc',
+  -                 'payload_sha256': 'e4fa5a27c86fefbc5d8ca8d2b0ea2f3170b9cb1ee58b9549134a5db7f5517dfa',
+  -                 'mac': '954a8599fa301e39e8be6e8590c01d4cb6b076b19874ec2eb887804b95c0d5a6',
+  -             },
+  -         },
+  -     },
+  -     'member_failures': {},
+  -     'assessment': {
+            'convergence': {
+  -             'schema_version': 'px.independent-convergence/1.0',
+  +             'authority_granted': False,
+  +             'conclusion': None,
+  +             'convergence_sha256': 'dfd488b0707ec7cd6f35ddd373df2f19c6f9ed2c950b963df7059923ba5927df',
+  +             'critique_edges': [],
+  +             'declared_count': 1,
+  +             'dissent': [
+  +                 'model-0',
+  +             ],
+  +             'effective_independent_count': 0,
+  +             'eligible_count': 0,
+                'group_id': 'mesh',
+                'group_sha256': '9b56ac64d1dd1dc6a111f5e2bf5b0cce096a50d1faf9e665c96f7c9e424265da',
+  +             'not_admitted': [
+  +                 'model-0',
+  +             ],
+  -             'status': 'INDETERMINATE',
+  -             'conclusion': None,
+  -             'declared_count': 1,
+  -             'eligible_count': 0,
+  -             'effective_independent_count': 0,
+  -             'support': 0,
+                'observations': [
+                    {
+  +                     'artifact_sha256': None,
+  +                     'conclusion': 'not admitted',
+  +                     'containment_proven': False,
+  +                     'evidence': [],
+  +                     'isolation_proven': False,
+                        'model_id': 'model-0',
+  -                     'conclusion': 'not admitted',
+  -                     'artifact_sha256': None,
+  -                     'evidence': (),
+  -                     'isolation_proven': False,
+  -                     'containment_proven': False,
+                        'state': 'not_admitted',
+                    },
+                ],
+  -             'dissent': [
+  -                 'model-0',
+  +             'schema_version': 'px.independent-convergence/1.0',
+  +             'status': 'INDETERMINATE',
+  +             'support': 0,
+  -             ],
+  ?         ^^^^^
+  +         },
+  ?         ^
+  +         'verdict': {
+  -             'not_admitted': [
+  -                 'model-0',
+  -             ],
+  -             'critique_edges': [],
+                'authority_granted': False,
+  -             'convergence_sha256': 'dfd488b0707ec7cd6f35ddd373df2f19c6f9ed2c950b963df7059923ba5927df',
+  -         },
+  -         'boundary': {
+  -             'schema_version': 'px.work-disposition/1.0',
+  -             'dispositions': [
+  -                 {
+  -                     'work_id': 'model-0',
+  -                     'state': 'blocked',
+  -                     'reason': 'committed artifact or signed attestation unavailable',
+  -                     'target_id': 'signed-current-branch-assessment:model-0',
+  -                 },
+  -             ],
+  -             'boundary_sha256': '1c2a6b343112d77fc0ae2b6d369e75b4e637030ea384c973c7e86cfb25187584',
+  -         },
+  -         'verdict': {
+  -             'schema_version': 'px.generation-bound-verdict/1.0',
+                'candidate_sha256': 'f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2',
+                'dependencies': {
+                    'context_generation': '75f94a581c333da5b286d95dad28f58f84f212e5623b8bfa7ba63143ed413875',
+                    'model_contract_set': '857555103b60ff536179dc4595dc228ba79fa2a2c1750556d6443a5abc97c964',
+                    'model_execution_group': '9b56ac64d1dd1dc6a111f5e2bf5b0cce096a50d1faf9e665c96f7c9e424265da',
+                    'task_plan': 'f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2',
+                },
+  -             'verifier_revision': 'source-sha256:6a91641e1311282deadf3009541a93f4b675b262f865cec783c9dde8e2fdd85b',
+                'evidence_sha256': [
+                    '1c2a6b343112d77fc0ae2b6d369e75b4e637030ea384c973c7e86cfb25187584',
+                    'dfd488b0707ec7cd6f35ddd373df2f19c6f9ed2c950b963df7059923ba5927df',
+                ],
+  +             'schema_version': 'px.generation-bound-verdict/1.0',
+                'status': 'INDETERMINATE',
+  -             'authority_granted': False,
+                'verdict_sha256': '7d7ab883513ce48c75246aaa132e2be16c606eeb058d15486a478586ff60a72f',
+  +             'verifier_revision': 'source-sha256:6a91641e1311282deadf3009541a93f4b675b262f865cec783c9dde8e2fdd85b',
+            },
+  -         'branch_assessments': [
+  -             {
+  +     },
+  +     'authority_granted': False,
+  +     'containment_proofs': None,
+  +     'control_state': 'failed',
+  +     'execution_context': {
+  +         'actor_id': 'human:owner',
+  +         'authority_granted': False,
+  +         'authority_reference_sha256': 'f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2',
+  +         'cancellation_scope_id': 'run-d2f15885d1d448fb9a39f115c306ce1b',
+  +         'context_sha256': '85e92314a7a9c23fd06942b4acb367d4c3eae8f80d6e583676b324e1a22debec',
+  +         'contract_set_revision': None,
+  +         'deadline_utc': '2026-10-27T22:03:09.790745+00:00',
+  +         'effect_budget_sha256': 'f9318d9bd409729b69b6bb4e5a797f74549c5d2c668ae80dc36a6cdfa2ff2d4a',
+  +         'effect_intent_id': None,
+  +         'epoch': 1,
+  +         'execution_id': 'run-d2f15885d1d448fb9a39f115c306ce1b',
+  +         'generation_vector_sha256': '75f94a581c333da5b286d95dad28f58f84f212e5623b8bfa7ba63143ed413875',
+  +         'gremlin_revision': None,
+  +         'lease_id': None,
+  +         'model_execution_group_revision': None,
+  +         'network_policy_revision': None,
+  +         'parent_execution_id': None,
+  +         'project_id': 'px',
+  +         'provider_id': None,
+  +         'revision': 2,
+  +         'root_execution_id': 'run-d2f15885d1d448fb9a39f115c306ce1b',
+  +         'schema_version': 'px.execution-context/1.0',
+  +         'session_id': 'run-d2f15885d1d448fb9a39f115c306ce1b',
+  +         'trace_root_id': 'run-d2f15885d1d448fb9a39f115c306ce1b',
+  +         'workflow_adapter_revision': None,
+  +     },
+  +     'group_run_id': 'run-d2f15885d1d448fb9a39f115c306ce1b',
+  +     'group_run_sha256': 'ef50f27deffee8dbc921d592cb1820de4018159f4127c090bbcee9de0f5f792b',
+  +     'group_sha256': '9b56ac64d1dd1dc6a111f5e2bf5b0cce096a50d1faf9e665c96f7c9e424265da',
+  +     'member_failures': {},
+  +     'member_receipts': {
+  +         'model-0': {
+  +             'agent_id': 'agent:demo',
+  +             'agent_revision_sha256': '8ca727f949f1a52bc3dfc11c5ce7b6205fd1ecbe89981c1390f7799a15a1b8fb',
+  +             'authentication': {
+  +                 'algorithm': 'hmac-sha256',
+  +                 'issuer': 'px-project-studio-authority',
+  +                 'mac': '954a8599fa301e39e8be6e8590c01d4cb6b076b19874ec2eb887804b95c0d5a6',
+  +                 'payload_sha256': 'e4fa5a27c86fefbc5d8ca8d2b0ea2f3170b9cb1ee58b9549134a5db7f5517dfa',
+  +                 'project_identity': 'px-project-1a035b6c94e049faaa0e516ab72cd2dc',
+  +             },
+  +             'control_sequence': 3,
+  +             'effects_studio_admitted': True,
+  +             'execution_context': {
+  +                 'actor_id': 'human:owner',
+  +                 'authority_granted': False,
+  +                 'authority_reference_sha256': 'f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2',
+  +                 'cancellation_scope_id': 'run-d2f15885d1d448fb9a39f115c306ce1b',
+  +                 'context_sha256': '9d120cf2188b21c20cdade351908a928449fcb5773dadf74044613727aaa2343',
+  +                 'contract_set_revision': None,
+  +                 'deadline_utc': '2026-10-27T22:03:09.790745+00:00',
+  +                 'effect_budget_sha256': 'f9318d9bd409729b69b6bb4e5a797f74549c5d2c668ae80dc36a6cdfa2ff2d4a',
+  +                 'effect_intent_id': None,
+  +                 'epoch': 1,
+  +                 'execution_id': 'run-d3ec21ceca4c4fa78c5f7fe302484dd3',
+  +                 'generation_vector_sha256': '75f94a581c333da5b286d95dad28f58f84f212e5623b8bfa7ba63143ed413875',
+  +                 'gremlin_revision': None,
+  +                 'lease_id': None,
+  +                 'model_execution_group_revision': None,
+  +                 'network_policy_revision': None,
+  +                 'parent_execution_id': 'run-d2f15885d1d448fb9a39f115c306ce1b',
+  +                 'project_id': 'px',
+  +                 'provider_id': None,
+  +                 'revision': 2,
+  +                 'root_execution_id': 'run-d2f15885d1d448fb9a39f115c306ce1b',
+  +                 'schema_version': 'px.execution-context/1.0',
+  +                 'session_id': 'run-d2f15885d1d448fb9a39f115c306ce1b',
+  +                 'trace_root_id': 'run-d2f15885d1d448fb9a39f115c306ce1b',
+  +                 'workflow_adapter_revision': None,
+  +             },
+  +             'handoff_packet_sha256': [],
+  +             'host_authority_retained': True,
+  +             'memory_context_receipt_sha256': None,
+  +             'model_attachment_sha256': '7f7fd254b9f37751c727cc3f48a4cbf30fb2db3ffe90dac302a4fc18b10c2590',
+  +             'outcome': {
+  +                 'branch_artifact': {
+  +                     'agent_generation_id': 'generation-0',
+  +                     'artifact_sha256': '75c6068c02110a3f8caf0801f021b8fb8bfa582292dd55d43aa26e0d7406cef8',
+  +                     'attachment_sha256': '7f7fd254b9f37751c727cc3f48a4cbf30fb2db3ffe90dac302a4fc18b10c2590',
+  +                     'authority_granted': False,
+  +                     'context_sha256': 'c22db62eb89f2e0be18634c2eac933d81735b74de21991147e94575f07a27cfa',
+  +                     'group_sha256': '9b56ac64d1dd1dc6a111f5e2bf5b0cce096a50d1faf9e665c96f7c9e424265da',
+  +                     'manifest_path': '.agentic_engineering_os_px/runtime-core/model-artifacts/f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2/ea79a5f6d2eea2cda84a0950f378424dc54899f720e24b948c6463f30e2f5cff/db81642bf6d41f87a8dc8506c429097de3fdd3d6413e93f6b16329d21f059023/commitment.json',
+  +                     'model_id': 'model-0',
+  +                     'output_bytes': 33,
+  +                     'output_path': '.agentic_engineering_os_px/runtime-core/model-artifacts/f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2/ea79a5f6d2eea2cda84a0950f378424dc54899f720e24b948c6463f30e2f5cff/db81642bf6d41f87a8dc8506c429097de3fdd3d6413e93f6b16329d21f059023/output.json',
+  +                     'output_sha256': '6ca00d3ba72455c64085ff6af0723d297f9ca00fc1cfdd0173138ee75e886846',
+  +                     'project_id': 'px',
+  +                     'resource_id': 'path-b39e9db26005493187b516ed5623f567',
+  +                     'run_id': 'run-d3ec21ceca4c4fa78c5f7fe302484dd3',
+  +                     'schema_version': 'px.model-branch-artifact/1.0',
+  +                     'task_plan_id': 'task-plan-05195b53cf1f33afb273a58e',
+  +                     'task_plan_sha256': 'f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2',
+  +                 },
+  +                 'capacity_release': {
+  +                     'outcome_sha256': 'bdb442708d0abbbdb1d16955723ca159050f8a4c8b563f1fad0533688f2a3950',
+  +                     'release_sha256': '01063fee773694f17fc2ca1bf1e05bfec8a43e8c40ed46fc659af9a55c994e2f',
+  +                     'released': True,
+  +                     'reservation_id': 'placement-reserve-9f71564dd0e748f89dccddb442348c7e',
+  +                     'reservation_sha256': 'a9c1d33db0b1655897aaa3ccf67e06d43b08a69d3627706403daf34d740f6ac9',
+  +                     'schema_version': 'px.placement-capacity-release/1.0',
+  +                 },
+  +                 'context_sha256': 'c22db62eb89f2e0be18634c2eac933d81735b74de21991147e94575f07a27cfa',
+  +                 'execution_context': {
+  +                     'actor_id': 'human:owner',
+  +                     'authority_granted': False,
+  +                     'authority_reference_sha256': 'f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2',
+  +                     'cancellation_scope_id': 'run-d2f15885d1d448fb9a39f115c306ce1b',
+  +                     'context_sha256': '9d120cf2188b21c20cdade351908a928449fcb5773dadf74044613727aaa2343',
+  +                     'contract_set_revision': None,
+  +                     'deadline_utc': '2026-10-27T22:03:09.790745+00:00',
+  +                     'effect_budget_sha256': 'f9318d9bd409729b69b6bb4e5a797f74549c5d2c668ae80dc36a6cdfa2ff2d4a',
+  +                     'effect_intent_id': None,
+  +                     'epoch': 1,
+  +                     'execution_id': 'run-d3ec21ceca4c4fa78c5f7fe302484dd3',
+  +                     'generation_vector_sha256': '75f94a581c333da5b286d95dad28f58f84f212e5623b8bfa7ba63143ed413875',
+  +                     'gremlin_revision': None,
+  +                     'lease_id': None,
+  +                     'model_execution_group_revision': None,
+  +                     'network_policy_revision': None,
+  +                     'parent_execution_id': 'run-d2f15885d1d448fb9a39f115c306ce1b',
+  +                     'project_id': 'px',
+  +                     'provider_id': None,
+  +                     'revision': 2,
+  +                     'root_execution_id': 'run-d2f15885d1d448fb9a39f115c306ce1b',
+  +                     'schema_version': 'px.execution-context/1.0',
+  +                     'session_id': 'run-d2f15885d1d448fb9a39f115c306ce1b',
+  +                     'trace_root_id': 'run-d2f15885d1d448fb9a39f115c306ce1b',
+  +                     'workflow_adapter_revision': None,
+  +                 },
+  +                 'model_execution_group_sha256': '9b56ac64d1dd1dc6a111f5e2bf5b0cce096a50d1faf9e665c96f7c9e424265da',
+                    'model_id': 'model-0',
+  -                 'admitted': False,
+  -                 'reasons': [
+  -                     'committed artifact or signed attestation unavailable',
+  -                 ],
+  -                 'attestation': None,
+  -             },
+  -         ],
+  -         'authority_granted': False,
+  -         'assessment_sha256': 'b0299dbc138b8d22df357cbc985dfe854e01691c0a6ae670596cda688f32ca72',
+  +                 'outcome_sha256': 'bdb442708d0abbbdb1d16955723ca159050f8a4c8b563f1fad0533688f2a3950',
+  +                 'placement_sha256': '54d6ceea470da37fbd0fb329fa987b99db47c6fbe761bc0bb8a129d8b85ce46e',
+  +                 'reservation_sha256': 'a9c1d33db0b1655897aaa3ccf67e06d43b08a69d3627706403daf34d740f6ac9',
+  +                 'run_id': 'run-d3ec21ceca4c4fa78c5f7fe302484dd3',
+  +                 'schema_version': 'px.governed-agent-placement-outcome/1.0',
+  +                 'status': 'succeeded',
+  +                 'task_plan_sha256': 'f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2',
+  +                 'telemetry': {
+  +                     'actual_device': 'cpu',
+  +                     'device_index': None,
+  +                     'duration_seconds': 3.499999365885742e-06,
+  +                     'executor_backend': None,
+  +                     'fallback': False,
+  +                     'process_parallelism': 0,
+  +                     'routing_reason': 'CUDA is unavailable; using declared CPU fallback',
+  +                     'selected_device': 'cpu',
+  +                 },
+  +             },
+  +             'placement_sha256': '54d6ceea470da37fbd0fb329fa987b99db47c6fbe761bc0bb8a129d8b85ce46e',
+  +             'result_sha256': 'dd5f37e6b01a4a17c2c685f8b769852091ee12ad3f2604b9bbd91237aaf52cc1',
+  +             'run_id': 'run-d3ec21ceca4c4fa78c5f7fe302484dd3',
+  +             'schema_version': 'px.agent-governed-execution-receipt/1.0',
+  +             'task_plan_sha256': 'f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2',
+  +         },
+        },
+  +     'physical_scheduler': 'bounded-sequential-members',
+  +     'sandbox_policy_sha256': None,
+        'sandbox_provenance': None,
+  +     'schema_version': 'px.governed-model-group-run/1.0',
+  +     'task_plan_sha256': 'f566c8bd2956fa73cb8dc423afd0fec230d96b2607822b9dcc018fd22d00d1c2',
+  -     'sandbox_policy_sha256': None,
+  -     'containment_proofs': None,
+  -     'physical_scheduler': 'bounded-sequential-members',
+  -     'authority_granted': False,
+  -     'group_run_sha256': 'ef50f27deffee8dbc921d592cb1820de4018159f4127c090bbcee9de0f5f792b',
+    }
+ERROR tests/test_prepared_group_operation_approval.py::test_signed_operation_is_consumed_once_in_execution_owner - ValueError: workflow node lacks contract, grant, or failure policy
+ERROR tests/test_prepared_group_operation_approval.py::test_caller_identity_string_cannot_authorize_prepared_execution - ValueError: workflow node lacks contract, grant, or failure policy
+ERROR tests/test_prepared_group_operation_approval.py::test_group_only_capability_does_not_execute_additional_workflow_nodes - ValueError: workflow node lacks contract, grant, or failure policy
+=================== 1 failed, 9 passed, 3 errors in 18.50s ====================
+

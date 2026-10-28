@@ -37,6 +37,8 @@ from .studio_models import (
     EffectGrant,
     WorkflowDefinition,
     WorkflowNode,
+    WorkflowPort,
+    WorkflowEdge,
     canonical_bytes,
     digest,
     record as studio_record,
@@ -55,10 +57,19 @@ from .task_execution_plan import (
 )
 
 
+# These closed native adapters compute values only. Their broader grants still
+# constrain scheduling, but unused permissions are not performed effect claims.
+_PURE_WORKFLOW_ADAPTERS = frozenset({"identity", "increment", "double", "fail", "sleep"})
+
+
 class _WorkflowLifecycleSignal(RuntimeError):
     def __init__(self, requested_state: str) -> None:
         self.requested_state = requested_state
         super().__init__(requested_state)
+
+
+class _WorkflowEffectReconciliationRequired(RuntimeError):
+    """An uncertain native effect must not enter automatic retry."""
 
 
 class _WorkflowBranchSkipped(RuntimeError):
@@ -248,6 +259,8 @@ def _adapter_contract_reasons(node: WorkflowNode, adapter: str) -> list[str]:
     inputs = {port.name: port.data_type for port in node.inputs}
     outputs = {port.name: port.data_type for port in node.outputs}
     numeric = {"integer", "number"}
+    if node.config.get("execution_mode") == "prepared-model-group":
+        return ["prepared_group_executor_not_integrated"]
     if node.kind in {"branch", "join"} and adapter != "identity":
         return [f"{node.kind}_requires_identity_adapter"]
     if adapter == "identity":
@@ -263,10 +276,54 @@ def _adapter_contract_reasons(node: WorkflowNode, adapter: str) -> list[str]:
     return ["executor_adapter_not_admitted"]
 
 
+def _definition_from_record(value: Mapping[str, object]) -> WorkflowDefinition:
+    """Rebuild the exact typed WorkflowDefinition from its immutable record.
+
+    The record is the same canonical image `write_versioned_record` persisted;
+    this is a typed re-read of one authoritative document, never a new
+    definition source. Any shape deviation fails closed.
+    """
+    if not isinstance(value, Mapping) or set(value) != {
+            "workflow_id", "version", "owner", "nodes", "edges", "lifecycle"}:
+        raise ValueError("workflow revision record shape is invalid")
+    nodes = []
+    for node in value["nodes"]:
+        if not isinstance(node, Mapping):
+            raise ValueError("workflow revision node record is invalid")
+        nodes.append(WorkflowNode(
+            node["node_id"], node["executor_binding_id"],
+            tuple(WorkflowPort(port["name"], port["data_type"], port["required"])
+                  for port in node["inputs"]),
+            tuple(WorkflowPort(port["name"], port["data_type"], port["required"])
+                  for port in node["outputs"]),
+            tuple(node["effect_grant_ids"]), node["failure_policy"],
+            node["timeout_seconds"], node["retry_limit"],
+            node["approval_required"], node["kind"], dict(node["config"]),
+        ))
+    edges = []
+    for edge in value["edges"]:
+        if not isinstance(edge, Mapping):
+            raise ValueError("workflow revision edge record is invalid")
+        edges.append(WorkflowEdge(
+            edge["source_node"], edge["source_port"],
+            edge["target_node"], edge["target_port"], edge["condition"],
+        ))
+    return WorkflowDefinition(
+        value["workflow_id"], value["version"], value["owner"],
+        tuple(nodes), tuple(edges), value["lifecycle"],
+    )
+
+
+
 class WorkflowStudio:
     MAX_PARALLEL_NODES = 4
 
-    def __init__(self, project_root: Path) -> None:
+    def __init__(self, project_root: Path, *, gremlin_runtime=None) -> None:
+        if gremlin_runtime is not None:
+            from .gremlin.composition import GremlinRuntimeComposition
+            if type(gremlin_runtime) is not GremlinRuntimeComposition:
+                raise TypeError("workflow host requires the commissioned Gremlin composition")
+        self.gremlin_runtime = gremlin_runtime
         self.project_root = project_root.resolve(strict=True)
         if self.project_root == Path(self.project_root.anchor):
             raise ValueError("workflow root must be bounded")
@@ -767,6 +824,161 @@ class WorkflowStudio:
             "status": "ready",
         }
 
+    def resolve_prepared_group_owner(self, reference: Mapping[str, object]) -> dict[str, object]:
+        """Read one immutable, currently admitted owner without issuing authority."""
+        from .archive_io import reject_path_links
+        from .prepared_group_transport import resolve_prepared_group
+
+        plan = resolve_prepared_group(self.project_root, dict(reference))
+        reject_path_links(self.state_root)
+        if not self.state_root.is_dir():
+            raise PermissionError("prepared group has no admitted workflow owner")
+        def bounded_entries(directory):
+            entries = []
+            with os.scandir(directory) as iterator:
+                for entry in iterator:
+                    if len(entries) == 512:
+                        raise PermissionError("prepared-group owner directory exceeded bound")
+                    entries.append(Path(entry.path))
+            return sorted(entries)
+
+        matches = []
+        scanned = 0
+        for component in bounded_entries(self.state_root):
+            reject_path_links(component)
+            if not component.is_dir() or component.name.startswith("."):
+                continue
+            revisions = component / "revisions"
+            reject_path_links(revisions)
+            if not revisions.is_dir():
+                continue
+            for version in bounded_entries(revisions):
+                scanned += 1
+                if scanned > 512:
+                    raise PermissionError("prepared-group owner scan exceeded bound")
+                reject_path_links(version)
+                if not version.is_dir() or version.name.startswith("."):
+                    continue
+                path = version / "record.json"
+                reject_path_links(path)
+                if not path.is_file():
+                    continue
+                if path.stat(follow_symlinks=False).st_nlink != 1:
+                    raise PermissionError("aliased workflow revision refused")
+                raw = _read_revision_bytes(path)
+                envelope = json.loads(raw.decode("utf-8"))
+                if (not isinstance(envelope, Mapping)
+                        or envelope.get("schema_version") != "px.workflowdefinition/1.0"
+                        or not isinstance(envelope.get("record"), Mapping)
+                        or envelope.get("sha256") != digest(envelope["record"])):
+                    raise PermissionError("workflow revision integrity is invalid")
+                definition = _definition_from_record(envelope["record"])
+                if json.loads(canonical_bytes(studio_record(definition))) != envelope:
+                    raise PermissionError("workflow revision shape is not canonical")
+                expected_component = (f"{re.sub(r'[^a-z0-9._-]+', '-', definition.workflow_id).strip('-')}-"
+                                      f"{hashlib.sha256(definition.workflow_id.encode()).hexdigest()[:8]}")
+                if component.name != expected_component or version.name != definition.version:
+                    raise PermissionError("workflow revision location differs from identity")
+                for node in definition.nodes:
+                    if node.config.get("prepared_group_reference") == dict(reference):
+                        if "agent_spec" in node.config:
+                            from .workflow_group_config import resolve_workflow_group_plan
+                            bound = resolve_workflow_group_plan(self.project_root, node.config)
+                            if bound.plan_sha256 != plan.plan_sha256:
+                                raise PermissionError("workflow group plan changed during resolution")
+                        matches.append((definition, node, path, raw))
+        if len(matches) != 1:
+            raise PermissionError("prepared group requires exactly one workflow owner")
+        definition, node, path, raw = matches[0]
+        if node.kind != "task" or node.config.get("execution_mode") != "prepared-model-group":
+            raise PermissionError("prepared group owner is not a model-group task")
+        admission_path = path.with_name("admission-receipt.json")
+        reject_path_links(admission_path)
+        admission = self.authority.verify_receipt(_read_revision_json(admission_path))
+        if (admission.get("runnable_state") != "runnable"
+                or admission.get("workflow_id") != definition.workflow_id
+                or admission.get("version") != definition.version
+                or admission.get("revision_sha256") != hashlib.sha256(raw).hexdigest()):
+            raise PermissionError("current runnable workflow admission is required")
+        hashes = {}
+        for item in definition.nodes:
+            _, hashes[f"binding:{item.executor_binding_id}"] = self.authority.resolve_binding(
+                item.executor_binding_id, subject_kind="workflow", subject_id=definition.workflow_id)
+            _, hashes[f"executor:{item.executor_binding_id}"] = self.authority.resolve_executor(item.executor_binding_id)
+            for grant in item.effect_grant_ids:
+                _, hashes[f"grant:{grant}"] = self.authority.resolve_grant(grant, subject_id=definition.workflow_id)
+        if hashes != admission.get("authority_record_hashes"):
+            raise PermissionError("workflow authority changed after admission")
+        executor, _ = self.authority.resolve_executor(node.executor_binding_id)
+        if executor.get("adapter_id") != "model-group":
+            raise PermissionError("prepared group executor is not admitted")
+        return {"schema_version": "px.prepared-group-owner/1.0",
+                "plan_id": plan.plan_id, "plan_sha256": plan.plan_sha256,
+                "project_id": plan.project_id, "group_sha256": plan.model_execution_group.group_sha256,
+                "workflow_id": definition.workflow_id, "version": definition.version,
+                "owner": definition.owner, "node_id": node.node_id,
+                "revision_sha256": hashlib.sha256(raw).hexdigest(),
+                "revision_path": path.relative_to(self.project_root).as_posix(),
+                "approval_required": node.approval_required,
+                "authority_granted": False, "execution_authorized": False}
+
+    def execute_prepared_group_node(self, reference: Mapping[str, object], *,
+            approval_capability: Mapping[str, object], selection: dict,
+            assert_current=None) -> dict[str, object]:
+        """Consume one exact host capability; identity strings grant no authority.
+
+        Group-only selection cannot authorize additional workflow nodes. General
+        DAG execution uses its separately approved WorkflowStudio run operation.
+        """
+        from .json_io import bounded_canonical_json_bytes
+        from .prepared_group_transport import resolve_prepared_group
+        from .model_group_preparation import member_attachment
+        from .remote_model_attachment import remote_branch_id, remote_model_attachment_from_dict, build_remote_model_attachment
+        fields = {"prepared_group_reference", "profile_id", "profile_sha256", "provider_id"}
+        if type(selection) is not dict or set(selection) != fields:
+            raise ValueError("exact prepared remote selection required")
+        selection = json.loads(bounded_canonical_json_bytes(selection, max_bytes=256 * 1024))
+        reference = dict(reference)
+        if selection["prepared_group_reference"] != reference:
+            raise PermissionError("approved selection differs from prepared reference")
+        if not isinstance(approval_capability, Mapping):
+            raise PermissionError("signed prepared-group operation approval is required")
+        if assert_current is not None and not callable(assert_current):
+            raise TypeError("currentness owner must be callable")
+
+        def current_selection():
+            plan = resolve_prepared_group(self.project_root, reference)
+            branch = remote_branch_id(selection["provider_id"], selection["profile_id"])
+            value, _ = member_attachment(plan.as_dict(), branch)
+            attached = remote_model_attachment_from_dict(value)
+            if (attached.profile_sha256 != selection["profile_sha256"]
+                    or attached != build_remote_model_attachment(self.project_root,
+                        profile_id=selection["profile_id"], requester_id=attached.requester_id)):
+                raise PermissionError("selected prepared remote profile is no longer current")
+            if assert_current is not None:
+                assert_current()
+
+        current_selection()
+        owner = self.resolve_prepared_group_owner(reference)
+        raw = _read_revision_bytes(self.project_root / owner["revision_path"])
+        if hashlib.sha256(raw).hexdigest() != owner["revision_sha256"]:
+            raise PermissionError("prepared workflow revision changed")
+        definition = _definition_from_record(json.loads(raw.decode("utf-8"))["record"])
+        if (len(definition.nodes) != 1 or definition.edges
+                or definition.nodes[0].node_id != owner["node_id"]
+                or not definition.nodes[0].approval_required
+                or definition.nodes[0].config.get("execution_mode") != "prepared-model-group"):
+            raise PermissionError("group-only approval requires an isolated single-node workflow")
+        approved = self.authority.consume_host_operation_approval(approval_capability,
+            kind="remote-model", operation="chat", supplied_payload=selection)
+        current_selection()
+        if self.resolve_prepared_group_owner(reference) != owner:
+            raise PermissionError("prepared workflow owner changed after approval")
+        node_approval = self.issue_approval(definition, owner["node_id"], approved_by=approved["approved_by"])
+        result = self.execute(definition, {}, {owner["node_id"]: node_approval}, approval=True)
+        current_selection()
+        return result
+
     def issue_approval(
         self,
         definition: WorkflowDefinition,
@@ -959,9 +1171,135 @@ class WorkflowStudio:
         control_signal: DurableControlSignal,
         approval_execution: Mapping[str, object] | None,
     ) -> tuple[dict[str, object], dict[str, object]]:
+        from .effect_intent import EffectIntentLedger
+        from .scope_lease import ScopeLeaseStore
+        authority_hashes, claims = self._node_authority(definition, node)
         executor, _ = self.authority.resolve_executor(node.executor_binding_id)
+        mutating = [] if executor["adapter_id"] in _PURE_WORKFLOW_ADAPTERS else sorted({
+            (effect, scope) for scope, _mode, effect in claims
+            if effect not in _READ_ONLY_WORKFLOW_EFFECTS})
+        if any(scope == "*" for _, scope in mutating):
+            raise PermissionError("workflow mutation requires an exact declared scope")
+        ledger = EffectIntentLedger(self.project_root)
+        leases = ScopeLeaseStore(self.project_root)
+        execution_id = "workflow-effect-" + digest({
+            "run_id": run_id, "node_id": node.node_id,
+            "workflow_version": definition.version, "authority": authority_hashes})[:40]
+        bindings = []
+        held = []
+        intended = []
+        worker_invoked = False
+        release_leases = False
+        # Keys omit attempt and resume epoch: uncertain work is fenced across
+        # retries/restarts rather than renamed into a fresh execution.
+        for effect, scope in mutating:
+            key = "workflow-node-effect:" + digest({
+                "run_id": run_id, "node_id": node.node_id,
+                "effect": effect, "scope": scope})
+            observed = ledger.fence(key)
+            if observed["disposition"] != "new":
+                raise _WorkflowEffectReconciliationRequired(
+                    "workflow node effect requires reconciliation before replay: "
+                    + str(observed["disposition"]))
+            bindings.append({"idempotency_key": key, "execution_id": execution_id,
+                             "effect": effect, "scopes": [scope]})
+        try:
+            expiry = (datetime.now(timezone.utc) + timedelta(
+                seconds=float(node.timeout_seconds) + 60)).isoformat()
+            for binding in bindings:
+                lease_id = "workflow-lease-" + digest(binding)[:40]
+                leases.acquire(lease_id=lease_id, execution_id=execution_id,
+                    effect=binding["effect"], scopes=binding["scopes"],
+                    reason="admitted workflow node effect", expires_utc=expiry)
+                held.append(lease_id)
+                binding["lease_id"] = lease_id
+            # Revalidate grants while leases are held, before recording intents
+            # and before any worker is spawned.
+            if self._node_authority(definition, node)[0] != authority_hashes:
+                raise PermissionError("workflow effect authority changed before execution")
+            for binding in bindings:
+                ledger.intend(**{key: binding[key] for key in (
+                    "idempotency_key", "execution_id", "effect", "scopes")})
+                intended.append(binding)
+            worker_invoked = True
+            result = self._run_node_attempt(definition, node, node_inputs, run_id,
+                attempt, control_signal, approval_execution, bindings)
+            release_leases = True
+            return result
+        except BaseException as error:
+            release_leases = not worker_invoked or getattr(error, "workflow_tree_closed", False) is True
+            # Exception text is not native physical-closure proof. Only the
+            # launch wrapper's observed supervisor result may release these leases.
+            if not release_leases:
+                quarantined = {row["binding"]["lease_id"] for row in leases.quarantines()}
+                for binding in bindings:
+                    if binding.get("lease_id") in held and binding["lease_id"] not in quarantined:
+                        leases.quarantine_unresolved(lease_id=binding["lease_id"], execution_id=execution_id,
+                            run_id=run_id, node_id=node.node_id,
+                            authority_reference_sha256=digest(authority_hashes), attempt=attempt)
+            for binding in intended:
+                observed = ledger.fence(binding["idempotency_key"])
+                if observed["disposition"] == "in_flight":
+                    ledger.fail(idempotency_key=binding["idempotency_key"],
+                        execution_id=execution_id, failure_type=type(error).__name__)
+            if bindings and isinstance(error, Exception) and not isinstance(error, _WorkflowLifecycleSignal):
+                raise _WorkflowEffectReconciliationRequired(
+                    "workflow effect outcome requires reconciliation; automatic retry refused: "
+                    + type(error).__name__) from error
+            raise
+        finally:
+            # Native quarantines block cross-execution overlap beyond lease TTL.
+            # Only independently verified closure resolves their exclusion.
+            if release_leases:
+                for lease_id in reversed(held):
+                    leases.release(lease_id=lease_id, execution_id=execution_id)
+
+
+    def _run_node_attempt(self, definition, node, node_inputs, run_id, attempt,
+                          control_signal, approval_execution, prepared_effect_intents=()):
+        # This is native launch progress, not a worker's closure assertion. A
+        # known pre-launch rejection never started a physical effect owner.
+        launch_progress = {"entered":False}
+        try:
+            return self._run_node_attempt_inner(definition,node,node_inputs,run_id,attempt,
+                control_signal,approval_execution,prepared_effect_intents,launch_progress)
+        except BaseException as error:
+            if not launch_progress["entered"] or launch_progress.get("tree_closed") is True:
+                error.workflow_tree_closed = True
+            raise
+
+
+    def _run_node_attempt_inner(
+        self,
+        definition: WorkflowDefinition,
+        node,
+        node_inputs: Mapping[str, object],
+        run_id: str,
+        attempt: int,
+        control_signal: DurableControlSignal,
+        approval_execution: Mapping[str, object] | None,
+        prepared_effect_intents=(),
+        launch_progress=None,
+    ) -> tuple[dict[str, object], dict[str, object]]:
+        executor, _ = self.authority.resolve_executor(node.executor_binding_id)
+        group_worker = executor["adapter_id"] == "model-group"
+        if prepared_effect_intents and os.name != "nt":
+            raise PermissionError("mutating workflow requires native suspended Job custody")
+        if group_worker and self.gremlin_runtime is None:
+            from .gremlin.host_configuration import resolve_recovery_verifier_from_environment, load_configured_gremlin_runtime
+            verifier = resolve_recovery_verifier_from_environment()
+            if verifier is None:
+                raise PermissionError("group workflow requires a commissioned independent recovery verifier")
+            self.gremlin_runtime = load_configured_gremlin_runtime(self.project_root, recovery_verifier=verifier)
         authority_hashes, _ = self._node_authority(definition, node)
         task_plan_receipt = None
+        task_plan = None
+        if node.config.get("execution_mode") == "prepared-model-group":
+            from .workflow_group_config import resolve_workflow_group_plan
+            from .task_execution_plan import PLAN_DIRECTORY
+            task_plan = resolve_workflow_group_plan(self.project_root, node.config)
+            task_plan_receipt = {"plan_id": task_plan.plan_id, "plan_sha256": task_plan.plan_sha256,
+                                 "path": (PLAN_DIRECTORY / (task_plan.plan_id + ".json")).as_posix()}
         configured_plan = node.config.get("task_execution_plan")
         if configured_plan is not None:
             if not isinstance(configured_plan, Mapping):
@@ -979,34 +1317,14 @@ class WorkflowStudio:
                 "plan_sha256": task_plan.plan_sha256,
                 "path": plan_path.relative_to(self.project_root).as_posix(),
             }
-        request = self.authority.sign_receipt(
-            {
-                "schema_version": "px.workflow-node-task/1.0",
-                "workflow_id": definition.workflow_id,
-                "node_id": node.node_id,
-                "run_id": run_id,
-                "attempt": attempt,
-                "adapter_id": executor["adapter_id"],
-                "executor_binding_id": node.executor_binding_id,
-                "authority_record_hashes": authority_hashes,
-                "node_kind": node.kind,
-                "node_config": dict(node.config),
-                "approval_required": node.approval_required,
-                "approval_execution": dict(approval_execution or {}),
-                "inputs": dict(node_inputs),
-                "task_execution_plan": task_plan_receipt,
-                "effect_grant_ids": list(node.effect_grant_ids),
-                "created_utc": _now(),
-                "nonce": uuid4().hex,
-            }
-        )
+        process_project_id = task_plan.project_id if task_plan is not None else definition.workflow_id
         node_component = hashlib.sha256(node.node_id.encode("utf-8")).hexdigest()[:16]
         task_root = self.state_root / "node-tasks"
         task_root.mkdir(parents=True, exist_ok=True)
         run_component = hashlib.sha256(run_id.encode("utf-8")).hexdigest()[:16]
         request_resource = self.manager.create_workspace(
             task_root,
-            project_id=definition.workflow_id,
+            project_id=process_project_id,
             run_id=run_id,
             lane_id=node.node_id,
             creator=definition.owner,
@@ -1028,13 +1346,109 @@ class WorkflowStudio:
             "stdout_limit_bytes": 65536,
             "stderr_limit_bytes": 65536,
         }
+        from .execution_context import ExecutionContext
+        current_run = self.run_control.read(run_id)
+        activation_epoch = int(current_run["resume_count"]) + 1
+        execution_context = ExecutionContext(
+            execution_id="workflow-node-" + hashlib.sha256(
+                f"{run_id}\0{node.node_id}\0{attempt}\0{activation_epoch}".encode()).hexdigest()[:40],
+            parent_execution_id=run_id, root_execution_id=run_id,
+            project_id=process_project_id,
+            session_id=run_id, revision=int(current_run["sequence"]), epoch=activation_epoch,
+            generation_vector_sha256=None if task_plan is None or task_plan.context_generation is None else task_plan.context_generation.vector_sha256,
+            authority_reference_sha256=digest(authority_hashes), effect_budget_sha256=digest(budget),
+            cancellation_scope_id=run_id,
+            deadline_utc=(datetime.now(timezone.utc) + timedelta(seconds=timeout)).isoformat(),
+            actor_id=definition.owner, provider_id=None, trace_root_id=run_id)
+        request = self.authority.sign_receipt(
+            {
+                "schema_version": "px.workflow-node-task/1.0",
+                "workflow_id": definition.workflow_id,
+                "node_id": node.node_id,
+                "run_id": run_id,
+                "attempt": attempt,
+                "adapter_id": executor["adapter_id"],
+                "executor_binding_id": node.executor_binding_id,
+                "authority_record_hashes": authority_hashes,
+                "node_kind": node.kind,
+                "node_config": dict(node.config),
+                "approval_required": node.approval_required,
+                "approval_execution": dict(approval_execution or {}),
+                "inputs": dict(node_inputs),
+                "task_execution_plan": task_plan_receipt,
+                "effect_grant_ids": list(node.effect_grant_ids),
+                "prepared_effect_intents": [dict(row) for row in prepared_effect_intents],
+                "execution_context": execution_context.as_dict(),
+                "created_utc": _now(),
+                "nonce": uuid4().hex,
+            }
+        )
+        enrollment = None
+        custody_resource_id = None
+
+        def assert_execution_current(context):
+            observed = self.run_control.read(run_id)
+            if (context.context_sha256 != execution_context.context_sha256
+                    or observed["state"] != "running"
+                    or observed["sequence"] != context.revision
+                    or int(observed["resume_count"]) + 1 != context.epoch
+                    or observed["subject_id"] != definition.workflow_id
+                    or observed["version"] != definition.version
+                    or self._node_authority(definition, node)[0] != authority_hashes):
+                raise PermissionError("workflow execution context no longer admits the worker")
+
+        def enroll_before_release(custody):
+            nonlocal request, enrollment, custody_resource_id
+            from .scope_lease import ScopeLeaseStore
+            leases = ScopeLeaseStore(self.project_root)
+            for binding in prepared_effect_intents:
+                leases.quarantine(lease_id=binding["lease_id"], execution_id=binding["execution_id"],
+                    execution_context=execution_context, manager=self.manager, resource_id=custody.parent_resource_id)
+            custody_resource_id = custody.parent_resource_id
+            if not group_worker:
+                return
+            from .gremlin.enrollment import enroll_supervised_process
+            from .isolated_sandbox import load_sandbox_policy
+            nanny = self.gremlin_runtime.nanny
+            nanny.apply_sandbox_policy(load_sandbox_policy(self.project_root))
+            execution_id = "workflow-worker-" + hashlib.sha256(
+                f"{run_id}\0{node.node_id}\0{attempt}".encode()).hexdigest()[:32]
+            enrollment = enroll_supervised_process(nanny, self.manager, custody,
+                execution_id=execution_id, agent_id=definition.workflow_id,
+                policy_profile="workflow-model-group", orchestration_id=run_id)
+            payload = self.authority.verify_receipt(request)
+            payload.update(containment_parent_resource_id=custody.parent_resource_id,
+                containment_execution_id=execution_id, containment_enrollment=enrollment.as_dict(),
+                containment_resource_state_path=(self.state_root / "resources.json").resolve(strict=False).as_posix())
+            request = self.authority.sign_receipt(payload)
+            write_json_atomic(request_path, request)
+
+        group_environment = {}
+        if group_worker:
+            names = ("PX_ENGINE_ROOT", "PX_PROVIDER_EXECUTION_POLICY", "PX_PROVIDER_ADAPTER_REGISTRY",
+                "PX_EVIDENCE_STORE", "PX_EVIDENCE_TRUST_POLICY", "PX_ACCEPTED_EVIDENCE_PRODUCERS",
+                "PX_GREMLIN_RECOVERY_VERIFIER", "PX_GROUP_GENERATION_OBSERVER", "PX_GROUP_ATTESTATION_PROVIDER")
+            group_environment = {name: os.environ[name] for name in names if name in os.environ}
+            from .remote_provider_profiles import load_profiles
+            _, profiles = load_profiles(self.project_root)
+            used_profiles = {row["attachment"].get("profile_id") for row in task_plan.as_dict()["model_group_preparation"]["members"]
+                             if row["attachment"].get("schema_version") == "px.remote-model-attachment/2.0"}
+            for profile in profiles:
+                if profile["profile_id"] in used_profiles:
+                    name = profile["credential_reference"]
+                    if name in os.environ:
+                        group_environment[name] = os.environ[name]
+
         task_cleanup = None
         task_error: Exception | None = None
         try:
             write_json_atomic(request_path, request)
+            if launch_progress is not None:
+                launch_progress["entered"] = True
             result = self.supervisor.run(
                 [
                     sys.executable,
+                    "-P",
                     "-m",
                     "runtime.workflow_worker",
                     "--project-root",
@@ -1054,7 +1468,7 @@ class WorkflowStudio:
                     "approval": True,
                     "policy_override_requested": False,
                 },
-                project_id=definition.workflow_id,
+                project_id=process_project_id,
                 run_id=run_id,
                 lane_id=node.node_id,
                 creator=definition.owner,
@@ -1063,6 +1477,7 @@ class WorkflowStudio:
                     "PYTHONUTF8": "1",
                     "PYTHONDONTWRITEBYTECODE": "1",
                     **studio_authority_locator_environment(),
+                    **group_environment,
                     **(
                         {"SYSTEMROOT": os.environ["SYSTEMROOT"]}
                         if "SYSTEMROOT" in os.environ
@@ -1070,10 +1485,33 @@ class WorkflowStudio:
                     ),
                 },
                 cancel_event=control_signal,
+                execution_context=execution_context if prepared_effect_intents or group_worker else None,
+                assert_execution_current=assert_execution_current if prepared_effect_intents or group_worker else None,
+                before_release=enroll_before_release if prepared_effect_intents or group_worker else None,
             )
+            if launch_progress is not None:
+                launch_progress["tree_closed"] = result.tree_closed
         except Exception as error:
             task_error = error
         finally:
+            if prepared_effect_intents:
+                from .scope_lease import ScopeLeaseStore
+                leases = ScopeLeaseStore(self.project_root)
+                unresolved = {row["binding"]["lease_id"] for row in leases.quarantines()}
+                for binding in prepared_effect_intents:
+                    if binding["lease_id"] not in unresolved:
+                        continue
+                    try:
+                        leases.resolve_quarantine(lease_id=binding["lease_id"], execution_id=binding["execution_id"], manager=self.manager)
+                    except Exception as error:
+                        if task_error is None:
+                            task_error = error
+            if enrollment is not None and custody_resource_id is not None:
+                try:
+                    self.gremlin_runtime.nanny.close_supervised_execution(enrollment.execution_id, self.manager, custody_resource_id)
+                except Exception as error:
+                    if task_error is None:
+                        task_error = error
             task_cleanup = self.manager.reclaim_ephemeral_path(
                 request_resource.resource_id,
                 reason="workflow_node_task_consumed",
@@ -1170,10 +1608,51 @@ class WorkflowStudio:
             or response.get("status") != "completed"
         ):
             raise RuntimeError(json.dumps(attempt_receipt, sort_keys=True))
+        attempt_receipt["committed_effect_intents"] = self._settle_node_effect_intents(prepared_effect_intents, response)
+        attempt_receipt["execution_context"] = execution_context.as_dict()
         outputs = response.get("outputs")
         if not isinstance(outputs, dict):
             raise RuntimeError("workflow worker returned an invalid output contract")
         return outputs, attempt_receipt
+
+    def _settle_node_effect_intents(
+        self, prepared: Sequence[Mapping[str, object]],
+        response: Mapping[str, object],
+    ) -> list[dict[str, object]]:
+        """Observe native owner outcomes; never manufacture post-hoc commits."""
+        if not prepared:
+            if response.get("completed_effects") or response.get("attempted_effects"):
+                raise PermissionError("worker reported effects with no pre-execution fence")
+            return []
+        from .effect_intent import EffectIntentLedger
+        ledger = EffectIntentLedger(self.project_root)
+        outcomes = response.get("completed_effects")
+        if type(outcomes) is not list or len(outcomes) != len(prepared):
+            raise _WorkflowEffectReconciliationRequired(
+                "worker has no exact native outcomes for prepared effects")
+        committed = []
+        by_key = {}
+        for row in outcomes:
+            if type(row) is not dict or type(row.get("idempotency_key")) is not str:
+                raise _WorkflowEffectReconciliationRequired("worker effect outcome is malformed")
+            if row["idempotency_key"] in by_key:
+                raise _WorkflowEffectReconciliationRequired("worker effect outcome is duplicated")
+            by_key[row["idempotency_key"]] = row
+        if set(by_key) != {row["idempotency_key"] for row in prepared}:
+            raise _WorkflowEffectReconciliationRequired("worker effect outcome bindings differ")
+        for binding in prepared:
+            observed = ledger.fence(binding["idempotency_key"])
+            outcome = by_key[binding["idempotency_key"]]
+            if (observed["disposition"] != "committed"
+                    or any(observed.get(field) != binding[field]
+                           for field in ("execution_id", "effect", "scopes"))
+                    or any(outcome.get(field) != observed.get(field)
+                           for field in ("execution_id", "effect", "scopes", "result_sha256"))):
+                raise _WorkflowEffectReconciliationRequired(
+                    "worker effect is not committed by its exact native owner")
+            committed.append({**dict(binding), "result_sha256": observed["result_sha256"]})
+        return committed
+
 
     def _execute_node(
         self,
@@ -1215,6 +1694,8 @@ class WorkflowStudio:
                         ).hexdigest()[:24],
                     }
                 attempts.append({"attempt": attempt + 1, **failure})
+                if isinstance(error, _WorkflowEffectReconciliationRequired):
+                    break
         if output is None:
             return None, {
                 "node_id": node.node_id,

@@ -1,0 +1,19 @@
+{
+  "command": [
+    "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\Python\\pythoncore-3.14-64\\python.exe",
+    "-m",
+    "pytest",
+    "tests/test_workflow_worker_pre_dispatch.py",
+    "tests/test_workflow_effect_custody.py",
+    "tests/test_workflow_approval_boundary.py",
+    "tests/test_group_remote_wire_recordings.py",
+    "-q"
+  ],
+  "exit_code": 0,
+  "tree_closed": true,
+  "resource_inactive": true,
+  "receipt": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.tmp\\resume10\\owned\\cleanup-receipts\\process-b938a36463f944778f55b50bb295d756.json",
+  "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.tmp\\resume10\\owned\\pacifyx-jvoqw6ue",
+  "log": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\docs\\repair\\evidence\\resume10-composed-worker-guard-neighbors.log",
+  "log_sha256": "90862691da867bda7f84b4189910c31077b0659c5b2c831077df818642e43627"
+}

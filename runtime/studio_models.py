@@ -921,8 +921,11 @@ class WorkflowNode:
         object.__setattr__(
             self, "effect_grant_ids", _unique(self.effect_grant_ids, "effect_grant_ids")
         )
+        prepared_inputless = (str(self.kind).strip().lower() == "task"
+            and isinstance(self.config, Mapping)
+            and self.config.get("execution_mode") == "prepared-model-group")
         if (
-            not self.inputs
+            (not self.inputs and not prepared_inputless)
             or not self.outputs
             or not self.effect_grant_ids
             or not self.failure_policy
@@ -945,7 +948,25 @@ class WorkflowNode:
             raise ValueError("workflow node config must be canonical JSON") from error
         if len(canonical_bytes(normalized_config)) > 16384:
             raise ValueError("workflow node config exceeds 16384 bytes")
-        if kind != "validation" and normalized_config:
+        group_mode = kind == "task" and normalized_config.get("execution_mode") == "prepared-model-group"
+        if group_mode:
+            if set(normalized_config) == {"execution_mode", "prepared_group_reference", "agent_spec", "placements"}:
+                from .workflow_group_config import validate_prepared_group_node_config
+                normalized_config = validate_prepared_group_node_config(normalized_config)
+            elif set(normalized_config) != {"execution_mode", "prepared_group_reference"}:
+                raise ValueError("prepared group task config is closed")
+            reference = normalized_config["prepared_group_reference"]
+            if (not isinstance(reference, dict)
+                    or set(reference) != {"schema_version", "plan_id", "plan_sha256"}
+                    or reference["schema_version"] != "px.prepared-group-reference/1.0"
+                    or not isinstance(reference["plan_id"], str)
+                    or re.fullmatch(r"task-plan-[0-9a-f]{24}", reference["plan_id"]) is None
+                    or not isinstance(reference["plan_sha256"], str)
+                    or re.fullmatch(r"[0-9a-f]{64}", reference["plan_sha256"]) is None):
+                raise ValueError("exact prepared group reference required")
+            if not self.approval_required or self.failure_policy != "fail-closed":
+                raise ValueError("prepared group task requires approval and fail-closed policy")
+        if kind != "validation" and normalized_config and not group_mode:
             raise ValueError(
                 f"{kind} workflow node config is closed and must be empty"
             )

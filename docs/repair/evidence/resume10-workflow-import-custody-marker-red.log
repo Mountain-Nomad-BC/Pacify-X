@@ -1,0 +1,339 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+______ test_project_runtime_package_cannot_shadow_owned_workflow_worker _______
+
+tmp_path = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.tmp/resume10/owned/pacifyx-odkpxfxu/pytest-of-Ben/pytest-0/test_project_runtime_package_c0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000021A5422C3E0>
+
+    def test_project_runtime_package_cannot_shadow_owned_workflow_worker(tmp_path, monkeypatch):
+        root = tmp_path / "managed-project"
+        root.mkdir()
+        monkeypatch.setenv("PX_STUDIO_KEY_ROOT", str(tmp_path / "host-keys"))
+        hostile = root / "runtime"
+        hostile.mkdir()
+        marker = root / "untrusted-package-executed.txt"
+        (hostile / "__init__.py").write_text("from pathlib import Path\nPath(" + repr(str(marker)) + ").write_text('shadowed', encoding='utf-8')\n", encoding="utf-8")
+        (hostile / "workflow_worker.py").write_text("raise SystemExit(7)\n", encoding="utf-8")
+        definition, bindings, grants = fixture()
+        studio = WorkflowStudio(root)
+        studio.save_revision(definition)
+        studio.register_authority(bindings, grants, {bindings[0].binding_id: "increment", bindings[1].binding_id: "double"})
+        assert studio.validate_and_admit(definition)["runnable_state"] == "runnable"
+        approved = studio.issue_approval(definition, "node:two", approved_by="human:vscode-local-user")
+        try:
+>           receipt = studio.execute(definition, {"node:one.value": 2}, {"node:two": approved}, approval=True)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_workflow_worker_import_custody.py:22: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <runtime.workflow_studio.WorkflowStudio object at 0x0000021A52D18AD0>
+definition = WorkflowDefinition(workflow_id='workflow:demo', version='1.0.0', owner='owner', nodes=(WorkflowNode(node_id='node:one'...'node:one', source_port='value', target_node='node:two', target_port='value', condition='always'),), lifecycle='draft')
+inputs = {'node:one.value': 2}
+approvals = {'node:two': 'approval:832974234a714c61a77157c9457ca078'}
+approval = True, run_id = 'run-3d0e3cacea09498a8a0daf118c545036'
+defer_terminal_publication = False
+
+    def execute(
+        self,
+        definition: WorkflowDefinition,
+        inputs: Mapping[str, object],
+        approvals: Mapping[str, str] | None = None,
+        *,
+        approval: bool,
+        run_id: str | None = None,
+        defer_terminal_publication: bool = False,
+    ) -> dict[str, object]:
+        if not approval:
+            raise PermissionError("workflow launch requires explicit host approval")
+        plan = self.dry_run(definition)
+        nodes = {node.node_id: node for node in definition.nodes}
+        request_sha256 = digest({"inputs": dict(inputs)})
+        approvals = dict(approvals or {})
+        if run_id is None:
+            state = self.run_control.create(
+                kind="workflow",
+                subject_id=definition.workflow_id,
+                version=definition.version,
+                owner=definition.owner,
+                revision_sha256=str(plan["revision_sha256"]),
+                request_sha256=request_sha256,
+                checkpoint=self._checkpoint_value(
+                    set(),
+                    {},
+                    (),
+                    self._ready_node_ids(definition, set()),
+                ),
+            )
+            run_id = str(state["run_id"])
+        else:
+            state = self.run_control.read(run_id)
+            if (
+                state["kind"] != "workflow"
+                or state["subject_id"] != definition.workflow_id
+                or state["version"] != definition.version
+                or state["revision_sha256"] != plan["revision_sha256"]
+                or state["request_sha256"] != request_sha256
+            ):
+                raise PermissionError(
+                    "workflow resume identity does not match durable state"
+                )
+        if state["state"] not in {"queued", "paused", "interrupted"}:
+            raise ValueError(f"workflow cannot start from {state['state']}")
+        if state["state"] == "paused":
+            state = wait_for_paused_worker_closure(
+                state_root=self.state_root,
+                manager=self.manager,
+                authority=self.authority,
+                run_control=self.run_control,
+                run_id=run_id,
+                kind="workflow",
+            )
+        checkpoint = dict(state["checkpoint"])
+        raw_results = checkpoint.get("results", {})
+        if not isinstance(raw_results, Mapping):
+            raise PermissionError("workflow checkpoint results are invalid")
+        results: dict[str, Mapping[str, object]] = {
+            str(key): dict(value)
+            for key, value in raw_results.items()
+            if isinstance(value, Mapping)
+        }
+        node_receipts = checkpoint.get("node_receipts", [])
+        if not isinstance(node_receipts, list) or not all(
+            isinstance(row, Mapping) for row in node_receipts
+        ):
+            raise PermissionError("workflow checkpoint receipts are invalid")
+        receipt_nodes = [dict(row) for row in node_receipts]
+        completed_nodes = set(map(str, checkpoint.get("completed_nodes", [])))
+        if (
+            not completed_nodes <= set(nodes)
+            or not set(results) <= completed_nodes
+            or any(str(row.get("node_id", "")) not in completed_nodes for row in receipt_nodes)
+            or len({str(row.get("node_id", "")) for row in receipt_nodes})
+            != len(receipt_nodes)
+        ):
+            raise PermissionError("workflow checkpoint identity is invalid")
+        self.run_control.transition(
+            run_id,
+            "running",
+            actor=definition.owner,
+            approved=True,
+            checkpoint=checkpoint,
+            operation="workflow.start"
+            if state["state"] == "queued"
+            else "workflow.resume",
+        )
+        run_path = self.state_root / "runs" / f"{run_id}.json"
+        receipt: dict[str, object] = {
+            "schema_version": "px.workflow-run-receipt/1.3",
+            "run_id": run_id,
+            "workflow_id": definition.workflow_id,
+            "version": definition.version,
+            "revision_sha256": plan["revision_sha256"],
+            "run_state": "running",
+            "status": "running",
+            "started_utc": _now(),
+            "completed_utc": None,
+            "node_receipts": receipt_nodes,
+            "declared_effect_grants": sorted(
+                {grant for node in definition.nodes for grant in node.effect_grant_ids}
+            ),
+            "attempted_effects": [],
+            "completed_effects": [],
+            "denied_effects": [],
+            "effects_executed": False,
+            "outputs_retained": True,
+            "output_retention": "durable checkpoint results retained for downstream dataflow and resumable execution",
+            "node_task_content_retained": False,
+            "node_task_cleanup_policy": "registered ephemeral task envelopes are reclaimed after every node attempt",
+            "execution_policy": {
+                "scheduler": "dependency-ready-batches",
+                "max_parallel_nodes": self.MAX_PARALLEL_NODES,
+                "shared_effects_serialized": True,
+                "approval_nodes_serialized": True,
+                "checkpoint_order": "node-id",
+            },
+        }
+        write_json_atomic(run_path, self.authority.sign_receipt(receipt))
+        try:
+            authority_claims = {
+                node_id: self._node_authority(definition, node)[1]
+                for node_id, node in nodes.items()
+            }
+            while len(completed_nodes) < len(nodes):
+                control = self.run_control.read(run_id)
+                if control["state"] in {"pause_requested", "cancel_requested"}:
+                    raise _WorkflowLifecycleSignal(str(control["state"]))
+                ready = self._ready_node_ids(definition, completed_nodes)
+                if not ready:
+                    raise RuntimeError("workflow has no resumable ready node")
+                batch = self._select_ready_batch(ready, nodes, authority_claims)
+                prepared: dict[
+                    str, tuple[dict[str, object], dict[str, object] | None]
+                ] = {}
+                outcomes: dict[
+                    str, tuple[dict[str, object] | None, dict[str, object]]
+                ] = {}
+                for node_id in batch:
+                    node = nodes[node_id]
+                    try:
+                        node_inputs = self._node_inputs(
+                            definition, node, inputs, results
+                        )
+                    except _WorkflowBranchSkipped as skipped:
+                        outcomes[node_id] = (
+                            {},
+                            {
+                                "node_id": node.node_id,
+                                "kind": node.kind,
+                                "state": "skipped",
+                                "skip_reason": "incoming_condition_disabled",
+                                "disabled_required_ports": list(skipped.ports),
+                                "attempts": [],
+                                "approval_execution": {},
+                            },
+                        )
+                        continue
+                    approval_execution: dict[str, object] | None = None
+                    if node.approval_required or node.kind == "approval":
+                        approval_id = approvals.get(node.node_id)
+                        if not approval_id:
+                            raise PermissionError(
+                                f"workflow node approval missing: {node.node_id}"
+                            )
+                        approval_record, approval_sha256 = (
+                            self.authority.consume_approval(
+                                approval_id,
+                                subject_id=definition.workflow_id,
+                                revision_sha256=str(plan["revision_sha256"]),
+                                node_id=node.node_id,
+                                effects=node.effect_grant_ids,
+                                run_id=run_id,
+                            )
+                        )
+                        approval_execution = {
+                            "required": True,
+                            "host_consumed": True,
+                            "approved_by": approval_record.get("approved_by"),
+                            "approval_sha256": approval_sha256,
+                            "approval_id_sha256": hashlib.sha256(
+                                approval_id.encode("utf-8")
+                            ).hexdigest(),
+                        }
+                    prepared[node_id] = (node_inputs, approval_execution)
+                lifecycle_signals: list[_WorkflowLifecycleSignal] = []
+                worker_errors: list[tuple[str, Exception]] = []
+                execution_ids = sorted(prepared)
+                if len(execution_ids) == 1:
+                    node_id = execution_ids[0]
+                    try:
+                        outcomes[node_id] = self._execute_node(
+                            definition,
+                            nodes[node_id],
+                            prepared[node_id][0],
+                            run_id,
+                            prepared[node_id][1],
+                        )
+                    except _WorkflowLifecycleSignal as signal:
+                        lifecycle_signals.append(signal)
+                    except Exception as error:
+                        worker_errors.append((node_id, error))
+                elif execution_ids:
+                    with ThreadPoolExecutor(
+                        max_workers=min(self.MAX_PARALLEL_NODES, len(execution_ids)),
+                        thread_name_prefix=f"px-workflow-{run_id[:8]}",
+                    ) as pool:
+                        futures = {
+                            node_id: pool.submit(
+                                self._execute_node,
+                                definition,
+                                nodes[node_id],
+                                prepared[node_id][0],
+                                run_id,
+                                prepared[node_id][1],
+                            )
+                            for node_id in execution_ids
+                        }
+                        for node_id in sorted(futures):
+                            try:
+                                outcomes[node_id] = futures[node_id].result()
+                            except _WorkflowLifecycleSignal as signal:
+                                lifecycle_signals.append(signal)
+                            except Exception as error:
+                                worker_errors.append((node_id, error))
+                failed_closed: list[str] = []
+                for node_id in sorted(outcomes):
+                    output, node_receipt = outcomes[node_id]
+                    node = nodes[node_id]
+                    if output is None:
+                        if node.failure_policy == "continue":
+                            results[node_id] = {}
+                            node_receipt["state"] = "failed-continued"
+                        else:
+                            failed_closed.append(node_id)
+                    else:
+                        results[node_id] = output
+                    receipt_nodes[:] = [
+                        row
+                        for row in receipt_nodes
+                        if str(row.get("node_id", "")) != node_id
+                    ]
+                    receipt_nodes.append(node_receipt)
+                    completed_nodes.add(node_id)
+                next_ready = self._ready_node_ids(definition, completed_nodes)
+                self.run_control.heartbeat(
+                    run_id,
+                    actor=definition.owner,
+                    checkpoint=self._checkpoint_value(
+                        completed_nodes, results, receipt_nodes, next_ready
+                    ),
+                )
+                # A lifecycle request can arrive after the last node process
+                # returns but before its batch checkpoint is published.  Re-read
+                # the authoritative head so pause/cancel cannot be skipped by
+                # the success transition at the bottom of the loop.
+                control = self.run_control.read(run_id)
+                if control["state"] in {"pause_requested", "cancel_requested"}:
+                    raise _WorkflowLifecycleSignal(str(control["state"]))
+                if failed_closed:
+>                   raise RuntimeError(
+                        "workflow node failed: " + ", ".join(failed_closed)
+                    )
+E                   RuntimeError: workflow node failed: node:one
+
+runtime\workflow_studio.py:1837: RuntimeError
+
+During handling of the above exception, another exception occurred:
+
+tmp_path = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.tmp/resume10/owned/pacifyx-odkpxfxu/pytest-of-Ben/pytest-0/test_project_runtime_package_c0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000021A5422C3E0>
+
+    def test_project_runtime_package_cannot_shadow_owned_workflow_worker(tmp_path, monkeypatch):
+        root = tmp_path / "managed-project"
+        root.mkdir()
+        monkeypatch.setenv("PX_STUDIO_KEY_ROOT", str(tmp_path / "host-keys"))
+        hostile = root / "runtime"
+        hostile.mkdir()
+        marker = root / "untrusted-package-executed.txt"
+        (hostile / "__init__.py").write_text("from pathlib import Path\nPath(" + repr(str(marker)) + ").write_text('shadowed', encoding='utf-8')\n", encoding="utf-8")
+        (hostile / "workflow_worker.py").write_text("raise SystemExit(7)\n", encoding="utf-8")
+        definition, bindings, grants = fixture()
+        studio = WorkflowStudio(root)
+        studio.save_revision(definition)
+        studio.register_authority(bindings, grants, {bindings[0].binding_id: "increment", bindings[1].binding_id: "double"})
+        assert studio.validate_and_admit(definition)["runnable_state"] == "runnable"
+        approved = studio.issue_approval(definition, "node:two", approved_by="human:vscode-local-user")
+        try:
+            receipt = studio.execute(definition, {"node:one.value": 2}, {"node:two": approved}, approval=True)
+        except RuntimeError:
+>           assert not marker.exists(), "managed project code shadowed the owned engine before worker checks"
+E           AssertionError: managed project code shadowed the owned engine before worker checks
+E           assert not True
+E            +  where True = exists()
+E            +    where exists = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.tmp/resume10/owned/pacifyx-odkpxfxu/pytest-of-Ben/pytest-0/test_project_runtime_package_c0/managed-project/untrusted-package-executed.txt').exists
+
+tests\test_workflow_worker_import_custody.py:24: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_workflow_worker_import_custody.py::test_project_runtime_package_cannot_shadow_owned_workflow_worker
+1 failed in 1.40s
+

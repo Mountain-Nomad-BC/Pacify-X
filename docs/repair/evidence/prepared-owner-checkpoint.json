@@ -1,0 +1,56 @@
+{
+  "schema_version": "px.operational-gap-ledger-event/1.0",
+  "sequence": 36241,
+  "event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000036241",
+  "event_type": "work_checkpoint",
+  "timestamp": "2026-10-27T16:24:02.605463Z",
+  "actor": "codex",
+  "previous_event_sha256": "b30ca97d41f8ea89f4ccf9d28cefab53ef2414ca9051c36df0966d80b7fcdbe9",
+  "payload": {
+    "active_gap_id": "PX-OS-1067",
+    "evidence": [
+      {
+        "artifact_sha256": "abe0d19a21da353006f27ab7b2e3a8a2a010cbf0f8a7c0d21dc1aea671e62fc9",
+        "artifact_size": 88696,
+        "claim": "W1a implementation/verification; W1 overall partial; no certification.",
+        "reference": "runtime/workflow_studio.py"
+      },
+      {
+        "artifact_sha256": "acc3e5cb74a94f32d0aa301391cd26c25cd62c3c8fc5faddbee38c307c64f299",
+        "artifact_size": 50469,
+        "claim": "W1a implementation/verification; W1 overall partial; no certification.",
+        "reference": "runtime/studio_models.py"
+      },
+      {
+        "artifact_sha256": "daf0656a650ba84a8a13ede929b5f694e647610abfc9cdaf45b7c76c503e71d7",
+        "artifact_size": 5023,
+        "claim": "W1a implementation/verification; W1 overall partial; no certification.",
+        "reference": "tests/test_prepared_group_workflow_owner.py"
+      },
+      {
+        "artifact_sha256": "75e0576461e8dc96d17b9a286b9d57d7f825c8621465c9a0342399e30e955893",
+        "artifact_size": 7698,
+        "claim": "W1a implementation/verification; W1 overall partial; no certification.",
+        "reference": "docs/repair/WORKFLOW_APPROVAL_AND_REMOTE_INTEGRATION_2026-10-27.md"
+      },
+      {
+        "artifact_sha256": "6afdeb1217150d46ebfc0eccc1e5888ae57dce6e566720064635c6d1e802a162",
+        "artifact_size": 771,
+        "claim": "W1a implementation/verification; W1 overall partial; no certification.",
+        "reference": "docs/repair/evidence/resume10-owner-physical-paths.json"
+      },
+      {
+        "artifact_sha256": "dd04d16ec529e6f34b146bae4aada3c88eda70da1eb0ea0afcf7e45145f824ca",
+        "artifact_size": 773,
+        "claim": "W1a implementation/verification; W1 overall partial; no certification.",
+        "reference": "docs/repair/evidence/resume10-owner-final-section.json"
+      }
+    ],
+    "learned": "W1a implemented: bounded read-only prepared-group resolver, exact approved fail-closed declaration, current signed admission/authority identity checks and physical link denial.66 neighbors and13 final physical checks pass; required governed section phaseblocked. W1 overall partial pending W2 group adapter, worker, host-custody and effect settlement implementation; W2 dependency audit recorded in integration plan; W3/W4 open.",
+    "newly_discovered_gap_ids": [],
+    "next_action": "Run the single revision/generated-projection reconciliation, make every governed section current, then execute exactly one full profile, validation, package, install, installed-system operational test, and certification in registered order.",
+    "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000036240",
+    "unresolved_branch_gap_ids": []
+  },
+  "event_sha256": "818e0735bbf26ebf0add71aba30a98173a0e4f1605284329afe0c95c090ef9f6"
+}

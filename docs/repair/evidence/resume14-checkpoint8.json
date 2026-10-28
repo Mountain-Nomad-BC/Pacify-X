@@ -1,0 +1,34 @@
+{
+  "active_gap_id": "PX-OS-1067",
+  "evidence": [
+    {
+      "reference": "docs/repair/TREE_SCAN_AND_DECISION_2026-10-27.md",
+      "claim": "External tree scan report: both Music and Videos are full checkouts; three real finds (stricter semantic-entity contract, T.I.E. link hardening, four genuinely missing modules), one trap (external T.I.E. reads a different store), and no successor authority in either tree.",
+      "artifact_sha256": "6a2915b6d17e4bbc228636306169740a7b48012fecf57643af99c53fe2563032",
+      "artifact_size": 9094
+    },
+    {
+      "reference": "docs/repair/evidence/treescan-old-contract-qualifier.log",
+      "claim": "Pre-change contract ACCEPTED an identity with the qualifier omitted; the replacement refuses it, closing an unauditable-identity hole.",
+      "artifact_sha256": "feda4fe6fba4b2dd4c9bf44718384db4407f7343907d14fa64700612fa758b9e",
+      "artifact_size": 424
+    },
+    {
+      "reference": "docs/repair/evidence/treescan-tie-link-red.log",
+      "claim": "Before hardening, a symlinked experience log was read as genuine subject history (red). After adding reject_path_links it is reported corrupt_or_unavailable with no records (green).",
+      "artifact_sha256": "830628c8d4f6feaeecda66d132e33abbf3154d1e66c636a620354eeabe023eb3",
+      "artifact_size": 1907
+    },
+    {
+      "reference": "docs/repair/evidence/treescan-step12-neighbours.log",
+      "claim": "110 passed across tie fusion, usage memory, model-group preparation, entity contract, secure publish and contract length after both changes.",
+      "artifact_sha256": "63a840221dd73d2c89a8c02e2be9d24d7945035b6ed6d50e39579219c392c566",
+      "artifact_size": 581
+    }
+  ],
+  "learned": "External scan: Music and Videos are both full checkouts (Music nests one level deeper, which my first scan misread as absence). Three real finds acted on: the Videos semantic-entity contract requires qualifier and is stricter than mine (mine permitted an unauditable identity; now replaced, proved against the preserved pre-change copy); T.I.E. link rejection ported (red/green); four genuinely missing modules identified as portable. One trap avoided: the external fuse reads .engineering-bootstrap/studios revisions while our recorder writes orchestration/workflows/.../memory, so adopting it wholesale would make every fusion report corrupt_or_unavailable; also its binding requires version, which ours does not. Two of my own analysis errors were corrected mid-work: the Music-root scan path and my claim that a malformed qualifier was the divergence (it legitimately matches the pattern; the real divergence is a missing qualifier).",
+  "newly_discovered_gap_ids": [],
+  "next_action": "Run the single revision/generated-projection reconciliation, make every governed section current, then execute exactly one full profile, validation, package, install, installed-system operational test, and certification in registered order.",
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000036238",
+  "unresolved_branch_gap_ids": []
+}

@@ -1,0 +1,61 @@
+..........F............................................................. [ 91%]
+.......                                                                  [100%]
+================================== FAILURES ===================================
+___ test_workflow_declaration_uses_native_group_parser_and_stays_unadmitted ___
+
+tmp_path = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.tmp/resume10/owned/pacifyx-cat8iqlo/pytest-of-Ben/pytest-0/test_workflow_declaration_uses0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000216DFAA96E0>
+
+    def test_workflow_declaration_uses_native_group_parser_and_stays_unadmitted(tmp_path, monkeypatch):
+        from dataclasses import replace
+        from runtime.workflow_studio import WorkflowStudio
+        from tests.test_workflow_studio import fixture
+        monkeypatch.setenv("PX_STUDIO_KEY_ROOT", str(tmp_path / "keys"))
+        definition, bindings, grants = fixture()
+        node = replace(definition.nodes[0], approval_required=True, config=config())
+        definition = replace(definition, nodes=(node,), edges=())
+>       studio = WorkflowStudio(tmp_path)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_workflow_group_config.py:58: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+runtime\workflow_studio.py:321: in __init__
+    self.authority = StudioAuthorityStore(self.project_root)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <runtime.studio_authority.StudioAuthorityStore object at 0x00000216E10E2270>
+project_root = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.tmp/resume10/owned/pacifyx-cat8iqlo/pytest-of-Ben/pytest-0/test_workflow_declaration_uses0')
+
+    def __init__(self, project_root: Path) -> None:
+        self.project_root = project_root.resolve(strict=True)
+        self.root = (
+            self.project_root / ".engineering-bootstrap" / "studios" / "authority"
+        )
+        verify_safe_ancestors(self.project_root, self.root / "placeholder")
+        self.root.mkdir(parents=True, exist_ok=True)
+        verify_safe_ancestors(self.project_root, self.root / "placeholder")
+        identity_path = self.root / "project-identity.json"
+        if identity_path.is_file():
+            identity = json.loads(identity_path.read_text(encoding="utf-8"))
+            self.project_identity = str(identity.get("project_identity") or "")
+        else:
+            self.project_identity = f"px-project-{uuid4().hex}"
+            write_json_atomic(identity_path, {
+                "schema_version": "px.studio-project-identity/1.0",
+                "project_identity": self.project_identity,
+            })
+        if not self.project_identity.startswith("px-project-"):
+            raise ValueError("studio project identity is invalid")
+        key_root = Path(
+            studio_authority_locator_environment()["PX_STUDIO_KEY_ROOT"]
+        )
+        if key_root == self.project_root or self.project_root in key_root.parents:
+>           raise ValueError("Studio authority key root must remain outside the project")
+E           ValueError: Studio authority key root must remain outside the project
+
+runtime\studio_authority.py:160: ValueError
+=========================== short test summary info ===========================
+FAILED tests/test_workflow_group_config.py::test_workflow_declaration_uses_native_group_parser_and_stays_unadmitted
+1 failed, 78 passed in 17.90s
+

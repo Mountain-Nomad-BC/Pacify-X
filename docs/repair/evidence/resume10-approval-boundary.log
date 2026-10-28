@@ -1,0 +1,57 @@
+........F....                                                            [100%]
+================================== FAILURES ===================================
+___________ test_signed_approval_runs_real_nodes_and_cannot_replay ____________
+
+isolated = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.tmp/resume10/owned/pacifyx-ajs731fs/pytest-of-Ben/pytest-0/test_signed_approval_runs_real0/project')
+
+    def test_signed_approval_runs_real_nodes_and_cannot_replay(isolated):
+        definition, bindings, grants = fixture()
+        studio = WorkflowStudio(isolated)
+        studio.save_revision(definition)
+        studio.register_authority(bindings, grants, {bindings[0].binding_id: "increment", bindings[1].binding_id: "double"})
+        studio.validate_and_admit(definition)
+        payload = {"definition": asdict(definition), "node_id": "node:two"}
+        proof = approval_proof(isolated, "workflow", "approve", payload)
+        request = {**payload, "approval_capability": proof}
+>       result = studio_operation(isolated, "workflow", "approve", request)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_workflow_approval_boundary.py:37: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+runtime\studio_api.py:924: in studio_operation
+    value = _request(value)
+            ^^^^^^^^^^^^^^^
+runtime\studio_api.py:400: in _request
+    validate_json_value(value, max_depth=MAX_REQUEST_DEPTH, max_nodes=MAX_REQUEST_NODES)
+runtime\json_io.py:73: in validate_json_value
+    visit(value, 1)
+runtime\json_io.py:66: in visit
+    visit(child, depth + 1)
+runtime\json_io.py:66: in visit
+    visit(child, depth + 1)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+item = ({'node_id': 'node:one', 'executor_binding_id': 'binding:first', 'inputs': ({'name': 'value', 'data_type': 'integer', ...ype': 'integer', 'required': True},), 'outputs': ({'name': 'result', 'data_type': 'integer', 'required': True},), ...})
+depth = 3
+
+    def visit(item: Any, depth: int) -> None:
+        nonlocal nodes
+        nodes += 1
+        if nodes > max_nodes:
+            raise ValueError("JSON max_nodes exceeded")
+        kind = type(item)
+        if kind in (str, int, bool, type(None)):
+            return
+        if kind is float:
+            if not math.isfinite(item):
+                raise ValueError("non-finite JSON number")
+            return
+        if kind not in (dict, list):
+>           raise ValueError(f"non-JSON value type: {kind.__name__}")
+E           ValueError: non-JSON value type: tuple
+
+runtime\json_io.py:53: ValueError
+=========================== short test summary info ===========================
+FAILED tests/test_workflow_approval_boundary.py::test_signed_approval_runs_real_nodes_and_cannot_replay
+1 failed, 12 passed in 1.85s
+

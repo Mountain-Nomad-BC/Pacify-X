@@ -1,0 +1,157 @@
+{
+  "schema_version": "px.repair-dependency-review/1.0",
+  "generated_by": "docs/repair/evidence/resume14-dependency-review.py",
+  "source_adjudication": "docs/repair/evidence/resume10-contract-adjudication.json",
+  "record_count": 12,
+  "summary": {
+    "TARGET_PRESENT": 1,
+    "REFERENCE_ONLY_PORT_CANDIDATE": 2,
+    "REFERENCE_ONLY_OWNER_ABSENT": 9
+  },
+  "records": [
+    {
+      "contract": "contracts/agent_handoff_packet.schema.json",
+      "contract_here": true,
+      "contract_in_reference": true,
+      "owner": "runtime/agent_handoff.py",
+      "owner_here": true,
+      "missing_tests": [],
+      "importers": [
+        "tests/test_agent_governed_integration.py",
+        "tests/test_agent_handoff.py"
+      ],
+      "unresolved_imports": [],
+      "verdict": "TARGET_PRESENT"
+    },
+    {
+      "contract": "contracts/models/execution-generation-vector.schema.json",
+      "contract_here": false,
+      "contract_in_reference": true,
+      "owner": "runtime/context_generation.py",
+      "owner_here": true,
+      "missing_tests": [
+        "tests/test_refines_generation_lineage.py"
+      ],
+      "importers": [
+        "tests/test_context_generation.py",
+        "tests/test_model_group_preparation.py",
+        "tests/test_projection_gate.py"
+      ],
+      "unresolved_imports": [],
+      "verdict": "REFERENCE_ONLY_PORT_CANDIDATE"
+    },
+    {
+      "contract": "contracts/models/governed-exception.schema.json",
+      "contract_here": false,
+      "contract_in_reference": true,
+      "owner": "runtime/governed_exception.py",
+      "owner_here": false,
+      "missing_tests": [
+        "tests/test_refines_mesh_integration.py"
+      ],
+      "verdict": "REFERENCE_ONLY_OWNER_ABSENT"
+    },
+    {
+      "contract": "contracts/models/model-router-preset-format.schema.json",
+      "contract_here": false,
+      "contract_in_reference": true,
+      "owner": "runtime/model_router_preset.py",
+      "owner_here": false,
+      "missing_tests": [],
+      "verdict": "REFERENCE_ONLY_OWNER_ABSENT"
+    },
+    {
+      "contract": "contracts/models/model-router-preset.schema.json",
+      "contract_here": false,
+      "contract_in_reference": true,
+      "owner": "runtime/model_router_preset.py",
+      "owner_here": false,
+      "missing_tests": [],
+      "verdict": "REFERENCE_ONLY_OWNER_ABSENT"
+    },
+    {
+      "contract": "contracts/models/work-disposition.schema.json",
+      "contract_here": false,
+      "contract_in_reference": true,
+      "owner": "runtime/work_disposition.py",
+      "owner_here": false,
+      "missing_tests": [
+        "tests/test_refines_mesh_integration.py"
+      ],
+      "verdict": "REFERENCE_ONLY_OWNER_ABSENT"
+    },
+    {
+      "contract": "contracts/semantic/compact-address-record.schema.json",
+      "contract_here": false,
+      "contract_in_reference": true,
+      "owner": "runtime/compact_address.py",
+      "owner_here": false,
+      "missing_tests": [
+        "tests/test_compact_address.py",
+        "tests/test_librarian_semantic_map.py"
+      ],
+      "verdict": "REFERENCE_ONLY_OWNER_ABSENT"
+    },
+    {
+      "contract": "contracts/semantic/locator-record.schema.json",
+      "contract_here": false,
+      "contract_in_reference": true,
+      "owner": "runtime/semantic_locator.py",
+      "owner_here": false,
+      "missing_tests": [
+        "tests/test_semantic_locator.py",
+        "tests/test_librarian_semantic_map.py"
+      ],
+      "verdict": "REFERENCE_ONLY_OWNER_ABSENT"
+    },
+    {
+      "contract": "contracts/semantic/relation-record.schema.json",
+      "contract_here": false,
+      "contract_in_reference": true,
+      "owner": "runtime/semantic_locator.py",
+      "owner_here": false,
+      "missing_tests": [
+        "tests/test_semantic_locator.py",
+        "tests/test_librarian_semantic_map.py"
+      ],
+      "verdict": "REFERENCE_ONLY_OWNER_ABSENT"
+    },
+    {
+      "contract": "contracts/semantic/semantic-entity.schema.json",
+      "contract_here": false,
+      "contract_in_reference": true,
+      "owner": "runtime/semantic_entity.py",
+      "owner_here": true,
+      "missing_tests": [
+        "tests/test_semantic_entity.py",
+        "tests/test_librarian_semantic_map.py"
+      ],
+      "importers": [
+        "tests/test_secure_publish.py"
+      ],
+      "unresolved_imports": [],
+      "verdict": "REFERENCE_ONLY_PORT_CANDIDATE"
+    },
+    {
+      "contract": "contracts/semantic/source-census-binding.schema.json",
+      "contract_here": false,
+      "contract_in_reference": true,
+      "owner": "runtime/semantic_surfaces.py",
+      "owner_here": false,
+      "missing_tests": [
+        "tests/test_semantic_surfaces.py"
+      ],
+      "verdict": "REFERENCE_ONLY_OWNER_ABSENT"
+    },
+    {
+      "contract": "contracts/workflow-model-group-node-config.schema.json",
+      "contract_here": false,
+      "contract_in_reference": true,
+      "owner": "runtime/workflow_group_config.py",
+      "owner_here": false,
+      "missing_tests": [],
+      "verdict": "REFERENCE_ONLY_OWNER_ABSENT"
+    }
+  ],
+  "note": "Read-only review. A REFERENCE_ONLY verdict is not a port decision: porting requires the owner's behaviour, callers and tests to be reconciled against this checkout, and unreachable owners add no operating behaviour."
+}

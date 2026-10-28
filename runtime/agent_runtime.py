@@ -911,6 +911,7 @@ class AgentRuntimeController:
         )
         if not handoffs_resolved:
             blockers.append("handoff_agents_not_runtime_resolved")
+        resolved_attachment = task_plan.get("model_attachment") if task_plan else None
         if governed:
             from .execution_placement import _hash
             from .task_execution_plan import validate_task_execution_plan
@@ -922,6 +923,14 @@ class AgentRuntimeController:
             )
             if not plan_valid:
                 blockers.append("task_plan_not_runtime_resolved")
+            member = None
+            if plan_valid:
+                from .model_group_preparation import member_attachment
+                try:
+                    resolved_attachment, member = member_attachment(task_plan, (placement or {}).get("model_id"))
+                except (ValueError, TypeError, KeyError):
+                    blockers.append("member_preparation_not_runtime_resolved")
+                    resolved_attachment = None
             placement_unsigned = {
                 key: value
                 for key, value in (placement or {}).items()
@@ -932,9 +941,10 @@ class AgentRuntimeController:
                 and placement
                 and placement.get("placement_sha256") == _hash(placement_unsigned)
                 and placement.get("task_plan_sha256") == task_plan.get("plan_sha256")
-                and isinstance(task_plan.get("model_attachment"), Mapping)
+                and isinstance(resolved_attachment, Mapping)
                 and placement.get("model_attachment_sha256")
-                == task_plan["model_attachment"].get("attachment_sha256")
+                == resolved_attachment.get("attachment_sha256")
+                and (member is None or placement.get("context_sha256") == member["context_sha256"])
             )
             if not placement_valid:
                 blockers.append("placement_not_runtime_resolved")
@@ -962,8 +972,8 @@ class AgentRuntimeController:
             ),
             "task_plan_sha256": task_plan.get("plan_sha256") if task_plan else None,
             "model_attachment_sha256": (
-                task_plan.get("model_attachment", {}).get("attachment_sha256")
-                if task_plan and isinstance(task_plan.get("model_attachment"), Mapping)
+                resolved_attachment.get("attachment_sha256")
+                if isinstance(resolved_attachment, Mapping)
                 else None
             ),
             "placement_sha256": placement.get("placement_sha256") if placement else None,
@@ -990,6 +1000,7 @@ class AgentRuntimeController:
         memory_records=(),
         handoff_inputs: Sequence[Mapping[str, object]] = (),
         memory_now_utc=None,
+        current_context_generation=None,
     ) -> dict[str, object]:
         """Resolve broker memory and acknowledged handoffs without effects."""
         from .agent_handoff import consume_handoff
@@ -997,6 +1008,10 @@ class AgentRuntimeController:
 
         _record_path, admission, live_hashes = self._admitted_context(spec)
         errors: list[str] = []
+        try:
+            _validate_execution_generation(task_plan, current_context_generation)
+        except (ValueError, TypeError, KeyError):
+            errors.append("execution_generation_not_current")
         memory_context = None
         if spec.memory_binding_ids:
             try:
@@ -1062,10 +1077,22 @@ class AgentRuntimeController:
         memory_records=(),
         handoff_inputs: Sequence[Mapping[str, object]] = (),
         memory_now_utc=None,
+        current_context_generation=None,
+        member_executor=None,
+        execution_context_parent=None,
+        provider_custody_required=False,
     ) -> dict[str, object]:
         """Run exact plan inputs only after Studio durable admission."""
         if not approval:
             raise PermissionError("governed agent execution requires explicit host approval")
+        if execution_context_parent is not None:
+            from .execution_context import ExecutionContext
+            if type(execution_context_parent) is not ExecutionContext or execution_context_parent.project_id != spec.project_id:
+                raise ValueError("parent execution context must belong to this canonical project")
+            parent_state = self.run_control.read(execution_context_parent.root_execution_id)
+            if parent_state["state"] != "running":
+                raise ValueError("parent execution no longer admits child work")
+        _validate_execution_generation(task_plan, current_context_generation)
         record_path, admission, _live_hashes = self._admitted_context(spec)
         preview = self.preview_governed(
             spec,
@@ -1075,6 +1102,7 @@ class AgentRuntimeController:
             memory_records=memory_records,
             handoff_inputs=handoff_inputs,
             memory_now_utc=memory_now_utc,
+            current_context_generation=current_context_generation,
         )
         if preview["eligible"] is not True:
             raise PermissionError(
@@ -1100,12 +1128,13 @@ class AgentRuntimeController:
             request_sha256=request_sha,
             checkpoint={
                 "phase": "governed-plan-authorized",
+                "execution_epoch": 1,
                 "task_plan_sha256": task_plan["plan_sha256"],
                 "placement_sha256": placement["placement_sha256"],
             },
         )
         run_id = str(state["run_id"])
-        self.run_control.transition(
+        running = self.run_control.transition(
             run_id,
             "running",
             actor=spec.owner,
@@ -1114,6 +1143,15 @@ class AgentRuntimeController:
             operation="agent.governed-plan.start",
         )
         try:
+            execution_context = _plan_execution_context(task_plan, run_id=run_id, actor_id=spec.owner,
+                revision=int(running["sequence"]), epoch=int(running["checkpoint"]["execution_epoch"]),
+                parent=execution_context_parent, provider_id=placement.get("provider_id") if placement.get("selected_backend") == "remote_provider" else None)
+            signal = DurableControlSignal(self.run_control, run_id)
+            parent_signal = DurableControlSignal(self.run_control, execution_context.root_execution_id) if execution_context.parent_execution_id else None
+            def control_requested():
+                if self.run_control.peek(run_id)["state"] != "running": return True
+                if parent_signal is not None and self.run_control.peek(execution_context.root_execution_id)["state"] != "running": return True
+                return signal.is_set() or (parent_signal is not None and parent_signal.is_set())
             value, outcome = execute_agent_plan(
                 self.project_root,
                 task_plan,
@@ -1121,34 +1159,49 @@ class AgentRuntimeController:
                 run_id=run_id,
                 gpu_fn=gpu_fn,
                 cpu_fn=cpu_fn,
+                current_context_generation=current_context_generation,
+                member_executor=member_executor,
+                provider_custody_required=provider_custody_required,
+                execution_context=execution_context,
+                cancellation_token=control_requested,
             )
         except Exception as error:
             current = self.run_control.read(run_id)
+            if execution_context_parent is not None and current["state"] == "running":
+                inherited = self.run_control.read(execution_context_parent.root_execution_id)["state"]
+                request = "cancel_requested" if inherited in {"cancel_requested", "cancelled"} else "pause_requested" if inherited in {"pause_requested", "paused"} else None
+                if request is not None:
+                    current = self.run_control.transition(run_id, request, actor=spec.owner, approved=True,
+                        checkpoint={**dict(current["checkpoint"]), "phase": "inherited-" + request}, operation="agent.governed-plan.inherited-control")
+            terminal = "cancelled" if current["state"] == "cancel_requested" else "paused" if current["state"] == "pause_requested" else "failed"
+            if current["state"] in TERMINAL_STATES:
+                raise
             self.run_control.transition(
                 run_id,
-                "failed",
+                terminal,
                 actor=spec.owner,
                 approved=True,
-                checkpoint={**dict(current["checkpoint"]), "phase": "failed"},
+                checkpoint={**dict(current["checkpoint"]), "phase": terminal},
                 failure={"code": type(error).__name__, "message": str(error)[:500]},
-                operation="agent.governed-plan.failed",
+                operation="agent.governed-plan." + terminal,
             )
             raise
         current = self.run_control.read(run_id)
+        target = {"cancel_requested": "cancelled", "pause_requested": "paused"}.get(str(current["state"]), "succeeded")
         final = self.run_control.transition(
             run_id,
-            "succeeded",
+            target,
             actor=spec.owner,
             approved=True,
             checkpoint={
                 **dict(current["checkpoint"]),
-                "phase": "succeeded",
+                "phase": target,
                 "outcome_sha256": outcome["outcome_sha256"],
-                "capacity_release_sha256": outcome["capacity_release"][
-                    "release_sha256"
-                ],
+                **({"capacity_release_sha256": outcome["capacity_release"]["release_sha256"]}
+                   if "capacity_release" in outcome else
+                   {"remote_provider_evidence_sha256": digest(outcome["remote_provider_execution"])}),
             },
-            operation="agent.governed-plan.succeeded",
+            operation="agent.governed-plan." + target,
         )
         receipt = {
             "schema_version": "px.agent-governed-execution-receipt/1.0",
@@ -1166,11 +1219,474 @@ class AgentRuntimeController:
             "result_sha256": digest(value),
             "control_sequence": final["sequence"],
             "effects_studio_admitted": True,
+            "execution_context": execution_context.as_dict(),
             "host_authority_retained": True,
         }
         signed = self.authority.sign_receipt(receipt)
-        write_json_atomic(record_path.parent / "runs" / f"{run_id}.json", signed)
+        receipt_path = record_path.parent / "runs" / f"{run_id}.json"
+        write_json_atomic(receipt_path, signed)
         return signed
+
+    def execute_governed_group(
+        self, spec, *, task_plan, placements, approval, member_executor,
+        generation_observer, evidence_resolver, accepted_producers,
+        attestation_provider, memory_query_plan=None, memory_records=(),
+        handoff_inputs=(), memory_now_utc=None, containment=None,
+        containment_required: bool = False,
+        containment_identities: Mapping[str, Mapping[str, object]] | None = None,
+        sandbox_policy=None,
+        worker_custody_resource_id: str | None = None,
+        worker_custody_manager=None,
+        worker_custody_execution_id: str | None = None,
+        workflow_effect_receipt=None,
+    ):
+        """Execute declared members in bounded physical waves through this owner.
+
+        Each invocation uses the existing Studio/placement/run-control path.
+        Signed external assessment is required for independent convergence;
+        unavailable containment never becomes an invented acknowledgment.
+
+        When ``containment`` is supplied (the canonical Gremlin Nanny), each member
+        must be linked to an already protected parent through supervisor-verified
+        Job membership before its governed plan runs. Caller-supplied PID/start
+        identity values are not accepted as custody proof. ``containment_identities``
+        supplies the parent resource identity and candidate child PID for that
+        supervisor verification.
+        """
+        from .remote_provider_placement import require_complete_group_provider_custody
+        # Custody is proven against the adapter resolver this executor was built
+        # with, so the check matches the provider that will actually run.
+        require_complete_group_provider_custody(
+            task_plan, project_root=self.project_root,
+            adapter_for=getattr(member_executor, "adapter_for", None))
+        workflow_task = None
+        workflow_bindings = ()
+        def verify_workflow_effect(remote_outcomes=None):
+            if workflow_effect_receipt is None:
+                return None, ()
+            from .workflow_worker import _verify_group_workflow_effect_receipt
+            return _verify_group_workflow_effect_receipt(self.project_root, workflow_effect_receipt,
+                task_plan=task_plan, spec=spec, placements=placements, remote_outcomes=remote_outcomes)
+        workflow_task, workflow_bindings = verify_workflow_effect()
+        if workflow_task is not None:
+            native_member_executor = member_executor
+            def member_executor(*args, **kwargs):
+                verify_workflow_effect()
+                member_cancelled = kwargs.get("cancellation_token")
+                def workflow_or_member_cancelled():
+                    if member_cancelled is not None and member_cancelled():
+                        return True
+                    try:
+                        verify_workflow_effect()
+                    except Exception:
+                        return True
+                    return False
+                kwargs["cancellation_token"] = workflow_or_member_cancelled
+                return native_member_executor(*args, **kwargs)
+        from .task_execution_plan import task_execution_plan_from_dict
+        from .model_convergence import converge_committed_group
+        from .model_group_preparation import member_attachment
+        from .resource_lifecycle import RunState
+        if worker_custody_resource_id is not None:
+            from .resource_lifecycle import ResourceManager
+            from .gremlin.enrollment import ContainmentRequired
+            if (type(worker_custody_resource_id) is not str or not worker_custody_resource_id.strip()
+                    or type(worker_custody_manager) is not ResourceManager or containment is None
+                    or type(worker_custody_execution_id) is not str):
+                raise ContainmentRequired("worker custody requires its live supervisor manager and protected execution binding")
+            custody = worker_custody_manager.verify_owned_job(worker_custody_resource_id)
+            protected = containment.registry.get(worker_custody_execution_id)
+            if (protected is None or protected.identity.pid != custody.member_pid
+                    or protected.identity.process_start_identity != custody.member_process_start_identity
+                    or protected.identity.job_object_id != custody.job_object_id
+                    or not containment.containment_proof(worker_custody_execution_id).proven):
+                raise ContainmentRequired("worker custody differs from its protected supervisor execution")
+        # Isolated Agent Sandbox: when the mode is ON, configure the canonical
+        # containment instance (never a second monitor) and record the isolation
+        # state in run provenance so logs identify the execution mode.
+        if sandbox_policy is not None:
+            from .isolated_sandbox import SandboxPolicy, sandbox_policy_from_dict
+            if type(sandbox_policy) is not SandboxPolicy:
+                raise TypeError("canonical typed sandbox policy required")
+            sandbox_policy = sandbox_policy_from_dict(sandbox_policy.as_dict())
+            sandbox_active = sandbox_policy.active
+            if sandbox_active and containment is None:
+                from .gremlin.enrollment import ContainmentRequired
+                raise ContainmentRequired(
+                    "sandbox mode is active but no canonical Gremlin Nanny is configured"
+                )
+            if containment is not None:
+                containment.apply_sandbox_policy(sandbox_policy)
+            sandbox_required = sandbox_active
+        else:
+            sandbox_required = False
+        if containment_required and containment is None:
+            from .gremlin.enrollment import ContainmentRequired
+            raise ContainmentRequired(
+                "governed group execution requires a canonical Gremlin Nanny"
+            )
+        plan = task_execution_plan_from_dict(task_plan)
+        if plan.model_execution_group is None or plan.model_group_preparation is None:
+            raise ValueError("group execution requires canonical prepared members")
+        if not approval or not callable(member_executor) or not callable(generation_observer):
+            raise PermissionError("group requires host approval, member executor and current generation observer")
+        group = plan.model_execution_group
+        if attestation_provider is not None and not callable(attestation_provider):
+            raise TypeError("attestation_provider must be callable or absent")
+        if type(placements) is not dict or set(placements) != set(group.model_ids):
+            raise ValueError("exact member placement denominator required")
+        _, admission, _ = self._admitted_context(spec)
+        root_state = self.run_control.create(kind="agent", subject_id=spec.agent_id,
+            version=spec.version, owner=spec.owner, revision_sha256=str(admission["agent_revision_sha256"]),
+            request_sha256=digest({"plan": plan.plan_sha256, "group": group.group_sha256, "placements": placements}),
+            checkpoint={"phase": "governed-group-authorized", "execution_epoch": 1, "task_plan_sha256": plan.plan_sha256})
+        group_run_id = str(root_state["run_id"])
+        root_state = self.run_control.transition(group_run_id, "running", actor=spec.owner, approved=True,
+            checkpoint={**dict(root_state["checkpoint"]), "phase": "governed-group-running"}, operation="agent.governed-group.start")
+        artifacts = dict.fromkeys(group.model_ids)
+        attestations = dict.fromkeys(group.model_ids)
+        containment_proofs: dict[str, object] = {}
+        receipts, failures = {}, {}
+        released: list[str] = []
+        assessment: dict[str, object] | None = None
+        terminal = "running"
+        root_context = None
+
+        def _release_member_capacity(member_run_id: str, *, state, reason: str) -> None:
+            """End member capacity exactly once, tolerating an already-ended run."""
+            if member_run_id in released:
+                return
+            try:
+                self.manager.mark_run_ended(member_run_id, state, retain_reason=reason)
+            except Exception as error:
+                raise RuntimeError("member capacity reconciliation failed") from error
+            released.append(member_run_id)
+
+        def _propagate_control(member_run_id: str) -> str | None:
+            """Adopt an externally terminal member state onto the group root.
+
+            The propagation decision is made by the canonical cancellation-scope
+            owner, so a member's terminal state resolves to the exact control the
+            whole scope must adopt rather than an ad-hoc local mapping.
+            """
+            try:
+                member_state = str(self.run_control.read(member_run_id)["state"])
+            except Exception:
+                return None
+            try:
+                current_root = self.run_control.read(group_run_id)
+            except Exception:
+                return None
+            if current_root["state"] != "running":
+                return None
+            try:
+                from .cancellation_scope import build_scope, resolve_control, CancellationScopeError
+                scope = build_scope("group:" + group_run_id, plan.project_id, group_run_id,
+                                    [member_run_id])
+                resolution = resolve_control(scope, {group_run_id: "running", member_run_id: member_state})
+                target = resolution["adopt"].get(group_run_id)
+            except (ValueError, CancellationScopeError):
+                # Fall back to the local mapping only when the scope owner cannot
+                # classify the member state; never silently ignore a terminal state.
+                target = ("cancelled" if member_state in {"cancelled", "cancel_requested", "interrupted"}
+                          else "paused" if member_state in {"paused", "pause_requested"}
+                          else "failed" if member_state == "failed" else None)
+            if target is None:
+                return None
+            self.run_control.transition(group_run_id, target, actor=spec.owner, approved=True,
+                checkpoint={**dict(current_root["checkpoint"]), "phase": "member-terminal-" + target},
+                operation="agent.governed-group.member-terminal")
+            return target
+
+        try:
+            root_context = _plan_execution_context(task_plan, run_id=group_run_id, actor_id=spec.owner,
+                revision=int(root_state["sequence"]), epoch=1)
+            halted = False
+            for model in group.model_ids:
+                if halted:
+                    failures[model] = {"state": "not_admitted", "reason": "group generation drift halted remaining members"}
+                    continue
+                try:
+                    current_root = self.run_control.read(group_run_id)
+                    if current_root["state"] != "running":
+                        raise ValueError("group control no longer admits execution: " + str(current_root["state"]))
+                    observed = generation_observer()
+                    _validate_execution_generation(task_plan, observed)
+                except Exception as error:
+                    failures[model] = {"state": "not_admitted", "reason": str(error)[:512]}
+                    halted = True
+                    continue
+                member_receipt = None
+                member_intent_key = f"group-member:{plan.plan_sha256}:{group.group_sha256}:{model}"
+                member_ledger = None
+                member_intent_active = False
+                try:
+                    verify_workflow_effect()
+                    member_attachment(task_plan, model)
+                    if placements[model].get("model_id") != model:
+                        raise ValueError("placement member differs from declared member")
+                    # Replay fence: never re-run a member effect whose intent is
+                    # already committed or in flight. A committed member's output
+                    # is durable, so the fence refuses a blind retry.
+                    from .effect_intent import EffectIntentLedger
+                    ledger = EffectIntentLedger(self.project_root)
+                    member_ledger = ledger
+                    disposition = ledger.fence(member_intent_key)["disposition"]
+                    if disposition == "committed":
+                        raise ValueError("member effect already committed; blind retry refused")
+                    if disposition == "in_flight":
+                        raise ValueError("member effect already in flight; concurrent retry refused")
+                    ledger.intend(idempotency_key=member_intent_key, execution_id=group_run_id,
+                                  effect="execute", scopes=["runtime"])
+                    member_intent_active = True
+                    # Containment-before-release: enroll the member under Gremlin and
+                    # require a verified containment proof before its governed plan
+                    # runs. The group owner drives enrollment; the member never does.
+                    member_containment_proof = None
+                    if containment is not None or containment_required or sandbox_required:
+                        from .gremlin.enrollment import (
+                            ContainmentRequired,
+                            enroll_supervised_child,
+                            require_containment_proof,
+                        )
+                        identity_spec = (containment_identities or {}).get(model)
+                        requested_execution_id = (
+                            identity_spec.get("execution_id") if identity_spec is not None else None
+                        )
+                        member_execution_id = (
+                            requested_execution_id
+                            if type(requested_execution_id) is str
+                            and requested_execution_id.strip()
+                            else f"member:{group_run_id}:{model}"
+                        )
+                        if containment is None:
+                            if containment_required:
+                                raise ContainmentRequired(
+                                    "containment is required but no Gremlin Nanny is configured"
+                                )
+                        elif identity_spec is None:
+                            if containment_required:
+                                if worker_custody_resource_id is None:
+                                    raise ContainmentRequired(
+                                        "containment is required but no process identity was supplied for member " + model
+                                    )
+                                # Members execute in-process inside the already
+                                # protected worker. Their containment is the
+                                # worker's own verified proof; no fabricated
+                                # child identity may be substituted for it.
+                                member_execution_id = worker_custody_execution_id
+                                member_containment_proof = containment.containment_proof(
+                                    worker_custody_execution_id)
+                                if not member_containment_proof.proven:
+                                    raise ContainmentRequired(
+                                        "worker custody proof is not established for member " + model
+                                    )
+                        else:
+                            parent_resource_id = identity_spec.get("parent_resource_id")
+                            if type(parent_resource_id) is not str or not parent_resource_id.strip():
+                                raise ContainmentRequired(
+                                    "verified child containment requires the parent's supervisor resource identity"
+                                )
+                            if (worker_custody_resource_id is not None
+                                    and parent_resource_id != worker_custody_resource_id):
+                                raise ContainmentRequired("member parent differs from the verified host worker custody")
+                            child_pid = identity_spec.get("pid")
+                            if type(child_pid) is not int or child_pid <= 0:
+                                raise ContainmentRequired(
+                                    "verified child containment requires a positive candidate PID"
+                                )
+                            supplied_agent_id = identity_spec.get("agent_id")
+                            member_agent_id = (
+                                supplied_agent_id
+                                if type(supplied_agent_id) is str and supplied_agent_id.strip()
+                                else spec.agent_id
+                            )
+                            supplied_profile = identity_spec.get("policy_profile")
+                            member_policy_profile = (
+                                supplied_profile
+                                if type(supplied_profile) is str and supplied_profile.strip()
+                                else "gn-redteam-strict"
+                            )
+                            supplied_runtime_id = identity_spec.get("runtime_id")
+                            member_runtime_id = (
+                                supplied_runtime_id
+                                if type(supplied_runtime_id) is str and supplied_runtime_id.strip()
+                                else None
+                            )
+                            binding = enroll_supervised_child(
+                                containment,
+                                worker_custody_manager if worker_custody_resource_id is not None else self.manager,
+                                parent_execution_id=worker_custody_execution_id if worker_custody_resource_id is not None else group_run_id,
+                                parent_resource_id=parent_resource_id,
+                                child_execution_id=member_execution_id,
+                                child_pid=child_pid,
+                                agent_id=member_agent_id,
+                                policy_profile=member_policy_profile,
+                                model_id=model,
+                                runtime_id=member_runtime_id,
+                                orchestration_id=group_run_id,
+                            )
+                            member_containment_proof = binding.containment_proof
+                        if containment is not None and not containment_required and member_containment_proof is None:
+                            # Containment is available but not required: record the
+                            # proof honestly (it may still be absent).
+                            member_containment_proof = require_containment_proof(
+                                containment,
+                                execution_id=member_execution_id,
+                                required=False,
+                            )
+                    try:
+                        member_receipt = self.execute_governed_plan(spec, task_plan=task_plan,
+                            placement=placements[model], approval=approval, gpu_fn=None, cpu_fn=None,
+                            member_executor=member_executor, current_context_generation=observed,
+                            execution_context_parent=root_context,
+                            provider_custody_required=workflow_task is not None,
+                            memory_query_plan=memory_query_plan, memory_records=memory_records,
+                            handoff_inputs=handoff_inputs, memory_now_utc=memory_now_utc)
+                    except Exception:
+                        ledger.fail(idempotency_key=member_intent_key, execution_id=group_run_id,
+                                    failure_type="member-execution-failed")
+                        member_intent_active = False
+                        raise
+                    ledger.commit(idempotency_key=member_intent_key, execution_id=group_run_id,
+                                  result_sha256=member_receipt["outcome"]["outcome_sha256"])
+                    member_intent_active = False
+                    receipts[model] = member_receipt
+                    artifacts[model] = member_receipt["outcome"]["branch_artifact"]
+                    try:
+                        _validate_execution_generation(task_plan, generation_observer())
+                    except Exception as drift:
+                        halted = True
+                        raise ValueError("group generation drift after member execution") from drift
+                    if member_containment_proof is not None:
+                        containment_proofs[model] = member_containment_proof.as_dict()
+                    _release_member_capacity(member_receipt["run_id"], state=RunState.COMPLETED,
+                        reason="committed model evidence retained for explicit retention review")
+                    if attestation_provider is not None:
+                        attestations[model] = attestation_provider(model, artifacts[model])
+                    # A member may be externally terminal even on a nominal
+                    # return (cancel/pause observed during its own execution).
+                    if _propagate_control(member_receipt["run_id"]) is not None:
+                        halted = True
+                except Exception as error:
+                    if member_intent_active and member_ledger is not None:
+                        try:
+                            member_ledger.fail(
+                                idempotency_key=member_intent_key,
+                                execution_id=group_run_id,
+                                failure_type=type(error).__name__,
+                            )
+                            member_intent_active = False
+                        except Exception as settlement_error:
+                            raise RuntimeError(
+                                "failed to settle the group-member effect intent"
+                            ) from settlement_error
+                    failures[model] = {"state": "failed", "reason": str(error)[:512],
+                                       "failure_type": type(error).__name__}
+                    if member_receipt is not None:
+                        _release_member_capacity(member_receipt["run_id"], state=RunState.FAILED,
+                            reason="member failed after governed plan admission")
+                        if _propagate_control(member_receipt["run_id"]) is not None:
+                            halted = True
+            try:
+                assessment = converge_committed_group(self.project_root, plan, artifacts, attestations,
+                    resolver=evidence_resolver, accepted_producers=accepted_producers, actor_id=spec.owner,
+                    containment_proofs=containment_proofs or None)
+            except Exception as error:
+                current = self.run_control.read(group_run_id)
+                if current["state"] in {"running", "cancel_requested", "pause_requested"}:
+                    target = {"cancel_requested": "cancelled", "pause_requested": "paused"}.get(current["state"], "failed")
+                    self.run_control.transition(group_run_id, target, actor=spec.owner, approved=True,
+                        checkpoint={**dict(current["checkpoint"]), "phase": "group-assessment-failed"},
+                        failure={"code": type(error).__name__, "message": str(error)[:500]}, operation="agent.governed-group.failed")
+                raise
+            current = self.run_control.read(group_run_id)
+            terminal = str(current["state"])
+            if terminal in {"running", "cancel_requested", "pause_requested"}:
+                terminal = "cancelled" if terminal == "cancel_requested" else "paused" if terminal == "pause_requested" else "failed" if failures or assessment["convergence"]["status"] != "PASS" else "succeeded"
+                self.run_control.transition(group_run_id, terminal, actor=spec.owner, approved=True,
+                    checkpoint={**dict(current["checkpoint"]), "phase": "governed-group-" + terminal}, operation="agent.governed-group.finish")
+        except Exception as error:
+            # A failure before or after context construction must still leave a
+            # coherent root terminal state rather than a stranded running root.
+            try:
+                current = self.run_control.read(group_run_id)
+            except Exception:
+                current = {"state": "running", "checkpoint": {"phase": "governed-group"}}
+            terminal = str(current["state"])
+            if terminal in {"running", "cancel_requested", "pause_requested"}:
+                terminal = {"cancel_requested": "cancelled", "pause_requested": "paused"}.get(terminal, "failed")
+                self.run_control.transition(group_run_id, terminal, actor=spec.owner, approved=True,
+                    checkpoint={**dict(current["checkpoint"]), "phase": "governed-group-" + terminal},
+                    failure={"code": type(error).__name__, "message": str(error)[:500]},
+                    operation="agent.governed-group." + terminal)
+            raise
+        finally:
+            # Every member run this group observed must be capacity-reconciled
+            # before the group is certified closed, even on cancellation or an
+            # unexpected observer failure.
+            for receipt in receipts.values():
+                _release_member_capacity(receipt["run_id"], state=RunState.COMPLETED,
+                    reason="committed model evidence retained for explicit retention review")
+        body = {"schema_version": "px.governed-model-group-run/1.0", "task_plan_sha256": plan.plan_sha256,
+                "group_run_id": group_run_id, "execution_context": root_context.as_dict() if root_context is not None else None,
+                "control_state": terminal,
+                "group_sha256": group.group_sha256, "member_receipts": receipts,
+                "member_failures": failures, "assessment": assessment,
+                "sandbox_provenance": (
+                    None if sandbox_policy is None else
+                    f"isolated_agent_sandbox={getattr(sandbox_policy, 'mode', 'OFF')};"
+                    f"policy_revision={getattr(sandbox_policy, 'policy_revision', '')};"
+                    f"scope_key={getattr(sandbox_policy, 'scope_key', '')};"
+                    f"policy_sha256={sandbox_policy.as_dict()['policy_sha256']}"
+                ),
+                "sandbox_policy_sha256": (
+                    None if sandbox_policy is None else sandbox_policy.as_dict()["policy_sha256"]
+                ),
+                "containment_proofs": containment_proofs or None,
+                "physical_scheduler": "bounded-sequential-members", "authority_granted": False}
+        if workflow_task is not None:
+            body["workflow_execution_context"] = workflow_task["execution_context"]
+            body["workflow_effect_bindings"] = list(workflow_bindings)
+        remote_effects = ()
+        remote_outcomes = {model: receipt["outcome"].get("remote_provider_execution",receipt["outcome"].get("local_provider_execution"))
+            for model, receipt in receipts.items() if "remote_provider_execution" in receipt["outcome"] or "local_provider_execution" in receipt["outcome"]}
+        if remote_outcomes and workflow_bindings and terminal == "succeeded" and not failures:
+            from .remote_member_execution import settle_remote_workflow_effects
+            verify_workflow_effect()
+            remote_effects = settle_remote_workflow_effects(self.project_root, task_plan,
+                workflow_effect_receipt, spec, placements, remote_outcomes)
+            verify_workflow_effect(remote_outcomes)
+            body["workflow_remote_effect_outcomes"] = list(remote_effects)
+        body["group_run_sha256"] = digest(body)
+        write_json_atomic(self.state_root / "group-runs" / (body["group_run_sha256"] + ".json"),
+                          self.authority.sign_receipt(body))
+        if workflow_bindings and terminal == "succeeded" and not failures:
+            verify_workflow_effect(remote_outcomes if remote_outcomes else None)
+            from .effect_intent import EffectIntentLedger
+            workflow_ledger = EffectIntentLedger(self.project_root)
+            for binding in workflow_bindings:
+                if (binding["effect"], binding["scopes"]) != ("execute", ["runtime"]):
+                    continue
+                workflow_ledger.commit(idempotency_key=binding["idempotency_key"],
+                    execution_id=binding["execution_id"], result_sha256=body["group_run_sha256"])
+        return body
+
+
+    def read_governed_group_run(self, group_run_sha256: str) -> dict[str, object]:
+        """Read the producer's signed immutable group receipt through its owner."""
+        from .input_files import contained_file
+        from .json_io import load_json_object
+        if type(group_run_sha256) is not str or re.fullmatch(r"[0-9a-f]{64}", group_run_sha256) is None:
+            raise ValueError("canonical group receipt digest required")
+        relative = (self.state_root / "group-runs" / (group_run_sha256 + ".json")).relative_to(self.project_root).as_posix()
+        path, _ = contained_file(self.project_root, relative)
+        body = self.authority.verify_receipt(load_json_object(path, max_bytes=4 * 1024 * 1024))
+        if (body.get("schema_version") != "px.governed-model-group-run/1.0"
+                or body.get("group_run_sha256") != group_run_sha256
+                or digest({key: value for key, value in body.items() if key != "group_run_sha256"}) != group_run_sha256):
+            raise PermissionError("native group receipt integrity differs")
+        return body
 
     def _new_session(
         self, spec: AgentSpec, task: Mapping[str, object], *, approval: bool
@@ -1687,6 +2203,7 @@ class AgentRuntimeController:
             result = self.supervisor.run(
                 [
                     sys.executable,
+                    "-P",
                     "-m",
                     "runtime.agent_harness_worker",
                     "--project-root",
@@ -2183,6 +2700,7 @@ def execute_agent_plan(
     member_executor=None,
     execution_context=None,
     cancellation_token=None,
+    provider_custody_required=False,
 ):
     """Execute one plan through its exact placement and always release capacity."""
     from .execution_placement import PlacementCapacityLedger, _hash
@@ -2292,8 +2810,9 @@ def execute_agent_plan(
             epoch=execution_context.epoch, generation_vector_sha256=expected_vector)
         if cancellation_token is not None and cancellation_token():
             raise RuntimeError("execution cancellation requested before output commitment")
-        if member is not None and any(row['attachment'].get('schema_version') == REMOTE_ATTACHMENT_SCHEMA
-                for row in task_plan['model_group_preparation']['members']):
+        if member is not None and (provider_custody_required or any(
+                row['attachment'].get('schema_version') == REMOTE_ATTACHMENT_SCHEMA
+                for row in task_plan['model_group_preparation']['members'])):
             from .remote_member_execution import verify_remote_member_outcome
             envelope = value
             outcome['local_provider_execution'] = verify_remote_member_outcome(root,task_plan,invocation,execution_context,envelope)

@@ -1,0 +1,16 @@
+{
+  "active_gap_id": "PX-OS-1067",
+  "evidence": [
+    {
+      "reference": "extension/src/agentHarness/durableTaskState.js",
+      "claim": "Ported from the external tree (Node built-ins only, self-contained rejectLinks). Unblocks the Node billing suite: 20/20 pass.",
+      "artifact_sha256": "1da38a73f284a5afa9288f62b3433429beb93d4932dccb7205af505a7d28e48f",
+      "artifact_size": 4892
+    }
+  ],
+  "learned": "Environment was broken and is now repaired: .venv-repair had been built from a Python in %TEMP% that was later cleaned, so every interpreter launch failed. Rebuilt on the intact Python 3.11.9 (pyproject allows >=3.11,<3.15); old venv preserved as .venv-repair-broken-tempbase. The WindowsApps python alias also pointed at the dead build, so the Node bridge and MCP tests could not run; prepending the real Python for the session fixed it. Re-verified the baseline on 3.11: 52 passed. Ported durableTaskState.js from the external tree after confirming it needs only Node built-ins and carries its own rejectLinks; Node billing suite went from blocked to 20/20. Full Node surface now 946/947 pass. The single failure, mcp-server.test.js, is PRE-EXISTING and unrelated to the port (it fails identically with the port removed); the tool returns no receipt because the MCP write authority denies pacify_parallel_plan_create as unauthenticated, which is the capability gate working rather than a defect I introduced. That suite is not in the certification required set. Correcting my earlier report: only durableTaskState.js was genuinely missing; scripts/rollout/* and test_rollout_inventory.py already existed here and pass.",
+  "newly_discovered_gap_ids": [],
+  "next_action": "Run the single revision/generated-projection reconciliation, make every governed section current, then execute exactly one full profile, validation, package, install, installed-system operational test, and certification in registered order.",
+  "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000036248",
+  "unresolved_branch_gap_ids": []
+}

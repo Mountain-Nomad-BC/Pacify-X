@@ -1,0 +1,386 @@
+[
+  {
+    "tree": "bootstrap",
+    "path": "REPAIR_HANDOFF.md",
+    "sha256": "ed414708984dcf00ea1055e51679d87cc31ab0325c879431dd4aa2490482335d",
+    "bytes": 1320
+  },
+  {
+    "tree": "bootstrap",
+    "path": "docs/repair/SESSION_HANDOFF_2026-10-25.md",
+    "sha256": "482fefb2be57b9aabd403acb5ff52d69b6e9aafbabdc787bf5e5b46513e387a9",
+    "bytes": 21464
+  },
+  {
+    "tree": "bootstrap",
+    "path": "docs/repair/SESSION_STATE.md",
+    "sha256": "66becb1ee542c75017174d87ad3b62f4691227ef22fcc557a908e6d25e81df91",
+    "bytes": 5379
+  },
+  {
+    "tree": "bootstrap",
+    "path": "docs/repair/TRACKING_LOG.md",
+    "sha256": "3b25e9ba391251f3e51febcbd7b3b701fbf117f023ef36fced94a8ee49eb2a89",
+    "bytes": 1546
+  },
+  {
+    "tree": "bootstrap",
+    "path": "extension/scripts/run-operational-ui-walk.js",
+    "sha256": "22387405b1c67be0a5c2551f3a4a545f15e6cae24ec1cf7f011e5e98e9d7f07a",
+    "bytes": 903724
+  },
+  {
+    "tree": "bootstrap",
+    "path": "extension/src/agentHarness/adapters/ollama.js",
+    "sha256": "5daf34190146c486a93a9cd3b9b19f30256e281ab6b6db5fabdd2c745db195bb",
+    "bytes": 3160
+  },
+  {
+    "tree": "bootstrap",
+    "path": "extension/src/agentHarness/adapters/openaiCompatible.js",
+    "sha256": "36661669768e7aaacc58fd983081ff7dfd18b2edae10bd78572ddc95cf338ff9",
+    "bytes": 3889
+  },
+  {
+    "tree": "bootstrap",
+    "path": "extension/src/agentHarness/agentConsoleProjection.js",
+    "sha256": "de7bcf7c31eff7313ddce24dde97204464c9555d00e9580c46b009eed936faa7",
+    "bytes": 3170
+  },
+  {
+    "tree": "bootstrap",
+    "path": "extension/src/agentHarness/agentConsoleView.js",
+    "sha256": "8fc2961b5244f8deb3d25821b6dac78e14dfc4b40a587aee70105aa5a6d978be",
+    "bytes": 6146
+  },
+  {
+    "tree": "bootstrap",
+    "path": "extension/src/agentHarness/budgetLedger.js",
+    "sha256": "844ea9a2b50851480f9b9bf33a88738119d665a6175bf5f04768d8febf7e937c",
+    "bytes": 2696
+  },
+  {
+    "tree": "bootstrap",
+    "path": "extension/src/agentHarness/eventBus.js",
+    "sha256": "9e2fa8e7b77cfed10245658242f2ae2d32bdc24397f432cdaf43f9805270250a",
+    "bytes": 2451
+  },
+  {
+    "tree": "bootstrap",
+    "path": "extension/src/agentHarness/harnessController.js",
+    "sha256": "0e1d601a084d0bece80592ac60fe9b783a7f03621b2b63896d69a416ed3c1c26",
+    "bytes": 8833
+  },
+  {
+    "tree": "bootstrap",
+    "path": "extension/src/agentHarness/registerAgentConsole.js",
+    "sha256": "db0c96cb835492370194461925840af4beb2a3ba598e54e3ff9db70842527c5d",
+    "bytes": 5700
+  },
+  {
+    "tree": "bootstrap",
+    "path": "extension/tests/agent-harness-streaming.test.js",
+    "sha256": "e36ad088a5dc3521df13a545fc2ba3fdad76da8e5a8b2a425d8d3f89cfcb29bd",
+    "bytes": 3948
+  },
+  {
+    "tree": "bootstrap",
+    "path": "extension/tests/conclusion-hash-regression.test.js",
+    "sha256": "b41ab07dfc1f5838ea0edcc27227634e247f99b0320d938384ca254887e73b4d",
+    "bytes": 2676
+  },
+  {
+    "tree": "bootstrap",
+    "path": "extension/tests/path-containment-regression.test.js",
+    "sha256": "4dd45679af8b254608d244ab077b11974015cf0112d593ae0a0c7a8def2888ec",
+    "bytes": 1309
+  },
+  {
+    "tree": "bootstrap",
+    "path": "extension/tests/zero-budget-regression.test.js",
+    "sha256": "c977bb19454984ee16fb4e5e1bf1159306ea8f71da3bb2249d26a93cf91e89dd",
+    "bytes": 1148
+  },
+  {
+    "tree": "bootstrap",
+    "path": "registry/contract_ownership.json",
+    "sha256": "fb14a32f7ab6c05b5a057d813f882277cecd921d08cd34b2db65197275ab9c60",
+    "bytes": 117110
+  },
+  {
+    "tree": "bootstrap",
+    "path": "runtime/capability_scheduler.py",
+    "sha256": "e858662435087ff84e8a331bcb743e6e4c0d93da1d0bc56f1118ab551aed69a8",
+    "bytes": 19512
+  },
+  {
+    "tree": "bootstrap",
+    "path": "runtime/cognitive_query.py",
+    "sha256": "ced3e58d3683be2b87373d99fcfb007a833a7853196ae27cd71f893e419c2761",
+    "bytes": 13503
+  },
+  {
+    "tree": "bootstrap",
+    "path": "runtime/context_checkpoint.py",
+    "sha256": "888d554df968fdc989411d0369758ba8b5ccd10f9a0cda1cfb9ecf7ad19c9f06",
+    "bytes": 7185
+  },
+  {
+    "tree": "bootstrap",
+    "path": "runtime/event_ledger.py",
+    "sha256": "233fa1f3723ec9163113d9592401017d95faa1530d0b9297ead755eb6889acf4",
+    "bytes": 14576
+  },
+  {
+    "tree": "bootstrap",
+    "path": "runtime/gremlin/host_enforcement_backend.py",
+    "sha256": "2d7058287ad3ec9ef81acd81565d38cc1e4b61cba48426b961d3ec26aea42dd4",
+    "bytes": 4600
+  },
+  {
+    "tree": "bootstrap",
+    "path": "runtime/memory_broker.py",
+    "sha256": "373ecc4c151945fd4c93e51da71b1e3718653b32582c80b19d3d6f8f5eb2b8ab",
+    "bytes": 14371
+  },
+  {
+    "tree": "bootstrap",
+    "path": "runtime/memory_intelligence.py",
+    "sha256": "a08406f9949d2d032660fbf5d1d255bc926f38a9933f377ba6b896dec2411c25",
+    "bytes": 44749
+  },
+  {
+    "tree": "bootstrap",
+    "path": "runtime/memory_vault.py",
+    "sha256": "8d3ed407735aa7fef6e69ddfcf2fb665d0c23e5b4a66fed965718f7b18e3b758",
+    "bytes": 40296
+  },
+  {
+    "tree": "bootstrap",
+    "path": "runtime/operational_event_bus.py",
+    "sha256": "c62e41dbbfb1b3c8c12ed7d679b1cd92b64be41f991092bb6974af3d2e44a6bf",
+    "bytes": 20898
+  },
+  {
+    "tree": "bootstrap",
+    "path": "runtime/query_planner.py",
+    "sha256": "a1956b4f7e9692c49fd58bfef2a46eab3e4d4015650186825bc2ae1941a20d95",
+    "bytes": 8888
+  },
+  {
+    "tree": "bootstrap",
+    "path": "runtime/recovery.py",
+    "sha256": "ec5a18f01fc1b62ae46ab314b96638838aa2cec8f88d9880940224490448a732",
+    "bytes": 24651
+  },
+  {
+    "tree": "bootstrap",
+    "path": "runtime/retrieval.py",
+    "sha256": "a642366f5db254579d7e5e934adc2d275b49d40b10bdacc0c25a0b0a9d9f4eea",
+    "bytes": 11850
+  },
+  {
+    "tree": "bootstrap",
+    "path": "runtime/scheduler.py",
+    "sha256": "027fe797b62e78790c78a32304b80fd0047fa7074086b22235e4a4aba79a40c7",
+    "bytes": 7819
+  },
+  {
+    "tree": "bootstrap",
+    "path": "runtime/workflow_studio.py",
+    "sha256": "6a1b53fc6128e4a798a0e65b8ea82e8e6a00453e6d2dd04faca71807a504f94e",
+    "bytes": 78944
+  },
+  {
+    "tree": "bootstrap",
+    "path": "scripts/build_contract_ownership_registry.py",
+    "sha256": "896e466c715437818ccc5be2b82f7a06d2c932aa252b8b46d03a207326974253",
+    "bytes": 30692
+  },
+  {
+    "tree": "bootstrap",
+    "path": "tests/test_budget_regression.py",
+    "sha256": "becf27edc8930fead4e4e56ad3033cc841568a50f0af0e2a9368cb4e8468e15e",
+    "bytes": 3758
+  },
+  {
+    "tree": "bootstrap",
+    "path": "tests/test_capability_scheduler_regression.py",
+    "sha256": "eb4920f1c6d1e5b86466f02c24c7befd63c9733032cf54ebb5fd2a434a1ab819",
+    "bytes": 3175
+  },
+  {
+    "tree": "bootstrap",
+    "path": "tests/test_context_checkpoint_regression.py",
+    "sha256": "2cf95a0c326311c7872848a62fe392a5c449cf4bf057b75c25d6ba6a834f4563",
+    "bytes": 3031
+  },
+  {
+    "tree": "bootstrap",
+    "path": "tests/test_contract_ownership_registry_source.py",
+    "sha256": "ac350dbf9b7c7b7ba86c52ffa6cfacec69a92baed83fbec51934dab5751125da",
+    "bytes": 2288
+  },
+  {
+    "tree": "bootstrap",
+    "path": "tests/test_dag_regression.py",
+    "sha256": "d425998833f29401b3c311dcbed3df97b97742f776ecb93c061ff6390c16d6b2",
+    "bytes": 2800
+  },
+  {
+    "tree": "bootstrap",
+    "path": "tests/test_event_ledger_regression.py",
+    "sha256": "c79ab4a490dbf7e55d697c01467b09fdff79b3d4996f1f317ef7ada97073dae2",
+    "bytes": 5267
+  },
+  {
+    "tree": "bootstrap",
+    "path": "tests/test_gremlin_regression.py",
+    "sha256": "67f2c0f307f0e486f3c2a684995d2d0c6c2d90aacfc97f990cd6f4624892fa6a",
+    "bytes": 3582
+  },
+  {
+    "tree": "bootstrap",
+    "path": "tests/test_hydration_regression.py",
+    "sha256": "2c5361918ed7cffe5ba1aad58f4606bccc19a3c2e1313bf07d8bab68cb17a7a5",
+    "bytes": 4487
+  },
+  {
+    "tree": "bootstrap",
+    "path": "tests/test_memory_broker_regression.py",
+    "sha256": "ca0b8e9f6bc3fb4d81825c38627a15e1838e2b2ac7efe168cd5dc69dfd8a4c98",
+    "bytes": 6079
+  },
+  {
+    "tree": "bootstrap",
+    "path": "tests/test_operational_event_bus.py",
+    "sha256": "44fc21f64645fc58fe24a83a125de50fee416ea35c68961b211c15837705dba7",
+    "bytes": 9581
+  },
+  {
+    "tree": "bootstrap",
+    "path": "tests/test_query_plan_regression.py",
+    "sha256": "a089ba89688527efbb7cc99daac9cbe0dae23e698cabac94540e455b60e5871b",
+    "bytes": 5821
+  },
+  {
+    "tree": "bootstrap",
+    "path": "tests/test_recovery_regression.py",
+    "sha256": "bb737f72a0edff36887414fd15b1352387a01d11ddfa063c7ef92930f72edf92",
+    "bytes": 4500
+  },
+  {
+    "tree": "bootstrap",
+    "path": "tests/test_scheduler_path_regression.py",
+    "sha256": "f66e200a45e80b2f0c9abbaa93f19ef1f8ab6d33ef98840b01c0867c2912ef17",
+    "bytes": 2538
+  },
+  {
+    "tree": "bootstrap",
+    "path": "tests/test_scheduler_recovery_regression.py",
+    "sha256": "52e77d5e49b7c70428bfe442a85d3abb507ee8eaf19759f8dfd53018747171ca",
+    "bytes": 3080
+  },
+  {
+    "tree": "bootstrap",
+    "path": "tests/test_scheduler_regression.py",
+    "sha256": "a52fb0c186afa4ccef55a30fcf9733953d034ef0e18a92663ebaa29a529eece4",
+    "bytes": 3958
+  },
+  {
+    "tree": "bootstrap",
+    "path": "tests/test_scheduler_scaling_regression.py",
+    "sha256": "3f36e27f2078818fa85e4f64da22b2dfefc036089136470a1e79b17032566e74",
+    "bytes": 3031
+  },
+  {
+    "tree": "bootstrap",
+    "path": "tests/test_secret_sanitizer_regression.py",
+    "sha256": "ca860ebfff1e404556429268487ba274e6b6d044bda12b3d728a533c537b9e46",
+    "bytes": 2692
+  },
+  {
+    "tree": "bootstrap",
+    "path": "tests/test_workflow_timeout_regression.py",
+    "sha256": "014a5245ec75476700b86531ccb92fd980dec441f16366e433dddd013ed1446f",
+    "bytes": 2261
+  },
+  {
+    "tree": "rollout",
+    "path": "extension/src/agentHarness/adapters/pxProviderGateway.js",
+    "sha256": "498655ecae468e4f205fab4b365306c9b77c3ffd79bc67c9e91f00a326c9adb8",
+    "bytes": 6997
+  },
+  {
+    "tree": "rollout",
+    "path": "extension/src/agentHarness/agentConsoleView.js",
+    "sha256": "12ef66873b1553b989eed506006149a1d272904a498034cb088ed2c01521f2ff",
+    "bytes": 10260
+  },
+  {
+    "tree": "rollout",
+    "path": "extension/src/agentHarness/budgetLedger.js",
+    "sha256": "b92c7b1d0c82973ee70c537c7b194362bd14a8d3ee16c20bdc16ead03d988eb2",
+    "bytes": 9878
+  },
+  {
+    "tree": "rollout",
+    "path": "extension/src/agentHarness/durableTaskState.js",
+    "sha256": "00fa054c672e5374252ce95361e307d782a1f6d3100bbe7213209dbece60d310",
+    "bytes": 5412
+  },
+  {
+    "tree": "rollout",
+    "path": "extension/src/agentHarness/harnessController.js",
+    "sha256": "aab6e0d4946b91a0626d3c536fd2b2e635f8ced0b308bd144947a2630e6164d3",
+    "bytes": 30407
+  },
+  {
+    "tree": "rollout",
+    "path": "extension/src/agentHarness/registerAgentConsole.js",
+    "sha256": "5f7c0555fe5402f66e6bca2bac00825a64194f9893bb63846d491612ad087e7c",
+    "bytes": 18048
+  },
+  {
+    "tree": "rollout",
+    "path": "extension/tests/agent-harness-core.test.js",
+    "sha256": "da54a3fccdfc888a58afc816dc3340348b451373021f1e0c41852c7932c07798",
+    "bytes": 16583
+  },
+  {
+    "tree": "rollout",
+    "path": "extension/tests/billing-settlement-audit.test.js",
+    "sha256": "bb25c4e4ca272a3fe11eb7f6968d2334fd1ca4e497b428062ba51767dc44c188",
+    "bytes": 6522
+  },
+  {
+    "tree": "rollout",
+    "path": "registry/test_profiles.json",
+    "sha256": "2ee8c9473f59098c6ccd426074ea8a163931ce52d5a4e5f3486dd1819313cef9",
+    "bytes": 179360
+  },
+  {
+    "tree": "rollout",
+    "path": "runtime/capability_scheduler.py",
+    "sha256": "143b6e8f4c7ab2618fc6d4f66fbaaf47477bac1c6aa6598e6e55906f4e59ef0e",
+    "bytes": 18231
+  },
+  {
+    "tree": "rollout",
+    "path": "scripts/validate_certification_pipeline.py",
+    "sha256": "b36e23c065866c240114141764284d01808ea8c64eb79e6af17b419e2d102934",
+    "bytes": 25232
+  },
+  {
+    "tree": "rollout",
+    "path": "tests/test_billing_budget_audit.py",
+    "sha256": "54c5dd6f576def192d2e7a9e9c21285573776821d203f0c30ee6f14dfe3cd3de",
+    "bytes": 3157
+  },
+  {
+    "tree": "rollout",
+    "path": "tests/test_certification_pipeline_readiness.py",
+    "sha256": "650a39f050b0f0187353e5acb804872366a3b1d278c7d43614f129743b9e4b6f",
+    "bytes": 4048
+  }
+]

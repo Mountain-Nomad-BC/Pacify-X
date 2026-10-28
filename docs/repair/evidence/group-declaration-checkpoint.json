@@ -1,0 +1,50 @@
+{
+  "schema_version": "px.operational-gap-ledger-event/1.0",
+  "sequence": 36242,
+  "event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000036242",
+  "event_type": "work_checkpoint",
+  "timestamp": "2026-10-27T16:26:16.550709Z",
+  "actor": "codex",
+  "previous_event_sha256": "818e0735bbf26ebf0add71aba30a98173a0e4f1605284329afe0c95c090ef9f6",
+  "payload": {
+    "active_gap_id": "PX-OS-1067",
+    "evidence": [
+      {
+        "artifact_sha256": "8855a605c2e1c862b1ce66cf3991063b2a279167c0f11aec050567265d3c7dd3",
+        "artifact_size": 4765,
+        "claim": "W2a declaration integration; execution and certification remain open.",
+        "reference": "runtime/workflow_group_config.py"
+      },
+      {
+        "artifact_sha256": "c1110caea2a6f1bf1deb03c49e1a37d8aae765d21c01e90fea63f9ee8771996f",
+        "artifact_size": 50769,
+        "claim": "W2a declaration integration; execution and certification remain open.",
+        "reference": "runtime/studio_models.py"
+      },
+      {
+        "artifact_sha256": "57c71a38f34b1cb73851681955edb32e39b39ca26a529f711174b20edfaf7cf7",
+        "artifact_size": 3385,
+        "claim": "W2a declaration integration; execution and certification remain open.",
+        "reference": "tests/test_workflow_group_config.py"
+      },
+      {
+        "artifact_sha256": "d19cf4841f6232cb3a12eb4057bc1d08e16fbfe79999f7c6b74a6caf0237815e",
+        "artifact_size": 911,
+        "claim": "W2a declaration integration; execution and certification remain open.",
+        "reference": "docs/repair/evidence/resume10-group-declaration-key-isolation.json"
+      },
+      {
+        "artifact_sha256": "8bf3b093b165c6b30c388640b4ba8f86a05c976fb15159699408fb0054ad43c6",
+        "artifact_size": 9242,
+        "claim": "W2a declaration integration; execution and certification remain open.",
+        "reference": "docs/repair/WORKFLOW_APPROVAL_AND_REMOTE_INTEGRATION_2026-10-27.md"
+      }
+    ],
+    "learned": "W2a exact AgentSpec/placements declaration parser integrated into WorkflowNode.79 combined checks pass; governed section phaseblocked. W1a/W2a substeps complete, W1/W2 overall partial; next W2b commissioned native parent/worker plan/effect custody closure; keep group adapter unadmitted until operational implementation.",
+    "newly_discovered_gap_ids": [],
+    "next_action": "Run the single revision/generated-projection reconciliation, make every governed section current, then execute exactly one full profile, validation, package, install, installed-system operational test, and certification in registered order.",
+    "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000036241",
+    "unresolved_branch_gap_ids": []
+  },
+  "event_sha256": "2b30f748aa04b4f525e56a7eb9915f2cbf6388673ec8c304c8b9b8c09a4dc2ed"
+}

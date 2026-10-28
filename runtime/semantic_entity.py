@@ -103,6 +103,30 @@ def _canonical(value: Any) -> bytes:
     return json.dumps(value, sort_keys=True, separators=(",", ":")).encode("utf-8")
 
 
+def contract_path() -> Path:
+    """Locate the entity contract through the framework-root owner.
+
+    The contract belongs to the framework, not to the project being managed and
+    not to whatever happens to sit one directory above this module's file. An
+    earlier version walked up from ``__file__`` and handed the result to
+    ``validate_instance``, which fails closed only on a *relative* root: a
+    missing contract then surfaced as a bare ``FileNotFoundError`` while
+    publication had already reported success, so the owner could not read back
+    a registry it had just written. Resolution is delegated to
+    ``runtime.paths.framework_root`` so source checkouts and installed
+    distributions both find their own contract, and absence is reported here as
+    a domain error naming the contract rather than as a path traceback.
+    """
+    from runtime.paths import framework_root
+
+    candidate = framework_root() / SCHEMA_RELATIVE
+    if not candidate.is_file():
+        raise SemanticEntityError(
+            f"entity contract is not installed with the framework: {SCHEMA_RELATIVE.as_posix()}"
+        )
+    return candidate
+
+
 def _sha256(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
 
@@ -413,10 +437,9 @@ class EntityRegistry:
 
             recovered = cls()
             previous_id = None
+            schema = contract_path()
             for row in records:
-                validate_instance(
-                    row, Path(__file__).resolve().parents[1] / SCHEMA_RELATIVE
-                )
+                validate_instance(row, schema)
                 entity_id = row["entity_id"]
                 if type(entity_id) is not str or not entity_id.startswith(ENTITY_ID_PREFIX):
                     raise SemanticEntityError("entity snapshot record has no canonical identity")
@@ -462,6 +485,10 @@ class EntityRegistry:
                 }
             return recovered
         except (ValueError, TypeError, KeyError, AttributeError) as exc:
+            raise SemanticEntityError(f"invalid entity snapshot: {exc}") from exc
+        except OSError as exc:
+            # A missing or unreadable contract is an owner failure, never a path
+            # traceback escaping to a caller that only asked to load a registry.
             raise SemanticEntityError(f"invalid entity snapshot: {exc}") from exc
 
     def accepted_entities(self) -> tuple[EntityRecord, ...]:

@@ -8,6 +8,7 @@ from pathlib import Path
 
 
 ROOT_OWNERS = {
+    'work-disposition.schema.json': ('runtime/work_disposition.py', ['runtime/work_disposition.py', 'runtime/model_convergence.py'], 'explicit_terminal_work_denominator_boundary', ['tests/test_group_convergence_boundary.py']),
     'remote_model_attachment.schema.json': ('runtime/remote_model_attachment.py', ['runtime/remote_model_attachment.py', 'runtime/model_attachment.py'], 'typed_remote_service_identity_boundary', ['tests/test_model_attachment.py', 'tests/test_model_group_preparation.py', 'tests/test_remote_attachment_identity.py']),
     'model-execution-group.schema.json': ('runtime/model_execution_group.py', ['runtime/model_execution_group.py', 'runtime/task_execution_plan.py'], 'bounded_group_declaration_boundary', ['tests/test_model_execution_group.py', 'tests/test_model_group_preparation.py']),
     'generation-bound-verdict.schema.json': ('runtime/generation_bound_verdict.py', ['runtime/generation_bound_verdict.py'], 'exact_candidate_dependency_verdict_boundary', ['tests/test_generation_bound_verdict.py']),
@@ -577,6 +578,18 @@ OPERATIONS_DIR_TESTS = {
     "local-model-runtime.schema.json": "tests/test_local_model_runtime.py",
 }
 
+SEMANTIC_DIR_OWNERS = {
+    # Canonical identity is owned by the registry that derives it: identity is a
+    # function of the identity basis, never of a filesystem location, so the
+    # owner is the module that performs that derivation and its durable snapshot.
+    "semantic-entity.schema.json": (
+        "runtime/semantic_entity.py",
+        ["runtime/semantic_entity.py"],
+        "runtime_enforced",
+        ["tests/test_semantic_entity_contract.py"],
+    ),
+}
+
 CONTROL_OWNERS = {
     "certification-readiness.schema.json": (
         "runtime/certification_readiness.py",
@@ -715,6 +728,13 @@ def build(root: Path) -> dict[str, object]:
                 "tests/test_contract_runtime.py",
                 "tests/test_temp2_completeness.py",
             ]
+        elif path.parent.name == "semantic":
+            if name not in SEMANTIC_DIR_OWNERS:
+                raise ValueError(
+                    f"no source-authentic owner rule for semantic contract {name}; "
+                    "declare it in SEMANTIC_DIR_OWNERS rather than publishing a guess"
+                )
+            owner, producers, enforcement, tests = SEMANTIC_DIR_OWNERS[name]
         elif path.parent.name == "research_ops":
             owner, enforcement = "runtime/research_assimilation.py", "runtime_enforced"
             producers = [

@@ -115,6 +115,23 @@ def legacy_control_root(root: Path) -> Path:
     return Path(root) / LEGACY_CONTROL_DIR
 
 
+def control_path(root: Path, *parts: str) -> Path:
+    """Build a canonical control path, the only sanctioned write target.
+
+    ``resolve`` answers "where is this state now?"; this answers "where does new
+    state belong?". Callers that need a fixed write authority must not call
+    ``resolve`` (which can legitimately return the legacy tree) and must not
+    spell the directory name inline, or two owners can silently disagree about
+    which directory holds the authoritative state.
+    """
+    segments = _bounded_segments(parts)
+    return Path(root) / Path(CANONICAL_CONTROL_DIR, *segments)
+
+def resolve_project_management(root: Path, *parts: str) -> Path:
+    """Resolve a project-management path for reading, whichever spelling holds it."""
+    return resolve(Path(root), "project-management", *parts)
+
+
 def _entry_count(directory: Path) -> int:
     """Count a directory's immediate entries, treating any read error as empty."""
     try:

@@ -35,3 +35,15 @@ def test_invalid_canonical_history_is_not_replaced_with_old_history(tmp_path):
     target.write_text(json.dumps({**event, 'payload': {'rebound': True}}), encoding='utf-8')
     with pytest.raises(ValueError, match='chain'):
         _event_rows(tmp_path)
+
+
+@pytest.mark.parametrize("error", [OSError("controlled localhost timeout; private detail"), ValueError("controlled invalid runtime; private detail")])
+def test_unreachable_local_runtime_returns_sanitized_unavailable_catalog(tmp_path, monkeypatch, error):
+    import runtime.vscode_model_bridge as bridge
+    import runtime.remote_model_bridge as remote
+    monkeypatch.setattr(bridge, "_available", lambda *_: (_ for _ in ()).throw(error))
+    monkeypatch.setattr(remote, "list_models", lambda *_: {"models": []})
+    result = bridge.list_models(tmp_path, tmp_path)
+    assert result["models"] == [] and result["authority_granted"] is False
+    assert result["local_catalog_status"] == "runtime_unreachable_or_invalid"
+    assert "private detail" not in json.dumps(result)

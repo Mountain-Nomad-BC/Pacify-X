@@ -1,0 +1,38 @@
+{
+  "schema_version": "px.operational-gap-ledger-event/1.0",
+  "sequence": 36240,
+  "event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000036240",
+  "event_type": "work_checkpoint",
+  "timestamp": "2026-10-27T16:14:15.509847Z",
+  "actor": "codex",
+  "previous_event_sha256": "25430c89cc054a8300ccc26d59e9f9ce512ecbd987f011b6921a3f11b045c60d",
+  "payload": {
+    "active_gap_id": "PX-OS-1067",
+    "evidence": [
+      {
+        "artifact_sha256": "de7338930a8d2880b90e0d7c122ff0aa4b477a47e170c6c4c17998e82de22e71",
+        "artifact_size": 770,
+        "claim": "Focused approval boundary evidence; not installed certification.",
+        "reference": "docs/repair/evidence/resume10-approval-boundary-wire.json"
+      },
+      {
+        "artifact_sha256": "6326c44ea466a5ab776b906dde9f7be85743177bf287f98d357eabba0feac101",
+        "artifact_size": 806,
+        "claim": "Focused approval boundary evidence; not installed certification.",
+        "reference": "docs/repair/evidence/resume10-approval-host-neighbors.json"
+      },
+      {
+        "artifact_sha256": "54ed6a569bd74bd7801e22be3618fc0bf1aa407bc40791716da969f5c802cd7c",
+        "artifact_size": 3527,
+        "claim": "Focused approval boundary evidence; not installed certification.",
+        "reference": "tests/test_workflow_approval_boundary.py"
+      }
+    ],
+    "learned": "Workflow native approval ingress verified:13 checks including actual two-node execution, single-use operation and node approval;41 host neighbors pass. Test request-format failures retained. Remote bridge still calls absent WorkflowStudio prepared-group owner/execution methods; integration remains open and must not be declared operational.",
+    "newly_discovered_gap_ids": [],
+    "next_action": "Run the single revision/generated-projection reconciliation, make every governed section current, then execute exactly one full profile, validation, package, install, installed-system operational test, and certification in registered order.",
+    "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000036239",
+    "unresolved_branch_gap_ids": []
+  },
+  "event_sha256": "b30ca97d41f8ea89f4ccf9d28cefab53ef2414ca9051c36df0966d80b7fcdbe9"
+}

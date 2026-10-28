@@ -1,0 +1,30 @@
+============================= test session starts =============================
+platform win32 -- Python 3.14.7, pytest-9.1.1, pluggy-1.6.0 -- C:\Users\Ben\Documents\bootstrap_project\Pacify-X\Python\pythoncore-3.14-64\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\Ben\Documents\bootstrap_project\Pacify-X
+configfile: pyproject.toml
+collecting ... collected 20 items
+
+tests/test_group_host_composition.py::test_worker_composition_has_no_unbound_owner_names PASSED [  5%]
+tests/test_group_host_composition.py::test_saved_vector_is_not_an_implicit_live_observer PASSED [ 10%]
+tests/test_group_host_composition.py::test_host_observer_is_called_again_and_checked_against_project PASSED [ 15%]
+tests/test_group_host_composition.py::test_host_assessment_returns_reference_not_an_approval_boolean PASSED [ 20%]
+tests/test_group_host_composition.py::test_local_group_declares_loopback_and_shared_gateway_writes PASSED [ 25%]
+tests/test_group_host_composition.py::test_remote_group_declares_its_signed_origin_not_generic_network PASSED [ 30%]
+tests/test_group_provider_bindings.py::test_remote_binding_uses_current_native_signed_service_without_network PASSED [ 35%]
+tests/test_group_provider_bindings.py::test_binding_rechecks_authority_before_provider_work[policy] PASSED [ 40%]
+tests/test_group_provider_bindings.py::test_binding_rechecks_authority_before_provider_work[registry] PASSED [ 45%]
+tests/test_group_remote_wire_recordings.py::test_named_service_recording_wire_and_reported_usage[openai-responses-openai-frames0] PASSED [ 50%]
+tests/test_group_remote_wire_recordings.py::test_named_service_recording_wire_and_reported_usage[gemini-generate-content-gemini-frames1] PASSED [ 55%]
+tests/test_group_remote_wire_recordings.py::test_named_service_recording_wire_and_reported_usage[mistral-chat-mistral-frames2] PASSED [ 60%]
+tests/test_group_remote_wire_recordings.py::test_named_service_recording_wire_and_reported_usage[claude-anthropic-messages-claude-frames3] PASSED [ 65%]
+tests/test_group_remote_wire_recordings.py::test_service_alias_cannot_select_another_wire[openai-responses-custom] PASSED [ 70%]
+tests/test_group_remote_wire_recordings.py::test_service_alias_cannot_select_another_wire[mistral-chat-openai] PASSED [ 75%]
+tests/test_group_remote_wire_recordings.py::test_service_alias_cannot_select_another_wire[claude-anthropic-messages-mistral] PASSED [ 80%]
+tests/test_group_remote_wire_recordings.py::test_actual_transport_exact_endpoint_headers_and_tls_pin[openai-responses-openai] PASSED [ 85%]
+tests/test_group_remote_wire_recordings.py::test_actual_transport_exact_endpoint_headers_and_tls_pin[mistral-chat-mistral] PASSED [ 90%]
+tests/test_group_remote_wire_recordings.py::test_actual_transport_exact_endpoint_headers_and_tls_pin[claude-anthropic-messages-claude] PASSED [ 95%]
+tests/test_group_remote_wire_recordings.py::test_actual_transport_exact_endpoint_headers_and_tls_pin[gemini-generate-content-gemini] PASSED [100%]
+
+============================= 20 passed in 1.25s ==============================
+

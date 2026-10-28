@@ -1,0 +1,9 @@
+cmd: C:\Users\Ben\Documents\bootstrap_project\Pacify-X\.venv-repair\Scripts\python.exe -m pytest -q --no-header -p no:cacheprovider tests/test_model_group_preparation.py tests/test_tie_fusion.py tests/test_usage_memory.py
+exit: 0
+elapsed_seconds: 4.60
+--- stdout ---
+....................................................                     [100%]
+52 passed in 4.24s
+
+--- stderr ---
+

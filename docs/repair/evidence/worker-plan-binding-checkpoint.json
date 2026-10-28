@@ -1,0 +1,56 @@
+{
+  "schema_version": "px.operational-gap-ledger-event/1.0",
+  "sequence": 36243,
+  "event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000036243",
+  "event_type": "work_checkpoint",
+  "timestamp": "2026-10-27T16:36:44.369637Z",
+  "actor": "codex",
+  "previous_event_sha256": "2b30f748aa04b4f525e56a7eb9915f2cbf6388673ec8c304c8b9b8c09a4dc2ed",
+  "payload": {
+    "active_gap_id": "PX-OS-1067",
+    "evidence": [
+      {
+        "artifact_sha256": "89615adb072838cca50e352b6c7b1f4d75d447e070e40096d5d1c3724c44967f",
+        "artifact_size": 9323,
+        "claim": "Bounded W2 implementation progress; group execution remains open.",
+        "reference": "runtime/workflow_worker.py"
+      },
+      {
+        "artifact_sha256": "08a7f16317a93ea7b4a738a76685c105fe3e2fd72f72caa2dfcedbbaa8b6629c",
+        "artifact_size": 6451,
+        "claim": "Bounded W2 implementation progress; group execution remains open.",
+        "reference": "runtime/workflow_group_config.py"
+      },
+      {
+        "artifact_sha256": "b91cbcaeac445dca0534aef3de235be670aa4a53411d73b26411314a6fc5dd45",
+        "artifact_size": 89117,
+        "claim": "Bounded W2 implementation progress; group execution remains open.",
+        "reference": "runtime/workflow_studio.py"
+      },
+      {
+        "artifact_sha256": "97b20e1240b01a4afbda9755670e1a4cd875c80c8393c2ce67ef8793dca08fcf",
+        "artifact_size": 2268,
+        "claim": "Bounded W2 implementation progress; group execution remains open.",
+        "reference": "tests/test_workflow_worker_pre_dispatch.py"
+      },
+      {
+        "artifact_sha256": "156797b8a11195c4821dce6e67e09654c3b1eaa5e9c4b4ac80fecb6586da77f4",
+        "artifact_size": 913,
+        "claim": "Bounded W2 implementation progress; group execution remains open.",
+        "reference": "docs/repair/evidence/resume10-group-plan-binding.json"
+      },
+      {
+        "artifact_sha256": "72f680fadb4223c6c6e2cbade7e19b61688dd67c6d98d4dcae0dea86086e09a9",
+        "artifact_size": 11710,
+        "claim": "Bounded W2 implementation progress; group execution remains open.",
+        "reference": "docs/repair/WORKFLOW_APPROVAL_AND_REMOTE_INTEGRATION_2026-10-27.md"
+      }
+    ],
+    "learned": "W2b1 worker node/config/approval guards now precede adapter dispatch; three causal signed-task red cases retained. W2b2 exact persisted group plan/placement/member binding integrated into owner resolver;47 combined checks passed. Governed section phaseblocked. Missing governed group controller means W2b3 execution/custody remains open, then W1 positive, W3 and W4.",
+    "newly_discovered_gap_ids": [],
+    "next_action": "Run the single revision/generated-projection reconciliation, make every governed section current, then execute exactly one full profile, validation, package, install, installed-system operational test, and certification in registered order.",
+    "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000036242",
+    "unresolved_branch_gap_ids": []
+  },
+  "event_sha256": "2a3203aa2e5f2d5f129946e16bdad45ed3189e2ef956455791777a4051852d94"
+}

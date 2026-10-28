@@ -1,0 +1,67 @@
+
+Traceback (most recent call last):
+  File "C:\Users\Ben\AppData\Local\Temp\py3145t\Lib\urllib\request.py", line 1321, in do_open
+    h.request(req.get_method(), req.selector, req.data, headers,
+    ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+              encode_chunked=req.has_header('Transfer-encoding'))
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ben\AppData\Local\Temp\py3145t\Lib\http\client.py", line 1367, in request
+    self._send_request(method, url, body, headers, encode_chunked)
+    ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ben\AppData\Local\Temp\py3145t\Lib\http\client.py", line 1413, in _send_request
+    self.endheaders(body, encode_chunked=encode_chunked)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ben\AppData\Local\Temp\py3145t\Lib\http\client.py", line 1362, in endheaders
+    self._send_output(message_body, encode_chunked=encode_chunked)
+    ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ben\AppData\Local\Temp\py3145t\Lib\http\client.py", line 1122, in _send_output
+    self.send(msg)
+    ~~~~~~~~~^^^^^
+  File "C:\Users\Ben\AppData\Local\Temp\py3145t\Lib\http\client.py", line 1066, in send
+    self.connect()
+    ~~~~~~~~~~~~^^
+  File "C:\Users\Ben\AppData\Local\Temp\py3145t\Lib\http\client.py", line 1032, in connect
+    self.sock = self._create_connection(
+                ~~~~~~~~~~~~~~~~~~~~~~~^
+        (self.host,self.port), self.timeout, self.source_address)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ben\AppData\Local\Temp\py3145t\Lib\socket.py", line 874, in create_connection
+    raise exceptions[0]
+  File "C:\Users\Ben\AppData\Local\Temp\py3145t\Lib\socket.py", line 859, in create_connection
+    sock.connect(sa)
+    ~~~~~~~~~~~~^^^^
+TimeoutError: timed out
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "<frozen runpy>", line 203, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\Users\Ben\Documents\bootstrap_project\Pacify-X\runtime\vscode_model_bridge.py", line 436, in <module>
+    raise SystemExit(main())
+                     ~~~~^^
+  File "C:\Users\Ben\Documents\bootstrap_project\Pacify-X\runtime\vscode_model_bridge.py", line 426, in main
+    print(json.dumps(list_models(engine_root, project_root), sort_keys=True, separators=(",", ":")))
+                     ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ben\Documents\bootstrap_project\Pacify-X\runtime\vscode_model_bridge.py", line 176, in list_models
+    models = _available(engine_root, project_root)
+  File "C:\Users\Ben\Documents\bootstrap_project\Pacify-X\runtime\vscode_model_bridge.py", line 138, in _available
+    states = runtime.router_model_states(session_id)
+  File "C:\Users\Ben\Documents\bootstrap_project\Pacify-X\runtime\local_model_runtime.py", line 716, in router_model_states
+    payload = self.router_request("GET", origin + "/models", None, timeout)
+  File "C:\Users\Ben\Documents\bootstrap_project\Pacify-X\runtime\local_model_runtime.py", line 326, in _http_json
+    with opener.open(request, timeout=float(timeout)) as response:
+         ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ben\AppData\Local\Temp\py3145t\Lib\urllib\request.py", line 487, in open
+    response = self._open(req, data)
+  File "C:\Users\Ben\AppData\Local\Temp\py3145t\Lib\urllib\request.py", line 504, in _open
+    result = self._call_chain(self.handle_open, protocol, protocol +
+                              '_open', req)
+  File "C:\Users\Ben\AppData\Local\Temp\py3145t\Lib\urllib\request.py", line 464, in _call_chain
+    result = func(*args)
+  File "C:\Users\Ben\AppData\Local\Temp\py3145t\Lib\urllib\request.py", line 1350, in http_open
+    return self.do_open(http.client.HTTPConnection, req)
+           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Ben\AppData\Local\Temp\py3145t\Lib\urllib\request.py", line 1324, in do_open
+    raise URLError(err)
+urllib.error.URLError: <urlopen error timed out>
