@@ -621,3 +621,22 @@ Closed the causal physical-project authority defect at source/test level: v2 lau
 Repaired the builder working-directory dependency (red/green checks from repository and extension roots). The first changed authority section exposed two pre-existing silently ignored prepared-group console messages; registration now wires real host callbacks, handlers surface missing/rejected transport, inspection rejects invented authority, and a host return emits information rather than fabricated completion. Twenty focused console/tool neighbors pass. Final governed agent-tool-authority section passed with native execution_valid=true; live receipt copied to evidence/project-mcp-authority-current-section.json. A short-startup owned retry stopped before output; retained, not success. All focused owner process trees are closed/resources inactive. See evidence/project-mcp-physical-project-authority.json.
 
 Next source defect: Studio API execute-plan-owner still passes approved_by to a native owner requiring approval_capability/selection. Repair the caller/consumer agreement with one signed single-use approval consumer; never restore identity-string authority. Canonical catalog/other console controls and protected provider/host operating proof remain open. No independent closure, projection refresh, full profile, installation or certification.
+
+
+### Native prepared-group approval boundary ? 2026-10-28
+
+Reproduced Studio API obsolete approved_by call against the real native owner (project-prepared-api-causal-red-py314). Repaired workflow versus remote capability scope, one-use consumption ownership and exact single-node/plan checks. Review added a preflight rule: invalid signature, wrong operation and replay must be rejected before WorkflowStudio initialization. Three original preflight failures are retained; read-only host-proof verification now precedes the execution owner, which alone atomically consumes the capability.
+
+Latest Python3.14 neighbor run: 56 passed, one skipped, one failed because a deliberately clean child process lacks required PyYAML. Python3.11 repair venv also lacks declared PyYAML==6.0.3. These are not green receipts. Next: hash-pinned wheel download and offline development-only dependency installation under separate network/install admissions, then clean-interpreter rerun and governed section. Production group registry remains closed; earlier three positive group fixtures failed at the closed registration gate and have not been relabelled as accepted operating proof. No production trust, signatures or historical state changed.
+
+
+### Current native repair checkpoint ? 2026-10-28
+
+Clean Python3.11 now passes57 Studio/prepared approval/API neighbors with1skip after installing only hash-pinned PyYAML6.0.3 offline into the development venv. No source-path override remains. First changed studio-memory-graph run completed12groups:11passed; one workflow/skill group had7failures. Scoped diagnosis found5 fence fixtures missing the newly required controlled executor declaration and one deadline fixture assuming a fixed11s budget; updated fixtures preserve every assertion and leave production registration closed. All8 targeted workflow custody/failure cases pass. One initial skill publication hit WinError5 before corruption injection; its unchanged isolated rerun passed, with original failure retained and cause unproved.
+
+Owned changed-section rerun project-prepared-studio-section-current is active; do not edit covered source while it runs. Admission36284 (checkpoint36282), gap PX-OS-1067; native source is uncommitted beyond28564f62. Next: section result, updated authority section, durable evidence/logs and source commit. See evidence/project-prepared-current-checkpoint.json. No operating-group or certification claim.
+
+
+### User stop and final handoff — 2026-10-28T21:37:19.894071+00:00
+
+STOPPED at user request. Native prepared approval changes are verified but uncommitted; main 28564f62 is ahead of origin/main by one unpublished commit. Clean Python3.11 focused neighbors:57 passed/1 skipped; custody fixtures:8 passed; governed studio-memory-graph and agent-tool-authority both passed with execution_valid=true. No owned test remains running. Intake remains open; reviewed closures0/105; no production commissioning or certification. Earlier pending/active entries are superseded. Full resume instructions:docs/repair/HANDOFF_PROJECT_REPAIR_2026-10-28.md.

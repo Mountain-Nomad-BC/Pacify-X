@@ -1319,7 +1319,9 @@
         "policies/release-preflight.json",
         "tests/release_preflight_testkit.py",
         "tests/test_release_feedback_audit.py",
-        "tests/test_release_evidence_portability.py"
+        "tests/test_release_evidence_portability.py",
+        "tests/test_prepared_group_operation_approval.py",
+        "tests/test_workflow_approval_boundary.py"
       ],
       "command": [
         "python",
@@ -1348,7 +1350,9 @@
         "tests/test_workspace_manager.py",
         "tests/test_dashboard_api.py",
         "tests/test_agent_builder_inputs.py",
-        "tests/test_studio_api_inputs.py"
+        "tests/test_studio_api_inputs.py",
+        "tests/test_prepared_group_operation_approval.py",
+        "tests/test_workflow_approval_boundary.py"
       ],
       "chunk_size": 2,
       "max_parallel_chunks": 1,

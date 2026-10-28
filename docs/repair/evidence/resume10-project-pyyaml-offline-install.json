@@ -1,0 +1,25 @@
+{
+  "command": [
+    "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.venv-repair\\Scripts\\python.exe",
+    "-m",
+    "pip",
+    "--isolated",
+    "--disable-pip-version-check",
+    "install",
+    "--quiet",
+    "--no-index",
+    "--no-deps",
+    "--require-hashes",
+    "--find-links",
+    ".tmp/resume10/owned/pacifyx-k21yc1mm/wheels",
+    "-r",
+    ".tmp/resume10/owned/pacifyx-k21yc1mm/pyyaml-pinned.txt"
+  ],
+  "exit_code": 0,
+  "tree_closed": true,
+  "resource_inactive": true,
+  "receipt": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.tmp\\resume10\\owned\\cleanup-receipts\\process-0e55efab935a4d699408319d4b4b4d5c.json",
+  "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.tmp\\resume10\\owned\\pacifyx-eieui1c4",
+  "log": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\docs\\repair\\evidence\\resume10-project-pyyaml-offline-install.log",
+  "log_sha256": "7eb70257593da06f682a3ddda54a9d260d4fc514f645237f5ca74b08f8da61a6"
+}

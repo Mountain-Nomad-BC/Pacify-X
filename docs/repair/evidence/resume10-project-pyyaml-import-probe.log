@@ -1,0 +1,5 @@
+
+  File "<string>", line 1
+    import yaml,sys; assert yaml.__version__ == 6.0.3; from runtime.studio_api import studio_operation; print(sys.executable); print(yaml.__version__); print(Studio
+                                                   ^^
+SyntaxError: invalid syntax

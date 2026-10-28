@@ -962,7 +962,7 @@ class WorkflowStudio:
                 "authority_granted": False, "execution_authorized": False}
 
     def execute_prepared_group_node(self, reference: Mapping[str, object], *,
-            approval_capability: Mapping[str, object], selection: dict,
+            approval_capability: Mapping[str, object], selection: dict | None = None,
             assert_current=None) -> dict[str, object]:
         """Consume one exact host capability; identity strings grant no authority.
 
@@ -973,13 +973,14 @@ class WorkflowStudio:
         from .prepared_group_transport import resolve_prepared_group
         from .model_group_preparation import member_attachment
         from .remote_model_attachment import remote_branch_id, remote_model_attachment_from_dict, build_remote_model_attachment
-        fields = {"prepared_group_reference", "profile_id", "profile_sha256", "provider_id"}
-        if type(selection) is not dict or set(selection) != fields:
-            raise ValueError("exact prepared remote selection required")
-        selection = json.loads(bounded_canonical_json_bytes(selection, max_bytes=256 * 1024))
         reference = dict(reference)
-        if selection["prepared_group_reference"] != reference:
-            raise PermissionError("approved selection differs from prepared reference")
+        if selection is not None:
+            fields = {"prepared_group_reference", "profile_id", "profile_sha256", "provider_id"}
+            if type(selection) is not dict or set(selection) != fields:
+                raise ValueError("exact prepared remote selection required")
+            selection = json.loads(bounded_canonical_json_bytes(selection, max_bytes=256 * 1024))
+            if selection["prepared_group_reference"] != reference:
+                raise PermissionError("approved selection differs from prepared reference")
         if not isinstance(approval_capability, Mapping):
             raise PermissionError("signed prepared-group operation approval is required")
         if assert_current is not None and not callable(assert_current):
@@ -987,13 +988,14 @@ class WorkflowStudio:
 
         def current_selection():
             plan = resolve_prepared_group(self.project_root, reference)
-            branch = remote_branch_id(selection["provider_id"], selection["profile_id"])
-            value, _ = member_attachment(plan.as_dict(), branch)
-            attached = remote_model_attachment_from_dict(value)
-            if (attached.profile_sha256 != selection["profile_sha256"]
-                    or attached != build_remote_model_attachment(self.project_root,
-                        profile_id=selection["profile_id"], requester_id=attached.requester_id)):
-                raise PermissionError("selected prepared remote profile is no longer current")
+            if selection is not None:
+                branch = remote_branch_id(selection["provider_id"], selection["profile_id"])
+                value, _ = member_attachment(plan.as_dict(), branch)
+                attached = remote_model_attachment_from_dict(value)
+                if (attached.profile_sha256 != selection["profile_sha256"]
+                        or attached != build_remote_model_attachment(self.project_root,
+                            profile_id=selection["profile_id"], requester_id=attached.requester_id)):
+                    raise PermissionError("selected prepared remote profile is no longer current")
             if assert_current is not None:
                 assert_current()
 
@@ -1009,7 +1011,9 @@ class WorkflowStudio:
                 or definition.nodes[0].config.get("execution_mode") != "prepared-model-group"):
             raise PermissionError("group-only approval requires an isolated single-node workflow")
         approved = self.authority.consume_host_operation_approval(approval_capability,
-            kind="remote-model", operation="chat", supplied_payload=selection)
+            kind="remote-model" if selection is not None else "workflow",
+            operation="chat" if selection is not None else "execute-plan-owner",
+            supplied_payload=selection if selection is not None else {"prepared_group_reference": reference})
         current_selection()
         if self.resolve_prepared_group_owner(reference) != owner:
             raise PermissionError("prepared workflow owner changed after approval")

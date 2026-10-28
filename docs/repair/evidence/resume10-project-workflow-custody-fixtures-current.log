@@ -1,0 +1,18 @@
+============================= test session starts =============================
+platform win32 -- Python 3.11.9, pytest-9.2.0, pluggy-1.7.0 -- C:\Users\Ben\Documents\bootstrap_project\Pacify-X\.venv-repair\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\Ben\Documents\bootstrap_project\Pacify-X
+configfile: pyproject.toml
+collecting ... collected 53 items / 45 deselected / 8 selected
+
+tests/test_workflow_studio.py::test_workflow_attempt_failure_closes_workspace_and_preserves_cause[request] PASSED [ 12%]
+tests/test_workflow_studio.py::test_workflow_attempt_failure_closes_workspace_and_preserves_cause[worker] PASSED [ 25%]
+tests/test_workflow_studio.py::test_workflow_attempt_failure_closes_workspace_and_preserves_cause[deadline] PASSED [ 37%]
+tests/test_workflow_studio.py::test_workflow_effect_intent_and_lease_precede_worker_and_only_owner_commits PASSED [ 50%]
+tests/test_workflow_studio.py::test_unused_mutating_permission_never_manufactures_commit_or_retries PASSED [ 62%]
+tests/test_workflow_studio.py::test_worker_output_cannot_commit_a_native_effect PASSED [ 75%]
+tests/test_workflow_studio.py::test_partial_native_effect_failure_is_not_replayed PASSED [ 87%]
+tests/test_workflow_studio.py::test_lease_acquisition_failure_cannot_fail_another_attempts_intent PASSED [100%]
+
+====================== 8 passed, 45 deselected in 4.84s =======================
+

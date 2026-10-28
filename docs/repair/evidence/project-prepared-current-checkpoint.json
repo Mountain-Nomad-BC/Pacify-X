@@ -1,0 +1,24 @@
+{
+  "date": "2026-10-28",
+  "source_commit": "28564f62",
+  "active_gap": "PX-OS-1067",
+  "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000036282",
+  "admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000036284",
+  "source_changes": [
+    "runtime/studio_api.py",
+    "runtime/studio_authority.py",
+    "runtime/workflow_studio.py",
+    "tests/test_prepared_group_operation_approval.py",
+    "tests/test_workflow_studio.py",
+    "registry/test_profiles.json"
+  ],
+  "verified": [
+    "Clean .venv-repair Python3.11:57 passed,1 skipped in focused prepared approval/Studio API neighbors.",
+    "PyYAML6.0.3 installed offline from repository-hash-pinned wheel; owned process closures retained.",
+    "First full changed Studio section:11 of12 groups passed; workflow/skill group7 failures retained.",
+    "Five workflow fence fixtures needed their controlled executor declaration; deadline fixture needed actual declared budget. All8 targeted custody/failure cases now pass without production allowlist changes.",
+    "Skill initial publication hit WinError5 before corruption injection; same untouched isolated case passed. Cause unproved; not rewritten as a source fix."
+  ],
+  "running": "Owned studio-memory-graph changed-section rerun: project-prepared-studio-section-current. Source unchanged during run.",
+  "next": "Inspect section result, refresh agent-tool-authority for new authored profile membership, append local/external logs and native checkpoint, commit source. Keep production groups closed and independent review/certification pending."
+}

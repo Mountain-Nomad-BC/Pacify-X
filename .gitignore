@@ -121,3 +121,6 @@ providers/agency_agents/agents/*/memory/
 
 # Local lease-recovery receipts retain interrupted runtime lock custody.
 registry/.lock-recovery-receipts/
+
+# Native test-owner recovery receipts remain in local runtime custody.
+.agentic_engineering_os_px/test-evidence/.lock-recovery-receipts/

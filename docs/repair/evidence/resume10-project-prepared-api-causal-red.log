@@ -1,0 +1,51 @@
+============================= test session starts =============================
+platform win32 -- Python 3.11.9, pytest-9.2.0, pluggy-1.7.0 -- C:\Users\Ben\Documents\bootstrap_project\Pacify-X\.venv-repair\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\Ben\Documents\bootstrap_project\Pacify-X
+configfile: pyproject.toml
+collecting ... collected 1 item
+
+tests/test_prepared_group_operation_approval.py::test_workflow_studio_api_delegates_one_use_capability_to_real_execution_owner FAILED [100%]
+
+================================== FAILURES ===================================
+_ test_workflow_studio_api_delegates_one_use_capability_to_real_execution_owner _
+
+boundary = (<runtime.workflow_studio.WorkflowStudio object at 0x0000025A014813D0>, TaskExecutionPlan(schema_version='px.task-exec...n_path': '.agentic_engineering_os_px/studios/workflows/workflow-group-15f269fc/revisions/1.0.0/record.json', ...}, ...)
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000025A014F6350>
+
+    def test_workflow_studio_api_delegates_one_use_capability_to_real_execution_owner(boundary, monkeypatch):
+>       from runtime import studio_api
+
+tests\test_prepared_group_operation_approval.py:72: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+runtime\studio_api.py:27: in <module>
+    from .skill_studio import SkillStudio, _component
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    """Governed skill draft, validation, preservation, promotion, and rollback."""
+    
+    from __future__ import annotations
+    
+    import ast
+    from dataclasses import asdict
+    from datetime import datetime, timezone
+    import hashlib
+    import json
+    import os
+    from pathlib import Path
+    import re
+    import stat
+    import struct
+    import tomllib
+    from typing import Mapping
+    import unicodedata
+    from uuid import uuid4
+    
+>   import yaml
+E   ModuleNotFoundError: No module named 'yaml'
+
+runtime\skill_studio.py:20: ModuleNotFoundError
+=========================== short test summary info ===========================
+FAILED tests/test_prepared_group_operation_approval.py::test_workflow_studio_api_delegates_one_use_capability_to_real_execution_owner - ModuleNotFoundError: No module named 'yaml'
+============================== 1 failed in 7.00s ==============================
+

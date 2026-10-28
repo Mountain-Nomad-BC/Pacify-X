@@ -1,0 +1,247 @@
+============================= test session starts =============================
+platform win32 -- Python 3.11.9, pytest-9.2.0, pluggy-1.7.0 -- C:\Users\Ben\Documents\bootstrap_project\Pacify-X\.venv-repair\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\Ben\Documents\bootstrap_project\Pacify-X
+configfile: pyproject.toml
+collecting ... collected 7 items
+
+tests/test_prepared_group_operation_approval.py::test_signed_operation_is_consumed_once_in_execution_owner PASSED [ 14%]
+tests/test_prepared_group_operation_approval.py::test_caller_identity_string_cannot_authorize_prepared_execution PASSED [ 28%]
+tests/test_prepared_group_operation_approval.py::test_group_only_capability_does_not_execute_additional_workflow_nodes PASSED [ 42%]
+tests/test_remote_prepared_bridge.py::test_bridge_reads_real_committed_member_and_never_replays[False] FAILED [ 57%]
+tests/test_remote_prepared_bridge.py::test_bridge_reads_real_committed_member_and_never_replays[True] FAILED [ 71%]
+tests/test_workflow_group_transport.py::test_prepared_group_owner_resolution_and_ambiguity_fail_closed FAILED [ 85%]
+tests/test_workflow_group_transport.py::test_definition_record_round_trip_is_exact PASSED [100%]
+
+================================== FAILURES ===================================
+______ test_bridge_reads_real_committed_member_and_never_replays[False] _______
+
+configured = (WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.tmp/resume10/owned/pacifyx-bqeznztj/pytest-of-Ben/pyt...e', 'request_id': 'fixture-run', 'client_session_id': 'fixture-session', 'correlation_id': 'fixture-correlation', ...})
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001F2A8531810>
+corrupt = False
+
+    @pytest.mark.parametrize("corrupt", [False,True])
+    def test_bridge_reads_real_committed_member_and_never_replays(configured,monkeypatch,corrupt):
+        from runtime import workflow_studio
+>       f=remote_group_fixture(configured,monkeypatch)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_remote_prepared_bridge.py:16: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_remote_group_effect_owner.py:27: in remote_group_fixture
+    fixture=workflow_group_fixture(root,plan,group,placements=placements,claims=claims)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\workflow_group_owner_fixture.py:43: in workflow_group_fixture
+    authority.register_authority_transaction((binding,), grants, {binding.binding_id: "model-group"})
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <runtime.studio_authority.StudioAuthorityStore object at 0x000001F2A8332ED0>
+bindings = (CapabilityBinding(binding_id='binding:workflow-group', subject_kind='workflow', subject_id='workflow:effect', capabil...ace=None, cost_policy='non-billable', egress_policy='deny', state='admitted', evidence_refs=('unit:workflow-group',)),)
+grants = (EffectGrant(grant_id='grant:workflow-effect:0', subject_id='workflow:effect', effects=('execute',), scope_roots=('run...ents',), approved_by='human:owner', evidence_refs=('unit:workflow-exact-effect',), expires_utc=None, state='admitted'))
+executors = {'binding:workflow-group': 'model-group'}
+
+    def register_authority_transaction(
+        self,
+        bindings: tuple[CapabilityBinding, ...],
+        grants: tuple[EffectGrant, ...],
+        executors: Mapping[str, str] | None = None,
+    ) -> dict[str, object]:
+        """Publish one fully prevalidated authority set with compensating rollback."""
+        executor_map = {str(key): str(value) for key, value in (executors or {}).items()}
+        grant_map = {grant.grant_id: grant for grant in grants}
+        binding_map = {binding.binding_id: binding for binding in bindings}
+        if len(grant_map) != len(grants) or len(binding_map) != len(bindings):
+            raise ValueError("authority transaction contains duplicate identities")
+        if any(grant.state != "admitted" for grant in grants):
+            raise ValueError("authority transaction contains a non-admitted grant")
+        if any(binding.state != "admitted" for binding in bindings):
+            raise ValueError("authority transaction contains a non-admitted binding")
+        subjects = {grant.subject_id for grant in grants} | {binding.subject_id for binding in bindings}
+        if len(subjects) != 1:
+            raise ValueError("authority transaction must belong to exactly one subject")
+        capability_records: dict[str, dict[str, object]] = {}
+        referenced_grants: set[str] = set()
+        for binding in bindings:
+            referenced = [grant_map.get(grant_id) for grant_id in binding.effect_grant_ids]
+            if not referenced or any(grant is None for grant in referenced):
+                raise ValueError(f"binding references a grant outside this transaction: {binding.binding_id}")
+            if any(grant.subject_id != binding.subject_id for grant in referenced if grant):
+                raise ValueError(f"binding/grant subject mismatch: {binding.binding_id}")
+            referenced_grants.update(binding.effect_grant_ids)
+            effects = sorted({effect for grant in referenced if grant for effect in grant.effects})
+            identity = f"{binding.capability_id}@{binding.capability_version}"
+            record = {
+                "capability_id": binding.capability_id,
+                "version": binding.capability_version,
+                "effects": effects,
+                "state": "admitted",
+                "approved_by": next(grant.approved_by for grant in referenced if grant),
+            }
+            prior = capability_records.get(identity)
+            if prior is not None and prior != record:
+                raise ValueError(f"one capability version has conflicting authority definitions: {identity}")
+            capability_records[identity] = record
+            adapter = executor_map.get(binding.binding_id)
+            if adapter is not None and adapter not in {"identity", "increment", "double", "fail", "sleep"}:
+>               raise ValueError(f"workflow executor adapter is not in the closed registry: {adapter}")
+E               ValueError: workflow executor adapter is not in the closed registry: model-group
+
+runtime\studio_authority.py:387: ValueError
+_______ test_bridge_reads_real_committed_member_and_never_replays[True] _______
+
+configured = (WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.tmp/resume10/owned/pacifyx-bqeznztj/pytest-of-Ben/pyt...e', 'request_id': 'fixture-run', 'client_session_id': 'fixture-session', 'correlation_id': 'fixture-correlation', ...})
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001F2A827A4D0>
+corrupt = True
+
+    @pytest.mark.parametrize("corrupt", [False,True])
+    def test_bridge_reads_real_committed_member_and_never_replays(configured,monkeypatch,corrupt):
+        from runtime import workflow_studio
+>       f=remote_group_fixture(configured,monkeypatch)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_remote_prepared_bridge.py:16: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_remote_group_effect_owner.py:27: in remote_group_fixture
+    fixture=workflow_group_fixture(root,plan,group,placements=placements,claims=claims)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\workflow_group_owner_fixture.py:43: in workflow_group_fixture
+    authority.register_authority_transaction((binding,), grants, {binding.binding_id: "model-group"})
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <runtime.studio_authority.StudioAuthorityStore object at 0x000001F2A840F990>
+bindings = (CapabilityBinding(binding_id='binding:workflow-group', subject_kind='workflow', subject_id='workflow:effect', capabil...ace=None, cost_policy='non-billable', egress_policy='deny', state='admitted', evidence_refs=('unit:workflow-group',)),)
+grants = (EffectGrant(grant_id='grant:workflow-effect:0', subject_id='workflow:effect', effects=('execute',), scope_roots=('run...ents',), approved_by='human:owner', evidence_refs=('unit:workflow-exact-effect',), expires_utc=None, state='admitted'))
+executors = {'binding:workflow-group': 'model-group'}
+
+    def register_authority_transaction(
+        self,
+        bindings: tuple[CapabilityBinding, ...],
+        grants: tuple[EffectGrant, ...],
+        executors: Mapping[str, str] | None = None,
+    ) -> dict[str, object]:
+        """Publish one fully prevalidated authority set with compensating rollback."""
+        executor_map = {str(key): str(value) for key, value in (executors or {}).items()}
+        grant_map = {grant.grant_id: grant for grant in grants}
+        binding_map = {binding.binding_id: binding for binding in bindings}
+        if len(grant_map) != len(grants) or len(binding_map) != len(bindings):
+            raise ValueError("authority transaction contains duplicate identities")
+        if any(grant.state != "admitted" for grant in grants):
+            raise ValueError("authority transaction contains a non-admitted grant")
+        if any(binding.state != "admitted" for binding in bindings):
+            raise ValueError("authority transaction contains a non-admitted binding")
+        subjects = {grant.subject_id for grant in grants} | {binding.subject_id for binding in bindings}
+        if len(subjects) != 1:
+            raise ValueError("authority transaction must belong to exactly one subject")
+        capability_records: dict[str, dict[str, object]] = {}
+        referenced_grants: set[str] = set()
+        for binding in bindings:
+            referenced = [grant_map.get(grant_id) for grant_id in binding.effect_grant_ids]
+            if not referenced or any(grant is None for grant in referenced):
+                raise ValueError(f"binding references a grant outside this transaction: {binding.binding_id}")
+            if any(grant.subject_id != binding.subject_id for grant in referenced if grant):
+                raise ValueError(f"binding/grant subject mismatch: {binding.binding_id}")
+            referenced_grants.update(binding.effect_grant_ids)
+            effects = sorted({effect for grant in referenced if grant for effect in grant.effects})
+            identity = f"{binding.capability_id}@{binding.capability_version}"
+            record = {
+                "capability_id": binding.capability_id,
+                "version": binding.capability_version,
+                "effects": effects,
+                "state": "admitted",
+                "approved_by": next(grant.approved_by for grant in referenced if grant),
+            }
+            prior = capability_records.get(identity)
+            if prior is not None and prior != record:
+                raise ValueError(f"one capability version has conflicting authority definitions: {identity}")
+            capability_records[identity] = record
+            adapter = executor_map.get(binding.binding_id)
+            if adapter is not None and adapter not in {"identity", "increment", "double", "fail", "sleep"}:
+>               raise ValueError(f"workflow executor adapter is not in the closed registry: {adapter}")
+E               ValueError: workflow executor adapter is not in the closed registry: model-group
+
+runtime\studio_authority.py:387: ValueError
+_______ test_prepared_group_owner_resolution_and_ambiguity_fail_closed ________
+
+tmp_path = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.tmp/resume10/owned/pacifyx-bqeznztj/pytest-of-Ben/pytest-0/test_prepared_group_owner_reso0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001F2A82AE190>
+
+    def test_prepared_group_owner_resolution_and_ambiguity_fail_closed(tmp_path, monkeypatch) -> None:
+        """The console transport resolves exactly one admitted workflow owner."""
+        from runtime.workflow_group_config import validate_prepared_group_node_config
+    
+        benchmark = SimpleNamespace(revision="b" * 64)
+        plan, group, persisted = _prepared_plan(tmp_path, "b" * 64, "unused", with_group=True)
+        reference = {
+            "schema_version": "px.prepared-group-reference/1.0",
+            "plan_id": plan.plan_id,
+            "plan_sha256": plan.plan_sha256,
+        }
+>       studio, definition = _admit_group_workflow(tmp_path, reference)
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_workflow_group_transport.py:152: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+tests\test_workflow_group_transport.py:136: in _admit_group_workflow
+    studio.register_authority([binding], [grant], {binding.binding_id: "model-group"})
+runtime\workflow_studio.py:385: in register_authority
+    return self.authority.register_authority_transaction(
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = <runtime.studio_authority.StudioAuthorityStore object at 0x000001F2A85C3810>
+bindings = (CapabilityBinding(binding_id='binding:group', subject_kind='workflow', subject_id='workflow:group', capability_id='ca...mespace=None, cost_policy='non-billable', egress_policy='deny', state='admitted', evidence_refs=('receipt:binding',)),)
+grants = (EffectGrant(grant_id='grant:group', subject_id='workflow:group', effects=('read',), scope_roots=('workspace:demo',), approved_by='human:owner', evidence_refs=('receipt:grant',), expires_utc=None, state='admitted'),)
+executors = {'binding:group': 'model-group'}
+
+    def register_authority_transaction(
+        self,
+        bindings: tuple[CapabilityBinding, ...],
+        grants: tuple[EffectGrant, ...],
+        executors: Mapping[str, str] | None = None,
+    ) -> dict[str, object]:
+        """Publish one fully prevalidated authority set with compensating rollback."""
+        executor_map = {str(key): str(value) for key, value in (executors or {}).items()}
+        grant_map = {grant.grant_id: grant for grant in grants}
+        binding_map = {binding.binding_id: binding for binding in bindings}
+        if len(grant_map) != len(grants) or len(binding_map) != len(bindings):
+            raise ValueError("authority transaction contains duplicate identities")
+        if any(grant.state != "admitted" for grant in grants):
+            raise ValueError("authority transaction contains a non-admitted grant")
+        if any(binding.state != "admitted" for binding in bindings):
+            raise ValueError("authority transaction contains a non-admitted binding")
+        subjects = {grant.subject_id for grant in grants} | {binding.subject_id for binding in bindings}
+        if len(subjects) != 1:
+            raise ValueError("authority transaction must belong to exactly one subject")
+        capability_records: dict[str, dict[str, object]] = {}
+        referenced_grants: set[str] = set()
+        for binding in bindings:
+            referenced = [grant_map.get(grant_id) for grant_id in binding.effect_grant_ids]
+            if not referenced or any(grant is None for grant in referenced):
+                raise ValueError(f"binding references a grant outside this transaction: {binding.binding_id}")
+            if any(grant.subject_id != binding.subject_id for grant in referenced if grant):
+                raise ValueError(f"binding/grant subject mismatch: {binding.binding_id}")
+            referenced_grants.update(binding.effect_grant_ids)
+            effects = sorted({effect for grant in referenced if grant for effect in grant.effects})
+            identity = f"{binding.capability_id}@{binding.capability_version}"
+            record = {
+                "capability_id": binding.capability_id,
+                "version": binding.capability_version,
+                "effects": effects,
+                "state": "admitted",
+                "approved_by": next(grant.approved_by for grant in referenced if grant),
+            }
+            prior = capability_records.get(identity)
+            if prior is not None and prior != record:
+                raise ValueError(f"one capability version has conflicting authority definitions: {identity}")
+            capability_records[identity] = record
+            adapter = executor_map.get(binding.binding_id)
+            if adapter is not None and adapter not in {"identity", "increment", "double", "fail", "sleep"}:
+>               raise ValueError(f"workflow executor adapter is not in the closed registry: {adapter}")
+E               ValueError: workflow executor adapter is not in the closed registry: model-group
+
+runtime\studio_authority.py:387: ValueError
+=========================== short test summary info ===========================
+FAILED tests/test_remote_prepared_bridge.py::test_bridge_reads_real_committed_member_and_never_replays[False] - ValueError: workflow executor adapter is not in the closed registry: model-group
+FAILED tests/test_remote_prepared_bridge.py::test_bridge_reads_real_committed_member_and_never_replays[True] - ValueError: workflow executor adapter is not in the closed registry: model-group
+FAILED tests/test_workflow_group_transport.py::test_prepared_group_owner_resolution_and_ambiguity_fail_closed - ValueError: workflow executor adapter is not in the closed registry: model-group
+======================== 3 failed, 4 passed in 28.60s =========================
+

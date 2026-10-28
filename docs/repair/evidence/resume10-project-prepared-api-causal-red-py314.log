@@ -1,0 +1,446 @@
+============================= test session starts =============================
+platform win32 -- Python 3.14.7, pytest-9.1.1, pluggy-1.6.0 -- C:\Users\Ben\Documents\bootstrap_project\Pacify-X\Python\pythoncore-3.14-64\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\Ben\Documents\bootstrap_project\Pacify-X
+configfile: pyproject.toml
+collecting ... collected 1 item
+
+tests/test_prepared_group_operation_approval.py::test_workflow_studio_api_delegates_one_use_capability_to_real_execution_owner FAILED [100%]
+
+================================== FAILURES ===================================
+_ test_workflow_studio_api_delegates_one_use_capability_to_real_execution_owner _
+
+boundary = (<runtime.workflow_studio.WorkflowStudio object at 0x000002C1D42578C0>, TaskExecutionPlan(schema_version='px.task-exec...n_path': '.agentic_engineering_os_px/studios/workflows/workflow-group-15f269fc/revisions/1.0.0/record.json', ...}, ...)
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002C1D4557E10>
+
+    def test_workflow_studio_api_delegates_one_use_capability_to_real_execution_owner(boundary, monkeypatch):
+        from runtime import studio_api
+        studio, _, reference, _, calls, *_ = boundary
+        # Keep real capability verification and the real prepared execution method;
+        # only the already-disabled commissioned execution host is controlled.
+        monkeypatch.setattr(studio_api, "WorkflowStudio", lambda *a, **kw: studio)
+        payload = {"prepared_group_reference": reference}
+        proof = approval_proof(studio.project_root, "workflow", "execute-plan-owner", payload)
+        request = {**payload, "approval_capability": proof, "approved_by": "forged-client"}
+>       result = studio_api.studio_operation(studio.project_root, "workflow", "execute-plan-owner", request)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_prepared_group_operation_approval.py:80: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.tmp/resume10/owned/pacifyx-8yrpetg2/pytest-of-Ben/pytest-0/test_workflow_studio_api_deleg0/project')
+kind = 'workflow', operation = 'execute-plan-owner'
+value = {'prepared_group_reference': {'schema_version': 'px.prepared-group-reference/1.0', 'plan_id': 'task-plan-4662ca1f495fc...d4858df3de811e63c3916693fc714344e184706baf6968e6f389afc5'}, 'approved': True, 'approved_by': 'human:vscode-local-user'}
+
+    def studio_operation(
+        root: Path, kind: str, operation: str, value: Mapping[str, Any]
+    ) -> dict[str, object]:
+        value = _request(value)
+        kind = _text(kind, 32)
+        operation = _text(operation, 64)
+        require_studio_operation(kind, operation)
+        value = dict(value)
+        foundry_intake = kind == "skill" and operation == "intake-foundry-candidate"
+        if foundry_intake:
+            StudioAuthorityStore.open_existing(root.resolve(strict=True))
+            if set(value) != {"candidate", "retained_publication", "studio_decision", "decision_reason", "approval_capability"}:
+                raise ValueError("exact signed Foundry intake request fields required")
+        if kind == "agent":
+            _require_standard_agent_domain(value)
+        if operation == "identity-absence":
+            if set(value) != {"identity"}:
+                raise ValueError("identity-absence requires exactly one identity")
+            return studio_identity_absence(
+                root.resolve(strict=True), kind, _text(value["identity"])
+            )
+        if operation == "next-version":
+            physical_keys = {"identity", "source_version"}
+            external_keys = {
+                "identity",
+                "source_version",
+                "source_scope",
+                "source_revision_sha256",
+                "source_content_sha256",
+            }
+            if frozenset(value) not in {
+                frozenset(physical_keys),
+                frozenset(external_keys),
+            }:
+                raise StudioVersionConflict("allocation-envelope-invalid")
+            try:
+                return allocate_studio_version(
+                    root.resolve(strict=True),
+                    kind,
+                    _text(value["identity"]),
+                    _text(value["source_version"]),
+                    source_scope=(
+                        "studio-physical"
+                        if "source_scope" not in value
+                        else value["source_scope"]
+                    ),
+                    source_revision_sha256=(
+                        value["source_revision_sha256"]
+                        if "source_revision_sha256" in value
+                        else None
+                    ),
+                    source_content_sha256=(
+                        value["source_content_sha256"]
+                        if "source_content_sha256" in value
+                        else None
+                    ),
+                )
+            except StudioVersionConflict:
+                raise
+            except (TypeError, ValueError) as error:
+                raise StudioVersionConflict("allocation-source-invalid") from error
+        if operation not in READ_ONLY_STUDIO_OPERATIONS:
+            if value.get("approved") is True and not value.get("approval_capability"):
+                raise PermissionError("caller-authored approval booleans are not authority")
+            proof = value.get("approval_capability")
+            if not isinstance(proof, Mapping):
+                raise PermissionError(
+                    "payload-bound single-use operation approval is required"
+                )
+            supplied_payload = _approval_payload(value)
+            authority = (StudioAuthorityStore.open_existing(root.resolve(strict=True))
+                         if foundry_intake else StudioAuthorityStore(root.resolve(strict=True)))
+            approval = authority.consume_host_operation_approval(
+                proof,
+                kind=kind,
+                operation=operation,
+                supplied_payload=supplied_payload or None,
+            )
+            approved_payload = approval.get("payload")
+            if not isinstance(approved_payload, Mapping):
+                raise PermissionError("host-signed Studio approval payload is invalid")
+            value = _request(approved_payload)
+            value["approved"] = True
+            value["approved_by"] = _text(approval["approved_by"])
+        """Execute one explicit lifecycle transition through the canonical controller."""
+        root = root.resolve(strict=True)
+        if kind == "knowledge":
+            controller = KnowledgeCoreController(
+                root,
+                policy_root=framework_root(),
+                read_only=operation == "browse",
+            )
+            if operation == "browse":
+                return controller.browse(
+                    query=_text(value.get("query") or ""),
+                    limit=_integer(value.get("limit", 100)),
+                )
+            if operation == "observe-experience":
+                measurements = value.get("measurements")
+                if not isinstance(measurements, Mapping):
+                    raise ValueError("experience capture requires numeric measurements")
+                return controller.observe_experience(
+                    pipeline_id=_text(value.get("pipeline_id") or "") or None,
+                    operation_id=_text(value.get("operation_id") or ""),
+                    task_class=_text(value.get("task_class") or ""),
+                    outcome=_text(value.get("outcome") or ""),
+                    measurements=measurements,
+                    capability_ids=_strings(value.get("capability_ids", [])),
+                    environment_sha256=_text(value.get("environment_sha256") or ""),
+                    source_ids=_strings(value.get("source_ids", [])),
+                    evidence_refs=_strings(value.get("evidence_refs", [])),
+                    approved=_boolean(value.get("approved", False)),
+                    observed_by=_text(value.get("approved_by") or ""),
+                )
+            if operation == "extract-pattern":
+                return controller.extract_learning_pattern(
+                    _text(value.get("pipeline_id") or ""),
+                    metric=_text(value.get("metric") or ""),
+                    higher_is_better=_boolean(value.get("higher_is_better", True)),
+                    interpretation=_text(value.get("interpretation") or ""),
+                    applicability=_strings(value.get("applicability", [])),
+                    approved=_boolean(value.get("approved", False)),
+                    extracted_by=_text(value.get("approved_by") or ""),
+                )
+            if operation == "form-hypothesis":
+                dependencies = value.get("dependency_sha256", {})
+                if not isinstance(dependencies, Mapping):
+                    raise ValueError("learning dependencies must be an object")
+                return controller.form_learning_hypothesis(
+                    _text(value.get("pipeline_id") or ""),
+                    unit_id=_text(value.get("unit_id") or ""),
+                    kind=_text(value.get("kind") or ""),
+                    claim=_text(value.get("claim") or ""),
+                    incumbent_artifact=value.get("incumbent_artifact"),
+                    challenger_artifact=value.get("challenger_artifact"),
+                    dependency_sha256={
+                        _text(key): _text(item) for key, item in dependencies.items()
+                    },
+                    approved=_boolean(value.get("approved", False)),
+                    formed_by=_text(value.get("approved_by") or ""),
+                )
+            if operation == "record-trial":
+                return controller.record_learning_trial(
+                    _text(value.get("pipeline_id") or ""),
+                    winner=_text(value.get("winner") or ""),
+                    evidence_ref=_text(value.get("evidence_ref") or ""),
+                    approved=_boolean(value.get("approved", False)),
+                    recorded_by=_text(value.get("approved_by") or ""),
+                )
+            if operation == "research-validate":
+                references = value.get("references", [])
+                if not isinstance(references, list) or any(
+                    not isinstance(item, Mapping) for item in references
+                ):
+                    raise ValueError("research references must be an array of objects")
+                return controller.validate_learning_research(
+                    _text(value.get("pipeline_id") or ""),
+                    question=_text(value.get("question") or ""),
+                    references=references,
+                    better_alternative_found=_boolean(
+                        value.get("better_alternative_found", False)
+                    ),
+                    conclusion=_text(value.get("conclusion") or ""),
+                    secondary_artifact=value.get("secondary_artifact"),
+                    approved=_boolean(value.get("approved", False)),
+                    validated_by=_text(value.get("approved_by") or ""),
+                )
+            if operation == "final-validate":
+                return controller.final_validate_learning(
+                    _text(value.get("pipeline_id") or ""),
+                    validation_evidence_ref=_text(
+                        value.get("validation_evidence_ref") or ""
+                    ),
+                    partial_units=_strings(value.get("partial_units", [])),
+                    approved=_boolean(value.get("approved", False)),
+                    validated_by=_text(value.get("approved_by") or ""),
+                )
+            if operation == "admit-learning":
+                return controller.admit_learning_candidate(
+                    _text(value.get("pipeline_id") or ""),
+                    approved=_boolean(value.get("approved", False)),
+                    admitted_by=_text(value.get("approved_by") or ""),
+                )
+            if operation == "measure-reuse":
+                return controller.measure_learning_reuse(
+                    _text(value.get("pipeline_id") or ""),
+                    uses=_integer(value.get("uses", 0)),
+                    successes=_integer(value.get("successes", 0)),
+                    regressions=_integer(value.get("regressions", 0)),
+                    approved=_boolean(value.get("approved", False)),
+                    measured_by=_text(value.get("approved_by") or ""),
+                )
+            if operation == "propose":
+                candidate = value.get("candidate")
+                if not isinstance(candidate, Mapping):
+                    raise ValueError("knowledge proposal requires a candidate object")
+                return controller.propose(
+                    candidate,
+                    source_ids=_strings(value.get("source_ids", [])),
+                    evidence_refs=_strings(value.get("evidence_refs", [])),
+                    approved=_boolean(value.get("approved", False)),
+                    proposed_by=_text(value.get("approved_by") or ""),
+                )
+            if operation == "verify":
+                return controller.verify(
+                    _text(value.get("proposal_id") or ""),
+                    approved=_boolean(value.get("approved", False)),
+                    verified_by=_text(value.get("approved_by") or ""),
+                )
+            if operation == "approve":
+                return controller.approve(
+                    _text(value.get("proposal_id") or ""),
+                    approved=_boolean(value.get("approved", False)),
+                    approved_by=_text(value.get("approved_by") or ""),
+                )
+            if operation == "promote":
+                return controller.promote(
+                    _text(value.get("proposal_id") or ""),
+                    approved=_boolean(value.get("approved", False)),
+                    promoted_by=_text(value.get("approved_by") or ""),
+                )
+            if operation == "reject":
+                return controller.reject(
+                    _text(value.get("proposal_id") or ""),
+                    approved=_boolean(value.get("approved", False)),
+                    rejected_by=_text(value.get("approved_by") or ""),
+                    reason=_text(value.get("reason") or ""),
+                )
+            if operation == "rollback":
+                return controller.rollback(
+                    _text(value.get("record_id") or ""),
+                    _text(value.get("target_sha256") or ""),
+                    approved=_boolean(value.get("approved", False)),
+                    approved_by=_text(value.get("approved_by") or ""),
+                    evidence_refs=_strings(value.get("evidence_refs", [])),
+                    expected_head_sha256=_text(value.get("expected_head_sha256") or "")
+                    or None,
+                )
+            if operation == "recover":
+                return controller.recover(
+                    approved=_boolean(value.get("approved", False)),
+                    recovered_by=_text(value.get("approved_by") or ""),
+                )
+            raise ValueError(f"unsupported knowledge Studio operation: {operation}")
+        if operation == "create":
+            return create_draft(root, kind, value)
+        if operation == "admit-source":
+            if kind != "skill":
+                raise ValueError("source admission is only valid for Skill Studio")
+            return admit_skill_source(root, value)
+        if kind == "agent":
+            if operation == "check-host-run":
+                spec, _ = _agent(value)
+                return AgentRuntimeController.assert_host_run_current(root, spec, run_id=_text(value.get("run_id") or ""), task=dict(value.get("task", {})))
+            if operation in {"runs", "status"}:
+                run_root = (
+                    root.resolve(strict=True)
+                    / ".agentic_engineering_os_px/studios/agents/sessions"
+                )
+                if operation == "runs" and not run_root.is_dir():
+                    return {
+                        "schema_version": "px.studio-run-list/1.0",
+                        "kind": "agent",
+                        "runs": [],
+                        "returned": 0,
+                        "total_authenticated": 0,
+                        "has_more": False,
+                        "invalid": [],
+                    }
+                control = DurableRunControl.open_existing(
+                    root.resolve(strict=True),
+                    run_root,
+                )
+                return (
+                    control.list_snapshots(
+                        kind="agent", limit=_integer(value.get("limit", 100))
+                    )
+                    if operation == "runs"
+                    else control.read_snapshot(_text(value.get("run_id") or ""))
+                )
+            controller = AgentRuntimeController(root)
+            if operation in {"pause", "cancel", "stop"}:
+                return controller.request_lifecycle(
+                    _text(value.get("run_id") or ""),
+                    operation,
+                    approved=_boolean(value.get("approved", False)),
+                    approved_by=_text(value.get("approved_by") or ""),
+                )
+            if operation == "reconcile":
+                return controller.reconcile_sessions(
+                    approved=_boolean(value.get("approved", False)),
+                    approved_by=_text(value.get("approved_by") or ""),
+                    stale_after_seconds=_number(value.get("stale_after_seconds", 60.0)),
+                )
+            spec, _ = _agent(value)
+            if operation == "preview":
+                return controller.preview(spec)
+            if operation == "test":
+                return controller.test_candidate(spec)
+            if operation == "register-authority":
+                bindings, grants = _authority(value)
+                return controller.register_revision_authority(spec, bindings, grants)
+            if operation == "admit":
+                return controller.admit(spec)
+            if operation == "prepare-host-run":
+                task = value.get("task")
+                if not isinstance(task, Mapping):
+                    raise ValueError("agent host run requires a bounded task object")
+                return controller.prepare_host_run(
+                    spec, task=task, approval=_boolean(value.get("approved", False))
+                )
+            if operation == "complete-host-run":
+                task = value.get("task")
+                host_result = value.get("host_result")
+                if not isinstance(task, Mapping) or not isinstance(host_result, Mapping):
+                    raise ValueError(
+                        "agent host completion requires task and host result objects"
+                    )
+                return controller.complete_host_run(
+                    spec,
+                    run_id=_text(value.get("run_id") or ""),
+                    task=task,
+                    host_result=host_result,
+                    approval=_boolean(value.get("approved", False)),
+                )
+            if operation == "run":
+                task = value.get("task")
+                if not isinstance(task, Mapping):
+                    raise ValueError("agent run requires a bounded task object")
+                return controller.invoke_harness(
+                    spec, task=task, approval=_boolean(value.get("approved", False))
+                )
+            if operation == "start":
+                task = value.get("task")
+                if not isinstance(task, Mapping):
+                    raise ValueError("agent start requires a bounded task object")
+                if spec.harness_id == "harness:vscode-lm":
+                    return controller.prepare_host_run(
+                        spec, task=task, approval=_boolean(value.get("approved", False))
+                    )
+                return controller.start_harness(
+                    spec, task=task, approval=_boolean(value.get("approved", False))
+                )
+            if operation == "resume":
+                task = value.get("task")
+                if not isinstance(task, Mapping):
+                    raise ValueError("agent resume requires a bounded task object")
+                return controller.resume_harness(
+                    spec,
+                    run_id=_text(value.get("run_id") or ""),
+                    task=task,
+                    approval=_boolean(value.get("approved", False)),
+                )
+        elif kind == "workflow":
+            if operation in {"runs", "status"}:
+                run_root = (
+                    root.resolve(strict=True)
+                    / ".agentic_engineering_os_px/studios/workflows/sessions"
+                )
+                if operation == "runs" and not run_root.is_dir():
+                    return {
+                        "schema_version": "px.studio-run-list/1.0",
+                        "kind": "workflow",
+                        "runs": [],
+                        "returned": 0,
+                        "total_authenticated": 0,
+                        "has_more": False,
+                        "invalid": [],
+                    }
+                control = DurableRunControl.open_existing(
+                    root.resolve(strict=True),
+                    run_root,
+                )
+                return (
+                    control.list_snapshots(
+                        kind="workflow", limit=_integer(value.get("limit", 100))
+                    )
+                    if operation == "runs"
+                    else control.read_snapshot(_text(value.get("run_id") or ""))
+                )
+            studio = WorkflowStudio(root, gremlin_runtime=_host_gremlin_composition(root))
+            if operation in {"pause", "cancel", "stop"}:
+                return studio.request_lifecycle(
+                    _text(value.get("run_id") or ""),
+                    operation,
+                    approved=_boolean(value.get("approved", False)),
+                    approved_by=_text(value.get("approved_by") or ""),
+                )
+            if operation == "reconcile":
+                return studio.reconcile(
+                    approved=_boolean(value.get("approved", False)),
+                    approved_by=_text(value.get("approved_by") or ""),
+                    stale_after_seconds=_number(value.get("stale_after_seconds", 60.0)),
+                )
+            if operation == "resolve-plan-owner":
+                reference = value.get("prepared_group_reference")
+                if not isinstance(reference, Mapping):
+                    raise ValueError("prepared-group owner resolution requires its exact reference")
+                return studio.resolve_prepared_group_owner(reference)
+            if operation == "execute-plan-owner":
+                reference = value.get("prepared_group_reference")
+                if not isinstance(reference, Mapping):
+                    raise ValueError("prepared-group execution requires its exact reference")
+>               return studio.execute_prepared_group_node(
+                    reference, approved_by=_text(value.get("approved_by") or ""))
+E               TypeError: WorkflowStudio.execute_prepared_group_node() got an unexpected keyword argument 'approved_by'
+
+runtime\studio_api.py:1347: TypeError
+=========================== short test summary info ===========================
+FAILED tests/test_prepared_group_operation_approval.py::test_workflow_studio_api_delegates_one_use_capability_to_real_execution_owner - TypeError: WorkflowStudio.execute_prepared_group_node() got an unexpected keyword argument 'approved_by'
+============================= 1 failed in 11.75s ==============================
+

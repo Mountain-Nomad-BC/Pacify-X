@@ -1,0 +1,18 @@
+{
+  "command": [
+    "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.venv-repair\\Scripts\\python.exe",
+    "-m",
+    "pytest",
+    "-vv",
+    "--tb=short",
+    "tests/test_workflow_studio.py::test_workflow_attempt_failure_closes_workspace_and_preserves_cause[deadline]",
+    "tests/test_skill_studio.py::test_skill_exact_replay_rejects_each_corrupted_revision[undeclared-key]"
+  ],
+  "exit_code": 1,
+  "tree_closed": true,
+  "resource_inactive": true,
+  "receipt": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.tmp\\resume10\\owned\\cleanup-receipts\\process-811f870287fc483fb4fcde5815958784.json",
+  "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.tmp\\resume10\\owned\\pacifyx-68q2yalc",
+  "log": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\docs\\repair\\evidence\\resume10-project-workflow-failure-diagnosis.log",
+  "log_sha256": "3431fae44c781cf118ffb8b6aa0dfd15651073653ee9ebdc25c36efec5df16a1"
+}

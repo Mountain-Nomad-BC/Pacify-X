@@ -1795,6 +1795,40 @@
         "Native Studio workflow execute-plan-owner still supplies obsolete approved_by; next source repair must preserve single-use signature consumption.",
         "First section attempt exposed two missing console handlers; later short-startup owner stopped and is retained as stopped. Final section passed under sufficient bounded startup."
       ]
+    },
+    {
+      "date": "2026-10-28",
+      "segment": "prepared-group-native-approval",
+      "status": "SOURCE_REPAIRED_ENVIRONMENT_GATE_PENDING",
+      "source": [
+        "runtime/studio_api.py",
+        "runtime/workflow_studio.py",
+        "runtime/studio_authority.py"
+      ],
+      "changes": [
+        "Workflow API now preflights signed reference-bound capability without consuming it or initializing the workflow owner.",
+        "Native prepared execution consumes the same exact one-use capability, preserving remote chat scope and isolated single-node checks.",
+        "Read-only verifier checks signature/current scope/replay; atomic consumer still owns exclusive nonce creation."
+      ],
+      "verification": {
+        "causal_red": "resume10-project-prepared-api-causal-red-py314.json",
+        "preflight_red": "resume10-project-prepared-api-preflight-red.json",
+        "latest": "resume10-project-prepared-api-owner-verified.json",
+        "latest_result": "Python 3.14 focused neighbors: 56 passed, 1 skipped, 1 failed; the failure is a child process without PyYAML, not an accepted pass.",
+        "repair_python311": "Missing required pinned PyYAML==6.0.3 prevents clean native Studio import.",
+        "production_model_group": "Registry stays closed; earlier three positive integration tests failed at that admission boundary."
+      },
+      "next": "Download hash-pinned PyYAML wheel under separate network admission; install offline into development venv under separate install admission; revalidate in clean Python 3.11 and run governed section."
+    }
+  ],
+  "continuation_reports": [
+    {
+      "date": "2026-10-28T21:37:19.894071+00:00",
+      "segment": "user-stop-final-handoff",
+      "status": "STOPPED_VERIFIED_UNCOMMITTED",
+      "summary": "STOPPED at user request. Native prepared approval changes are verified but uncommitted; main 28564f62 is ahead of origin/main by one unpublished commit. Clean Python3.11 focused neighbors:57 passed/1 skipped; custody fixtures:8 passed; governed studio-memory-graph and agent-tool-authority both passed with execution_valid=true. No owned test remains running. Intake remains open; reviewed closures0/105; no production commissioning or certification. Earlier pending/active entries are superseded. Full resume instructions:docs/repair/HANDOFF_PROJECT_REPAIR_2026-10-28.md.",
+      "handoff": "docs/repair/HANDOFF_PROJECT_REPAIR_2026-10-28.md",
+      "closure_receipt": "docs/repair/evidence/project-stop-handoff-ledger.json"
     }
   ]
 }

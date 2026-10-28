@@ -1,0 +1,34 @@
+============================= test session starts =============================
+platform win32 -- Python 3.14.7, pytest-9.1.1, pluggy-1.6.0 -- C:\Users\Ben\Documents\bootstrap_project\Pacify-X\Python\pythoncore-3.14-64\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\Ben\Documents\bootstrap_project\Pacify-X
+configfile: pyproject.toml
+collecting ... collected 24 items
+
+tests/test_prepared_group_operation_approval.py::test_signed_operation_is_consumed_once_in_execution_owner PASSED [  4%]
+tests/test_prepared_group_operation_approval.py::test_caller_identity_string_cannot_authorize_prepared_execution PASSED [  8%]
+tests/test_prepared_group_operation_approval.py::test_group_only_capability_does_not_execute_additional_workflow_nodes[False] PASSED [ 12%]
+tests/test_prepared_group_operation_approval.py::test_group_only_capability_does_not_execute_additional_workflow_nodes[True] PASSED [ 16%]
+tests/test_prepared_group_operation_approval.py::test_workflow_studio_api_delegates_one_use_capability_to_real_execution_owner PASSED [ 20%]
+tests/test_prepared_group_operation_approval.py::test_workflow_prepared_api_rejects_foreign_or_expanded_authority[missing] PASSED [ 25%]
+tests/test_prepared_group_operation_approval.py::test_workflow_prepared_api_rejects_foreign_or_expanded_authority[remote-scope] PASSED [ 29%]
+tests/test_prepared_group_operation_approval.py::test_workflow_prepared_api_rejects_foreign_or_expanded_authority[different-plan] PASSED [ 33%]
+tests/test_prepared_group_operation_approval.py::test_workflow_prepared_api_rejects_foreign_or_expanded_authority[extra-fields] PASSED [ 37%]
+tests/test_prepared_group_operation_approval.py::test_workflow_capability_cannot_be_reused_as_selected_remote_approval PASSED [ 41%]
+tests/test_prepared_group_operation_approval.py::test_changed_owner_after_signed_workflow_consumption_denies_before_node_approval PASSED [ 45%]
+tests/test_workflow_approval_boundary.py::test_caller_claims_never_reach_workflow_owner[fields0-approve] PASSED [ 50%]
+tests/test_workflow_approval_boundary.py::test_caller_claims_never_reach_workflow_owner[fields0-run] PASSED [ 54%]
+tests/test_workflow_approval_boundary.py::test_caller_claims_never_reach_workflow_owner[fields0-start] PASSED [ 58%]
+tests/test_workflow_approval_boundary.py::test_caller_claims_never_reach_workflow_owner[fields0-cancel] PASSED [ 62%]
+tests/test_workflow_approval_boundary.py::test_caller_claims_never_reach_workflow_owner[fields1-approve] PASSED [ 66%]
+tests/test_workflow_approval_boundary.py::test_caller_claims_never_reach_workflow_owner[fields1-run] PASSED [ 70%]
+tests/test_workflow_approval_boundary.py::test_caller_claims_never_reach_workflow_owner[fields1-start] PASSED [ 75%]
+tests/test_workflow_approval_boundary.py::test_caller_claims_never_reach_workflow_owner[fields1-cancel] PASSED [ 79%]
+tests/test_workflow_approval_boundary.py::test_signed_approval_runs_real_nodes_and_cannot_replay PASSED [ 83%]
+tests/test_workflow_approval_boundary.py::test_signed_request_binding_denies_tampering[payload] PASSED [ 87%]
+tests/test_workflow_approval_boundary.py::test_signed_request_binding_denies_tampering[operation] PASSED [ 91%]
+tests/test_workflow_approval_boundary.py::test_signed_request_binding_denies_tampering[signature] PASSED [ 95%]
+tests/test_workflow_approval_boundary.py::test_signed_request_binding_denies_tampering[project] PASSED [100%]
+
+============================= 24 passed in 7.39s ==============================
+

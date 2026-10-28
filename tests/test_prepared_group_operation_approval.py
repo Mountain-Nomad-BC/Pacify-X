@@ -55,14 +55,127 @@ def test_caller_identity_string_cannot_authorize_prepared_execution(boundary):
     assert calls == []
 
 
-def test_group_only_capability_does_not_execute_additional_workflow_nodes(boundary):
+@pytest.mark.parametrize("workflow_scope", [False, True])
+def test_group_only_capability_does_not_execute_additional_workflow_nodes(boundary, workflow_scope):
     studio, _, reference, selection, calls, owner, definition = boundary
     extra = replace(definition.nodes[0], node_id="node:additional")
     definition = replace(definition, version="1.0.1", nodes=(*definition.nodes, extra))
     studio.save_revision(definition)
     path = next(studio.state_root.glob("*/revisions/1.0.1/record.json"))
     owner.update(version=definition.version, revision_path=path.relative_to(studio.project_root).as_posix(), revision_sha256=hashlib.sha256(path.read_bytes()).hexdigest())
-    proof = approval_proof(studio.project_root, "remote-model", "chat", selection)
+    payload = {"prepared_group_reference": reference} if workflow_scope else selection
+    proof = approval_proof(studio.project_root,
+        "workflow" if workflow_scope else "remote-model",
+        "execute-plan-owner" if workflow_scope else "chat", payload)
     with pytest.raises(PermissionError, match="single-node"):
+        studio.execute_prepared_group_node(reference, approval_capability=proof,
+            selection=None if workflow_scope else selection)
+    assert calls == []
+
+
+def test_workflow_studio_api_delegates_one_use_capability_to_real_execution_owner(boundary, monkeypatch):
+    from runtime import studio_api
+    studio, _, reference, _, calls, *_ = boundary
+    # Keep real capability verification and the real prepared execution method;
+    # only the already-disabled commissioned execution host is controlled.
+    monkeypatch.setattr(studio_api, "WorkflowStudio", lambda *a, **kw: studio)
+    payload = {"prepared_group_reference": reference}
+    proof = approval_proof(studio.project_root, "workflow", "execute-plan-owner", payload)
+    request = {**payload, "approval_capability": proof, "approved_by": "forged-client"}
+    result = studio_api.studio_operation(studio.project_root, "workflow", "execute-plan-owner", request)
+    assert result == {"controlled_boundary": True}
+    assert calls == [("node-approval", "human:vscode-local-user"), ("execute", True)]
+    with pytest.raises(PermissionError):
+        studio_api.studio_operation(studio.project_root, "workflow", "execute-plan-owner", request)
+    assert len(calls) == 2
+
+
+@pytest.mark.parametrize("invalid", ["missing", "remote-scope", "different-plan", "extra-fields"])
+def test_workflow_prepared_api_rejects_foreign_or_expanded_authority(boundary, monkeypatch, invalid):
+    from runtime import studio_api
+    studio, _, reference, selection, calls, *_ = boundary
+    monkeypatch.setattr(studio_api, "WorkflowStudio", lambda *a, **kw: studio)
+    payload = {"prepared_group_reference": reference}
+    approved = payload if invalid != "different-plan" else {
+        "prepared_group_reference": {**reference, "plan_sha256": "f" * 64}}
+    proof = (approval_proof(studio.project_root, "remote-model", "chat", selection)
+             if invalid == "remote-scope" else
+             approval_proof(studio.project_root, "workflow", "execute-plan-owner", approved))
+    request = {**payload, "approved_by": "human:vscode-local-user", "approved": True}
+    if invalid != "missing":
+        request["approval_capability"] = proof
+    if invalid == "extra-fields":
+        request["placements"] = {"unexpected": {}}
+    with pytest.raises((PermissionError, ValueError)):
+        studio_api.studio_operation(studio.project_root, "workflow", "execute-plan-owner", request)
+    assert calls == []
+
+
+def test_workflow_capability_cannot_be_reused_as_selected_remote_approval(boundary):
+    studio, _, reference, selection, calls, *_ = boundary
+    proof = approval_proof(studio.project_root, "workflow", "execute-plan-owner",
+        {"prepared_group_reference": reference})
+    with pytest.raises(PermissionError):
         studio.execute_prepared_group_node(reference, approval_capability=proof, selection=selection)
+    assert calls == []
+
+
+def test_changed_owner_after_signed_workflow_consumption_denies_before_node_approval(boundary, monkeypatch):
+    studio, _, reference, _, calls, owner, _ = boundary
+    original = studio.authority.consume_host_operation_approval
+    def changed_owner(*args, **kwargs):
+        result = original(*args, **kwargs)
+        owner["revision_sha256"] = "f" * 64
+        return result
+    monkeypatch.setattr(studio.authority, "consume_host_operation_approval", changed_owner)
+    proof = approval_proof(studio.project_root, "workflow", "execute-plan-owner",
+        {"prepared_group_reference": reference})
+    with pytest.raises(PermissionError, match="owner changed"):
+        studio.execute_prepared_group_node(reference, approval_capability=proof)
+    assert calls == []
+
+
+@pytest.mark.parametrize("tamper", ["signature", "operation", "replay"])
+def test_prepared_api_rejects_bad_proof_before_workflow_initialization(boundary, monkeypatch, tamper):
+    from runtime import studio_api
+    studio, _, reference, _, _, *_ = boundary
+    payload = {"prepared_group_reference": reference}
+    proof = approval_proof(studio.project_root, "workflow", "execute-plan-owner", payload)
+    if tamper == "signature":
+        proof["signature"] = "invalid"
+    elif tamper == "operation":
+        proof["claim"]["operation"] = "run"
+    else:
+        studio.authority.consume_host_operation_approval(proof, kind="workflow",
+            operation="execute-plan-owner", supplied_payload=payload)
+    def forbidden(*args, **kwargs):
+        pytest.fail("unverified or replayed capability initialized a workflow owner")
+    monkeypatch.setattr(studio_api, "WorkflowStudio", forbidden)
+    with pytest.raises(PermissionError):
+        studio_api.studio_operation(studio.project_root, "workflow", "execute-plan-owner",
+            {**payload, "approval_capability": proof})
+
+
+
+def test_capability_preflight_is_read_only_and_does_not_consume_the_effect(boundary):
+    from runtime.studio_authority import StudioAuthorityStore
+    studio, _, reference, _, calls, *_ = boundary
+    payload = {"prepared_group_reference": reference}
+    proof = approval_proof(studio.project_root, "workflow", "execute-plan-owner", payload)
+    existing = StudioAuthorityStore.open_existing(studio.project_root)
+    def snapshot():
+        return {p.relative_to(studio.project_root).as_posix(): p.read_bytes()
+                for p in studio.project_root.rglob("*") if p.is_file()}
+    before = snapshot()
+    for _ in range(2):
+        verified = existing.verify_host_operation_approval(proof, kind="workflow",
+            operation="execute-plan-owner", supplied_payload=payload)
+        assert verified["approved_by"] == "human:vscode-local-user"
+    assert snapshot() == before
+    consumed = studio.authority.consume_host_operation_approval(proof, kind="workflow",
+        operation="execute-plan-owner", supplied_payload=payload)
+    assert consumed["payload"] == payload
+    with pytest.raises(PermissionError, match="replay"):
+        existing.verify_host_operation_approval(proof, kind="workflow",
+            operation="execute-plan-owner", supplied_payload=payload)
     assert calls == []

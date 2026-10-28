@@ -1,0 +1,52 @@
+[
+  {
+    "schema_version": "px.operational-gap-ledger-event/1.0",
+    "sequence": 36285,
+    "event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000036285",
+    "event_type": "work_checkpoint",
+    "timestamp": "2026-10-28T21:37:50.039644Z",
+    "actor": "codex",
+    "previous_event_sha256": "ddeffe3b9fe07b246c05088b93c0fa4a9f37b258240b7377b24cc7892ab5b07e",
+    "payload": {
+      "active_gap_id": "PX-OS-1067",
+      "evidence": [
+        {
+          "artifact_sha256": "047b4a503af87d251dda405b085b37e7fcd2a31c31cc132154d02a081acc5af5",
+          "artifact_size": 18484,
+          "claim": "Complete stopped-state handoff; verified native changes uncommitted; resume prerequisites and limits.",
+          "reference": "docs/repair/HANDOFF_PROJECT_REPAIR_2026-10-28.md"
+        }
+      ],
+      "learned": "STOPPED at user request. Native prepared approval changes are verified but uncommitted; main 28564f62 is ahead of origin/main by one unpublished commit. Clean Python3.11 focused neighbors:57 passed/1 skipped; custody fixtures:8 passed; governed studio-memory-graph and agent-tool-authority both passed with execution_valid=true. No owned test remains running. Intake remains open; reviewed closures0/105; no production commissioning or certification. Earlier pending/active entries are superseded. Full resume instructions:docs/repair/HANDOFF_PROJECT_REPAIR_2026-10-28.md.",
+      "newly_discovered_gap_ids": [],
+      "next_action": "Run the single revision/generated-projection reconciliation, make every governed section current, then execute exactly one full profile, validation, package, install, installed-system operational test, and certification in registered order.",
+      "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000036282",
+      "unresolved_branch_gap_ids": []
+    },
+    "event_sha256": "85a83aa31031a003c3ba07949f29ef20d430633d1fcedd0737d9a4640d20dd58"
+  },
+  {
+    "schema_version": "px.operational-gap-ledger-event/1.0",
+    "sequence": 36286,
+    "event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000036286",
+    "event_type": "work_session_closed",
+    "timestamp": "2026-10-28T21:37:53.815316Z",
+    "actor": "codex",
+    "previous_event_sha256": "85a83aa31031a003c3ba07949f29ef20d430633d1fcedd0737d9a4640d20dd58",
+    "payload": {
+      "admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000036284",
+      "evidence": [
+        {
+          "artifact_sha256": "047b4a503af87d251dda405b085b37e7fcd2a31c31cc132154d02a081acc5af5",
+          "artifact_size": 18484,
+          "claim": "Complete stopped-state handoff; verified native changes uncommitted; resume prerequisites and limits.",
+          "reference": "docs/repair/HANDOFF_PROJECT_REPAIR_2026-10-28.md"
+        }
+      ],
+      "gap_id": "PX-OS-1067",
+      "outcome": "cancelled",
+      "session_id": "project-prepared-boundary-verified-20261028"
+    },
+    "event_sha256": "6b1ecd8f3e6144a8f4a85c86001b1a69b533cbdae37b9681886514bd315772f0"
+  }
+]

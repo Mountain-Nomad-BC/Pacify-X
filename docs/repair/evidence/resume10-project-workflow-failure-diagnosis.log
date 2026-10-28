@@ -1,0 +1,35 @@
+============================= test session starts =============================
+platform win32 -- Python 3.11.9, pytest-9.2.0, pluggy-1.7.0 -- C:\Users\Ben\Documents\bootstrap_project\Pacify-X\.venv-repair\Scripts\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\Ben\Documents\bootstrap_project\Pacify-X
+configfile: pyproject.toml
+collecting ... collected 2 items
+
+tests/test_workflow_studio.py::test_workflow_attempt_failure_closes_workspace_and_preserves_cause[deadline] FAILED [ 50%]
+tests/test_skill_studio.py::test_skill_exact_replay_rejects_each_corrupted_revision[undeclared-key] PASSED [100%]
+
+================================== FAILURES ===================================
+_ test_workflow_attempt_failure_closes_workspace_and_preserves_cause[deadline] _
+tests\test_workflow_studio.py:206: in test_workflow_attempt_failure_closes_workspace_and_preserves_cause
+    studio.execute(definition, {'node:one.value': 2}, approval=True)
+runtime\workflow_studio.py:2019: in execute
+    outcomes[node_id] = self._execute_node(
+runtime\workflow_studio.py:1734: in _execute_node
+    output, attempt_receipt = self._run_node(
+runtime\workflow_studio.py:1269: in _run_node
+    result = self._run_node_attempt(definition, node, node_inputs, run_id,
+runtime\workflow_studio.py:1308: in _run_node_attempt
+    return self._run_node_attempt_inner(definition,node,node_inputs,run_id,attempt,
+runtime\workflow_studio.py:1511: in _run_node_attempt_inner
+    result = self.supervisor.run(
+runtime\process_supervisor.py:1213: in run
+    return self._run_with_custody(
+runtime\process_supervisor.py:1439: in _run_with_custody
+    record, process = self.manager.spawn_owned_process(
+tests\test_workflow_studio.py:203: in forbid_spawn
+    pytest.fail('expired workflow attempt must not spawn')
+E   Failed: expired workflow attempt must not spawn
+=========================== short test summary info ===========================
+FAILED tests/test_workflow_studio.py::test_workflow_attempt_failure_closes_workspace_and_preserves_cause[deadline] - Failed: expired workflow attempt must not spawn
+========================= 1 failed, 1 passed in 1.66s =========================
+

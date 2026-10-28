@@ -1,0 +1,19 @@
+{
+  "command": [
+    "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.venv-repair\\Scripts\\python.exe",
+    "-m",
+    "pytest",
+    "-vv",
+    "--tb=short",
+    "tests/test_workflow_studio.py",
+    "-k",
+    "workflow_attempt_failure_closes_workspace or workflow_effect_intent_and_lease or unused_mutating_permission or worker_output_cannot_commit or partial_native_effect_failure or lease_acquisition_failure"
+  ],
+  "exit_code": 0,
+  "tree_closed": true,
+  "resource_inactive": true,
+  "receipt": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.tmp\\resume10\\owned\\cleanup-receipts\\process-37174877324542b2bae9f65052801642.json",
+  "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.tmp\\resume10\\owned\\pacifyx-041r6g3t",
+  "log": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\docs\\repair\\evidence\\resume10-project-workflow-custody-fixtures-current.log",
+  "log_sha256": "7aaba953ce627cabfc22ad4cc47ce804382f45a22f8870b91e337d19971d4d89"
+}

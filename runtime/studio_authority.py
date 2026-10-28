@@ -568,7 +568,7 @@ class StudioAuthorityStore:
     def verify_receipt(self, receipt: Mapping[str, Any]) -> dict[str, Any]:
         return self.verify(receipt)
 
-    def consume_host_operation_approval(
+    def verify_host_operation_approval(
         self,
         proof: Mapping[str, Any],
         *,
@@ -576,6 +576,7 @@ class StudioAuthorityStore:
         operation: str,
         supplied_payload: Mapping[str, Any] | None = None,
     ) -> dict[str, Any]:
+        """Read-only preflight; an effect still requires atomic consumption."""
         if set(proof) != {"claim", "payload_json", "signature"} or not isinstance(
             proof.get("claim"), Mapping
         ):
@@ -664,6 +665,24 @@ class StudioAuthorityStore:
             raise PermissionError("Studio approval host signature is invalid")
         nonce = str(claim["nonce"])
         marker = self.root / "operation-approval-consumption" / f"{hashlib.sha256(nonce.encode()).hexdigest()}.json"
+        verify_safe_ancestors(self.project_root, marker)
+        if marker.exists() or marker.is_symlink():
+            raise PermissionError("operation approval replay denied")
+        return {**claim, "payload": dict(approved_payload)}
+
+    def consume_host_operation_approval(
+        self,
+        proof: Mapping[str, Any],
+        *,
+        kind: str,
+        operation: str,
+        supplied_payload: Mapping[str, Any] | None = None,
+    ) -> dict[str, Any]:
+        approved = self.verify_host_operation_approval(
+            proof, kind=kind, operation=operation, supplied_payload=supplied_payload
+        )
+        nonce = str(approved["nonce"])
+        marker = self.root / "operation-approval-consumption" / f"{hashlib.sha256(nonce.encode()).hexdigest()}.json"
         marker.parent.mkdir(parents=True, exist_ok=True)
         verify_safe_ancestors(self.project_root, marker)
         try:
@@ -674,17 +693,17 @@ class StudioAuthorityStore:
             {
                 "schema_version": "px.studio-operation-approval-consumption/1.0",
                 "approval_nonce_sha256": hashlib.sha256(nonce.encode()).hexdigest(),
-                "approval_key_id": claim["key_id"],
+                "approval_key_id": approved["key_id"],
                 "kind": kind,
                 "operation": operation,
-                "payload_sha256": payload_sha256,
+                "payload_sha256": approved["payload_sha256"],
                 "consumed_utc": _timestamp(),
             }
         )
         with os.fdopen(descriptor, "w", encoding="utf-8", newline="\n") as stream:
             json.dump(consumption, stream, sort_keys=True)
             stream.write("\n")
-        return {**claim, "payload": dict(approved_payload)}
+        return approved
 
     def admit_executor(
         self, binding_id: str, adapter_id: str, *, approved_by: str

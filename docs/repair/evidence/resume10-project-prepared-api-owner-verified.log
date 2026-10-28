@@ -1,0 +1,112 @@
+============================= test session starts =============================
+platform win32 -- Python 3.14.7, pytest-9.1.1, pluggy-1.6.0 -- C:\Users\Ben\Documents\bootstrap_project\Pacify-X\Python\pythoncore-3.14-64\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\Ben\Documents\bootstrap_project\Pacify-X
+configfile: pyproject.toml
+collecting ... collected 58 items
+
+tests/test_prepared_group_operation_approval.py::test_signed_operation_is_consumed_once_in_execution_owner PASSED [  1%]
+tests/test_prepared_group_operation_approval.py::test_caller_identity_string_cannot_authorize_prepared_execution PASSED [  3%]
+tests/test_prepared_group_operation_approval.py::test_group_only_capability_does_not_execute_additional_workflow_nodes[False] PASSED [  5%]
+tests/test_prepared_group_operation_approval.py::test_group_only_capability_does_not_execute_additional_workflow_nodes[True] PASSED [  6%]
+tests/test_prepared_group_operation_approval.py::test_workflow_studio_api_delegates_one_use_capability_to_real_execution_owner PASSED [  8%]
+tests/test_prepared_group_operation_approval.py::test_workflow_prepared_api_rejects_foreign_or_expanded_authority[missing] PASSED [ 10%]
+tests/test_prepared_group_operation_approval.py::test_workflow_prepared_api_rejects_foreign_or_expanded_authority[remote-scope] PASSED [ 12%]
+tests/test_prepared_group_operation_approval.py::test_workflow_prepared_api_rejects_foreign_or_expanded_authority[different-plan] PASSED [ 13%]
+tests/test_prepared_group_operation_approval.py::test_workflow_prepared_api_rejects_foreign_or_expanded_authority[extra-fields] PASSED [ 15%]
+tests/test_prepared_group_operation_approval.py::test_workflow_capability_cannot_be_reused_as_selected_remote_approval PASSED [ 17%]
+tests/test_prepared_group_operation_approval.py::test_changed_owner_after_signed_workflow_consumption_denies_before_node_approval PASSED [ 18%]
+tests/test_prepared_group_operation_approval.py::test_prepared_api_rejects_bad_proof_before_workflow_initialization[signature] PASSED [ 20%]
+tests/test_prepared_group_operation_approval.py::test_prepared_api_rejects_bad_proof_before_workflow_initialization[operation] PASSED [ 22%]
+tests/test_prepared_group_operation_approval.py::test_prepared_api_rejects_bad_proof_before_workflow_initialization[replay] PASSED [ 24%]
+tests/test_prepared_group_operation_approval.py::test_capability_preflight_is_read_only_and_does_not_consume_the_effect PASSED [ 25%]
+tests/test_workflow_approval_boundary.py::test_caller_claims_never_reach_workflow_owner[fields0-approve] PASSED [ 27%]
+tests/test_workflow_approval_boundary.py::test_caller_claims_never_reach_workflow_owner[fields0-run] PASSED [ 29%]
+tests/test_workflow_approval_boundary.py::test_caller_claims_never_reach_workflow_owner[fields0-start] PASSED [ 31%]
+tests/test_workflow_approval_boundary.py::test_caller_claims_never_reach_workflow_owner[fields0-cancel] PASSED [ 32%]
+tests/test_workflow_approval_boundary.py::test_caller_claims_never_reach_workflow_owner[fields1-approve] PASSED [ 34%]
+tests/test_workflow_approval_boundary.py::test_caller_claims_never_reach_workflow_owner[fields1-run] PASSED [ 36%]
+tests/test_workflow_approval_boundary.py::test_caller_claims_never_reach_workflow_owner[fields1-start] PASSED [ 37%]
+tests/test_workflow_approval_boundary.py::test_caller_claims_never_reach_workflow_owner[fields1-cancel] PASSED [ 39%]
+tests/test_workflow_approval_boundary.py::test_signed_approval_runs_real_nodes_and_cannot_replay PASSED [ 41%]
+tests/test_workflow_approval_boundary.py::test_signed_request_binding_denies_tampering[payload] PASSED [ 43%]
+tests/test_workflow_approval_boundary.py::test_signed_request_binding_denies_tampering[operation] PASSED [ 44%]
+tests/test_workflow_approval_boundary.py::test_signed_request_binding_denies_tampering[signature] PASSED [ 46%]
+tests/test_workflow_approval_boundary.py::test_signed_request_binding_denies_tampering[project] PASSED [ 48%]
+tests/test_studio_api.py::test_skill_promotion_api_returns_the_physical_component_receipt_path PASSED [ 50%]
+tests/test_studio_api.py::test_skill_rollback_api_uses_authenticated_receipt_without_reconstructing_manifest PASSED [ 51%]
+tests/test_studio_api.py::test_worker_authority_environment_forwards_only_key_locators PASSED [ 53%]
+tests/test_studio_api.py::test_worker_authority_environment_freezes_parent_home_key_root SKIPPED [ 55%]
+tests/test_studio_api.py::test_agent_and_workflow_drafts_are_real_immutable_revisions PASSED [ 56%]
+tests/test_studio_api.py::test_identity_absence_uses_physical_revisions_and_initial_create_cannot_skip_lineage PASSED [ 58%]
+tests/test_studio_api.py::test_next_version_is_read_only_prerelease_aware_and_create_revalidates_it PASSED [ 60%]
+tests/test_studio_api.py::test_workflow_next_version_authenticates_physical_predecessor_and_revalidates_conflict PASSED [ 62%]
+tests/test_studio_api.py::test_allocation_revalidation_detects_source_tree_change_before_publication PASSED [ 63%]
+tests/test_studio_api.py::test_main_serializes_version_conflict_as_exact_compact_json PASSED [ 65%]
+tests/test_studio_api.py::test_main_structures_invalid_next_version_requests[payload_value0-allocation-source-invalid] PASSED [ 67%]
+tests/test_studio_api.py::test_main_structures_invalid_next_version_requests[payload_value1-allocation-envelope-invalid] PASSED [ 68%]
+tests/test_studio_api.py::test_main_structures_invalid_next_version_requests[payload_value2-external-source-invalid] PASSED [ 70%]
+tests/test_studio_api.py::test_skill_source_admission_binds_host_materialization_and_rejects_tamper PASSED [ 72%]
+tests/test_studio_api.py::test_skill_source_admission_returns_the_path_from_the_admission_receipt PASSED [ 74%]
+tests/test_studio_api.py::test_workflow_layout_is_content_bound_and_exactly_idempotent PASSED [ 75%]
+tests/test_studio_api.py::test_workflow_layout_rejects_incomplete_or_unsafe_geometry[layout0] PASSED [ 77%]
+tests/test_studio_api.py::test_workflow_layout_rejects_incomplete_or_unsafe_geometry[layout1] PASSED [ 79%]
+tests/test_studio_api.py::test_workflow_layout_rejects_incomplete_or_unsafe_geometry[layout2] PASSED [ 81%]
+tests/test_studio_api.py::test_workflow_layout_rejects_incomplete_or_unsafe_geometry[layout3] PASSED [ 82%]
+tests/test_studio_api.py::test_agent_draft_rejects_builder_graph_that_differs_from_direct_spec PASSED [ 84%]
+tests/test_studio_api.py::test_standard_agent_studio_rejects_enterprise_namespace_bleed PASSED [ 86%]
+tests/test_studio_api.py::test_studio_mutations_reject_boolean_wrong_payload_and_replayed_approval PASSED [ 87%]
+tests/test_studio_api.py::test_studio_receipts_are_project_move_portable_with_host_only_key PASSED [ 89%]
+tests/test_studio_api.py::test_legacy_project_key_is_backed_up_migrated_and_removed PASSED [ 91%]
+tests/test_studio_api.py::test_project_python_cannot_issue_studio_approval FAILED [ 93%]
+tests/test_studio_api.py::test_studio_authority_rejects_relative_and_project_contained_key_roots PASSED [ 94%]
+tests/test_studio_api.py::test_studio_host_signature_is_required_and_tampering_is_rejected PASSED [ 96%]
+tests/test_studio_api.py::test_agent_lifecycle_is_available_through_the_bounded_adapter PASSED [ 98%]
+tests/test_studio_api.py::test_workflow_lifecycle_is_available_through_the_bounded_adapter PASSED [100%]
+
+================================== FAILURES ===================================
+______________ test_project_python_cannot_issue_studio_approval _______________
+
+tmp_path = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.tmp/resume10/owned/pacifyx-i3gk1g35/pytest-of-Ben/pytest-0/test_project_python_cannot_iss0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001B5DA68FC40>
+
+    def test_project_python_cannot_issue_studio_approval(
+        tmp_path, monkeypatch
+    ) -> None:
+        project = tmp_path / "project"
+        project.mkdir()
+        host_keys = tmp_path / "host-keys"
+        environment = {
+            **os.environ,
+            "PYTHONPATH": str(ROOT),
+            "PYTHONDONTWRITEBYTECODE": "1",
+            "PX_STUDIO_KEY_ROOT": str(host_keys),
+        }
+        untrusted = subprocess.run(
+            [
+                sys.executable, "-m", "runtime.studio_approval", "--root", str(project),
+                "--kind", "agent", "--operation", "create", "--approved-by",
+                "human:caller-controlled", "--payload-stdin",
+            ],
+            cwd=ROOT, env=environment, input="{}", text=True,
+            capture_output=True, timeout=10,
+        )
+        assert untrusted.returncode != 0
+        assert "unrecognized arguments:" in untrusted.stderr
+        assert "--approved-by" in untrusted.stderr
+    
+        direct = subprocess.run(
+            [sys.executable, "-c", "from runtime.studio_api import issue_studio_operation_approval"],
+            cwd=ROOT, env=environment, text=True, capture_output=True, timeout=10,
+        )
+        assert direct.returncode != 0
+>       assert "cannot import name 'issue_studio_operation_approval'" in direct.stderr
+E       assert "cannot import name 'issue_studio_operation_approval'" in 'Traceback (most recent call last):\n  File "<string>", line 1, in <module>\n    from runtime.studio_api import issue_studio_operation_approval\n  File "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\runtime\\studio_api.py", line 27, in <module>\n    from .skill_studio import SkillStudio, _component\n  File "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\runtime\\skill_studio.py", line 20, in <module>\n    import yaml\nModuleNotFoundError: No module named \'yaml\'\n'
+E        +  where 'Traceback (most recent call last):\n  File "<string>", line 1, in <module>\n    from runtime.studio_api import issue_studio_operation_approval\n  File "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\runtime\\studio_api.py", line 27, in <module>\n    from .skill_studio import SkillStudio, _component\n  File "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\runtime\\skill_studio.py", line 20, in <module>\n    import yaml\nModuleNotFoundError: No module named \'yaml\'\n' = CompletedProcess(args=['C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\Python\\pythoncore-3.14-64\\python.exe', '-c', 'from runtime.studio_api import issue_studio_operation_approval'], returncode=1, stdout='', stderr='Traceback (most recent call last):\n  File "<string>", line 1, in <module>\n    from runtime.studio_api import issue_studio_operation_approval\n  File "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\runtime\\studio_api.py", line 27, in <module>\n    from .skill_studio import SkillStudio, _component\n  File "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\runtime\\skill_studio.py", line 20, in <module>\n    import yaml\nModuleNotFoundError: No module named \'yaml\'\n').stderr
+
+tests\test_studio_api.py:757: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_studio_api.py::test_project_python_cannot_issue_studio_approval - assert "cannot import name 'issue_studio_operation_approval'" in 'Traceback (most recent call last):\n  File "<string>", line 1, in <module>\n    from runtime.studio_api import issue_studio_operation_approval\n  File "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\runtime\\studio_api.py", line 27, in <module>\n    from .skill_studio import SkillStudio, _component\n  File "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\runtime\\skill_studio.py", line 20, in <module>\n    import yaml\nModuleNotFoundError: No module named \'yaml\'\n'
+ +  where 'Traceback (most recent call last):\n  File "<string>", line 1, in <module>\n    from runtime.studio_api import issue_studio_operation_approval\n  File "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\runtime\\studio_api.py", line 27, in <module>\n    from .skill_studio import SkillStudio, _component\n  File "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\runtime\\skill_studio.py", line 20, in <module>\n    import yaml\nModuleNotFoundError: No module named \'yaml\'\n' = CompletedProcess(args=['C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\Python\\pythoncore-3.14-64\\python.exe', '-c', 'from runtime.studio_api import issue_studio_operation_approval'], returncode=1, stdout='', stderr='Traceback (most recent call last):\n  File "<string>", line 1, in <module>\n    from runtime.studio_api import issue_studio_operation_approval\n  File "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\runtime\\studio_api.py", line 27, in <module>\n    from .skill_studio import SkillStudio, _component\n  File "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\runtime\\skill_studio.py", line 20, in <module>\n    import yaml\nModuleNotFoundError: No module named \'yaml\'\n').stderr
+================== 1 failed, 56 passed, 1 skipped in 15.62s ===================
+

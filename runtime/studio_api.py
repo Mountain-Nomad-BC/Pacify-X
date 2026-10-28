@@ -1002,6 +1002,24 @@ def studio_operation(
             raise
         except (TypeError, ValueError) as error:
             raise StudioVersionConflict("allocation-source-invalid") from error
+    if kind == "workflow" and operation == "execute-plan-owner":
+        # The native prepared owner consumes this exact one-use proof. Consuming
+        # it here first would either replay it or reduce authority to a string.
+        reference = value.get("prepared_group_reference")
+        proof = value.get("approval_capability")
+        if not isinstance(reference, Mapping):
+            raise ValueError("prepared-group execution requires its exact reference")
+        if not isinstance(proof, Mapping):
+            raise PermissionError("payload-bound single-use operation approval is required")
+        if set(_approval_payload(value)) != {"prepared_group_reference"}:
+            raise ValueError("exact prepared-group execution request fields required")
+        project = root.resolve(strict=True)
+        StudioAuthorityStore.open_existing(project).verify_host_operation_approval(
+            proof, kind="workflow", operation="execute-plan-owner",
+            supplied_payload={"prepared_group_reference": dict(reference)},
+        )
+        studio = WorkflowStudio(project, gremlin_runtime=_host_gremlin_composition(project))
+        return studio.execute_prepared_group_node(reference, approval_capability=proof)
     if operation not in READ_ONLY_STUDIO_OPERATIONS:
         if value.get("approved") is True and not value.get("approval_capability"):
             raise PermissionError("caller-authored approval booleans are not authority")
@@ -1340,12 +1358,6 @@ def studio_operation(
             if not isinstance(reference, Mapping):
                 raise ValueError("prepared-group owner resolution requires its exact reference")
             return studio.resolve_prepared_group_owner(reference)
-        if operation == "execute-plan-owner":
-            reference = value.get("prepared_group_reference")
-            if not isinstance(reference, Mapping):
-                raise ValueError("prepared-group execution requires its exact reference")
-            return studio.execute_prepared_group_node(
-                reference, approved_by=_text(value.get("approved_by") or ""))
         definition = _workflow(value)
         if operation == "register-authority":
             bindings, grants = _authority(value)

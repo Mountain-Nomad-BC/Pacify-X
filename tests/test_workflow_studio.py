@@ -195,7 +195,9 @@ def test_workflow_attempt_failure_closes_workspace_and_preserves_cause(tmp_path,
         authorize = studio.supervisor._authorize
         def expire_after_authorization(*args, **kwargs):
             result = authorize(*args, **kwargs)
-            clock[0] += 11.0
+            # Include the owner's bounded Python-startup allowance rather than
+            # assuming its process budget equals the node's execution timeout.
+            clock[0] += result[0].total_timeout_seconds + 1.0
             return result
         monkeypatch.setattr(process_owner, 'time', SimpleNamespace(monotonic=lambda: clock[0]))
         monkeypatch.setattr(studio.supervisor, '_authorize', expire_after_authorization)
@@ -1262,6 +1264,11 @@ def _effect_fence_studio(tmp_path, monkeypatch):
     studio = WorkflowStudio(tmp_path)
     monkeypatch.setattr(studio, "_node_authority",
         lambda *args: ({"grant:mutation": "a" * 64}, (("workspace:demo", "exclusive", "write"),)))
+    # These tests isolate native intent/lease settlement with an in-process
+    # controlled mutating worker. Supply its executor declaration as well as
+    # its claims; do not enroll it or change the production closed registry.
+    monkeypatch.setattr(studio.authority, "resolve_executor", lambda binding_id:
+        ({"adapter_id": "unit-controlled-mutation"}, "b" * 64))
     return studio, definition, node
 
 def test_workflow_effect_intent_and_lease_precede_worker_and_only_owner_commits(tmp_path, monkeypatch):

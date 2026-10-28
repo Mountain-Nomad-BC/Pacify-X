@@ -1,0 +1,141 @@
+============================= test session starts =============================
+platform win32 -- Python 3.14.7, pytest-9.1.1, pluggy-1.6.0 -- C:\Users\Ben\Documents\bootstrap_project\Pacify-X\Python\pythoncore-3.14-64\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\Ben\Documents\bootstrap_project\Pacify-X
+configfile: pyproject.toml
+collecting ... collected 3 items
+
+tests/test_prepared_group_operation_approval.py::test_prepared_api_rejects_bad_proof_before_workflow_initialization[signature] FAILED [ 33%]
+tests/test_prepared_group_operation_approval.py::test_prepared_api_rejects_bad_proof_before_workflow_initialization[operation] FAILED [ 66%]
+tests/test_prepared_group_operation_approval.py::test_prepared_api_rejects_bad_proof_before_workflow_initialization[replay] FAILED [100%]
+
+================================== FAILURES ===================================
+_ test_prepared_api_rejects_bad_proof_before_workflow_initialization[signature] _
+
+boundary = (<runtime.workflow_studio.WorkflowStudio object at 0x000001CEA79F7E00>, TaskExecutionPlan(schema_version='px.task-exec...n_path': '.agentic_engineering_os_px/studios/workflows/workflow-group-15f269fc/revisions/1.0.0/record.json', ...}, ...)
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001CEA7BF82B0>
+tamper = 'signature'
+
+    @pytest.mark.parametrize("tamper", ["signature", "operation", "replay"])
+    def test_prepared_api_rejects_bad_proof_before_workflow_initialization(boundary, monkeypatch, tamper):
+        from runtime import studio_api
+        studio, _, reference, _, _, *_ = boundary
+        payload = {"prepared_group_reference": reference}
+        proof = approval_proof(studio.project_root, "workflow", "execute-plan-owner", payload)
+        if tamper == "signature":
+            proof["signature"] = "invalid"
+        elif tamper == "operation":
+            proof["claim"]["operation"] = "run"
+        else:
+            studio.authority.consume_host_operation_approval(proof, kind="workflow",
+                operation="execute-plan-owner", supplied_payload=payload)
+        def forbidden(*args, **kwargs):
+            pytest.fail("unverified or replayed capability initialized a workflow owner")
+        monkeypatch.setattr(studio_api, "WorkflowStudio", forbidden)
+        with pytest.raises(PermissionError):
+>           studio_api.studio_operation(studio.project_root, "workflow", "execute-plan-owner",
+                {**payload, "approval_capability": proof})
+
+tests\test_prepared_group_operation_approval.py:155: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+runtime\studio_api.py:1017: in studio_operation
+    studio = WorkflowStudio(project, gremlin_runtime=_host_gremlin_composition(project))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+args = (WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.tmp/resume10/owned/pacifyx-kki7ku_s/pytest-of-Ben/pytest-0/test_prepared_api_rejects_bad_0/project'),)
+kwargs = {'gremlin_runtime': None}
+
+    def forbidden(*args, **kwargs):
+>       pytest.fail("unverified or replayed capability initialized a workflow owner")
+E       Failed: unverified or replayed capability initialized a workflow owner
+
+tests\test_prepared_group_operation_approval.py:152: Failed
+_ test_prepared_api_rejects_bad_proof_before_workflow_initialization[operation] _
+
+boundary = (<runtime.workflow_studio.WorkflowStudio object at 0x000001CEA7FFC190>, TaskExecutionPlan(schema_version='px.task-exec...n_path': '.agentic_engineering_os_px/studios/workflows/workflow-group-15f269fc/revisions/1.0.0/record.json', ...}, ...)
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001CEA7D3FA80>
+tamper = 'operation'
+
+    @pytest.mark.parametrize("tamper", ["signature", "operation", "replay"])
+    def test_prepared_api_rejects_bad_proof_before_workflow_initialization(boundary, monkeypatch, tamper):
+        from runtime import studio_api
+        studio, _, reference, _, _, *_ = boundary
+        payload = {"prepared_group_reference": reference}
+        proof = approval_proof(studio.project_root, "workflow", "execute-plan-owner", payload)
+        if tamper == "signature":
+            proof["signature"] = "invalid"
+        elif tamper == "operation":
+            proof["claim"]["operation"] = "run"
+        else:
+            studio.authority.consume_host_operation_approval(proof, kind="workflow",
+                operation="execute-plan-owner", supplied_payload=payload)
+        def forbidden(*args, **kwargs):
+            pytest.fail("unverified or replayed capability initialized a workflow owner")
+        monkeypatch.setattr(studio_api, "WorkflowStudio", forbidden)
+        with pytest.raises(PermissionError):
+>           studio_api.studio_operation(studio.project_root, "workflow", "execute-plan-owner",
+                {**payload, "approval_capability": proof})
+
+tests\test_prepared_group_operation_approval.py:155: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+runtime\studio_api.py:1017: in studio_operation
+    studio = WorkflowStudio(project, gremlin_runtime=_host_gremlin_composition(project))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+args = (WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.tmp/resume10/owned/pacifyx-kki7ku_s/pytest-of-Ben/pytest-0/test_prepared_api_rejects_bad_1/project'),)
+kwargs = {'gremlin_runtime': None}
+
+    def forbidden(*args, **kwargs):
+>       pytest.fail("unverified or replayed capability initialized a workflow owner")
+E       Failed: unverified or replayed capability initialized a workflow owner
+
+tests\test_prepared_group_operation_approval.py:152: Failed
+_ test_prepared_api_rejects_bad_proof_before_workflow_initialization[replay] __
+
+boundary = (<runtime.workflow_studio.WorkflowStudio object at 0x000001CEA7FFC910>, TaskExecutionPlan(schema_version='px.task-exec...n_path': '.agentic_engineering_os_px/studios/workflows/workflow-group-15f269fc/revisions/1.0.0/record.json', ...}, ...)
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001CEA7F34B90>
+tamper = 'replay'
+
+    @pytest.mark.parametrize("tamper", ["signature", "operation", "replay"])
+    def test_prepared_api_rejects_bad_proof_before_workflow_initialization(boundary, monkeypatch, tamper):
+        from runtime import studio_api
+        studio, _, reference, _, _, *_ = boundary
+        payload = {"prepared_group_reference": reference}
+        proof = approval_proof(studio.project_root, "workflow", "execute-plan-owner", payload)
+        if tamper == "signature":
+            proof["signature"] = "invalid"
+        elif tamper == "operation":
+            proof["claim"]["operation"] = "run"
+        else:
+            studio.authority.consume_host_operation_approval(proof, kind="workflow",
+                operation="execute-plan-owner", supplied_payload=payload)
+        def forbidden(*args, **kwargs):
+            pytest.fail("unverified or replayed capability initialized a workflow owner")
+        monkeypatch.setattr(studio_api, "WorkflowStudio", forbidden)
+        with pytest.raises(PermissionError):
+>           studio_api.studio_operation(studio.project_root, "workflow", "execute-plan-owner",
+                {**payload, "approval_capability": proof})
+
+tests\test_prepared_group_operation_approval.py:155: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+runtime\studio_api.py:1017: in studio_operation
+    studio = WorkflowStudio(project, gremlin_runtime=_host_gremlin_composition(project))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+args = (WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.tmp/resume10/owned/pacifyx-kki7ku_s/pytest-of-Ben/pytest-0/test_prepared_api_rejects_bad_2/project'),)
+kwargs = {'gremlin_runtime': None}
+
+    def forbidden(*args, **kwargs):
+>       pytest.fail("unverified or replayed capability initialized a workflow owner")
+E       Failed: unverified or replayed capability initialized a workflow owner
+
+tests\test_prepared_group_operation_approval.py:152: Failed
+=========================== short test summary info ===========================
+FAILED tests/test_prepared_group_operation_approval.py::test_prepared_api_rejects_bad_proof_before_workflow_initialization[signature] - Failed: unverified or replayed capability initialized a workflow owner
+FAILED tests/test_prepared_group_operation_approval.py::test_prepared_api_rejects_bad_proof_before_workflow_initialization[operation] - Failed: unverified or replayed capability initialized a workflow owner
+FAILED tests/test_prepared_group_operation_approval.py::test_prepared_api_rejects_bad_proof_before_workflow_initialization[replay] - Failed: unverified or replayed capability initialized a workflow owner
+============================== 3 failed in 1.10s ==============================
+
