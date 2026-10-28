@@ -51,9 +51,11 @@ evidence/releases/*/rel-*/* binary
 /.engineering-bootstrap/** export-ignore
 
 # Retained merge preimages and test outputs keep their exact evidence bytes.
+docs/repair/evidence/merge-2026-10-28/** -text whitespace=cr-at-eol,-blank-at-eof
 docs/repair/evidence/merge-2026-10-28/*.txt binary
 docs/repair/evidence/merge-2026-10-28/*.json -text whitespace=cr-at-eol,-blank-at-eof
 docs/repair/evidence/resume10-merge-*.log binary
 docs/repair/evidence/resume10-git-unify-*.log binary
 docs/repair/evidence/resume10-merge-*.json -text whitespace=cr-at-eol,-blank-at-eof
 docs/repair/evidence/resume10-git-unify-*.json -text whitespace=cr-at-eol,-blank-at-eof
+docs/repair/evidence/resume15-checkpoint1.json -text whitespace=cr-at-eol,-blank-at-eof

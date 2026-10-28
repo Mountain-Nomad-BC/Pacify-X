@@ -118,3 +118,6 @@ providers/agency_agents/agents/*/memory/
 
 # Live test orchestration lock; local process custody.
 .agentic_engineering_os_px/test-evidence/.test-orchestration.lock
+
+# Local lease-recovery receipts retain interrupted runtime lock custody.
+registry/.lock-recovery-receipts/

@@ -27,7 +27,8 @@
     "Protected model-group/provider/host operating evidence",
     "Independent repair review and ordered release certification"
   ],
-  "remote": "Not yet checked in this checkpoint; final remote verification follows local integration.",
+  "remote": "Origin fetched successfully on 2026-10-28. Origin main and repair tips are ancestors of the integrated local source; non-force atomic publication follows final evidence-byte commit.",
   "merge_commit": "9316ce7b",
-  "local_integration": "Merge completed with both parents preserved. Main and repair refs will point to this source plus evidence-integrity follow-up; rollout history remains reachable through merge parent."
+  "local_integration": "Merge completed with both parents preserved. Main and repair refs will point to this source plus evidence-integrity follow-up; rollout history remains reachable through merge parent.",
+  "evidence_integrity": "Explicitly re-stage immutable evidence under exact-byte attributes to bypass Git stat-cache normalization; index-to-original blob checks retained in git-unify-byte-integrity.json."
 }
