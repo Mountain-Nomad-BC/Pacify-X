@@ -38,6 +38,28 @@ from runtime.source_boundary import (
 REPO_ROOT = Path(__file__).resolve().parents[1]
 
 
+def test_authored_inventory_prunes_custody_before_scanning_children(tmp_path, monkeypatch):
+    import os
+    (tmp_path / 'runtime').mkdir()
+    (tmp_path / 'runtime/owner.py').write_text('VALUE = 1\n')
+    (tmp_path / '.tmp-retained').mkdir()
+    original = os.scandir
+    def guarded(path):
+        if Path(path).name == '.tmp-retained':
+            raise AssertionError('Excluded custody must not be traversed')
+        return original(path)
+    monkeypatch.setattr(os, 'scandir', guarded)
+    assert authored_paths(tmp_path) == ['runtime/owner.py']
+
+
+def test_recovery_snapshot_root_does_not_hide_same_named_authored_directory(tmp_path):
+    for name in ['.audit-handoff/copy.py', 'runtime/.audit-handoff/owner.py']:
+        path = tmp_path / name
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text('VALUE = 1\n')
+    assert authored_paths(tmp_path) == ['runtime/.audit-handoff/owner.py']
+
+
 @pytest.mark.parametrize("kind,prefix", [("skill", ".px/skills"), ("workflow", "orchestration/workflows")])
 def test_actual_experience_writer_does_not_change_authored_identity(tmp_path, kind, prefix):
     from runtime.engine_identity import build_engine_identity

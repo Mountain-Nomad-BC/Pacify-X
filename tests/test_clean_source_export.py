@@ -29,6 +29,19 @@ import scripts.clean_source_export as clean_source_export
 from scripts.clean_source_export import create_clean_export
 
 
+def test_nested_source_cannot_claim_ancestor_git_identity(tmp_path, monkeypatch):
+    calls = []
+    def ancestor(command, **kwargs):
+        calls.append(command)
+        return subprocess.CompletedProcess(command, 0, str(tmp_path.parent) + '\n', '')
+    monkeypatch.setattr(clean_source_export.subprocess, 'run', ancestor)
+    provenance = clean_source_export._git_provenance(tmp_path)
+    assert provenance['source_control_available'] is False
+    assert provenance['source_commit'] is None
+    assert provenance['source_commit_time'] is None
+    assert len(calls) == 1
+
+
 def test_clean_export_is_byte_deterministic_and_non_destructive():
     with tempfile.TemporaryDirectory() as directory:
         root = Path(directory) / "source"

@@ -438,6 +438,7 @@ BOUNDARY_RULES: tuple[BoundaryRule, ...] = (
     BoundaryRule(".pacify-x", RUNTIME_STATE, owner="runtime", reason="derived custody tree"),
     BoundaryRule(".quarantine", RUNTIME_STATE, owner="runtime", reason="derived custody tree"),
     BoundaryRule(".audit-visible", RUNTIME_STATE, owner="runtime", reason="derived custody tree"),
+    BoundaryRule(".audit-handoff", RUNTIME_STATE, owner="runtime", reason="retained host-local recovery snapshots"),
     BoundaryRule(".engineering-bootstrap/architecture-repair-wal", RUNTIME_STATE, owner="runtime", reason="governed repair wal"),
     # Multi-segment derived custody paths. These are declared as full prefixes
     # because repository_scope matches them by segment position
@@ -760,17 +761,21 @@ def census(root: Path) -> dict[str, Any]:
 
 
 def authored_paths(root: Path) -> list[str]:
-    """Sorted repository-relative authored paths. Deterministic."""
+    """Bounded authored inventory; prune custody before touching its children."""
+    from .bounded_walk import bounded_walk, WalkLimits
+
     root = Path(root).resolve(strict=True)
-    values = []
     agent_directories = agent_experience_directories(root)
-    for path in sorted(root.rglob("*")):
-        if not path.is_file() or path.is_symlink():
-            continue
-        relative = path.relative_to(root).as_posix()
-        if classify_path(relative, agent_directories=agent_directories)["classification"] == AUTHORED:
-            values.append(relative)
-    return values
+    result = bounded_walk(
+        root,
+        limits=WalkLimits(max_files=100_000, max_depth=128,
+                          max_bytes=2 * 1024**3, max_entries=500_000),
+        symlink_policy="reject",
+        exclude=lambda relative: classify_path(
+            relative, agent_directories=agent_directories
+        )["classification"] != AUTHORED,
+    )
+    return sorted(entry.relative for entry in result.entries if entry.kind == "file")
 
 
 def unbuilt_profile(root: Path) -> dict[str, Any]:

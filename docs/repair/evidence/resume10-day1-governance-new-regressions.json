@@ -1,0 +1,21 @@
+{
+  "command": [
+    "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.venv-repair\\Scripts\\python.exe",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "tests/test_source_boundary.py",
+    "tests/test_clean_source_export.py",
+    "-k",
+    "authored_inventory_prunes_custody or recovery_snapshot_root or nested_source_cannot_claim_ancestor"
+  ],
+  "exit_code": 0,
+  "tree_closed": true,
+  "resource_inactive": true,
+  "receipt": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.tmp\\resume10\\owned\\cleanup-receipts\\process-4fde93e520594d908ff4fe77ec9a1bb2.json",
+  "workspace": "C:\\Users\\Ben\\AppData\\Local\\Temp\\Pacify-X-day1-owned\\pacifyx-skqmq6t8",
+  "log": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\docs\\repair\\evidence\\resume10-day1-governance-new-regressions.log",
+  "log_sha256": "72ea53272fa2d25ec18c6970a68726b8eff271cd2e8d64765e81b992a1194012"
+}

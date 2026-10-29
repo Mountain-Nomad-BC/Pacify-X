@@ -8,6 +8,7 @@ import json
 import os
 from pathlib import Path
 from typing import Mapping
+from uuid import uuid4
 
 from .file_lock import FileLock
 from .json_io import MAX_JSON_BYTES, decode_json_value, load_json_object
@@ -315,7 +316,10 @@ def _finish_head_intent(pending: Path, intent: dict[str, object], outcome: str) 
             raise ValueError("retained event-head intent differs")
     else:
         atomic_write_bytes(history, image)
-    pending.unlink()
+    # Preserve the exact acquired intent as well as its canonical history.
+    # Recovery can encounter an already-published history, so each original
+    # gets a distinct retained name rather than replacing prior evidence.
+    pending.rename(history.with_name(f"{history.stem}-source-{uuid4().hex}.json"))
 
 
 def _recover_event_ledger_locked(ledger: Path) -> dict[str, object]:

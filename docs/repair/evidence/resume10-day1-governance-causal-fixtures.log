@@ -1,0 +1,338 @@
+FFFFFFF                                                                  [100%]
+================================== FAILURES ===================================
+____________ test_section_status_refuses_missing_or_stale_receipts ____________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000012EF3CC09D0>
+
+    def test_section_status_refuses_missing_or_stale_receipts(monkeypatch):
+        from runtime import verification_status
+    
+        original = verification_status.resolve_test_section
+    
+        def stale(root, name, *, capture=None):
+            value = original(root, name, capture=capture)
+            return {**value, "input_sha256": "0" * 64}
+    
+        monkeypatch.setattr(verification_status, "resolve_test_section", stale)
+        status = section_status(ROOT)
+        assert not status["valid"]
+>       assert set(status["required_sections"]) == {
+            "testing-governance",
+            "dashboard-extension",
+            "studio-memory-graph",
+            "learning-promotion",
+            "execution-placement",
+            "hardware-routing",
+            "runtime-domain-contracts",
+            "source-authority",
+            "revision-lifecycle",
+            # Added by the resumed repair source as mandatory sections. They are
+            # genuinely required (secure publisher, native runtime integration, real
+            # Windows Job operating proof, host containment), so the governed set grows.
+            "secure-persistence",
+            "native-runtime-integration",
+            "native-job-operating",
+            "host-containment",
+        }
+E       AssertionError: assert {'agent-gatew...tlement', ...} == {'dashboard-e...erating', ...}
+E         
+E         Extra items in the left set:
+E         'context-provenance'
+E         'ui-event-integrity'
+E         'source-inventory'
+E         'agent-tool-authority'
+E         'provider-stream-custody'...
+E         
+E         ...Full output truncated, use '-vv' to show
+
+tests\test_test_profiles.py:622: AssertionError
+_______ test_certification_groups_are_exhaustive_exclusive_and_bounded ________
+
+    def test_certification_groups_are_exhaustive_exclusive_and_bounded():
+>       groups = resolve_test_groups(ROOT)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\test_test_profiles.py:643: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+runtime\test_profiles.py:1323: in resolve_test_groups
+    return resolve_groups(root)
+           ^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X')
+capture = <runtime.verification_inputs.CapturedInputs object at 0x0000012EF3F25D50>
+historical_index = False
+
+    def resolve_groups(root, *, capture=None, historical_index=False):
+        from .input_files import contained_file, read_file_image
+        from .json_io import decode_json_object
+    
+        owned = capture is None
+        capture = capture if capture is not None else CapturedInputs(root)
+        capture.capture(POLICY)
+        definitions = _definitions(capture.config, 'groups')
+        required(capture.config, 'groups', definitions)
+        capture.capture(INDEX)
+        path, info = contained_file(capture.root, INDEX)
+        raw = read_file_image(path, info, limit=8 * 1024**2, deadline=capture.deadline)
+        if hashlib.sha256(raw).digest() != capture.digests[INDEX]:
+            raise ValueError('test group index changed during resolution')
+        index = decode_json_object(raw, max_bytes=8 * 1024**2, max_depth=32, max_nodes=300000)
+        expected = {'schema_version', 'topology_sha256', 'dependency_parser', 'test_file_count',
+                    'tracked_python_file_count', 'verified_file_count', 'files', 'groups', 'index_sha256'}
+        if set(index) != expected or index['schema_version'] != INDEX_SCHEMA:
+            raise ValueError('test group index schema is stale or malformed; explicit reconciliation required')
+        supplied = index['index_sha256']
+        body = {k: v for k, v in index.items() if k != 'index_sha256'}
+        digest = hashlib.sha256(json.dumps(body, sort_keys=True, separators=(',', ':')).encode()).hexdigest()
+        parser_current = index['dependency_parser'] == _parser_identity()
+        if type(supplied) is not str or supplied != digest or (not parser_current and not historical_index):
+>           raise ValueError('test group index content or parser identity is invalid')
+E           ValueError: test group index content or parser identity is invalid
+
+runtime\verification_status.py:207: ValueError
+_______ test_group_status_is_receipt_driven_and_covers_every_test_file ________
+
+    def test_group_status_is_receipt_driven_and_covers_every_test_file():
+>       status = group_status(ROOT)
+                 ^^^^^^^^^^^^^^^^^^
+
+tests\test_test_profiles.py:761: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+runtime\test_profiles.py:1344: in group_status
+    return status(root)
+           ^^^^^^^^^^^^
+runtime\verification_status.py:257: in group_status
+    groups = resolve_groups(root, capture=capture, historical_index=historical_index)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X')
+capture = <runtime.verification_inputs.CapturedInputs object at 0x0000012EF61C8310>
+historical_index = False
+
+    def resolve_groups(root, *, capture=None, historical_index=False):
+        from .input_files import contained_file, read_file_image
+        from .json_io import decode_json_object
+    
+        owned = capture is None
+        capture = capture if capture is not None else CapturedInputs(root)
+        capture.capture(POLICY)
+        definitions = _definitions(capture.config, 'groups')
+        required(capture.config, 'groups', definitions)
+        capture.capture(INDEX)
+        path, info = contained_file(capture.root, INDEX)
+        raw = read_file_image(path, info, limit=8 * 1024**2, deadline=capture.deadline)
+        if hashlib.sha256(raw).digest() != capture.digests[INDEX]:
+            raise ValueError('test group index changed during resolution')
+        index = decode_json_object(raw, max_bytes=8 * 1024**2, max_depth=32, max_nodes=300000)
+        expected = {'schema_version', 'topology_sha256', 'dependency_parser', 'test_file_count',
+                    'tracked_python_file_count', 'verified_file_count', 'files', 'groups', 'index_sha256'}
+        if set(index) != expected or index['schema_version'] != INDEX_SCHEMA:
+            raise ValueError('test group index schema is stale or malformed; explicit reconciliation required')
+        supplied = index['index_sha256']
+        body = {k: v for k, v in index.items() if k != 'index_sha256'}
+        digest = hashlib.sha256(json.dumps(body, sort_keys=True, separators=(',', ':')).encode()).hexdigest()
+        parser_current = index['dependency_parser'] == _parser_identity()
+        if type(supplied) is not str or supplied != digest or (not parser_current and not historical_index):
+>           raise ValueError('test group index content or parser identity is invalid')
+E           ValueError: test group index content or parser identity is invalid
+
+runtime\verification_status.py:207: ValueError
+________ test_pytest_uses_registered_isolated_basetemp_and_reclaims_it ________
+
+tmp_path = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.tmp/resume10/owned/pacifyx-qkthm4pb/pytest-of-Ben/pytest-0/test_pytest_uses_registered_is0')
+
+    def test_pytest_uses_registered_isolated_basetemp_and_reclaims_it(
+        tmp_path: Path,
+    ) -> None:
+        test_file = tmp_path / "test_nested.py"
+        test_file.write_text(
+            "import os\n"
+            "from pathlib import Path\n"
+            "import tempfile\n\n"
+            "def test_uses_bound_temp_roots(tmp_path):\n"
+            "    assert tmp_path.is_dir()\n"
+            "    inherited = Path(tempfile.gettempdir()).resolve()\n"
+            "    assert inherited == Path(os.environ['TEMP']).resolve()\n"
+            "    assert os.environ['TMP'] == os.environ['TEMP'] == os.environ['TMPDIR']\n"
+            "    assert inherited.name == 'process-temp'\n"
+            "    key_root = Path(os.environ['PX_STUDIO_KEY_ROOT']).resolve()\n"
+            "    assert key_root.name == 'authority-keys'\n"
+            "    assert Path.cwd().resolve() not in key_root.parents\n"
+            "    key_root.mkdir()\n"
+            "    (key_root / 'prepared.key').write_text('test-only')\n"
+            "    assert inherited in Path(tempfile.mkdtemp()).resolve().parents\n",
+            encoding="utf-8",
+        )
+        manager = ResourceManager(
+            tmp_path / "ledger.json", receipt_dir=tmp_path / "cleanup-receipts"
+        )
+        result = run_test_command(
+            [sys.executable, "-m", "pytest", "-q", str(test_file)],
+            cwd=ROOT,
+            environment=os.environ,
+            timeout_seconds=30,
+            resource_manager=manager,
+            run_id="nested-pytest",
+        )
+    
+>       assert result["valid"] is True, json.dumps(result, indent=2, default=str)
+E       AssertionError: {
+E           "valid": false,
+E           "exit_code": 1,
+E           "timed_out": false,
+E           "timeout_seconds": 30.0,
+E           "duration_seconds": 1.063,
+E           "stdout": "F                                                                        [100%]\r\n================================== FAILURES ===================================\r\n_________________________ test_uses_bound_temp_roots __________________________\r\n\r\ntmp_path = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.tmp/resume10/owned/pacifyx-qkthm4pb/pacify-x-pytest-h9zdzo69/pytest/test_uses_bound_temp_roots0')\r\n\r\n    def test_uses_bound_temp_roots(tmp_path):\r\n        assert tmp_path.is_dir()\r\n        inherited = Path(tempfile.gettempdir()).resolve()\r\n        assert inherited == Path(os.environ['TEMP']).resolve()\r\n        assert os.environ['TMP'] == os.environ['TEMP'] == os.environ['TMPDIR']\r\n        assert inherited.name == 'process-temp'\r\n        key_root = Path(os.environ['PX_STUDIO_KEY_ROOT']).resolve()\r\n        assert key_root.name == 'authority-keys'\r\n>       assert Path.cwd().resolve() not in key_root.parents\r\nE       AssertionError: assert WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X') not in <WindowsPath.parents>\r\nE        +  where WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X') = resolve()\r\nE        +    where resolve = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X').resolve\r\nE        +      where WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X') = cwd()\r\nE        +        where cwd = Path.cwd\r\nE        +  and   <WindowsPath.parents> = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.tmp/resume10/owned/pacifyx-qkthm4pb/pacify-x-pytest-h9zdzo69/process-temp/authority-keys').parents\r\n\r\n.tmp\\resume10\\owned\\pacifyx-qkthm4pb\\pytest-of-Ben\\pytest-0\\test_pytest_uses_registered_is0\\test_nested.py:13: AssertionError\r\n=========================== short test summary info ===========================\r\nFAILED .tmp/resume10/owned/pacifyx-qkthm4pb/pytest-of-Ben/pytest-0/test_pytest_uses_registered_is0/test_nested.py::test_uses_bound_temp_roots\r\n1 failed in 0.23s\r\n",
+E           "stderr": "",
+E           "process_tree_terminated": true,
+E           "execution_started": true,
+E           "termination": null,
+E           "resource_id": "process-e3d08141488745818fa631f1a3a1cf1c",
+E           "supervision_receipt": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.tmp\\resume10\\owned\\pacifyx-qkthm4pb\\pytest-of-Ben\\pytest-0\\test_pytest_uses_registered_is0\\cleanup-receipts\\process-76cd3878ab5a46dd967fc893c9b5a91a.json",
+E           "supervision_status": "exited",
+E           "disk_consumption_limit_bytes": 8589934592,
+E           "test_workspace": {
+E             "kind": "managed_pytest_basetemp",
+E             "path": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.tmp\\resume10\\owned\\pacifyx-qkthm4pb\\pacify-x-pytest-h9zdzo69",
+E             "resource_id": "path-4ac0317624624979b132d5b03f6d2764",
+E             "cleanup_id": "cleanup-3de1513b514442c8a1f59c2b6e369643",
+E             "reclaimed": true,
+E             "errors": []
+E           }
+E         }
+E       assert False is True
+
+tests\test_test_runner_controls.py:282: AssertionError
+_________ test_local_dependency_installations_are_pruned_at_the_root __________
+
+    def test_local_dependency_installations_are_pruned_at_the_root() -> None:
+        assert is_external_environment_relative("Python/pythoncore/Lib/json.py")
+        assert is_external_environment_relative(".venv-certify/Lib/site-packages/x.py")
+        assert is_external_environment_relative("node_modules/pkg/index.js")
+        assert is_external_environment_relative("extension/node_modules/pkg/dist/index.js")
+        assert is_external_environment_relative("extension/dist/pacify-x.vsix")
+        assert is_external_environment_relative("extension/build/generated.js")
+        assert is_external_environment_relative("extension/evidence/screenshots/view.png")
+        assert is_external_environment_relative("runtime/__pycache__/owner.pyc")
+        assert is_external_environment_relative("extension/.pytest_cache/state.json")
+        assert is_external_environment_relative(
+            "extension/.vscode-test/vscode-win32/resources/app/out/main.js"
+        )
+        assert is_external_environment_relative("extension/.venv-build/Lib/site-packages/x.py")
+        assert is_external_environment_relative(".git/objects/pack/pack.bin")
+        assert is_external_environment_relative(".pacify-x/resource-ledger.json.lock")
+        assert is_external_environment_relative(".audit-visible/transient.py")
+>       assert is_external_environment_relative(".audit-handoff/snapshot/source.py")
+E       AssertionError: assert False
+E        +  where False = is_external_environment_relative('.audit-handoff/snapshot/source.py')
+
+tests\test_repository_scope.py:28: AssertionError
+_________ test_clean_export_is_byte_deterministic_and_non_destructive _________
+
+    def test_clean_export_is_byte_deterministic_and_non_destructive():
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory) / "source"
+            root.mkdir()
+            (root / "keep.txt").write_text("keep\n", encoding="utf-8")
+            (root / "run.sh").write_text("#!/bin/sh\nexit 0\n", encoding="utf-8")
+            (root / "windows.txt").write_bytes(b"one\r\ntwo\r\n")
+            (root / ".git").mkdir()
+            (root / ".git/config").write_text("private\n", encoding="utf-8")
+            (root / "__pycache__").mkdir()
+            (root / "__pycache__/x.pyc").write_bytes(b"cache")
+            (root / ".venv-certify/Scripts").mkdir(parents=True)
+            (root / ".venv-certify/Scripts/tool.exe").write_bytes(b"generated")
+            (root / ".tmp_work.json").write_text("temporary\n", encoding="utf-8")
+            (root / ".tmp_batch/record.json").parent.mkdir()
+            (root / ".tmp_batch/record.json").write_text("temporary\n", encoding="utf-8")
+            (root / ".tmp/cache.bin").parent.mkdir()
+            (root / ".tmp/cache.bin").write_bytes(b"temporary")
+            (root / "tmp_admission.json").write_text("temporary\n", encoding="utf-8")
+            (root / "registry/.operational-gap-ledger.lock").parent.mkdir()
+            (root / "registry/.operational-gap-ledger.lock").write_text(
+                "host-local lock\n", encoding="utf-8"
+            )
+            (root / ".VSCodeCounter/report.txt").parent.mkdir()
+            (root / ".VSCodeCounter/report.txt").write_text("generated\n", encoding="utf-8")
+            (root / "evidence/historical-proof.json").parent.mkdir()
+            (root / "evidence/historical-proof.json").write_text(
+                '{"historical":true}\n', encoding="utf-8"
+            )
+            first = Path(directory) / "first.zip"
+            second = Path(directory) / "second.zip"
+            one = create_clean_export(root, first)
+            two = create_clean_export(root, second)
+            assert one["archive_sha256"] == two["archive_sha256"]
+            assert one["hard_delete"] is False
+            assert (root / ".git/config").is_file()
+            with zipfile.ZipFile(first) as archive:
+                assert archive.namelist() == [
+                    "AUDIT_EXPORT_MANIFEST.json",
+                    "AUDIT_REPLAY_CONTRACT.json",
+                    "keep.txt",
+                    "run.sh",
+                    "windows.txt",
+                ]
+                assert archive.read("windows.txt") == b"one\r\ntwo\r\n"
+                assert (archive.getinfo("run.sh").external_attr >> 16) & 0o777 == 0o755
+                assert (archive.getinfo("keep.txt").external_attr >> 16) & 0o777 == 0o644
+                assert archive.getinfo("run.sh").create_system == 3
+                assert archive.getinfo("keep.txt").create_system == 3
+                manifest = __import__("json").loads(
+                    archive.read("AUDIT_EXPORT_MANIFEST.json")
+                )
+                assert (
+                    manifest["bundle_mode"]
+                    == "source-only-final-byte-candidate"
+                )
+                assert manifest["artifacts"] == []
+                assert manifest["certification_claim"] is False
+                assert manifest["record_count"] == 4
+                assert [record["path"] for record in manifest["records"]] == [
+                    "AUDIT_REPLAY_CONTRACT.json",
+                    "keep.txt",
+                    "run.sh",
+                    "windows.txt",
+                ]
+                assert manifest["build_time"] == manifest["source_timestamp"]
+>               assert manifest["source_control_available"] is False
+E               assert True is False
+
+tests\test_clean_source_export.py:98: AssertionError
+______ test_current_source_archive_is_bounded_and_excludes_local_custody ______
+
+    def test_current_source_archive_is_bounded_and_excludes_local_custody() -> None:
+        root = Path(__file__).resolve().parents[1]
+        result = scripts.audit_source_archive.audit_source_archive(
+            root, worktree_attributes=True
+        )
+>       assert result["valid"], json.dumps(result, indent=2, sort_keys=True)
+E       AssertionError: {
+E           "errors": [
+E             "[WinError 3] The system cannot find the path specified: 'C:\\\\Users\\\\Ben\\\\Documents\\\\bootstrap_project\\\\Pacify-X\\\\.tmp\\\\resume10\\\\owned\\\\pacifyx-esah03h9\\\\pacify-x-pytest-jbauzbqx\\\\pytest\\\\test_materialization_rejects_o0\\\\linked'"
+E           ],
+E           "schema_version": "px.source-archive-audit/1.0",
+E           "valid": false,
+E           "validation_basis": "current_implementation",
+E           "workspace_cleanup": {
+E             "cleanup_id": "cleanup-42e788132e7f4a5b82a5df571de8806f",
+E             "errors": [],
+E             "resources_failed": 0,
+E             "resources_reclaimed": 1
+E           }
+E         }
+E       assert False
+
+tests\test_clean_source_export.py:128: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_test_profiles.py::test_section_status_refuses_missing_or_stale_receipts
+FAILED tests/test_test_profiles.py::test_certification_groups_are_exhaustive_exclusive_and_bounded
+FAILED tests/test_test_profiles.py::test_group_status_is_receipt_driven_and_covers_every_test_file
+FAILED tests/test_test_runner_controls.py::test_pytest_uses_registered_isolated_basetemp_and_reclaims_it
+FAILED tests/test_repository_scope.py::test_local_dependency_installations_are_pruned_at_the_root
+FAILED tests/test_clean_source_export.py::test_clean_export_is_byte_deterministic_and_non_destructive
+FAILED tests/test_clean_source_export.py::test_current_source_archive_is_bounded_and_excludes_local_custody
+7 failed, 91 deselected in 45.24s
+

@@ -1,0 +1,101 @@
+.FF                                                                      [100%]
+================================== FAILURES ===================================
+__________ test_materialized_release_source_is_bounded_and_complete ___________
+
+    def test_materialized_release_source_is_bounded_and_complete() -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            destination = Path(directory) / "source"
+>           receipt = materialize_release_source(
+                ROOT,
+                destination,
+                extra_paths=("policies/rev1xx-validation.json",),
+            )
+
+tests\test_release_artifacts.py:756: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+source_root = WindowsPath('C:/Users/Ben/Documents/bootstrap_project/Pacify-X')
+destination = WindowsPath('C:/Users/Ben/AppData/Local/Temp/Pacify-X-day1-owned/pacifyx-8ovmt5j4/tmpppq2wcx4/source')
+extra_paths = ('policies/rev1xx-validation.json',)
+
+    def materialize_release_source(
+        source_root: Path,
+        destination: Path,
+        *,
+        extra_paths: Iterable[str] = (),
+    ) -> dict[str, object]:
+        """Materialize product inputs and declared packaged evidence for release tests."""
+    
+        from .input_files import directory_root
+        from .archive_io import reject_path_links
+    
+        root = directory_root(source_root)
+        reject_path_links(destination)
+        target = destination.resolve(strict=False)
+        if target.exists():
+            raise FileExistsError(f"release fixture destination already exists: {target}")
+        try:
+            target.relative_to(root)
+        except ValueError:
+            pass
+        else:
+            raise ValueError("release fixture destination must be outside the source root")
+    
+        classification = classify_tree(root)
+        if not classification["valid"] or not classification["product_valid"]:
+            raise ValueError(
+                f"release source is not classifiable: {classification['errors']}"
+            )
+    
+        product_paths = {record["path"] for record in classification["product_records"]}
+        declared_evidence = _declared_evidence_files(root)
+        extras = {_safe_fixture_relative(str(path)).as_posix() for path in extra_paths}
+        selected = sorted(product_paths | declared_evidence | extras)
+    
+        from .input_files import cooperative_deadline, check_deadline
+    
+        expected = {record["path"]: record for record in classification["product_records"]}
+    
+        def identity(value):
+            return value.st_dev, value.st_ino, value.st_size, value.st_mtime_ns
+    
+        copied_bytes = 0
+        copied_records = []
+        created_paths = []
+        directory_creation_attempted = False
+        deadline = cooperative_deadline()
+        reject_path_links(destination)
+        inventory = _ReleaseImageInventory(root)
+        try:
+            for relative in selected:
+                raw = inventory.acquire(relative, limit=64 * 1024 * 1024, deadline=deadline)
+                if copied_bytes + len(raw) > 64 * 1024**3:
+                    raise ValueError(
+                        "release fixture aggregate source byte budget exceeded"
+                    )
+                digest = hashlib.sha256(raw).hexdigest()
+                if relative in expected and (
+                    digest != expected[relative]["sha256"]
+                    or len(raw) != expected[relative]["size"]
+                ):
+>                   raise ValueError(
+                        "release fixture source changed after classification: " + relative
+                    )
+E                   ValueError: release fixture source changed after classification: tests/test_event_integrity_audit.py
+
+runtime\release_artifacts.py:835: ValueError
+___________ test_materialized_release_source_rejects_path_traversal ___________
+
+    def test_materialized_release_source_rejects_path_traversal() -> None:
+        with tempfile.TemporaryDirectory() as directory:
+>           with pytest.raises(ValueError, match="unsafe release fixture path"):
+E           AssertionError: Regex pattern did not match.
+E             Expected regex: 'unsafe release fixture path'
+E             Actual message: "release source is not classifiable: ['release source ancestry changed during classification: ValueError: release source file changed during acquisition: runtime/event_ledger.py']"
+
+tests\test_release_artifacts.py:793: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_release_artifacts.py::test_materialized_release_source_is_bounded_and_complete
+FAILED tests/test_release_artifacts.py::test_materialized_release_source_rejects_path_traversal
+2 failed, 1 passed, 54 deselected in 110.51s (0:01:50)
+

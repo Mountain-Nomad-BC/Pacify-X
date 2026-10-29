@@ -1,0 +1,26 @@
+.F.                                                                      [100%]
+================================== FAILURES ===================================
+__________ test_materialized_release_source_is_bounded_and_complete ___________
+
+    def test_materialized_release_source_is_bounded_and_complete() -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            destination = Path(directory) / "source"
+            receipt = materialize_release_source(
+                ROOT,
+                destination,
+                extra_paths=("policies/rev1xx-validation.json",),
+            )
+    
+            assert receipt["valid"]
+            assert receipt["copied_bytes"] < 256 * 1024 * 1024
+>           assert receipt["declared_evidence_file_count"] == len(
+                DECLARED_PACKAGED_EVIDENCE
+            )
+E           assert 12 == 0
+E            +  where 0 = len(())
+
+tests\test_release_artifacts.py:764: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_release_artifacts.py::test_materialized_release_source_is_bounded_and_complete
+1 failed, 2 passed, 54 deselected in 72.91s (0:01:12)
+

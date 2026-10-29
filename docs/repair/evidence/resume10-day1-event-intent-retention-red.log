@@ -1,0 +1,91 @@
+FF                                                                       [100%]
+================================== FAILURES ===================================
+____ test_finished_head_intent_retains_original_without_hard_delete[False] ____
+
+tmp_path = WindowsPath('C:/Users/Ben/AppData/Local/Temp/Pacify-X-day1-owned/pacifyx-v8ph1cjh/pytest-of-Ben/pytest-0/test_finished_head_intent_reta0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002451184EB50>
+existing_history = False
+
+    @pytest.mark.parametrize('existing_history', [False, True])
+    def test_finished_head_intent_retains_original_without_hard_delete(tmp_path, monkeypatch, existing_history):
+        from runtime import event_ledger as owner
+        import hashlib
+        intent = {'fixture': 'original intent'}
+        pending = tmp_path / '.pending-head.json'
+        raw = json.dumps(intent, indent=2).encode()
+        pending.write_bytes(raw)
+        image = owner._canonical(intent)
+        history = tmp_path / 'head-intents' / f'{hashlib.sha256(image).hexdigest()}-committed.json'
+        if existing_history:
+            history.parent.mkdir()
+            history.write_bytes(image)
+        original = Path.unlink
+        def refuse_pending_unlink(path, *args, **kwargs):
+            if path == pending:
+                raise AssertionError('Original event intent must be retained, not deleted')
+            return original(path, *args, **kwargs)
+        monkeypatch.setattr(Path, 'unlink', refuse_pending_unlink)
+>       owner._finish_head_intent(pending, intent, 'committed')
+
+tests\test_event_integrity_audit.py:32: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+runtime\event_ledger.py:318: in _finish_head_intent
+    pending.unlink()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+path = WindowsPath('C:/Users/Ben/AppData/Local/Temp/Pacify-X-day1-owned/pacifyx-v8ph1cjh/pytest-of-Ben/pytest-0/test_finished_head_intent_reta0/.pending-head.json')
+args = (), kwargs = {}
+
+    def refuse_pending_unlink(path, *args, **kwargs):
+        if path == pending:
+>           raise AssertionError('Original event intent must be retained, not deleted')
+E           AssertionError: Original event intent must be retained, not deleted
+
+tests\test_event_integrity_audit.py:29: AssertionError
+____ test_finished_head_intent_retains_original_without_hard_delete[True] _____
+
+tmp_path = WindowsPath('C:/Users/Ben/AppData/Local/Temp/Pacify-X-day1-owned/pacifyx-v8ph1cjh/pytest-of-Ben/pytest-0/test_finished_head_intent_reta1')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000245124D1A10>
+existing_history = True
+
+    @pytest.mark.parametrize('existing_history', [False, True])
+    def test_finished_head_intent_retains_original_without_hard_delete(tmp_path, monkeypatch, existing_history):
+        from runtime import event_ledger as owner
+        import hashlib
+        intent = {'fixture': 'original intent'}
+        pending = tmp_path / '.pending-head.json'
+        raw = json.dumps(intent, indent=2).encode()
+        pending.write_bytes(raw)
+        image = owner._canonical(intent)
+        history = tmp_path / 'head-intents' / f'{hashlib.sha256(image).hexdigest()}-committed.json'
+        if existing_history:
+            history.parent.mkdir()
+            history.write_bytes(image)
+        original = Path.unlink
+        def refuse_pending_unlink(path, *args, **kwargs):
+            if path == pending:
+                raise AssertionError('Original event intent must be retained, not deleted')
+            return original(path, *args, **kwargs)
+        monkeypatch.setattr(Path, 'unlink', refuse_pending_unlink)
+>       owner._finish_head_intent(pending, intent, 'committed')
+
+tests\test_event_integrity_audit.py:32: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+runtime\event_ledger.py:318: in _finish_head_intent
+    pending.unlink()
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+path = WindowsPath('C:/Users/Ben/AppData/Local/Temp/Pacify-X-day1-owned/pacifyx-v8ph1cjh/pytest-of-Ben/pytest-0/test_finished_head_intent_reta1/.pending-head.json')
+args = (), kwargs = {}
+
+    def refuse_pending_unlink(path, *args, **kwargs):
+        if path == pending:
+>           raise AssertionError('Original event intent must be retained, not deleted')
+E           AssertionError: Original event intent must be retained, not deleted
+
+tests\test_event_integrity_audit.py:29: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_event_integrity_audit.py::test_finished_head_intent_retains_original_without_hard_delete[False]
+FAILED tests/test_event_integrity_audit.py::test_finished_head_intent_retains_original_without_hard_delete[True]
+2 failed, 29 deselected in 0.40s
+

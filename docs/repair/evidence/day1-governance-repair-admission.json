@@ -1,0 +1,99 @@
+[
+  {
+    "schema_version": "px.operational-gap-ledger-event/1.0",
+    "sequence": 36302,
+    "event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000036302",
+    "event_type": "work_session_closed",
+    "timestamp": "2026-10-29T12:57:04.562009Z",
+    "actor": "codex",
+    "previous_event_sha256": "47d9b3b6957754bdcabb58afa110515b4287e2a682fa7599357c3336c9c05d15",
+    "payload": {
+      "admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000036301",
+      "evidence": [
+        {
+          "artifact_sha256": "663bc7efebec15e9ab961f9edbf074a020c52b2c077033a7bf835538269d981e",
+          "artifact_size": 10415,
+          "claim": "Gateway and tool authority repaired and passing; testing-governance retains17failures; user resumes repairs.",
+          "reference": "docs/repair/REV1XX_DAY1_RESUME_HANDOFF_2026-10-29.md"
+        }
+      ],
+      "gap_id": "PX-OS-1067",
+      "outcome": "superseded",
+      "session_id": "project-day1-gateway-timeout-and-pending-gates"
+    },
+    "event_sha256": "5e667afcebedfa215ec5d645f8630765cef4ad9225f8c019438ddfd04aa31935"
+  },
+  {
+    "schema_version": "px.operational-gap-ledger-event/1.0",
+    "sequence": 36303,
+    "event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000036303",
+    "event_type": "work_checkpoint",
+    "timestamp": "2026-10-29T12:57:05.111758Z",
+    "actor": "codex",
+    "previous_event_sha256": "5e667afcebedfa215ec5d645f8630765cef4ad9225f8c019438ddfd04aa31935",
+    "payload": {
+      "active_gap_id": "PX-OS-1067",
+      "evidence": [
+        {
+          "artifact_sha256": "663bc7efebec15e9ab961f9edbf074a020c52b2c077033a7bf835538269d981e",
+          "artifact_size": 10415,
+          "claim": "Gateway and tool authority repaired and passing; testing-governance retains17failures; user resumes repairs.",
+          "reference": "docs/repair/REV1XX_DAY1_RESUME_HANDOFF_2026-10-29.md"
+        }
+      ],
+      "learned": "Resume latest Day1 handoff. Gateway and tool authority pass; testing governance fails17tests. Diagnose source/fixture causes without regenerating stale world-state projection during open intake. Preserve inherited dirty tree and exact custody evidence.",
+      "newly_discovered_gap_ids": [],
+      "next_action": "Run the single revision/generated-projection reconciliation, make every governed section current, then execute exactly one full profile, validation, package, install, installed-system operational test, and certification in registered order.",
+      "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000036300",
+      "unresolved_branch_gap_ids": []
+    },
+    "event_sha256": "04852a186c227843bbecfacc56600dcd251266802ce1da9c21491ade80117be3"
+  },
+  {
+    "schema_version": "px.operational-gap-ledger-event/1.0",
+    "sequence": 36304,
+    "event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000036304",
+    "event_type": "work_admitted",
+    "timestamp": "2026-10-29T12:57:05.715270Z",
+    "actor": "codex",
+    "previous_event_sha256": "04852a186c227843bbecfacc56600dcd251266802ce1da9c21491ade80117be3",
+    "payload": {
+      "authority": "User directs continued repairs from latest handoff; existing Day1 local repair campaign, Codex host authority.",
+      "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000036303",
+      "effect_scopes": [
+        {
+          "effect": "read",
+          "scope": [
+            "C:/Users/Ben/Documents/bootstrap_project/Pacify-X"
+          ]
+        },
+        {
+          "effect": "write",
+          "scope": [
+            "C:/Users/Ben/Documents/bootstrap_project/Pacify-X"
+          ]
+        },
+        {
+          "effect": "execute",
+          "scope": [
+            "Bounded testing-governance source/fixture and controller mesh custody diagnosis and causal repairs, owned focused tests and changed-section gates, evidence/tracking and reviewed local commits; no generated projection refresh, network, install, service, destructive cleanup, full profile, package or certification"
+          ]
+        }
+      ],
+      "evidence": [
+        {
+          "artifact_sha256": "663bc7efebec15e9ab961f9edbf074a020c52b2c077033a7bf835538269d981e",
+          "artifact_size": 10415,
+          "claim": "Gateway and tool authority repaired and passing; testing-governance retains17failures; user resumes repairs.",
+          "reference": "docs/repair/REV1XX_DAY1_RESUME_HANDOFF_2026-10-29.md"
+        }
+      ],
+      "expected_effect": "Causal repairs and faithful fixture updates, native section evidence, reviewed local commits if verified.",
+      "expires_utc": "2026-10-29T18:57:01.316913+00:00",
+      "gap_id": "PX-OS-1067",
+      "rollback": "Preserve inherited diff and failed receipts; revert only new disproved edits; do not mutate historical campaign or generated projections.",
+      "session_id": "project-day1-governance-repairs-20261029"
+    },
+    "event_sha256": "15816462dd5bfa984138749661245ad1cfb6c713158549bd80ea4efbfe732eb5"
+  }
+]

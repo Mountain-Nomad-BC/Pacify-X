@@ -1,5 +1,6 @@
 from copy import deepcopy
 import json
+from pathlib import Path
 
 import pytest
 
@@ -7,6 +8,33 @@ from runtime.event_ledger import append_chained_event, recover_event_ledger
 from runtime.operational_event_bus import OperationalEventBus
 from runtime.wal_transaction import JsonWal
 from tests.test_operational_event_bus import ROOT, _event
+
+
+@pytest.mark.parametrize('existing_history', [False, True])
+def test_finished_head_intent_retains_original_without_hard_delete(tmp_path, monkeypatch, existing_history):
+    from runtime import event_ledger as owner
+    import hashlib
+    intent = {'fixture': 'original intent'}
+    pending = tmp_path / '.pending-head.json'
+    raw = json.dumps(intent, indent=2).encode()
+    pending.write_bytes(raw)
+    image = owner._canonical(intent)
+    history = tmp_path / 'head-intents' / f'{hashlib.sha256(image).hexdigest()}-committed.json'
+    if existing_history:
+        history.parent.mkdir()
+        history.write_bytes(image)
+    original = Path.unlink
+    def refuse_pending_unlink(path, *args, **kwargs):
+        if path == pending:
+            raise AssertionError('Original event intent must be retained, not deleted')
+        return original(path, *args, **kwargs)
+    monkeypatch.setattr(Path, 'unlink', refuse_pending_unlink)
+    owner._finish_head_intent(pending, intent, 'committed')
+    assert not pending.exists()
+    assert history.read_bytes() == image
+    retained = [p for p in history.parent.iterdir() if p != history]
+    assert len(retained) == 1
+    assert retained[0].read_bytes() == raw
 
 
 def test_real_commissioning_and_tool_intake_share_one_lifecycle_owner(tmp_path):

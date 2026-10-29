@@ -261,7 +261,8 @@ def test_pytest_uses_registered_isolated_basetemp_and_reclaims_it(
         "    assert inherited.name == 'process-temp'\n"
         "    key_root = Path(os.environ['PX_STUDIO_KEY_ROOT']).resolve()\n"
         "    assert key_root.name == 'authority-keys'\n"
-        "    assert Path.cwd().resolve() not in key_root.parents\n"
+        "    assert key_root.parent == inherited\n"
+        "    assert key_root != Path(os.environ['PX_TEST_OUTER_KEY_ROOT']).resolve()\n"
         "    key_root.mkdir()\n"
         "    (key_root / 'prepared.key').write_text('test-only')\n"
         "    assert inherited in Path(tempfile.mkdtemp()).resolve().parents\n",
@@ -273,7 +274,9 @@ def test_pytest_uses_registered_isolated_basetemp_and_reclaims_it(
     result = run_test_command(
         [sys.executable, "-m", "pytest", "-q", str(test_file)],
         cwd=ROOT,
-        environment=os.environ,
+        environment={**os.environ,
+                     "PX_STUDIO_KEY_ROOT": str(tmp_path / "outer-authority"),
+                     "PX_TEST_OUTER_KEY_ROOT": str(tmp_path / "outer-authority")},
         timeout_seconds=30,
         resource_manager=manager,
         run_id="nested-pytest",

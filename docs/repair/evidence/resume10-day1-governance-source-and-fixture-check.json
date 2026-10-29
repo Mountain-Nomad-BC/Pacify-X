@@ -1,0 +1,25 @@
+{
+  "command": [
+    "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.venv-repair\\Scripts\\python.exe",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "tests/test_repository_scope.py",
+    "tests/test_source_boundary.py",
+    "tests/test_clean_source_export.py",
+    "tests/test_test_runner_controls.py",
+    "tests/test_cli_commands.py",
+    "tests/test_test_profiles.py",
+    "-k",
+    "local_dependency_installations_are_pruned_at_the_root or authored_inventory_prunes or recovery_snapshot_root or clean_export_is_byte_deterministic_and_non_destructive or current_source_archive_is_bounded_and_excludes_local_custody or pytest_uses_registered_isolated_basetemp_and_reclaims_it or section_status_refuses_missing_or_stale_receipts or cannot_bypass_profile_lock or full_profile_orchestration_is_repository_single_flight or profile_lock_blocks_projection_identity_mutation or projection_lock_blocks_profile_and_releases_cleanly"
+  ],
+  "exit_code": 0,
+  "tree_closed": true,
+  "resource_inactive": true,
+  "receipt": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.tmp\\resume10\\owned\\cleanup-receipts\\process-1aded5f821484279b99f57af8cc510c7.json",
+  "workspace": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.tmp\\resume10\\owned\\pacifyx-kpoxy2ep",
+  "log": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\docs\\repair\\evidence\\resume10-day1-governance-source-and-fixture-check.log",
+  "log_sha256": "9db8a0dd8a360c400db8ecd8928778775177f5fac2c276407e4f58b08952b7de"
+}

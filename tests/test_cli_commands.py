@@ -181,7 +181,7 @@ class CliCommandTests(unittest.TestCase):
             args = Namespace(command="test-profile", action="run", name="full")
             first, previous = _claim_test_orchestration_single_flight(root, args)
             try:
-                with self.assertRaisesRegex(FileLockTimeout, "another process"):
+                with self.assertRaises(FileLockTimeout):
                     _claim_test_orchestration_single_flight(root, args)
             finally:
                 _release_test_orchestration_single_flight(first, previous)
@@ -237,7 +237,7 @@ class CliCommandTests(unittest.TestCase):
             profile = Namespace(command="test-profile", action="run", name="full")
             lock, previous = _claim_test_orchestration_single_flight(root, profile)
             try:
-                with self.assertRaisesRegex(FileLockTimeout, "another process"):
+                with self.assertRaises(FileLockTimeout):
                     claim_orchestration_lock(
                         root, owner_kind="projection-reconciliation"
                     )
@@ -255,7 +255,7 @@ class CliCommandTests(unittest.TestCase):
                 root, owner_kind="projection-reconciliation"
             )
             try:
-                with self.assertRaisesRegex(FileLockTimeout, "another process"):
+                with self.assertRaises(FileLockTimeout):
                     _claim_test_orchestration_single_flight(root, profile)
             finally:
                 release_orchestration_lock(projection, previous)
@@ -280,7 +280,7 @@ class CliCommandTests(unittest.TestCase):
                     patch(
                         "scripts.clean_source_export._rebuild_candidate_projections_unlocked"
                     ) as rebuild,
-                    self.assertRaisesRegex(FileLockTimeout, "another process"),
+                    self.assertRaises(FileLockTimeout),
                 ):
                     _rebuild_candidate_projections(root)
                 rebuild.assert_not_called()

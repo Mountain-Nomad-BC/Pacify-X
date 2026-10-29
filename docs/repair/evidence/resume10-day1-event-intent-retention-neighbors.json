@@ -1,0 +1,21 @@
+{
+  "command": [
+    "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.venv-repair\\Scripts\\python.exe",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "tests/test_event_integrity_audit.py",
+    "tests/test_event_ledger_regression.py",
+    "tests/test_event_ledger_integrity.py",
+    "tests/test_operational_event_bus.py"
+  ],
+  "exit_code": 0,
+  "tree_closed": true,
+  "resource_inactive": true,
+  "receipt": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.tmp\\resume10\\owned\\cleanup-receipts\\process-f9ad71edf6b94ed3a2bd1a8ae5bf1dc4.json",
+  "workspace": "C:\\Users\\Ben\\AppData\\Local\\Temp\\Pacify-X-day1-owned\\pacifyx-hmope7az",
+  "log": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\docs\\repair\\evidence\\resume10-day1-event-intent-retention-neighbors.log",
+  "log_sha256": "cd7214e55e75534b7547abedfbb56e724544c3f2fcec5e5a70baebea6a179bef"
+}

@@ -1,0 +1,20 @@
+{
+  "command": [
+    "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.venv-repair\\Scripts\\python.exe",
+    "-m",
+    "pytest",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "tests/test_release_artifacts.py",
+    "-k",
+    "current_product_tree_identity_apply_is_a_fixed_point or materialized_release_source_is_bounded_and_complete or materialized_release_source_rejects_path_traversal"
+  ],
+  "exit_code": 1,
+  "tree_closed": true,
+  "resource_inactive": true,
+  "receipt": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.tmp\\resume10\\owned\\cleanup-receipts\\process-c14d3309f46240e8ac48fdaac69426ed.json",
+  "workspace": "C:\\Users\\Ben\\AppData\\Local\\Temp\\Pacify-X-day1-owned\\pacifyx-yssdzpj5",
+  "log": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\docs\\repair\\evidence\\resume10-day1-governance-materialization-stable.log",
+  "log_sha256": "f819ad0d46560ecf34b60eba17f6dbb411f155a90c8eb8c4e7800a1691ddc2f9"
+}

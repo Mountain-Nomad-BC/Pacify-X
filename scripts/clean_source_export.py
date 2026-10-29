@@ -673,6 +673,12 @@ def _git_provenance(root: Path) -> dict[str, object]:
         value = completed.stdout.strip()
         return value or None
 
+    # Git searches ancestors when a fixture or nested source has no repository
+    # of its own. That ancestor's commit must not become this source's identity.
+    top = query("rev-parse", "--show-toplevel")
+    if top is None or Path(top).resolve() != root.resolve():
+        return {"source_commit": None, "source_commit_time": None,
+                "source_worktree_dirty": None, "source_control_available": False}
     commit = query("rev-parse", "HEAD")
     commit_time = query("show", "-s", "--format=%cI", "HEAD")
     status = query("status", "--porcelain=v1", "--untracked-files=normal")

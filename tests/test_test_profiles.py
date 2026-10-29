@@ -636,6 +636,22 @@ def test_section_status_refuses_missing_or_stale_receipts(monkeypatch):
         "native-runtime-integration",
         "native-job-operating",
         "host-containment",
+        "event-integrity",
+        "ui-event-integrity",
+        "agent-task-lifecycle",
+        "billing-budget",
+        "provider-settlement-contract",
+        "billing-settlement",
+        "release-lifecycle",
+        "source-inventory",
+        "provider-stream-custody",
+        "native-provider-protocol",
+        "context-provenance",
+        "remote-profile-catalog",
+        "agent-gateway-integration",
+        "agent-tool-authority",
+        "model-group-execution",
+        "billing-accounting",
     }
 
 
