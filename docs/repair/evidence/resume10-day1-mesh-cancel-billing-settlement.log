@@ -1,0 +1,83 @@
+{
+  "schema_version": "px.test-section/1.0",
+  "valid": true,
+  "section": "billing-settlement",
+  "description": "Durable cumulative reservations, async host acknowledgment, settlement identity/restart, cancellation and unknown-charge holds; controlled host evidence, no credentialed billing claim.",
+  "dependencies": [],
+  "inputs": [
+    ".agentic_engineering_os_px/processing-order/active-revision.json",
+    ".agentic_engineering_os_px/project-revisions/prj_pacify_x_rev1xx_day1_20261029/validation-policy.json",
+    "extension/src/agentHarness/adapters/pxProviderGateway.js",
+    "extension/src/agentHarness/budgetLedger.js",
+    "extension/src/agentHarness/harnessController.js",
+    "extension/src/agentHarness/pxProviderInvoker.js",
+    "extension/src/agentHarness/registerAgentConsole.js",
+    "extension/tests/billing-settlement-audit.test.js",
+    "registry/test_profiles.json"
+  ],
+  "input_sha256": "a3fb1fac8a994363d12c05f42f5a8d8051b40beb2a3f0657c4f3def909a7c735",
+  "command": [
+    "node",
+    "--test",
+    "tests/billing-settlement-audit.test.js"
+  ],
+  "cwd": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\extension",
+  "cwd_relative": "extension",
+  "timeout_seconds": 179.26600000000326,
+  "chunks": [],
+  "max_parallel_chunks": 1,
+  "environment": {
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONNOUSERSITE": "0"
+  },
+  "dependency_analysis": {
+    "kind": "static-local-python-plus-declared-assets",
+    "unresolved_dynamic_imports": {},
+    "runtime_coverage_complete": false
+  },
+  "exit_code": 0,
+  "timed_out": false,
+  "duration_seconds": 2.687,
+  "stdout": "\u2714 unknown, nonfinite and negative billable estimates fail closed (1.7527ms)\n\u2714 concurrent reservations enforce the cumulative ceiling (0.5089ms)\n\u2714 unsettled reservations survive restart and still consume the task ceiling (0.24ms)\n\u2714 zero policy ceiling is preserved by the view defaults (0.1532ms)\n\u2714 billable work cannot be reserved without durable persistence (0.4308ms)\n\u2714 gateway rejects forged settlement true (0.576ms)\n\u2714 gateway rejects forged settlement {} (0.14ms)\n\u2714 gateway rejects forged settlement {\"schema_version\":\"failure\",\"provider_receipt\":{}} (0.0944ms)\n\u2714 gateway rejects forged settlement {\"exact_receipt\":false} (0.1221ms)\n\u2714 asynchronous disk acknowledgment retains settlement deduplication across owner restart (31.1486ms)\n\u2714 unknown actual costs remain held and cannot silently become zero (0.7377ms)\n\u2714 failed asynchronous reservation acknowledgment prevents dispatch admission (0.4312ms)\n\u2714 legacy untracked task spend remains blocked after restart while new owners may reserve (0.2016ms)\n\u2714 financial rows and returned receipts cannot be mutated to evade accumulated spend (0.3547ms)\n\u2714 sub-microunit task ceiling never rounds upward into extra authority (0.1248ms)\n\u2714 actual host registration never invokes a provider before asynchronous reservation acknowledgment (13.4637ms)\n\u2714 native invoker carries the reserved invocation identity across the bridge (0.6407ms)\n\u2714 registered host settles a typed receipt under the reserved task/run/invocation exactly once (3.8821ms)\n\u25b6 cancelled paid attempt records its returned typed usage before rejecting late completion\n  \u2714 real durable owner retains settlements and rejects duplicate or conflicting charges (47.8875ms)\n  \u2714 reservation ownership, unknown actual costs and persistence failures fail closed (0.7019ms)\n  \u2714 controller settlement helper binds task and execution and flushes durable usage (0.3331ms)\n\u2714 cancelled paid attempt records its returned typed usage before rejecting late completion (52.9087ms)\n\u2139 tests 22\n\u2139 suites 0\n\u2139 pass 22\n\u2139 fail 0\n\u2139 cancelled 0\n\u2139 skipped 0\n\u2139 todo 0\n\u2139 duration_ms 313.0847\n",
+  "stderr": "",
+  "process_tree_terminated": true,
+  "execution_started": true,
+  "termination": null,
+  "resource_id": "process-a94d5e7efd6f494c8e53635501f288ff",
+  "supervision_receipt": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\.agentic_engineering_os_px\\resource-lifecycle\\cleanup-receipts\\process-b145692e86a7428c92793f15d829c759.json",
+  "supervision_status": "exited",
+  "disk_consumption_limit_bytes": 8589934592,
+  "test_workspace": {
+    "kind": "managed_process_temp",
+    "path": "C:\\Users\\Ben\\AppData\\Local\\Temp\\Pacify-X-day1-owned\\pacifyx-fdce99q6\\pacify-x-process-pd_67yfj",
+    "resource_id": "path-20619d66194b48c19c6b6f3e296dafc9",
+    "cleanup_id": "cleanup-fa516006dbd747f8b67e17203b92de7b",
+    "reclaimed": true,
+    "errors": []
+  },
+  "section_receipt": {
+    "schema_version": "px.test-section-receipt/1.2",
+    "input_sha256": "a3fb1fac8a994363d12c05f42f5a8d8051b40beb2a3f0657c4f3def909a7c735",
+    "execution_valid": true,
+    "passed": true,
+    "exit_code": 0,
+    "timed_out": false,
+    "duration_seconds": 2.047,
+    "section": "billing-settlement",
+    "dependencies": [],
+    "command": [
+      "node",
+      "--test",
+      "tests/billing-settlement-audit.test.js"
+    ],
+    "cwd": "extension",
+    "chunks": [],
+    "receipt_sha256": "61fe2e9f2245cdbb6f5deeef70c56ee951dd2426fc6307e0b6b9510830f52ef2"
+  },
+  "receipt_path": "C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.agentic_engineering_os_px/test-evidence/sections/billing-settlement.json",
+  "receipt_published": true,
+  "secondary_errors": [],
+  "deadline_exceeded_seconds": 0,
+  "deadline_scope": "section resolution, admission, scheduling, execution and observed closure; OS calls and cleanup remain cooperative"
+}
+

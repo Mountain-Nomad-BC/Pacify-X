@@ -1,0 +1,340 @@
+{
+  "schema_version": "px.test-section/1.0",
+  "valid": true,
+  "section": "billing-accounting",
+  "description": "Durable reservations, cumulative ceilings, owner-bound idempotent settlement and exact provider receipt validation.",
+  "dependencies": [],
+  "inputs": [
+    ".agentic_engineering_os_px/processing-order/active-revision.json",
+    ".agentic_engineering_os_px/project-revisions/prj_pacify_x_rev1xx_day1_20261029/validation-policy.json",
+    "extension/src/agentHarness/adapters/base.js",
+    "extension/src/agentHarness/adapters/codexAppServer.js",
+    "extension/src/agentHarness/adapters/copilotSdk.js",
+    "extension/src/agentHarness/adapters/mock.js",
+    "extension/src/agentHarness/adapters/ollama.js",
+    "extension/src/agentHarness/adapters/openaiCompatible.js",
+    "extension/src/agentHarness/adapters/pxProviderGateway.js",
+    "extension/src/agentHarness/adapters/streamCustody.js",
+    "extension/src/agentHarness/agentConsoleMessages.js",
+    "extension/src/agentHarness/agentConsoleProjection.js",
+    "extension/src/agentHarness/agentConsoleView.js",
+    "extension/src/agentHarness/budgetLedger.js",
+    "extension/src/agentHarness/completionEvaluator.js",
+    "extension/src/agentHarness/contextCompiler.js",
+    "extension/src/agentHarness/contracts.js",
+    "extension/src/agentHarness/durableTaskState.js",
+    "extension/src/agentHarness/eventBus.js",
+    "extension/src/agentHarness/executionContext.js",
+    "extension/src/agentHarness/harnessController.js",
+    "extension/src/agentHarness/ids.js",
+    "extension/src/agentHarness/legacyTaskMigration.js",
+    "extension/src/agentHarness/pxProviderInvoker.js",
+    "extension/src/agentHarness/registerAgentConsole.js",
+    "extension/src/agentHarness/router.js",
+    "extension/src/agentHarness/taskStore.js",
+    "extension/src/agentHarness/tinyLibrarian.js",
+    "extension/src/agentHarness/toolBroker.js",
+    "extension/src/agentHarness/vscodeTools.js",
+    "extension/src/agentHarness/workerRegistry.js",
+    "extension/tests/agent-harness-core.test.js",
+    "extension/tests/billing-settlement-audit.test.js",
+    "extension/tests/px-provider-invoker.test.js",
+    "registry/test_profiles.json"
+  ],
+  "input_sha256": "c85f2a70b45e479d43f8c54ced4ed2ee53a320b1022759ce4bbf2ae1f71610b6",
+  "command": [
+    "node",
+    "--test",
+    "tests/billing-settlement-audit.test.js",
+    "tests/agent-harness-core.test.js",
+    "tests/px-provider-invoker.test.js"
+  ],
+  "cwd": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\extension",
+  "cwd_relative": "extension",
+  "timeout_seconds": 600.0,
+  "chunks": [
+    {
+      "chunk_id": "chunk-01",
+      "input_sha256": "93ff419f808e3fd5aed0e8efb7597e4d08423b7a07692fc75a86251649eda331",
+      "member_count": 1,
+      "members": [
+        "tests/billing-settlement-audit.test.js"
+      ],
+      "passed": true,
+      "timed_out": false,
+      "duration_seconds": 1.328,
+      "output_evidence": {
+        "stdout_sha256": "8884d55fa52cb0d224936565edac2f63ceeb625a6bbfe580bc76bb1b0eec1d01",
+        "stdout_bytes": 2129,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_bytes": 0,
+        "failure_nodes": []
+      },
+      "receipt_sha256": "b20a1af2ca479f237aeed67eedce7f31ade9abc52e0a5c34cb31df7e0d267090",
+      "reused": false,
+      "execution_started": true,
+      "process_tree_terminated": true,
+      "receipt_published": true,
+      "execution_valid": true,
+      "exit_code": 0
+    },
+    {
+      "chunk_id": "chunk-02",
+      "input_sha256": "87a00cbe917676f31ee6640d7399a0070bf9de303d6c8f9e29bb56d58505e5b5",
+      "member_count": 1,
+      "members": [
+        "tests/agent-harness-core.test.js"
+      ],
+      "passed": true,
+      "timed_out": false,
+      "duration_seconds": 1.969,
+      "output_evidence": {
+        "stdout_sha256": "78a39a8ac42ebcbe10d57af6271227e7a4204b1e112d44bf543136146f2564f2",
+        "stdout_bytes": 924,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_bytes": 0,
+        "failure_nodes": []
+      },
+      "receipt_sha256": "343701b0d2ec37f48069bdc49034d9be1dfe3c572df0acd0c8e085b0b6a2ff31",
+      "reused": false,
+      "execution_started": true,
+      "process_tree_terminated": true,
+      "receipt_published": true,
+      "execution_valid": true,
+      "exit_code": 0
+    },
+    {
+      "chunk_id": "chunk-03",
+      "input_sha256": "4bfafa1f21cbe400bd0045b7c3982dbf42ee25ec6eafab3f4bcd3bc48d504b18",
+      "member_count": 1,
+      "members": [
+        "tests/px-provider-invoker.test.js"
+      ],
+      "passed": true,
+      "timed_out": false,
+      "duration_seconds": 1.656,
+      "output_evidence": {
+        "stdout_sha256": "b871546b4f846c52e7f084b39799bb02f9d1c1978249581ac42aca9472fc8556",
+        "stdout_bytes": 477,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_bytes": 0,
+        "failure_nodes": []
+      },
+      "receipt_sha256": "7058b75524696167a86138cd65a7e9aafad1bd7bda0be7481131a99e09b969f4",
+      "reused": false,
+      "execution_started": true,
+      "process_tree_terminated": true,
+      "receipt_published": true,
+      "execution_valid": true,
+      "exit_code": 0
+    }
+  ],
+  "max_parallel_chunks": 1,
+  "environment": {
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONNOUSERSITE": "0"
+  },
+  "dependency_analysis": {
+    "kind": "static-local-python-plus-declared-assets",
+    "unresolved_dynamic_imports": {},
+    "runtime_coverage_complete": false
+  },
+  "exit_code": 0,
+  "timed_out": false,
+  "duration_seconds": 9.969,
+  "chunk_results": [
+    {
+      "schema_version": "px.test-section-chunk-receipt/1.2",
+      "input_sha256": "93ff419f808e3fd5aed0e8efb7597e4d08423b7a07692fc75a86251649eda331",
+      "execution_valid": true,
+      "passed": true,
+      "exit_code": 0,
+      "timed_out": false,
+      "duration_seconds": 1.328,
+      "section": "billing-accounting",
+      "chunk_id": "chunk-01",
+      "members": [
+        "tests/billing-settlement-audit.test.js"
+      ],
+      "member_count": 1,
+      "output_evidence": {
+        "stdout_sha256": "8884d55fa52cb0d224936565edac2f63ceeb625a6bbfe580bc76bb1b0eec1d01",
+        "stdout_bytes": 2129,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_bytes": 0,
+        "failure_nodes": []
+      },
+      "receipt_sha256": "b20a1af2ca479f237aeed67eedce7f31ade9abc52e0a5c34cb31df7e0d267090",
+      "reused": false,
+      "receipt_published": true,
+      "receipt_path": "C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.agentic_engineering_os_px/test-evidence/section-chunks/billing-accounting/chunk-01.json",
+      "stdout": "\u2714 unknown, nonfinite and negative billable estimates fail closed (1.7675ms)\n\u2714 concurrent reservations enforce the cumulative ceiling (0.5865ms)\n\u2714 unsettled reservations survive restart and still consume the task ceiling (0.3678ms)\n\u2714 zero policy ceiling is preserved by the view defaults (0.195ms)\n\u2714 billable work cannot be reserved without durable persistence (0.442ms)\n\u2714 gateway rejects forged settlement true (0.6029ms)\n\u2714 gateway rejects forged settlement {} (0.1648ms)\n\u2714 gateway rejects forged settlement {\"schema_version\":\"failure\",\"provider_receipt\":{}} (0.1051ms)\n\u2714 gateway rejects forged settlement {\"exact_receipt\":false} (0.1392ms)\n\u2714 asynchronous disk acknowledgment retains settlement deduplication across owner restart (23.2869ms)\n\u2714 unknown actual costs remain held and cannot silently become zero (0.8525ms)\n\u2714 failed asynchronous reservation acknowledgment prevents dispatch admission (0.5075ms)\n\u2714 legacy untracked task spend remains blocked after restart while new owners may reserve (0.21ms)\n\u2714 financial rows and returned receipts cannot be mutated to evade accumulated spend (0.5011ms)\n\u2714 sub-microunit task ceiling never rounds upward into extra authority (0.1479ms)\n\u2714 actual host registration never invokes a provider before asynchronous reservation acknowledgment (13.5316ms)\n\u2714 native invoker carries the reserved invocation identity across the bridge (0.652ms)\n\u2714 registered host settles a typed receipt under the reserved task/run/invocation exactly once (4.4363ms)\n\u25b6 cancelled paid attempt records its returned typed usage before rejecting late completion\n  \u2714 real durable owner retains settlements and rejects duplicate or conflicting charges (56.048ms)\n  \u2714 reservation ownership, unknown actual costs and persistence failures fail closed (0.7133ms)\n  \u2714 controller settlement helper binds task and execution and flushes durable usage (0.2523ms)\n\u2714 cancelled paid attempt records its returned typed usage before rejecting late completion (61.9437ms)\n\u2139 tests 22\n\u2139 suites 0\n\u2139 pass 22\n\u2139 fail 0\n\u2139 cancelled 0\n\u2139 skipped 0\n\u2139 todo 0\n\u2139 duration_ms 313.0718\n",
+      "stderr": "",
+      "execution_started": true,
+      "process_tree_terminated": true
+    },
+    {
+      "schema_version": "px.test-section-chunk-receipt/1.2",
+      "input_sha256": "87a00cbe917676f31ee6640d7399a0070bf9de303d6c8f9e29bb56d58505e5b5",
+      "execution_valid": true,
+      "passed": true,
+      "exit_code": 0,
+      "timed_out": false,
+      "duration_seconds": 1.969,
+      "section": "billing-accounting",
+      "chunk_id": "chunk-02",
+      "members": [
+        "tests/agent-harness-core.test.js"
+      ],
+      "member_count": 1,
+      "output_evidence": {
+        "stdout_sha256": "78a39a8ac42ebcbe10d57af6271227e7a4204b1e112d44bf543136146f2564f2",
+        "stdout_bytes": 924,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_bytes": 0,
+        "failure_nodes": []
+      },
+      "receipt_sha256": "343701b0d2ec37f48069bdc49034d9be1dfe3c572df0acd0c8e085b0b6a2ff31",
+      "reused": false,
+      "receipt_published": true,
+      "receipt_path": "C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.agentic_engineering_os_px/test-evidence/section-chunks/billing-accounting/chunk-02.json",
+      "stdout": "\u2714 worker registry accepts an explicit provider profile and only declared latency classes (4.0313ms)\n\u2714 canonical event bus is bounded and monotonic (7.2375ms)\n\u2714 router never selects a deterministically rejected worker (4.3272ms)\n\u2714 context compiler dedupes and honors budget (1.7858ms)\n\u2714 context compiler rejects a budget smaller than the task instruction (0.4343ms)\n\u2714 context compiler reserves request message, output, and protocol tokens before selecting refs (0.2714ms)\n\u2714 context compiler rejects request reservations beyond the task budget (0.2371ms)\n\u2714 context compiler rejects a non-integer or non-finite request reservation (0.3665ms)\n\u2714 tiny librarian fallback produces visible structured classification (1.0091ms)\n\u2714 completion requires execution evidence and ignores prose (2.1077ms)\n\u2139 tests 10\n\u2139 suites 0\n\u2139 pass 10\n\u2139 fail 0\n\u2139 cancelled 0\n\u2139 skipped 0\n\u2139 todo 0\n\u2139 duration_ms 181.0676\n",
+      "stderr": "",
+      "execution_started": true,
+      "process_tree_terminated": true
+    },
+    {
+      "schema_version": "px.test-section-chunk-receipt/1.2",
+      "input_sha256": "4bfafa1f21cbe400bd0045b7c3982dbf42ee25ec6eafab3f4bcd3bc48d504b18",
+      "execution_valid": true,
+      "passed": true,
+      "exit_code": 0,
+      "timed_out": false,
+      "duration_seconds": 1.656,
+      "section": "billing-accounting",
+      "chunk_id": "chunk-03",
+      "members": [
+        "tests/px-provider-invoker.test.js"
+      ],
+      "member_count": 1,
+      "output_evidence": {
+        "stdout_sha256": "b871546b4f846c52e7f084b39799bb02f9d1c1978249581ac42aca9472fc8556",
+        "stdout_bytes": 477,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_bytes": 0,
+        "failure_nodes": []
+      },
+      "receipt_sha256": "7058b75524696167a86138cd65a7e9aafad1bd7bda0be7481131a99e09b969f4",
+      "reused": false,
+      "receipt_published": true,
+      "receipt_path": "C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.agentic_engineering_os_px/test-evidence/section-chunks/billing-accounting/chunk-03.json",
+      "stdout": "\u2714 provider invoker uses the routed worker output-token allowance (3.3121ms)\n\u2714 provider invoker retains its bounded default when no worker allowance is supplied (0.3291ms)\n\u2714 provider invoker rejects an invalid output-token allowance before bridge invocation (0.5574ms)\n\u2714 provider invoker refuses a missing invocation owner instead of minting one (0.1926ms)\n\u2139 tests 4\n\u2139 suites 0\n\u2139 pass 4\n\u2139 fail 0\n\u2139 cancelled 0\n\u2139 skipped 0\n\u2139 todo 0\n\u2139 duration_ms 114.4673\n",
+      "stderr": "",
+      "execution_started": true,
+      "process_tree_terminated": true
+    }
+  ],
+  "section_receipt": {
+    "schema_version": "px.test-section-receipt/1.2",
+    "input_sha256": "c85f2a70b45e479d43f8c54ced4ed2ee53a320b1022759ce4bbf2ae1f71610b6",
+    "execution_valid": true,
+    "passed": true,
+    "exit_code": 0,
+    "timed_out": false,
+    "duration_seconds": 8.719,
+    "section": "billing-accounting",
+    "dependencies": [],
+    "command": [
+      "node",
+      "--test",
+      "tests/billing-settlement-audit.test.js",
+      "tests/agent-harness-core.test.js",
+      "tests/px-provider-invoker.test.js"
+    ],
+    "cwd": "extension",
+    "chunks": [
+      {
+        "chunk_id": "chunk-01",
+        "input_sha256": "93ff419f808e3fd5aed0e8efb7597e4d08423b7a07692fc75a86251649eda331",
+        "member_count": 1,
+        "members": [
+          "tests/billing-settlement-audit.test.js"
+        ],
+        "passed": true,
+        "timed_out": false,
+        "duration_seconds": 1.328,
+        "output_evidence": {
+          "stdout_sha256": "8884d55fa52cb0d224936565edac2f63ceeb625a6bbfe580bc76bb1b0eec1d01",
+          "stdout_bytes": 2129,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr_bytes": 0,
+          "failure_nodes": []
+        },
+        "receipt_sha256": "b20a1af2ca479f237aeed67eedce7f31ade9abc52e0a5c34cb31df7e0d267090",
+        "reused": false,
+        "execution_started": true,
+        "process_tree_terminated": true,
+        "receipt_published": true,
+        "execution_valid": true,
+        "exit_code": 0
+      },
+      {
+        "chunk_id": "chunk-02",
+        "input_sha256": "87a00cbe917676f31ee6640d7399a0070bf9de303d6c8f9e29bb56d58505e5b5",
+        "member_count": 1,
+        "members": [
+          "tests/agent-harness-core.test.js"
+        ],
+        "passed": true,
+        "timed_out": false,
+        "duration_seconds": 1.969,
+        "output_evidence": {
+          "stdout_sha256": "78a39a8ac42ebcbe10d57af6271227e7a4204b1e112d44bf543136146f2564f2",
+          "stdout_bytes": 924,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr_bytes": 0,
+          "failure_nodes": []
+        },
+        "receipt_sha256": "343701b0d2ec37f48069bdc49034d9be1dfe3c572df0acd0c8e085b0b6a2ff31",
+        "reused": false,
+        "execution_started": true,
+        "process_tree_terminated": true,
+        "receipt_published": true,
+        "execution_valid": true,
+        "exit_code": 0
+      },
+      {
+        "chunk_id": "chunk-03",
+        "input_sha256": "4bfafa1f21cbe400bd0045b7c3982dbf42ee25ec6eafab3f4bcd3bc48d504b18",
+        "member_count": 1,
+        "members": [
+          "tests/px-provider-invoker.test.js"
+        ],
+        "passed": true,
+        "timed_out": false,
+        "duration_seconds": 1.656,
+        "output_evidence": {
+          "stdout_sha256": "b871546b4f846c52e7f084b39799bb02f9d1c1978249581ac42aca9472fc8556",
+          "stdout_bytes": 477,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr_bytes": 0,
+          "failure_nodes": []
+        },
+        "receipt_sha256": "7058b75524696167a86138cd65a7e9aafad1bd7bda0be7481131a99e09b969f4",
+        "reused": false,
+        "execution_started": true,
+        "process_tree_terminated": true,
+        "receipt_published": true,
+        "execution_valid": true,
+        "exit_code": 0
+      }
+    ],
+    "receipt_sha256": "acd82ebb944d1c5f8c6807c6821b4c07e969775e14c3b124d6679837a38e4fef"
+  },
+  "receipt_path": "C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.agentic_engineering_os_px/test-evidence/sections/billing-accounting.json",
+  "receipt_published": true,
+  "secondary_errors": [],
+  "deadline_exceeded_seconds": 0,
+  "deadline_scope": "section resolution, admission, scheduling, execution and observed closure; OS calls and cleanup remain cooperative"
+}
+

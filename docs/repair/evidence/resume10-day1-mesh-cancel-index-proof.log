@@ -1,0 +1,27 @@
+✔ failed synchronous save cannot publish a task mutation (5.2216ms)
+✔ cancelled task cannot return to implementation or start a run (0.4569ms)
+✔ only one live run can own a task (1.614ms)
+✔ task and run identities cannot be rebound by an update (0.4086ms)
+✔ corrupt persisted state is refused rather than silently replaced with empty state (0.169ms)
+✔ persistence rejection prevents further dispatch-facing reads (0.485ms)
+✔ stale disposable cannot delete a replacement worker registration (1.4009ms)
+✔ late health response cannot overwrite replacement worker health (0.4179ms)
+✔ controller does not dispatch before worker selection is durably acknowledged (20.0972ms)
+✔ cancellation settles usage but cannot publish completion or late deltas (5.7129ms)
+✔ controller rejects a run belonging to another task before dispatch (0.5855ms)
+✔ returned task values cannot mutate persisted ownership or constraints (0.5368ms)
+✔ restart cannot redispatch a worker-selected run with unknown previous effects (0.5667ms)
+✔ cancel request has a bound while unsettled adapter remains fenced from replacement (37.7325ms)
+✔ mesh cancellation bounds stalled interrupts and retains active ownership (31.2271ms)
+✔ mesh cancellation records acknowledged interrupt outcome (1.7631ms)
+✔ mesh cancellation records unsupported interrupt outcome (0.7528ms)
+✔ mesh cancellation records failed interrupt outcome (0.8048ms)
+ℹ tests 18
+ℹ suites 0
+ℹ pass 18
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 268.2361
+

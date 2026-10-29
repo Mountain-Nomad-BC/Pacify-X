@@ -109,6 +109,30 @@ class HarnessController {
 
   async cancelRun(runId) {
     const active = this.active.get(runId); if (!active) return false;
+    if (active.mesh) {
+      const current = this.taskStore.requireRun(runId); if (['complete','failed','cancelled'].includes(current.status)) return false;
+      this.taskStore.updateRun(runId, { status: 'cancelled', lastError: 'Cancellation requested by operator.' });
+      for (const controller of active.controllers.values()) controller.abort(); await this.taskStore.flush();
+      const workerIds = new Set(active.branchWorkerIds.values());
+      const requested = this.cancelInterruptTimeoutMs ?? 1000;
+      const timeout = Number.isSafeInteger(requested) && requested >= 10 && requested <= 10000 ? requested : 1000;
+      await Promise.all([...workerIds].map(async workerId => {
+        const adapter = this.workerRegistry.adapter(workerId);
+        let timer;
+        try {
+          const outcome = await Promise.race([
+            Promise.resolve().then(() => typeof adapter?.interrupt === 'function' ? adapter.interrupt() : false)
+              .then(value => value === false ? 'unsupported' : 'acknowledged', () => 'failed'),
+            new Promise(resolve => { timer = setTimeout(() => resolve('timeout'), timeout); })
+          ]);
+          if (outcome !== 'acknowledged') this.eventBus.emit('worker.interrupt.unsettled', {
+            taskId: active.taskId, runId, workerId, status: 'blocked',
+            summary: 'Cancellation requested; adapter closure remains unverified.', payload: { outcome, timeoutMs: timeout }
+          });
+        } finally { clearTimeout(timer); }
+      }));
+      return true;
+    }
     active.abort.abort();
     const adapter = active.workerId ? this.workerRegistry.adapter(active.workerId) : null;
     const requested = this.cancelInterruptTimeoutMs ?? 1000;

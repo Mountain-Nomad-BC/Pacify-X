@@ -1,0 +1,65 @@
+✖ mesh cancellation bounds stalled interrupts and retains active ownership (27.8619ms)
+✖ mesh cancellation records acknowledged interrupt outcome (0.7708ms)
+✖ mesh cancellation records unsupported interrupt outcome (0.6914ms)
+✖ mesh cancellation records failed interrupt outcome (0.5739ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 0
+ℹ fail 4
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3354.9145
+
+✖ failing tests:
+
+test at extension\tests\task-state-custody.test.js:177:1
+✖ mesh cancellation bounds stalled interrupts and retains active ownership (27.8619ms)
+  Error: worker-adapter-invalid
+      at WorkerRegistry.register (C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\src\agentHarness\workerRegistry.js:10:66)
+      at harness (C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\tests\task-state-custody.test.js:97:18)
+      at TestContext.<anonymous> (C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\tests\task-state-custody.test.js:181:17)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.start (node:internal/test_runner/test:1177:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:385:17)
+
+test at extension\tests\task-state-custody.test.js:211:3
+✖ mesh cancellation records acknowledged interrupt outcome (0.7708ms)
+  Error: worker-adapter-invalid
+      at WorkerRegistry.register (C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\src\agentHarness\workerRegistry.js:10:66)
+      at harness (C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\tests\task-state-custody.test.js:97:18)
+      at TestContext.<anonymous> (C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\tests\task-state-custody.test.js:212:19)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3)
+
+test at extension\tests\task-state-custody.test.js:211:3
+✖ mesh cancellation records unsupported interrupt outcome (0.6914ms)
+  Error: worker-adapter-invalid
+      at WorkerRegistry.register (C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\src\agentHarness\workerRegistry.js:10:66)
+      at harness (C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\tests\task-state-custody.test.js:97:18)
+      at TestContext.<anonymous> (C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\tests\task-state-custody.test.js:212:19)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7)
+
+test at extension\tests\task-state-custody.test.js:211:3
+✖ mesh cancellation records failed interrupt outcome (0.5739ms)
+  Error: worker-adapter-invalid
+      at WorkerRegistry.register (C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\src\agentHarness\workerRegistry.js:10:66)
+      at harness (C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\tests\task-state-custody.test.js:97:18)
+      at TestContext.<anonymous> (C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\tests\task-state-custody.test.js:212:19)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1306:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:897:18)
+      at Test.postRun (node:internal/test_runner/test:1447:19)
+      at Test.run (node:internal/test_runner/test:1372:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7)
+

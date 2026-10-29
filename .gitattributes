@@ -63,3 +63,6 @@ docs/repair/evidence/resume15-checkpoint1.json -text whitespace=cr-at-eol,-blank
 # Immutable focused application-repair outputs retain their exact bytes.
 docs/repair/evidence/resume10-project-*.log binary
 docs/repair/evidence/resume10-project-*.json -text whitespace=cr-at-eol,-blank-at-eof
+
+# Owned mesh-cancellation proof retains exact captured process output.
+docs/repair/evidence/resume10-day1-mesh-cancel-*.log binary

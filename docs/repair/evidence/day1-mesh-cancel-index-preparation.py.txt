@@ -1,0 +1,20 @@
+from pathlib import Path
+import subprocess,hashlib,json
+root=Path.cwd()
+name='extension/src/agentHarness/harnessController.js'
+head=subprocess.check_output(['git','show','HEAD:'+name],timeout=10).decode()
+live=(root/name).read_text()
+method=live.index('  async cancelRun(runId) {')
+begin=live.index('    if (active.mesh) {',method)
+end=live.index('    active.abort.abort();',begin)
+branch=live[begin:end]
+assert branch.count('if (active.mesh)')==1 and "resolve('timeout')" in branch
+marker='    const active = this.active.get(runId); if (!active) return false;\n'
+start=head.index('  async cancelRun(runId) {')
+offset=head.index(marker,start)+len(marker)
+assert 'if (active.mesh)' not in head[start:head.index('  project(',start)]
+candidate=head[:offset]+branch+head[offset:]
+target=root/'.tmp/resume10/mesh-cancel-index-controller.js'
+target.write_bytes(candidate.encode())
+print(json.dumps({'candidate':str(target),'sha256':hashlib.sha256(target.read_bytes()).hexdigest(),
+                  'change':'Only insert the bounded mesh cancellation branch into HEAD; inherited controller edits stay unstaged.'}))

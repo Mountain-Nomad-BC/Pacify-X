@@ -1,0 +1,68 @@
+✖ mesh cancellation bounds stalled interrupts and retains active ownership (229.176ms)
+✔ mesh cancellation records acknowledged interrupt outcome (2.5221ms)
+✖ mesh cancellation records unsupported interrupt outcome (1.2135ms)
+✖ mesh cancellation records failed interrupt outcome (1.0845ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 1
+ℹ fail 3
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 398.6248
+
+✖ failing tests:
+
+test at extension\tests\task-state-custody.test.js:177:1
+✖ mesh cancellation bounds stalled interrupts and retains active ownership (229.176ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'unbounded'
+  - true
+  
+      at TestContext.<anonymous> (C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\tests\task-state-custody.test.js:195:12)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:385:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'unbounded',
+    expected: true,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at extension\tests\task-state-custody.test.js:212:3
+✖ mesh cancellation records unsupported interrupt outcome (1.2135ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  0 !== 1
+  
+      at TestContext.<anonymous> (C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\tests\task-state-custody.test.js:224:14)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 0,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at extension\tests\task-state-custody.test.js:212:3
+✖ mesh cancellation records failed interrupt outcome (1.0845ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  0 !== 1
+  
+      at TestContext.<anonymous> (C:\Users\Ben\Documents\bootstrap_project\Pacify-X\extension\tests\task-state-custody.test.js:224:14)
+      at async Test.run (node:internal/test_runner/test:1313:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:897:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 0,
+    expected: 1,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+

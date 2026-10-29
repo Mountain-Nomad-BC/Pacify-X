@@ -1,0 +1,77 @@
+[
+  {
+    "schema_version": "px.operational-gap-ledger-event/1.0",
+    "sequence": 36315,
+    "event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000036315",
+    "event_type": "work_checkpoint",
+    "timestamp": "2026-10-29T13:44:00.797553Z",
+    "actor": "codex",
+    "previous_event_sha256": "cde0fccb8ce27f41994737eeea2bb702982cac56ed474a19c7555071676ee8bb",
+    "payload": {
+      "active_gap_id": "PX-OS-1067",
+      "evidence": [
+        {
+          "artifact_sha256": "10414d61f4be8a2e1d8d55fc0cbb824d6d86aac7950a076d36c825ea031262c8",
+          "artifact_size": 12454,
+          "claim": "User requests one more completable repair: bound mesh adapter interrupt waits.",
+          "reference": "docs/repair/REV1XX_DAY1_GOVERNANCE_REPAIR_HANDOFF_2026-10-29.md"
+        }
+      ],
+      "learned": "User requests one more completable repair: bound mesh adapter interrupt waits.",
+      "newly_discovered_gap_ids": [],
+      "next_action": "Run the single revision/generated-projection reconciliation, make every governed section current, then execute exactly one full profile, validation, package, install, installed-system operational test, and certification in registered order.",
+      "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000036313",
+      "unresolved_branch_gap_ids": []
+    },
+    "event_sha256": "ba0389eab1ffa05c2c5189f912055cfdc0a18aac8dcc5cbb04c280556d581a8b"
+  },
+  {
+    "schema_version": "px.operational-gap-ledger-event/1.0",
+    "sequence": 36316,
+    "event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000036316",
+    "event_type": "work_admitted",
+    "timestamp": "2026-10-29T13:44:01.342632Z",
+    "actor": "codex",
+    "previous_event_sha256": "ba0389eab1ffa05c2c5189f912055cfdc0a18aac8dcc5cbb04c280556d581a8b",
+    "payload": {
+      "authority": "User explicitly requests one more bounded repair; existing Day1 campaign and Codex host authority.",
+      "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000036315",
+      "effect_scopes": [
+        {
+          "effect": "read",
+          "scope": [
+            "C:/Users/Ben/Documents/bootstrap_project/Pacify-X",
+            "C:/Users/Ben/AppData/Local/Temp/Pacify-X-day1-owned"
+          ]
+        },
+        {
+          "effect": "write",
+          "scope": [
+            "C:/Users/Ben/Documents/bootstrap_project/Pacify-X",
+            "C:/Users/Ben/AppData/Local/Temp/Pacify-X-day1-owned"
+          ]
+        },
+        {
+          "effect": "execute",
+          "scope": [
+            "One bounded mesh cancellation repair, registered owned causal controller tests and affected section gates, evidence/handoff and surgical local commit preserving inherited source; no network, install, service, deletion, generated refresh, full profile, package or certification"
+          ]
+        }
+      ],
+      "evidence": [
+        {
+          "artifact_sha256": "10414d61f4be8a2e1d8d55fc0cbb824d6d86aac7950a076d36c825ea031262c8",
+          "artifact_size": 12454,
+          "claim": "User requests one more completable repair: bound mesh adapter interrupt waits.",
+          "reference": "docs/repair/REV1XX_DAY1_GOVERNANCE_REPAIR_HANDOFF_2026-10-29.md"
+        }
+      ],
+      "expected_effect": "Bound mesh cancellation waits; prove stalls and failures remain explicitly unsettled; retain owned-run evidence and commit only the isolated cancellation handler and tests.",
+      "expires_utc": "2026-10-29T15:43:57.551920+00:00",
+      "gap_id": "PX-OS-1067",
+      "rollback": "Revert only this disproved source change; preserve inherited work and failed proof; do not change generated projections.",
+      "session_id": "day1-mesh-cancel-20261029"
+    },
+    "event_sha256": "66e4e9232fb682dc575e2ebbef377f45aaff93510c4cd231df2d73bbb47cd5c7"
+  }
+]

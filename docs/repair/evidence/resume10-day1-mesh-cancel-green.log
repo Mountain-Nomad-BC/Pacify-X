@@ -1,0 +1,41 @@
+✔ manual service/model routes exact native worker and is not blocked by another service output reserve (22.0666ms)
+✔ automatic model rolls past quota exhaustion within the manually selected service (13.3549ms)
+✔ manual model quota failure preserves exact selection without silently switching (1.8855ms)
+✔ contradictory service and model selections cannot invoke any adapter (1.2388ms)
+✔ malformed service and model filters are blocked before provider invocation (4.4708ms)
+✔ automatic service and model routes an admitted candidate (1.2906ms)
+✔ selected mesh branches reserve only their eligible service models (1.9999ms)
+✔ selected output allowance still cannot exceed the real task token budget (0.7119ms)
+✔ mesh quota failure after visible output cannot switch providers and replay work (1.0693ms)
+✔ branch event context rejects a different branch session and tampered digest (0.7658ms)
+✔ automatic service with a manual model routes only services exposing that exact model (1.1163ms)
+✔ single rollover discards a failed provider's late callback (1.5854ms)
+✔ mesh rollover discards a failed provider's late callback (0.9044ms)
+✔ completed single turn refuses tools through a provider-retained broker reference (1.2161ms)
+✔ failed synchronous save cannot publish a task mutation (6.2889ms)
+✔ cancelled task cannot return to implementation or start a run (0.4831ms)
+✔ only one live run can own a task (1.661ms)
+✔ task and run identities cannot be rebound by an update (0.4212ms)
+✔ corrupt persisted state is refused rather than silently replaced with empty state (0.1654ms)
+✔ persistence rejection prevents further dispatch-facing reads (0.5353ms)
+✔ stale disposable cannot delete a replacement worker registration (1.5284ms)
+✔ late health response cannot overwrite replacement worker health (0.7041ms)
+✔ controller does not dispatch before worker selection is durably acknowledged (23.5161ms)
+✔ cancellation settles usage but cannot publish completion or late deltas (3.5169ms)
+✔ controller rejects a run belonging to another task before dispatch (0.5438ms)
+✔ returned task values cannot mutate persisted ownership or constraints (0.3583ms)
+✔ restart cannot redispatch a worker-selected run with unknown previous effects (0.5974ms)
+✔ cancel request has a bound while unsettled adapter remains fenced from replacement (23.8488ms)
+✔ mesh cancellation bounds stalled interrupts and retains active ownership (32.9355ms)
+✔ mesh cancellation records acknowledged interrupt outcome (0.8096ms)
+✔ mesh cancellation records unsupported interrupt outcome (0.5002ms)
+✔ mesh cancellation records failed interrupt outcome (0.4578ms)
+ℹ tests 32
+ℹ suites 0
+ℹ pass 32
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 257.8465
+

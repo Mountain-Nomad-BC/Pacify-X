@@ -1,0 +1,11 @@
+'use strict';
+const fs = require('node:fs');
+const path = require('node:path');
+const Module = require('node:module');
+const root = process.cwd();
+const controller = path.join(root, 'extension/src/agentHarness/harnessController.js');
+const candidate = fs.readFileSync(path.join(root, '.tmp/resume10/mesh-cancel-index-controller.js'), 'utf8');
+const original = Module._extensions['.js'];
+Module._extensions['.js'] = (module, filename) => filename === controller
+  ? module._compile(candidate, filename) : original(module, filename);
+require(path.join(root, 'extension/tests/task-state-custody.test.js'));

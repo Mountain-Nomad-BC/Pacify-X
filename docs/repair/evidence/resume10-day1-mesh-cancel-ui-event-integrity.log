@@ -1,0 +1,484 @@
+{
+  "schema_version": "px.test-section/1.0",
+  "valid": true,
+  "section": "ui-event-integrity",
+  "description": "Canonical event commit, immutable observer delivery, bounded cumulative buffering and redaction across live/snapshot console transport. Existing controller behavior is preserved.",
+  "dependencies": [],
+  "inputs": [
+    ".agentic_engineering_os_px/processing-order/active-revision.json",
+    ".agentic_engineering_os_px/project-revisions/prj_pacify_x_rev1xx_day1_20261029/validation-policy.json",
+    "extension/src/agentHarness/agentConsoleMessages.js",
+    "extension/src/agentHarness/agentConsoleProjection.js",
+    "extension/src/agentHarness/agentConsoleView.js",
+    "extension/src/agentHarness/contracts.js",
+    "extension/src/agentHarness/eventBus.js",
+    "extension/src/agentHarness/harnessController.js",
+    "extension/src/agentHarness/registerAgentConsole.js",
+    "extension/tests/agent-console-catalog-currentness.test.js",
+    "extension/tests/agent-console-messages.test.js",
+    "extension/tests/agent-console-model-fabric-catalog.test.js",
+    "extension/tests/agent-harness-core.test.js",
+    "extension/tests/event-integrity-audit.test.js",
+    "registry/test_profiles.json"
+  ],
+  "input_sha256": "1cd7854be6aebc2c21e4b308b272f946c6d0f3bf935193cecfae902b4ef1a5d2",
+  "command": [
+    "node",
+    "--test",
+    "tests/event-integrity-audit.test.js",
+    "tests/agent-harness-core.test.js",
+    "tests/agent-console-messages.test.js",
+    "tests/agent-console-catalog-currentness.test.js",
+    "tests/agent-console-model-fabric-catalog.test.js"
+  ],
+  "cwd": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\extension",
+  "cwd_relative": "extension",
+  "timeout_seconds": 600.0,
+  "chunks": [
+    {
+      "chunk_id": "chunk-01",
+      "input_sha256": "8f38a82b10fec24512cdc04780f93990a756ff377c3156cabcd7917f30398358",
+      "member_count": 1,
+      "members": [
+        "tests/event-integrity-audit.test.js"
+      ],
+      "passed": true,
+      "timed_out": false,
+      "duration_seconds": 1.171,
+      "output_evidence": {
+        "stdout_sha256": "d211da615d89643ba5a8b556fad794421cd6d03e7c7e9c693048faecb492c8e1",
+        "stdout_bytes": 529,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_bytes": 0,
+        "failure_nodes": []
+      },
+      "receipt_sha256": "8d94210c7327e16a1161eb32a42ecd8ba2ffe77f09064c734280714592371f8a",
+      "reused": false,
+      "execution_started": true,
+      "process_tree_terminated": true,
+      "receipt_published": true,
+      "execution_valid": true,
+      "exit_code": 0
+    },
+    {
+      "chunk_id": "chunk-02",
+      "input_sha256": "fd46a72302ccd1f6007044cdd811c7c144ff267355e36aefa6243461bf150a02",
+      "member_count": 1,
+      "members": [
+        "tests/agent-harness-core.test.js"
+      ],
+      "passed": true,
+      "timed_out": false,
+      "duration_seconds": 1.687,
+      "output_evidence": {
+        "stdout_sha256": "183bfc4b0ae97ee89fe0cfa64ffadd5bb2651e59d985c4c86bb572e227d9d970",
+        "stdout_bytes": 922,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_bytes": 0,
+        "failure_nodes": []
+      },
+      "receipt_sha256": "44aa0dfe3c29636f096fa941452e24dcaf2db252d6b04e3186533d16e5b67dc2",
+      "reused": false,
+      "execution_started": true,
+      "process_tree_terminated": true,
+      "receipt_published": true,
+      "execution_valid": true,
+      "exit_code": 0
+    },
+    {
+      "chunk_id": "chunk-03",
+      "input_sha256": "fc6c6215bbe8b56fb9a4105ae9edd71721d793697f628ea7e62e7bd0e086274b",
+      "member_count": 1,
+      "members": [
+        "tests/agent-console-messages.test.js"
+      ],
+      "passed": true,
+      "timed_out": false,
+      "duration_seconds": 1.593,
+      "output_evidence": {
+        "stdout_sha256": "d557c2776121c8b1268fb4bb00dc3d2a825cc77b8e1eab2a1b34316c0c9cf398",
+        "stdout_bytes": 540,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_bytes": 0,
+        "failure_nodes": []
+      },
+      "receipt_sha256": "bc11ea9e8060f2e400c5c62869635f8532f38e4d1d091fb6f8152819e69aa58c",
+      "reused": false,
+      "execution_started": true,
+      "process_tree_terminated": true,
+      "receipt_published": true,
+      "execution_valid": true,
+      "exit_code": 0
+    },
+    {
+      "chunk_id": "chunk-04",
+      "input_sha256": "f3dca9ba56b52dbd49fd6dc353a72c5a180b3b5504d1977379214bcd103dad85",
+      "member_count": 1,
+      "members": [
+        "tests/agent-console-catalog-currentness.test.js"
+      ],
+      "passed": true,
+      "timed_out": false,
+      "duration_seconds": 1.718,
+      "output_evidence": {
+        "stdout_sha256": "8460ebb3f0e4316348880795ca767ec29ff395dff1db6a8e9efb610d7fe07b50",
+        "stdout_bytes": 391,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_bytes": 0,
+        "failure_nodes": []
+      },
+      "receipt_sha256": "bbe511140937e97b702adbe14602d05882f177d517602afbb6edf8fdb36ecd2b",
+      "reused": false,
+      "execution_started": true,
+      "process_tree_terminated": true,
+      "receipt_published": true,
+      "execution_valid": true,
+      "exit_code": 0
+    },
+    {
+      "chunk_id": "chunk-05",
+      "input_sha256": "2a162cc8d90694cec0e10d7de7c3febaea453b7afec5806628e5bf0d1d3a5e5b",
+      "member_count": 1,
+      "members": [
+        "tests/agent-console-model-fabric-catalog.test.js"
+      ],
+      "passed": true,
+      "timed_out": false,
+      "duration_seconds": 1.718,
+      "output_evidence": {
+        "stdout_sha256": "b5245e548f771b3d3f617d158f6a4201f1ce9627638df67f8cea38e580d84356",
+        "stdout_bytes": 827,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_bytes": 0,
+        "failure_nodes": []
+      },
+      "receipt_sha256": "b4453ac210e13e87659031b6247189ec24cd3a8f77f69d9ff621e336328cc6a6",
+      "reused": false,
+      "execution_started": true,
+      "process_tree_terminated": true,
+      "receipt_published": true,
+      "execution_valid": true,
+      "exit_code": 0
+    }
+  ],
+  "max_parallel_chunks": 1,
+  "environment": {
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONNOUSERSITE": "0"
+  },
+  "dependency_analysis": {
+    "kind": "static-local-python-plus-declared-assets",
+    "unresolved_dynamic_imports": {},
+    "runtime_coverage_complete": false
+  },
+  "exit_code": 0,
+  "timed_out": false,
+  "duration_seconds": 14.343,
+  "chunk_results": [
+    {
+      "schema_version": "px.test-section-chunk-receipt/1.2",
+      "input_sha256": "8f38a82b10fec24512cdc04780f93990a756ff377c3156cabcd7917f30398358",
+      "execution_valid": true,
+      "passed": true,
+      "exit_code": 0,
+      "timed_out": false,
+      "duration_seconds": 1.171,
+      "section": "ui-event-integrity",
+      "chunk_id": "chunk-01",
+      "members": [
+        "tests/event-integrity-audit.test.js"
+      ],
+      "member_count": 1,
+      "output_evidence": {
+        "stdout_sha256": "d211da615d89643ba5a8b556fad794421cd6d03e7c7e9c693048faecb492c8e1",
+        "stdout_bytes": 529,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_bytes": 0,
+        "failure_nodes": []
+      },
+      "receipt_sha256": "8d94210c7327e16a1161eb32a42ecd8ba2ffe77f09064c734280714592371f8a",
+      "reused": false,
+      "receipt_published": true,
+      "receipt_path": "C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.agentic_engineering_os_px/test-evidence/section-chunks/ui-event-integrity/chunk-01.json",
+      "stdout": "\u2714 nested snapshot secrets are redacted without mutating canonical events (6.9264ms)\n\u2714 live and snapshot transport both redact nested secrets (3.7333ms)\n\u2714 observer exceptions and rejected promises cannot change committed result (1.0647ms)\n\u2714 oversize payloads and cumulative event buffers fit transport with omission proof (37.1409ms)\n\u2714 observer mutation cannot rewrite committed canonical events (0.4755ms)\n\u2139 tests 5\n\u2139 suites 0\n\u2139 pass 5\n\u2139 fail 0\n\u2139 cancelled 0\n\u2139 skipped 0\n\u2139 todo 0\n\u2139 duration_ms 244.8495\n",
+      "stderr": "",
+      "execution_started": true,
+      "process_tree_terminated": true
+    },
+    {
+      "schema_version": "px.test-section-chunk-receipt/1.2",
+      "input_sha256": "fd46a72302ccd1f6007044cdd811c7c144ff267355e36aefa6243461bf150a02",
+      "execution_valid": true,
+      "passed": true,
+      "exit_code": 0,
+      "timed_out": false,
+      "duration_seconds": 1.687,
+      "section": "ui-event-integrity",
+      "chunk_id": "chunk-02",
+      "members": [
+        "tests/agent-harness-core.test.js"
+      ],
+      "member_count": 1,
+      "output_evidence": {
+        "stdout_sha256": "183bfc4b0ae97ee89fe0cfa64ffadd5bb2651e59d985c4c86bb572e227d9d970",
+        "stdout_bytes": 922,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_bytes": 0,
+        "failure_nodes": []
+      },
+      "receipt_sha256": "44aa0dfe3c29636f096fa941452e24dcaf2db252d6b04e3186533d16e5b67dc2",
+      "reused": false,
+      "receipt_published": true,
+      "receipt_path": "C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.agentic_engineering_os_px/test-evidence/section-chunks/ui-event-integrity/chunk-02.json",
+      "stdout": "\u2714 worker registry accepts an explicit provider profile and only declared latency classes (4.0488ms)\n\u2714 canonical event bus is bounded and monotonic (5.3786ms)\n\u2714 router never selects a deterministically rejected worker (4.321ms)\n\u2714 context compiler dedupes and honors budget (1.8332ms)\n\u2714 context compiler rejects a budget smaller than the task instruction (0.4479ms)\n\u2714 context compiler reserves request message, output, and protocol tokens before selecting refs (0.2843ms)\n\u2714 context compiler rejects request reservations beyond the task budget (0.2503ms)\n\u2714 context compiler rejects a non-integer or non-finite request reservation (0.3606ms)\n\u2714 tiny librarian fallback produces visible structured classification (1.0453ms)\n\u2714 completion requires execution evidence and ignores prose (2.1554ms)\n\u2139 tests 10\n\u2139 suites 0\n\u2139 pass 10\n\u2139 fail 0\n\u2139 cancelled 0\n\u2139 skipped 0\n\u2139 todo 0\n\u2139 duration_ms 188.679\n",
+      "stderr": "",
+      "execution_started": true,
+      "process_tree_terminated": true
+    },
+    {
+      "schema_version": "px.test-section-chunk-receipt/1.2",
+      "input_sha256": "fc6c6215bbe8b56fb9a4105ae9edd71721d793697f628ea7e62e7bd0e086274b",
+      "execution_valid": true,
+      "passed": true,
+      "exit_code": 0,
+      "timed_out": false,
+      "duration_seconds": 1.593,
+      "section": "ui-event-integrity",
+      "chunk_id": "chunk-03",
+      "members": [
+        "tests/agent-console-messages.test.js"
+      ],
+      "member_count": 1,
+      "output_evidence": {
+        "stdout_sha256": "d557c2776121c8b1268fb4bb00dc3d2a825cc77b8e1eab2a1b34316c0c9cf398",
+        "stdout_bytes": 540,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_bytes": 0,
+        "failure_nodes": []
+      },
+      "receipt_sha256": "bc11ea9e8060f2e400c5c62869635f8532f38e4d1d091fb6f8152819e69aa58c",
+      "reused": false,
+      "receipt_published": true,
+      "receipt_path": "C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.agentic_engineering_os_px/test-evidence/section-chunks/ui-event-integrity/chunk-03.json",
+      "stdout": "\u2714 agent console protocol rejects unknown fields and unsafe IDs (2.7678ms)\n\u2714 agent console never collects selected text outside its active project (6.2157ms)\n\u2714 agent console executePreparedGroup admits only the canonical reference (1.1602ms)\n\u2714 agent console reports unavailable prepared-group execution without downgrade (0.4242ms)\n\u2714 agent console prepared-group execution failure is surfaced, never masked (0.3705ms)\n\u2139 tests 5\n\u2139 suites 0\n\u2139 pass 5\n\u2139 fail 0\n\u2139 cancelled 0\n\u2139 skipped 0\n\u2139 todo 0\n\u2139 duration_ms 174.4133\n",
+      "stderr": "",
+      "execution_started": true,
+      "process_tree_terminated": true
+    },
+    {
+      "schema_version": "px.test-section-chunk-receipt/1.2",
+      "input_sha256": "f3dca9ba56b52dbd49fd6dc353a72c5a180b3b5504d1977379214bcd103dad85",
+      "execution_valid": true,
+      "passed": true,
+      "exit_code": 0,
+      "timed_out": false,
+      "duration_seconds": 1.718,
+      "section": "ui-event-integrity",
+      "chunk_id": "chunk-04",
+      "members": [
+        "tests/agent-console-catalog-currentness.test.js"
+      ],
+      "member_count": 1,
+      "output_evidence": {
+        "stdout_sha256": "8460ebb3f0e4316348880795ca767ec29ff395dff1db6a8e9efb610d7fe07b50",
+        "stdout_bytes": 391,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_bytes": 0,
+        "failure_nodes": []
+      },
+      "receipt_sha256": "bbe511140937e97b702adbe14602d05882f177d517602afbb6edf8fdb36ecd2b",
+      "reused": false,
+      "receipt_published": true,
+      "receipt_path": "C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.agentic_engineering_os_px/test-evidence/section-chunks/ui-event-integrity/chunk-04.json",
+      "stdout": "\u2714 failed current catalog invalidates previously selectable manual and Auto workers (10.9813ms)\n\u2714 missing invoker remains unavailable even when canonical listing succeeds (0.5579ms)\n\u2714 older successful response cannot resurrect workers after newer failed refresh (4.5472ms)\n\u2139 tests 3\n\u2139 suites 0\n\u2139 pass 3\n\u2139 fail 0\n\u2139 cancelled 0\n\u2139 skipped 0\n\u2139 todo 0\n\u2139 duration_ms 192.9461\n",
+      "stderr": "",
+      "execution_started": true,
+      "process_tree_terminated": true
+    },
+    {
+      "schema_version": "px.test-section-chunk-receipt/1.2",
+      "input_sha256": "2a162cc8d90694cec0e10d7de7c3febaea453b7afec5806628e5bf0d1d3a5e5b",
+      "execution_valid": true,
+      "passed": true,
+      "exit_code": 0,
+      "timed_out": false,
+      "duration_seconds": 1.718,
+      "section": "ui-event-integrity",
+      "chunk_id": "chunk-05",
+      "members": [
+        "tests/agent-console-model-fabric-catalog.test.js"
+      ],
+      "member_count": 1,
+      "output_evidence": {
+        "stdout_sha256": "b5245e548f771b3d3f617d158f6a4201f1ce9627638df67f8cea38e580d84356",
+        "stdout_bytes": 827,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_bytes": 0,
+        "failure_nodes": []
+      },
+      "receipt_sha256": "b4453ac210e13e87659031b6247189ec24cd3a8f77f69d9ff621e336328cc6a6",
+      "reused": false,
+      "receipt_published": true,
+      "receipt_path": "C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.agentic_engineering_os_px/test-evidence/section-chunks/ui-event-integrity/chunk-05.json",
+      "stdout": "\u2714 model catalog is derived from the canonical fabric, including every bridged lane (4.6902ms)\n\u2714 projected bridge identity survives the strict worker contract and reaches the operator (0.549ms)\n\u2714 a lane with no known mapping is still projected rather than dropped (0.2631ms)\n\u2714 malformed or duplicate fabric rows cannot poison or duplicate the catalog (9.9198ms)\n\u2714 Auto routing selects over the full admitted fabric, not a closed literal (1.1244ms)\n\u2714 the console projection carries catalog provenance for the operator (1.306ms)\n\u2714 catalog refresh is an admitted host message and stays contract-bounded (1.3686ms)\n\u2714 the console no longer depends on a hardcoded model literal for its catalog (0.4937ms)\n\u2139 tests 8\n\u2139 suites 0\n\u2139 pass 8\n\u2139 fail 0\n\u2139 cancelled 0\n\u2139 skipped 0\n\u2139 todo 0\n\u2139 duration_ms 204.9087\n",
+      "stderr": "",
+      "execution_started": true,
+      "process_tree_terminated": true
+    }
+  ],
+  "section_receipt": {
+    "schema_version": "px.test-section-receipt/1.2",
+    "input_sha256": "1cd7854be6aebc2c21e4b308b272f946c6d0f3bf935193cecfae902b4ef1a5d2",
+    "execution_valid": true,
+    "passed": true,
+    "exit_code": 0,
+    "timed_out": false,
+    "duration_seconds": 13.203,
+    "section": "ui-event-integrity",
+    "dependencies": [],
+    "command": [
+      "node",
+      "--test",
+      "tests/event-integrity-audit.test.js",
+      "tests/agent-harness-core.test.js",
+      "tests/agent-console-messages.test.js",
+      "tests/agent-console-catalog-currentness.test.js",
+      "tests/agent-console-model-fabric-catalog.test.js"
+    ],
+    "cwd": "extension",
+    "chunks": [
+      {
+        "chunk_id": "chunk-01",
+        "input_sha256": "8f38a82b10fec24512cdc04780f93990a756ff377c3156cabcd7917f30398358",
+        "member_count": 1,
+        "members": [
+          "tests/event-integrity-audit.test.js"
+        ],
+        "passed": true,
+        "timed_out": false,
+        "duration_seconds": 1.171,
+        "output_evidence": {
+          "stdout_sha256": "d211da615d89643ba5a8b556fad794421cd6d03e7c7e9c693048faecb492c8e1",
+          "stdout_bytes": 529,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr_bytes": 0,
+          "failure_nodes": []
+        },
+        "receipt_sha256": "8d94210c7327e16a1161eb32a42ecd8ba2ffe77f09064c734280714592371f8a",
+        "reused": false,
+        "execution_started": true,
+        "process_tree_terminated": true,
+        "receipt_published": true,
+        "execution_valid": true,
+        "exit_code": 0
+      },
+      {
+        "chunk_id": "chunk-02",
+        "input_sha256": "fd46a72302ccd1f6007044cdd811c7c144ff267355e36aefa6243461bf150a02",
+        "member_count": 1,
+        "members": [
+          "tests/agent-harness-core.test.js"
+        ],
+        "passed": true,
+        "timed_out": false,
+        "duration_seconds": 1.687,
+        "output_evidence": {
+          "stdout_sha256": "183bfc4b0ae97ee89fe0cfa64ffadd5bb2651e59d985c4c86bb572e227d9d970",
+          "stdout_bytes": 922,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr_bytes": 0,
+          "failure_nodes": []
+        },
+        "receipt_sha256": "44aa0dfe3c29636f096fa941452e24dcaf2db252d6b04e3186533d16e5b67dc2",
+        "reused": false,
+        "execution_started": true,
+        "process_tree_terminated": true,
+        "receipt_published": true,
+        "execution_valid": true,
+        "exit_code": 0
+      },
+      {
+        "chunk_id": "chunk-03",
+        "input_sha256": "fc6c6215bbe8b56fb9a4105ae9edd71721d793697f628ea7e62e7bd0e086274b",
+        "member_count": 1,
+        "members": [
+          "tests/agent-console-messages.test.js"
+        ],
+        "passed": true,
+        "timed_out": false,
+        "duration_seconds": 1.593,
+        "output_evidence": {
+          "stdout_sha256": "d557c2776121c8b1268fb4bb00dc3d2a825cc77b8e1eab2a1b34316c0c9cf398",
+          "stdout_bytes": 540,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr_bytes": 0,
+          "failure_nodes": []
+        },
+        "receipt_sha256": "bc11ea9e8060f2e400c5c62869635f8532f38e4d1d091fb6f8152819e69aa58c",
+        "reused": false,
+        "execution_started": true,
+        "process_tree_terminated": true,
+        "receipt_published": true,
+        "execution_valid": true,
+        "exit_code": 0
+      },
+      {
+        "chunk_id": "chunk-04",
+        "input_sha256": "f3dca9ba56b52dbd49fd6dc353a72c5a180b3b5504d1977379214bcd103dad85",
+        "member_count": 1,
+        "members": [
+          "tests/agent-console-catalog-currentness.test.js"
+        ],
+        "passed": true,
+        "timed_out": false,
+        "duration_seconds": 1.718,
+        "output_evidence": {
+          "stdout_sha256": "8460ebb3f0e4316348880795ca767ec29ff395dff1db6a8e9efb610d7fe07b50",
+          "stdout_bytes": 391,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr_bytes": 0,
+          "failure_nodes": []
+        },
+        "receipt_sha256": "bbe511140937e97b702adbe14602d05882f177d517602afbb6edf8fdb36ecd2b",
+        "reused": false,
+        "execution_started": true,
+        "process_tree_terminated": true,
+        "receipt_published": true,
+        "execution_valid": true,
+        "exit_code": 0
+      },
+      {
+        "chunk_id": "chunk-05",
+        "input_sha256": "2a162cc8d90694cec0e10d7de7c3febaea453b7afec5806628e5bf0d1d3a5e5b",
+        "member_count": 1,
+        "members": [
+          "tests/agent-console-model-fabric-catalog.test.js"
+        ],
+        "passed": true,
+        "timed_out": false,
+        "duration_seconds": 1.718,
+        "output_evidence": {
+          "stdout_sha256": "b5245e548f771b3d3f617d158f6a4201f1ce9627638df67f8cea38e580d84356",
+          "stdout_bytes": 827,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr_bytes": 0,
+          "failure_nodes": []
+        },
+        "receipt_sha256": "b4453ac210e13e87659031b6247189ec24cd3a8f77f69d9ff621e336328cc6a6",
+        "reused": false,
+        "execution_started": true,
+        "process_tree_terminated": true,
+        "receipt_published": true,
+        "execution_valid": true,
+        "exit_code": 0
+      }
+    ],
+    "receipt_sha256": "22ae8c0d0b98092d79c226cca5b0305def2ade663773f7cbcb07aacd5ea746ba"
+  },
+  "receipt_path": "C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.agentic_engineering_os_px/test-evidence/sections/ui-event-integrity.json",
+  "receipt_published": true,
+  "secondary_errors": [],
+  "deadline_exceeded_seconds": 0,
+  "deadline_scope": "section resolution, admission, scheduling, execution and observed closure; OS calls and cleanup remain cooperative"
+}
+

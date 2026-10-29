@@ -76,3 +76,33 @@ Evidence `resume10-day1-inventory-timeout-red` reproduces the original native ef
 The governed `source-inventory` section was rerun and passed all 25 tests (`resume10-day1-inventory-timeout-source-inventory`). Its existing section scope covers rollout inventory; the focused probe provides direct coverage of this diagnostic script. All three owned runs closed their process trees and marked resources inactive. No full testing-governance rerun was needed for this one diagnostic helper change; the prior six-failure result remains the latest whole-section result, not a new pass.
 
 Follow-up admission: checkpoint `...000000036311`, admission `...000000036312`, session `day1-inventory-timeout-20261029`, same repository/external-owned-temp roots. Evidence `day1-inventory-timeout-admission.json`. This repair and its proof are committed separately; inspect the latest commit. Final checkpoint/closure: `evidence/day1-inventory-timeout-final-checkpoint.json`. The larger inherited worktree remains dirty and intact. No registry refresh, push, package, installation or certification occurred.
+
+## Completed second follow-up: bounded mesh cancellation
+
+The user requested one more repair. Mesh `cancelRun` now waits for each distinct worker interrupt concurrently with a bounded timer, using the same validated 10–10000 ms configuration range and 1000 ms default as single-turn cancellation. Aborted branch signals and persisted cancelled status precede interrupts. A timeout, unsupported interrupt or rejection emits `worker.interrupt.unsettled` with the worker and outcome. Timers are cleared; active ownership stays in place for the actual execution owner to settle. Returning true acknowledges the request, not verified provider closure. This bounds adapter interrupt waits, not task-store persistence or all possible cancellation effects.
+
+Four added task-state regressions verify a genuinely unresolved interrupt returns within the configured bound, duplicate worker IDs are interrupted once, branch signals abort, active ownership remains, and acknowledged/unsupported/failed outcomes are distinguished. Tests seed an active mesh to isolate cancellation; they do not commission real provider execution, restart recovery or end-to-end mesh convergence.
+
+Owned evidence basenames under `evidence/`:
+
+| Basename | Result |
+|---|---|
+| `resume10-day1-mesh-cancel-red` | Fixture setup failed (`worker-adapter-invalid`); retained, not causal defect proof |
+| `resume10-day1-mesh-cancel-causal-red` | Valid fixture: 3 failed, 1 passed before source repair; proves unbounded wait and missing unsettled events |
+| `resume10-day1-mesh-cancel-green` | 32 task-state and routing/mesh neighbor tests passed |
+| `resume10-day1-mesh-cancel-index-proof` | 18 task-state tests passed with the exact isolated controller image intended for the commit |
+| `resume10-day1-mesh-cancel-ui-event-integrity` | Governed section: 31 passed |
+| `resume10-day1-mesh-cancel-agent-task-lifecycle` | Governed section: 43 passed |
+| `resume10-day1-mesh-cancel-billing-settlement` | Governed section: 22 passed |
+| `resume10-day1-mesh-cancel-agent-tool-authority` | Governed section: 67 passed |
+| `resume10-day1-mesh-cancel-billing-accounting` | Governed section: 36 passed |
+
+All five section receipts report execution_valid=true and passed=true. All owned runs closed their trees and marked process resources inactive. Source was held fixed during gates. No generated projections or full testing-governance profile were refreshed; the earlier six-failure result remains the latest testing-governance result.
+
+The controller already had a much larger inherited uncommitted mesh implementation. The new commit inserts only the bounded mesh cancellation branch into the prior HEAD controller and adds the four tests; the rest of that inherited implementation stays uncommitted. A module-loader fixture tested that isolated controller image against all 18 task-state tests using current working-tree dependencies. Exact preparation and loader scripts are retained inert as `evidence/day1-mesh-cancel-index-preparation.py.txt` and `evidence/day1-mesh-cancel-index-loader.js.txt`. The isolated controller SHA256 is `1bc3e939ea645672a1174dba1184cf0dae25cd3c3c3788072e18a806abbc1683`. This extra check is not a test of an entirely clean historical checkout. Do not accidentally stage the remaining controller diff in a later unrelated commit.
+
+Worker refresh/currentness and persisted mesh restart/recovery fencing remain open. The previous broad mesh-cancellation review is only partially addressed: this completes the adapter-wait defect, with no claim of provider closure, full mesh lifecycle acceptance or independent host verification.
+
+The nine raw run logs are marked binary by the narrowly scoped `.gitattributes` rule `docs/repair/evidence/resume10-day1-mesh-cancel-*.log binary`; Git otherwise normalized Node's captured line endings and changed their receipt hashes. All nine staged blobs now match the exact recorded SHA256 values, and the complete staged whitespace check passes. Only that new attribute rule is committed; inherited attribute edits remain unstaged too.
+
+Session `day1-mesh-cancel-20261029`: checkpoint `...000000036315`, admission `...000000036316`, individually guarded read/write/execute under the same repository/external-owned-temp roots. Admission evidence: `day1-mesh-cancel-admission.json`. Final checkpoint/closure is in `day1-mesh-cancel-final-checkpoint.json`; obtain a fresh admission for subsequent work. Local helper `.tmp/resume10/run_mesh_cancel.py` supports `--node` or native `--section`, but must use the next session's admission before reuse. No push, package, installation, broad validation or certification occurred.

@@ -173,3 +173,57 @@ test('cancel request has a bound while unsettled adapter remains fenced from rep
     assert.equal(owner.eventBus.snapshot().some(e=>e.type==='worker.interrupt.unsettled'),true);
   } finally {clearTimeout(timer);finish({text:'late'});await settled;owner.dispose();}
 });
+
+test('mesh cancellation bounds stalled interrupts and retains active ownership', async () => {
+  let releaseInterrupt;
+  const pending = new Promise(resolve => { releaseInterrupt = resolve; });
+  let interrupts = 0;
+  const owner = harness({ runTurn: async () => { throw new Error('unexpected dispatch'); },
+    interrupt: () => { interrupts++; return pending; } });
+  owner.cancelInterruptTimeoutMs = 20;
+  const task = owner.createTask(input());
+  const run = owner.taskStore.createRun(task.taskId);
+  const controllers = new Map([[0, new AbortController()], [1, new AbortController()]]);
+  const active = { mesh: true, taskId: task.taskId, controllers,
+    branchWorkerIds: new Map([[0, 'worker'], [1, 'worker']]) };
+  owner.active.set(run.runId, active);
+  const cancellation = owner.cancelRun(run.runId);
+  let timer;
+  try {
+    const result = await Promise.race([cancellation,
+      new Promise(resolve => { timer = setTimeout(() => resolve('unbounded'), 200); })]);
+    assert.equal(result, true);
+    assert.equal(interrupts, 1);
+    assert.ok([...controllers.values()].every(controller => controller.signal.aborted));
+    assert.equal(owner.taskStore.requireRun(run.runId).status, 'cancelled');
+    assert.equal(owner.active.get(run.runId), active);
+    const unsettled = owner.eventBus.snapshot().filter(event => event.type === 'worker.interrupt.unsettled');
+    assert.equal(unsettled.length, 1);
+    assert.equal(unsettled[0].workerId, 'worker');
+    assert.equal(unsettled[0].payload.outcome, 'timeout');
+    assert.equal(await owner.cancelRun(run.runId), false);
+  } finally {
+    clearTimeout(timer); releaseInterrupt(); await cancellation;
+    owner.active.delete(run.runId); owner.dispose();
+  }
+});
+
+for (const outcome of ['acknowledged', 'unsupported', 'failed']) {
+  test(`mesh cancellation records ${outcome} interrupt outcome`, async () => {
+    const owner = harness({ runTurn: async () => { throw new Error('unexpected dispatch'); }, interrupt: () => {
+      if (outcome === 'failed') throw new Error('controlled interrupt failure');
+      return outcome !== 'unsupported';
+    } });
+    const task = owner.createTask(input());
+    const run = owner.taskStore.createRun(task.taskId);
+    owner.active.set(run.runId, { mesh: true, taskId: task.taskId,
+      controllers: new Map([[0, new AbortController()]]), branchWorkerIds: new Map([[0, 'worker']]) });
+    try {
+      assert.equal(await owner.cancelRun(run.runId), true);
+      const unsettled = owner.eventBus.snapshot().filter(event => event.type === 'worker.interrupt.unsettled');
+      assert.equal(unsettled.length, outcome === 'acknowledged' ? 0 : 1);
+      if (unsettled.length) assert.equal(unsettled[0].payload.outcome, outcome);
+      assert.equal(owner.active.has(run.runId), true);
+    } finally { owner.active.delete(run.runId); owner.dispose(); }
+  });
+}

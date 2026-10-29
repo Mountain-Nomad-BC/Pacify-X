@@ -1,0 +1,423 @@
+{
+  "schema_version": "px.test-section/1.0",
+  "valid": true,
+  "section": "agent-task-lifecycle",
+  "description": "Task/run persistence acknowledgement, cancellation and owner binding; stale worker registration/health rejection; no model or installed-host certification from local controlled adapters.",
+  "dependencies": [],
+  "inputs": [
+    ".agentic_engineering_os_px/processing-order/active-revision.json",
+    ".agentic_engineering_os_px/project-revisions/prj_pacify_x_rev1xx_day1_20261029/validation-policy.json",
+    "extension/src/agentHarness/adapters/base.js",
+    "extension/src/agentHarness/adapters/codexAppServer.js",
+    "extension/src/agentHarness/adapters/copilotSdk.js",
+    "extension/src/agentHarness/adapters/mock.js",
+    "extension/src/agentHarness/adapters/ollama.js",
+    "extension/src/agentHarness/adapters/openaiCompatible.js",
+    "extension/src/agentHarness/adapters/pxProviderGateway.js",
+    "extension/src/agentHarness/adapters/streamCustody.js",
+    "extension/src/agentHarness/agentConsoleMessages.js",
+    "extension/src/agentHarness/agentConsoleProjection.js",
+    "extension/src/agentHarness/agentConsoleView.js",
+    "extension/src/agentHarness/budgetLedger.js",
+    "extension/src/agentHarness/completionEvaluator.js",
+    "extension/src/agentHarness/contextCompiler.js",
+    "extension/src/agentHarness/contracts.js",
+    "extension/src/agentHarness/durableTaskState.js",
+    "extension/src/agentHarness/eventBus.js",
+    "extension/src/agentHarness/executionContext.js",
+    "extension/src/agentHarness/harnessController.js",
+    "extension/src/agentHarness/ids.js",
+    "extension/src/agentHarness/legacyTaskMigration.js",
+    "extension/src/agentHarness/pxProviderInvoker.js",
+    "extension/src/agentHarness/registerAgentConsole.js",
+    "extension/src/agentHarness/router.js",
+    "extension/src/agentHarness/taskStore.js",
+    "extension/src/agentHarness/tinyLibrarian.js",
+    "extension/src/agentHarness/toolBroker.js",
+    "extension/src/agentHarness/vscodeTools.js",
+    "extension/src/agentHarness/workerRegistry.js",
+    "extension/tests/agent-harness-core.test.js",
+    "extension/tests/completion-ownership-audit.test.js",
+    "extension/tests/task-state-custody.test.js",
+    "extension/tests/task-store-generation-custody.test.js",
+    "registry/test_profiles.json"
+  ],
+  "input_sha256": "4c6bdec8e9cb40209d9d213ae59cd070968319f00c62edabf550be1cf19f5ac7",
+  "command": [
+    "node",
+    "--test",
+    "tests/task-state-custody.test.js",
+    "tests/agent-harness-core.test.js",
+    "tests/completion-ownership-audit.test.js",
+    "tests/task-store-generation-custody.test.js"
+  ],
+  "cwd": "C:\\Users\\Ben\\Documents\\bootstrap_project\\Pacify-X\\extension",
+  "cwd_relative": "extension",
+  "timeout_seconds": 300.0,
+  "chunks": [
+    {
+      "chunk_id": "chunk-01",
+      "input_sha256": "b4b17e31e98c0ee053c0d1741acbc722884d3660584797901226eb9a547aba25",
+      "member_count": 1,
+      "members": [
+        "tests/task-state-custody.test.js"
+      ],
+      "passed": true,
+      "timed_out": false,
+      "duration_seconds": 1.312,
+      "output_evidence": {
+        "stdout_sha256": "369cfda54981d160a1e1513a3eca60fb54247cddb1a3af5ae591d1b3a538ce1a",
+        "stdout_bytes": 1546,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_bytes": 0,
+        "failure_nodes": []
+      },
+      "receipt_sha256": "fc6c230d0d2f66597574e457b408ba5b6f422af594bc0ac72c30ad9eb3ecfc33",
+      "reused": false,
+      "execution_started": true,
+      "process_tree_terminated": true,
+      "receipt_published": true,
+      "execution_valid": true,
+      "exit_code": 0
+    },
+    {
+      "chunk_id": "chunk-02",
+      "input_sha256": "87a00cbe917676f31ee6640d7399a0070bf9de303d6c8f9e29bb56d58505e5b5",
+      "member_count": 1,
+      "members": [
+        "tests/agent-harness-core.test.js"
+      ],
+      "passed": true,
+      "timed_out": false,
+      "duration_seconds": 1.687,
+      "output_evidence": {
+        "stdout_sha256": "ae086b2f041603f03106b8fc02087db8bd3c9cc633833f32cae81e298b6599b1",
+        "stdout_bytes": 921,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_bytes": 0,
+        "failure_nodes": []
+      },
+      "receipt_sha256": "d8ac25241d3245834f831e0856f39f85205af1dc7edf52719b6969e1d8f448ff",
+      "reused": false,
+      "execution_started": true,
+      "process_tree_terminated": true,
+      "receipt_published": true,
+      "execution_valid": true,
+      "exit_code": 0
+    },
+    {
+      "chunk_id": "chunk-03",
+      "input_sha256": "f4ced3cbef580165805944a2bce42c39982d28b26284e8693537c8886f28255f",
+      "member_count": 1,
+      "members": [
+        "tests/completion-ownership-audit.test.js"
+      ],
+      "passed": true,
+      "timed_out": false,
+      "duration_seconds": 1.813,
+      "output_evidence": {
+        "stdout_sha256": "556acd8ee768a68084a0a8ac41200efd96739e3f8b09cea79c61335f9e59b4b9",
+        "stdout_bytes": 1114,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_bytes": 0,
+        "failure_nodes": []
+      },
+      "receipt_sha256": "2138aee3abbb7aa80088a4f4fa735c26f9eae13d8613f8b0c9d7febc58aef943",
+      "reused": false,
+      "execution_started": true,
+      "process_tree_terminated": true,
+      "receipt_published": true,
+      "execution_valid": true,
+      "exit_code": 0
+    },
+    {
+      "chunk_id": "chunk-04",
+      "input_sha256": "7dd620e9af6211b4ce4c63ce3cf0d192b4d79c5e40ba5e7eb3c22c75943fd49f",
+      "member_count": 1,
+      "members": [
+        "tests/task-store-generation-custody.test.js"
+      ],
+      "passed": true,
+      "timed_out": false,
+      "duration_seconds": 1.75,
+      "output_evidence": {
+        "stdout_sha256": "9e17de36a81a115c4f4b338018deee12ad4a45049c1eeb63769320ad75bc235f",
+        "stdout_bytes": 221,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_bytes": 0,
+        "failure_nodes": []
+      },
+      "receipt_sha256": "b85e17ad35e2f1e1aea0ae4b4ca231c8a92015dc10e2b1c4784100ea393c8f98",
+      "reused": false,
+      "execution_started": true,
+      "process_tree_terminated": true,
+      "receipt_published": true,
+      "execution_valid": true,
+      "exit_code": 0
+    }
+  ],
+  "max_parallel_chunks": 1,
+  "environment": {
+    "PYTHONDONTWRITEBYTECODE": "1",
+    "PYTHONNOUSERSITE": "0"
+  },
+  "dependency_analysis": {
+    "kind": "static-local-python-plus-declared-assets",
+    "unresolved_dynamic_imports": {},
+    "runtime_coverage_complete": false
+  },
+  "exit_code": 0,
+  "timed_out": false,
+  "duration_seconds": 12.015,
+  "chunk_results": [
+    {
+      "schema_version": "px.test-section-chunk-receipt/1.2",
+      "input_sha256": "b4b17e31e98c0ee053c0d1741acbc722884d3660584797901226eb9a547aba25",
+      "execution_valid": true,
+      "passed": true,
+      "exit_code": 0,
+      "timed_out": false,
+      "duration_seconds": 1.312,
+      "section": "agent-task-lifecycle",
+      "chunk_id": "chunk-01",
+      "members": [
+        "tests/task-state-custody.test.js"
+      ],
+      "member_count": 1,
+      "output_evidence": {
+        "stdout_sha256": "369cfda54981d160a1e1513a3eca60fb54247cddb1a3af5ae591d1b3a538ce1a",
+        "stdout_bytes": 1546,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_bytes": 0,
+        "failure_nodes": []
+      },
+      "receipt_sha256": "fc6c230d0d2f66597574e457b408ba5b6f422af594bc0ac72c30ad9eb3ecfc33",
+      "reused": false,
+      "receipt_published": true,
+      "receipt_path": "C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.agentic_engineering_os_px/test-evidence/section-chunks/agent-task-lifecycle/chunk-01.json",
+      "stdout": "\u2714 failed synchronous save cannot publish a task mutation (5.2216ms)\n\u2714 cancelled task cannot return to implementation or start a run (0.5407ms)\n\u2714 only one live run can own a task (1.6174ms)\n\u2714 task and run identities cannot be rebound by an update (0.3681ms)\n\u2714 corrupt persisted state is refused rather than silently replaced with empty state (0.1736ms)\n\u2714 persistence rejection prevents further dispatch-facing reads (0.5141ms)\n\u2714 stale disposable cannot delete a replacement worker registration (1.4811ms)\n\u2714 late health response cannot overwrite replacement worker health (0.452ms)\n\u2714 controller does not dispatch before worker selection is durably acknowledged (20.5077ms)\n\u2714 cancellation settles usage but cannot publish completion or late deltas (3.6036ms)\n\u2714 controller rejects a run belonging to another task before dispatch (0.5623ms)\n\u2714 returned task values cannot mutate persisted ownership or constraints (0.3072ms)\n\u2714 restart cannot redispatch a worker-selected run with unknown previous effects (0.5264ms)\n\u2714 cancel request has a bound while unsettled adapter remains fenced from replacement (22.762ms)\n\u2714 mesh cancellation bounds stalled interrupts and retains active ownership (23.814ms)\n\u2714 mesh cancellation records acknowledged interrupt outcome (1.3399ms)\n\u2714 mesh cancellation records unsupported interrupt outcome (0.9426ms)\n\u2714 mesh cancellation records failed interrupt outcome (0.8239ms)\n\u2139 tests 18\n\u2139 suites 0\n\u2139 pass 18\n\u2139 fail 0\n\u2139 cancelled 0\n\u2139 skipped 0\n\u2139 todo 0\n\u2139 duration_ms 245.0852\n",
+      "stderr": "",
+      "execution_started": true,
+      "process_tree_terminated": true
+    },
+    {
+      "schema_version": "px.test-section-chunk-receipt/1.2",
+      "input_sha256": "87a00cbe917676f31ee6640d7399a0070bf9de303d6c8f9e29bb56d58505e5b5",
+      "execution_valid": true,
+      "passed": true,
+      "exit_code": 0,
+      "timed_out": false,
+      "duration_seconds": 1.687,
+      "section": "agent-task-lifecycle",
+      "chunk_id": "chunk-02",
+      "members": [
+        "tests/agent-harness-core.test.js"
+      ],
+      "member_count": 1,
+      "output_evidence": {
+        "stdout_sha256": "ae086b2f041603f03106b8fc02087db8bd3c9cc633833f32cae81e298b6599b1",
+        "stdout_bytes": 921,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_bytes": 0,
+        "failure_nodes": []
+      },
+      "receipt_sha256": "d8ac25241d3245834f831e0856f39f85205af1dc7edf52719b6969e1d8f448ff",
+      "reused": false,
+      "receipt_published": true,
+      "receipt_path": "C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.agentic_engineering_os_px/test-evidence/section-chunks/agent-task-lifecycle/chunk-02.json",
+      "stdout": "\u2714 worker registry accepts an explicit provider profile and only declared latency classes (4.3333ms)\n\u2714 canonical event bus is bounded and monotonic (5.9029ms)\n\u2714 router never selects a deterministically rejected worker (3.9728ms)\n\u2714 context compiler dedupes and honors budget (1.9447ms)\n\u2714 context compiler rejects a budget smaller than the task instruction (0.5066ms)\n\u2714 context compiler reserves request message, output, and protocol tokens before selecting refs (0.311ms)\n\u2714 context compiler rejects request reservations beyond the task budget (0.3108ms)\n\u2714 context compiler rejects a non-integer or non-finite request reservation (0.3739ms)\n\u2714 tiny librarian fallback produces visible structured classification (1.1258ms)\n\u2714 completion requires execution evidence and ignores prose (2.147ms)\n\u2139 tests 10\n\u2139 suites 0\n\u2139 pass 10\n\u2139 fail 0\n\u2139 cancelled 0\n\u2139 skipped 0\n\u2139 todo 0\n\u2139 duration_ms 194.411\n",
+      "stderr": "",
+      "execution_started": true,
+      "process_tree_terminated": true
+    },
+    {
+      "schema_version": "px.test-section-chunk-receipt/1.2",
+      "input_sha256": "f4ced3cbef580165805944a2bce42c39982d28b26284e8693537c8886f28255f",
+      "execution_valid": true,
+      "passed": true,
+      "exit_code": 0,
+      "timed_out": false,
+      "duration_seconds": 1.813,
+      "section": "agent-task-lifecycle",
+      "chunk_id": "chunk-03",
+      "members": [
+        "tests/completion-ownership-audit.test.js"
+      ],
+      "member_count": 1,
+      "output_evidence": {
+        "stdout_sha256": "556acd8ee768a68084a0a8ac41200efd96739e3f8b09cea79c61335f9e59b4b9",
+        "stdout_bytes": 1114,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_bytes": 0,
+        "failure_nodes": []
+      },
+      "receipt_sha256": "2138aee3abbb7aa80088a4f4fa735c26f9eae13d8613f8b0c9d7febc58aef943",
+      "reused": false,
+      "receipt_published": true,
+      "receipt_path": "C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.agentic_engineering_os_px/test-evidence/section-chunks/agent-task-lifecycle/chunk-03.json",
+      "stdout": "\u2714 valid current-run evidence satisfies the declared requirement (6.7416ms)\n\u2714 foreign taskId cannot satisfy completion (0.4708ms)\n\u2714 foreign runId cannot satisfy completion (0.3554ms)\n\u2714 missing current run fails closed for required evidence (0.6722ms)\n\u2714 foreign current-run owner fails closed (0.4506ms)\n\u2714 out-of-run timestamp 2000-01-01T00:00:00.000Z cannot satisfy completion (0.3798ms)\n\u2714 out-of-run timestamp 2099-01-01T00:00:00.000Z cannot satisfy completion (0.2938ms)\n\u2714 out-of-run timestamp invalid cannot satisfy completion (0.4247ms)\n\u2714 conflicting duplicate identity invalidates both records regardless of order (0.6092ms)\n\u2714 identical retransmission contributes one evidence ID (1.0872ms)\n\u2714 malformed evidence does not masquerade as a typed pass (0.5351ms)\n\u2714 actual controller completion filters current evidence (15.6ms)\n\u2714 actual controller completion filters foreign-task evidence (1.4934ms)\n\u2714 actual controller completion filters previous-run evidence (1.354ms)\n\u2139 tests 14\n\u2139 suites 0\n\u2139 pass 14\n\u2139 fail 0\n\u2139 cancelled 0\n\u2139 skipped 0\n\u2139 todo 0\n\u2139 duration_ms 193.2255\n",
+      "stderr": "",
+      "execution_started": true,
+      "process_tree_terminated": true
+    },
+    {
+      "schema_version": "px.test-section-chunk-receipt/1.2",
+      "input_sha256": "7dd620e9af6211b4ce4c63ce3cf0d192b4d79c5e40ba5e7eb3c22c75943fd49f",
+      "execution_valid": true,
+      "passed": true,
+      "exit_code": 0,
+      "timed_out": false,
+      "duration_seconds": 1.75,
+      "section": "agent-task-lifecycle",
+      "chunk_id": "chunk-04",
+      "members": [
+        "tests/task-store-generation-custody.test.js"
+      ],
+      "member_count": 1,
+      "output_evidence": {
+        "stdout_sha256": "9e17de36a81a115c4f4b338018deee12ad4a45049c1eeb63769320ad75bc235f",
+        "stdout_bytes": 221,
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_bytes": 0,
+        "failure_nodes": []
+      },
+      "receipt_sha256": "b85e17ad35e2f1e1aea0ae4b4ca231c8a92015dc10e2b1c4784100ea393c8f98",
+      "reused": false,
+      "receipt_published": true,
+      "receipt_path": "C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.agentic_engineering_os_px/test-evidence/section-chunks/agent-task-lifecycle/chunk-04.json",
+      "stdout": "\u2714 native durable restart advances epoch and fences a real stale writer without changing bytes (58.2876ms)\n\u2139 tests 1\n\u2139 suites 0\n\u2139 pass 1\n\u2139 fail 0\n\u2139 cancelled 0\n\u2139 skipped 0\n\u2139 todo 0\n\u2139 duration_ms 205.4613\n",
+      "stderr": "",
+      "execution_started": true,
+      "process_tree_terminated": true
+    }
+  ],
+  "section_receipt": {
+    "schema_version": "px.test-section-receipt/1.2",
+    "input_sha256": "4c6bdec8e9cb40209d9d213ae59cd070968319f00c62edabf550be1cf19f5ac7",
+    "execution_valid": true,
+    "passed": true,
+    "exit_code": 0,
+    "timed_out": false,
+    "duration_seconds": 11.0,
+    "section": "agent-task-lifecycle",
+    "dependencies": [],
+    "command": [
+      "node",
+      "--test",
+      "tests/task-state-custody.test.js",
+      "tests/agent-harness-core.test.js",
+      "tests/completion-ownership-audit.test.js",
+      "tests/task-store-generation-custody.test.js"
+    ],
+    "cwd": "extension",
+    "chunks": [
+      {
+        "chunk_id": "chunk-01",
+        "input_sha256": "b4b17e31e98c0ee053c0d1741acbc722884d3660584797901226eb9a547aba25",
+        "member_count": 1,
+        "members": [
+          "tests/task-state-custody.test.js"
+        ],
+        "passed": true,
+        "timed_out": false,
+        "duration_seconds": 1.312,
+        "output_evidence": {
+          "stdout_sha256": "369cfda54981d160a1e1513a3eca60fb54247cddb1a3af5ae591d1b3a538ce1a",
+          "stdout_bytes": 1546,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr_bytes": 0,
+          "failure_nodes": []
+        },
+        "receipt_sha256": "fc6c230d0d2f66597574e457b408ba5b6f422af594bc0ac72c30ad9eb3ecfc33",
+        "reused": false,
+        "execution_started": true,
+        "process_tree_terminated": true,
+        "receipt_published": true,
+        "execution_valid": true,
+        "exit_code": 0
+      },
+      {
+        "chunk_id": "chunk-02",
+        "input_sha256": "87a00cbe917676f31ee6640d7399a0070bf9de303d6c8f9e29bb56d58505e5b5",
+        "member_count": 1,
+        "members": [
+          "tests/agent-harness-core.test.js"
+        ],
+        "passed": true,
+        "timed_out": false,
+        "duration_seconds": 1.687,
+        "output_evidence": {
+          "stdout_sha256": "ae086b2f041603f03106b8fc02087db8bd3c9cc633833f32cae81e298b6599b1",
+          "stdout_bytes": 921,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr_bytes": 0,
+          "failure_nodes": []
+        },
+        "receipt_sha256": "d8ac25241d3245834f831e0856f39f85205af1dc7edf52719b6969e1d8f448ff",
+        "reused": false,
+        "execution_started": true,
+        "process_tree_terminated": true,
+        "receipt_published": true,
+        "execution_valid": true,
+        "exit_code": 0
+      },
+      {
+        "chunk_id": "chunk-03",
+        "input_sha256": "f4ced3cbef580165805944a2bce42c39982d28b26284e8693537c8886f28255f",
+        "member_count": 1,
+        "members": [
+          "tests/completion-ownership-audit.test.js"
+        ],
+        "passed": true,
+        "timed_out": false,
+        "duration_seconds": 1.813,
+        "output_evidence": {
+          "stdout_sha256": "556acd8ee768a68084a0a8ac41200efd96739e3f8b09cea79c61335f9e59b4b9",
+          "stdout_bytes": 1114,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr_bytes": 0,
+          "failure_nodes": []
+        },
+        "receipt_sha256": "2138aee3abbb7aa80088a4f4fa735c26f9eae13d8613f8b0c9d7febc58aef943",
+        "reused": false,
+        "execution_started": true,
+        "process_tree_terminated": true,
+        "receipt_published": true,
+        "execution_valid": true,
+        "exit_code": 0
+      },
+      {
+        "chunk_id": "chunk-04",
+        "input_sha256": "7dd620e9af6211b4ce4c63ce3cf0d192b4d79c5e40ba5e7eb3c22c75943fd49f",
+        "member_count": 1,
+        "members": [
+          "tests/task-store-generation-custody.test.js"
+        ],
+        "passed": true,
+        "timed_out": false,
+        "duration_seconds": 1.75,
+        "output_evidence": {
+          "stdout_sha256": "9e17de36a81a115c4f4b338018deee12ad4a45049c1eeb63769320ad75bc235f",
+          "stdout_bytes": 221,
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "stderr_bytes": 0,
+          "failure_nodes": []
+        },
+        "receipt_sha256": "b85e17ad35e2f1e1aea0ae4b4ca231c8a92015dc10e2b1c4784100ea393c8f98",
+        "reused": false,
+        "execution_started": true,
+        "process_tree_terminated": true,
+        "receipt_published": true,
+        "execution_valid": true,
+        "exit_code": 0
+      }
+    ],
+    "receipt_sha256": "79b76f5fa4409c443e9d83ba58ee510bc2f627da5f9643a548ae793037640095"
+  },
+  "receipt_path": "C:/Users/Ben/Documents/bootstrap_project/Pacify-X/.agentic_engineering_os_px/test-evidence/sections/agent-task-lifecycle.json",
+  "receipt_published": true,
+  "secondary_errors": [],
+  "deadline_exceeded_seconds": 0,
+  "deadline_scope": "section resolution, admission, scheduling, execution and observed closure; OS calls and cleanup remain cooperative"
+}
+
