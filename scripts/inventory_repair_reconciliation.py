@@ -17,7 +17,7 @@ from runtime.repository_scope import is_external_environment_relative
 
 
 def git(root: Path, *arguments: str) -> bytes:
-    return subprocess.check_output(["git", "-C", str(root), *arguments])
+    return subprocess.check_output(["git", "-C", str(root), *arguments], timeout=30)
 
 
 def source_paths(root: Path, *, untracked: bool = False) -> set[str]:

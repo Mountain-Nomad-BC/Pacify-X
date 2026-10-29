@@ -1,0 +1,6 @@
+
+Traceback (most recent call last):
+  File "C:\Users\Ben\Documents\bootstrap_project\Pacify-X\.tmp\resume10\probe_inventory_timeout.py", line 15, in <module>
+    assert processes[0]['timeout']=='30', processes
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: [{'id': 'af90bd4823f76d8ed4eb', 'path': 'scripts/inventory_repair_reconciliation.py', 'line': 20, 'call': 'subprocess.check_output', 'effect': 'process', 'owner': 'scripts', 'policy': 'policies/contained-execution.json', 'approval': 'required_for_material_or_external_effects', 'containment': 'validated_path_and_bounded_scope', 'timeout': None, 'shell': None, 'destructive': False}]

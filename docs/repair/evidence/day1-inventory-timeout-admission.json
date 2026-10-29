@@ -1,0 +1,77 @@
+[
+  {
+    "schema_version": "px.operational-gap-ledger-event/1.0",
+    "sequence": 36311,
+    "event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000036311",
+    "event_type": "work_checkpoint",
+    "timestamp": "2026-10-29T13:39:11.473088Z",
+    "actor": "codex",
+    "previous_event_sha256": "0f10b80156682c00957040200baf02dc152f548c98b698778c01123e3b358486",
+    "payload": {
+      "active_gap_id": "PX-OS-1067",
+      "evidence": [
+        {
+          "artifact_sha256": "bd6958598f50e7dad4231a82c054c91d81d69a57b3ff02b0ecc5f3b5f916e521",
+          "artifact_size": 10342,
+          "claim": "User requests one more completable repair: bound the diagnostic inventory Git subprocess.",
+          "reference": "docs/repair/REV1XX_DAY1_GOVERNANCE_REPAIR_HANDOFF_2026-10-29.md"
+        }
+      ],
+      "learned": "User requests one more completable repair: bound the diagnostic inventory Git subprocess.",
+      "newly_discovered_gap_ids": [],
+      "next_action": "Run the single revision/generated-projection reconciliation, make every governed section current, then execute exactly one full profile, validation, package, install, installed-system operational test, and certification in registered order.",
+      "previous_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000036309",
+      "unresolved_branch_gap_ids": []
+    },
+    "event_sha256": "fd495c916111225f97dfd8ed5721715c4b773d9afe10bb5b8e4c1824a4115dee"
+  },
+  {
+    "schema_version": "px.operational-gap-ledger-event/1.0",
+    "sequence": 36312,
+    "event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000036312",
+    "event_type": "work_admitted",
+    "timestamp": "2026-10-29T13:39:12.032847Z",
+    "actor": "codex",
+    "previous_event_sha256": "fd495c916111225f97dfd8ed5721715c4b773d9afe10bb5b8e4c1824a4115dee",
+    "payload": {
+      "authority": "User explicitly requests one more bounded repair; existing Day1 campaign and Codex host authority.",
+      "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000036311",
+      "effect_scopes": [
+        {
+          "effect": "read",
+          "scope": [
+            "C:/Users/Ben/Documents/bootstrap_project/Pacify-X",
+            "C:/Users/Ben/AppData/Local/Temp/Pacify-X-day1-owned"
+          ]
+        },
+        {
+          "effect": "write",
+          "scope": [
+            "C:/Users/Ben/Documents/bootstrap_project/Pacify-X",
+            "C:/Users/Ben/AppData/Local/Temp/Pacify-X-day1-owned"
+          ]
+        },
+        {
+          "effect": "execute",
+          "scope": [
+            "One bounded inventory_repair_reconciliation Git timeout repair, registered owned focused timeout/success checks and source-inventory section, evidence/handoff and local commit; no network, install, service, deletion, generated refresh, full profile, package or certification"
+          ]
+        }
+      ],
+      "evidence": [
+        {
+          "artifact_sha256": "bd6958598f50e7dad4231a82c054c91d81d69a57b3ff02b0ecc5f3b5f916e521",
+          "artifact_size": 10342,
+          "claim": "User requests one more completable repair: bound the diagnostic inventory Git subprocess.",
+          "reference": "docs/repair/REV1XX_DAY1_GOVERNANCE_REPAIR_HANDOFF_2026-10-29.md"
+        }
+      ],
+      "expected_effect": "Bound Git diagnostic calls; prove success and fail-closed timeout; retain owned-run evidence and commit only this repair.",
+      "expires_utc": "2026-10-29T15:39:08.247562+00:00",
+      "gap_id": "PX-OS-1067",
+      "rollback": "Revert only this disproved source change; preserve inherited work and failed proof; do not change generated projections.",
+      "session_id": "day1-inventory-timeout-20261029"
+    },
+    "event_sha256": "d36093f86d1c8100442152f8bc7df2cdfbbcdd6f575154acbaa4efc7c2bc0bad"
+  }
+]

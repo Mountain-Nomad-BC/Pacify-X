@@ -1,0 +1,32 @@
+from pathlib import Path
+import json, os, subprocess, sys
+from unittest.mock import patch
+root=Path.cwd();sys.path.insert(0,str(root))
+from runtime.effect_surface import discover_effect_surfaces
+from scripts import inventory_repair_reconciliation as owner
+
+# Retained fixture is inside this run's registered outer workspace.
+fixture=Path(os.environ['TMP'])/'inventory-source-fixture'
+(fixture/'scripts').mkdir(parents=True)
+(fixture/'scripts/inventory_repair_reconciliation.py').write_bytes(
+    (root/'scripts/inventory_repair_reconciliation.py').read_bytes())
+processes=[r for r in discover_effect_surfaces(fixture) if r['effect']=='process']
+assert len(processes)==1
+assert processes[0]['timeout']=='30', processes
+
+expired=subprocess.TimeoutExpired(['git'],30)
+with patch.object(owner.subprocess,'check_output',side_effect=expired) as call:
+    try:
+        owner.git(root,'ls-files','-z')
+    except subprocess.TimeoutExpired as observed:
+        assert observed is expired
+    else:
+        raise AssertionError('Git timeout was swallowed')
+    call.assert_called_once_with(['git','-C',str(root),'ls-files','-z'],timeout=30)
+
+# An actual successful Git call still returns the original bytes.
+head=owner.git(root,'rev-parse','HEAD')
+assert isinstance(head,bytes) and len(head.strip())==40
+print(json.dumps({'native_effect_timeout':processes[0]['timeout'],
+                  'timeout_propagation':'passed (injected TimeoutExpired)',
+                  'real_git_success':'passed','head':head.decode().strip()}))

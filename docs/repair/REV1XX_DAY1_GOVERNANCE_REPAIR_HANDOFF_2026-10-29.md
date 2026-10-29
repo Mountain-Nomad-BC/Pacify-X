@@ -66,3 +66,13 @@ Canonical PX-OS-1067 next action remains exactly:
 > Run the single revision/generated-projection reconciliation, make every governed section current, then execute exactly one full profile, validation, package, install, installed-system operational test, and certification in registered order.
 
 This is a future ordered action, not authorization to skip intake/repair prerequisites. No owned test remained running when this handoff was written.
+
+## Completed follow-up: bound diagnostic Git calls
+
+At the user's request for one more completable repair, `scripts/inventory_repair_reconciliation.py::git` now supplies `timeout=30` to `subprocess.check_output`. This resolves the missing-timeout source finding listed above; other effect-surface findings remain open. Timeout errors propagate instead of producing a partial inventory, and successful calls retain their byte return value. The complete diagnostic command is not claimed to have a 30-second total deadline; each Git invocation has that bound.
+
+Evidence `resume10-day1-inventory-timeout-red` reproduces the original native effect-scanner finding (`timeout=null`). The unchanged focused probe then passes in `resume10-day1-inventory-timeout-green`, proving native discovery sees the timeout, an injected `TimeoutExpired` is propagated unchanged, and a real Git call succeeds. The probe's exact source is retained as `evidence/day1-inventory-timeout-probe.py.txt`; it is a diagnostic artifact, not executable package source. This does not claim an actual 30-second OS timeout experiment.
+
+The governed `source-inventory` section was rerun and passed all 25 tests (`resume10-day1-inventory-timeout-source-inventory`). Its existing section scope covers rollout inventory; the focused probe provides direct coverage of this diagnostic script. All three owned runs closed their process trees and marked resources inactive. No full testing-governance rerun was needed for this one diagnostic helper change; the prior six-failure result remains the latest whole-section result, not a new pass.
+
+Follow-up admission: checkpoint `...000000036311`, admission `...000000036312`, session `day1-inventory-timeout-20261029`, same repository/external-owned-temp roots. Evidence `day1-inventory-timeout-admission.json`. This repair and its proof are committed separately; inspect the latest commit. Final checkpoint/closure: `evidence/day1-inventory-timeout-final-checkpoint.json`. The larger inherited worktree remains dirty and intact. No registry refresh, push, package, installation or certification occurred.
