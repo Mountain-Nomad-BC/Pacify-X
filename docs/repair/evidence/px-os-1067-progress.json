@@ -1,0 +1,763 @@
+{
+ "baseline": {
+  "canonical_census": {
+   "effect_records": 1697,
+   "gate_findings": 310,
+   "gate_valid": false,
+   "mutating_producers": 373,
+   "producers_any_effect": 377,
+   "resolved": 216,
+   "unresolved": 157,
+   "unresolved_by_family": {
+    ".px": 11,
+    "runtime": 68,
+    "scripts": 78
+   }
+  },
+  "git_path_entries_untracked_dirs_expanded": 5677,
+  "git_status_entries_collapsed": 884,
+  "inherited_status_counts": {
+   " D": 207,
+   " M": 39,
+   "??": 5431
+  },
+  "ledger_errors": 0,
+  "ledger_valid": true,
+  "open_admissions_before_session": 0
+ },
+ "gap_id": "PX-OS-1067",
+ "pinned_sources": {
+  "runtime/effect_surface.py": "41f6d6cec120aae0236b0fa1437ac62ab16e54695afce13f4eacb4f56de19f70",
+  "runtime/mutating_producer_registry.py": "a5e3c87d18ef395c6b30ee7064f4ba0f949e1911afb23d2e869e2cbcbcfacd02",
+  "runtime/producer_census.py": "7225d1dc3bd12d67527a83278965f3a55d33c0adab8d6992114b7faff03b26f4"
+ },
+ "repository": "C:/Users/Ben/Documents/bootstrap_project/Pacify-X",
+ "schema_version": "px-os-1067-progress-ledger/1.0",
+ "session": {
+  "admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000036527",
+  "baseline_head": "a4bddfde",
+  "branch": "work/px-os-1067-b7-runtime-state",
+  "latest_checkpoint_event_id": "pending-this-pass",
+  "prior_admission_closed": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000036510",
+  "session_id": "px-os-1067-p4-script-producers-r-20261103"
+ },
+ "tasks": [
+  {
+   "authorization": {
+    "admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000036495",
+    "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000036497",
+    "effect_scope": "B7 investigation and listed task deliverables only; no owner registrations, release, or inherited changes."
+   },
+   "census_before_after": "No producer source or registry changed in this task phase; baseline census remains the current measurement.",
+   "changes_made": [
+    "Recorded the user-directed B7 next action append-only in the gap ledger.",
+    "Created branch work/px-os-1067-b7-runtime-state.",
+    "Created a full path/status inventory of inherited working-tree changes."
+   ],
+   "completion_status": "COMPLETED",
+   "decisions_resolved": [
+    "B7 execution order is set by the current handoff; no per-resource owner or exemption was assigned."
+   ],
+   "defects_discovered": [
+    "Ordinary Git status collapsed untracked directories: 884 status entries represented 5,677 path-level inherited entries.",
+    "The ledger next_action still pointed to final release certification despite the new handoff prioritizing B7; this was corrected append-only."
+   ],
+   "dependencies": [],
+   "files_examined": [
+    "docs/repair/New_handoff.md",
+    "docs/repair/REV1XX_DAY1_EXECUTION_PASS_HANDOFF_2026-11-01.md",
+    "docs/repair/REV1XX_DAY1_ARCHITECTURE_DECISIONS_HANDOFF_2026-11-01.md",
+    "docs/repair/REV1XX_DAY1_GOVERNANCE_DECISIONS_HANDOFF_2026-11-01.md",
+    "runtime/producer_census.py",
+    "runtime/operational_gap_ledger.py",
+    "docs/repair/evidence/day1-ledger_tools.py.txt"
+   ],
+   "next_executable_task": "Trace the actual durable and ephemeral state roots of all 68 unresolved runtime producers.",
+   "priority": 0,
+   "remaining_blockers": [
+    "Inherited file contents and provenance are not approved for commit; only task-attributed files may be considered later.",
+    "Per-resource owner decisions remain with accountable owners."
+   ],
+   "source_evidence": [
+    "docs/repair/New_handoff.md: B7 is the highest-priority task and forbids owner inference.",
+    "runtime/producer_census.py: reproduced the canonical census from the repair venv.",
+    "docs/repair/evidence/px-os-1067-inherited-worktree-inventory.json: exact 5,677-path baseline."
+   ],
+   "starting_state": "HEAD a4bddfde; 884 collapsed Git status entries; ledger not yet verified.",
+   "status": "COMPLETED",
+   "task_id": "baseline-initialization",
+   "tests_executed": [
+    {
+     "command": ".venv-repair\\Scripts\\python.exe docs\\repair\\evidence\\day1-ledger_tools.py.txt",
+     "result": "valid: True | errors: 0; open admissions: []"
+    },
+    {
+     "command": ".venv-repair\\Scripts\\python.exe -m runtime.producer_census",
+     "result": "1,697 effect records; 377 producers; 373 mutating; 216 resolved; 157 unresolved; 310 gate findings; gate invalid."
+    }
+   ]
+  },
+  {
+   "authorization": {
+    "admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000036495",
+    "write_scope": "New B7 module, tests, ownership registry candidate, master log, and evidence paths only."
+   },
+   "census_before_after": "No producer source or classification changed; the live census still has 68 unresolved runtime producers and exactly matches the matrix producer path set (no missing or extra paths).",
+   "changes_made": [
+    "Created the evidence-backed 68-producer, 32-group runtime-state ownership matrix with explicit nonpersistent dispositions and unresolved questions.",
+    "Recorded candidate components as unapproved evidence only; did not assign accountable owners."
+   ],
+   "completion_status": "COMPLETED",
+   "decisions_resolved": [
+    "Source evidence is sufficient to describe resource groups and candidate components, but not to approve accountable owners."
+   ],
+   "defects_discovered": [],
+   "dependencies": [
+    "baseline-initialization"
+   ],
+   "files_examined": [
+    "docs/adr/ADR-REV1XX-RUNTIME-STATE-OWNERSHIP-001.md",
+    "runtime/output_roots.py",
+    "registry/producer_output_roots.json",
+    "runtime/scope_lease.py",
+    "runtime/resource_lifecycle.py",
+    "runtime/effect_intent.py",
+    "runtime/mutating_producer_registry.py",
+    "runtime/agent_runtime.py",
+    "runtime/workflow_studio.py",
+    "runtime/studio_models.py",
+    "runtime/memory_vault.py",
+    "runtime/memory_intelligence.py",
+    "runtime/operational_gap_ledger.py",
+    "docs/repair/evidence/px-os-1067-runtime-state-ownership-matrix.json"
+   ],
+   "next_executable_task": "Validate the candidate registry and fail-closed validator against the source matrix.",
+   "priority": 1,
+   "remaining_blockers": [
+    "All 32 resource groups remain unresolved for accountable owner, retention/lifecycle, concurrency, reclamation, recovery, or authorization decisions as listed in the matrix."
+   ],
+   "source_evidence": [
+    "The proposed ADR says output-root grants, task leases, operation intents, and allocated-resource lifecycle each have distinct existing semantics; none alone establishes ownership of arbitrary durable runtime state.",
+    "The ownership graph must be based on actual writes, read-back, call chains, and lifecycle code, not directory or module names.",
+    "Live effect discovery returned 480 records across the 68 unresolved runtime producers; 471 were labelled filesystem_mutation. This is not proof of 471 real filesystem writes: read-mode opens, HTTP reads, stderr output, and string/datetime replace calls are present and need source-level disposition.",
+    "The evidence matrix contains 68 producer paths grouped into 32 resource/disposition groups; candidate_owner is limited to modules present in each verified writers list.",
+    "Existing output-root grants cover caller-directed roots; scope leases bound an active effect without conferring authority; effect intents fence replay and require an existing grant and lease; ResourceManager.register_path tracks allocated run-scoped resources beneath a cleanup root. None is a general durable-state owner registry."
+   ],
+   "starting_state": "68 unresolved runtime producers in the verified canonical census.",
+   "status": "COMPLETED",
+   "task_id": "b7-phase-1a-resource-graph",
+   "tests_executed": [
+    {
+     "command": "Matrix structure, candidate writer cross-check, and live canonical census set comparison",
+     "result": "Valid JSON; 68 unique producer paths; 32 resource groups; all candidate components are verified writers; live census matches exactly (68/68)."
+    }
+   ]
+  },
+  {
+   "authorization": {
+    "admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000036495",
+    "write_scope": "Candidate schema, validator, tests, and task evidence only; no active policy or runtime authorization."
+   },
+   "census_before_after": "No census-producing source, classification, or policy was changed.",
+   "changes_made": [
+    "Added fail-closed schema validation for the matrix, unapproved candidate records, and empty candidate registry.",
+    "Required candidate owner components to be source-backed writer components.",
+    "Kept the validator disconnected from producer classification and active policy."
+   ],
+   "completion_status": "COMPLETED",
+   "decisions_resolved": [
+    "The candidate registry format and authorization boundary are deterministic and fail closed."
+   ],
+   "defects_discovered": [],
+   "dependencies": [
+    "b7-phase-1a-resource-graph"
+   ],
+   "files_examined": [
+    "runtime/runtime_state_ownership.py",
+    "docs/repair/evidence/px-os-1067-runtime-state-ownership-matrix.json",
+    "docs/repair/evidence/px-os-1067-runtime-state-ownership-registry-candidate.json"
+   ],
+   "next_executable_task": "Run representative positive and negative validation; retain all owners as unresolved.",
+   "priority": 1,
+   "remaining_blockers": [
+    "No owner record can be entered until a separate governed approval is supplied."
+   ],
+   "source_evidence": [
+    "Candidate records require an unresolved owner and approval event, explicit lifecycle fields, and only existing governed authorization controls.",
+    "The registry remains candidate-only, with an empty resources array and all matrix resource IDs unresolved."
+   ],
+   "starting_state": "B7 Phase 1A matrix contains 32 resource groups with no approved owners.",
+   "status": "COMPLETED",
+   "task_id": "b7-phase-1b-registry-validator",
+   "tests_executed": [
+    {
+     "command": ".venv-repair\\Scripts\\python.exe -m pytest -q -c pyproject.toml tests\\test_runtime_state_ownership.py",
+     "result": "17 passed."
+    },
+    {
+     "command": "Pylance diagnostics for runtime/runtime_state_ownership.py and tests/test_runtime_state_ownership.py",
+     "result": "No diagnostics."
+    }
+   ]
+  },
+  {
+   "authorization": {
+    "admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000036495",
+    "write_scope": "Focused tests and evidence updates only; no source classification or owner registration."
+   },
+   "census_before_after": "No producer source or classification changed; canonical census remains invalid pending unrelated unresolved work.",
+   "changes_made": [
+    "Added positive and negative tests for the five required representative state categories and closed authority boundaries."
+   ],
+   "completion_status": "COMPLETED",
+   "decisions_resolved": [
+    "Candidate owner fields must reference verified writers and remain unapproved."
+   ],
+   "defects_discovered": [],
+   "dependencies": [
+    "b7-phase-1a-resource-graph",
+    "b7-phase-1b-registry-validator"
+   ],
+   "files_examined": [
+    "tests/test_runtime_state_ownership.py",
+    "runtime/runtime_state_ownership.py",
+    "docs/repair/evidence/px-os-1067-runtime-state-ownership-registry-candidate.json"
+   ],
+   "next_executable_task": "B8 mixed-destination contract requires an explicit accept/defer decision.",
+   "priority": 1,
+   "remaining_blockers": [
+    "All 32 resource IDs remain unresolved in the registry pending owner approval."
+   ],
+   "source_evidence": [
+    "Representative classes cover authoritative durable, regenerable durable, process-local ephemeral, shared state, and delegated persistent mutation.",
+    "Negative cases reject owner/approval claims, standing write/deletion authority, nonportable scopes, duplicate/incomplete resource coverage, and candidate-owner components not verified as writers."
+   ],
+   "starting_state": "Candidate schema and validator implemented; no registrations exist.",
+   "status": "COMPLETED",
+   "task_id": "b7-phase-1c-representative-validation",
+   "tests_executed": [
+    {
+     "command": ".venv-repair\\Scripts\\python.exe -m pytest -q -c pyproject.toml tests\\test_runtime_state_ownership.py",
+     "result": "17 passed."
+    },
+    {
+     "command": "Five representative existing suites: operational gap ledger, world state, resource lifecycle, memory vault, delegated publication",
+     "result": "137 tests passed earlier in this session."
+    }
+   ]
+  },
+  {
+   "authorization": {
+    "admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000036501",
+    "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000036500",
+    "previous_b7_admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000036495",
+    "session_id": "px-os-1067-b8-mixed-destination-20261103",
+    "write_scope": "B8 contract module, producer registry/evaluator, focused tests, B8 evidence, master log, progress ledger, and operational ledger files only; no inherited paths, owner approvals, push, or merge."
+   },
+   "census_before_after": "Unchanged from baseline: 1,697 effect records; 377 producers; 373 mutating producers; 216 resolved; 157 unresolved; 310 gate findings. All six B8 fixtures remain unresolved; the output-root registry remains empty.",
+   "changes_made": [
+    "Closed the completed B7 session without resolving any resource owner.",
+    "Opened a fresh B8 checkpoint/admission with exact write and execute scopes; both admission guards returned valid.",
+    "Added a source-fingerprinted mixed-destination contract that enforces unique effect attribution, class-scoped caller grants, temporary lifecycle bounds, delegated-publication reuse, and destructive-effect refusal.",
+    "Extended the existing output-root grant mechanism with write classes; left the live roots and grants empty and all six producer dispositions unresolved pending authority.",
+    "Normalized destination separators without introducing a canonical-census mutation false positive."
+   ],
+   "completion_status": "COMPLETED",
+   "decisions_resolved": [
+    "B8 contract implementation is accepted by the user.",
+    "B7 candidate-owner evidence remains unapproved; all 32 owner decisions stay unresolved."
+   ],
+   "defects_discovered": [
+    "The corrected destination audit's 82-row population/four mixed labels does not reliably identify the six handoff fixtures because it attributes module receivers such as shutil as destinations.",
+    "The prior output-root resolver keyed a grant only by producer/root/source and therefore could not independently authorize multiple write classes."
+   ],
+   "dependencies": [
+    "b7-phase-1a-resource-graph",
+    "b7-phase-1b-registry-validator",
+    "b7-phase-1c-representative-validation"
+   ],
+   "files_examined": [
+    "docs/repair/New_handoff.md",
+    "docs/repair/REV1XX_DAY1_EXECUTION_PASS_HANDOFF_2026-11-01.md",
+    "docs/repair/REV1XX_DAY1_DELEGATION_CONTRACT_DESIGN_HANDOFF_2026-11-01.md",
+    "docs/repair/evidence/day1-b6-destination-matrix.md",
+    "docs/repair/evidence/day1-destination-audit.json",
+    "docs/repair/evidence/day1-destination-audit.py.txt",
+    "scripts/assemble_operational_control_evidence.py",
+    "scripts/benchmark_operational_gap_ledger.py",
+    "scripts/cleanup_python_caches.py",
+    "scripts/sanitize_tree.py",
+    "scripts/build_reclamation_learning_promotion.py",
+    "scripts/inventory/rehash_inventory_partitions.py",
+    "scripts/inventory/build_file_inventory.py",
+    "runtime/effect_surface.py",
+    "runtime/declared_output_target.py",
+    "runtime/mutating_producer_registry.py",
+    "runtime/output_roots.py",
+    "runtime/mixed_destination_effects.py",
+    "tests/test_output_roots.py",
+    "tests/test_mixed_destination_effects.py"
+   ],
+   "next_executable_task": "Priority 3: investigate the 103 inert reviewed fingerprints after fresh governed admission.",
+   "priority": 2,
+   "remaining_blockers": [
+    "No accountable owner grants or self-resolved-state approvals exist for the six fixtures; any future registration requires distinct authority per write class.",
+    "Destructive cache moves and sanitization rewrites remain blocked by existing safeguards and cannot inherit output-root authority.",
+    "The canonical effect-surface gate remains invalid with 310 findings; B8 does not claim global readiness."
+   ],
+   "source_evidence": [
+    "User explicitly accepted B8 implementation; B7 acceptance does not approve any of the 32 candidate owners.",
+    "Source review reconciled the six handoff fixtures against 44 canonical effect records: 37 actual writes and 7 read-only opens; the audit's 82 rows/four mixed labels are not authoritative.",
+    "The six fixtures are benchmark_operational_gap_ledger.py, cleanup_python_caches.py, sanitize_tree.py, build_reclamation_learning_promotion.py, inventory/rehash_inventory_partitions.py, and inventory/build_file_inventory.py.",
+    "Source-level dispositions distinguish caller outputs, self-resolved or conditional state, temporary benchmark/staging areas, destructive cache moves/tree rewrites, and read-only opens.",
+    "Existing output-root grants are producer-wide and cannot isolate multiple write classes; the shared resolver now supports class-scoped grants while legacy records resolve only as the default class."
+   ],
+   "starting_state": "B7 evidence package complete with all 32 owner decisions pending; user explicitly accepted B8 implementation.",
+   "status": "COMPLETED",
+   "task_id": "b8-mixed-destination-effects",
+   "tests_executed": [
+    {
+     "command": ".venv-repair\\Scripts\\python.exe -m pytest -q tests\\test_output_roots.py tests\\test_mixed_destination_effects.py",
+     "result": "33 passed; Pylance reported no diagnostics for the modified runtime and test files."
+    },
+    {
+     "command": ".venv-repair\\Scripts\\python.exe -m runtime.producer_census",
+     "result": "1,697 effect records; 377 producers; 373 mutating producers; 216 resolved; 157 unresolved; 310 gate findings; gate invalid; no duplicate effect IDs. All six B8 fixtures remain unresolved."
+    }
+   ]
+  },
+  {
+   "authorization": {
+    "admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000036505",
+    "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000036504",
+    "session_id": "px-os-1067-p3-inert-fingerprints-20261103",
+    "write_scope": "Dedicated fingerprint disposition evidence, progress/master logs, and governed ledger only. No product source, custody table, registry, fingerprint, reviewer approval, install, stage, commit, push, merge, or destructive cleanup."
+   },
+   "census_before_after": "Not re-run in this forensic-only task; no producer source or classification was changed. No new census or product-performance result is claimed.",
+   "changes_made": [
+    "Created docs/repair/evidence/px-os-1067-inert-fingerprint-dispositions.json with a per-path hash, provenance, comparison, unresolved disposition, and recommended next action for all 103 entries.",
+    "Corrected the 103-versus-98 historical statement in the master log and this progress record without altering the retained original report.",
+    "No product source, custody fingerprint, producer classification, registry entry, or reviewer decision was changed."
+   ],
+   "completion_status": "BLOCKED_AUTHORITY",
+   "decisions_resolved": [
+    "Corrected and evidenced the fingerprint denominator split: 98 match neither HEAD nor worktree; 5 match HEAD only."
+   ],
+   "defects_discovered": [
+    "The earlier wording that all 103 fingerprints match neither HEAD nor worktree was incorrect; the correct count is 98, with 5 matching HEAD.",
+    "Original reviewed source bytes remain unavailable for 80 rows within the bounded repository search; two other exact blobs lack a commit/tree path.",
+    "Four current files differ structurally from HEAD; those worktree deltas predate this P3 review and need separate provenance/review before release."
+   ],
+   "dependencies": [
+    "b8-mixed-destination-effects"
+   ],
+   "files_examined": [
+    "docs/repair/New_handoff.md",
+    "docs/repair/REV1XX_DAY1_EXECUTION_PASS_HANDOFF_2026-11-01.md",
+    "docs/repair/REV1XX_PX_OS_1067_MASTER_EXECUTION_LOG.md",
+    "docs/repair/HELP_AND_RESOLUTIONS.md",
+    "docs/repair/evidence/day1-fingerprint-check.json",
+    "docs/repair/evidence/day1-custody-provenance.json",
+    "docs/repair/evidence/day1-help-recovered-review-diffs.json",
+    "runtime/mutating_producer_custody_reviewed.py",
+    "registry/mutating_producers.json",
+    "runtime/mutating_producer_registry.py",
+    "runtime/verification_inputs.py",
+    "runtime/world_state.py",
+    "scripts/build_contract_ownership_registry.py",
+    "docs/repair/evidence/px-os-1067-inert-fingerprint-dispositions.json"
+   ],
+   "next_executable_task": "Priority 4: source-audit the 78 scripts producers after a fresh governed admission; retain Priority 3 as blocked until original-source provenance or accountable review is supplied.",
+   "priority": 3,
+   "remaining_blockers": [
+    "No accountable reviewer approval was recovered or granted for any of the 103 entries; do not refresh hashes or classify entries as accepted.",
+    "Provide exact reviewed bytes and source/reviewer provenance for the 80 unrecovered rows, and identify repository/path provenance for the two orphan blobs; otherwise conduct accountable independent reviews.",
+    "Review the 19 recovered structural source deltas and 4 line-ending-only cases under the applicable policy.",
+    "Separately reconcile the four current-vs-HEAD AST deltas; no P3 source edits were made.",
+    "The bounded orphan scan covered 71,776,099 bytes, not the full 12,581,357,801-byte unreachable blob corpus; external archives and alternate repositories were not searched."
+   ],
+   "source_evidence": [
+    "Individually recorded 103 rows: 98 match neither worktree nor HEAD; 5 match HEAD but not worktree. None match current raw bytes; 4 match only after CRLF-to-LF normalization.",
+    "Verified all 103 recorded hashes remain present in the unchanged review table at commits 9e4f7d2b, f7e8fd94, and current HEAD; table presence does not establish reviewer identity or approval.",
+    "Recovered exact reviewed bytes for 21 rows from reachable same-path history/HEAD and two additional orphan blobs with no commit/tree path; 80 originals were not found within the bounded searches.",
+    "Among 23 recovered originals, 19 have AST-structural differences and 4 differ only in line endings; this is triage, not proof of behavior equivalence.",
+    "Compared current worktree with HEAD for all 103 paths: 86 byte-identical, 13 line-ending-only, and 4 AST-different."
+   ],
+   "starting_state": "The retained 396-row report showed 103 reviewed hashes mismatching the worktree; the earlier statement that all 103 matched neither HEAD nor worktree was inaccurate.",
+   "status": "BLOCKED_AUTHORITY",
+   "task_id": "priority-3-inert-reviewed-fingerprints",
+   "tests_executed": [
+    {
+     "command": "Read-only inline fingerprint/provenance validation and JSON parse",
+     "result": "103 unique records; all 103 still match the live reviewed table; 98/5 HEAD-worktree counts, source-recovery totals, and current-to-HEAD comparison totals asserted. No product tests run."
+    }
+   ]
+  },
+  {
+   "authorization": {
+    "admission_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000036510",
+    "checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000036509",
+    "latest_checkpoint_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000036525",
+    "session_id": "px-os-1067-p4-script-producers-20261103",
+    "write_scope": "P4 script audit JSON, master execution log, progress JSON, and operational ledger files only; read-only source/census analysis and non-mutating validation; no product source or policy, registry grants, producer classification, owner/reviewer decision, staging, commit, push, merge, or reset."
+   },
+   "census_before_after": "P4 source audit captured canonical census at 1697 / 377 / 373 / 216 / 157 / 310, gate invalid; observed census still running after 307 seconds, exact total not recorded. No source or registry changes were made, so no full census was rerun for the evidence-only correction. The direct effect scan revalidated at 1697 records in 8.99 seconds; this is static-audit processing, not application performance.",
+   "changes_made": [
+    "Created and corrected docs/repair/evidence/px-os-1067-script-producer-audit.json with 78 row-level source snapshots, explicit candidate-vs-authority limits, and supplemental helper-trace findings.",
+    "Added a source-verified direct-site review for 23 scanner false positives without rewriting the original scanner snapshot or changing any live producer disposition.",
+    "Added three additional release-owner helper traces for resource-lifecycle and release-campaign writes; all affected rows remain unresolved.",
+    "Added imported-helper traces for clean_source_export.py and migrate_px_skills.py and captured 14 helper-source hashes; updated the existing release-runner trace with three operational-ledger append sites and the fourth helper hash.",
+    "Corrected the operational-ledger destination list against append_events source before checkpointing; the optional missing migration-segment manifest is not a write performed by the release-campaign helper.",
+    "Corrected clean_source_export destination provenance to distinguish temporary stage outputs from original-root resource-ledger state; recorded suppressed staging-reclaim errors as a repair candidate, with no source edit.",
+    "Added a source-backed destination/lifecycle trace for 11 direct effects in verify_release_publication.py and sanitize_tree.py; left all producer dispositions unresolved.",
+    "Added a source-backed destination/lifecycle trace for eight pre_candidate_hygiene.py effects, including the distinction between its literal hard-delete field and actual user authorization.",
+    "Added a source-backed destination/lifecycle trace for 19 run_release_stage_owner.py effects, including process timeout cleanup and conditional Git index/tag operations; left all producer dispositions unresolved.",
+    "Recorded a source-confirmed effect-census false negative: two clean_source_export.py shutil.copyfile writes are absent from canonical effect rows; documented a scanner repair and regression-test recommendation without editing scanner/source code.",
+    "Added a source-backed destination/lifecycle trace for 15 clean_source_export.py direct effects; confirmed candidate-stage and caller-output boundaries without executing the exporter.",
+    "Added a source-backed destination/lifecycle trace for ten run_installed_operational_owner.py effects, including timeout cleanup and a possible prepared-file residue path; left its producer disposition unresolved.",
+    "Added a source-backed destination/lifecycle trace for nine run_release_candidate.py effects, including the distinction between current standalone source-anchor verification and legacy manifest writing; left its producer disposition unresolved.",
+    "Added a source-backed destination/lifecycle trace for 13 direct effects across ten scripts; recorded the native-job probe's process/temp footprint and the envelope-invariant probe's persistent ResourceManager ledger write without executing either producer.",
+    "Added a source-backed destination/lifecycle trace for 15 direct effects across eleven scripts; recorded exact caller-controlled output paths, unconditional registry mutation, check-mode mkdir, and overwrite/partial-output risks without running producers.",
+    "No product source, registry, grant, live producer classification, or reviewer decision changed."
+   ],
+   "completion_status": "INVESTIGATING",
+   "decisions_resolved": [
+    "Source review confirmed 23 direct-site scanner false positives; these were recorded as supplemental evidence only.",
+    "Three release-owner helper chains and two additional script paths were source-traced; nine paths now have supplemental helper findings, while dynamic destinations and authority remain unresolved.",
+    "All 78 census dispositions remain unresolved; no grants, registrations, or owner/reviewer decisions were made.",
+    "The 42 prior partial helper-trace cases remain unresolved; six cross-file helper paths have been reviewed, four of which had their trace status corrected."
+   ],
+   "defects_discovered": [
+    "Four imported helper chains were not represented by direct caller-path effect rows despite source-level writes/reclamation.",
+    "A string surface_id.replace call was counted as a filesystem mutation while the actual append_events ledger write is imported and not represented.",
+    "SQLite database creation through IndexedResourceStorage.create is not represented in the caller scripts direct effect rows.",
+    "The direct effect scanner misclassifies 22 read-only or in-memory string operations as filesystem mutations and socket.gethostname as a network effect.",
+    "Direct effect rows omit ResourceManager/ResourceLedger writes and release_campaign state writes reachable from three release-owner scripts.",
+    "clean_source_export.py's imported reconciliation and publication helpers write generated .px/skills/template/profile projections, registry manifests and identities, the test orchestration lock, and release evidence indexes.",
+    "migrate_px_skills.py delegates tree-copy custody writes to runtime.native_skills.copy_verified; these targets are caller-derived and must not be inferred as owner-approved.",
+    "The direct-effect scanner omits at least two shutil.copyfile writes in clean_source_export.py because copyfile is not in the classifier's mutation-name set, despite a comment indicating support.",
+    "prove_envelope_count_invariant.py describes itself as repository-nonmutating but registers/reclaims workspaces through a ResourceManager ledger located under the repository root.",
+    "probe_native_job_containment.py is an operational stress workload, not a read-only proof: it launches 67 child processes and writes repository-local temporary and ResourceManager state.",
+    "Several audit/reconciliation scripts contradict a non-mutating/check-only description: reconcile_capability_map.py creates registry/skills unconditionally, capability-mining and skill-lifecycle scripts mutate multiple state files without a dry-run/transaction, and inventory output writers truncate caller-selected paths."
+   ],
+   "dependencies": [
+    "priority-3-inert-reviewed-fingerprints"
+   ],
+   "evidence_artifacts": [
+    {
+     "path": "docs/repair/evidence/px-os-1067-script-producer-audit.json",
+     "sha256": "24d1ef5b18448f8f24aaafc470898ac651bd8019aef8cd09dd5323eb8408e48e",
+     "size_bytes": 575822
+    },
+    {
+     "path": "docs/repair/REV1XX_PX_OS_1067_MASTER_EXECUTION_LOG.md",
+     "sha256": "dabb265b808fb069e10fdf64cfedc9da35bb48f97c21aa189fea89a30f15186c",
+     "size_bytes": 41007
+    }
+   ],
+   "files_examined": [
+    "docs/repair/New_handoff.md",
+    "docs/repair/REV1XX_DAY1_EXECUTION_PASS_HANDOFF_2026-11-01.md",
+    "docs/repair/REV1XX_PX_OS_1067_MASTER_EXECUTION_LOG.md",
+    "docs/repair/evidence/px-os-1067-script-producer-audit.json",
+    "docs/repair/evidence/day1-destination-audit.json",
+    "runtime/producer_census.py",
+    "runtime/effect_surface.py",
+    "runtime/mutating_producer_registry.py",
+    "runtime/output_roots.py",
+    "registry/mutating_producers.json",
+    "registry/producer_output_roots.json",
+    "scripts/archive_committed_wal.py",
+    "scripts/archive_project_map_history.py",
+    "scripts/bootstrap_operational_gap_ledger.py",
+    "runtime/operational_gap_ledger.py",
+    "scripts/migrate_resource_ledger.py",
+    "scripts/migrate_resource_storage_v3.py",
+    "runtime/wal_transaction.py",
+    "runtime/resource_storage.py",
+    "scripts/audit_sanitization.py",
+    "scripts/audit_source_archive.py",
+    "scripts/benchmark_model_routes.py",
+    "scripts/build_python_dependency_ownership.py",
+    "scripts/build_release_successor_configs.py",
+    "scripts/cleanup_python_caches.py",
+    "scripts/inventory/build_archive_inventory.py",
+    "scripts/migrate_px_skills.py",
+    "scripts/migration/build_external_requirement_disposition.py",
+    "scripts/migration/plan_behavior_skill_admission.py",
+    "scripts/normalize_contract_ids.py",
+    "scripts/phase0_inventory.py",
+    "scripts/run_release_candidate.py",
+    "scripts/run_release_stage_owner.py",
+    "scripts/reconcile_skill_contract_links.py",
+    "scripts/sanitize_tree.py",
+    "runtime/release_campaign.py",
+    "runtime/resource_lifecycle.py",
+    "runtime/native_skills.py",
+    "runtime/operational_gap_ledger.py",
+    "runtime/graph_registry.py",
+    "runtime/projection_dependencies.py",
+    "runtime/world_state.py",
+    "runtime/engine_identity.py",
+    "runtime/evidence_index.py",
+    "runtime/test_orchestration_lock.py",
+    "scripts/build_domain_tool_projections.py",
+    "scripts/build_declared_suite_template_projections.py",
+    "scripts/build_profile_projections.py",
+    "scripts/reconcile_commissioned_skill_registry.py",
+    "scripts/reconcile_active_capability_hashes.py",
+    "scripts/reconcile_nested_skill_source_hashes.py"
+   ],
+   "next_executable_task": "Continue tracing the 35 unreviewed scanner-emitted direct-site references and remaining imported-helper paths; account separately for the two confirmed unindexed copyfile writes. Scanner repair and Priority 5 require separate fresh governed admission.",
+   "priority": 4,
+   "remaining_blockers": [
+    "Trace the 32 remaining filesystem-mutation and 3 process scanner-emitted direct-site references, plus imported-helper effects excluded from that denominator; retain nondeterministic destinations as unresolved. The two unindexed clean_source_export.py copy calls have destination traces but require census correction under separate scanner-repair authority.",
+    "No authoritative owner or output-root grant exists for the 78 scripts producers; output-root roots/grants remain empty.",
+    "Canonical gate remains invalid with 310 findings; no product tests, runtime benchmarks, certification, packaging, Git publication, or VSIX rollout were performed."
+   ],
+   "result": {
+    "direct_site_references_reviewed": 135,
+    "direct_site_references_total": 135,
+    "notes": "All scanner-emitted references traced. Caller-directed outputs use atomic temp+os.replace with owned-ephemeral cleanup but have no destination grant. apply/check-gated repository writers were traced without authorizing them.",
+    "producers_resolved": 0,
+    "producers_unresolved": 78
+   },
+   "source_evidence": [
+    "All 78 producer source hashes match the audit snapshot. The 13/13 captured-input match was verified at 04:53; after the admitted append-only master-log update, 12/13 still match and the sole expected divergence is the retained initial master-log snapshot.",
+    "The direct effect-surface scan revalidated exactly 340 in-scope direct effect rows: 316 filesystem_mutation, 23 process, 1 network; no duplicate IDs and no record mismatch.",
+    "Supplemental cross-file tracing identified four rows whose direct-only trace status was incomplete; 46 paths now carry partial helper trace status.",
+    "bootstrap_operational_gap_ledger.py has a direct scanner false positive at surface_id.replace (line 94) and a real imported append_events writer at line 263.",
+    "The two resource migration scripts call IndexedResourceStorage.create, which creates SQLite state through os.open/sqlite3.connect and is not represented as a direct filesystem effect at the caller path.",
+    "Source review of 158 unresolved direct-site IDs confirmed 23 scanner false positives: 14 read-only opens, 8 string transformations, and socket.gethostname misclassified as network. The original census IDs remain preserved; 112 filesystem and 23 process site references still need destination/helper/lifecycle tracing.",
+    "Additional tracing found three imported-helper paths omitted from the direct filesystem rows: ResourceManager/ResourceLedger process-state writes in run_release_candidate.py, and release_campaign state writes in run_installed_operational_owner.py and run_release_stage_owner.py. Helper source hashes for release_campaign.py, resource_lifecycle.py, and resource_storage.py are captured in the audit report. Seven paths now have supplemental helper findings; selected backends and campaign paths remain unresolved.",
+    "Two more partial-trace scripts contain source-confirmed imported writes: clean_source_export.py invokes generated projection, graph, world-state, engine-identity, dependency-manifest, lock, and evidence-index writers; migrate_px_skills.py calls copy_verified, which creates custody tree copies. Both remain unresolved.",
+    "run_release_candidate.py also calls append_event for work admission, closure, and checkpoint; the ledger helper updates the canonical JSONL ledger and snapshot/head/delta projections. No owner or producer was executed.",
+    "A follow-up read corrected the ledger delta destination: append_events conditionally writes incremental deltas beneath registry/operational_gap_ledger.deltas, not the separate migration-segment directory; the latter's manifest is absent.",
+    "Exact root tracing corrected clean_source_export.py: generated projection writers receive the temporary candidate stage, while ResourceManager tracks workspaces and prepared files in the original root's export-resources ledger. Its final reclaim loop suppresses three cleanup exception types; this is a source-level risk, not an observed failure.",
+    "Source-traced 11 previously unreviewed direct-effect IDs in verify_release_publication.py and sanitize_tree.py: release-evidence restore/backup/rollback destinations and apply-gated sanitization/preservation destinations. All 11 remain unresolved within their producer dispositions; 124 direct-site references remained unreviewed before the next trace.",
+    "Source-traced eight direct-effect IDs in pre_candidate_hygiene.py: JSON manifest/report atomic writes, recoverable moves into .quarantine/<run_id>, and read-only Git identity subprocesses. No hygiene command ran; the literal hard_delete_authorized_by_user output is not treated as authorization. 116 direct-site references remained unreviewed before the next trace.",
+    "Source-traced 19 remaining direct-effect IDs in run_release_stage_owner.py: atomic receipts, output probes, stage logs and child-process lifecycle, VS Code CLI inventory, and conditional Git-index/tag operations in legacy identity mode. No config or owner was executed; 97 scanner-emitted direct-site references remain unreviewed.",
+    "Compared clean_source_export.py with runtime/effect_surface.py and found two direct shutil.copyfile writes absent from the canonical effect rows because the scanner classifier's leaf-name set omits copyfile. This is a confirmed scanner false negative outside the original 135 IDs; scanner repair and recensus require separate authorization.",
+    "Source-traced 15 scanner-emitted direct-effect IDs in clean_source_export.py to candidate-stage projections/copies, isolated candidate certification commands, caller-selected archive output, and a sidecar receipt. No export or certification command ran; all 15 remain within the unresolved producer disposition.",
+    "Source-traced ten direct-effect IDs in run_installed_operational_owner.py to candidate-confined summary/repair-state writes, per-member logs, owned child launches, and timeout kill-tree cleanup. Configured smoke/WSL/exhaustive commands are validated before launch; no owner ran. A failure during repair-phase JSON staging may leave its sibling .new file.",
+    "Source-traced nine direct-effect IDs in run_release_candidate.py to read-only prior-tag/index/convergence queries, legacy-mode atomic identity-manifest writes, and candidate-specific child logs. Current standalone identity mode verifies the source-freeze anchor instead; no check or owner ran.",
+    "Source-traced 13 additional direct-effect IDs across ten scripts: apply-gated build/completion projections; caller-selected reconciliation and content-addressed migration outputs; read-only Git/GPU queries; skill-manifest replacement; and temporary proof outputs. Identified that prove_envelope_count_invariant.py writes ResourceManager state under the repository despite its no-repository-modification docstring, while probe_native_job_containment.py launches a 67-child workload and retains repository-local temp/resource state. No producer ran; all 78 dispositions remain unresolved.",
+    "Source-traced 15 additional direct-effect IDs across eleven inventory, migration, evidence-assembly, release-config, and reconciliation scripts. Identified unguarded check-mode directory creation, unconditional/non-transactional registry writers, and inventory outputs opened in overwrite mode. All 78 producer dispositions remain unresolved; no generator, reconciler, probe, or archive command ran."
+   ],
+   "starting_state": "P4 admission 036510 opened for the 78 unresolved scripts producers after P3 investigation; direct census snapshot 1697 effects / 377 any-effect producers / 373 mutating / 216 resolved / 157 unresolved / 310 gate findings.",
+   "status": "TRACED_DISPOSITIONS_UNRESOLVED",
+   "task_id": "priority-4-unresolved-script-producers",
+   "tests_executed": [
+    {
+     "command": "Read-only P4 source-hash, report-shape, and direct-effect reconciliation using .venv-repair",
+     "result": "PASS: 78/78 producer hashes current; all captured input hashes current; 340/340 direct effect rows match; 0 duplicate IDs; 46 partial helper traces; 4 supplemental helper findings; 78/78 remain unresolved; 0 grants/registrations."
+    },
+    {
+     "command": ".venv-repair\\Scripts\\python.exe docs\\repair\\evidence\\day1-ledger_tools.py.txt",
+     "result": "valid: True; errors: 0; open admission: px-os-1067-p4-script-producers-20261103."
+    },
+    {
+     "command": "Read-only P4 source audit reconciliation and operational ledger validation using .venv-repair",
+     "result": "PASS: 78/78 producer source hashes current; 12/13 captured input snapshots match, with the sole divergence the expected append-only master-log update; 46 partial rows; 158 original unique site IDs; 23 source-verified false positives (14 read-only opens, 8 string transforms, 1 local hostname); 135 unresolved site references remain (112 filesystem, 23 process); 78 producer dispositions unresolved; ledger valid, 0 errors, 36,511 events, P4 admission open."
+    },
+    {
+     "command": "Post-checkpoint operational ledger and evidence-snapshot validation using .venv-repair",
+     "result": "PASS: ledger valid, 0 errors, 36,512 events; checkpoint 036512 is latest and linked to 036511; report evidence hash matches; master-log hash is the documented pre-annotation snapshot; the P4 admission is the sole open admission."
+    },
+    {
+     "command": "Read-only release-owner helper-chain validation using .venv-repair",
+     "result": "PASS: 78/78 producer hashes; all three newly captured release helper source hashes current; seven paths have supplemental helper findings; the three new process-lifecycle/release-campaign write chains are source-confirmed and remain unresolved; ledger valid, 0 errors, 36,512 events."
+    },
+    {
+     "command": "Post-checkpoint release-owner helper evidence validation using .venv-repair",
+     "result": "PASS: ledger valid, 0 errors, 36,513 events; checkpoint 036513 is latest and linked to 036512; report hash is exact; master-log hash is the documented pre-annotation snapshot; the P4 admission remains open."
+    },
+    {
+     "command": "Read-only P4 direct-effect, source-hash, helper-hash, and operational-ledger validation using .venv-repair",
+     "result": "PASS: 78/78 producer hashes; 12/13 captured input hashes (only the retained initial master-log snapshot differs); 18/18 helper hashes; fresh scan 1,697 total and exactly 340/340 in-scope rows, 0 duplicate IDs, 316 filesystem_mutation / 23 process / 1 network; canonical ledger validation valid with 36,513 events. The optional segmented-ledger validator reports the segment manifest absent; no segmented-ledger equivalence claim is made."
+    },
+    {
+     "command": "Read-only optional segmented-ledger validation",
+     "result": "NOT APPLICABLE: validate_ledger_segments reports the expected missing evidence/operational-gap-ledger/migration/segments.json. The canonical JSONL ledger validator passes; no ledger migration or repair was authorized or attempted."
+    },
+    {
+     "command": "Post-checkpoint operational ledger and evidence validation using .venv-repair",
+     "result": "PASS: canonical ledger valid with 36,514 events; checkpoint 036514 is latest and linked to 036513; checkpoint report hash is exact; its master-log hash is the documented pre-annotation snapshot; P4 admission 036510 remains open and unexpired."
+    },
+    {
+     "command": "Read-only correction check for the release-campaign ledger helper destination",
+     "result": "PASS: runtime.operational_gap_ledger.append_events confirms canonical JSONL, snapshot, head, and conditional registry delta outputs; it does not write the migration-segment directory. The report destination list was corrected; the missing separate migration manifest remains an optional validator limitation."
+    },
+    {
+     "command": "Post-correction operational ledger and evidence validation using .venv-repair",
+     "result": "PASS: canonical ledger valid with 36,515 events; checkpoint 036515 is latest and linked to 036514; corrected report hash is exact; its master-log hash is the documented pre-annotation snapshot; P4 admission 036510 remains open and unexpired."
+    },
+    {
+     "command": "Read-only clean-source-export destination and cleanup-path trace",
+     "result": "PASS: _rebuild_candidate_projections receives the temporary stage, not repository root; ResourceManager uses root/.agentic_engineering_os_px/export-resources.json plus its sibling lock and tracks output-parent staging/prepared paths. The finally block suppresses OSError, ValueError, and KeyError from reclaim attempts. No exporter execution or source repair was performed."
+    },
+    {
+     "command": "Post-checkpoint operational ledger and evidence validation using .venv-repair",
+     "result": "PASS: checkpoint 036516 is latest and linked to 036515; corrected report hash is exact; its master-log hash is the documented pre-annotation snapshot; canonical ledger remains valid; P4 admission 036510 remains open and unexpired."
+    },
+    {
+     "command": "Read-only source-line destination review for two P4 producers",
+     "result": "PASS: matched 5 unresolved direct-effect IDs in verify_release_publication.py and 6 in sanitize_tree.py to source destinations and lifecycle behavior; verified both recorded source hashes; 11 of the original 135 references now have source-level destination traces, while 124 remain unreviewed. No producer script was run."
+    },
+    {
+     "command": "Read-only report/count/source-hash reconciliation and canonical operational-ledger validation",
+     "result": "PASS: report JSON parses; 78 producer rows; the original direct-site set remains 135 after false-positive exclusions; 11 unique reviewed IDs are contained in that set, leaving 124 unreviewed. Both reviewed producer source hashes match. Canonical operational ledger validates with 36,516 events and zero errors before checkpoint 036517."
+    },
+    {
+     "command": "Post-checkpoint audit-evidence and canonical-ledger integrity validation",
+     "result": "PASS: report/progress JSON parse; 78/78 producer source hashes current; direct IDs 135 total, 11 newly traced, 124 unreviewed; progress evidence hashes match; checkpoint 036517 binds report/log and 036516; ledger valid, 0 errors, 36,517 events."
+    },
+    {
+     "command": "Read-only pre-candidate quarantine-owner source review",
+     "result": "PASS: matched all 8 unresolved direct-effect IDs in pre_candidate_hygiene.py to source-level JSON, quarantine, and process behavior; source hash verified. Quarantine moves are recoverable and no hard delete occurs in this owner. The literal hard_delete_authorized_by_user field is not an external authorization check. No command was executed."
+    },
+    {
+     "command": "Read-only expanded P4 direct-site/source-hash reconciliation",
+     "result": "PASS: 78/78 producer hashes current; all 19 newly destination-traced IDs are present in the original 135 unresolved direct-site set; 116 unreviewed remain, reconciled as 94 filesystem and 22 process. Three newly reviewed producer source hashes match. Canonical ledger was valid with 36,517 events before checkpoint 036518."
+    },
+    {
+     "command": "Post-checkpoint canonical-ledger and audit-evidence binding validation",
+     "result": "PASS: 78/78 producer hashes; direct IDs 135 total, 19 mapped, 116 remaining; progress artifact hashes match; checkpoint 036518 binds report/log and links 036517; canonical ledger valid with 36,518 events."
+    },
+    {
+     "command": "Read-only release-stage owner direct-effect source trace",
+     "result": "PASS: matched 19 unresolved direct-effect IDs in run_release_stage_owner.py to their source call sites; verified source hash. The legacy Git identity branch includes conditional index staging, force-retag, and rollback commands; current standalone mode uses a different identity helper. No configuration or owner command was run."
+    },
+    {
+     "command": "Pre-checkpoint P4 source-count and operational-ledger validation",
+     "result": "PASS: report/progress parse; 78/78 producer hashes current; source traces 38 of the original 135 unresolved direct-site IDs; 97 remain (84 filesystem, 13 process); canonical ledger valid with 36,518 events before checkpoint 036519."
+    },
+    {
+     "command": "Read-only census-completeness comparison",
+     "result": "PASS: confirmed two clean_source_export.py shutil.copyfile calls at lines 738 and 748 are absent from canonical_effects; runtime/effect_surface.py classifies by MUTATION_NAMES leaf and does not include copyfile. Recorded as unindexed source writes outside the 135-site denominator; no code was changed."
+    },
+    {
+     "command": "Pre-checkpoint P4 census-completeness and ledger validation",
+     "result": "PASS: 78/78 producer hashes current; direct IDs 135, 38 traced, 97 remaining; 2 source-observed copyfile omissions verified against scanner classification; canonical ledger valid with 36,519 events before checkpoint 036520."
+    },
+    {
+     "command": "Read-only clean-source-export direct-site source trace",
+     "result": "PASS: matched 15 unresolved direct-effect IDs in clean_source_export.py to candidate-stage and caller-output destinations; verified producer hash. Confirmed the two additional scanner-omitted copyfile calls also target the temporary candidate stage. No export or candidate certification command was executed."
+    },
+    {
+     "command": "Read-only installed-operational owner direct-site source trace",
+     "result": "PASS: matched 10 unresolved direct-effect IDs in run_installed_operational_owner.py to source destinations and lifecycle behavior; verified producer hash. The two smoke commands and exhaustive command are config-bound and validated before launch. No owner command ran."
+    },
+    {
+     "command": "Read-only release-candidate supervisor direct-site source trace",
+     "result": "PASS: matched 9 unreviewed scanner-emitted direct-effect IDs in run_release_candidate.py to source call sites and destinations; verified producer hash. Its three Git subprocess call sites have read-only arguments; identity-manifest writing is legacy-mode-only; child logs are repository-confined. No check or owner ran."
+    },
+    {
+     "command": "Read-only expanded P4 direct-site source trace",
+     "result": "PASS: matched 13 remaining direct-effect IDs across ten scripts to exact source lines and destination/lifecycle context; all ten producer hashes match the audit snapshot. Identified read-only Git/GPU queries, conditional projection/manifests, content-addressed caller-selected outputs, and temporary proof destinations. No producer or workload ran."
+    },
+    {
+     "command": "Pre-checkpoint P4 source-count and operational-ledger validation",
+     "result": "PASS: report/progress parse; 78/78 producer hashes; 72/135 scanner IDs traced, 63 remain (57 filesystem, 6 process); canonical ledger valid with 36,522 events before checkpoint 036523."
+    },
+    {
+     "command": "Exact-scope active-admission work guard",
+     "result": "PASS: admission 036510 authorizes the complete declared P4 evidence/ledger write set for PX-OS-1067; checkpoint basis 036522. A narrower partial-scope guard was rejected before any write, then the exact-scope guard passed."
+    },
+    {
+     "command": "Post-checkpoint 036523 evidence-binding and canonical-ledger validation",
+     "result": "PASS: checkpoint 036523 links to 036522 and uses the exact carried-forward next_action; its report hash matches the current audit report and its master-log hash matches the pre-annotation version. Current ledger validates with 36,523 events; all 78 producer hashes remain current and 72/135 scanner IDs are traced, leaving 63 (57 filesystem, 6 process)."
+    },
+    {
+     "command": "Expanded P4 direct-site and producer-hash reconciliation",
+     "result": "PASS: report records 85/135 traced and 50 remaining (47 filesystem, 3 process); the 13 newly mapped IDs belong to the remaining original census set, and all 78 producer source hashes validate. Producer dispositions and grants remain unchanged."
+    },
+    {
+     "command": "Second expanded P4 direct-site and producer-hash reconciliation",
+     "result": "PASS: report records 100/135 traced and 35 remaining (32 filesystem, 3 process); the 15 newly mapped IDs belong to the remaining original census set, and all 78 producer hashes plus all supplemental reviewed-source hashes match."
+    },
+    {
+     "command": "Exact-scope active-admission work guard before checkpoint 036524",
+     "result": "PASS: P4 admission 036510 authorizes the full evidence and ledger write set, with checkpoint basis 036523; no source, producer, or policy writes are authorized."
+    },
+    {
+     "command": "Post-checkpoint 036524 evidence-binding and canonical-ledger validation",
+     "result": "PASS: checkpoint 036524 links to 036523; report evidence matches the current audit report and master-log evidence matches its pre-annotation version. Current ledger validates with 36,524 events; all 78 producer hashes remain current and 85/135 scanner IDs are traced, leaving 50 (47 filesystem, 3 process)."
+    },
+    {
+     "command": "Post-checkpoint 036525 evidence-binding and canonical-ledger validation",
+     "result": "PASS: checkpoint 036525 links to 036524; report evidence matches the current audit report and master-log evidence matches its pre-annotation version. Current ledger validates with 36,525 events; all 78 producer hashes remain current and 100/135 scanner IDs are traced, leaving 35 (32 filesystem, 3 process)."
+    },
+    {
+     "command": "Pre-checkpoint P4 direct-site/source-hash and canonical-ledger validation",
+     "result": "PASS: report/progress parse; 78/78 producer hashes; 63/135 direct IDs traced, 72 remain (63 filesystem, 9 process); two unindexed copyfile writes documented; canonical ledger valid with 36,521 events before checkpoint 036522."
+    },
+    {
+     "command": "Pre-checkpoint P4 source-count and census-completeness validation",
+     "result": "PASS: report/progress parse; 78/78 producer hashes; 53/135 scanner IDs traced; 82 remain (71 filesystem, 11 process); two unindexed copyfile writes confirmed; ledger valid with 36,520 events before checkpoint 036521."
+    }
+   ]
+  },
+  {
+   "blockers": [
+    "Governed role and ownership decision per skill script."
+   ],
+   "evidence": "docs/repair/evidence/px-os-1067-px-skills-owner-audit.json",
+   "priority": 5,
+   "result": {
+    "destructive_producers": 0,
+    "population": 11,
+    "reconciles_with_census_family": true,
+    "registered": 0,
+    "role_categories": "investigation labels only; none approved"
+   },
+   "starting_state": "11 unresolved .px/skills producers; roles unverified.",
+   "status": "EVIDENCE_COMPLETE_DISPOSITIONS_UNRESOLVED",
+   "task_id": "priority-5-px-skills-owner-architecture"
+  },
+  {
+   "changes": [
+    "runtime/effect_surface.py: recognize shutil.copyfile/copyfileobj and Path.copy; exclude docs/repair/evidence tooling from the producer census.",
+    "runtime/mutating_producer_registry.py: share one effect scan across discover/build/validate instead of rescanning per delegated producer.",
+    "runtime/producer_census.py: pass the shared scan into build_registry.",
+    "tests/test_effect_surface_copy_recognizers.py: 7 focused regression tests."
+   ],
+   "priority": 6,
+   "result": {
+    "census_elapsed_seconds": "307+ (unmeasured) -> 57",
+    "effect_records": "1697 -> 1700 (two recovered copyfile writes + one Path.copy site)",
+    "figure_changes": "none: 377 any-effect / 373 mutating / 216 resolved / 157 unresolved / 310 findings",
+    "gate_valid": false
+   },
+   "status": "COMPLETED",
+   "task_id": "priority-6-tooling-hardening"
+  }
+ ],
+ "updated_at_utc": "2026-11-03T10:02:50Z",
+ "verification": {
+  "b7_matrix": {
+   "approved_owners": 0,
+   "reconciles_with_live_census": true,
+   "resource_groups": 32,
+   "runtime_producers": 68
+  },
+  "census_artifact": {
+   "path": "docs/repair/evidence/px-os-1067-census-2026-11-03.json",
+   "sha256": "4ae797722f76a5b839709ebb53833bad1395ce29336d0dc2fa437fb612d4ff3d"
+  },
+  "focused_suite": {
+   "command": ".venv-repair\\Scripts\\python.exe -m pytest -q tests\\test_effect_surface.py tests\\test_effect_surface_copy_recognizers.py tests\\test_output_roots.py tests\\test_mixed_destination_effects.py tests\\test_producer_census.py tests\\test_runtime_state_ownership.py",
+   "elapsed_seconds": 207.85,
+   "failed": 1,
+   "failed_tests": [
+    "tests/test_effect_surface.py::test_every_executable_effect_surface_is_owned_and_bounded"
+   ],
+   "failure_meaning": "Repository-wide green-gate assertion. Red because the inherited worktree carries 310 gate findings and 157 unresolved producers. Not weakened.",
+   "passed": 88
+  },
+  "pre_existing_inherited_failures": [
+   "tests/test_effect_pure_string_discovery.py",
+   "tests/test_effect_stream_discovery.py"
+  ]
+ }
+}
