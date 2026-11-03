@@ -74,6 +74,9 @@ EXEMPTION_REASONS = (
     # The custodian is never one of the resource's own producers, and registration confers
     # no write authority — each mutation still needs a per-run governed grant.
     "owned_durable_resource",
+    # P6: every destination this producer writes lies strictly below an authorized output
+    # root, under a per-class grant. One destination never authorizes another.
+    "authorized_output_root",
 )
 
 NATIVE_CONTROL_CUSTODY_OWNERS = frozenset(
@@ -374,6 +377,14 @@ def default_classification(
     owned = _registry_owned_verdict(root, relative)
     if owned is not None:
         return owned
+    # Output-root grants: a producer resolves only when every destination it writes is
+    # authorized. One destination never authorizes another, and this path is never used for
+    # process or network producers.
+    from .output_root_classification import output_root_verdict
+
+    granted = output_root_verdict(root, relative, effects)
+    if granted is not None:
+        return granted
     # B1 delegated_publication is evaluated from the caller's own source, before the pinned
     # table, because the table's owner fingerprint had drifted for six entries (two different
     # hashes for one owner module), which made those entries unresolvable regardless of the
