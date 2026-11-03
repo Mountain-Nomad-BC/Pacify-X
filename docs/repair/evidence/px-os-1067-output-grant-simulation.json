@@ -1,0 +1,17 @@
+{
+ "conclusion": "A `reports/` grant would resolve 0 of 78 unresolved scripts producers under the all-destinations rule. The rest write somewhere else or nowhere statically visible, so granting `reports/` would leave them unresolved regardless.",
+ "evaluated": 78,
+ "gap_id": "PX-OS-1067",
+ "hypothesis": {
+  "retention": "run-scoped",
+  "root": "reports"
+ },
+ "not_resolved": {
+  "no_static_destination": 1,
+  "ungranted_destination": 77
+ },
+ "producers": [],
+ "schema_version": "px.output-grant-simulation/1.0",
+ "would_resolve": 0,
+ "writes_registry": false
+}
