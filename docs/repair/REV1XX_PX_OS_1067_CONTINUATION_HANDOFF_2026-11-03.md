@@ -12,11 +12,13 @@
 | Effect records | **1,700** |
 | Producers with any effect | 377 |
 | Mutating producers | 373 |
-| Resolved | 216 |
-| Unresolved | **157** |
+| Resolved | **234** |
+| Unresolved | **139** |
 | Custody-gate findings | **310** |
 | Gate valid | **False** |
-| Unresolved families | runtime 68, scripts 78, `.px` 11 |
+| Registered custodian owners | **15** |
+| Accepted-without-owner resources | 14 |
+| Pending owner decisions | 3 |
 
 Definitive legalization was **not established**. Release certification is **not authorized** and not implied.
 
@@ -25,7 +27,8 @@ Reproduce: `.venv-repair\Scripts\python.exe docs\repair\evidence\px-os-1067-run-
 
 ## 2. What was completed this pass
 
-- **Priority 4 (scripts) — tracing complete.** 135/135 scanner-emitted references reviewed. All 78 dispositions remain unresolved.
+- **B7 ownership unblocked and wired (the main result).** The 32 owner decisions were accepted; `validate_approved_resource_record` forbids a writer from owning its own resource group, 15 resources gained a registered custodian taken from existing readers, and `_registry_owned_verdict` feeds that into classification. **Unresolved: 157 → 139; resolved: 216 → 234.**
+- **Priority 4 (scripts) — tracing complete.** 135/135 scanner-emitted references reviewed. Coverage now split by the audit's reviewed class: **40 write durable state under the B7 model, 36 need output-root grants, 2 remain helper-mediated.**
 - **Priority 5 `.px/skills` — evidence complete.** 11/11 accounted for; none registered; none destructive.
 - **Priority 6 — tooling hardened.**
   - Census was quadratic (rescanned the whole repo per delegated producer); 307 s+ → **57 s**, identical figures.
@@ -49,11 +52,12 @@ Pre-existing inherited failures, untouched: `tests/test_effect_pure_string_disco
 
 | Item | Blocked on | Engineering left |
 |---|---|---|
-| B7 — 32 resource owners | **Governance approval** per resource | None. Decision register is ready to accept approvals. |
-| All 157 unresolved producers | Per-write-class authority (grants or approved owners) | None until authority exists. Each row's `missing_authority` names the need. |
-| 103 inert fingerprints | Original sources (83 absent from history) **or** an accountable independent re-review | None lawful. Rewriting would fabricate review. |
-| Output-root grants | Audited destination guarantee per producer class | Would unblock caller-directed script outputs. |
-| Release certification | The above | Not started, and must not start on custody counts alone. |
+| 139 unresolved producers | **36** need output-root grants; **2** helper-mediated; **101** in `runtime/`+`.px` with no custodian outside their writer group | None until each has a lawful owner or grant |
+| 14 accepted-but-unregistered resources | Several candidate readers each — choosing one is an ownership decision | None. Rows carry their reason. |
+| 3 pending owner decisions | No candidate exists in the matrix | Needs a named component, not a guess |
+| 103 inert fingerprints | Original sources (83 absent from all reachable history) **or** an accountable re-review | None lawful |
+| Registry publication | The 139 must reach zero | `publish_registry` already refuses correctly |
+| Release certification | All of the above | Not started |
 
 ## 5. Rules that must not be relaxed
 
@@ -66,9 +70,8 @@ Pre-existing inherited failures, untouched: `tests/test_effect_pure_string_disco
 
 ## 6. Next executable step
 
-Two independent paths, neither blocked by the other:
-
-1. **Governance:** accept or reject decision rows in `px-os-1067-b7-owner-decision-register.json`. Each approval unlocks real registrations and makes the custody gate meaningful.
-2. **Engineering:** audit destination guarantees for the caller-directed output producers identified in the master log (atomic temp + `os.replace`, owned-ephemeral cleanup). A proven grant for one write class would resolve producers without touching B7.
+1. **Ownership:** the 14 accepted-but-unregistered resources each need one chosen reconciling reader; the 3 pending rows need a component that does not yet exist in the matrix.
+2. **Grants:** the 36 caller-directed scripts producers need a destination guarantee. The audit shows only `build_release_successor_configs.py` currently confines its output, and it is not atomic — so the prerequisite is making those producers confine and publish atomically, then granting per class.
+3. **Wiring gap to close first:** `runtime/output_roots.py` is still not consulted by classification. Granting before that wiring changes nothing measurable.
 
 Every step must append to the operational gap ledger and `REV1XX_PX_OS_1067_MASTER_EXECUTION_LOG.md`, and re-run `px-os-1067-validate-registries.py`.
