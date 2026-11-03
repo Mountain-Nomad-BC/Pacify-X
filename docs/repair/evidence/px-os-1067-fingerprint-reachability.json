@@ -1,0 +1,851 @@
+{
+ "approvals_created": 0,
+ "classes": {
+  "head_exact": 5,
+  "not_found_within_bound": 80,
+  "orphan_blob_exact": 2,
+  "reachable_history_exact": 16
+ },
+ "fingerprints": 103,
+ "fingerprints_changed": 0,
+ "gap_id": "PX-OS-1067",
+ "measurement": "git object/commit metadata only; no worktree change",
+ "newly_recovered_exact_revisions": 0,
+ "priority": 3,
+ "recommendation": "The reviewed bytes for these paths are not in reachable history, and no reviewer approval exists for their current content. Rewriting a fingerprint would assert a review that did not happen, so the only lawful routes are (a) the external original review artifact, or (b) an accountable independent re-review of the current file. Both are governance acts, not engineering tasks.",
+ "repository_state": {
+  "grafts_present": false,
+  "reachable_commits": "309",
+  "shallow": false,
+  "shallow_marker_present": false
+ },
+ "rows": [
+  {
+   "disposition": "BLOCKED_ORIGINAL_SOURCE_UNAVAILABLE",
+   "exact_reviewed_revision_found_now": null,
+   "path": "px/py_cert/runtime/release_campaign.py",
+   "prior_recovery": "not_found_within_bound",
+   "reachable_revisions": 5,
+   "reviewed_sha256": "d81b28d9eddea59900aee15aa5f32fb305314287084b03f1c88a4233aa9bb62f"
+  },
+  {
+   "disposition": "BLOCKED_ORIGINAL_SOURCE_UNAVAILABLE",
+   "exact_reviewed_revision_found_now": null,
+   "path": "px/py_cert/scripts/build_release_successor_configs.py",
+   "prior_recovery": "not_found_within_bound",
+   "reachable_revisions": 3,
+   "reviewed_sha256": "b2c9d0bf617ff3a76836d28bdea10a6b19bbbb65541ce2c0f759b4a77f565a7b"
+  },
+  {
+   "disposition": "BLOCKED_ORIGINAL_SOURCE_UNAVAILABLE",
+   "exact_reviewed_revision_found_now": null,
+   "path": "px/py_cert/scripts/pre_candidate_hygiene.py",
+   "prior_recovery": "not_found_within_bound",
+   "reachable_revisions": 2,
+   "reviewed_sha256": "0cc312874c40e6c26265b68e838db6106a9d11e18f04239dd931ab388b19e5a3"
+  },
+  {
+   "disposition": "BLOCKED_ORIGINAL_SOURCE_UNAVAILABLE",
+   "exact_reviewed_revision_found_now": null,
+   "path": "px/py_cert/scripts/reconcile_cohesion_cards.py",
+   "prior_recovery": "not_found_within_bound",
+   "reachable_revisions": 5,
+   "reviewed_sha256": "16ca8b9c4900a948c4df26b749d9733612fd0a934ebdb4d8b06775f5d397bd3c"
+  },
+  {
+   "disposition": "BLOCKED_ORIGINAL_SOURCE_UNAVAILABLE",
+   "exact_reviewed_revision_found_now": null,
+   "path": "px/py_cert/scripts/reconcile_unverified_operational_controls.py",
+   "prior_recovery": "not_found_within_bound",
+   "reachable_revisions": 3,
+   "reviewed_sha256": "de44f77a0d4b5063709590f6e1c401e698ba13a55420df0b845c24b1ed7e6069"
+  },
+  {
+   "disposition": "BLOCKED_ORIGINAL_SOURCE_UNAVAILABLE",
+   "exact_reviewed_revision_found_now": null,
+   "path": "px/py_cert/scripts/run_installed_operational_owner.py",
+   "prior_recovery": "not_found_within_bound",
+   "reachable_revisions": 4,
+   "reviewed_sha256": "fda2d674c0a23a1d01720dfffff10b63548f83893163b9cc300d3e821d016bb5"
+  },
+  {
+   "disposition": "BLOCKED_ORIGINAL_SOURCE_UNAVAILABLE",
+   "exact_reviewed_revision_found_now": null,
+   "path": "px/py_cert/scripts/run_release_candidate.py",
+   "prior_recovery": "not_found_within_bound",
+   "reachable_revisions": 4,
+   "reviewed_sha256": "7259d5264575a084d63482c70a3eb4bed1d51849571c0e85859dd7ec431a4f65"
+  },
+  {
+   "disposition": "BLOCKED_ORIGINAL_SOURCE_UNAVAILABLE",
+   "exact_reviewed_revision_found_now": null,
+   "path": "px/py_cert/scripts/run_release_candidate_dry.py",
+   "prior_recovery": "not_found_within_bound",
+   "reachable_revisions": 3,
+   "reviewed_sha256": "b660f87fc688a075fbc90a3dc6196abc68ce4c5e802172f9ef26c6d7cbfe0e28"
+  },
+  {
+   "disposition": "BLOCKED_ORIGINAL_SOURCE_UNAVAILABLE",
+   "exact_reviewed_revision_found_now": null,
+   "path": "px/py_cert/scripts/run_release_stage_owner.py",
+   "prior_recovery": "not_found_within_bound",
+   "reachable_revisions": 6,
+   "reviewed_sha256": "dd98d9a37930e4b13e2cbce4f7edab2961751ebc44f46a03cb76655bf632b46e"
+  },
+  {
+   "disposition": "BLOCKED_ORIGINAL_SOURCE_UNAVAILABLE",
+   "exact_reviewed_revision_found_now": null,
+   "path": "px/py_cert/scripts/validate_certification_pipeline.py",
+   "prior_recovery": "not_found_within_bound",
+   "reachable_revisions": 3,
+   "reviewed_sha256": "20bebb95bf8a99b41edde396c4a9898b773131ee9d7c7fe8dc074ac91868408b"
+  },
+  {
+   "disposition": "BLOCKED_ORIGINAL_SOURCE_UNAVAILABLE",
+   "exact_reviewed_revision_found_now": null,
+   "path": "runtime/agent_fleet_controls.py",
+   "prior_recovery": "not_found_within_bound",
+   "reachable_revisions": 5,
+   "reviewed_sha256": "86f2a11bbd34aba738d2809d7f6915b21175cdb625f05eeabe54fe2dc64269ed"
+  },
+  {
+   "disposition": "BLOCKED_ORIGINAL_SOURCE_UNAVAILABLE",
+   "exact_reviewed_revision_found_now": null,
+   "path": "runtime/agent_runtime.py",
+   "prior_recovery": "not_found_within_bound",
+   "reachable_revisions": 12,
+   "reviewed_sha256": "5130a1120e7026dea870561b316095945502349b6801a65a244a383f7162ef1d"
+  },
+  {
+   "disposition": "BLOCKED_ORIGINAL_SOURCE_UNAVAILABLE",
+   "exact_reviewed_revision_found_now": null,
+   "path": "runtime/airllm_runtime.py",
+   "prior_recovery": "not_found_within_bound",
+   "reachable_revisions": 4,
+   "reviewed_sha256": "5e79bdda1d44cb65e5f3796af734bc7802fe5dadef060ffb185264dff4a68512"
+  },
+  {
+   "disposition": "BLOCKED_ORIGINAL_SOURCE_UNAVAILABLE",
+   "exact_reviewed_revision_found_now": null,
+   "path": "runtime/assurance_controls.py",
+   "prior_recovery": "not_found_within_bound",
+   "reachable_revisions": 4,
+   "reviewed_sha256": "c4728c424298536bc5cc5f234994b3a9fcdb6a1b58d21e74d40adef32e676f93"
+  },
+  {
+   "disposition": "REVIEW_REQUIRED_SOURCE_DELTA",
+   "exact_reviewed_revision_found_now": "b6d09e69eb65fb2ba3eb71ed527abd85be2619d0",
+   "path": "runtime/authoritative_json.py",
+   "prior_recovery": "reachable_history_exact",
+   "reachable_revisions": 5,
+   "reviewed_sha256": "3a8f494bce5960dc8aae305421fcd067152567c08f246a90b8c1ec6dafba0aa6"
+  },
+  {
+   "disposition": "REVIEW_REQUIRED_LINE_ENDING_ONLY",
+   "exact_reviewed_revision_found_now": "9583fcd999cc117f3c72bf4e6b98e3c67423bccf",
+   "path": "runtime/capability_routing.py",
+   "prior_recovery": "head_exact",
+   "reachable_revisions": 6,
+   "reviewed_sha256": "f32d12baa354be924e275f6d4c0ab8c49be4ecc45cf0fcd51a02be7ee43a8514"
+  },
+  {
+   "disposition": "BLOCKED_ORIGINAL_SOURCE_UNAVAILABLE",
+   "exact_reviewed_revision_found_now": null,
+   "path": "runtime/cli.py",
+   "prior_recovery": "not_found_within_bound",
+   "reachable_revisions": 37,
+   "reviewed_sha256": "0a3ef8a844a65ade2c6ac1366bcf60c6f3e3c513a881a883f9f80c65af890644"
+  },
+  {
+   "disposition": "BLOCKED_ORIGINAL_SOURCE_UNAVAILABLE",
+   "exact_reviewed_revision_found_now": null,
+   "path": "runtime/completion_controls.py",
+   "prior_recovery": "not_found_within_bound",
+   "reachable_revisions": 6,
+   "reviewed_sha256": "1a8903496dc0035aa0ea5dc2ba04a088e66b68f7151f08738f94792b1b746a52"
+  },
+  {
+   "disposition": "BLOCKED_ORIGINAL_SOURCE_UNAVAILABLE",
+   "exact_reviewed_revision_found_now": null,
+   "path": "runtime/contracts.py",
+   "prior_recovery": "not_found_within_bound",
+   "reachable_revisions": 17,
+   "reviewed_sha256": "39685372b7c611489fa64212296cc622a796cd58bc87f77e66262caf9d4f8d92"
+  },
+  {
+   "disposition": "REVIEW_REQUIRED_LINE_ENDING_ONLY",
+   "exact_reviewed_revision_found_now": "b6d09e69eb65fb2ba3eb71ed527abd85be2619d0",
+   "path": "runtime/coverage_assurance.py",
+   "prior_recovery": "head_exact",
+   "reachable_revisions": 5,
+   "reviewed_sha256": "0ea9d2af2b818beade6d1f4018d304fdd41bcefb1dada9941e095523163c9dee"
+  },
+  {
+   "disposition": "BLOCKED_ORIGINAL_SOURCE_UNAVAILABLE",
+   "exact_reviewed_revision_found_now": null,
+   "path": "runtime/data_inventory.py",
+   "prior_recovery": "not_found_within_bound",
+   "reachable_revisions": 1,
+   "reviewed_sha256": "824312403c8ab14de21cd343e216b7040ae3f9d03fc4144dc87da3770d3e9e4d"
+  },
+  {
+   "disposition": "BLOCKED_ORIGINAL_SOURCE_UNAVAILABLE",
+   "exact_reviewed_revision_found_now": null,
+   "path": "runtime/data_subject_records.py",
+   "prior_recovery": "not_found_within_bound",
+   "reachable_revisions": 1,
+   "reviewed_sha256": "57f6e882e37604f5bb9a5a22fa9eac10abab42c91475cc30b81e72b6c29eb5da"
+  },
+  {
+   "disposition": "BLOCKED_ORIGINAL_SOURCE_UNAVAILABLE",
+   "exact_reviewed_revision_found_now": null,
+   "path": "runtime/effect_intent.py",
+   "prior_recovery": "not_found_within_bound",
+   "reachable_revisions": 3,
+   "reviewed_sha256": "96e9a39718cae6993fff1e93f2c17219ab6dd6db393cd5d65f5ce4ad30df064c"
+  },
+  {
+   "disposition": "REVIEW_REQUIRED_SOURCE_DELTA",
+   "exact_reviewed_revision_found_now": "f7e8fd940215a1f61b72e47d2ddcadf933d2e10b",
+   "path": "runtime/engineering_os_paths.py",
+   "prior_recovery": "reachable_history_exact",
+   "reachable_revisions": 3,
+   "reviewed_sha256": "7d50d633fa7c4fe34a59e06bea191e02674b469cb22b8cbef785748dba6d803c"
+  },
+  {
+   "disposition": "REVIEW_REQUIRED_SOURCE_DELTA",
+   "exact_reviewed_revision_found_now": "b6d09e69eb65fb2ba3eb71ed527abd85be2619d0",
+   "path": "runtime/evidence_custody.py",
+   "prior_recovery": "reachable_history_exact",
+   "reachable_revisions": 4,
+   "reviewed_sha256": "e960f5e7ee3bfa448c9af666174dae83fa24a11e4cdbcf518db77713149d93d1"
+  },
+  {
+   "disposition": "BLOCKED_ORIGINAL_SOURCE_UNAVAILABLE",
+   "exact_reviewed_revision_found_now": null,
+   "path": "runtime/execution_placement.py",
+   "prior_recovery": "not_found_within_bound",
+   "reachable_revisions": 5,
+   "reviewed_sha256": "90a610223c34bb3e5dbf91926c5a65d05b2669c7edcd0320c0ec1c8bb1990ea9"
+  },
+  {
+   "disposition": "REVIEW_REQUIRED_SOURCE_DELTA",
+   "exact_reviewed_revision_found_now": "b6d09e69eb65fb2ba3eb71ed527abd85be2619d0",
+   "path": "runtime/file_lock.py",
+   "prior_recovery": "reachable_history_exact",
+   "reachable_revisions": 8,
+   "reviewed_sha256": "035cf057a34b8a669f587f9ab805c21cf257a20865e494c78d7005a6d4602b95"
+  },
+  {
+   "disposition": "BLOCKED_ORIGINAL_SOURCE_UNAVAILABLE",
+   "exact_reviewed_revision_found_now": null,
+   "path": "runtime/gremlin/admin.py",
+   "prior_recovery": "not_found_within_bound",
+   "reachable_revisions": 2,
+   "reviewed_sha256": "5fdbb0fb70ea0426f49dd7220dd1b51632b80c0feb4bb009e2d1402678ee56cd"
+  },
+  {
+   "disposition": "BLOCKED_ORIGINAL_SOURCE_UNAVAILABLE",
+   "exact_reviewed_revision_found_now": null,
+   "path": "runtime/gremlin/containment.py",
+   "prior_recovery": "not_found_within_bound",
+   "reachable_revisions": 2,
+   "reviewed_sha256": "ebeb73be3cf467c46200aaab886b8212d486929dd82e4909223ac90db863063f"
+  },
+  {
+   "disposition": "BLOCKED_ORIGINAL_SOURCE_UNAVAILABLE",
+   "exact_reviewed_revision_found_now": null,
+   "path": "runtime/isolated_sandbox.py",
+   "prior_recovery": "not_found_within_bound",
+   "reachable_revisions": 2,
+   "reviewed_sha256": "b3136a2403b7868d4d1d1c37c9bae0ccf68cc3ac7e4602e1d0c221db5d42917f"
+  },
+  {
+   "disposition": "BLOCKED_ORIGINAL_SOURCE_UNAVAILABLE",
+   "exact_reviewed_revision_found_now": null,
+   "path": "runtime/knowledge_foundry.py",
+   "prior_recovery": "not_found_within_bound",
+   "reachable_revisions": 8,
+   "reviewed_sha256": "0fdb414e1121c0cc1c4e088ceeee9f1eda3ffce11b2bd0f0d912c7f100303fc4"
+  },
+  {
+   "disposition": "REVIEW_REQUIRED_LINE_ENDING_ONLY",
+   "exact_reviewed_revision_found_now": "f7c235d1ea37c8f0db879c0f06661aebfe988a84",
+   "path": "runtime/librarian_answer.py",
+   "prior_recovery": "head_exact",
+   "reachable_revisions": 4,
+   "reviewed_sha256": "5f1a025a10065de05625c742ef12a17820ba76afb8681909b138a410c0fcc03e"
+  },
+  {
+   "disposition": "BLOCKED_ORIGINAL_SOURCE_UNAVAILABLE",
+   "exact_reviewed_revision_found_now": null,
+   "path": "runtime/llama_cpp_capabilities.py",
+   "prior_recovery": "not_found_within_bound",
+   "reachable_revisions": 4,
+   "reviewed_sha256": "70397bf94026062139ad35183bc2d5a70146c2e4a4c66658fc7ad985a28da424"
+  },
+  {
+   "disposition": "BLOCKED_ORIGINAL_SOURCE_UNAVAILABLE",
+   "exact_reviewed_revision_found_now": null,
+   "path": "runtime/member_execution.py",
+   "prior_recovery": "not_found_within_bound",
+   "reachable_revisions": 2,
+   "reviewed_sha256": "31276f2af267286c1d47a80ec88a413e537cf12c08efd5bc2a389b441e0de6f4"
+  },
+  {
+   "disposition": "BLOCKED_ORIGINAL_SOURCE_UNAVAILABLE",
+   "exact_reviewed_revision_found_now": null,
+   "path": "runtime/memory_intelligence.py",
+   "prior_recovery": "not_found_within_bound",
+   "reachable_revisions": 10,
+   "reviewed_sha256": "923d9566bb074140871a8b6f768fa4bc12cff01073c2d3eb1e7c5c014e717834"
+  },
+  {
+   "disposition": "REVIEW_REQUIRED_SOURCE_DELTA",
+   "exact_reviewed_revision_found_now": "b6d09e69eb65fb2ba3eb71ed527abd85be2619d0",
+   "path": "runtime/memory_vault.py",
+   "prior_recovery": "reachable_history_exact",
+   "reachable_revisions": 8,
+   "reviewed_sha256": "0b915f59fb5960bef93b1b2630699287f060115151f66aa48cbb369aed33d239"
+  },
+  {
+   "disposition": "BLOCKED_ORIGINAL_SOURCE_UNAVAILABLE",
+   "exact_reviewed_revision_found_now": null,
+   "path": "runtime/model_branch_artifacts.py",
+   "prior_recovery": "not_found_within_bound",
+   "reachable_revisions": 2,
+   "reviewed_sha256": "7c9577b35454944d4260b800ff6a2884891c46d4710f5ff4130fb655bf194619"
+  },
+  {
+   "disposition": "REVIEW_REQUIRED_LINE_ENDING_ONLY",
+   "exact_reviewed_revision_found_now": "9583fcd999cc117f3c72bf4e6b98e3c67423bccf",
+   "path": "runtime/model_branch_contracts.py",
+   "prior_recovery": "head_exact",
+   "reachable_revisions": 2,
+   "reviewed_sha256": "613c5cbff9cc6a4e4b7cb55017732a092385772dc359e64560f88c8552c21460"
+  },
+  {
+   "disposition": "BLOCKED_ORIGINAL_SOURCE_UNAVAILABLE",
+   "exact_reviewed_revision_found_now": null,
+   "path": "runtime/mutating_producer_registry.py",
+   "prior_recovery": "not_found_within_bound",
+   "reachable_revisions": 3,
+   "reviewed_sha256": "2a1382dcdac258c09f677e8e40cabdb923f830ad97d9291a678a149563a8b782"
+  },
+  {
+   "disposition": "REVIEW_REQUIRED_SOURCE_DELTA",
+   "exact_reviewed_revision_found_now": "9e4f7d2b2b85b46c3db666d837f0a959ad3b237b",
+   "path": "runtime/mutation_queue.py",
+   "prior_recovery": "reachable_history_exact",
+   "reachable_revisions": 3,
+   "reviewed_sha256": "8f5b04c7c6d39206ea4c09bd1088b36cf14e054f419396657d022bff74a0eefb"
+  },
+  {
+   "disposition": "REVIEW_REQUIRED_SOURCE_DELTA",
+   "exact_reviewed_revision_found_now": "b6d09e69eb65fb2ba3eb71ed527abd85be2619d0",
+   "path": "runtime/operational_event_bus.py",
+   "prior_recovery": "reachable_history_exact",
+   "reachable_revisions": 6,
+   "reviewed_sha256": "ab8c3574af97c6d892e53ab5bf14c97269ec894065323675336d63281f7c1b35"
+  },
+  {
+   "disposition": "REVIEW_REQUIRED_SOURCE_DELTA",
+   "exact_reviewed_revision_found_now": null,
+   "path": "runtime/operational_gap_ledger.py",
+   "prior_recovery": "reachable_history_exact",
+   "reachable_revisions": 13,
+   "reviewed_sha256": "61b4dd084307a9de4acd68ec794510835259d2bf55a8b1741db64ddaab35540e"
+  },
+  {
+   "disposition": "BLOCKED_ORIGINAL_SOURCE_UNAVAILABLE",
+   "exact_reviewed_revision_found_now": null,
+   "path": "runtime/personal_record_store.py",
+   "prior_recovery": "not_found_within_bound",
+   "reachable_revisions": 1,
+   "reviewed_sha256": "acc2963eb51a37eec1a0c58283569379597f6cd3572fad927a39c6f25b478f12"
+  },
+  {
+   "disposition": "BLOCKED_ORIGINAL_SOURCE_UNAVAILABLE",
+   "exact_reviewed_revision_found_now": null,
+   "path": "runtime/plan_registry.py",
+   "prior_recovery": "not_found_within_bound",
+   "reachable_revisions": 3,
+   "reviewed_sha256": "ee7e27896dcb6f4fb03f315e1d6643bfedb523566da481001d597199ecf5a538"
+  },
+  {
+   "disposition": "BLOCKED_ORIGINAL_SOURCE_UNAVAILABLE",
+   "exact_reviewed_revision_found_now": null,
+   "path": "runtime/process_supervisor.py",
+   "prior_recovery": "not_found_within_bound",
+   "reachable_revisions": 15,
+   "reviewed_sha256": "990b30784fc2ae3a8deb0c09f0524c8ec426ad78b69da699b0fda89b378cf08f"
+  },
+  {
+   "disposition": "BLOCKED_ORIGINAL_SOURCE_UNAVAILABLE",
+   "exact_reviewed_revision_found_now": null,
+   "path": "runtime/project_control_plane.py",
+   "prior_recovery": "not_found_within_bound",
+   "reachable_revisions": 7,
+   "reviewed_sha256": "667b1e3eb84e4b9601985b3b662c6d4d126f1bda6934dc23140b6b7e44fd5cfd"
+  },
+  {
+   "disposition": "BLOCKED_ORIGINAL_SOURCE_UNAVAILABLE",
+   "exact_reviewed_revision_found_now": null,
+   "path": "runtime/project_intelligence.py",
+   "prior_recovery": "not_found_within_bound",
+   "reachable_revisions": 8,
+   "reviewed_sha256": "d7e3856f73234006b5c247a57f745ff5919a16c03ade9ae09a090f2e9471c43f"
+  },
+  {
+   "disposition": "BLOCKED_ORIGINAL_SOURCE_UNAVAILABLE",
+   "exact_reviewed_revision_found_now": null,
+   "path": "runtime/provider_gateway.py",
+   "prior_recovery": "not_found_within_bound",
+   "reachable_revisions": 9,
+   "reviewed_sha256": "d03efe779ccb45fbfec73f8d74e198f52d9d7aca532b1a086eea8d1e0c854d25"
+  },
+  {
+   "disposition": "REVIEW_REQUIRED_SOURCE_DELTA",
+   "exact_reviewed_revision_found_now": "b6d09e69eb65fb2ba3eb71ed527abd85be2619d0",
+   "path": "runtime/recovery.py",
+   "prior_recovery": "reachable_history_exact",
+   "reachable_revisions": 6,
+   "reviewed_sha256": "665b1f2cd8925f7b86e94aa12c169b7f1022dc5c487261539b0d23bb89ca2013"
+  },
+  {
+   "disposition": "BLOCKED_ORIGINAL_SOURCE_UNAVAILABLE",
+   "exact_reviewed_revision_found_now": null,
+   "path": "runtime/release_artifacts.py",
+   "prior_recovery": "not_found_within_bound",
+   "reachable_revisions": 15,
+   "reviewed_sha256": "1923f0a0a01d9463365e638ca3f2b745f6364a7d112f8f4efe308facaefa7112"
+  },
+  {
+   "disposition": "BLOCKED_ORIGINAL_SOURCE_UNAVAILABLE",
+   "exact_reviewed_revision_found_now": null,
+   "path": "runtime/release_campaign.py",
+   "prior_recovery": "not_found_within_bound",
+   "reachable_revisions": 12,
+   "reviewed_sha256": "a8bc49d64edb8477a32cbe629611cac73a270986ea66a32928b8ca84e1f143e4"
+  },
+  {
+   "disposition": "BLOCKED_ORIGINAL_SOURCE_UNAVAILABLE",
+   "exact_reviewed_revision_found_now": null,
+   "path": "runtime/release_certification.py",
+   "prior_recovery": "not_found_within_bound",
+   "reachable_revisions": 22,
+   "reviewed_sha256": "0f72d1f220f1031c7235a97750df27c9d8727f3b5df0ede76319a09321fc0367"
+  },
+  {
+   "disposition": "BLOCKED_ORIGINAL_SOURCE_UNAVAILABLE",
+   "exact_reviewed_revision_found_now": null,
+   "path": "runtime/release_preflight.py",
+   "prior_recovery": "not_found_within_bound",
+   "reachable_revisions": 11,
+   "reviewed_sha256": "939639231372694b03622306b53249bb3cfc297a8b2a4569aaef2161ab133de0"
+  },
+  {
+   "disposition": "BLOCKED_ORIGINAL_SOURCE_UNAVAILABLE",
+   "exact_reviewed_revision_found_now": null,
+   "path": "runtime/release_repository_context.py",
+   "prior_recovery": "not_found_within_bound",
+   "reachable_revisions": 3,
+   "reviewed_sha256": "a55fd2adef818aeaaa7289307f79a6e8886d46b9e04dcdc82466afbd2d0b1c27"
+  },
+  {
+   "disposition": "BLOCKED_ORIGINAL_SOURCE_UNAVAILABLE",
+   "exact_reviewed_revision_found_now": null,
+   "path": "runtime/remote_provider_profiles.py",
+   "prior_recovery": "not_found_within_bound",
+   "reachable_revisions": 2,
+   "reviewed_sha256": "0dc837f3b0d21d0ee65b942444e48cf6fa7c92e4d9aaabbb9b7225cfb0086b3b"
+  },
+  {
+   "disposition": "BLOCKED_ORIGINAL_SOURCE_UNAVAILABLE",
+   "exact_reviewed_revision_found_now": null,
+   "path": "runtime/remote_service_protocols.py",
+   "prior_recovery": "not_found_within_bound",
+   "reachable_revisions": 2,
+   "reviewed_sha256": "2efc606b6a9236bf246450494d441595712a685922e4d176d444af9babe51b78"
+  },
+  {
+   "disposition": "BLOCKED_ORIGINAL_SOURCE_UNAVAILABLE",
+   "exact_reviewed_revision_found_now": null,
+   "path": "runtime/resource_lifecycle.py",
+   "prior_recovery": "not_found_within_bound",
+   "reachable_revisions": 20,
+   "reviewed_sha256": "deed450179e7fabe02caa0ee60d1474b399d876eceb119e3d83305a1f30fed58"
+  },
+  {
+   "disposition": "BLOCKED_ORIGINAL_SOURCE_UNAVAILABLE",
+   "exact_reviewed_revision_found_now": null,
+   "path": "runtime/retrieval_generation.py",
+   "prior_recovery": "not_found_within_bound",
+   "reachable_revisions": 4,
+   "reviewed_sha256": "979b0c59ad85a0b88d68e7ce51efe329886e5921a4ef2897a6f50d47069cfb84"
+  },
+  {
+   "disposition": "REVIEW_REQUIRED_SOURCE_DELTA",
+   "exact_reviewed_revision_found_now": "b6d09e69eb65fb2ba3eb71ed527abd85be2619d0",
+   "path": "runtime/scheduler.py",
+   "prior_recovery": "reachable_history_exact",
+   "reachable_revisions": 5,
+   "reviewed_sha256": "46c679c876d0c56af4b5fb3fe078ef1b875e23cdf652287b8c17d4f4565d6091"
+  },
+  {
+   "disposition": "BLOCKED_ORIGINAL_SOURCE_UNAVAILABLE",
+   "exact_reviewed_revision_found_now": null,
+   "path": "runtime/scope_lease.py",
+   "prior_recovery": "not_found_within_bound",
+   "reachable_revisions": 3,
+   "reviewed_sha256": "8deaad745a5121f5ae06a33da35fd1b34d94ca614e3a8fc588ea82f4cd27d128"
+  },
+  {
+   "disposition": "BLOCKED_ORIGINAL_SOURCE_UNAVAILABLE",
+   "exact_reviewed_revision_found_now": null,
+   "path": "runtime/semantic_authored_sources.py",
+   "prior_recovery": "not_found_within_bound",
+   "reachable_revisions": 1,
+   "reviewed_sha256": "22635200cb2a55f0b9d934b26534b1e231ea4baa4609b399da721358e5e0a58c"
+  },
+  {
+   "disposition": "REVIEW_REQUIRED_SOURCE_DELTA",
+   "exact_reviewed_revision_found_now": "9e4f7d2b2b85b46c3db666d837f0a959ad3b237b",
+   "path": "runtime/semantic_entity.py",
+   "prior_recovery": "reachable_history_exact",
+   "reachable_revisions": 4,
+   "reviewed_sha256": "8ecd0e19dd469bf584cccf93b1ff8a01e9b3498c2dc4ff1a89b6d56b80bf19a7"
+  },
+  {
+   "disposition": "BLOCKED_ORIGINAL_SOURCE_UNAVAILABLE",
+   "exact_reviewed_revision_found_now": null,
+   "path": "runtime/semantic_prefreeze_census.py",
+   "prior_recovery": "not_found_within_bound",
+   "reachable_revisions": 1,
+   "reviewed_sha256": "607ca2fb46ec044a1073a1281e1f0bf78b421fecd4b6a250721fcc242aff90cf"
+  },
+  {
+   "disposition": "BLOCKED_ORIGINAL_SOURCE_UNAVAILABLE",
+   "exact_reviewed_revision_found_now": null,
+   "path": "runtime/semantic_surfaces.py",
+   "prior_recovery": "not_found_within_bound",
+   "reachable_revisions": 1,
+   "reviewed_sha256": "5fb907a16e863c1d9213a641effb7ad3a9b448d338e38e2dc6ebc785f815d64b"
+  },
+  {
+   "disposition": "BLOCKED_ORIGINAL_SOURCE_UNAVAILABLE",
+   "exact_reviewed_revision_found_now": null,
+   "path": "runtime/skill_studio.py",
+   "prior_recovery": "not_found_within_bound",
+   "reachable_revisions": 8,
+   "reviewed_sha256": "3c7a404e13b5ad0daef053e85a55ec7a0f295be045126b02d05732d22bdc9927"
+  },
+  {
+   "disposition": "BLOCKED_ORIGINAL_SOURCE_UNAVAILABLE",
+   "exact_reviewed_revision_found_now": null,
+   "path": "runtime/source_boundary.py",
+   "prior_recovery": "not_found_within_bound",
+   "reachable_revisions": 4,
+   "reviewed_sha256": "73e39818a558f64ba9040cfd23b92ad668926bcd51120cfd5bb400aaccceb72a"
+  },
+  {
+   "disposition": "BLOCKED_ORIGINAL_SOURCE_UNAVAILABLE",
+   "exact_reviewed_revision_found_now": null,
+   "path": "runtime/source_freeze.py",
+   "prior_recovery": "not_found_within_bound",
+   "reachable_revisions": 3,
+   "reviewed_sha256": "e0b400e25b0d67f979a36f155ceb4c02f4cb1b7c6566da67923d41dfc7e0908b"
+  },
+  {
+   "disposition": "BLOCKED_ORIGINAL_SOURCE_UNAVAILABLE",
+   "exact_reviewed_revision_found_now": null,
+   "path": "runtime/studio_api.py",
+   "prior_recovery": "not_found_within_bound",
+   "reachable_revisions": 8,
+   "reviewed_sha256": "61f742b864ecee42a4b4e003f583edc626d938e5a1634bd060a6bc5b9056f402"
+  },
+  {
+   "disposition": "BLOCKED_ORIGINAL_SOURCE_UNAVAILABLE",
+   "exact_reviewed_revision_found_now": null,
+   "path": "runtime/studio_authority.py",
+   "prior_recovery": "not_found_within_bound",
+   "reachable_revisions": 6,
+   "reviewed_sha256": "9fbc08d30e51fa0e9c7e35372d9d0a0bc3e495c224687202d2a7bf24915c4532"
+  },
+  {
+   "disposition": "BLOCKED_ORIGINAL_SOURCE_UNAVAILABLE",
+   "exact_reviewed_revision_found_now": null,
+   "path": "runtime/studio_models.py",
+   "prior_recovery": "not_found_within_bound",
+   "reachable_revisions": 7,
+   "reviewed_sha256": "e211b8fdbde658bccb19f7bd406285b57dd22860d25fd13b76809e161f381a65"
+  },
+  {
+   "disposition": "REVIEW_REQUIRED_SOURCE_DELTA",
+   "exact_reviewed_revision_found_now": "b6d09e69eb65fb2ba3eb71ed527abd85be2619d0",
+   "path": "runtime/studio_worker_launch.py",
+   "prior_recovery": "reachable_history_exact",
+   "reachable_revisions": 8,
+   "reviewed_sha256": "191541ea23612cb68be9d9a979acced12c5a1c7e1345067fde7225d55a35cb2f"
+  },
+  {
+   "disposition": "REVIEW_REQUIRED_SOURCE_DELTA",
+   "exact_reviewed_revision_found_now": null,
+   "path": "runtime/test_profiles.py",
+   "prior_recovery": "orphan_blob_exact",
+   "reachable_revisions": 25,
+   "reviewed_sha256": "f232f2f68230efaa09f9261355ba91f6609754aaf36d31a118a49f771c1ef7a0"
+  },
+  {
+   "disposition": "REVIEW_REQUIRED_SOURCE_DELTA",
+   "exact_reviewed_revision_found_now": "9e4f7d2b2b85b46c3db666d837f0a959ad3b237b",
+   "path": "runtime/test_runner.py",
+   "prior_recovery": "reachable_history_exact",
+   "reachable_revisions": 17,
+   "reviewed_sha256": "1d0ad66b2668f85c464eb8003cb01b2cf146efb271e51c08952b3ff04a9cfbca"
+  },
+  {
+   "disposition": "BLOCKED_ORIGINAL_SOURCE_UNAVAILABLE",
+   "exact_reviewed_revision_found_now": null,
+   "path": "runtime/tie_experience.py",
+   "prior_recovery": "not_found_within_bound",
+   "reachable_revisions": 1,
+   "reviewed_sha256": "d131e15f011f7a3ba07c324d993f0b169fcc215a968516f892232a5dde292ece"
+  },
+  {
+   "disposition": "REVIEW_REQUIRED_SOURCE_DELTA",
+   "exact_reviewed_revision_found_now": "9e4f7d2b2b85b46c3db666d837f0a959ad3b237b",
+   "path": "runtime/tool_intake.py",
+   "prior_recovery": "reachable_history_exact",
+   "reachable_revisions": 10,
+   "reviewed_sha256": "ade2582cb7cd3551cce184ce4a4dd042bea0b75cbd7e75f2f0fbf6ffc398a22d"
+  },
+  {
+   "disposition": "BLOCKED_ORIGINAL_SOURCE_UNAVAILABLE",
+   "exact_reviewed_revision_found_now": null,
+   "path": "runtime/transcript_analysis.py",
+   "prior_recovery": "not_found_within_bound",
+   "reachable_revisions": 3,
+   "reviewed_sha256": "d9076d2bc435b0952bc431da42c49b83a08df0f1413932127f1481d064063338"
+  },
+  {
+   "disposition": "BLOCKED_ORIGINAL_SOURCE_UNAVAILABLE",
+   "exact_reviewed_revision_found_now": null,
+   "path": "runtime/usage_memory.py",
+   "prior_recovery": "not_found_within_bound",
+   "reachable_revisions": 5,
+   "reviewed_sha256": "4574f4999bdb6aea35cca32a2738e2f1746617806ba14709ca5f280e671ac383"
+  },
+  {
+   "disposition": "REVIEW_REQUIRED_SOURCE_DELTA",
+   "exact_reviewed_revision_found_now": null,
+   "path": "runtime/verification_inputs.py",
+   "prior_recovery": "orphan_blob_exact",
+   "reachable_revisions": 10,
+   "reviewed_sha256": "44b31218c8c1ab424cfd5ca677cd9c41972910c60706a6a27e705e25e88dafe2"
+  },
+  {
+   "disposition": "BLOCKED_ORIGINAL_SOURCE_UNAVAILABLE",
+   "exact_reviewed_revision_found_now": null,
+   "path": "runtime/workflow_studio.py",
+   "prior_recovery": "not_found_within_bound",
+   "reachable_revisions": 18,
+   "reviewed_sha256": "32e38e86d07ea439559f9d3170c19d5ba6f8c0fafcea1ae08d989dc49fdfe494"
+  },
+  {
+   "disposition": "BLOCKED_ORIGINAL_SOURCE_UNAVAILABLE",
+   "exact_reviewed_revision_found_now": null,
+   "path": "runtime/workspace_manager.py",
+   "prior_recovery": "not_found_within_bound",
+   "reachable_revisions": 12,
+   "reviewed_sha256": "dbcf8cf5f686f05f72444c712a2277497c710ed87ad9b86a2c20301214e511ef"
+  },
+  {
+   "disposition": "REVIEW_REQUIRED_SOURCE_DELTA",
+   "exact_reviewed_revision_found_now": "9e4f7d2b2b85b46c3db666d837f0a959ad3b237b",
+   "path": "runtime/world_state.py",
+   "prior_recovery": "head_exact",
+   "reachable_revisions": 4,
+   "reviewed_sha256": "5a166827cf38eaffd37f084ee2fbd3e3d99dea713fd7d15fbba8b08429004e1f"
+  },
+  {
+   "disposition": "BLOCKED_ORIGINAL_SOURCE_UNAVAILABLE",
+   "exact_reviewed_revision_found_now": null,
+   "path": "scripts/archive_project_map_history.py",
+   "prior_recovery": "not_found_within_bound",
+   "reachable_revisions": 4,
+   "reviewed_sha256": "3df8a23d056fdcd63b1f07e498a8bdc7dc6aa639b057ae2bbc8597d49375d9eb"
+  },
+  {
+   "disposition": "BLOCKED_ORIGINAL_SOURCE_UNAVAILABLE",
+   "exact_reviewed_revision_found_now": null,
+   "path": "scripts/benchmark_local_models.py",
+   "prior_recovery": "not_found_within_bound",
+   "reachable_revisions": 4,
+   "reviewed_sha256": "0e07e82ac8617add11cd9b30a26812b54b2e6cefcb243aaf8b3b7448fe5d3949"
+  },
+  {
+   "disposition": "BLOCKED_ORIGINAL_SOURCE_UNAVAILABLE",
+   "exact_reviewed_revision_found_now": null,
+   "path": "scripts/bootstrap_usage_memory.py",
+   "prior_recovery": "not_found_within_bound",
+   "reachable_revisions": 3,
+   "reviewed_sha256": "bf545298d70190d6faaf99d435f43e258b4129d57a3adc4b4428ea3cc90136a6"
+  },
+  {
+   "disposition": "REVIEW_REQUIRED_SOURCE_DELTA",
+   "exact_reviewed_revision_found_now": "b6d09e69eb65fb2ba3eb71ed527abd85be2619d0",
+   "path": "scripts/build_cognitive_index.py",
+   "prior_recovery": "reachable_history_exact",
+   "reachable_revisions": 4,
+   "reviewed_sha256": "e8bbeb15e26efe5b74db9f786650631d220656ee9fd3d7f89829287ddd4bb1a0"
+  },
+  {
+   "disposition": "BLOCKED_ORIGINAL_SOURCE_UNAVAILABLE",
+   "exact_reviewed_revision_found_now": null,
+   "path": "scripts/build_contract_ownership_registry.py",
+   "prior_recovery": "not_found_within_bound",
+   "reachable_revisions": 21,
+   "reviewed_sha256": "a83bebc1f37296b96fabe0d785f50e7a52363d864de62bd6e6647ed5b49b2ecd"
+  },
+  {
+   "disposition": "BLOCKED_ORIGINAL_SOURCE_UNAVAILABLE",
+   "exact_reviewed_revision_found_now": null,
+   "path": "scripts/build_release_successor_configs.py",
+   "prior_recovery": "not_found_within_bound",
+   "reachable_revisions": 11,
+   "reviewed_sha256": "3f3b6012271452acc66fdfcbc9106bdb1143cbf0239fbe68c6e435a726622439"
+  },
+  {
+   "disposition": "BLOCKED_ORIGINAL_SOURCE_UNAVAILABLE",
+   "exact_reviewed_revision_found_now": null,
+   "path": "scripts/certify_local_model_profiles.py",
+   "prior_recovery": "not_found_within_bound",
+   "reachable_revisions": 4,
+   "reviewed_sha256": "027c4d2d149d23014494d10a343c213f7bf44e7ea04a7005fd1653ac1c98e306"
+  },
+  {
+   "disposition": "REVIEW_REQUIRED_SOURCE_DELTA",
+   "exact_reviewed_revision_found_now": "9e4f7d2b2b85b46c3db666d837f0a959ad3b237b",
+   "path": "scripts/clean_source_export.py",
+   "prior_recovery": "reachable_history_exact",
+   "reachable_revisions": 18,
+   "reviewed_sha256": "438eb240a0d49cc1d7427d6caa4abc21e9fbc2b7056b645a355b55d82d3af043"
+  },
+  {
+   "disposition": "BLOCKED_ORIGINAL_SOURCE_UNAVAILABLE",
+   "exact_reviewed_revision_found_now": null,
+   "path": "scripts/close_out_gap_dispositions.py",
+   "prior_recovery": "not_found_within_bound",
+   "reachable_revisions": 1,
+   "reviewed_sha256": "8e544bcd85176d83df43256a236532c5fa9f79270f0c4406d9a92cf66b4b7a66"
+  },
+  {
+   "disposition": "BLOCKED_ORIGINAL_SOURCE_UNAVAILABLE",
+   "exact_reviewed_revision_found_now": null,
+   "path": "scripts/pre_candidate_hygiene.py",
+   "prior_recovery": "not_found_within_bound",
+   "reachable_revisions": 12,
+   "reviewed_sha256": "ecb667cde457a31932a276e7b4dedb9dc7d10ca0150586f18a1cf17598fd434d"
+  },
+  {
+   "disposition": "BLOCKED_ORIGINAL_SOURCE_UNAVAILABLE",
+   "exact_reviewed_revision_found_now": null,
+   "path": "scripts/reconcile_studio_operation_projections.py",
+   "prior_recovery": "not_found_within_bound",
+   "reachable_revisions": 3,
+   "reviewed_sha256": "998a05acb46a69507aa6de3f316adfa0fe3a51283e9b02dca5412d8e7bec0233"
+  },
+  {
+   "disposition": "BLOCKED_ORIGINAL_SOURCE_UNAVAILABLE",
+   "exact_reviewed_revision_found_now": null,
+   "path": "scripts/record_custody_correction.py",
+   "prior_recovery": "not_found_within_bound",
+   "reachable_revisions": 1,
+   "reviewed_sha256": "dd3b2a306d8be9b0528b622454e20944110ceda42a2cdaac289ec4ad760bb79f"
+  },
+  {
+   "disposition": "BLOCKED_ORIGINAL_SOURCE_UNAVAILABLE",
+   "exact_reviewed_revision_found_now": null,
+   "path": "scripts/record_gap_0008_provenance.py",
+   "prior_recovery": "not_found_within_bound",
+   "reachable_revisions": 1,
+   "reviewed_sha256": "1eaa7cef71f632503c3a2dc861967bd55f50c5c01c1b06c5864626f21628aa8d"
+  },
+  {
+   "disposition": "BLOCKED_ORIGINAL_SOURCE_UNAVAILABLE",
+   "exact_reviewed_revision_found_now": null,
+   "path": "scripts/record_gap_completion_evidence.py",
+   "prior_recovery": "not_found_within_bound",
+   "reachable_revisions": 1,
+   "reviewed_sha256": "df7bc9f40789c858bc196bd232895b090b6e2e533cf538b9187cda75ae7a172a"
+  },
+  {
+   "disposition": "BLOCKED_ORIGINAL_SOURCE_UNAVAILABLE",
+   "exact_reviewed_revision_found_now": null,
+   "path": "scripts/record_gap_completion_evidence_2.py",
+   "prior_recovery": "not_found_within_bound",
+   "reachable_revisions": 1,
+   "reviewed_sha256": "44bc99c81b05112d72a91d05c31bdc5fbccc74eab91cae9fb54990303495e714"
+  },
+  {
+   "disposition": "BLOCKED_ORIGINAL_SOURCE_UNAVAILABLE",
+   "exact_reviewed_revision_found_now": null,
+   "path": "scripts/record_gap_dispositions.py",
+   "prior_recovery": "not_found_within_bound",
+   "reachable_revisions": 1,
+   "reviewed_sha256": "51e1f9624c6704077a117e2034d1ac588734cc9196f0b0e1f776c480329c7b08"
+  },
+  {
+   "disposition": "BLOCKED_ORIGINAL_SOURCE_UNAVAILABLE",
+   "exact_reviewed_revision_found_now": null,
+   "path": "scripts/regenerate_projections.py",
+   "prior_recovery": "not_found_within_bound",
+   "reachable_revisions": 1,
+   "reviewed_sha256": "d29b96506a7656f96926d1ba3edc52033232899bfe79a8e8764dc4bb37082820"
+  },
+  {
+   "disposition": "BLOCKED_ORIGINAL_SOURCE_UNAVAILABLE",
+   "exact_reviewed_revision_found_now": null,
+   "path": "scripts/run_installed_operational_owner.py",
+   "prior_recovery": "not_found_within_bound",
+   "reachable_revisions": 5,
+   "reviewed_sha256": "d4c9843a73b86a6ac555294544c8b2786f0802a9780113cff4d298d2bea1bc6b"
+  },
+  {
+   "disposition": "BLOCKED_ORIGINAL_SOURCE_UNAVAILABLE",
+   "exact_reviewed_revision_found_now": null,
+   "path": "scripts/run_release_candidate.py",
+   "prior_recovery": "not_found_within_bound",
+   "reachable_revisions": 24,
+   "reviewed_sha256": "ce3aa4d3978e4ce56f81ac5b71574f07759a7e9b43a34c364d7dec77eb54aa05"
+  },
+  {
+   "disposition": "BLOCKED_ORIGINAL_SOURCE_UNAVAILABLE",
+   "exact_reviewed_revision_found_now": null,
+   "path": "scripts/run_release_stage_owner.py",
+   "prior_recovery": "not_found_within_bound",
+   "reachable_revisions": 29,
+   "reviewed_sha256": "ae48da55d19a6232d07299795ac7beb5f5cd5027d2bc94d58289dfc5b93305f3"
+  },
+  {
+   "disposition": "BLOCKED_ORIGINAL_SOURCE_UNAVAILABLE",
+   "exact_reviewed_revision_found_now": null,
+   "path": "scripts/split_gap_0010.py",
+   "prior_recovery": "not_found_within_bound",
+   "reachable_revisions": 1,
+   "reviewed_sha256": "0c542fa56e66fdbedd7188c2cd64ac935d1d5906b51706f49b0f4d28cd127a6a"
+  },
+  {
+   "disposition": "BLOCKED_ORIGINAL_SOURCE_UNAVAILABLE",
+   "exact_reviewed_revision_found_now": null,
+   "path": "scripts/verify_release_publication.py",
+   "prior_recovery": "not_found_within_bound",
+   "reachable_revisions": 4,
+   "reviewed_sha256": "b4e27c95263902394634874bab7e9ba01ca1f16a44cc8b4e859f77e6ff504c80"
+  }
+ ],
+ "schema_version": "px.fingerprint-reachability/1.0",
+ "status": "BLOCKED_AUTHORITY",
+ "still_unrecovered": 83
+}

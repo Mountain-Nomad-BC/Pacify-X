@@ -160,6 +160,17 @@
 - **Next:** Priority 6 is consolidated tooling/evidence cleanup, then Priority 7 reconciliation: rerun the retained census launcher, re-run focused suites, and validate the ledger. Any producer resolution still requires distinct, approved authority per write class.
 - **Next:** Continue tracing the 35 unreviewed scanner-emitted direct-site references and imported-helper paths excluded from that denominator. The two confirmed unindexed copy operations have known destinations but still require census correction. Preserve unresolved status wherever authority or runtime behavior is not established. Scanner repair and Priority 5 require separate fresh governed admission.
 
+## Session 2 — auditable registries and fingerprint reachability
+
+- **Authorization:** Continuation under admission `…036527` (still within its expiry), session `px-os-1067-p4-script-producers-r-20261103`.
+- **Registries (`COMPLETED`):** Added [b7 owner decision register](./evidence/px-os-1067-b7-owner-decision-register.json) (32 rows, all `pending`, each carrying candidate evidence and the approval rule), [producer dispositions](./evidence/px-os-1067-producer-dispositions.json) (all 373 mutating producers, **0 unaccounted**, every unresolved row naming its missing authority), and the [authority contract](./evidence/px-os-1067-authority-contract.json) (the closed catalog a row may cite, taken from `EXEMPTION_REASONS` rather than invented).
+- **Drift guard:** [validate-registries](evidence/px-os-1067-validate-registries.py) fails closed when the registries disagree with the live census, when a resolved row cites an authority outside the contract, or when an owner row claims approval without evidence. It found two real defects during construction — a wrong matrix join (68 producers misreported as unaccounted) and 43 producers citing authorities the first contract draft omitted. Both were corrected in the tool, not worked around.
+- **Census plumbing (`COMPLETED`):** `classify_source_file` extracted from `discover_effect_surfaces` so any probe classifies exactly as the repository scan; `census()` accepts a probe population and now retains `producer_paths`/`mutating_producer_paths`. Figures unchanged: **1,700 / 377 / 373 / 216 / 157 / 310, gate invalid**.
+- **Priority 3 (`BLOCKED_AUTHORITY`, blocker now proven):** [Reachability check](./evidence/px-os-1067-fingerprint-reachability.json) shows the repository is **not** shallow (`shallow: false`, no `.git/shallow`, no grafts) with 309 reachable commits, yet **83 of 103** reviewed sources have no reachable revision whose bytes hash to the reviewed fingerprint. The remaining 20 are the previously recovered HEAD/history/orphan matches. **0 fingerprints rewritten, 0 approvals created.** The earlier "not found within bound" was correct, not a search limit.
+- **Correction to my own earlier claim:** the previous entry said the two recovered `shutil.copyfile` writes plus one `Path.copy` site explained the +3 effect records. Only the two `copyfile` sites are confirmed; the third record's origin was not individually traced and is recorded here as unattributed rather than asserted.
+- **Tests:** Focused suite re-run after the refactor: **88 passed, 1 failed** (the expected repository-wide gate assertion).
+- **Next:** Governance decisions on the 32 owner rows, or a destination-guarantee audit for the caller-directed output producers. Both are independent.
+
 ## Source material examined
 
 - [New_handoff.md](./New_handoff.md)
