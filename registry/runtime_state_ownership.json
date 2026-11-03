@@ -9,6 +9,7 @@
  },
  "resources": [
   {
+   "custody_basis": "component outside the group writes canonical state",
    "group_members": [
     "runtime/agent_runtime.py",
     "runtime/studio_models.py",
@@ -47,6 +48,7 @@
    "registration_state": "registered"
   },
   {
+   "custody_basis": "component outside the group writes canonical state",
    "group_members": [
     "runtime/certification_state.py"
    ],
@@ -186,7 +188,7 @@
     "retention": "unresolved",
     "scope": ".agentic_engineering_os_px/runtime-core/placement"
    },
-   "registration_reason": "No component reads this resource from outside its producer group; the only source-backed candidates are its own writers.",
+   "registration_reason": "no executable component outside the producer group",
    "registration_state": "pending_registration"
   },
   {
@@ -220,7 +222,7 @@
     "retention": "unresolved",
     "scope": "injected-store-root/registry.json and per-session state paths"
    },
-   "registration_reason": "No component reads this resource from outside its producer group; the only source-backed candidates are its own writers.",
+   "registration_reason": "no executable component outside the producer group",
    "registration_state": "pending_registration"
   },
   {
@@ -254,7 +256,7 @@
     "retention": "unresolved",
     "scope": ".agentic_engineering_os_px/runtime-core/knowledge-foundry"
    },
-   "registration_reason": "No component reads this resource from outside its producer group; the only source-backed candidates are its own writers.",
+   "registration_reason": "no executable component outside the producer group",
    "registration_state": "pending_registration"
   },
   {
@@ -291,10 +293,11 @@
     "retention": "unresolved",
     "scope": ".memory-control/evidence, offload/objects, offload/pointers, and write-queue"
    },
-   "registration_reason": "Several components read this resource from outside its group; choosing the reconciling authority is an ownership decision, not an inference.",
+   "registration_reason": "2 components outside the group write state; the reconciling authority is undecidable from source",
    "registration_state": "pending_registration"
   },
   {
+   "custody_basis": "component outside the group writes canonical state",
    "group_members": [
     "runtime/memory_vault.py",
     "runtime/workspace_manager.py"
@@ -332,6 +335,7 @@
    "registration_state": "registered"
   },
   {
+   "custody_basis": "component outside the group writes canonical state",
    "group_members": [
     "runtime/operational_event_bus.py"
    ],
@@ -401,10 +405,11 @@
     "retention": "append-only retention contract exists outside this candidate matrix; exact deletion/reclamation authority remains policy-bound",
     "scope": "registry/operational_gap_ledger.* and evidence/operational-gap-ledger/migration"
    },
-   "registration_reason": "Several components read this resource from outside its group; choosing the reconciling authority is an ownership decision, not an inference.",
+   "registration_reason": "the only writer of this state is inside the producer group \u2014 the reconciled projection is maintained by a group member and no outside component writes it",
    "registration_state": "pending_registration"
   },
   {
+   "custody_basis": "component outside the group writes canonical state",
    "group_members": [
     "runtime/output_roots.py"
    ],
@@ -474,7 +479,7 @@
     "retention": "unresolved",
     "scope": "registry/plan_corpus.json, punch_card_ledger.json, registry/planning/rev1xx/**, and project processing-order state"
    },
-   "registration_reason": "Several components read this resource from outside its group; choosing the reconciling authority is an ownership decision, not an inference.",
+   "registration_reason": "2 components outside the group write state; the reconciling authority is undecidable from source",
    "registration_state": "pending_registration"
   },
   {
@@ -508,7 +513,7 @@
     "retention": "unresolved",
     "scope": "caller-configured project roots/targets, transaction journals, rollback images, and quarantine"
    },
-   "registration_reason": "No component reads this resource from outside its producer group; the only source-backed candidates are its own writers.",
+   "registration_reason": "no executable component outside the producer group",
    "registration_state": "pending_registration"
   },
   {
@@ -545,7 +550,7 @@
     "retention": "unresolved",
     "scope": ".agentic_engineering_os_px/project-map and project-map-history"
    },
-   "registration_reason": "Several components read this resource from outside its group; choosing the reconciling authority is an ownership decision, not an inference.",
+   "registration_reason": "2 components outside the group write state; the reconciling authority is undecidable from source",
    "registration_state": "pending_registration"
   },
   {
@@ -557,7 +562,7 @@
     "runtime/engineering_lifecycle.py"
    ],
    "record": {
-    "accountable_owner": "runtime/engineering_lifecycle.py",
+    "accountable_owner": null,
     "authorization": {
      "existing_controls": [
       "effect_grant",
@@ -571,7 +576,7 @@
     },
     "concurrency": "single accountable reconciler; per-run authorization required",
     "lifecycle": "State is transactional and revisioned; receipt/history retention and rollback authority are unresolved.",
-    "owner_approval_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000036534",
+    "owner_approval_event_id": null,
     "provenance": [
      "docs/repair/evidence/evidence/px-os-1067-runtime-state-ownership-matrix.json"
     ],
@@ -582,8 +587,8 @@
     "retention": "unresolved",
     "scope": ".agentic_engineering_os_px/project-management/{state.json,tool-intake.json,history/**}"
    },
-   "registration_reason": null,
-   "registration_state": "registered"
+   "registration_reason": "the only writer of this state is inside the producer group \u2014 the reconciled projection is maintained by a group member and no outside component writes it",
+   "registration_state": "pending_registration"
   },
   {
    "group_members": [
@@ -616,7 +621,7 @@
     "retention": "unresolved",
     "scope": "registry/provider_adapters.json and registry/provider_route_scan.json"
    },
-   "registration_reason": "No component reads this resource from outside its producer group; the only source-backed candidates are its own writers.",
+   "registration_reason": "no executable component outside the producer group",
    "registration_state": "pending_registration"
   },
   {
@@ -657,7 +662,7 @@
     "retention": "release evidence retention policy applies to evidence artifacts; control-state retention and revocation policy remain distinct",
     "scope": ".agentic_engineering_os_px/processing-order, release locks/transactions, registry release projections, and evidence/releases"
    },
-   "registration_reason": "Several components read this resource from outside its group; choosing the reconciling authority is an ownership decision, not an inference.",
+   "registration_reason": "2 components outside the group write state; the reconciling authority is undecidable from source",
    "registration_state": "pending_registration"
   },
   {
@@ -702,7 +707,7 @@
     "runtime/admitted_fabric_integrations.py"
    ],
    "record": {
-    "accountable_owner": "runtime/admitted_fabric_integrations.py",
+    "accountable_owner": null,
     "authorization": {
      "existing_controls": [
       "effect_grant",
@@ -716,7 +721,7 @@
     },
     "concurrency": "single accountable reconciler; per-run authorization required",
     "lifecycle": "Immutable content-addressed generations coexist with mutable active/rollback pointers; the source root is supplied by the caller.",
-    "owner_approval_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000036534",
+    "owner_approval_event_id": null,
     "provenance": [
      "docs/repair/evidence/evidence/px-os-1067-runtime-state-ownership-matrix.json"
     ],
@@ -727,8 +732,8 @@
     "retention": "unresolved",
     "scope": "caller-configured state_root/{active.json, rollback.json, generations/**}"
    },
-   "registration_reason": null,
-   "registration_state": "registered"
+   "registration_reason": "the only writer of this state is inside the producer group \u2014 the reconciled projection is maintained by a group member and no outside component writes it",
+   "registration_state": "pending_registration"
   },
   {
    "group_members": [
@@ -773,10 +778,11 @@
     "retention": "run-scoped resource records and cleanup receipts; exact lifecycle policy applies, while durable product-state retention is separate",
     "scope": ".agentic_engineering_os_px/resource-lifecycle/ledger.json, cleanup receipts, and registered run workspaces"
    },
-   "registration_reason": "No component reads this resource from outside its producer group; the only source-backed candidates are its own writers.",
+   "registration_reason": "no executable component outside the producer group",
    "registration_state": "pending_registration"
   },
   {
+   "custody_basis": "component outside the group writes canonical state",
    "group_members": [
     "runtime/semantic_entity.py"
    ],
@@ -846,10 +852,11 @@
     "retention": "unresolved",
     "scope": ".px/skills, .agentic_engineering_os_px/studios/skills, and skill-related registry projections"
    },
-   "registration_reason": "Several components read this resource from outside its group; choosing the reconciling authority is an ownership decision, not an inference.",
+   "registration_reason": "2 components outside the group write state; the reconciling authority is undecidable from source",
    "registration_state": "pending_registration"
   },
   {
+   "custody_basis": "component outside the group writes canonical state",
    "group_members": [
     "runtime/source_boundary.py",
     "runtime/source_freeze.py"
@@ -921,7 +928,7 @@
     "retention": "unresolved",
     "scope": ".agentic_engineering_os_px/studios/skills/<identity>/revisions and .px/skills authored sources"
    },
-   "registration_reason": "Several components read this resource from outside its group; choosing the reconciling authority is an ownership decision, not an inference.",
+   "registration_reason": "2 components outside the group write state; the reconciling authority is undecidable from source",
    "registration_state": "pending_registration"
   },
   {
@@ -932,7 +939,7 @@
     "runtime/semantic_orchestration.py"
    ],
    "record": {
-    "accountable_owner": "runtime/semantic_orchestration.py",
+    "accountable_owner": null,
     "authorization": {
      "existing_controls": [
       "effect_grant",
@@ -946,7 +953,7 @@
     },
     "concurrency": "single accountable reconciler; per-run authorization required",
     "lifecycle": "Versioned records are immutable/no-replace; retirement and reclamation authority are unresolved.",
-    "owner_approval_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000036534",
+    "owner_approval_event_id": null,
     "provenance": [
      "docs/repair/evidence/evidence/px-os-1067-runtime-state-ownership-matrix.json"
     ],
@@ -957,8 +964,8 @@
     "retention": "unresolved",
     "scope": ".agentic_engineering_os_px/studios/{knowledge,models}/<identity>/revisions"
    },
-   "registration_reason": null,
-   "registration_state": "registered"
+   "registration_reason": "the only writer of this state is inside the producer group \u2014 the reconciled projection is maintained by a group member and no outside component writes it",
+   "registration_state": "pending_registration"
   },
   {
    "group_members": [
@@ -996,10 +1003,11 @@
     "retention": "policy/config retention unresolved; run-scoped work follows ResourceManager records",
     "scope": "registry/test_profiles.json, registry/repair_campaign.json, project repair-campaign state, and run-scoped test work"
    },
-   "registration_reason": "Several components read this resource from outside its group; choosing the reconciling authority is an ownership decision, not an inference.",
+   "registration_reason": "2 components outside the group write state; the reconciling authority is undecidable from source",
    "registration_state": "pending_registration"
   },
   {
+   "custody_basis": "component outside the group writes canonical state",
    "group_members": [
     "runtime/tie_experience.py",
     "runtime/usage_memory.py"
@@ -1037,6 +1045,7 @@
    "registration_state": "registered"
   },
   {
+   "custody_basis": "component outside the group writes canonical state",
    "group_members": [
     "runtime/yaml_subject_files.py"
    ],
@@ -1073,6 +1082,7 @@
    "registration_state": "registered"
   },
   {
+   "custody_basis": "component outside the group writes canonical state",
    "group_members": [
     "runtime/studio_models.py",
     "runtime/studio_session_worker.py",
@@ -1111,6 +1121,7 @@
    "registration_state": "registered"
   },
   {
+   "custody_basis": "component outside the group writes canonical state",
    "group_members": [
     "runtime/workspace_manager.py"
    ],
@@ -1147,6 +1158,7 @@
    "registration_state": "registered"
   },
   {
+   "custody_basis": "component outside the group writes canonical state",
    "group_members": [
     "runtime/world_state.py"
    ],
@@ -1187,8 +1199,8 @@
  "state": "approved_custodian_registrations",
  "totals": {
   "pending_decision": 3,
-  "pending_registration": 14,
-  "registered": 15,
+  "pending_registration": 17,
+  "registered": 12,
   "resources": 32
  }
 }

@@ -8,7 +8,7 @@
  },
  "duplicate_effect_ids": [],
  "effect_records": 1700,
- "elapsed_seconds": 17.5,
+ "elapsed_seconds": 20.3,
  "gate_findings": 310,
  "gate_valid": false,
  "mutating_producer_paths": [
@@ -767,9 +767,9 @@
   "scripts/verify_repair_operations.py"
  ],
  "producers_any_effect": 377,
- "registry_classified": 234,
- "registry_unclassified": 139,
- "resolved": 234,
+ "registry_classified": 232,
+ "registry_unclassified": 141,
+ "resolved": 232,
  "resolved_by_reason": {
   "canonical_control_audit_custody": 1,
   "canonical_control_custody_owner": 10,
@@ -778,17 +778,17 @@
   "delegated_publication": 10,
   "generated_projection_producer": 13,
   "non_runtime_harness": 4,
-  "owned_durable_resource": 18,
+  "owned_durable_resource": 16,
   "owned_ephemeral_reclamation": 8,
   "protected_identity_custody": 1,
   "read_only_classifier": 36,
   "read_only_probe": 16
  },
  "schema_version": "px.producer-census/1.0",
- "unresolved": 139,
+ "unresolved": 141,
  "unresolved_by_family": {
   ".px": 11,
-  "runtime": 50,
+  "runtime": 52,
   "scripts": 78
  },
  "unresolved_paths": [
@@ -840,6 +840,7 @@
   "runtime/release_repository_context.py",
   "runtime/remote_provider_profiles.py",
   "runtime/remote_service_protocols.py",
+  "runtime/retrieval_generation.py",
   "runtime/secure_publish.py",
   "runtime/semantic_authored_sources.py",
   "runtime/semantic_code_service.py",
@@ -851,6 +852,7 @@
   "runtime/studio_worker_launch.py",
   "runtime/test_profiles.py",
   "runtime/test_runner.py",
+  "runtime/tool_intake.py",
   "runtime/transcript_analysis.py",
   "runtime/verification_inputs.py",
   "scripts/admit_semantic_ownership.py",
