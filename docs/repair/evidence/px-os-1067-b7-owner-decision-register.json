@@ -1,0 +1,793 @@
+{
+ "candidate_registry": "px-os-1067-runtime-state-ownership-registry-candidate.json",
+ "decision_authority": "Governance only. This register is executable: flipping a row to `approved` without a recorded approval event is a defect, and `validate_resource_candidate` refuses a candidate record that carries one.",
+ "decisions": [
+  {
+   "approval_evidence": null,
+   "candidate_evidence": [
+    "runtime/resource_lifecycle.py",
+    "runtime/cli.py:221-2405",
+    "runtime/personal_record_store.py:124-127",
+    "runtime/plan_registry.py:763-771",
+    "runtime/process_supervisor.py:917-991",
+    "runtime/test_runner.py:186",
+    "runtime/tie_experience.py:228-230",
+    "runtime/usage_memory.py:147-151"
+   ],
+   "candidate_owner": [
+    "runtime/resource_lifecycle.py"
+   ],
+   "decision": "pending",
+   "decision_rule": "A candidate becomes the accountable owner only after a governed approval records an owner_approval_event_id for this resource_id. The matrix proposes; it does not approve.",
+   "producers": [],
+   "registry_registered": false,
+   "resource_class": null,
+   "resource_id": "run-scoped-resource-lifecycle",
+   "scope": null,
+   "unresolved_questions": [
+    "Which call paths are fully covered by ResourceManager?",
+    "Are cleanup receipt retention and deletion authority aligned with policy?",
+    "Which current effect records are temporary staging rather than persistent product state?"
+   ]
+  },
+  {
+   "approval_evidence": null,
+   "candidate_evidence": [
+    "runtime/agent_runtime.py:216",
+    "runtime/agent_runtime.py:551-585",
+    "runtime/studio_api.py:1217",
+    "runtime/studio_session_worker.py:187-237"
+   ],
+   "candidate_owner": [
+    "runtime/agent_runtime.py",
+    "runtime/studio_models.py"
+   ],
+   "decision": "pending",
+   "decision_rule": "A candidate becomes the accountable owner only after a governed approval records an owner_approval_event_id for this resource_id. The matrix proposes; it does not approve.",
+   "producers": [],
+   "registry_registered": false,
+   "resource_class": null,
+   "resource_id": "agent-studio-state",
+   "scope": null,
+   "unresolved_questions": [
+    "Who is the accountable reconciling authority for revisions versus run records?",
+    "What retention and deletion authority applies to each subtree?",
+    "Which concurrent writers are serialized for every durable artifact?"
+   ]
+  },
+  {
+   "approval_evidence": null,
+   "candidate_evidence": [
+    "runtime/workflow_studio.py:369",
+    "runtime/studio_api.py:1317",
+    "runtime/studio_session_worker.py:187-237"
+   ],
+   "candidate_owner": [
+    "runtime/workflow_studio.py",
+    "runtime/studio_models.py"
+   ],
+   "decision": "pending",
+   "decision_rule": "A candidate becomes the accountable owner only after a governed approval records an owner_approval_event_id for this resource_id. The matrix proposes; it does not approve.",
+   "producers": [],
+   "registry_registered": false,
+   "resource_class": null,
+   "resource_id": "workflow-studio-state",
+   "scope": null,
+   "unresolved_questions": [
+    "Who reconciles workflow revisions and run records?",
+    "What are retention, migration, deletion, and recovery rules?",
+    "Is every shared write path serialized?"
+   ]
+  },
+  {
+   "approval_evidence": null,
+   "candidate_evidence": [
+    "runtime/studio_models.py:38-47",
+    "runtime/studio_models.py:216-229",
+    "runtime/studio_models.py:1189-1247",
+    "runtime/semantic_orchestration.py:164-167"
+   ],
+   "candidate_owner": [
+    "runtime/studio_models.py"
+   ],
+   "decision": "pending",
+   "decision_rule": "A candidate becomes the accountable owner only after a governed approval records an owner_approval_event_id for this resource_id. The matrix proposes; it does not approve.",
+   "producers": [],
+   "registry_registered": false,
+   "resource_class": null,
+   "resource_id": "studio-knowledge-model-records",
+   "scope": null,
+   "unresolved_questions": [
+    "Who owns knowledge/model revision histories?",
+    "Which lifecycle and reclamation rules apply to each kind?",
+    "How does T.I.E. usage memory attach to these roots?"
+   ]
+  },
+  {
+   "approval_evidence": null,
+   "candidate_evidence": [
+    "runtime/agent_fleet_controls.py:296-401",
+    "runtime/agent_fleet_controls.py:455-456",
+    "runtime/agent_fleet_controls.py:809-945"
+   ],
+   "candidate_owner": [
+    "runtime/agent_fleet_controls.py"
+   ],
+   "decision": "pending",
+   "decision_rule": "A candidate becomes the accountable owner only after a governed approval records an owner_approval_event_id for this resource_id. The matrix proposes; it does not approve.",
+   "producers": [],
+   "registry_registered": false,
+   "resource_class": null,
+   "resource_id": "fleet-session-state",
+   "scope": null,
+   "unresolved_questions": [
+    "Who controls the injected root?",
+    "What is the session-record retention/reclamation policy?",
+    "How are concurrent registry and per-session updates coordinated?"
+   ]
+  },
+  {
+   "approval_evidence": null,
+   "candidate_evidence": [
+    "runtime/certification_state.py:33",
+    "runtime/certification_state.py:80",
+    "runtime/certification_state.py:183-190"
+   ],
+   "candidate_owner": [
+    "runtime/certification_state.py"
+   ],
+   "decision": "pending",
+   "decision_rule": "A candidate becomes the accountable owner only after a governed approval records an owner_approval_event_id for this resource_id. The matrix proposes; it does not approve.",
+   "producers": [],
+   "registry_registered": false,
+   "resource_class": null,
+   "resource_id": "campaign-certification-state",
+   "scope": null,
+   "unresolved_questions": [
+    "Is this canonical campaign state or a projection?",
+    "What migration/recovery and retention rules govern the legacy root?",
+    "Who can authorize deletion?"
+   ]
+  },
+  {
+   "approval_evidence": null,
+   "candidate_evidence": [
+    "runtime/execution_placement.py:158",
+    "runtime/execution_placement.py:174-181",
+    "runtime/execution_placement.py:195-234",
+    "runtime/execution_placement.py:618-629"
+   ],
+   "candidate_owner": [
+    "runtime/execution_placement.py"
+   ],
+   "decision": "pending",
+   "decision_rule": "A candidate becomes the accountable owner only after a governed approval records an owner_approval_event_id for this resource_id. The matrix proposes; it does not approve.",
+   "producers": [],
+   "registry_registered": false,
+   "resource_class": null,
+   "resource_id": "execution-placement-state",
+   "scope": null,
+   "unresolved_questions": [
+    "Who is accountable for reconciling placement decisions?",
+    "Which artifacts are canonical versus regenerable?",
+    "What are concurrency and retention rules for reservations?"
+   ]
+  },
+  {
+   "approval_evidence": null,
+   "candidate_evidence": [
+    "runtime/knowledge_foundry.py:806",
+    "runtime/knowledge_foundry.py:854",
+    "runtime/knowledge_foundry.py:912",
+    "runtime/knowledge_foundry.py:1001-1017"
+   ],
+   "candidate_owner": [
+    "runtime/knowledge_foundry.py"
+   ],
+   "decision": "pending",
+   "decision_rule": "A candidate becomes the accountable owner only after a governed approval records an owner_approval_event_id for this resource_id. The matrix proposes; it does not approve.",
+   "producers": [],
+   "registry_registered": false,
+   "resource_class": null,
+   "resource_id": "knowledge-foundry-state",
+   "scope": null,
+   "unresolved_questions": [
+    "Which package outputs are authoritative versus regenerable?",
+    "Who authorizes promotion, retention, and deletion?",
+    "How are shared candidates reconciled?"
+   ]
+  },
+  {
+   "approval_evidence": null,
+   "candidate_evidence": [
+    "runtime/retrieval_generation.py:156-202",
+    "runtime/retrieval_generation.py:225-290",
+    "runtime/admitted_fabric_integrations.py:46-48"
+   ],
+   "candidate_owner": [
+    "runtime/retrieval_generation.py"
+   ],
+   "decision": "pending",
+   "decision_rule": "A candidate becomes the accountable owner only after a governed approval records an owner_approval_event_id for this resource_id. The matrix proposes; it does not approve.",
+   "producers": [],
+   "registry_registered": false,
+   "resource_class": null,
+   "resource_id": "retrieval-generation-store",
+   "scope": null,
+   "unresolved_questions": [
+    "Who controls each state_root?",
+    "What is the generation retention/reclamation policy?",
+    "What concurrency mechanism protects active/rollback pointer updates?"
+   ]
+  },
+  {
+   "approval_evidence": null,
+   "candidate_evidence": [
+    "runtime/recovery.py:191-194",
+    "runtime/recovery.py:222-235",
+    "runtime/recovery.py:460-467",
+    "runtime/recovery.py:497-543"
+   ],
+   "candidate_owner": [],
+   "decision": "pending",
+   "decision_rule": "A candidate becomes the accountable owner only after a governed approval records an owner_approval_event_id for this resource_id. The matrix proposes; it does not approve.",
+   "producers": [],
+   "registry_registered": false,
+   "resource_class": null,
+   "resource_id": "configured-durable-state-migration",
+   "scope": null,
+   "unresolved_questions": [
+    "Which production components configure durable_state_paths?",
+    "Who owns state versus sidecar history/WAL for each configured path?",
+    "What policy governs history retention and deletion?"
+   ]
+  },
+  {
+   "approval_evidence": null,
+   "candidate_evidence": [
+    "runtime/memory_intelligence.py:208",
+    "runtime/memory_intelligence.py:816-822",
+    "runtime/memory_intelligence.py:918",
+    "runtime/memory_intelligence.py:1028",
+    "runtime/memory_intelligence.py:1095-1096"
+   ],
+   "candidate_owner": [
+    "runtime/memory_intelligence.py"
+   ],
+   "decision": "pending",
+   "decision_rule": "A candidate becomes the accountable owner only after a governed approval records an owner_approval_event_id for this resource_id. The matrix proposes; it does not approve.",
+   "producers": [],
+   "registry_registered": false,
+   "resource_class": null,
+   "resource_id": "memory-intelligence-state",
+   "scope": null,
+   "unresolved_questions": [
+    "Who owns memory content and offload pointers?",
+    "What retention/deletion policy applies to evidence and objects?",
+    "How are queue replay and concurrent consumers fenced?"
+   ]
+  },
+  {
+   "approval_evidence": null,
+   "candidate_evidence": [
+    "runtime/memory_vault.py:415-419",
+    "runtime/memory_vault.py:734-785",
+    "runtime/memory_vault.py:848-929"
+   ],
+   "candidate_owner": [
+    "runtime/memory_vault.py",
+    "runtime/workspace_manager.py"
+   ],
+   "decision": "pending",
+   "decision_rule": "A candidate becomes the accountable owner only after a governed approval records an owner_approval_event_id for this resource_id. The matrix proposes; it does not approve.",
+   "producers": [],
+   "registry_registered": false,
+   "resource_class": null,
+   "resource_id": "memory-vault-state",
+   "scope": null,
+   "unresolved_questions": [
+    "Which component is the one reconciling authority across lifecycle and index state?",
+    "What retention and deletion rules apply to generations?",
+    "What concurrency guarantees apply across multiple processes?"
+   ]
+  },
+  {
+   "approval_evidence": null,
+   "candidate_evidence": [
+    "runtime/operational_event_bus.py:34-55",
+    "runtime/operational_event_bus.py:89-118",
+    "runtime/operational_event_bus.py:213-250",
+    "runtime/operational_event_bus.py:320-364"
+   ],
+   "candidate_owner": [
+    "runtime/operational_event_bus.py"
+   ],
+   "decision": "pending",
+   "decision_rule": "A candidate becomes the accountable owner only after a governed approval records an owner_approval_event_id for this resource_id. The matrix proposes; it does not approve.",
+   "producers": [],
+   "registry_registered": false,
+   "resource_class": null,
+   "resource_id": "operational-event-bus",
+   "scope": null,
+   "unresolved_questions": [
+    "Who approves each bus_root?",
+    "Which consumers can publish versus replay?",
+    "What retention, compaction, and recovery authority applies?"
+   ]
+  },
+  {
+   "approval_evidence": null,
+   "candidate_evidence": [
+    "runtime/operational_gap_ledger.py:34-40",
+    "runtime/operational_gap_ledger.py:776",
+    "runtime/operational_gap_ledger.py:2131",
+    "runtime/operational_gap_ledger.py:3425-3470",
+    "runtime/operational_gap_ledger.py:4098-4192"
+   ],
+   "candidate_owner": [
+    "runtime/operational_gap_ledger.py"
+   ],
+   "decision": "pending",
+   "decision_rule": "A candidate becomes the accountable owner only after a governed approval records an owner_approval_event_id for this resource_id. The matrix proposes; it does not approve.",
+   "producers": [],
+   "registry_registered": false,
+   "resource_class": null,
+   "resource_id": "operational-gap-ledger",
+   "scope": null,
+   "unresolved_questions": [
+    "Which existing policy is authoritative for the ledger's retention/reclamation lifecycle?",
+    "What is the approved custody classification for the ledger module itself?"
+   ]
+  },
+  {
+   "approval_evidence": null,
+   "candidate_evidence": [
+    "runtime/output_roots.py:21",
+    "runtime/output_roots.py:load_registry",
+    "runtime/output_roots.py:validate_registry",
+    "runtime/output_roots.py:register"
+   ],
+   "candidate_owner": [
+    "runtime/output_roots.py"
+   ],
+   "decision": "pending",
+   "decision_rule": "A candidate becomes the accountable owner only after a governed approval records an owner_approval_event_id for this resource_id. The matrix proposes; it does not approve.",
+   "producers": [],
+   "registry_registered": false,
+   "resource_class": null,
+   "resource_id": "output-root-grant-registry",
+   "scope": null,
+   "unresolved_questions": [
+    "Does this registry's own write require a separate control-custody decision?",
+    "Which governed actor can approve and revoke entries?"
+   ]
+  },
+  {
+   "approval_evidence": null,
+   "candidate_evidence": [
+    "runtime/plan_registry.py:37-40",
+    "runtime/plan_registry.py:182-240",
+    "runtime/plan_registry.py:347",
+    "runtime/plan_registry.py:621-739",
+    "runtime/plan_registry.py:1351",
+    "runtime/plan_registry.py:1755"
+   ],
+   "candidate_owner": [
+    "runtime/plan_registry.py"
+   ],
+   "decision": "pending",
+   "decision_rule": "A candidate becomes the accountable owner only after a governed approval records an owner_approval_event_id for this resource_id. The matrix proposes; it does not approve.",
+   "producers": [],
+   "registry_registered": false,
+   "resource_class": null,
+   "resource_id": "plan-registry-state",
+   "scope": null,
+   "unresolved_questions": [
+    "Which subresources share one accountable authority?",
+    "What retention and history archive policy applies?",
+    "How does project processing-order ownership relate to repository registry ownership?"
+   ]
+  },
+  {
+   "approval_evidence": null,
+   "candidate_evidence": [
+    "runtime/project_intelligence.py:35",
+    "runtime/project_intelligence.py:2977-3002",
+    "runtime/project_intelligence.py:3352"
+   ],
+   "candidate_owner": [
+    "runtime/project_intelligence.py"
+   ],
+   "decision": "pending",
+   "decision_rule": "A candidate becomes the accountable owner only after a governed approval records an owner_approval_event_id for this resource_id. The matrix proposes; it does not approve.",
+   "producers": [],
+   "registry_registered": false,
+   "resource_class": null,
+   "resource_id": "project-intelligence-map",
+   "scope": null,
+   "unresolved_questions": [
+    "Which map files are canonical inputs versus derived outputs?",
+    "Who authorizes retention/deletion of history and lock records?",
+    "What is the verified rebuild procedure?"
+   ]
+  },
+  {
+   "approval_evidence": null,
+   "candidate_evidence": [
+    "runtime/provider_gateway.py:41",
+    "runtime/provider_gateway.py:1072"
+   ],
+   "candidate_owner": [
+    "runtime/provider_gateway.py"
+   ],
+   "decision": "pending",
+   "decision_rule": "A candidate becomes the accountable owner only after a governed approval records an owner_approval_event_id for this resource_id. The matrix proposes; it does not approve.",
+   "producers": [],
+   "registry_registered": false,
+   "resource_class": null,
+   "resource_id": "provider-routing-registry",
+   "scope": null,
+   "unresolved_questions": [
+    "Is provider_adapters actually written by this producer or only read?",
+    "Who owns route-scan regeneration and retention?",
+    "Which operation writes each file?"
+   ]
+  },
+  {
+   "approval_evidence": null,
+   "candidate_evidence": [
+    "runtime/release_campaign.py:27-29",
+    "runtime/release_certification.py:1296",
+    "runtime/release_certification.py:1500-1544",
+    "runtime/release_certification.py:1639-1661",
+    "runtime/release_preflight.py:34-39",
+    "runtime/release_process_custody.py:58-86"
+   ],
+   "candidate_owner": [
+    "runtime/release_campaign.py",
+    "runtime/release_certification.py",
+    "runtime/release_preflight.py",
+    "runtime/release_process_custody.py",
+    "runtime/release_artifacts.py"
+   ],
+   "decision": "pending",
+   "decision_rule": "A candidate becomes the accountable owner only after a governed approval records an owner_approval_event_id for this resource_id. The matrix proposes; it does not approve.",
+   "producers": [],
+   "registry_registered": false,
+   "resource_class": null,
+   "resource_id": "release-control-and-evidence",
+   "scope": null,
+   "unresolved_questions": [
+    "Which component reconciles each separate release store?",
+    "What is the approved retention and revocation authority for each artifact?",
+    "Which release-process resource is ephemeral versus durable?"
+   ]
+  },
+  {
+   "approval_evidence": null,
+   "candidate_evidence": [
+    "runtime/remote_provider_profiles.py:15",
+    "runtime/remote_provider_profiles.py:55"
+   ],
+   "candidate_owner": [],
+   "decision": "pending",
+   "decision_rule": "A candidate becomes the accountable owner only after a governed approval records an owner_approval_event_id for this resource_id. The matrix proposes; it does not approve.",
+   "producers": [],
+   "registry_registered": false,
+   "resource_class": null,
+   "resource_id": "remote-provider-profile-state",
+   "scope": null,
+   "unresolved_questions": [
+    "Which producer, if any, writes profiles.json?",
+    "Is the file authored configuration or generated state?"
+   ]
+  },
+  {
+   "approval_evidence": null,
+   "candidate_evidence": [
+    "runtime/semantic_entity.py:337-348",
+    "runtime/semantic_entity.py:550",
+    "runtime/semantic_entity.py:573"
+   ],
+   "candidate_owner": [
+    "runtime/semantic_entity.py"
+   ],
+   "decision": "pending",
+   "decision_rule": "A candidate becomes the accountable owner only after a governed approval records an owner_approval_event_id for this resource_id. The matrix proposes; it does not approve.",
+   "producers": [],
+   "registry_registered": false,
+   "resource_class": null,
+   "resource_id": "semantic-entity-registry",
+   "scope": null,
+   "unresolved_questions": [
+    "Who approves acceptance and supersession?",
+    "What retention/reclamation rule applies to retired entities?",
+    "Which readers treat this registry as authoritative?"
+   ]
+  },
+  {
+   "approval_evidence": null,
+   "candidate_evidence": [
+    "runtime/skill_studio.py:510",
+    "runtime/skill_studio.py:1082",
+    "runtime/skill_studio.py:1302-1337",
+    "runtime/skill_studio.py:1379-1394",
+    "runtime/skill_studio.py:1596-1600",
+    "runtime/skill_studio.py:1774-1821",
+    "runtime/skill_studio.py:1950-1958"
+   ],
+   "candidate_owner": [
+    "runtime/skill_studio.py"
+   ],
+   "decision": "pending",
+   "decision_rule": "A candidate becomes the accountable owner only after a governed approval records an owner_approval_event_id for this resource_id. The matrix proposes; it does not approve.",
+   "producers": [],
+   "registry_registered": false,
+   "resource_class": null,
+   "resource_id": "skill-studio-and-projections",
+   "scope": null,
+   "unresolved_questions": [
+    "What is the architectural role/owner of .px/skills?",
+    "Who authorizes source mutation, backup deletion, and projection regeneration?",
+    "Which exact outputs are canonical versus derived?"
+   ]
+  },
+  {
+   "approval_evidence": null,
+   "candidate_evidence": [
+    "runtime/source_boundary.py:49",
+    "runtime/source_boundary.py:364",
+    "runtime/source_freeze.py:46-47",
+    "runtime/source_freeze.py:172"
+   ],
+   "candidate_owner": [
+    "runtime/source_boundary.py",
+    "runtime/source_freeze.py"
+   ],
+   "decision": "pending",
+   "decision_rule": "A candidate becomes the accountable owner only after a governed approval records an owner_approval_event_id for this resource_id. The matrix proposes; it does not approve.",
+   "producers": [],
+   "registry_registered": false,
+   "resource_class": null,
+   "resource_id": "source-boundary-and-freeze",
+   "scope": null,
+   "unresolved_questions": [
+    "Who approves boundary changes versus freeze creation?",
+    "What archive retention/reclamation rule applies?",
+    "How are stale freeze pointers recovered?"
+   ]
+  },
+  {
+   "approval_evidence": null,
+   "candidate_evidence": [
+    "runtime/test_profiles.py:18-20",
+    "runtime/test_profiles.py:115",
+    "runtime/test_profiles.py:1224-1349",
+    "runtime/test_runner.py:186",
+    "runtime/cli.py:221-2405",
+    "runtime/verification_inputs.py:29"
+   ],
+   "candidate_owner": [
+    "runtime/test_profiles.py"
+   ],
+   "decision": "pending",
+   "decision_rule": "A candidate becomes the accountable owner only after a governed approval records an owner_approval_event_id for this resource_id. The matrix proposes; it does not approve.",
+   "producers": [],
+   "registry_registered": false,
+   "resource_class": null,
+   "resource_id": "test-profile-and-run-state",
+   "scope": null,
+   "unresolved_questions": [
+    "Which files are authored policy versus generated projections?",
+    "Who authorizes profile changes and index regeneration?",
+    "What exact cleanup boundary applies to test work?"
+   ]
+  },
+  {
+   "approval_evidence": null,
+   "candidate_evidence": [
+    "runtime/tie_experience.py:50",
+    "runtime/tie_experience.py:228-230",
+    "runtime/usage_memory.py:187-205",
+    "runtime/usage_memory.py:279",
+    "runtime/usage_memory.py:448-467",
+    "runtime/usage_memory.py:702"
+   ],
+   "candidate_owner": [
+    "runtime/tie_experience.py",
+    "runtime/usage_memory.py"
+   ],
+   "decision": "pending",
+   "decision_rule": "A candidate becomes the accountable owner only after a governed approval records an owner_approval_event_id for this resource_id. The matrix proposes; it does not approve.",
+   "producers": [],
+   "registry_registered": false,
+   "resource_class": null,
+   "resource_id": "tie-receipts-and-subject-usage-memory",
+   "scope": null,
+   "unresolved_questions": [
+    "Who owns each subject's usage log?",
+    "What retention and deletion policy applies to logs and migration receipts?",
+    "What locking guarantees cover cross-process appends and rollup replacement?"
+   ]
+  },
+  {
+   "approval_evidence": null,
+   "candidate_evidence": [
+    "runtime/workspace_manager.py:567-927",
+    "runtime/workspace_manager.py:2247",
+    "runtime/workspace_manager.py:2376",
+    "runtime/workspace_manager.py:2723-2728",
+    "runtime/workspace_manager.py:3100-3197"
+   ],
+   "candidate_owner": [
+    "runtime/workspace_manager.py"
+   ],
+   "decision": "pending",
+   "decision_rule": "A candidate becomes the accountable owner only after a governed approval records an owner_approval_event_id for this resource_id. The matrix proposes; it does not approve.",
+   "producers": [],
+   "registry_registered": false,
+   "resource_class": null,
+   "resource_id": "workspace-and-project-control-state",
+   "scope": null,
+   "unresolved_questions": [
+    "Which project metadata is authoritative and who reconciles it?",
+    "Who approves rollback, quarantine, and deletion?",
+    "How do project-local and central tracking roots coordinate concurrent updates?"
+   ]
+  },
+  {
+   "approval_evidence": null,
+   "candidate_evidence": [
+    "runtime/project_control_plane.py:92-104",
+    "runtime/project_control_plane.py:424-435",
+    "runtime/project_control_plane.py:914-970"
+   ],
+   "candidate_owner": [
+    "runtime/project_control_plane.py"
+   ],
+   "decision": "pending",
+   "decision_rule": "A candidate becomes the accountable owner only after a governed approval records an owner_approval_event_id for this resource_id. The matrix proposes; it does not approve.",
+   "producers": [],
+   "registry_registered": false,
+   "resource_class": null,
+   "resource_id": "project-control-transactions",
+   "scope": null,
+   "unresolved_questions": [
+    "Which project component owns each supplied target?",
+    "Who authorizes rollback and quarantine reclamation?",
+    "How long are committed and failed transaction journals retained?"
+   ]
+  },
+  {
+   "approval_evidence": null,
+   "candidate_evidence": [
+    "runtime/studio_models.py:38-47",
+    "runtime/studio_models.py:216-229",
+    "runtime/studio_models.py:1189-1247",
+    "runtime/skill_studio.py:510",
+    "runtime/skill_studio.py:1082",
+    "runtime/skill_studio.py:1379-1394"
+   ],
+   "candidate_owner": [
+    "runtime/studio_models.py",
+    "runtime/skill_studio.py"
+   ],
+   "decision": "pending",
+   "decision_rule": "A candidate becomes the accountable owner only after a governed approval records an owner_approval_event_id for this resource_id. The matrix proposes; it does not approve.",
+   "producers": [],
+   "registry_registered": false,
+   "resource_class": null,
+   "resource_id": "studio-authored-skill-revisions",
+   "scope": null,
+   "unresolved_questions": [
+    "Who owns authored skill sources versus versioned revision records?",
+    "What retention/reclamation rules apply to rejected/retired revisions and backups?",
+    "Which writes are authorized by Skill Studio admission versus other callers?"
+   ]
+  },
+  {
+   "approval_evidence": null,
+   "candidate_evidence": [
+    "runtime/tool_intake.py:363-402",
+    "runtime/workspace_manager.py:567-591",
+    "runtime/engineering_lifecycle.py:30"
+   ],
+   "candidate_owner": [
+    "runtime/tool_intake.py",
+    "runtime/workspace_manager.py"
+   ],
+   "decision": "pending",
+   "decision_rule": "A candidate becomes the accountable owner only after a governed approval records an owner_approval_event_id for this resource_id. The matrix proposes; it does not approve.",
+   "producers": [],
+   "registry_registered": false,
+   "resource_class": null,
+   "resource_id": "project-management-tool-intake",
+   "scope": null,
+   "unresolved_questions": [
+    "Who reconciles project-management state with workspace tracking?",
+    "What is the retention policy for tool-intake records/history?",
+    "Who may authorize rollback or deletion?"
+   ]
+  },
+  {
+   "approval_evidence": null,
+   "candidate_evidence": [
+    "runtime/world_state.py:22",
+    "runtime/world_state.py:188",
+    "runtime/world_state.py:261-277"
+   ],
+   "candidate_owner": [
+    "runtime/world_state.py"
+   ],
+   "decision": "pending",
+   "decision_rule": "A candidate becomes the accountable owner only after a governed approval records an owner_approval_event_id for this resource_id. The matrix proposes; it does not approve.",
+   "producers": [],
+   "registry_registered": false,
+   "resource_class": null,
+   "resource_id": "world-state-projection",
+   "scope": null,
+   "unresolved_questions": [
+    "Are all projection inputs authoritative and complete?",
+    "Who owns regeneration and stale projection recovery?",
+    "What retention/reclamation policy applies?"
+   ]
+  },
+  {
+   "approval_evidence": null,
+   "candidate_evidence": [
+    "runtime/yaml_subject_files.py:41",
+    "runtime/yaml_subject_files.py:48"
+   ],
+   "candidate_owner": [
+    "runtime/yaml_subject_files.py"
+   ],
+   "decision": "pending",
+   "decision_rule": "A candidate becomes the accountable owner only after a governed approval records an owner_approval_event_id for this resource_id. The matrix proposes; it does not approve.",
+   "producers": [],
+   "registry_registered": false,
+   "resource_class": null,
+   "resource_id": "usage-memory-manifest",
+   "scope": null,
+   "unresolved_questions": [
+    "Which exact files are written and read back?",
+    "Is the manifest authored, generated, or an import receipt?",
+    "Who approves lifecycle and retention?"
+   ]
+  },
+  {
+   "approval_evidence": null,
+   "candidate_evidence": [
+    "runtime/evidence_custody.py:219-286",
+    "runtime/gremlin/containment.py:691-697",
+    "runtime/gremlin/deviation.py:95-120",
+    "runtime/secure_publish.py:69-175",
+    "runtime/transcript_analysis.py:261-291",
+    "runtime/transcript_analysis.py:575-576"
+   ],
+   "candidate_owner": [],
+   "decision": "pending",
+   "decision_rule": "A candidate becomes the accountable owner only after a governed approval records an owner_approval_event_id for this resource_id. The matrix proposes; it does not approve.",
+   "producers": [],
+   "registry_registered": false,
+   "resource_class": null,
+   "resource_id": "delegated-persistent-mutation",
+   "scope": null,
+   "unresolved_questions": [
+    "Which caller/authority owns each destination?",
+    "Which outputs are append-only evidence versus replaceable output?",
+    "What cleanup/recovery policy applies to partial publication?"
+   ]
+  }
+ ],
+ "gap_id": "PX-OS-1067",
+ "generated_at_utc": "2026-11-03T11:26:21Z",
+ "schema_version": "px.b7-owner-decision-register/1.0",
+ "source_matrix": "px-os-1067-runtime-state-ownership-matrix.json",
+ "source_matrix_sha256": "e3a476353957ff639595ec0a387925e763eaa53ebe22cc68e36328d1f6217043",
+ "totals": {
+  "approved": 0,
+  "pending": 32,
+  "rejected": 0,
+  "resources": 32
+ }
+}

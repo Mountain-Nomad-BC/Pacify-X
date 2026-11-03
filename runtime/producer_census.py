@@ -33,9 +33,18 @@ from typing import Any
 SCHEMA_VERSION = "px.producer-census/1.0"
 
 
-def census(root: Path) -> dict[str, Any]:
-    """Compute the canonical census for `root`. Deterministic; no filesystem writes."""
-    from .effect_surface import discover_effect_surfaces, validate_effect_surfaces
+def census(root: Path, producer_paths: list[str] | None = None) -> dict[str, Any]:
+    """Compute the canonical census for `root`. Deterministic; no filesystem writes.
+
+    `producer_paths` names a population discovered by an evidence probe. When given, the
+    effect image is rebuilt from exactly those files using the same classifier, so a
+    producer-scoped audit can be replayed without claiming it is a full repository scan.
+    """
+    from .effect_surface import (
+        classify_source_file,
+        discover_effect_surfaces,
+        validate_effect_surfaces,
+    )
     from .mutating_producer_registry import (
         build_registry,
         default_classification,
@@ -43,7 +52,17 @@ def census(root: Path) -> dict[str, Any]:
     )
 
     root = Path(root).resolve()
-    records = discover_effect_surfaces(root)
+    records = (
+        discover_effect_surfaces(root)
+        if producer_paths is None
+        else [
+            record
+            for relative in producer_paths
+            for record in classify_source_file(
+                (root / relative).read_text(encoding="utf-8-sig"), relative
+            )
+        ]
+    )
     all_producers = sorted({str(record["path"]).replace("\\", "/") for record in records})
     mutating = discover_mutating_producers(root, records=records)
 
@@ -93,6 +112,10 @@ def census(root: Path) -> dict[str, Any]:
         "gate_findings": len(gate["errors"]),
         "duplicate_effect_ids": duplicates,
         "unresolved_paths": sorted(unresolved),
+        # A retained, typed population lets a later pass re-audit exactly the producers that
+        # an evidence artifact covered, without re-deriving that set from a mutable census.
+        "producer_paths": all_producers,
+        "mutating_producer_paths": sorted(mutating),
     }
 
 

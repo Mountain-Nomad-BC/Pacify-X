@@ -725,95 +725,110 @@ def discover_effect_surfaces(root: Path) -> list[dict[str, Any]]:
             or relative.startswith("docs/repair/evidence/")
         ):
             continue
-        tree = ast.parse(path.read_text(encoding="utf-8-sig"), filename=relative)
-        guarded_projection_calls = _guarded_projection_calls(tree, relative)
-        stream_effect = _stream_effect_resolver(tree)
-        pure_string_replace = _pure_string_replace_resolver(tree)
-        # Per-file occurrence counter for locator collisions; see the id comment below.
-        locator_ordinals: dict[str, int] = {}
-        for node in ast.walk(tree):
-            if not isinstance(node, ast.Call):
-                continue
-            call = _call_name(node)
-            leaf = call.rsplit(".", 1)[-1]
-            stream_diagnostic = stream_effect(node)
-            if pure_string_replace(node):
-                continue
-            if call in PROCESS_CALLS:
-                effect = "process"
-            elif call.startswith(NETWORK_PREFIXES):
-                effect = "network"
-            elif call in guarded_projection_calls:
-                effect = "filesystem_mutation"
-            elif call in FILE_COPY_CALLS or call == "os.remove":
-                effect = "filesystem_mutation"
-            elif leaf in MUTATION_NAMES:
-                effect = "filesystem_mutation"
-            elif leaf in {"copyfile", "copyfileobj"} and _is_shutil_module_receiver(call, tree):
-                # `shutil.copyfile` / `shutil.copyfileobj` write bytes at the destination
-                # and were previously absent from the census in every qualified form.
-                # The bare leaf is admitted only when this module imports shutil under
-                # exactly that name and never rebinds it; a shadowed `shutil` renders
-                # identically and stays a caller-defined call with unknown behavior.
-                effect = "filesystem_mutation"
-            elif leaf == "copy" and _path_receiver_copy(node):
-                effect = "filesystem_mutation"
-            elif stream_diagnostic is not None:
-                effect = "filesystem_mutation"
-            else:
-                continue
-            keywords = {
-                str(item.arg): ast.unparse(item.value)
-                for item in node.keywords
-                if item.arg
+        records.extend(
+            classify_source_file(path.read_text(encoding="utf-8-sig"), relative)
+        )
+    return records
+
+
+def classify_source_file(source: str, relative: str) -> list[dict[str, Any]]:
+    """Classify one source file exactly as the repository scan does.
+
+    `discover_effect_surfaces` delegates here per file, so a caller that must audit a
+    specific population (for example a replayed evidence probe) produces the same effect
+    image as a full scan without re-implementing any recognizer. The caller owns all
+    inclusion decisions; this function classifies whatever it is given.
+    """
+    records: list[dict[str, Any]] = []
+    tree = ast.parse(source, filename=relative)
+    guarded_projection_calls = _guarded_projection_calls(tree, relative)
+    stream_effect = _stream_effect_resolver(tree)
+    pure_string_replace = _pure_string_replace_resolver(tree)
+    # Per-file occurrence counter for locator collisions; see the id comment below.
+    locator_ordinals: dict[str, int] = {}
+    for node in ast.walk(tree):
+        if not isinstance(node, ast.Call):
+            continue
+        call = _call_name(node)
+        leaf = call.rsplit(".", 1)[-1]
+        stream_diagnostic = stream_effect(node)
+        if pure_string_replace(node):
+            continue
+        if call in PROCESS_CALLS:
+            effect = "process"
+        elif call.startswith(NETWORK_PREFIXES):
+            effect = "network"
+        elif call in guarded_projection_calls:
+            effect = "filesystem_mutation"
+        elif call in FILE_COPY_CALLS or call == "os.remove":
+            effect = "filesystem_mutation"
+        elif leaf in MUTATION_NAMES:
+            effect = "filesystem_mutation"
+        elif leaf in {"copyfile", "copyfileobj"} and _is_shutil_module_receiver(call, tree):
+            # `shutil.copyfile` / `shutil.copyfileobj` write bytes at the destination
+            # and were previously absent from the census in every qualified form.
+            # The bare leaf is admitted only when this module imports shutil under
+            # exactly that name and never rebinds it; a shadowed `shutil` renders
+            # identically and stays a caller-defined call with unknown behavior.
+            effect = "filesystem_mutation"
+        elif leaf == "copy" and _path_receiver_copy(node):
+            effect = "filesystem_mutation"
+        elif stream_diagnostic is not None:
+            effect = "filesystem_mutation"
+        else:
+            continue
+        keywords = {
+            str(item.arg): ast.unparse(item.value)
+            for item in node.keywords
+            if item.arg
+        }
+        process_timeout = keywords.get("timeout")
+        if call == "subprocess.Popen":
+            process_timeout = _popen_communication_timeout(tree, node)
+            if relative == RESOURCE_LIFECYCLE_OWNER:
+                process_timeout = "owned_resource_lifecycle_process_tree_receipt"
+            elif relative in OWNED_PROCESS_SUPERVISORS:
+                process_timeout = OWNED_PROCESS_SUPERVISORS[relative]
+        # Identity is a source locator, not an interpreter serialization.
+        # ast.dump() changes when Python adds AST fields (for example
+        # type_params in 3.12), which made the same bytes produce different
+        # ownership IDs across supported runtimes.
+        #
+        # A chained call such as `a.replace(x).replace(y)` reports distinct calls
+        # with the same line *and* column, so a bare path:line:col:call locator
+        # collided and two ownership records shared one id. The locator keeps its
+        # meaning and gains a deterministic occurrence ordinal scoped to that
+        # locator, which is `ast.walk` order (breadth-first from the module, and
+        # therefore stable for identical bytes on a supported interpreter).
+        locator = f"{relative}:{node.lineno}:{node.col_offset}:{call}"
+        ordinal = locator_ordinals.get(locator, 0)
+        locator_ordinals[locator] = ordinal + 1
+        semantic = locator if ordinal == 0 else f"{locator}#{ordinal}"
+        records.append(
+            {
+                "id": hashlib.sha256(semantic.encode()).hexdigest()[:20],
+                "path": relative,
+                "line": node.lineno,
+                "call": call,
+                "effect": effect,
+                "owner": relative.split("/", 1)[0],
+                "policy": (
+                    "policies/resource-lifecycle-retention.json"
+                    if relative == RESOURCE_LIFECYCLE_OWNER
+                    else "policies/contained-execution.json"
+                    if effect in {"process", "network"}
+                    else RECOVERABLE_RECLAMATION_OWNERS[relative]
+                    if relative in RECOVERABLE_RECLAMATION_OWNERS
+                    else "policies/artifact-preservation.json"
+                ),
+                "approval": "required_for_material_or_external_effects",
+                "containment": "validated_path_and_bounded_scope",
+                "timeout": process_timeout if effect == "process" else None,
+                "shell": keywords.get("shell"),
+                "destructive": leaf in DESTRUCTIVE_NAMES or call == "os.remove",
+                **({"stream_discovery": stream_diagnostic} if stream_diagnostic is not None else {}),
             }
-            process_timeout = keywords.get("timeout")
-            if call == "subprocess.Popen":
-                process_timeout = _popen_communication_timeout(tree, node)
-                if relative == RESOURCE_LIFECYCLE_OWNER:
-                    process_timeout = "owned_resource_lifecycle_process_tree_receipt"
-                elif relative in OWNED_PROCESS_SUPERVISORS:
-                    process_timeout = OWNED_PROCESS_SUPERVISORS[relative]
-            # Identity is a source locator, not an interpreter serialization.
-            # ast.dump() changes when Python adds AST fields (for example
-            # type_params in 3.12), which made the same bytes produce different
-            # ownership IDs across supported runtimes.
-            #
-            # A chained call such as `a.replace(x).replace(y)` reports distinct calls
-            # with the same line *and* column, so a bare path:line:col:call locator
-            # collided and two ownership records shared one id. The locator keeps its
-            # meaning and gains a deterministic occurrence ordinal scoped to that
-            # locator, which is `ast.walk` order (breadth-first from the module, and
-            # therefore stable for identical bytes on a supported interpreter).
-            locator = f"{relative}:{node.lineno}:{node.col_offset}:{call}"
-            ordinal = locator_ordinals.get(locator, 0)
-            locator_ordinals[locator] = ordinal + 1
-            semantic = locator if ordinal == 0 else f"{locator}#{ordinal}"
-            records.append(
-                {
-                    "id": hashlib.sha256(semantic.encode()).hexdigest()[:20],
-                    "path": relative,
-                    "line": node.lineno,
-                    "call": call,
-                    "effect": effect,
-                    "owner": relative.split("/", 1)[0],
-                    "policy": (
-                        "policies/resource-lifecycle-retention.json"
-                        if relative == RESOURCE_LIFECYCLE_OWNER
-                        else "policies/contained-execution.json"
-                        if effect in {"process", "network"}
-                        else RECOVERABLE_RECLAMATION_OWNERS[relative]
-                        if relative in RECOVERABLE_RECLAMATION_OWNERS
-                        else "policies/artifact-preservation.json"
-                    ),
-                    "approval": "required_for_material_or_external_effects",
-                    "containment": "validated_path_and_bounded_scope",
-                    "timeout": process_timeout if effect == "process" else None,
-                    "shell": keywords.get("shell"),
-                    "destructive": leaf in DESTRUCTIVE_NAMES or call == "os.remove",
-                    **({"stream_discovery": stream_diagnostic} if stream_diagnostic is not None else {}),
-                }
-            )
+        )
     return records
 
 
