@@ -1,9 +1,35 @@
 {
+ "accepted_at_utc": "2026-11-03",
+ "accepted_by": "Ben (repository owner)",
  "candidate_registry": "px-os-1067-runtime-state-ownership-registry-candidate.json",
- "decision_authority": "Governance only. This register is executable: flipping a row to `approved` without a recorded approval event is a defect, and `validate_resource_candidate` refuses a candidate record that carries one.",
+ "decision_authority": "Owner decisions recorded. Registration of an accountable owner is a separate act: a resource group's candidate writer is the accepted reconciling authority, but the group contains that writer, so no component may be registered as the owner of its own group's state without violating the prohibition on self-ownership. Approval states authority; it does not create a self-authorizing writer.",
  "decisions": [
   {
-   "approval_evidence": null,
+   "approval_evidence": {
+    "decided_at_utc": "2026-11-03",
+    "decided_by": "Ben (repository owner)",
+    "decision_source": "Direct instruction in session 2026-11-03: accept all resource-owner decisions, continue through the destination-guarantee path, then complete the rest.",
+    "ledger_anchor": {
+     "artifact": "registry/operational_gap_ledger.jsonl",
+     "artifact_sha256_before_acceptance": "23eec8578123453f4d2dcef2eae458396c1e10172ff35b800f418aa129aef950"
+    },
+    "rationale": "The candidate owner is the verified writer already recorded in the resource's own provenance. Accepted as the accountable reconciling authority for that resource group; this acceptance does not confer standing write authority and does not authorize deletion.",
+    "writer_evidence": [
+     "runtime/agent_runtime.py",
+     "runtime/cli.py",
+     "runtime/knowledge_foundry.py",
+     "runtime/personal_record_store.py",
+     "runtime/plan_registry.py",
+     "runtime/process_supervisor.py",
+     "runtime/resource_lifecycle.py",
+     "runtime/studio_session_worker.py",
+     "runtime/studio_worker_launch.py",
+     "runtime/test_runner.py",
+     "runtime/tie_experience.py",
+     "runtime/usage_memory.py",
+     "runtime/workflow_studio.py"
+    ]
+   },
    "candidate_evidence": [
     "runtime/resource_lifecycle.py",
     "runtime/cli.py:221-2405",
@@ -17,7 +43,12 @@
    "candidate_owner": [
     "runtime/resource_lifecycle.py"
    ],
-   "decision": "pending",
+   "custodian_evidence": {
+    "candidates": [],
+    "custodian": null,
+    "status": "none"
+   },
+   "decision": "approved",
    "decision_rule": "A candidate becomes the accountable owner only after a governed approval records an owner_approval_event_id for this resource_id. The matrix proposes; it does not approve.",
    "producers": [],
    "registry_registered": false,
@@ -31,7 +62,21 @@
    ]
   },
   {
-   "approval_evidence": null,
+   "approval_evidence": {
+    "decided_at_utc": "2026-11-03",
+    "decided_by": "Ben (repository owner)",
+    "decision_source": "Direct instruction in session 2026-11-03: accept all resource-owner decisions, continue through the destination-guarantee path, then complete the rest.",
+    "ledger_anchor": {
+     "artifact": "registry/operational_gap_ledger.jsonl",
+     "artifact_sha256_before_acceptance": "23eec8578123453f4d2dcef2eae458396c1e10172ff35b800f418aa129aef950"
+    },
+    "rationale": "The candidate owner is the verified writer already recorded in the resource's own provenance. Accepted as the accountable reconciling authority for that resource group; this acceptance does not confer standing write authority and does not authorize deletion.",
+    "writer_evidence": [
+     "runtime/agent_runtime.py",
+     "runtime/studio_models.py",
+     "runtime/studio_session_worker.py"
+    ]
+   },
    "candidate_evidence": [
     "runtime/agent_runtime.py:216",
     "runtime/agent_runtime.py:551-585",
@@ -42,7 +87,14 @@
     "runtime/agent_runtime.py",
     "runtime/studio_models.py"
    ],
-   "decision": "pending",
+   "custodian_evidence": {
+    "candidates": [
+     "runtime/studio_api.py"
+    ],
+    "custodian": "runtime/studio_api.py",
+    "status": "registered"
+   },
+   "decision": "approved",
    "decision_rule": "A candidate becomes the accountable owner only after a governed approval records an owner_approval_event_id for this resource_id. The matrix proposes; it does not approve.",
    "producers": [],
    "registry_registered": false,
@@ -56,7 +108,21 @@
    ]
   },
   {
-   "approval_evidence": null,
+   "approval_evidence": {
+    "decided_at_utc": "2026-11-03",
+    "decided_by": "Ben (repository owner)",
+    "decision_source": "Direct instruction in session 2026-11-03: accept all resource-owner decisions, continue through the destination-guarantee path, then complete the rest.",
+    "ledger_anchor": {
+     "artifact": "registry/operational_gap_ledger.jsonl",
+     "artifact_sha256_before_acceptance": "23eec8578123453f4d2dcef2eae458396c1e10172ff35b800f418aa129aef950"
+    },
+    "rationale": "The candidate owner is the verified writer already recorded in the resource's own provenance. Accepted as the accountable reconciling authority for that resource group; this acceptance does not confer standing write authority and does not authorize deletion.",
+    "writer_evidence": [
+     "runtime/studio_models.py",
+     "runtime/studio_session_worker.py",
+     "runtime/workflow_studio.py"
+    ]
+   },
    "candidate_evidence": [
     "runtime/workflow_studio.py:369",
     "runtime/studio_api.py:1317",
@@ -66,7 +132,14 @@
     "runtime/workflow_studio.py",
     "runtime/studio_models.py"
    ],
-   "decision": "pending",
+   "custodian_evidence": {
+    "candidates": [
+     "runtime/studio_api.py"
+    ],
+    "custodian": "runtime/studio_api.py",
+    "status": "registered"
+   },
+   "decision": "approved",
    "decision_rule": "A candidate becomes the accountable owner only after a governed approval records an owner_approval_event_id for this resource_id. The matrix proposes; it does not approve.",
    "producers": [],
    "registry_registered": false,
@@ -80,7 +153,19 @@
    ]
   },
   {
-   "approval_evidence": null,
+   "approval_evidence": {
+    "decided_at_utc": "2026-11-03",
+    "decided_by": "Ben (repository owner)",
+    "decision_source": "Direct instruction in session 2026-11-03: accept all resource-owner decisions, continue through the destination-guarantee path, then complete the rest.",
+    "ledger_anchor": {
+     "artifact": "registry/operational_gap_ledger.jsonl",
+     "artifact_sha256_before_acceptance": "23eec8578123453f4d2dcef2eae458396c1e10172ff35b800f418aa129aef950"
+    },
+    "rationale": "The candidate owner is the verified writer already recorded in the resource's own provenance. Accepted as the accountable reconciling authority for that resource group; this acceptance does not confer standing write authority and does not authorize deletion.",
+    "writer_evidence": [
+     "runtime/studio_models.py"
+    ]
+   },
    "candidate_evidence": [
     "runtime/studio_models.py:38-47",
     "runtime/studio_models.py:216-229",
@@ -90,7 +175,14 @@
    "candidate_owner": [
     "runtime/studio_models.py"
    ],
-   "decision": "pending",
+   "custodian_evidence": {
+    "candidates": [
+     "runtime/semantic_orchestration.py"
+    ],
+    "custodian": "runtime/semantic_orchestration.py",
+    "status": "registered"
+   },
+   "decision": "approved",
    "decision_rule": "A candidate becomes the accountable owner only after a governed approval records an owner_approval_event_id for this resource_id. The matrix proposes; it does not approve.",
    "producers": [],
    "registry_registered": false,
@@ -104,7 +196,19 @@
    ]
   },
   {
-   "approval_evidence": null,
+   "approval_evidence": {
+    "decided_at_utc": "2026-11-03",
+    "decided_by": "Ben (repository owner)",
+    "decision_source": "Direct instruction in session 2026-11-03: accept all resource-owner decisions, continue through the destination-guarantee path, then complete the rest.",
+    "ledger_anchor": {
+     "artifact": "registry/operational_gap_ledger.jsonl",
+     "artifact_sha256_before_acceptance": "23eec8578123453f4d2dcef2eae458396c1e10172ff35b800f418aa129aef950"
+    },
+    "rationale": "The candidate owner is the verified writer already recorded in the resource's own provenance. Accepted as the accountable reconciling authority for that resource group; this acceptance does not confer standing write authority and does not authorize deletion.",
+    "writer_evidence": [
+     "runtime/agent_fleet_controls.py"
+    ]
+   },
    "candidate_evidence": [
     "runtime/agent_fleet_controls.py:296-401",
     "runtime/agent_fleet_controls.py:455-456",
@@ -113,7 +217,12 @@
    "candidate_owner": [
     "runtime/agent_fleet_controls.py"
    ],
-   "decision": "pending",
+   "custodian_evidence": {
+    "candidates": [],
+    "custodian": null,
+    "status": "none"
+   },
+   "decision": "approved",
    "decision_rule": "A candidate becomes the accountable owner only after a governed approval records an owner_approval_event_id for this resource_id. The matrix proposes; it does not approve.",
    "producers": [],
    "registry_registered": false,
@@ -127,7 +236,19 @@
    ]
   },
   {
-   "approval_evidence": null,
+   "approval_evidence": {
+    "decided_at_utc": "2026-11-03",
+    "decided_by": "Ben (repository owner)",
+    "decision_source": "Direct instruction in session 2026-11-03: accept all resource-owner decisions, continue through the destination-guarantee path, then complete the rest.",
+    "ledger_anchor": {
+     "artifact": "registry/operational_gap_ledger.jsonl",
+     "artifact_sha256_before_acceptance": "23eec8578123453f4d2dcef2eae458396c1e10172ff35b800f418aa129aef950"
+    },
+    "rationale": "The candidate owner is the verified writer already recorded in the resource's own provenance. Accepted as the accountable reconciling authority for that resource group; this acceptance does not confer standing write authority and does not authorize deletion.",
+    "writer_evidence": [
+     "runtime/certification_state.py"
+    ]
+   },
    "candidate_evidence": [
     "runtime/certification_state.py:33",
     "runtime/certification_state.py:80",
@@ -136,7 +257,14 @@
    "candidate_owner": [
     "runtime/certification_state.py"
    ],
-   "decision": "pending",
+   "custodian_evidence": {
+    "candidates": [
+     "runtime/release_boundary.py"
+    ],
+    "custodian": "runtime/release_boundary.py",
+    "status": "registered"
+   },
+   "decision": "approved",
    "decision_rule": "A candidate becomes the accountable owner only after a governed approval records an owner_approval_event_id for this resource_id. The matrix proposes; it does not approve.",
    "producers": [],
    "registry_registered": false,
@@ -150,7 +278,19 @@
    ]
   },
   {
-   "approval_evidence": null,
+   "approval_evidence": {
+    "decided_at_utc": "2026-11-03",
+    "decided_by": "Ben (repository owner)",
+    "decision_source": "Direct instruction in session 2026-11-03: accept all resource-owner decisions, continue through the destination-guarantee path, then complete the rest.",
+    "ledger_anchor": {
+     "artifact": "registry/operational_gap_ledger.jsonl",
+     "artifact_sha256_before_acceptance": "23eec8578123453f4d2dcef2eae458396c1e10172ff35b800f418aa129aef950"
+    },
+    "rationale": "The candidate owner is the verified writer already recorded in the resource's own provenance. Accepted as the accountable reconciling authority for that resource group; this acceptance does not confer standing write authority and does not authorize deletion.",
+    "writer_evidence": [
+     "runtime/execution_placement.py"
+    ]
+   },
    "candidate_evidence": [
     "runtime/execution_placement.py:158",
     "runtime/execution_placement.py:174-181",
@@ -160,7 +300,12 @@
    "candidate_owner": [
     "runtime/execution_placement.py"
    ],
-   "decision": "pending",
+   "custodian_evidence": {
+    "candidates": [],
+    "custodian": null,
+    "status": "none"
+   },
+   "decision": "approved",
    "decision_rule": "A candidate becomes the accountable owner only after a governed approval records an owner_approval_event_id for this resource_id. The matrix proposes; it does not approve.",
    "producers": [],
    "registry_registered": false,
@@ -174,7 +319,19 @@
    ]
   },
   {
-   "approval_evidence": null,
+   "approval_evidence": {
+    "decided_at_utc": "2026-11-03",
+    "decided_by": "Ben (repository owner)",
+    "decision_source": "Direct instruction in session 2026-11-03: accept all resource-owner decisions, continue through the destination-guarantee path, then complete the rest.",
+    "ledger_anchor": {
+     "artifact": "registry/operational_gap_ledger.jsonl",
+     "artifact_sha256_before_acceptance": "23eec8578123453f4d2dcef2eae458396c1e10172ff35b800f418aa129aef950"
+    },
+    "rationale": "The candidate owner is the verified writer already recorded in the resource's own provenance. Accepted as the accountable reconciling authority for that resource group; this acceptance does not confer standing write authority and does not authorize deletion.",
+    "writer_evidence": [
+     "runtime/knowledge_foundry.py"
+    ]
+   },
    "candidate_evidence": [
     "runtime/knowledge_foundry.py:806",
     "runtime/knowledge_foundry.py:854",
@@ -184,7 +341,12 @@
    "candidate_owner": [
     "runtime/knowledge_foundry.py"
    ],
-   "decision": "pending",
+   "custodian_evidence": {
+    "candidates": [],
+    "custodian": null,
+    "status": "none"
+   },
+   "decision": "approved",
    "decision_rule": "A candidate becomes the accountable owner only after a governed approval records an owner_approval_event_id for this resource_id. The matrix proposes; it does not approve.",
    "producers": [],
    "registry_registered": false,
@@ -198,7 +360,19 @@
    ]
   },
   {
-   "approval_evidence": null,
+   "approval_evidence": {
+    "decided_at_utc": "2026-11-03",
+    "decided_by": "Ben (repository owner)",
+    "decision_source": "Direct instruction in session 2026-11-03: accept all resource-owner decisions, continue through the destination-guarantee path, then complete the rest.",
+    "ledger_anchor": {
+     "artifact": "registry/operational_gap_ledger.jsonl",
+     "artifact_sha256_before_acceptance": "23eec8578123453f4d2dcef2eae458396c1e10172ff35b800f418aa129aef950"
+    },
+    "rationale": "The candidate owner is the verified writer already recorded in the resource's own provenance. Accepted as the accountable reconciling authority for that resource group; this acceptance does not confer standing write authority and does not authorize deletion.",
+    "writer_evidence": [
+     "runtime/retrieval_generation.py"
+    ]
+   },
    "candidate_evidence": [
     "runtime/retrieval_generation.py:156-202",
     "runtime/retrieval_generation.py:225-290",
@@ -207,7 +381,14 @@
    "candidate_owner": [
     "runtime/retrieval_generation.py"
    ],
-   "decision": "pending",
+   "custodian_evidence": {
+    "candidates": [
+     "runtime/admitted_fabric_integrations.py"
+    ],
+    "custodian": "runtime/admitted_fabric_integrations.py",
+    "status": "registered"
+   },
+   "decision": "approved",
    "decision_rule": "A candidate becomes the accountable owner only after a governed approval records an owner_approval_event_id for this resource_id. The matrix proposes; it does not approve.",
    "producers": [],
    "registry_registered": false,
@@ -229,8 +410,13 @@
     "runtime/recovery.py:497-543"
    ],
    "candidate_owner": [],
+   "custodian_evidence": {
+    "candidates": [],
+    "custodian": null,
+    "status": "none"
+   },
    "decision": "pending",
-   "decision_rule": "A candidate becomes the accountable owner only after a governed approval records an owner_approval_event_id for this resource_id. The matrix proposes; it does not approve.",
+   "decision_rule": "Candidate is not a verified writer of this resource; needs a named accountable component before approval.",
    "producers": [],
    "registry_registered": false,
    "resource_class": null,
@@ -243,7 +429,19 @@
    ]
   },
   {
-   "approval_evidence": null,
+   "approval_evidence": {
+    "decided_at_utc": "2026-11-03",
+    "decided_by": "Ben (repository owner)",
+    "decision_source": "Direct instruction in session 2026-11-03: accept all resource-owner decisions, continue through the destination-guarantee path, then complete the rest.",
+    "ledger_anchor": {
+     "artifact": "registry/operational_gap_ledger.jsonl",
+     "artifact_sha256_before_acceptance": "23eec8578123453f4d2dcef2eae458396c1e10172ff35b800f418aa129aef950"
+    },
+    "rationale": "The candidate owner is the verified writer already recorded in the resource's own provenance. Accepted as the accountable reconciling authority for that resource group; this acceptance does not confer standing write authority and does not authorize deletion.",
+    "writer_evidence": [
+     "runtime/memory_intelligence.py"
+    ]
+   },
    "candidate_evidence": [
     "runtime/memory_intelligence.py:208",
     "runtime/memory_intelligence.py:816-822",
@@ -254,7 +452,15 @@
    "candidate_owner": [
     "runtime/memory_intelligence.py"
    ],
-   "decision": "pending",
+   "custodian_evidence": {
+    "candidates": [
+     "runtime/memory_vault.py",
+     "runtime/workspace_manager.py"
+    ],
+    "custodian": null,
+    "status": "ambiguous"
+   },
+   "decision": "approved",
    "decision_rule": "A candidate becomes the accountable owner only after a governed approval records an owner_approval_event_id for this resource_id. The matrix proposes; it does not approve.",
    "producers": [],
    "registry_registered": false,
@@ -268,7 +474,20 @@
    ]
   },
   {
-   "approval_evidence": null,
+   "approval_evidence": {
+    "decided_at_utc": "2026-11-03",
+    "decided_by": "Ben (repository owner)",
+    "decision_source": "Direct instruction in session 2026-11-03: accept all resource-owner decisions, continue through the destination-guarantee path, then complete the rest.",
+    "ledger_anchor": {
+     "artifact": "registry/operational_gap_ledger.jsonl",
+     "artifact_sha256_before_acceptance": "23eec8578123453f4d2dcef2eae458396c1e10172ff35b800f418aa129aef950"
+    },
+    "rationale": "The candidate owner is the verified writer already recorded in the resource's own provenance. Accepted as the accountable reconciling authority for that resource group; this acceptance does not confer standing write authority and does not authorize deletion.",
+    "writer_evidence": [
+     "runtime/memory_vault.py",
+     "runtime/workspace_manager.py"
+    ]
+   },
    "candidate_evidence": [
     "runtime/memory_vault.py:415-419",
     "runtime/memory_vault.py:734-785",
@@ -278,7 +497,14 @@
     "runtime/memory_vault.py",
     "runtime/workspace_manager.py"
    ],
-   "decision": "pending",
+   "custodian_evidence": {
+    "candidates": [
+     "runtime/memory_intelligence.py"
+    ],
+    "custodian": "runtime/memory_intelligence.py",
+    "status": "registered"
+   },
+   "decision": "approved",
    "decision_rule": "A candidate becomes the accountable owner only after a governed approval records an owner_approval_event_id for this resource_id. The matrix proposes; it does not approve.",
    "producers": [],
    "registry_registered": false,
@@ -292,7 +518,19 @@
    ]
   },
   {
-   "approval_evidence": null,
+   "approval_evidence": {
+    "decided_at_utc": "2026-11-03",
+    "decided_by": "Ben (repository owner)",
+    "decision_source": "Direct instruction in session 2026-11-03: accept all resource-owner decisions, continue through the destination-guarantee path, then complete the rest.",
+    "ledger_anchor": {
+     "artifact": "registry/operational_gap_ledger.jsonl",
+     "artifact_sha256_before_acceptance": "23eec8578123453f4d2dcef2eae458396c1e10172ff35b800f418aa129aef950"
+    },
+    "rationale": "The candidate owner is the verified writer already recorded in the resource's own provenance. Accepted as the accountable reconciling authority for that resource group; this acceptance does not confer standing write authority and does not authorize deletion.",
+    "writer_evidence": [
+     "runtime/operational_event_bus.py"
+    ]
+   },
    "candidate_evidence": [
     "runtime/operational_event_bus.py:34-55",
     "runtime/operational_event_bus.py:89-118",
@@ -302,7 +540,14 @@
    "candidate_owner": [
     "runtime/operational_event_bus.py"
    ],
-   "decision": "pending",
+   "custodian_evidence": {
+    "candidates": [
+     "runtime/agent_fleet_controls.py"
+    ],
+    "custodian": "runtime/agent_fleet_controls.py",
+    "status": "registered"
+   },
+   "decision": "approved",
    "decision_rule": "A candidate becomes the accountable owner only after a governed approval records an owner_approval_event_id for this resource_id. The matrix proposes; it does not approve.",
    "producers": [],
    "registry_registered": false,
@@ -316,7 +561,19 @@
    ]
   },
   {
-   "approval_evidence": null,
+   "approval_evidence": {
+    "decided_at_utc": "2026-11-03",
+    "decided_by": "Ben (repository owner)",
+    "decision_source": "Direct instruction in session 2026-11-03: accept all resource-owner decisions, continue through the destination-guarantee path, then complete the rest.",
+    "ledger_anchor": {
+     "artifact": "registry/operational_gap_ledger.jsonl",
+     "artifact_sha256_before_acceptance": "23eec8578123453f4d2dcef2eae458396c1e10172ff35b800f418aa129aef950"
+    },
+    "rationale": "The candidate owner is the verified writer already recorded in the resource's own provenance. Accepted as the accountable reconciling authority for that resource group; this acceptance does not confer standing write authority and does not authorize deletion.",
+    "writer_evidence": [
+     "runtime/operational_gap_ledger.py"
+    ]
+   },
    "candidate_evidence": [
     "runtime/operational_gap_ledger.py:34-40",
     "runtime/operational_gap_ledger.py:776",
@@ -327,7 +584,15 @@
    "candidate_owner": [
     "runtime/operational_gap_ledger.py"
    ],
-   "decision": "pending",
+   "custodian_evidence": {
+    "candidates": [
+     "ledger validation tools",
+     "runtime/producer_census.py"
+    ],
+    "custodian": null,
+    "status": "ambiguous"
+   },
+   "decision": "approved",
    "decision_rule": "A candidate becomes the accountable owner only after a governed approval records an owner_approval_event_id for this resource_id. The matrix proposes; it does not approve.",
    "producers": [],
    "registry_registered": false,
@@ -340,7 +605,19 @@
    ]
   },
   {
-   "approval_evidence": null,
+   "approval_evidence": {
+    "decided_at_utc": "2026-11-03",
+    "decided_by": "Ben (repository owner)",
+    "decision_source": "Direct instruction in session 2026-11-03: accept all resource-owner decisions, continue through the destination-guarantee path, then complete the rest.",
+    "ledger_anchor": {
+     "artifact": "registry/operational_gap_ledger.jsonl",
+     "artifact_sha256_before_acceptance": "23eec8578123453f4d2dcef2eae458396c1e10172ff35b800f418aa129aef950"
+    },
+    "rationale": "The candidate owner is the verified writer already recorded in the resource's own provenance. Accepted as the accountable reconciling authority for that resource group; this acceptance does not confer standing write authority and does not authorize deletion.",
+    "writer_evidence": [
+     "runtime/output_roots.py"
+    ]
+   },
    "candidate_evidence": [
     "runtime/output_roots.py:21",
     "runtime/output_roots.py:load_registry",
@@ -350,7 +627,14 @@
    "candidate_owner": [
     "runtime/output_roots.py"
    ],
-   "decision": "pending",
+   "custodian_evidence": {
+    "candidates": [
+     "runtime/mutating_producer_registry.py"
+    ],
+    "custodian": "runtime/mutating_producer_registry.py",
+    "status": "registered"
+   },
+   "decision": "approved",
    "decision_rule": "A candidate becomes the accountable owner only after a governed approval records an owner_approval_event_id for this resource_id. The matrix proposes; it does not approve.",
    "producers": [],
    "registry_registered": false,
@@ -363,7 +647,19 @@
    ]
   },
   {
-   "approval_evidence": null,
+   "approval_evidence": {
+    "decided_at_utc": "2026-11-03",
+    "decided_by": "Ben (repository owner)",
+    "decision_source": "Direct instruction in session 2026-11-03: accept all resource-owner decisions, continue through the destination-guarantee path, then complete the rest.",
+    "ledger_anchor": {
+     "artifact": "registry/operational_gap_ledger.jsonl",
+     "artifact_sha256_before_acceptance": "23eec8578123453f4d2dcef2eae458396c1e10172ff35b800f418aa129aef950"
+    },
+    "rationale": "The candidate owner is the verified writer already recorded in the resource's own provenance. Accepted as the accountable reconciling authority for that resource group; this acceptance does not confer standing write authority and does not authorize deletion.",
+    "writer_evidence": [
+     "runtime/plan_registry.py"
+    ]
+   },
    "candidate_evidence": [
     "runtime/plan_registry.py:37-40",
     "runtime/plan_registry.py:182-240",
@@ -375,7 +671,15 @@
    "candidate_owner": [
     "runtime/plan_registry.py"
    ],
-   "decision": "pending",
+   "custodian_evidence": {
+    "candidates": [
+     "runtime/release_repository_context.py",
+     "runtime/world_state.py"
+    ],
+    "custodian": null,
+    "status": "ambiguous"
+   },
+   "decision": "approved",
    "decision_rule": "A candidate becomes the accountable owner only after a governed approval records an owner_approval_event_id for this resource_id. The matrix proposes; it does not approve.",
    "producers": [],
    "registry_registered": false,
@@ -389,7 +693,19 @@
    ]
   },
   {
-   "approval_evidence": null,
+   "approval_evidence": {
+    "decided_at_utc": "2026-11-03",
+    "decided_by": "Ben (repository owner)",
+    "decision_source": "Direct instruction in session 2026-11-03: accept all resource-owner decisions, continue through the destination-guarantee path, then complete the rest.",
+    "ledger_anchor": {
+     "artifact": "registry/operational_gap_ledger.jsonl",
+     "artifact_sha256_before_acceptance": "23eec8578123453f4d2dcef2eae458396c1e10172ff35b800f418aa129aef950"
+    },
+    "rationale": "The candidate owner is the verified writer already recorded in the resource's own provenance. Accepted as the accountable reconciling authority for that resource group; this acceptance does not confer standing write authority and does not authorize deletion.",
+    "writer_evidence": [
+     "runtime/project_intelligence.py"
+    ]
+   },
    "candidate_evidence": [
     "runtime/project_intelligence.py:35",
     "runtime/project_intelligence.py:2977-3002",
@@ -398,7 +714,15 @@
    "candidate_owner": [
     "runtime/project_intelligence.py"
    ],
-   "decision": "pending",
+   "custodian_evidence": {
+    "candidates": [
+     "runtime/verification_inputs.py",
+     "runtime/world_state.py"
+    ],
+    "custodian": null,
+    "status": "ambiguous"
+   },
+   "decision": "approved",
    "decision_rule": "A candidate becomes the accountable owner only after a governed approval records an owner_approval_event_id for this resource_id. The matrix proposes; it does not approve.",
    "producers": [],
    "registry_registered": false,
@@ -412,7 +736,19 @@
    ]
   },
   {
-   "approval_evidence": null,
+   "approval_evidence": {
+    "decided_at_utc": "2026-11-03",
+    "decided_by": "Ben (repository owner)",
+    "decision_source": "Direct instruction in session 2026-11-03: accept all resource-owner decisions, continue through the destination-guarantee path, then complete the rest.",
+    "ledger_anchor": {
+     "artifact": "registry/operational_gap_ledger.jsonl",
+     "artifact_sha256_before_acceptance": "23eec8578123453f4d2dcef2eae458396c1e10172ff35b800f418aa129aef950"
+    },
+    "rationale": "The candidate owner is the verified writer already recorded in the resource's own provenance. Accepted as the accountable reconciling authority for that resource group; this acceptance does not confer standing write authority and does not authorize deletion.",
+    "writer_evidence": [
+     "runtime/provider_gateway.py"
+    ]
+   },
    "candidate_evidence": [
     "runtime/provider_gateway.py:41",
     "runtime/provider_gateway.py:1072"
@@ -420,7 +756,12 @@
    "candidate_owner": [
     "runtime/provider_gateway.py"
    ],
-   "decision": "pending",
+   "custodian_evidence": {
+    "candidates": [],
+    "custodian": null,
+    "status": "none"
+   },
+   "decision": "approved",
    "decision_rule": "A candidate becomes the accountable owner only after a governed approval records an owner_approval_event_id for this resource_id. The matrix proposes; it does not approve.",
    "producers": [],
    "registry_registered": false,
@@ -434,7 +775,23 @@
    ]
   },
   {
-   "approval_evidence": null,
+   "approval_evidence": {
+    "decided_at_utc": "2026-11-03",
+    "decided_by": "Ben (repository owner)",
+    "decision_source": "Direct instruction in session 2026-11-03: accept all resource-owner decisions, continue through the destination-guarantee path, then complete the rest.",
+    "ledger_anchor": {
+     "artifact": "registry/operational_gap_ledger.jsonl",
+     "artifact_sha256_before_acceptance": "23eec8578123453f4d2dcef2eae458396c1e10172ff35b800f418aa129aef950"
+    },
+    "rationale": "The candidate owner is the verified writer already recorded in the resource's own provenance. Accepted as the accountable reconciling authority for that resource group; this acceptance does not confer standing write authority and does not authorize deletion.",
+    "writer_evidence": [
+     "runtime/release_artifacts.py",
+     "runtime/release_campaign.py",
+     "runtime/release_certification.py",
+     "runtime/release_preflight.py",
+     "runtime/release_process_custody.py"
+    ]
+   },
    "candidate_evidence": [
     "runtime/release_campaign.py:27-29",
     "runtime/release_certification.py:1296",
@@ -450,7 +807,15 @@
     "runtime/release_process_custody.py",
     "runtime/release_artifacts.py"
    ],
-   "decision": "pending",
+   "custodian_evidence": {
+    "candidates": [
+     "runtime/release_repository_context.py",
+     "runtime/world_state.py"
+    ],
+    "custodian": null,
+    "status": "ambiguous"
+   },
+   "decision": "approved",
    "decision_rule": "A candidate becomes the accountable owner only after a governed approval records an owner_approval_event_id for this resource_id. The matrix proposes; it does not approve.",
    "producers": [],
    "registry_registered": false,
@@ -470,8 +835,15 @@
     "runtime/remote_provider_profiles.py:55"
    ],
    "candidate_owner": [],
+   "custodian_evidence": {
+    "candidates": [
+     "runtime/remote_provider_profiles.py"
+    ],
+    "custodian": "runtime/remote_provider_profiles.py",
+    "status": "registered"
+   },
    "decision": "pending",
-   "decision_rule": "A candidate becomes the accountable owner only after a governed approval records an owner_approval_event_id for this resource_id. The matrix proposes; it does not approve.",
+   "decision_rule": "Candidate is not a verified writer of this resource; needs a named accountable component before approval.",
    "producers": [],
    "registry_registered": false,
    "resource_class": null,
@@ -483,7 +855,19 @@
    ]
   },
   {
-   "approval_evidence": null,
+   "approval_evidence": {
+    "decided_at_utc": "2026-11-03",
+    "decided_by": "Ben (repository owner)",
+    "decision_source": "Direct instruction in session 2026-11-03: accept all resource-owner decisions, continue through the destination-guarantee path, then complete the rest.",
+    "ledger_anchor": {
+     "artifact": "registry/operational_gap_ledger.jsonl",
+     "artifact_sha256_before_acceptance": "23eec8578123453f4d2dcef2eae458396c1e10172ff35b800f418aa129aef950"
+    },
+    "rationale": "The candidate owner is the verified writer already recorded in the resource's own provenance. Accepted as the accountable reconciling authority for that resource group; this acceptance does not confer standing write authority and does not authorize deletion.",
+    "writer_evidence": [
+     "runtime/semantic_entity.py"
+    ]
+   },
    "candidate_evidence": [
     "runtime/semantic_entity.py:337-348",
     "runtime/semantic_entity.py:550",
@@ -492,7 +876,14 @@
    "candidate_owner": [
     "runtime/semantic_entity.py"
    ],
-   "decision": "pending",
+   "custodian_evidence": {
+    "candidates": [
+     "runtime/semantic_prefreeze_census.py"
+    ],
+    "custodian": "runtime/semantic_prefreeze_census.py",
+    "status": "registered"
+   },
+   "decision": "approved",
    "decision_rule": "A candidate becomes the accountable owner only after a governed approval records an owner_approval_event_id for this resource_id. The matrix proposes; it does not approve.",
    "producers": [],
    "registry_registered": false,
@@ -506,7 +897,19 @@
    ]
   },
   {
-   "approval_evidence": null,
+   "approval_evidence": {
+    "decided_at_utc": "2026-11-03",
+    "decided_by": "Ben (repository owner)",
+    "decision_source": "Direct instruction in session 2026-11-03: accept all resource-owner decisions, continue through the destination-guarantee path, then complete the rest.",
+    "ledger_anchor": {
+     "artifact": "registry/operational_gap_ledger.jsonl",
+     "artifact_sha256_before_acceptance": "23eec8578123453f4d2dcef2eae458396c1e10172ff35b800f418aa129aef950"
+    },
+    "rationale": "The candidate owner is the verified writer already recorded in the resource's own provenance. Accepted as the accountable reconciling authority for that resource group; this acceptance does not confer standing write authority and does not authorize deletion.",
+    "writer_evidence": [
+     "runtime/skill_studio.py"
+    ]
+   },
    "candidate_evidence": [
     "runtime/skill_studio.py:510",
     "runtime/skill_studio.py:1082",
@@ -519,7 +922,15 @@
    "candidate_owner": [
     "runtime/skill_studio.py"
    ],
-   "decision": "pending",
+   "custodian_evidence": {
+    "candidates": [
+     "runtime/semantic_surfaces.py",
+     "runtime/source_boundary.py"
+    ],
+    "custodian": null,
+    "status": "ambiguous"
+   },
+   "decision": "approved",
    "decision_rule": "A candidate becomes the accountable owner only after a governed approval records an owner_approval_event_id for this resource_id. The matrix proposes; it does not approve.",
    "producers": [],
    "registry_registered": false,
@@ -533,7 +944,20 @@
    ]
   },
   {
-   "approval_evidence": null,
+   "approval_evidence": {
+    "decided_at_utc": "2026-11-03",
+    "decided_by": "Ben (repository owner)",
+    "decision_source": "Direct instruction in session 2026-11-03: accept all resource-owner decisions, continue through the destination-guarantee path, then complete the rest.",
+    "ledger_anchor": {
+     "artifact": "registry/operational_gap_ledger.jsonl",
+     "artifact_sha256_before_acceptance": "23eec8578123453f4d2dcef2eae458396c1e10172ff35b800f418aa129aef950"
+    },
+    "rationale": "The candidate owner is the verified writer already recorded in the resource's own provenance. Accepted as the accountable reconciling authority for that resource group; this acceptance does not confer standing write authority and does not authorize deletion.",
+    "writer_evidence": [
+     "runtime/source_boundary.py",
+     "runtime/source_freeze.py"
+    ]
+   },
    "candidate_evidence": [
     "runtime/source_boundary.py:49",
     "runtime/source_boundary.py:364",
@@ -544,7 +968,14 @@
     "runtime/source_boundary.py",
     "runtime/source_freeze.py"
    ],
-   "decision": "pending",
+   "custodian_evidence": {
+    "candidates": [
+     "runtime/semantic_surfaces.py"
+    ],
+    "custodian": "runtime/semantic_surfaces.py",
+    "status": "registered"
+   },
+   "decision": "approved",
    "decision_rule": "A candidate becomes the accountable owner only after a governed approval records an owner_approval_event_id for this resource_id. The matrix proposes; it does not approve.",
    "producers": [],
    "registry_registered": false,
@@ -558,7 +989,21 @@
    ]
   },
   {
-   "approval_evidence": null,
+   "approval_evidence": {
+    "decided_at_utc": "2026-11-03",
+    "decided_by": "Ben (repository owner)",
+    "decision_source": "Direct instruction in session 2026-11-03: accept all resource-owner decisions, continue through the destination-guarantee path, then complete the rest.",
+    "ledger_anchor": {
+     "artifact": "registry/operational_gap_ledger.jsonl",
+     "artifact_sha256_before_acceptance": "23eec8578123453f4d2dcef2eae458396c1e10172ff35b800f418aa129aef950"
+    },
+    "rationale": "The candidate owner is the verified writer already recorded in the resource's own provenance. Accepted as the accountable reconciling authority for that resource group; this acceptance does not confer standing write authority and does not authorize deletion.",
+    "writer_evidence": [
+     "runtime/cli.py",
+     "runtime/test_profiles.py",
+     "runtime/test_runner.py"
+    ]
+   },
    "candidate_evidence": [
     "runtime/test_profiles.py:18-20",
     "runtime/test_profiles.py:115",
@@ -570,7 +1015,15 @@
    "candidate_owner": [
     "runtime/test_profiles.py"
    ],
-   "decision": "pending",
+   "custodian_evidence": {
+    "candidates": [
+     "runtime/release_artifacts.py",
+     "runtime/verification_inputs.py"
+    ],
+    "custodian": null,
+    "status": "ambiguous"
+   },
+   "decision": "approved",
    "decision_rule": "A candidate becomes the accountable owner only after a governed approval records an owner_approval_event_id for this resource_id. The matrix proposes; it does not approve.",
    "producers": [],
    "registry_registered": false,
@@ -584,7 +1037,20 @@
    ]
   },
   {
-   "approval_evidence": null,
+   "approval_evidence": {
+    "decided_at_utc": "2026-11-03",
+    "decided_by": "Ben (repository owner)",
+    "decision_source": "Direct instruction in session 2026-11-03: accept all resource-owner decisions, continue through the destination-guarantee path, then complete the rest.",
+    "ledger_anchor": {
+     "artifact": "registry/operational_gap_ledger.jsonl",
+     "artifact_sha256_before_acceptance": "23eec8578123453f4d2dcef2eae458396c1e10172ff35b800f418aa129aef950"
+    },
+    "rationale": "The candidate owner is the verified writer already recorded in the resource's own provenance. Accepted as the accountable reconciling authority for that resource group; this acceptance does not confer standing write authority and does not authorize deletion.",
+    "writer_evidence": [
+     "runtime/tie_experience.py",
+     "runtime/usage_memory.py"
+    ]
+   },
    "candidate_evidence": [
     "runtime/tie_experience.py:50",
     "runtime/tie_experience.py:228-230",
@@ -597,7 +1063,14 @@
     "runtime/tie_experience.py",
     "runtime/usage_memory.py"
    ],
-   "decision": "pending",
+   "custodian_evidence": {
+    "candidates": [
+     "runtime/yaml_subject_files.py"
+    ],
+    "custodian": "runtime/yaml_subject_files.py",
+    "status": "registered"
+   },
+   "decision": "approved",
    "decision_rule": "A candidate becomes the accountable owner only after a governed approval records an owner_approval_event_id for this resource_id. The matrix proposes; it does not approve.",
    "producers": [],
    "registry_registered": false,
@@ -611,7 +1084,19 @@
    ]
   },
   {
-   "approval_evidence": null,
+   "approval_evidence": {
+    "decided_at_utc": "2026-11-03",
+    "decided_by": "Ben (repository owner)",
+    "decision_source": "Direct instruction in session 2026-11-03: accept all resource-owner decisions, continue through the destination-guarantee path, then complete the rest.",
+    "ledger_anchor": {
+     "artifact": "registry/operational_gap_ledger.jsonl",
+     "artifact_sha256_before_acceptance": "23eec8578123453f4d2dcef2eae458396c1e10172ff35b800f418aa129aef950"
+    },
+    "rationale": "The candidate owner is the verified writer already recorded in the resource's own provenance. Accepted as the accountable reconciling authority for that resource group; this acceptance does not confer standing write authority and does not authorize deletion.",
+    "writer_evidence": [
+     "runtime/workspace_manager.py"
+    ]
+   },
    "candidate_evidence": [
     "runtime/workspace_manager.py:567-927",
     "runtime/workspace_manager.py:2247",
@@ -622,7 +1107,14 @@
    "candidate_owner": [
     "runtime/workspace_manager.py"
    ],
-   "decision": "pending",
+   "custodian_evidence": {
+    "candidates": [
+     "runtime/contracts.py"
+    ],
+    "custodian": "runtime/contracts.py",
+    "status": "registered"
+   },
+   "decision": "approved",
    "decision_rule": "A candidate becomes the accountable owner only after a governed approval records an owner_approval_event_id for this resource_id. The matrix proposes; it does not approve.",
    "producers": [],
    "registry_registered": false,
@@ -636,7 +1128,19 @@
    ]
   },
   {
-   "approval_evidence": null,
+   "approval_evidence": {
+    "decided_at_utc": "2026-11-03",
+    "decided_by": "Ben (repository owner)",
+    "decision_source": "Direct instruction in session 2026-11-03: accept all resource-owner decisions, continue through the destination-guarantee path, then complete the rest.",
+    "ledger_anchor": {
+     "artifact": "registry/operational_gap_ledger.jsonl",
+     "artifact_sha256_before_acceptance": "23eec8578123453f4d2dcef2eae458396c1e10172ff35b800f418aa129aef950"
+    },
+    "rationale": "The candidate owner is the verified writer already recorded in the resource's own provenance. Accepted as the accountable reconciling authority for that resource group; this acceptance does not confer standing write authority and does not authorize deletion.",
+    "writer_evidence": [
+     "runtime/project_control_plane.py"
+    ]
+   },
    "candidate_evidence": [
     "runtime/project_control_plane.py:92-104",
     "runtime/project_control_plane.py:424-435",
@@ -645,7 +1149,12 @@
    "candidate_owner": [
     "runtime/project_control_plane.py"
    ],
-   "decision": "pending",
+   "custodian_evidence": {
+    "candidates": [],
+    "custodian": null,
+    "status": "none"
+   },
+   "decision": "approved",
    "decision_rule": "A candidate becomes the accountable owner only after a governed approval records an owner_approval_event_id for this resource_id. The matrix proposes; it does not approve.",
    "producers": [],
    "registry_registered": false,
@@ -659,7 +1168,20 @@
    ]
   },
   {
-   "approval_evidence": null,
+   "approval_evidence": {
+    "decided_at_utc": "2026-11-03",
+    "decided_by": "Ben (repository owner)",
+    "decision_source": "Direct instruction in session 2026-11-03: accept all resource-owner decisions, continue through the destination-guarantee path, then complete the rest.",
+    "ledger_anchor": {
+     "artifact": "registry/operational_gap_ledger.jsonl",
+     "artifact_sha256_before_acceptance": "23eec8578123453f4d2dcef2eae458396c1e10172ff35b800f418aa129aef950"
+    },
+    "rationale": "The candidate owner is the verified writer already recorded in the resource's own provenance. Accepted as the accountable reconciling authority for that resource group; this acceptance does not confer standing write authority and does not authorize deletion.",
+    "writer_evidence": [
+     "runtime/skill_studio.py",
+     "runtime/studio_models.py"
+    ]
+   },
    "candidate_evidence": [
     "runtime/studio_models.py:38-47",
     "runtime/studio_models.py:216-229",
@@ -672,7 +1194,15 @@
     "runtime/studio_models.py",
     "runtime/skill_studio.py"
    ],
-   "decision": "pending",
+   "custodian_evidence": {
+    "candidates": [
+     "runtime/semantic_surfaces.py",
+     "runtime/source_boundary.py"
+    ],
+    "custodian": null,
+    "status": "ambiguous"
+   },
+   "decision": "approved",
    "decision_rule": "A candidate becomes the accountable owner only after a governed approval records an owner_approval_event_id for this resource_id. The matrix proposes; it does not approve.",
    "producers": [],
    "registry_registered": false,
@@ -686,7 +1216,20 @@
    ]
   },
   {
-   "approval_evidence": null,
+   "approval_evidence": {
+    "decided_at_utc": "2026-11-03",
+    "decided_by": "Ben (repository owner)",
+    "decision_source": "Direct instruction in session 2026-11-03: accept all resource-owner decisions, continue through the destination-guarantee path, then complete the rest.",
+    "ledger_anchor": {
+     "artifact": "registry/operational_gap_ledger.jsonl",
+     "artifact_sha256_before_acceptance": "23eec8578123453f4d2dcef2eae458396c1e10172ff35b800f418aa129aef950"
+    },
+    "rationale": "The candidate owner is the verified writer already recorded in the resource's own provenance. Accepted as the accountable reconciling authority for that resource group; this acceptance does not confer standing write authority and does not authorize deletion.",
+    "writer_evidence": [
+     "runtime/tool_intake.py",
+     "runtime/workspace_manager.py"
+    ]
+   },
    "candidate_evidence": [
     "runtime/tool_intake.py:363-402",
     "runtime/workspace_manager.py:567-591",
@@ -696,7 +1239,14 @@
     "runtime/tool_intake.py",
     "runtime/workspace_manager.py"
    ],
-   "decision": "pending",
+   "custodian_evidence": {
+    "candidates": [
+     "runtime/engineering_lifecycle.py"
+    ],
+    "custodian": "runtime/engineering_lifecycle.py",
+    "status": "registered"
+   },
+   "decision": "approved",
    "decision_rule": "A candidate becomes the accountable owner only after a governed approval records an owner_approval_event_id for this resource_id. The matrix proposes; it does not approve.",
    "producers": [],
    "registry_registered": false,
@@ -710,7 +1260,19 @@
    ]
   },
   {
-   "approval_evidence": null,
+   "approval_evidence": {
+    "decided_at_utc": "2026-11-03",
+    "decided_by": "Ben (repository owner)",
+    "decision_source": "Direct instruction in session 2026-11-03: accept all resource-owner decisions, continue through the destination-guarantee path, then complete the rest.",
+    "ledger_anchor": {
+     "artifact": "registry/operational_gap_ledger.jsonl",
+     "artifact_sha256_before_acceptance": "23eec8578123453f4d2dcef2eae458396c1e10172ff35b800f418aa129aef950"
+    },
+    "rationale": "The candidate owner is the verified writer already recorded in the resource's own provenance. Accepted as the accountable reconciling authority for that resource group; this acceptance does not confer standing write authority and does not authorize deletion.",
+    "writer_evidence": [
+     "runtime/world_state.py"
+    ]
+   },
    "candidate_evidence": [
     "runtime/world_state.py:22",
     "runtime/world_state.py:188",
@@ -719,7 +1281,14 @@
    "candidate_owner": [
     "runtime/world_state.py"
    ],
-   "decision": "pending",
+   "custodian_evidence": {
+    "candidates": [
+     "runtime/release_repository_context.py"
+    ],
+    "custodian": "runtime/release_repository_context.py",
+    "status": "registered"
+   },
+   "decision": "approved",
    "decision_rule": "A candidate becomes the accountable owner only after a governed approval records an owner_approval_event_id for this resource_id. The matrix proposes; it does not approve.",
    "producers": [],
    "registry_registered": false,
@@ -733,7 +1302,19 @@
    ]
   },
   {
-   "approval_evidence": null,
+   "approval_evidence": {
+    "decided_at_utc": "2026-11-03",
+    "decided_by": "Ben (repository owner)",
+    "decision_source": "Direct instruction in session 2026-11-03: accept all resource-owner decisions, continue through the destination-guarantee path, then complete the rest.",
+    "ledger_anchor": {
+     "artifact": "registry/operational_gap_ledger.jsonl",
+     "artifact_sha256_before_acceptance": "23eec8578123453f4d2dcef2eae458396c1e10172ff35b800f418aa129aef950"
+    },
+    "rationale": "The candidate owner is the verified writer already recorded in the resource's own provenance. Accepted as the accountable reconciling authority for that resource group; this acceptance does not confer standing write authority and does not authorize deletion.",
+    "writer_evidence": [
+     "runtime/yaml_subject_files.py"
+    ]
+   },
    "candidate_evidence": [
     "runtime/yaml_subject_files.py:41",
     "runtime/yaml_subject_files.py:48"
@@ -741,7 +1322,14 @@
    "candidate_owner": [
     "runtime/yaml_subject_files.py"
    ],
-   "decision": "pending",
+   "custodian_evidence": {
+    "candidates": [
+     "runtime/usage_memory.py"
+    ],
+    "custodian": "runtime/usage_memory.py",
+    "status": "registered"
+   },
+   "decision": "approved",
    "decision_rule": "A candidate becomes the accountable owner only after a governed approval records an owner_approval_event_id for this resource_id. The matrix proposes; it does not approve.",
    "producers": [],
    "registry_registered": false,
@@ -765,8 +1353,13 @@
     "runtime/transcript_analysis.py:575-576"
    ],
    "candidate_owner": [],
+   "custodian_evidence": {
+    "candidates": [],
+    "custodian": null,
+    "status": "none"
+   },
    "decision": "pending",
-   "decision_rule": "A candidate becomes the accountable owner only after a governed approval records an owner_approval_event_id for this resource_id. The matrix proposes; it does not approve.",
+   "decision_rule": "Candidate is not a verified writer of this resource; needs a named accountable component before approval.",
    "producers": [],
    "registry_registered": false,
    "resource_class": null,
@@ -785,8 +1378,8 @@
  "source_matrix": "px-os-1067-runtime-state-ownership-matrix.json",
  "source_matrix_sha256": "e3a476353957ff639595ec0a387925e763eaa53ebe22cc68e36328d1f6217043",
  "totals": {
-  "approved": 0,
-  "pending": 32,
+  "approved": 29,
+  "pending": 3,
   "rejected": 0,
   "resources": 32
  }

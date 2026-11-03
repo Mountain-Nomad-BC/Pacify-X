@@ -31,6 +31,12 @@ from .effect_surface import (
 
 SCHEMA_VERSION = "px.mutating-producer-registry/1.0"
 REGISTRY_RELATIVE = "registry/mutating_producers.json"
+# The approved ownership registry. Unlike the candidate file under docs/repair/evidence/,
+# this is a governed registry path the classifier is allowed to consult.
+OWNERSHIP_REGISTRY_RELATIVE = "registry/runtime_state_ownership.json"
+# A published entry pins the bytes it classified. This module publishes that registry, so its
+# own entry cannot be hashed from disk (the entry text lives inside the file being hashed).
+SELF_RELATIVE = "runtime/mutating_producer_registry.py"
 
 # Closed vocabulary of proof reasons for an exemption. A producer that cannot be
 # classified as `leased` must cite exactly one of these and the evidence for it.
@@ -64,6 +70,10 @@ EXEMPTION_REASONS = (
     # permission. Distinguished from `declared_output_target` (caller-named destination)
     # and from `generated_projection_producer` (owns regeneration of its own output).
     "delegated_publication",
+    # B7: the module writes durable state that an approved, accountable custodian owns.
+    # The custodian is never one of the resource's own producers, and registration confers
+    # no write authority — each mutation still needs a per-run governed grant.
+    "owned_durable_resource",
 )
 
 NATIVE_CONTROL_CUSTODY_OWNERS = frozenset(
@@ -292,6 +302,51 @@ def _matches_native_owner(root: Path, relative: str) -> bool:
     return hashlib.sha256(candidate.read_bytes()).digest() == hashlib.sha256(native.read_bytes()).digest()
 
 
+def _registry_owned_verdict(root: Path, relative: str) -> Mapping[str, str] | None:
+    """Resolve a producer that writes repository state owned by a registered custodian.
+
+    This is the only authority that can act on the accepted B7 ownership decisions. It is
+    deliberately narrow:
+
+    * the ownership registry must be in the approved state;
+    * at least one resource must have a registered custodian;
+    * the producer must be a member of that resource's verified writer set — the registry
+      never claims a resource the matrix did not already attribute to this file;
+    * the custodian must not itself be a writer of the group it owns.
+
+    It confers no write authority: a writer still needs a per-run governed grant.
+    """
+    import json as _json
+
+    registry_path = root / OWNERSHIP_REGISTRY_RELATIVE
+    if not registry_path.is_file():
+        return None
+    try:
+        document = _json.loads(registry_path.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return None
+    if not isinstance(document, dict) or document.get("state") != "approved_custodian_registrations":
+        return None
+    resources = document.get("resources")
+    if not isinstance(resources, list):
+        return None
+    for item in resources:
+        if not isinstance(item, dict) or item.get("registration_state") != "registered":
+            continue
+        group = item.get("group_members")
+        record = item.get("record") or {}
+        owner = record.get("accountable_owner")
+        if not isinstance(group, list) or not owner:
+            continue
+        normalised = {_normalize(str(member)) for member in group}
+        if relative not in normalised:
+            continue
+        if _normalize(str(owner)) in normalised:
+            continue
+        return {"classification": "exempt", "reason": "owned_durable_resource"}
+    return None
+
+
 def default_classification(
     root: Path,
     relative: str,
@@ -314,6 +369,11 @@ def default_classification(
         return {"classification": "leased", "reason": "canonical_lease_intent_owner"}
     if relative in NATIVE_CONTROL_CUSTODY_OWNERS and _matches_native_owner(root, relative):
         return {"classification": "exempt", "reason": "canonical_control_custody_owner"}
+    # The approved ownership registry is consulted only after every reviewed local authority
+    # has declined, so it can add resolutions but never override an existing classification.
+    owned = _registry_owned_verdict(root, relative)
+    if owned is not None:
+        return owned
     # B1 delegated_publication is evaluated from the caller's own source, before the pinned
     # table, because the table's owner fingerprint had drifted for six entries (two different
     # hashes for one owner module), which made those entries unresolvable regardless of the
@@ -462,9 +522,17 @@ def validate_registry(
 
 
 def build_registry(
-    root: Path, *, records: list[dict[str, object]] | None = None
+    root: Path,
+    *,
+    records: list[dict[str, object]] | None = None,
+    self_source_sha256: str | None = None,
 ) -> dict[str, Any]:
     """Build the complete classification for every discovered producer.
+
+    `self_source_sha256` lets a publisher declare the exact bytes of this module that are
+    doing the publishing. The publisher rewrites its own file's entry to that digest, because
+    an entry hashed from disk could never match the file it is embedded in once the entry
+    text itself lives there.
 
     Producers that the structural rules cannot classify are returned as
     ``unclassified`` so the caller can fail closed rather than guess.
@@ -483,7 +551,11 @@ def build_registry(
             unclassified.append(relative)
             continue
         producers[relative] = {**derived, "effects": ", ".join(effects),
-            "source_sha256": hashlib.sha256((root / relative).read_bytes()).hexdigest()}
+            "source_sha256": (
+                self_source_sha256
+                if self_source_sha256 is not None and relative == SELF_RELATIVE
+                else hashlib.sha256((root / relative).read_bytes()).hexdigest()
+            )}
     return {
         "schema_version": SCHEMA_VERSION,
         "producers": producers,

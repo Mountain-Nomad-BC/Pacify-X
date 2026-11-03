@@ -29,6 +29,7 @@ def main() -> int:
     b7 = load("px-os-1067-b7-owner-decision-register.json")
     dispositions = load("px-os-1067-producer-dispositions.json")
     matrix = load("px-os-1067-runtime-state-ownership-matrix.json")
+    approved_owners = load("px-os-1067-runtime-state-ownership-registry.json")
 
     reported: list[str] = []
     live = census(ROOT)
@@ -70,15 +71,48 @@ def main() -> int:
 
     if len(b7["decisions"]) != len(matrix["resources"]):
         reported.append("B7 decision register does not cover every matrix resource")
+    registered = {
+        item["record"]["resource_id"]
+        for item in approved_owners["resources"]
+        if item["registration_state"] == "registered"
+    }
+    for item in approved_owners["resources"]:
+        if item["registration_state"] != "registered":
+            continue
+        record = item["record"]
+        if record["accountable_owner"] in item["group_members"]:
+            reported.append(
+                f"{record['resource_id']}: registered owner is a writer of the resource"
+            )
+        if not record["owner_approval_event_id"]:
+            reported.append(f"{record['resource_id']}: registered without an approval event")
+        authorization = record["authorization"]
+        if any(
+            authorization.get(field) is not False
+            for field in (
+                "standing_write_privilege",
+                "registry_confers_write_authority",
+                "registry_confers_deletion_authority",
+            )
+        ):
+            reported.append(
+                f"{record['resource_id']}: ownership registration confers write or deletion authority"
+            )
     for decision in b7["decisions"]:
         if decision["decision"] == "approved" and not decision.get("approval_evidence"):
             reported.append(
                 f"{decision['resource_id']}: approved without an approval event id"
             )
-        if decision["decision"] == "approved" and not decision.get("registry_registered"):
-            reported.append(
-                f"{decision['resource_id']}: approved but absent from the candidate registry"
-            )
+        if not approved_owners["resources"]:
+            reported.append("ownership registry is empty")
+        custody = decision.get("custodian_evidence", {}).get("status")
+        if decision["decision"] == "approved" and custody == "registered":
+            if decision["resource_id"] not in registered:
+                reported.append(
+                    f"{decision['resource_id']}: approved custodian not recorded in the ownership registry"
+                )
+        # Accepted ownership with no lawful owner (none/ambiguous) is a disclosed blocker,
+        # not a defect. It must remain visible in the registry, which it does.
 
     result = {
         "valid": not reported,
@@ -88,6 +122,7 @@ def main() -> int:
         "unresolved": len(rows) - len(resolved),
         "b7_resources": len(b7["decisions"]),
         "b7_pending": sum(1 for d in b7["decisions"] if d["decision"] == "pending"),
+        "b7_registered_owners": len(registered),
     }
     print(json.dumps(result, indent=1))
     return 0 if not reported else 1

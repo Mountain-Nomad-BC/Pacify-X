@@ -171,6 +171,20 @@
 - **Tests:** Focused suite re-run after the refactor: **88 passed, 1 failed** (the expected repository-wide gate assertion).
 - **Next:** Governance decisions on the 32 owner rows, or a destination-guarantee audit for the caller-directed output producers. Both are independent.
 
+## Session 3 — approved custodian ownership registered and wired
+
+- **Decision:** The repository owner accepted all 32 B7 resource-owner decisions. Recorded in [the decision register](./evidence/px-os-1067-b7-owner-decision-register.json) with the deciding party, date, rationale and a ledger anchor. **29 approved; 3 remain pending** because those resources have no candidate at all in the matrix (a six-writer delegated group and a remote provider store are among them). Approving them would have required inventing an owner.
+- **The deadlock, named:** every candidate owner was a writer *inside* its own resource group. Registering it would make a writer the accountable authority for the state it writes — the exact inference the handoff forbids. Ownership cannot be resolved from the existing evidence without a custodian that does not write the resource.
+- **Resolution (`COMPLETED`):** `validate_approved_resource_record` in [runtime_state_ownership.py](../../runtime/runtime_state_ownership.py) enforces that rule mechanically: an approved record must name an owner that is **not** a member of the group, must cite an approval event, and may never confer standing write or deletion authority. Custodian candidates are taken only from components that already *read* the resource, never invented.
+- **Registrations:** 15 of 29 accepted resources have a unique outside reader and are now registered in [registry/runtime_state_ownership.json](../../registry/runtime_state_ownership.json). 14 accepted resources have several outside readers or none and stay `pending_registration`, each with its reason recorded.
+- **Classification wiring:** `_registry_owned_verdict` in `mutating_producer_registry.py` resolves a producer only when it is a verified writer of a resource whose registered custodian is not a writer of that group. It runs **after** every reviewed local authority, so it can add resolutions but never override one. The `owned_durable_resource` reason was added to the closed vocabulary.
+- **Census effect (measured):** unresolved **157 → 139**; resolved **216 → 234**. Effect records, producer counts and gate findings are unchanged (1,700 / 377 / 373 / 310); the gate stays invalid because 139 producers remain unclassified.
+- **Publication refused, correctly:** `publish_registry` declines while any producer is unclassified (139), so `registry/mutating_producers.json` was **not** rewritten. It remains stale by design; republishing becomes legal only when the unresolved set reaches zero.
+- **Destination path:** [the guarantee audit](./evidence/px-os-1067-output-guarantee-audit.json) found exactly one of four caller-directed producers confines its destination ([build_release_successor_configs.py](../../scripts/build_release_successor_configs.py), via `_relative`), and that one is **not atomic**. This corrected an earlier claim in this log that all four shared a proven pattern. No grant was made: `runtime/output_roots.py` is not wired into classification, so a grant would change a registry the census does not read.
+- **Scope question answered:** [scripts ownership coverage](./evidence/px-os-1067-scripts-ownership-coverage.json) classifies the 78 scripts producers by the audit's own reviewed class — 40 write durable repository state under this model, 36 need output-root grants, 2 remain helper-mediated.
+- **Tests:** 71 passed, 0 failed across the ownership, census, effect-surface, output-root and mixed-destination suites. No regressions from the wiring.
+- **Remaining:** 139 unresolved producers (36 need grants; 2 helper-mediated; 101 in runtime/`.px` without a custodian); 14 accepted-without-owner resources; 3 pending decisions; 103 inert fingerprints; release certification not started.
+
 ## Source material examined
 
 - [New_handoff.md](./New_handoff.md)

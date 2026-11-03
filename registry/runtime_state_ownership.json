@@ -1,0 +1,1194 @@
+{
+ "authority": "Owner decisions accepted by the repository owner on 2026-11-03. An accountable owner is registered only where a component outside the resource's own producer group can reconcile it. Registration confers no standing write or deletion authority.",
+ "boundary": "A writer is never the accountable owner of its own group. Registered owners read the resource and hold no standing write privilege; every mutation still needs a per-run governed effect grant, and no registration authorizes deletion.",
+ "gap_id": "PX-OS-1067",
+ "owner_decision": {
+  "approval_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000036534",
+  "decided_at_utc": "2026-11-03",
+  "decided_by": "Ben (repository owner)"
+ },
+ "resources": [
+  {
+   "group_members": [
+    "runtime/agent_runtime.py",
+    "runtime/studio_models.py",
+    "runtime/studio_session_worker.py"
+   ],
+   "outside_readers": [
+    "runtime/studio_api.py"
+   ],
+   "record": {
+    "accountable_owner": "runtime/studio_api.py",
+    "authorization": {
+     "existing_controls": [
+      "effect_grant",
+      "scope_lease",
+      "effect_intent"
+     ],
+     "per_run_governed_authorization_required": true,
+     "registry_confers_deletion_authority": false,
+     "registry_confers_write_authority": false,
+     "standing_write_privilege": false
+    },
+    "concurrency": "single accountable reconciler; per-run authorization required",
+    "lifecycle": "ResourceManager tracks allocated resources; durable agent revisions and run records have distinct lifecycles not yet unified by an accountable authority.",
+    "owner_approval_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000036534",
+    "provenance": [
+     "docs/repair/evidence/evidence/px-os-1067-runtime-state-ownership-matrix.json"
+    ],
+    "reclamation": "retirement owner only; no registry grants deletion",
+    "recovery": "unresolved unless the matrix records it",
+    "resource_class": "authoritative_durable",
+    "resource_id": "agent-studio-state",
+    "retention": "unresolved",
+    "scope": ".agentic_engineering_os_px/studios/agents"
+   },
+   "registration_reason": null,
+   "registration_state": "registered"
+  },
+  {
+   "group_members": [
+    "runtime/certification_state.py"
+   ],
+   "outside_readers": [
+    "runtime/release_boundary.py"
+   ],
+   "record": {
+    "accountable_owner": "runtime/release_boundary.py",
+    "authorization": {
+     "existing_controls": [
+      "effect_grant",
+      "scope_lease",
+      "effect_intent"
+     ],
+     "per_run_governed_authorization_required": true,
+     "registry_confers_deletion_authority": false,
+     "registry_confers_write_authority": false,
+     "standing_write_privilege": false
+    },
+    "concurrency": "single accountable reconciler; per-run authorization required",
+    "lifecycle": "Atomic replacement is present; migration from the legacy control root, recovery, and reclamation authority are unresolved.",
+    "owner_approval_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000036534",
+    "provenance": [
+     "docs/repair/evidence/evidence/px-os-1067-runtime-state-ownership-matrix.json"
+    ],
+    "reclamation": "retirement owner only; no registry grants deletion",
+    "recovery": "unresolved unless the matrix records it",
+    "resource_class": "authoritative_durable",
+    "resource_id": "campaign-certification-state",
+    "retention": "unresolved",
+    "scope": ".engineering-bootstrap/runtime-core/campaign_state.json and release-preflight evidence"
+   },
+   "registration_reason": null,
+   "registration_state": "registered"
+  },
+  {
+   "group_members": [
+    "runtime/recovery.py"
+   ],
+   "outside_readers": [],
+   "record": {
+    "accountable_owner": null,
+    "authorization": {
+     "existing_controls": [
+      "effect_grant",
+      "scope_lease",
+      "effect_intent"
+     ],
+     "per_run_governed_authorization_required": true,
+     "registry_confers_deletion_authority": false,
+     "registry_confers_write_authority": false,
+     "standing_write_privilege": false
+    },
+    "concurrency": "single accountable reconciler; per-run authorization required",
+    "lifecycle": "Explicit version migrations preserve history and WAL state; the actual durable state owner is the subsystem configuring each path.",
+    "owner_approval_event_id": null,
+    "provenance": [
+     "docs/repair/evidence/evidence/px-os-1067-runtime-state-ownership-matrix.json"
+    ],
+    "reclamation": "retirement owner only; no registry grants deletion",
+    "recovery": "unresolved unless the matrix records it",
+    "resource_class": "authoritative_durable",
+    "resource_id": "configured-durable-state-migration",
+    "retention": "unresolved",
+    "scope": "caller-configured durable state file plus sibling .migrations/<name>/wal and .history/<name> sidecars"
+   },
+   "registration_reason": "Ownership decision not approved.",
+   "registration_state": "pending_decision"
+  },
+  {
+   "group_members": [
+    "runtime/cli.py",
+    "runtime/evidence_custody.py",
+    "runtime/gremlin/containment.py",
+    "runtime/gremlin/deviation.py",
+    "runtime/secure_publish.py",
+    "runtime/transcript_analysis.py"
+   ],
+   "outside_readers": [],
+   "record": {
+    "accountable_owner": null,
+    "authorization": {
+     "existing_controls": [
+      "effect_grant",
+      "scope_lease",
+      "effect_intent"
+     ],
+     "per_run_governed_authorization_required": true,
+     "registry_confers_deletion_authority": false,
+     "registry_confers_write_authority": false,
+     "standing_write_privilege": false
+    },
+    "concurrency": "single accountable reconciler; per-run authorization required",
+    "lifecycle": "Prepared/staged output is atomically published or delegated to a supplied package interface; destination-specific cleanup authority is external.",
+    "owner_approval_event_id": null,
+    "provenance": [
+     "docs/repair/evidence/evidence/px-os-1067-runtime-state-ownership-matrix.json"
+    ],
+    "reclamation": "retirement owner only; no registry grants deletion",
+    "recovery": "unresolved unless the matrix records it",
+    "resource_class": "delegated_persistent",
+    "resource_id": "delegated-persistent-mutation",
+    "retention": "destination-specific; unresolved here",
+    "scope": "destination owned by the supplied evidence/package/publication authority"
+   },
+   "registration_reason": "Ownership decision not approved.",
+   "registration_state": "pending_decision"
+  },
+  {
+   "group_members": [
+    "runtime/execution_placement.py"
+   ],
+   "outside_readers": [],
+   "record": {
+    "accountable_owner": null,
+    "authorization": {
+     "existing_controls": [
+      "effect_grant",
+      "scope_lease",
+      "effect_intent"
+     ],
+     "per_run_governed_authorization_required": true,
+     "registry_confers_deletion_authority": false,
+     "registry_confers_write_authority": false,
+     "standing_write_privilege": false
+    },
+    "concurrency": "single accountable reconciler; per-run authorization required",
+    "lifecycle": "Atomic JSON replacement is present; reservation expiry/release exists, but durable decision retention and deletion authority are unresolved.",
+    "owner_approval_event_id": null,
+    "provenance": [
+     "docs/repair/evidence/evidence/px-os-1067-runtime-state-ownership-matrix.json"
+    ],
+    "reclamation": "retirement owner only; no registry grants deletion",
+    "recovery": "unresolved unless the matrix records it",
+    "resource_class": "authoritative_durable",
+    "resource_id": "execution-placement-state",
+    "retention": "unresolved",
+    "scope": ".agentic_engineering_os_px/runtime-core/placement"
+   },
+   "registration_reason": "No component reads this resource from outside its producer group; the only source-backed candidates are its own writers.",
+   "registration_state": "pending_registration"
+  },
+  {
+   "group_members": [
+    "runtime/agent_fleet_controls.py"
+   ],
+   "outside_readers": [],
+   "record": {
+    "accountable_owner": null,
+    "authorization": {
+     "existing_controls": [
+      "effect_grant",
+      "scope_lease",
+      "effect_intent"
+     ],
+     "per_run_governed_authorization_required": true,
+     "registry_confers_deletion_authority": false,
+     "registry_confers_write_authority": false,
+     "standing_write_privilege": false
+    },
+    "concurrency": "single accountable reconciler; per-run authorization required",
+    "lifecycle": "State is read across invocations; registry and session records have authenticated/hash and locking/WAL mechanisms, but reclamation authority is not established by this matrix.",
+    "owner_approval_event_id": null,
+    "provenance": [
+     "docs/repair/evidence/evidence/px-os-1067-runtime-state-ownership-matrix.json"
+    ],
+    "reclamation": "retirement owner only; no registry grants deletion",
+    "recovery": "unresolved unless the matrix records it",
+    "resource_class": "shared_durable",
+    "resource_id": "fleet-session-state",
+    "retention": "unresolved",
+    "scope": "injected-store-root/registry.json and per-session state paths"
+   },
+   "registration_reason": "No component reads this resource from outside its producer group; the only source-backed candidates are its own writers.",
+   "registration_state": "pending_registration"
+  },
+  {
+   "group_members": [
+    "runtime/knowledge_foundry.py"
+   ],
+   "outside_readers": [],
+   "record": {
+    "accountable_owner": null,
+    "authorization": {
+     "existing_controls": [
+      "effect_grant",
+      "scope_lease",
+      "effect_intent"
+     ],
+     "per_run_governed_authorization_required": true,
+     "registry_confers_deletion_authority": false,
+     "registry_confers_write_authority": false,
+     "standing_write_privilege": false
+    },
+    "concurrency": "single accountable reconciler; per-run authorization required",
+    "lifecycle": "Candidate package creation is no-replace and bounded; package retention, promotion, and reclamation authority are unresolved.",
+    "owner_approval_event_id": null,
+    "provenance": [
+     "docs/repair/evidence/evidence/px-os-1067-runtime-state-ownership-matrix.json"
+    ],
+    "reclamation": "retirement owner only; no registry grants deletion",
+    "recovery": "unresolved unless the matrix records it",
+    "resource_class": "regenerable_durable",
+    "resource_id": "knowledge-foundry-state",
+    "retention": "unresolved",
+    "scope": ".agentic_engineering_os_px/runtime-core/knowledge-foundry"
+   },
+   "registration_reason": "No component reads this resource from outside its producer group; the only source-backed candidates are its own writers.",
+   "registration_state": "pending_registration"
+  },
+  {
+   "group_members": [
+    "runtime/memory_intelligence.py"
+   ],
+   "outside_readers": [
+    "runtime/memory_vault.py",
+    "runtime/workspace_manager.py"
+   ],
+   "record": {
+    "accountable_owner": null,
+    "authorization": {
+     "existing_controls": [
+      "effect_grant",
+      "scope_lease",
+      "effect_intent"
+     ],
+     "per_run_governed_authorization_required": true,
+     "registry_confers_deletion_authority": false,
+     "registry_confers_write_authority": false,
+     "standing_write_privilege": false
+    },
+    "concurrency": "single accountable reconciler; per-run authorization required",
+    "lifecycle": "Content-addressed and queued state is cross-invocation; expiration, purge, and recovery authority are not established here.",
+    "owner_approval_event_id": null,
+    "provenance": [
+     "docs/repair/evidence/evidence/px-os-1067-runtime-state-ownership-matrix.json"
+    ],
+    "reclamation": "retirement owner only; no registry grants deletion",
+    "recovery": "unresolved unless the matrix records it",
+    "resource_class": "shared_durable",
+    "resource_id": "memory-intelligence-state",
+    "retention": "unresolved",
+    "scope": ".memory-control/evidence, offload/objects, offload/pointers, and write-queue"
+   },
+   "registration_reason": "Several components read this resource from outside its group; choosing the reconciling authority is an ownership decision, not an inference.",
+   "registration_state": "pending_registration"
+  },
+  {
+   "group_members": [
+    "runtime/memory_vault.py",
+    "runtime/workspace_manager.py"
+   ],
+   "outside_readers": [
+    "runtime/memory_intelligence.py"
+   ],
+   "record": {
+    "accountable_owner": "runtime/memory_intelligence.py",
+    "authorization": {
+     "existing_controls": [
+      "effect_grant",
+      "scope_lease",
+      "effect_intent"
+     ],
+     "per_run_governed_authorization_required": true,
+     "registry_confers_deletion_authority": false,
+     "registry_confers_write_authority": false,
+     "standing_write_privilege": false
+    },
+    "concurrency": "single accountable reconciler; per-run authorization required",
+    "lifecycle": "Generation and activation records are durable and read back; lifecycle authority is separate from index activation, while deletion authority is unresolved.",
+    "owner_approval_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000036534",
+    "provenance": [
+     "docs/repair/evidence/evidence/px-os-1067-runtime-state-ownership-matrix.json"
+    ],
+    "reclamation": "retirement owner only; no registry grants deletion",
+    "recovery": "unresolved unless the matrix records it",
+    "resource_class": "shared_durable",
+    "resource_id": "memory-vault-state",
+    "retention": "unresolved",
+    "scope": ".memory-control/lifecycle, lifecycle-authority, index/generations, and index/activation"
+   },
+   "registration_reason": null,
+   "registration_state": "registered"
+  },
+  {
+   "group_members": [
+    "runtime/operational_event_bus.py"
+   ],
+   "outside_readers": [
+    "runtime/agent_fleet_controls.py"
+   ],
+   "record": {
+    "accountable_owner": "runtime/agent_fleet_controls.py",
+    "authorization": {
+     "existing_controls": [
+      "effect_grant",
+      "scope_lease",
+      "effect_intent"
+     ],
+     "per_run_governed_authorization_required": true,
+     "registry_confers_deletion_authority": false,
+     "registry_confers_write_authority": false,
+     "standing_write_privilege": false
+    },
+    "concurrency": "single accountable reconciler; per-run authorization required",
+    "lifecycle": "Append/replay is durable; the constructor's injected root and caller lifecycle are not equivalent to an owner approval.",
+    "owner_approval_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000036534",
+    "provenance": [
+     "docs/repair/evidence/evidence/px-os-1067-runtime-state-ownership-matrix.json"
+    ],
+    "reclamation": "retirement owner only; no registry grants deletion",
+    "recovery": "unresolved unless the matrix records it",
+    "resource_class": "shared_durable",
+    "resource_id": "operational-event-bus",
+    "retention": "unresolved",
+    "scope": "injected bus_root/state.json, head.json, revisions, receipts, and replay records"
+   },
+   "registration_reason": null,
+   "registration_state": "registered"
+  },
+  {
+   "group_members": [
+    "runtime/operational_gap_ledger.py"
+   ],
+   "outside_readers": [
+    "ledger validation tools",
+    "runtime/producer_census.py"
+   ],
+   "record": {
+    "accountable_owner": null,
+    "authorization": {
+     "existing_controls": [
+      "effect_grant",
+      "scope_lease",
+      "effect_intent"
+     ],
+     "per_run_governed_authorization_required": true,
+     "registry_confers_deletion_authority": false,
+     "registry_confers_write_authority": false,
+     "standing_write_privilege": false
+    },
+    "concurrency": "single accountable reconciler; per-run authorization required",
+    "lifecycle": "Append-only ledger with snapshots, heads, deltas, segment migration, locks, and explicit reclaim artifacts.",
+    "owner_approval_event_id": null,
+    "provenance": [
+     "docs/repair/evidence/evidence/px-os-1067-runtime-state-ownership-matrix.json"
+    ],
+    "reclamation": "retirement owner only; no registry grants deletion",
+    "recovery": "unresolved unless the matrix records it",
+    "resource_class": "authoritative_durable",
+    "resource_id": "operational-gap-ledger",
+    "retention": "append-only retention contract exists outside this candidate matrix; exact deletion/reclamation authority remains policy-bound",
+    "scope": "registry/operational_gap_ledger.* and evidence/operational-gap-ledger/migration"
+   },
+   "registration_reason": "Several components read this resource from outside its group; choosing the reconciling authority is an ownership decision, not an inference.",
+   "registration_state": "pending_registration"
+  },
+  {
+   "group_members": [
+    "runtime/output_roots.py"
+   ],
+   "outside_readers": [
+    "runtime/mutating_producer_registry.py"
+   ],
+   "record": {
+    "accountable_owner": "runtime/mutating_producer_registry.py",
+    "authorization": {
+     "existing_controls": [
+      "effect_grant",
+      "scope_lease",
+      "effect_intent"
+     ],
+     "per_run_governed_authorization_required": true,
+     "registry_confers_deletion_authority": false,
+     "registry_confers_write_authority": false,
+     "standing_write_privilege": false
+    },
+    "concurrency": "single accountable reconciler; per-run authorization required",
+    "lifecycle": "Grant revocation is preserved as a first-class record; no grants are present in the inherited registry baseline.",
+    "owner_approval_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000036534",
+    "provenance": [
+     "docs/repair/evidence/evidence/px-os-1067-runtime-state-ownership-matrix.json"
+    ],
+    "reclamation": "retirement owner only; no registry grants deletion",
+    "recovery": "unresolved unless the matrix records it",
+    "resource_class": "authoritative_durable",
+    "resource_id": "output-root-grant-registry",
+    "retention": "durable policy record; retention and deletion authority remain governed by the output-root ADR",
+    "scope": "registry/producer_output_roots.json"
+   },
+   "registration_reason": null,
+   "registration_state": "registered"
+  },
+  {
+   "group_members": [
+    "runtime/plan_registry.py"
+   ],
+   "outside_readers": [
+    "runtime/release_repository_context.py",
+    "runtime/world_state.py"
+   ],
+   "record": {
+    "accountable_owner": null,
+    "authorization": {
+     "existing_controls": [
+      "effect_grant",
+      "scope_lease",
+      "effect_intent"
+     ],
+     "per_run_governed_authorization_required": true,
+     "registry_confers_deletion_authority": false,
+     "registry_confers_write_authority": false,
+     "standing_write_privilege": false
+    },
+    "concurrency": "single accountable reconciler; per-run authorization required",
+    "lifecycle": "Immutable content-addressed records and mutable status/ledger records coexist; project processing-order is a separate root.",
+    "owner_approval_event_id": null,
+    "provenance": [
+     "docs/repair/evidence/evidence/px-os-1067-runtime-state-ownership-matrix.json"
+    ],
+    "reclamation": "retirement owner only; no registry grants deletion",
+    "recovery": "unresolved unless the matrix records it",
+    "resource_class": "shared_durable",
+    "resource_id": "plan-registry-state",
+    "retention": "unresolved",
+    "scope": "registry/plan_corpus.json, punch_card_ledger.json, registry/planning/rev1xx/**, and project processing-order state"
+   },
+   "registration_reason": "Several components read this resource from outside its group; choosing the reconciling authority is an ownership decision, not an inference.",
+   "registration_state": "pending_registration"
+  },
+  {
+   "group_members": [
+    "runtime/project_control_plane.py"
+   ],
+   "outside_readers": [],
+   "record": {
+    "accountable_owner": null,
+    "authorization": {
+     "existing_controls": [
+      "effect_grant",
+      "scope_lease",
+      "effect_intent"
+     ],
+     "per_run_governed_authorization_required": true,
+     "registry_confers_deletion_authority": false,
+     "registry_confers_write_authority": false,
+     "standing_write_privilege": false
+    },
+    "concurrency": "single accountable reconciler; per-run authorization required",
+    "lifecycle": "Transactional prepare/commit/rollback and quarantine are implemented; retention and deletion authority are unresolved.",
+    "owner_approval_event_id": null,
+    "provenance": [
+     "docs/repair/evidence/evidence/px-os-1067-runtime-state-ownership-matrix.json"
+    ],
+    "reclamation": "retirement owner only; no registry grants deletion",
+    "recovery": "unresolved unless the matrix records it",
+    "resource_class": "authoritative_durable",
+    "resource_id": "project-control-transactions",
+    "retention": "unresolved",
+    "scope": "caller-configured project roots/targets, transaction journals, rollback images, and quarantine"
+   },
+   "registration_reason": "No component reads this resource from outside its producer group; the only source-backed candidates are its own writers.",
+   "registration_state": "pending_registration"
+  },
+  {
+   "group_members": [
+    "runtime/project_intelligence.py"
+   ],
+   "outside_readers": [
+    "runtime/verification_inputs.py",
+    "runtime/world_state.py"
+   ],
+   "record": {
+    "accountable_owner": null,
+    "authorization": {
+     "existing_controls": [
+      "effect_grant",
+      "scope_lease",
+      "effect_intent"
+     ],
+     "per_run_governed_authorization_required": true,
+     "registry_confers_deletion_authority": false,
+     "registry_confers_write_authority": false,
+     "standing_write_privilege": false
+    },
+    "concurrency": "single accountable reconciler; per-run authorization required",
+    "lifecycle": "Generated and rebuildable behavior is suggested by the producer, but there is no automatic exemption; history and locks need separate retention decisions.",
+    "owner_approval_event_id": null,
+    "provenance": [
+     "docs/repair/evidence/evidence/px-os-1067-runtime-state-ownership-matrix.json"
+    ],
+    "reclamation": "retirement owner only; no registry grants deletion",
+    "recovery": "unresolved unless the matrix records it",
+    "resource_class": "regenerable_durable",
+    "resource_id": "project-intelligence-map",
+    "retention": "unresolved",
+    "scope": ".agentic_engineering_os_px/project-map and project-map-history"
+   },
+   "registration_reason": "Several components read this resource from outside its group; choosing the reconciling authority is an ownership decision, not an inference.",
+   "registration_state": "pending_registration"
+  },
+  {
+   "group_members": [
+    "runtime/tool_intake.py",
+    "runtime/workspace_manager.py"
+   ],
+   "outside_readers": [
+    "runtime/engineering_lifecycle.py"
+   ],
+   "record": {
+    "accountable_owner": "runtime/engineering_lifecycle.py",
+    "authorization": {
+     "existing_controls": [
+      "effect_grant",
+      "scope_lease",
+      "effect_intent"
+     ],
+     "per_run_governed_authorization_required": true,
+     "registry_confers_deletion_authority": false,
+     "registry_confers_write_authority": false,
+     "standing_write_privilege": false
+    },
+    "concurrency": "single accountable reconciler; per-run authorization required",
+    "lifecycle": "State is transactional and revisioned; receipt/history retention and rollback authority are unresolved.",
+    "owner_approval_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000036534",
+    "provenance": [
+     "docs/repair/evidence/evidence/px-os-1067-runtime-state-ownership-matrix.json"
+    ],
+    "reclamation": "retirement owner only; no registry grants deletion",
+    "recovery": "unresolved unless the matrix records it",
+    "resource_class": "authoritative_durable",
+    "resource_id": "project-management-tool-intake",
+    "retention": "unresolved",
+    "scope": ".agentic_engineering_os_px/project-management/{state.json,tool-intake.json,history/**}"
+   },
+   "registration_reason": null,
+   "registration_state": "registered"
+  },
+  {
+   "group_members": [
+    "runtime/provider_gateway.py"
+   ],
+   "outside_readers": [],
+   "record": {
+    "accountable_owner": null,
+    "authorization": {
+     "existing_controls": [
+      "effect_grant",
+      "scope_lease",
+      "effect_intent"
+     ],
+     "per_run_governed_authorization_required": true,
+     "registry_confers_deletion_authority": false,
+     "registry_confers_write_authority": false,
+     "standing_write_privilege": false
+    },
+    "concurrency": "single accountable reconciler; per-run authorization required",
+    "lifecycle": "Authored adapter policy and generated scan output have different provenance and must not be conflated.",
+    "owner_approval_event_id": null,
+    "provenance": [
+     "docs/repair/evidence/evidence/px-os-1067-runtime-state-ownership-matrix.json"
+    ],
+    "reclamation": "retirement owner only; no registry grants deletion",
+    "recovery": "unresolved unless the matrix records it",
+    "resource_class": "authoritative_durable",
+    "resource_id": "provider-routing-registry",
+    "retention": "unresolved",
+    "scope": "registry/provider_adapters.json and registry/provider_route_scan.json"
+   },
+   "registration_reason": "No component reads this resource from outside its producer group; the only source-backed candidates are its own writers.",
+   "registration_state": "pending_registration"
+  },
+  {
+   "group_members": [
+    "runtime/release_artifacts.py",
+    "runtime/release_campaign.py",
+    "runtime/release_certification.py",
+    "runtime/release_preflight.py",
+    "runtime/release_process_custody.py"
+   ],
+   "outside_readers": [
+    "runtime/release_repository_context.py",
+    "runtime/world_state.py"
+   ],
+   "record": {
+    "accountable_owner": null,
+    "authorization": {
+     "existing_controls": [
+      "effect_grant",
+      "scope_lease",
+      "effect_intent"
+     ],
+     "per_run_governed_authorization_required": true,
+     "registry_confers_deletion_authority": false,
+     "registry_confers_write_authority": false,
+     "standing_write_privilege": false
+    },
+    "concurrency": "single accountable reconciler; per-run authorization required",
+    "lifecycle": "Lock, transaction, certificate, revocation, release-preflight, and process resources have distinct recovery/reclamation paths.",
+    "owner_approval_event_id": null,
+    "provenance": [
+     "docs/repair/evidence/evidence/px-os-1067-runtime-state-ownership-matrix.json"
+    ],
+    "reclamation": "retirement owner only; no registry grants deletion",
+    "recovery": "unresolved unless the matrix records it",
+    "resource_class": "authoritative_durable",
+    "resource_id": "release-control-and-evidence",
+    "retention": "release evidence retention policy applies to evidence artifacts; control-state retention and revocation policy remain distinct",
+    "scope": ".agentic_engineering_os_px/processing-order, release locks/transactions, registry release projections, and evidence/releases"
+   },
+   "registration_reason": "Several components read this resource from outside its group; choosing the reconciling authority is an ownership decision, not an inference.",
+   "registration_state": "pending_registration"
+  },
+  {
+   "group_members": [],
+   "outside_readers": [
+    "runtime/remote_provider_profiles.py"
+   ],
+   "record": {
+    "accountable_owner": null,
+    "authorization": {
+     "existing_controls": [
+      "effect_grant",
+      "scope_lease",
+      "effect_intent"
+     ],
+     "per_run_governed_authorization_required": true,
+     "registry_confers_deletion_authority": false,
+     "registry_confers_write_authority": false,
+     "standing_write_privilege": false
+    },
+    "concurrency": "single accountable reconciler; per-run authorization required",
+    "lifecycle": "No filesystem writer was verified in this producer; ownership of any external profile writer is not identified.",
+    "owner_approval_event_id": null,
+    "provenance": [
+     "docs/repair/evidence/evidence/px-os-1067-runtime-state-ownership-matrix.json"
+    ],
+    "reclamation": "retirement owner only; no registry grants deletion",
+    "recovery": "unresolved unless the matrix records it",
+    "resource_class": "authoritative_durable",
+    "resource_id": "remote-provider-profile-state",
+    "retention": "unresolved",
+    "scope": ".agentic_engineering_os_px/runtime-core/remote-models/profiles.json"
+   },
+   "registration_reason": "Ownership decision not approved.",
+   "registration_state": "pending_decision"
+  },
+  {
+   "group_members": [
+    "runtime/retrieval_generation.py"
+   ],
+   "outside_readers": [
+    "runtime/admitted_fabric_integrations.py"
+   ],
+   "record": {
+    "accountable_owner": "runtime/admitted_fabric_integrations.py",
+    "authorization": {
+     "existing_controls": [
+      "effect_grant",
+      "scope_lease",
+      "effect_intent"
+     ],
+     "per_run_governed_authorization_required": true,
+     "registry_confers_deletion_authority": false,
+     "registry_confers_write_authority": false,
+     "standing_write_privilege": false
+    },
+    "concurrency": "single accountable reconciler; per-run authorization required",
+    "lifecycle": "Immutable content-addressed generations coexist with mutable active/rollback pointers; the source root is supplied by the caller.",
+    "owner_approval_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000036534",
+    "provenance": [
+     "docs/repair/evidence/evidence/px-os-1067-runtime-state-ownership-matrix.json"
+    ],
+    "reclamation": "retirement owner only; no registry grants deletion",
+    "recovery": "unresolved unless the matrix records it",
+    "resource_class": "authoritative_durable",
+    "resource_id": "retrieval-generation-store",
+    "retention": "unresolved",
+    "scope": "caller-configured state_root/{active.json, rollback.json, generations/**}"
+   },
+   "registration_reason": null,
+   "registration_state": "registered"
+  },
+  {
+   "group_members": [
+    "runtime/agent_runtime.py",
+    "runtime/cli.py",
+    "runtime/knowledge_foundry.py",
+    "runtime/personal_record_store.py",
+    "runtime/plan_registry.py",
+    "runtime/process_supervisor.py",
+    "runtime/resource_lifecycle.py",
+    "runtime/studio_session_worker.py",
+    "runtime/studio_worker_launch.py",
+    "runtime/test_runner.py",
+    "runtime/tie_experience.py",
+    "runtime/usage_memory.py",
+    "runtime/workflow_studio.py"
+   ],
+   "outside_readers": [],
+   "record": {
+    "accountable_owner": null,
+    "authorization": {
+     "existing_controls": [
+      "effect_grant",
+      "scope_lease",
+      "effect_intent"
+     ],
+     "per_run_governed_authorization_required": true,
+     "registry_confers_deletion_authority": false,
+     "registry_confers_write_authority": false,
+     "standing_write_privilege": false
+    },
+    "concurrency": "single accountable reconciler; per-run authorization required",
+    "lifecycle": "Allocated resources register beneath cleanup roots and can be reclaimed through ResourceManager; this is the representative ephemeral/run-scoped mechanism.",
+    "owner_approval_event_id": null,
+    "provenance": [
+     "docs/repair/evidence/evidence/px-os-1067-runtime-state-ownership-matrix.json"
+    ],
+    "reclamation": "retirement owner only; no registry grants deletion",
+    "recovery": "unresolved unless the matrix records it",
+    "resource_class": "ephemeral_process_local",
+    "resource_id": "run-scoped-resource-lifecycle",
+    "retention": "run-scoped resource records and cleanup receipts; exact lifecycle policy applies, while durable product-state retention is separate",
+    "scope": ".agentic_engineering_os_px/resource-lifecycle/ledger.json, cleanup receipts, and registered run workspaces"
+   },
+   "registration_reason": "No component reads this resource from outside its producer group; the only source-backed candidates are its own writers.",
+   "registration_state": "pending_registration"
+  },
+  {
+   "group_members": [
+    "runtime/semantic_entity.py"
+   ],
+   "outside_readers": [
+    "runtime/semantic_prefreeze_census.py"
+   ],
+   "record": {
+    "accountable_owner": "runtime/semantic_prefreeze_census.py",
+    "authorization": {
+     "existing_controls": [
+      "effect_grant",
+      "scope_lease",
+      "effect_intent"
+     ],
+     "per_run_governed_authorization_required": true,
+     "registry_confers_deletion_authority": false,
+     "registry_confers_write_authority": false,
+     "standing_write_privilege": false
+    },
+    "concurrency": "single accountable reconciler; per-run authorization required",
+    "lifecycle": "Proposed/accepted lifecycle states exist; supersession, deletion, and recovery authority are unresolved.",
+    "owner_approval_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000036534",
+    "provenance": [
+     "docs/repair/evidence/evidence/px-os-1067-runtime-state-ownership-matrix.json"
+    ],
+    "reclamation": "retirement owner only; no registry grants deletion",
+    "recovery": "unresolved unless the matrix records it",
+    "resource_class": "authoritative_durable",
+    "resource_id": "semantic-entity-registry",
+    "retention": "unresolved",
+    "scope": ".agentic_engineering_os_px/runtime-core/semantic/entity-registry.json"
+   },
+   "registration_reason": null,
+   "registration_state": "registered"
+  },
+  {
+   "group_members": [
+    "runtime/skill_studio.py"
+   ],
+   "outside_readers": [
+    "runtime/semantic_surfaces.py",
+    "runtime/source_boundary.py"
+   ],
+   "record": {
+    "accountable_owner": null,
+    "authorization": {
+     "existing_controls": [
+      "effect_grant",
+      "scope_lease",
+      "effect_intent"
+     ],
+     "per_run_governed_authorization_required": true,
+     "registry_confers_deletion_authority": false,
+     "registry_confers_write_authority": false,
+     "standing_write_privilege": false
+    },
+    "concurrency": "single accountable reconciler; per-run authorization required",
+    "lifecycle": "Admission, promotion, backup, and transaction journals are present; authored content, backup, and derived index retention must be decided separately.",
+    "owner_approval_event_id": null,
+    "provenance": [
+     "docs/repair/evidence/evidence/px-os-1067-runtime-state-ownership-matrix.json"
+    ],
+    "reclamation": "retirement owner only; no registry grants deletion",
+    "recovery": "unresolved unless the matrix records it",
+    "resource_class": "authoritative_durable",
+    "resource_id": "skill-studio-and-projections",
+    "retention": "unresolved",
+    "scope": ".px/skills, .agentic_engineering_os_px/studios/skills, and skill-related registry projections"
+   },
+   "registration_reason": "Several components read this resource from outside its group; choosing the reconciling authority is an ownership decision, not an inference.",
+   "registration_state": "pending_registration"
+  },
+  {
+   "group_members": [
+    "runtime/source_boundary.py",
+    "runtime/source_freeze.py"
+   ],
+   "outside_readers": [
+    "runtime/semantic_surfaces.py"
+   ],
+   "record": {
+    "accountable_owner": "runtime/semantic_surfaces.py",
+    "authorization": {
+     "existing_controls": [
+      "effect_grant",
+      "scope_lease",
+      "effect_intent"
+     ],
+     "per_run_governed_authorization_required": true,
+     "registry_confers_deletion_authority": false,
+     "registry_confers_write_authority": false,
+     "standing_write_privilege": false
+    },
+    "concurrency": "single accountable reconciler; per-run authorization required",
+    "lifecycle": "Boundary registry, current-freeze pointer, and content-addressed archive have distinct mutability and retention properties.",
+    "owner_approval_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000036534",
+    "provenance": [
+     "docs/repair/evidence/evidence/px-os-1067-runtime-state-ownership-matrix.json"
+    ],
+    "reclamation": "retirement owner only; no registry grants deletion",
+    "recovery": "unresolved unless the matrix records it",
+    "resource_class": "authoritative_durable",
+    "resource_id": "source-boundary-and-freeze",
+    "retention": "unresolved",
+    "scope": "registry/source_boundary.json, registry/source_freeze.json, registry/source-freeze/**"
+   },
+   "registration_reason": null,
+   "registration_state": "registered"
+  },
+  {
+   "group_members": [
+    "runtime/skill_studio.py",
+    "runtime/studio_models.py"
+   ],
+   "outside_readers": [
+    "runtime/semantic_surfaces.py",
+    "runtime/source_boundary.py"
+   ],
+   "record": {
+    "accountable_owner": null,
+    "authorization": {
+     "existing_controls": [
+      "effect_grant",
+      "scope_lease",
+      "effect_intent"
+     ],
+     "per_run_governed_authorization_required": true,
+     "registry_confers_deletion_authority": false,
+     "registry_confers_write_authority": false,
+     "standing_write_privilege": false
+    },
+    "concurrency": "single accountable reconciler; per-run authorization required",
+    "lifecycle": "Immutable admitted revisions and mutable authored .px/skills files are related but distinct; backup/transaction cleanup remains unresolved.",
+    "owner_approval_event_id": null,
+    "provenance": [
+     "docs/repair/evidence/evidence/px-os-1067-runtime-state-ownership-matrix.json"
+    ],
+    "reclamation": "retirement owner only; no registry grants deletion",
+    "recovery": "unresolved unless the matrix records it",
+    "resource_class": "authoritative_durable",
+    "resource_id": "studio-authored-skill-revisions",
+    "retention": "unresolved",
+    "scope": ".agentic_engineering_os_px/studios/skills/<identity>/revisions and .px/skills authored sources"
+   },
+   "registration_reason": "Several components read this resource from outside its group; choosing the reconciling authority is an ownership decision, not an inference.",
+   "registration_state": "pending_registration"
+  },
+  {
+   "group_members": [
+    "runtime/studio_models.py"
+   ],
+   "outside_readers": [
+    "runtime/semantic_orchestration.py"
+   ],
+   "record": {
+    "accountable_owner": "runtime/semantic_orchestration.py",
+    "authorization": {
+     "existing_controls": [
+      "effect_grant",
+      "scope_lease",
+      "effect_intent"
+     ],
+     "per_run_governed_authorization_required": true,
+     "registry_confers_deletion_authority": false,
+     "registry_confers_write_authority": false,
+     "standing_write_privilege": false
+    },
+    "concurrency": "single accountable reconciler; per-run authorization required",
+    "lifecycle": "Versioned records are immutable/no-replace; retirement and reclamation authority are unresolved.",
+    "owner_approval_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000036534",
+    "provenance": [
+     "docs/repair/evidence/evidence/px-os-1067-runtime-state-ownership-matrix.json"
+    ],
+    "reclamation": "retirement owner only; no registry grants deletion",
+    "recovery": "unresolved unless the matrix records it",
+    "resource_class": "authoritative_durable",
+    "resource_id": "studio-knowledge-model-records",
+    "retention": "unresolved",
+    "scope": ".agentic_engineering_os_px/studios/{knowledge,models}/<identity>/revisions"
+   },
+   "registration_reason": null,
+   "registration_state": "registered"
+  },
+  {
+   "group_members": [
+    "runtime/cli.py",
+    "runtime/test_profiles.py",
+    "runtime/test_runner.py"
+   ],
+   "outside_readers": [
+    "runtime/release_artifacts.py",
+    "runtime/verification_inputs.py"
+   ],
+   "record": {
+    "accountable_owner": null,
+    "authorization": {
+     "existing_controls": [
+      "effect_grant",
+      "scope_lease",
+      "effect_intent"
+     ],
+     "per_run_governed_authorization_required": true,
+     "registry_confers_deletion_authority": false,
+     "registry_confers_write_authority": false,
+     "standing_write_privilege": false
+    },
+    "concurrency": "single accountable reconciler; per-run authorization required",
+    "lifecycle": "Policy inputs, generated test-group indexes, and transient run directories are distinct resources.",
+    "owner_approval_event_id": null,
+    "provenance": [
+     "docs/repair/evidence/evidence/px-os-1067-runtime-state-ownership-matrix.json"
+    ],
+    "reclamation": "retirement owner only; no registry grants deletion",
+    "recovery": "unresolved unless the matrix records it",
+    "resource_class": "authoritative_durable",
+    "resource_id": "test-profile-and-run-state",
+    "retention": "policy/config retention unresolved; run-scoped work follows ResourceManager records",
+    "scope": "registry/test_profiles.json, registry/repair_campaign.json, project repair-campaign state, and run-scoped test work"
+   },
+   "registration_reason": "Several components read this resource from outside its group; choosing the reconciling authority is an ownership decision, not an inference.",
+   "registration_state": "pending_registration"
+  },
+  {
+   "group_members": [
+    "runtime/tie_experience.py",
+    "runtime/usage_memory.py"
+   ],
+   "outside_readers": [
+    "runtime/yaml_subject_files.py"
+   ],
+   "record": {
+    "accountable_owner": "runtime/yaml_subject_files.py",
+    "authorization": {
+     "existing_controls": [
+      "effect_grant",
+      "scope_lease",
+      "effect_intent"
+     ],
+     "per_run_governed_authorization_required": true,
+     "registry_confers_deletion_authority": false,
+     "registry_confers_write_authority": false,
+     "standing_write_privilege": false
+    },
+    "concurrency": "single accountable reconciler; per-run authorization required",
+    "lifecycle": "Receipt workspaces use ResourceManager; usage log is append-only and stats rollup is derived. Subject roots span skills, agents, workflows, and models.",
+    "owner_approval_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000036534",
+    "provenance": [
+     "docs/repair/evidence/evidence/px-os-1067-runtime-state-ownership-matrix.json"
+    ],
+    "reclamation": "retirement owner only; no registry grants deletion",
+    "recovery": "unresolved unless the matrix records it",
+    "resource_class": "authoritative_durable",
+    "resource_id": "tie-receipts-and-subject-usage-memory",
+    "retention": "unresolved",
+    "scope": ".agentic_engineering_os_px/runtime-core/tie-migrations/receipts and subject-root memory/usage.jsonl plus stats.json"
+   },
+   "registration_reason": null,
+   "registration_state": "registered"
+  },
+  {
+   "group_members": [
+    "runtime/yaml_subject_files.py"
+   ],
+   "outside_readers": [
+    "runtime/usage_memory.py"
+   ],
+   "record": {
+    "accountable_owner": "runtime/usage_memory.py",
+    "authorization": {
+     "existing_controls": [
+      "effect_grant",
+      "scope_lease",
+      "effect_intent"
+     ],
+     "per_run_governed_authorization_required": true,
+     "registry_confers_deletion_authority": false,
+     "registry_confers_write_authority": false,
+     "standing_write_privilege": false
+    },
+    "concurrency": "single accountable reconciler; per-run authorization required",
+    "lifecycle": "Manifest authoring versus generated subject discovery is not determined by the root binding alone.",
+    "owner_approval_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000036534",
+    "provenance": [
+     "docs/repair/evidence/evidence/px-os-1067-runtime-state-ownership-matrix.json"
+    ],
+    "reclamation": "retirement owner only; no registry grants deletion",
+    "recovery": "unresolved unless the matrix records it",
+    "resource_class": "authoritative_durable",
+    "resource_id": "usage-memory-manifest",
+    "retention": "unresolved",
+    "scope": ".px/usage-memory and subject-root manifests"
+   },
+   "registration_reason": null,
+   "registration_state": "registered"
+  },
+  {
+   "group_members": [
+    "runtime/studio_models.py",
+    "runtime/studio_session_worker.py",
+    "runtime/workflow_studio.py"
+   ],
+   "outside_readers": [
+    "runtime/studio_api.py"
+   ],
+   "record": {
+    "accountable_owner": "runtime/studio_api.py",
+    "authorization": {
+     "existing_controls": [
+      "effect_grant",
+      "scope_lease",
+      "effect_intent"
+     ],
+     "per_run_governed_authorization_required": true,
+     "registry_confers_deletion_authority": false,
+     "registry_confers_write_authority": false,
+     "standing_write_privilege": false
+    },
+    "concurrency": "single accountable reconciler; per-run authorization required",
+    "lifecycle": "Allocated worker/request resources are tracked separately from durable workflow revisions and run records.",
+    "owner_approval_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000036534",
+    "provenance": [
+     "docs/repair/evidence/evidence/px-os-1067-runtime-state-ownership-matrix.json"
+    ],
+    "reclamation": "retirement owner only; no registry grants deletion",
+    "recovery": "unresolved unless the matrix records it",
+    "resource_class": "authoritative_durable",
+    "resource_id": "workflow-studio-state",
+    "retention": "unresolved",
+    "scope": ".agentic_engineering_os_px/studios/workflows"
+   },
+   "registration_reason": null,
+   "registration_state": "registered"
+  },
+  {
+   "group_members": [
+    "runtime/workspace_manager.py"
+   ],
+   "outside_readers": [
+    "runtime/contracts.py"
+   ],
+   "record": {
+    "accountable_owner": "runtime/contracts.py",
+    "authorization": {
+     "existing_controls": [
+      "effect_grant",
+      "scope_lease",
+      "effect_intent"
+     ],
+     "per_run_governed_authorization_required": true,
+     "registry_confers_deletion_authority": false,
+     "registry_confers_write_authority": false,
+     "standing_write_privilege": false
+    },
+    "concurrency": "single accountable reconciler; per-run authorization required",
+    "lifecycle": "Project tracking, rollback journals, quarantine, local metadata, and memory are separately reconciled artifacts.",
+    "owner_approval_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000036534",
+    "provenance": [
+     "docs/repair/evidence/evidence/px-os-1067-runtime-state-ownership-matrix.json"
+    ],
+    "reclamation": "retirement owner only; no registry grants deletion",
+    "recovery": "unresolved unless the matrix records it",
+    "resource_class": "shared_durable",
+    "resource_id": "workspace-and-project-control-state",
+    "retention": "unresolved",
+    "scope": "projects_tracking/** and project-root/.agentic_engineering_os_px project records/bindings/staging"
+   },
+   "registration_reason": null,
+   "registration_state": "registered"
+  },
+  {
+   "group_members": [
+    "runtime/world_state.py"
+   ],
+   "outside_readers": [
+    "runtime/release_repository_context.py"
+   ],
+   "record": {
+    "accountable_owner": "runtime/release_repository_context.py",
+    "authorization": {
+     "existing_controls": [
+      "effect_grant",
+      "scope_lease",
+      "effect_intent"
+     ],
+     "per_run_governed_authorization_required": true,
+     "registry_confers_deletion_authority": false,
+     "registry_confers_write_authority": false,
+     "standing_write_privilege": false
+    },
+    "concurrency": "single accountable reconciler; per-run authorization required",
+    "lifecycle": "Projection can be regenerated from inputs in principle; exact source completeness and regeneration guarantees are not established.",
+    "owner_approval_event_id": "gap-event:PX-OPERATIONAL-GAPS-20260816:000000036534",
+    "provenance": [
+     "docs/repair/evidence/evidence/px-os-1067-runtime-state-ownership-matrix.json"
+    ],
+    "reclamation": "retirement owner only; no registry grants deletion",
+    "recovery": "unresolved unless the matrix records it",
+    "resource_class": "authoritative_durable",
+    "resource_id": "world-state-projection",
+    "retention": "unresolved",
+    "scope": "registry/px_world_state.json"
+   },
+   "registration_reason": null,
+   "registration_state": "registered"
+  }
+ ],
+ "schema_version": "px.runtime-state-ownership-registry/2.0",
+ "state": "approved_custodian_registrations",
+ "totals": {
+  "pending_decision": 3,
+  "pending_registration": 14,
+  "registered": 15,
+  "resources": 32
+ }
+}

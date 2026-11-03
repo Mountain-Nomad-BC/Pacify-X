@@ -1,0 +1,130 @@
+{
+ "authority_contract": "px-os-1067-authority-contract.json",
+ "binding_question": "Whether the destination is guaranteed to land under a root the generator itself derives \u2014 the exact guarantee the retired reports/ grant lacked.",
+ "current_output_roots": {
+  "approved_durable_resource_owners": 0,
+  "output_root_grants": 0,
+  "output_root_roots": 0
+ },
+ "gap_id": "PX-OS-1067",
+ "grant_decision": {
+  "needs": "An owner decision binding these pinned source bytes to a durable root whose retention class fits a caller-directed output. The audit only establishes that the confinement guarantee exists; it does not choose the root.",
+  "status": "PENDING_OWNER"
+ },
+ "measurement": "static source audit of required CLI arguments, confinement, and atomic publish",
+ "priority": 6,
+ "producers": [
+  {
+   "checks": {
+    "atomic_replace_publish": false,
+    "confines_to_generator_root": true,
+    "no_silent_overwrite": true,
+    "owned_temp_cleanup": false,
+    "required_output_argument": true,
+    "temp_beside_destination": false
+   },
+   "grant_recommendation": "Not eligible: the destination guarantee is incomplete, so a grant would authorize writes the producer does not confine.",
+   "guarantee": "unproven",
+   "producer": "scripts/build_release_successor_configs.py",
+   "required_output_arguments": [
+    {
+     "flag": "--automation-output",
+     "required": true
+    },
+    {
+     "flag": "--stage-output",
+     "required": true
+    }
+   ],
+   "source_sha256": "f585c1209778bae0eafcc0832a973e690bc63140695c017e89a451c8f662a31d",
+   "unproven_reasons": [
+    "atomic_replace_publish",
+    "temp_beside_destination",
+    "owned_temp_cleanup"
+   ],
+   "write_class": "caller_directed_output"
+  },
+  {
+   "checks": {
+    "atomic_replace_publish": true,
+    "confines_to_generator_root": false,
+    "no_silent_overwrite": false,
+    "owned_temp_cleanup": true,
+    "required_output_argument": true,
+    "temp_beside_destination": true
+   },
+   "grant_recommendation": "Not eligible: the destination guarantee is incomplete, so a grant would authorize writes the producer does not confine.",
+   "guarantee": "unproven",
+   "producer": "scripts/benchmark_local_models.py",
+   "required_output_arguments": [
+    {
+     "flag": "--output",
+     "required": true
+    }
+   ],
+   "source_sha256": "7cf9fe083645e2c42e9ad585e7f3941c4b3cd6a69272102f92873ca278cad62d",
+   "unproven_reasons": [
+    "confines_to_generator_root",
+    "no_silent_overwrite"
+   ],
+   "write_class": "caller_directed_output"
+  },
+  {
+   "checks": {
+    "atomic_replace_publish": true,
+    "confines_to_generator_root": false,
+    "no_silent_overwrite": true,
+    "owned_temp_cleanup": true,
+    "required_output_argument": true,
+    "temp_beside_destination": true
+   },
+   "grant_recommendation": "Not eligible: the destination guarantee is incomplete, so a grant would authorize writes the producer does not confine.",
+   "guarantee": "unproven",
+   "producer": "scripts/benchmark_model_routes.py",
+   "required_output_arguments": [
+    {
+     "flag": "--output",
+     "required": true
+    }
+   ],
+   "source_sha256": "768bacf8e896f8447f02ad59975f8178a1064fb7854742611d636d01fc4976e2",
+   "unproven_reasons": [
+    "confines_to_generator_root"
+   ],
+   "write_class": "caller_directed_output"
+  },
+  {
+   "checks": {
+    "atomic_replace_publish": true,
+    "confines_to_generator_root": false,
+    "no_silent_overwrite": false,
+    "owned_temp_cleanup": true,
+    "required_output_argument": true,
+    "temp_beside_destination": true
+   },
+   "grant_recommendation": "Not eligible: the destination guarantee is incomplete, so a grant would authorize writes the producer does not confine.",
+   "guarantee": "unproven",
+   "producer": "scripts/certify_local_model_profiles.py",
+   "required_output_arguments": [
+    {
+     "flag": "--output",
+     "required": true
+    }
+   ],
+   "source_sha256": "6b9442ea22b25712c803c18f1e03ce31c281786e5fb57a7348dd9021a61f49c7",
+   "unproven_reasons": [
+    "confines_to_generator_root",
+    "no_silent_overwrite"
+   ],
+   "write_class": "caller_directed_output"
+  }
+ ],
+ "schema_version": "px.output-guarantee-audit/1.0",
+ "summary": {
+  "grants_made": 0,
+  "guaranteed": 0,
+  "producers": 4,
+  "roots_added": 0,
+  "unproven": 4
+ }
+}
