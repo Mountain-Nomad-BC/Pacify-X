@@ -185,6 +185,16 @@
 - **Tests:** 71 passed, 0 failed across the ownership, census, effect-surface, output-root and mixed-destination suites. No regressions from the wiring.
 - **Remaining:** 139 unresolved producers (36 need grants; 2 helper-mediated; 101 in runtime/`.px` without a custodian); 14 accepted-without-owner resources; 3 pending decisions; 103 inert fingerprints; release certification not started.
 
+## Session 4 — output-root wiring, grant measurement, custody by capability
+
+- **Output-root wiring (`COMPLETED`):** [output_root_classification.py](../../runtime/output_root_classification.py) now resolves a producer only when **every** destination it writes is strictly below an active, unexpired grant root. Process/network producers are excluded and no destructive effect can use this path. With grants empty it is inert: the census did not move when it was wired. 7 focused tests pass, including the decisive case where one granted destination does not authorize a second ungranted one.
+- **A `reports/` grant was measured, not assumed:** [the simulation](./evidence/px-os-1067-output-grant-simulation.json) replays the classifier's own rule with a hypothetical `reports/` root. Result: **0 of 78** unresolved scripts producers would resolve. The November 1 retirement was correct, and a bare grant is not a shortcut to closing that family.
+- **Correction to session 3 (`wrong, now fixed`):** the tie-break there matched a filename hint and registered `runtime/world_state.py` as owner of three resources. Source review shows it *derives* a read-only view and never reconciles. The rule is now capability-based: the unique component **outside** the group that writes state owns it; read-only components can never own; more than one outside writer is undecidable. Registered custodians fell 19 → **12**.
+- **Measured earnings:** `owned_durable_resource` resolves **16** producers; resolved 216 → **232**, unresolved 157 → **141** across this pass.
+- **Gate explained exactly:** the 310 findings are **15** `unclassified mutating producer` (the same 15 producers reported as unresolved) plus **295** pre-existing stale-registry findings against the 386-entry published image. `publish_registry` correctly refuses to republish while any producer is unclassified, so those 295 cannot be cleared by legitimate means yet. No finding was suppressed.
+- **Tests:** 78 passed, 0 failed (ownership, approved-ownership, output roots, output-root classification, census, copy recognizers, mixed destination).
+- **Remaining:** 141 unresolved (77 scripts needing per-destination grants, 2 helper-mediated, ~62 runtime/`.px` with no lawful custodian); 17 accepted-but-unregistered resources; 3 pending decisions; 103 inert fingerprints; release certification not started.
+
 ## Source material examined
 
 - [New_handoff.md](./New_handoff.md)
