@@ -58,6 +58,12 @@ EXEMPTION_REASONS = (
     # The module is a read-only classifier whose only mutation-shaped call is a
     # string/dataclass helper (str.replace, dataclasses.replace), not a write.
     "read_only_classifier",
+    # B1: the module performs no filesystem write of its own; every durable effect is
+    # published through runtime/guarded_registry_projection, which owns the destination,
+    # custody, admission and lease. The caller holds no path and inherits no write
+    # permission. Distinguished from `declared_output_target` (caller-named destination)
+    # and from `generated_projection_producer` (owns regeneration of its own output).
+    "delegated_publication",
 )
 
 NATIVE_CONTROL_CUSTODY_OWNERS = frozenset(
@@ -92,13 +98,38 @@ def _normalize(path: str) -> str:
     return str(path).strip().replace("\\", "/")
 
 
-def discover_mutating_producers(root: Path) -> dict[str, tuple[str, ...]]:
-    """Return {relative_path: (effect, ...)} for every mutating producer."""
-    records = discover_effect_surfaces(root)
+def discover_effect_producers(
+    root: Path, *, records: list[dict[str, object]] | None = None
+) -> dict[str, tuple[str, ...]]:
+    """Return {relative_path: (effect, ...)} for every path with any effect record.
+
+    This includes process- and network-only producers. It is the right population for
+    answering "does this file do anything?", and the wrong one for custody: a file that only
+    spawns a process owns no filesystem mutation to classify.
+    """
+    if records is None:
+        records = discover_effect_surfaces(root)
     by_file: dict[str, set[str]] = {}
     for record in records:
         by_file.setdefault(_normalize(record["path"]), set()).add(str(record["effect"]))
     return {path: tuple(sorted(effects)) for path, effects in sorted(by_file.items())}
+
+
+def discover_mutating_producers(
+    root: Path, *, records: list[dict[str, object]] | None = None
+) -> dict[str, tuple[str, ...]]:
+    """Return {relative_path: (effect, ...)} for producers that mutate the filesystem.
+
+    The name and docstring said "mutating" while the body returned *every* producer, so a
+    process-only or network-only file was counted as a mutating producer and entered the
+    custody denominator. The distinction matters: the custody registry classifies filesystem
+    mutation, and a producer with none is not its business.
+    """
+    return {
+        path: effects
+        for path, effects in discover_effect_producers(root, records=records).items()
+        if "filesystem_mutation" in effects
+    }
 
 
 # Only an actual source review may establish a read-only exemption. This hash
@@ -138,17 +169,17 @@ REVIEWED_CONTROL_CUSTODY = {'runtime/gremlin/audit.py': {'evidence': '__call__ v
 
 # Individually reviewed complete publication paths, not module-import inference.
 REVIEWED_DELEGATED_PUBLICATION = {'scripts/build_contract_ownership_registry.py': {
-    'call_locations': [739],
+    'call_locations': [1011],
     'owner': 'runtime/guarded_registry_projection.py',
-    'owner_sha256': '98e24c3655f91648cd9e058263e980a4c45db6315d56eec2e35e93112943182c',
-    'source_sha256': 'a83bebc1f37296b96fabe0d785f50e7a52363d864de62bd6e6647ed5b49b2ecd'},
+    'owner_sha256': '7320e6e71436c79f25484f0c8053193d96bdd6a2142813ceb61acd74c55b0dc8',
+    'source_sha256': '1997de2a898cccecd9f34892efaa3a8628688a35dfe45da293300bc4ecb1df03'},
  'scripts/build_agency_agent_graph.py': {
     'call_locations': [39], 'owner': 'runtime/guarded_registry_projection.py',
-    'owner_sha256': '98e24c3655f91648cd9e058263e980a4c45db6315d56eec2e35e93112943182c',
+    'owner_sha256': '7320e6e71436c79f25484f0c8053193d96bdd6a2142813ceb61acd74c55b0dc8',
     'source_sha256': 'e7343c48d7e35a303d86ad5c64ac32f2870551a4725908aa5a650d9de2657631'},
  'scripts/build_semantic_capability_index.py': {
     'call_locations': [28], 'owner': 'runtime/guarded_registry_projection.py',
-    'owner_sha256': '98e24c3655f91648cd9e058263e980a4c45db6315d56eec2e35e93112943182c',
+    'owner_sha256': '7320e6e71436c79f25484f0c8053193d96bdd6a2142813ceb61acd74c55b0dc8',
     'source_sha256': '57bc52c70c4ca37f5729086559e76fbc0c6dc63e5c499352de0afbf6d1a0740b'},
  'scripts/build_artifact_reachability.py': {'call_locations': [21],
                                             'owner': 'runtime/guarded_registry_projection.py',
@@ -156,7 +187,7 @@ REVIEWED_DELEGATED_PUBLICATION = {'scripts/build_contract_ownership_registry.py'
                                             'source_sha256': 'a1d905a0d884affa295948508d753ed231fc91a911d97d58da17412005698b76'},
  'scripts/build_effect_surface_ownership.py': {'call_locations': [22],
                                                'owner': 'runtime/guarded_registry_projection.py',
-                                               'owner_sha256': '98e24c3655f91648cd9e058263e980a4c45db6315d56eec2e35e93112943182c',
+                                               'owner_sha256': '7320e6e71436c79f25484f0c8053193d96bdd6a2142813ceb61acd74c55b0dc8',
                                                'source_sha256': '34582e1cf9d2f66331d4ff1c808a779ae59eb7543f9665a251539c3181c16046'},
  'scripts/build_historical_external_references.py': {'call_locations': [31],
                                                      'owner': 'runtime/guarded_registry_projection.py',
@@ -179,6 +210,74 @@ REVIEWED_DELEGATED_PUBLICATION = {'scripts/build_contract_ownership_registry.py'
                                        'owner_sha256': '98e24c3655f91648cd9e058263e980a4c45db6315d56eec2e35e93112943182c',
                                        'source_sha256': '3358a43e48c956f6af7570c153533969353265ed8bfb36abc71d247b2708afc4'}}
 
+PUBLICATION_OWNER = "runtime/guarded_registry_projection.py"
+PUBLICATION_FUNCTION = "publish_guarded_registry_projection"
+
+
+def _delegated_publication_verdict(
+    root: Path, relative: str, records: list[dict[str, object]] | None = None
+) -> dict[str, str] | None:
+    """B1: does this caller purely delegate its durable effect to the publication owner?
+
+    Verified from the caller's own source on every evaluation, so neither a stale table
+    entry nor a rename can grant the classification. Four facts are required:
+
+    1. the source imports `publish_guarded_registry_projection` from the canonical module;
+    2. it calls it;
+    3. it has no `filesystem_mutation` record outside its own publication call sites;
+    4. the owner module exists and still defines the function.
+
+    Anything else returns None, which leaves the producer unresolved — the fail-closed
+    direction, because a caller that also writes directly is a mixed producer and needs a
+    different contract (B6-D2), not this one.
+
+    `records` may carry one shared effect inventory from the caller. Re-scanning the whole
+    repository for every delegated caller made the census quadratic: `default_classification`
+    runs once per mutating producer, and each delegated caller re-parsed every source file.
+    """
+    import ast as _ast
+
+    path = root / relative
+    owner = root / PUBLICATION_OWNER
+    if not path.is_file() or not owner.is_file():
+        return None
+    if PUBLICATION_FUNCTION not in owner.read_text(encoding="utf-8"):
+        return None
+
+    source = path.read_text(encoding="utf-8-sig")
+    tree = _ast.parse(source)
+    imported = False
+    call_lines: set[int] = set()
+    for node in _ast.walk(tree):
+        if isinstance(node, _ast.ImportFrom) and node.module == "runtime.guarded_registry_projection":
+            if any(alias.name == PUBLICATION_FUNCTION for alias in node.names):
+                imported = True
+        elif isinstance(node, _ast.Import):
+            if any(alias.name == "runtime.guarded_registry_projection" for alias in node.names):
+                imported = True
+        if isinstance(node, _ast.Call):
+            target = node.func
+            name = target.attr if isinstance(target, _ast.Attribute) else getattr(
+                target, "id", "")
+            if name == PUBLICATION_FUNCTION:
+                call_lines.add(node.lineno)
+    if not imported or not call_lines:
+        return None
+
+    if records is None:
+        from .effect_surface import discover_effect_surfaces
+
+        records = discover_effect_surfaces(root)
+    for record in records:
+        if record["path"] != relative:
+            continue
+        if str(record["effect"]) != "filesystem_mutation":
+            continue
+        if int(record["line"]) not in call_lines:
+            return None
+    return {"classification": "exempt", "reason": "delegated_publication"}
+
+
 def _matches_native_owner(root: Path, relative: str) -> bool:
     """A project filename cannot impersonate the shipped native custody owner."""
     from .archive_io import reject_path_links
@@ -194,7 +293,11 @@ def _matches_native_owner(root: Path, relative: str) -> bool:
 
 
 def default_classification(
-    root: Path, relative: str, effects: tuple[str, ...]
+    root: Path,
+    relative: str,
+    effects: tuple[str, ...],
+    *,
+    records: list[dict[str, object]] | None = None,
 ) -> Mapping[str, str] | None:
     """Return current source-backed classification, never an import assertion.
 
@@ -202,12 +305,24 @@ def default_classification(
     remains unclassified until its real guarded call path has been reviewed.
     Atomic output, a canonical import, and a generated destination do not prove
     scope leasing or effect-intent admission.
+
+    `records` is an optional shared effect inventory for delegated-publication checks.
+    Omitting it preserves the previous per-producer scan behavior.
     """
     relative = _normalize(relative)
     if relative in GUARDED_MUTATING_OWNERS and _matches_native_owner(root, relative):
         return {"classification": "leased", "reason": "canonical_lease_intent_owner"}
     if relative in NATIVE_CONTROL_CUSTODY_OWNERS and _matches_native_owner(root, relative):
         return {"classification": "exempt", "reason": "canonical_control_custody_owner"}
+    # B1 delegated_publication is evaluated from the caller's own source, before the pinned
+    # table, because the table's owner fingerprint had drifted for six entries (two different
+    # hashes for one owner module), which made those entries unresolvable regardless of the
+    # source. The live check is stricter than the table: it requires the canonical import, the
+    # call, the owner's current definition, and no owned filesystem mutation.
+    if relative in REVIEWED_DELEGATED_PUBLICATION:
+        delegated_verdict = _delegated_publication_verdict(root, relative, records)
+        if delegated_verdict is not None:
+            return delegated_verdict
     delegated = REVIEWED_DELEGATED_PUBLICATION.get(relative)
     if delegated is not None:
         caller, owner = root / relative, root / delegated["owner"]
@@ -221,7 +336,41 @@ def default_classification(
     if control is not None and path.is_file():
         if hashlib.sha256(path.read_bytes()).hexdigest() == control["sha256"]:
             return {"classification": "exempt", "reason": control["reason"]}
-    from .mutating_producer_custody_reviewed import REVIEWED_PRODUCER_CUSTODY
+
+    from .mutating_producer_custody_reviewed import (
+        DECLARED_OUTPUT_PRECEDENCE,
+        DECLARED_OUTPUT_TARGET_RECONCILED,
+        REVIEWED_PRODUCER_CUSTODY,
+    )
+    # Predicate-reconciled declared_output_target entries (PX-OS-1067) take precedence
+    # over the generated table for the producers they cover, so a stale
+    # `declared_output_target` label cannot substitute itself for the predicate. A
+    # producer the predicate rejected is not in this mapping and stays unresolved.
+    # Each entry pins the exact source it judged, so drift invalidates it.
+    # Precedence is decided first. A producer the predicate audited and rejected was also
+    # added to precedence so the generated table cannot re-promote it — but the generated
+    # table is itself in REVIEWED_PRODUCER_CUSTODY, so checking the reconciled mapping
+    # first let a drifted old entry survive ahead of the rejection. A rejected producer
+    # must resolve to nothing regardless of which reviewed table mentions it.
+    reconciled = DECLARED_OUTPUT_TARGET_RECONCILED.get(relative)
+    if reconciled is not None:
+        # A reconciled producer resolves only from a live, matching pinned entry; drift
+        # or an audit that did not qualify it returns None and never falls through to a
+        # generated label.
+        if path.is_file() and hashlib.sha256(path.read_bytes()).hexdigest() == reconciled["sha256"]:
+            return {
+                "classification": reconciled["classification"],
+                "reason": reconciled["reason"],
+            }
+        return None
+    if relative in DECLARED_OUTPUT_PRECEDENCE and relative not in REVIEWED_DELEGATED_PUBLICATION:
+        # This producer was judged by the predicate and did not qualify; the generated
+        # table's label must not re-promote it. Report the exact failing condition.
+        #
+        # A producer whose complete publication path was separately reviewed as delegating
+        # to the guarded projection is a different contract: it is `leased` because of that
+        # reviewed call path, not because of a stale label, so it is not withheld here.
+        return None
     reviewed = REVIEWED_PRODUCER_CUSTODY.get(relative)
     if reviewed is not None and path.is_file():
         if hashlib.sha256(path.read_bytes()).hexdigest() == reviewed["sha256"]:
@@ -251,12 +400,17 @@ def _load_registry(path: Path) -> dict[str, object]:
     return document
 
 
-def validate_registry(root: Path) -> dict[str, object]:
+def validate_registry(
+    root: Path, *, records: list[dict[str, object]] | None = None
+) -> dict[str, object]:
     """Validate the published registry against the discovered producers.
 
     Fails closed: any discovered producer absent from the registry, or any
     registry entry whose classification/reason is invalid, is reported as an
     error and the result is not valid.
+
+    `records` is an optional shared effect inventory; `validate_effect_surfaces` passes
+    the scan it already performed so a gate run does not rescan per producer.
     """
     root = root.resolve()
     registry_path = root / REGISTRY_RELATIVE
@@ -266,13 +420,13 @@ def validate_registry(root: Path) -> dict[str, object]:
     if not isinstance(declared, dict):
         declared = {}
 
-    discovered = discover_mutating_producers(root)
+    discovered = discover_mutating_producers(root, records=records)
     for relative, effects in discovered.items():
         entry = declared.get(relative)
         if not isinstance(entry, dict):
             errors.append(f"{relative}: unclassified mutating producer ({', '.join(effects)})")
             continue
-        current = default_classification(root, relative, effects)
+        current = default_classification(root, relative, effects, records=records)
         if current is None:
             errors.append(f"{relative}: no current source-backed custody classification")
         elif any(entry.get(key) != current[key] for key in ("classification", "reason")):
@@ -307,18 +461,24 @@ def validate_registry(root: Path) -> dict[str, object]:
     }
 
 
-def build_registry(root: Path) -> dict[str, Any]:
+def build_registry(
+    root: Path, *, records: list[dict[str, object]] | None = None
+) -> dict[str, Any]:
     """Build the complete classification for every discovered producer.
 
     Producers that the structural rules cannot classify are returned as
     ``unclassified`` so the caller can fail closed rather than guess.
+
+    `records` is an optional shared effect inventory. Without it this function rescans
+    the repository once; the canonical census passes its own scan so the whole run does
+    a bounded number of scans instead of one per delegated producer.
     """
     root = root.resolve()
-    discovered = discover_mutating_producers(root)
+    discovered = discover_mutating_producers(root, records=records)
     producers: dict[str, dict[str, str]] = {}
     unclassified: list[str] = []
     for relative, effects in discovered.items():
-        derived = default_classification(root, relative, effects)
+        derived = default_classification(root, relative, effects, records=records)
         if derived is None:
             unclassified.append(relative)
             continue
