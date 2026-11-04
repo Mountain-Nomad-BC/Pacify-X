@@ -195,6 +195,19 @@
 - **Tests:** 78 passed, 0 failed (ownership, approved-ownership, output roots, output-root classification, census, copy recognizers, mixed destination).
 - **Remaining:** 141 unresolved (77 scripts needing per-destination grants, 2 helper-mediated, ~62 runtime/`.px` with no lawful custodian); 17 accepted-but-unregistered resources; 3 pending decisions; 103 inert fingerprints; release certification not started.
 
+## Session 5 — caller-directed outputs confined; four producers resolved by observation
+
+- **New capability:** [confined_output.py](../../runtime/confined_output.py) provides confined atomic publication and confined relocation. It refuses traversal, symlinks, absolute escapes and the root itself; publishes via temp + `os.replace`; never truncates an existing report on failure. **8 tests.**
+- **Producers rewired:** all six that previously wrote a caller path directly now publish through it. `sanitize_tree` additionally refuses a preservation root outside the repository; `rehash_inventory_partitions` confines its `--parts-root` walk while allowing the repository root itself as a read origin (the sandbox caught that over-strict version rejecting its most natural invocation).
+- **Grants:** six per-producer grants under a `REPOSITORY_ROOT` root, write class `caller_directed_report`, pinned to exact source bytes, deletion never authorized. This is **not** the retired `reports/` grant: the [simulation](./evidence/px-os-1067-output-grant-simulation.json) had already measured that a bare `reports/` root would resolve nothing.
+- **Classification now needs two independent proofs:** a static pass (every destination under an authorized root) **and** a retained sandbox observation (a real run that wrote nothing outside its tree). Observation is mandatory for every producer on this path.
+- **Sandbox evidence:** [7 of 8 modes](./evidence/px-os-1067-sandbox-evidence.json) observed with zero escaping writes, each entry carrying the source digest it observed.
+- **Measured result:** `authorized_output_root` resolves **4** producers; resolved 232 → **236**, unresolved 141 → **137**.
+- **Gate findings rose 310 → 318 and why:** four producer sources changed bytes, so their entries in the published registry are stale and now report as findings instead of silently matching. Nothing was suppressed; the gate is doing its job.
+- **A relapsed and reverted attempt:** I drafted a rule that skipped the observation requirement when a destination was "literal." It broke three safety tests. The tests were right, the draft was wrong, and the relaxation was reverted rather than the test adjusted.
+- **Tests:** 18 passed across confinement and classification.
+- **Still unresolved:** 137 producers. Two of the six rewired ones (`build_integration_disposition`, `import_adversarial_reaudit`) have fully confined destinations but no successful observation — neither can be exercised without inputs the sandbox cannot synthesise validly — so they stay unresolved on evidence grounds.
+
 ## Source material examined
 
 - [New_handoff.md](./New_handoff.md)
