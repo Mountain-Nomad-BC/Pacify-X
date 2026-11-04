@@ -1,0 +1,952 @@
+{
+ "gap_id": "PX-OS-1067",
+ "population": 78,
+ "producers": [
+  {
+   "caller_destinations": [],
+   "confines_to_root": false,
+   "destinations": [
+    "REGISTRY"
+   ],
+   "kind": "repository_state",
+   "path": "scripts/admit_semantic_ownership.py"
+  },
+  {
+   "caller_destinations": [],
+   "confines_to_root": true,
+   "destinations": [
+    "archive_root"
+   ],
+   "kind": "repository_state",
+   "path": "scripts/archive_committed_wal.py"
+  },
+  {
+   "caller_destinations": [],
+   "confines_to_root": true,
+   "destinations": [
+    "archive",
+    "archive_root",
+    "os",
+    "retained_lock.parent",
+    "temporary",
+    "zipfile"
+   ],
+   "kind": "repository_state",
+   "path": "scripts/archive_project_map_history.py"
+  },
+  {
+   "caller_destinations": [],
+   "confines_to_root": true,
+   "destinations": [
+    "data",
+    "datetime",
+    "datetime.now(timezone.utc)",
+    "datetime.now(timezone.utc).isoformat()",
+    "files",
+    "output",
+    "output.parent",
+    "relative"
+   ],
+   "kind": "repository_state",
+   "path": "scripts/assemble_operational_control_evidence.py"
+  },
+  {
+   "caller_destinations": [],
+   "confines_to_root": false,
+   "destinations": [
+    "path"
+   ],
+   "kind": "repository_state",
+   "path": "scripts/audit_sanitization.py"
+  },
+  {
+   "caller_destinations": [],
+   "confines_to_root": false,
+   "destinations": [
+    "tarfile"
+   ],
+   "kind": "repository_state",
+   "path": "scripts/audit_source_archive.py"
+  },
+  {
+   "caller_destinations": [],
+   "confines_to_root": true,
+   "destinations": [
+    "json",
+    "manifest",
+    "path",
+    "summary_path",
+    "summary_path.open('x', encoding='utf-8')"
+   ],
+   "kind": "repository_state",
+   "path": "scripts/audit_validations_tree.py"
+  },
+  {
+   "caller_destinations": [],
+   "confines_to_root": false,
+   "destinations": [
+    "json",
+    "os",
+    "path.parent",
+    "payload",
+    "temporary"
+   ],
+   "kind": "repository_state",
+   "path": "scripts/benchmark_local_models.py"
+  },
+  {
+   "caller_destinations": [],
+   "confines_to_root": false,
+   "destinations": [
+    "os",
+    "path",
+    "path.parent"
+   ],
+   "kind": "repository_state",
+   "path": "scripts/benchmark_model_routes.py"
+  },
+  {
+   "caller_destinations": [],
+   "confines_to_root": false,
+   "destinations": [
+    "ledger_path",
+    "output",
+    "output.parent",
+    "target"
+   ],
+   "kind": "repository_state",
+   "path": "scripts/benchmark_operational_gap_ledger.py"
+  },
+  {
+   "caller_destinations": [],
+   "confines_to_root": false,
+   "destinations": [
+    "codex-primary:operational-ledger-bootstrap",
+    "surface_id",
+    "surface_id.replace('-', ' ')"
+   ],
+   "kind": "repository_state",
+   "path": "scripts/bootstrap_operational_gap_ledger.py"
+  },
+  {
+   "caller_destinations": [],
+   "confines_to_root": false,
+   "destinations": [
+    "base",
+    "base / subject_id",
+    "normalized"
+   ],
+   "kind": "repository_state",
+   "path": "scripts/bootstrap_usage_memory.py"
+  },
+  {
+   "caller_destinations": [],
+   "confines_to_root": false,
+   "destinations": [
+    "os",
+    "target.parent",
+    "temporary"
+   ],
+   "kind": "repository_state",
+   "path": "scripts/build_claims.py"
+  },
+  {
+   "caller_destinations": [],
+   "confines_to_root": true,
+   "destinations": [
+    "Path(str(output).replace('\\\\', '/'))",
+    "output",
+    "str(output)"
+   ],
+   "kind": "repository_state",
+   "path": "scripts/build_cognitive_index.py"
+  },
+  {
+   "caller_destinations": [],
+   "confines_to_root": true,
+   "destinations": [
+    "os",
+    "target.parent",
+    "temporary"
+   ],
+   "kind": "repository_state",
+   "path": "scripts/build_completion_status.py"
+  },
+  {
+   "caller_destinations": [],
+   "confines_to_root": false,
+   "destinations": [
+    "460f2ed54dac3bc96a453d2fd30c098234df80d3840fda475ba95b1e3983a08f",
+    "bindings",
+    "bindings_path",
+    "catalog_path",
+    "domain",
+    "ledger",
+    "ledger_path",
+    "orchestrations_path",
+    "path",
+    "path.parent"
+   ],
+   "kind": "repository_state",
+   "path": "scripts/build_cybersecurity_provider_registry.py"
+  },
+  {
+   "caller_destinations": [],
+   "confines_to_root": false,
+   "destinations": [],
+   "kind": "opaque",
+   "path": "scripts/build_integration_disposition.py"
+  },
+  {
+   "caller_destinations": [],
+   "confines_to_root": false,
+   "destinations": [
+    "candidate",
+    "candidate.strip()",
+    "claims_output",
+    "claims_output.parent",
+    "coverage_output",
+    "coverage_output.parent",
+    "datetime",
+    "output",
+    "output.parent"
+   ],
+   "kind": "repository_state",
+   "path": "scripts/build_operation_health_snapshot.py"
+  },
+  {
+   "caller_destinations": [],
+   "confines_to_root": false,
+   "destinations": [
+    "target"
+   ],
+   "kind": "repository_state",
+   "path": "scripts/build_operational_control_proof_matrix.py"
+  },
+  {
+   "caller_destinations": [],
+   "confines_to_root": true,
+   "destinations": [
+    "target",
+    "target.parent"
+   ],
+   "kind": "repository_state",
+   "path": "scripts/build_profile_projections.py"
+  },
+  {
+   "caller_destinations": [],
+   "confines_to_root": false,
+   "destinations": [
+    "97f491042d7de73397bd6e597f546d70b310303f31870babf752e19a3e402859",
+    "C:/Python314/python.exe",
+    "extension/dist/pacify-x-vscode-0.9.0.vsix",
+    "out",
+    "pacify-x-certification-20260928-r102-0.9.0"
+   ],
+   "kind": "repository_state",
+   "path": "scripts/build_pxos102_automation_config.py"
+  },
+  {
+   "caller_destinations": [],
+   "confines_to_root": false,
+   "destinations": [
+    "97f491042d7de73397bd6e597f546d70b310303f31870babf752e19a3e402859",
+    "C:/Python314/python.exe",
+    "extension/dist/pacify-x-vscode-0.9.0.vsix",
+    "out",
+    "pacify-x-certification-20260928-r103-0.9.0"
+   ],
+   "kind": "repository_state",
+   "path": "scripts/build_pxos103_automation_config.py"
+  },
+  {
+   "caller_destinations": [],
+   "confines_to_root": true,
+   "destinations": [
+    "path"
+   ],
+   "kind": "repository_state",
+   "path": "scripts/build_python_dependency_ownership.py"
+  },
+  {
+   "caller_destinations": [],
+   "confines_to_root": true,
+   "destinations": [
+    "output",
+    "output.parent"
+   ],
+   "kind": "repository_state",
+   "path": "scripts/build_reclamation_learning_promotion.py"
+  },
+  {
+   "caller_destinations": [],
+   "confines_to_root": true,
+   "destinations": [
+    "os.path",
+    "os.path.relpath(root, automation_output.parent)",
+    "os.path.relpath(root, stage_output.parent)",
+    "path",
+    "path.parent",
+    "px.release-candidate-automation/1.0",
+    "px.release-candidate-build-spec/1.0",
+    "px.release-stage-owner-config/1.0"
+   ],
+   "kind": "repository_state",
+   "path": "scripts/build_release_successor_configs.py"
+  },
+  {
+   "caller_destinations": [],
+   "confines_to_root": false,
+   "destinations": [
+    "surface_id",
+    "surface_id.replace('-', ' ')",
+    "target"
+   ],
+   "kind": "repository_state",
+   "path": "scripts/build_typed_operational_surface_inventory.py"
+  },
+  {
+   "caller_destinations": [],
+   "confines_to_root": false,
+   "destinations": [
+    "json",
+    "os",
+    "path.parent",
+    "payload",
+    "temporary"
+   ],
+   "kind": "repository_state",
+   "path": "scripts/certify_local_model_profiles.py"
+  },
+  {
+   "caller_destinations": [],
+   "confines_to_root": true,
+   "destinations": [
+    "datetime",
+    "datetime.fromtimestamp(max((path.stat().st_mtime for path in included_files(root, output)), default=0), tz=timezone.utc)",
+    "datetime.fromtimestamp(max((path.stat().st_mtime for path in included_files(root, output)), default=0), tz=timezone.utc).isoformat()",
+    "os",
+    "output.parent",
+    "path",
+    "path.parent",
+    "receipt_prepared",
+    "stage / 'AUDIT_ARTIFACTS/SHA256SUMS.txt'",
+    "stage / 'AUDIT_BUNDLE_README.md'"
+   ],
+   "kind": "repository_state",
+   "path": "scripts/clean_source_export.py"
+  },
+  {
+   "caller_destinations": [],
+   "confines_to_root": false,
+   "destinations": [
+    "destination",
+    "destination / 'receipt.json'",
+    "path",
+    "target.parent"
+   ],
+   "kind": "repository_state",
+   "path": "scripts/cleanup_python_caches.py"
+  },
+  {
+   "caller_destinations": [],
+   "confines_to_root": false,
+   "destinations": [
+    "path"
+   ],
+   "kind": "repository_state",
+   "path": "scripts/close_out_gap_dispositions.py"
+  },
+  {
+   "caller_destinations": [],
+   "confines_to_root": false,
+   "destinations": [
+    "INVENTORY",
+    "registry/plan_corpus.json",
+    "registry/punch_card_ledger.json",
+    "registry/source_freeze.json",
+    "root schema_version plus shared registry-envelope invariant",
+    "runtime/plan_registry.py",
+    "runtime/source_freeze.py"
+   ],
+   "kind": "repository_state",
+   "path": "scripts/declare_plan_corpus_count_owners.py"
+  },
+  {
+   "caller_destinations": [],
+   "confines_to_root": false,
+   "destinations": [],
+   "kind": "opaque",
+   "path": "scripts/extract_structured_text.py"
+  },
+  {
+   "caller_destinations": [],
+   "confines_to_root": false,
+   "destinations": [
+    "TARGET",
+    "text"
+   ],
+   "kind": "repository_state",
+   "path": "scripts/fix_boundary_rule_matching.py"
+  },
+  {
+   "caller_destinations": [],
+   "confines_to_root": false,
+   "destinations": [
+    "target"
+   ],
+   "kind": "repository_state",
+   "path": "scripts/generated_dependency_graph.py"
+  },
+  {
+   "caller_destinations": [],
+   "confines_to_root": false,
+   "destinations": [
+    "home",
+    "value",
+    "value.replace(home, '${USER_HOME}')"
+   ],
+   "kind": "repository_state",
+   "path": "scripts/import_adversarial_reaudit.py"
+  },
+  {
+   "caller_destinations": [
+    "args.output",
+    "args.output.parent"
+   ],
+   "confines_to_root": true,
+   "destinations": [
+    "_CONTROL_CHARACTERS",
+    "_CONTROL_CHARACTERS.sub('_', redacted)",
+    "args.output",
+    "args.output.parent",
+    "maps_dir",
+    "maps_dir / f'archive-{map_id}.json'",
+    "part",
+    "parts",
+    "path",
+    "sanitize_relative_path(value)"
+   ],
+   "kind": "confined_output",
+   "path": "scripts/inventory/build_archive_inventory.py"
+  },
+  {
+   "caller_destinations": [
+    "args.output",
+    "args.output.parent"
+   ],
+   "confines_to_root": true,
+   "destinations": [
+    "args.output",
+    "args.output.parent",
+    "error_path",
+    "json",
+    "markdown",
+    "path",
+    "summary_path"
+   ],
+   "kind": "confined_output",
+   "path": "scripts/inventory/build_file_inventory.py"
+  },
+  {
+   "caller_destinations": [],
+   "confines_to_root": false,
+   "destinations": [
+    "'\\n'",
+    "json",
+    "markdown",
+    "summary"
+   ],
+   "kind": "repository_state",
+   "path": "scripts/inventory/rehash_inventory_partitions.py"
+  },
+  {
+   "caller_destinations": [],
+   "confines_to_root": false,
+   "destinations": [
+    "options.output",
+    "raw",
+    "raw.decode('utf-8-sig')",
+    "right"
+   ],
+   "kind": "repository_state",
+   "path": "scripts/inventory_repair_reconciliation.py"
+  },
+  {
+   "caller_destinations": [
+    "args.out",
+    "args.out.parent"
+   ],
+   "confines_to_root": true,
+   "destinations": [
+    "args.out",
+    "args.out.parent",
+    "item.filename",
+    "item.filename.replace('\\\\', '/')",
+    "json"
+   ],
+   "kind": "confined_output",
+   "path": "scripts/map_archives.py"
+  },
+  {
+   "caller_destinations": [],
+   "confines_to_root": true,
+   "destinations": [
+    "before",
+    "f'{domain}/{relative}'",
+    "f'{domain}/{relative}'.replace('_', '-')",
+    "json",
+    "path",
+    "path.parent",
+    "prepared",
+    "prepared_skills",
+    "prepared_transaction",
+    "prepared_transaction / image"
+   ],
+   "kind": "repository_state",
+   "path": "scripts/migrate_px_skills.py"
+  },
+  {
+   "caller_destinations": [],
+   "confines_to_root": false,
+   "destinations": [
+    "generation",
+    "storage_root"
+   ],
+   "kind": "repository_state",
+   "path": "scripts/migrate_resource_ledger.py"
+  },
+  {
+   "caller_destinations": [],
+   "confines_to_root": false,
+   "destinations": [
+    "generation"
+   ],
+   "kind": "repository_state",
+   "path": "scripts/migrate_resource_storage_v3.py"
+  },
+  {
+   "caller_destinations": [],
+   "confines_to_root": false,
+   "destinations": [
+    "ROOT / 'orchestration' / 'workflows'",
+    "json",
+    "path",
+    "path.parent",
+    "text"
+   ],
+   "kind": "repository_state",
+   "path": "scripts/migration/admit_capability_mining_skills.py"
+  },
+  {
+   "caller_destinations": [],
+   "confines_to_root": false,
+   "destinations": [
+    "destination",
+    "destination / 'source-12-disposition.json'",
+    "path"
+   ],
+   "kind": "repository_state",
+   "path": "scripts/migration/build_external_requirement_disposition.py"
+  },
+  {
+   "caller_destinations": [],
+   "confines_to_root": true,
+   "destinations": [
+    "destination",
+    "destination / 'behavior-index.jsonl'",
+    "destination / 'exact-duplicates.json'",
+    "destination / 'skill-candidates.json'",
+    "destination / 'summary.json'"
+   ],
+   "kind": "repository_state",
+   "path": "scripts/migration/extract_behavior_contracts.py"
+  },
+  {
+   "caller_destinations": [],
+   "confines_to_root": false,
+   "destinations": [
+    "output",
+    "output / 'admission-plan.json'",
+    "path"
+   ],
+   "kind": "repository_state",
+   "path": "scripts/migration/plan_behavior_skill_admission.py"
+  },
+  {
+   "caller_destinations": [],
+   "confines_to_root": true,
+   "destinations": [
+    "# BEGIN GENERATED OPERATIONAL SKILL DATA FILES",
+    "# END GENERATED OPERATIONAL SKILL DATA FILES",
+    "prepared"
+   ],
+   "kind": "repository_state",
+   "path": "scripts/migration/sync_skill_packaging.py"
+  },
+  {
+   "caller_destinations": [],
+   "confines_to_root": true,
+   "destinations": [
+    "path",
+    "relative",
+    "relative.removeprefix('contracts/')",
+    "relative.removeprefix('contracts/').removesuffix('.schema.json')"
+   ],
+   "kind": "repository_state",
+   "path": "scripts/normalize_contract_ids.py"
+  },
+  {
+   "caller_destinations": [],
+   "confines_to_root": false,
+   "destinations": [
+    "json",
+    "out",
+    "out.parent",
+    "relative[:-3]"
+   ],
+   "kind": "repository_state",
+   "path": "scripts/phase0_inventory.py"
+  },
+  {
+   "caller_destinations": [],
+   "confines_to_root": true,
+   "destinations": [
+    "datetime",
+    "datetime.now(timezone.utc)",
+    "datetime.now(timezone.utc).isoformat()",
+    "destination.parent",
+    "os",
+    "path.parent",
+    "px.pre-candidate-hygiene/1.0",
+    "px.pre-candidate-quarantine/1.0",
+    "quarantine_root",
+    "result"
+   ],
+   "kind": "repository_state",
+   "path": "scripts/pre_candidate_hygiene.py"
+  },
+  {
+   "caller_destinations": [],
+   "confines_to_root": false,
+   "destinations": [
+    "child",
+    "destination",
+    "owned",
+    "workload"
+   ],
+   "kind": "repository_state",
+   "path": "scripts/probe_native_job_containment.py"
+  },
+  {
+   "caller_destinations": [],
+   "confines_to_root": false,
+   "destinations": [
+    "ROOT / relative",
+    "json",
+    "path",
+    "target",
+    "target.parent"
+   ],
+   "kind": "repository_state",
+   "path": "scripts/prove_envelope_count_invariant.py"
+  },
+  {
+   "caller_destinations": [],
+   "confines_to_root": false,
+   "destinations": [
+    "COMMISSIONING_DIR",
+    "json",
+    "px.commissioning-plan/1.0",
+    "target"
+   ],
+   "kind": "repository_state",
+   "path": "scripts/px_install.py"
+  },
+  {
+   "caller_destinations": [],
+   "confines_to_root": false,
+   "destinations": [
+    "os",
+    "prepared"
+   ],
+   "kind": "repository_state",
+   "path": "scripts/reconcile_active_capability_hashes.py"
+  },
+  {
+   "caller_destinations": [],
+   "confines_to_root": false,
+   "destinations": [
+    "contracts_dir",
+    "os",
+    "prepared"
+   ],
+   "kind": "repository_state",
+   "path": "scripts/reconcile_capability_map.py"
+  },
+  {
+   "caller_destinations": [],
+   "confines_to_root": true,
+   "destinations": [
+    "card_finished",
+    "card_started",
+    "claimed",
+    "datetime",
+    "finished",
+    "started"
+   ],
+   "kind": "repository_state",
+   "path": "scripts/reconcile_cohesion_cards.py"
+  },
+  {
+   "caller_destinations": [],
+   "confines_to_root": true,
+   "destinations": [
+    "ROOT / relative"
+   ],
+   "kind": "repository_state",
+   "path": "scripts/reconcile_declared_tool_hashes.py"
+  },
+  {
+   "caller_destinations": [],
+   "confines_to_root": false,
+   "destinations": [
+    "os",
+    "prepared"
+   ],
+   "kind": "repository_state",
+   "path": "scripts/reconcile_nested_skill_source_hashes.py"
+  },
+  {
+   "caller_destinations": [],
+   "confines_to_root": true,
+   "destinations": [
+    "path",
+    "px.punch-card-evidence/1.0"
+   ],
+   "kind": "repository_state",
+   "path": "scripts/reconcile_punch_card_evidence.py"
+  },
+  {
+   "caller_destinations": [],
+   "confines_to_root": false,
+   "destinations": [
+    "json",
+    "path"
+   ],
+   "kind": "repository_state",
+   "path": "scripts/reconcile_reference_candidate_admission.py"
+  },
+  {
+   "caller_destinations": [],
+   "confines_to_root": true,
+   "destinations": [
+    "os",
+    "path",
+    "prepared",
+    "px.skill-contract-links/1.0"
+   ],
+   "kind": "repository_state",
+   "path": "scripts/reconcile_skill_contract_links.py"
+  },
+  {
+   "caller_destinations": [],
+   "confines_to_root": false,
+   "destinations": [
+    "''",
+    "catalog_path",
+    "json",
+    "path"
+   ],
+   "kind": "repository_state",
+   "path": "scripts/reconcile_skill_lifecycle_states.py"
+  },
+  {
+   "caller_destinations": [],
+   "confines_to_root": false,
+   "destinations": [
+    "path",
+    "target"
+   ],
+   "kind": "repository_state",
+   "path": "scripts/record_custody_correction.py"
+  },
+  {
+   "caller_destinations": [],
+   "confines_to_root": false,
+   "destinations": [
+    "docs/architecture/reference/graph_baseline_architecture.json",
+    "path"
+   ],
+   "kind": "repository_state",
+   "path": "scripts/record_gap_0008_provenance.py"
+  },
+  {
+   "caller_destinations": [],
+   "confines_to_root": false,
+   "destinations": [
+    "path"
+   ],
+   "kind": "repository_state",
+   "path": "scripts/record_gap_completion_evidence.py"
+  },
+  {
+   "caller_destinations": [],
+   "confines_to_root": false,
+   "destinations": [
+    "path"
+   ],
+   "kind": "repository_state",
+   "path": "scripts/record_gap_completion_evidence_2.py"
+  },
+  {
+   "caller_destinations": [],
+   "confines_to_root": false,
+   "destinations": [
+    "path"
+   ],
+   "kind": "repository_state",
+   "path": "scripts/record_gap_dispositions.py"
+  },
+  {
+   "caller_destinations": [],
+   "confines_to_root": false,
+   "destinations": [
+    "REGISTER",
+    "datetime",
+    "datetime.now(timezone.utc)",
+    "datetime.now(timezone.utc).isoformat()"
+   ],
+   "kind": "repository_state",
+   "path": "scripts/record_recovery_round.py"
+  },
+  {
+   "caller_destinations": [],
+   "confines_to_root": false,
+   "destinations": [
+    "workspace_parent"
+   ],
+   "kind": "repository_state",
+   "path": "scripts/regenerate_projections.py"
+  },
+  {
+   "caller_destinations": [],
+   "confines_to_root": false,
+   "destinations": [
+    "delta_path.parent",
+    "delta_path_str",
+    "jsonl_path",
+    "temp_path"
+   ],
+   "kind": "repository_state",
+   "path": "scripts/repair_operational_gap_ledger_delta.py"
+  },
+  {
+   "caller_destinations": [],
+   "confines_to_root": false,
+   "destinations": [
+    "delta_path_str",
+    "head_path",
+    "jsonl_path",
+    "snapshot_path"
+   ],
+   "kind": "repository_state",
+   "path": "scripts/resolve_operational_gap_ledger_orphan.py"
+  },
+  {
+   "caller_destinations": [],
+   "confines_to_root": true,
+   "destinations": [
+    "datetime",
+    "datetime.now(timezone.utc)",
+    "datetime.now(timezone.utc).isoformat()",
+    "os",
+    "path.parent",
+    "paths.log",
+    "paths.log.parent",
+    "prepared",
+    "px.installed-operational-run-summary/1.1",
+    "px.installed-vsix-certification/1.1"
+   ],
+   "kind": "repository_state",
+   "path": "scripts/run_installed_operational_owner.py"
+  },
+  {
+   "caller_destinations": [],
+   "confines_to_root": true,
+   "destinations": [
+    "datetime",
+    "datetime.now(timezone.utc)",
+    "datetime.now(timezone.utc).isoformat()",
+    "expires",
+    "expires.isoformat()",
+    "log",
+    "os",
+    "path.parent",
+    "px.release-candidate-automation-state/1.0",
+    "px.release-candidate-automation/1.0"
+   ],
+   "kind": "repository_state",
+   "path": "scripts/run_release_candidate.py"
+  },
+  {
+   "caller_destinations": [],
+   "confines_to_root": true,
+   "destinations": [
+    "config.log_dir",
+    "datetime",
+    "datetime.now(timezone.utc)",
+    "datetime.now(timezone.utc).isoformat()",
+    "log",
+    "os",
+    "path.parent",
+    "prepared",
+    "probe",
+    "px.release-stage-owner-config/1.0"
+   ],
+   "kind": "repository_state",
+   "path": "scripts/run_release_stage_owner.py"
+  },
+  {
+   "caller_destinations": [],
+   "confines_to_root": false,
+   "destinations": [
+    "failed_temporary_quarantine",
+    "os",
+    "path",
+    "preservation",
+    "preservation / 'preservation-receipt.json'",
+    "source",
+    "target",
+    "target.parent"
+   ],
+   "kind": "repository_state",
+   "path": "scripts/sanitize_tree.py"
+  },
+  {
+   "caller_destinations": [],
+   "confines_to_root": false,
+   "destinations": [
+    "path"
+   ],
+   "kind": "repository_state",
+   "path": "scripts/split_gap_0010.py"
+  },
+  {
+   "caller_destinations": [],
+   "confines_to_root": true,
+   "destinations": [
+    "os",
+    "parent"
+   ],
+   "kind": "repository_state",
+   "path": "scripts/verify_release_publication.py"
+  }
+ ],
+ "schema_version": "px.scripts-confinement-audit/1.0",
+ "totals": {
+  "confined_output": 3,
+  "opaque": 2,
+  "repository_state": 73
+ }
+}

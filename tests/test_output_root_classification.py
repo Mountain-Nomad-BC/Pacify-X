@@ -58,11 +58,57 @@ def test_no_grants_means_nothing_resolves(tmp_path: Path) -> None:
     assert output_root_verdict(root, "p.py", ("filesystem_mutation",)) is None
 
 
+def _observe(tmp_path: Path, producer: str = "p.py", *, confined: bool = True, escapes: list | None = None) -> None:
+    """Record a sandbox observation for `producer`, as the evidence harness would."""
+    import hashlib
+
+    evidence = tmp_path / "docs/repair/evidence"
+    evidence.mkdir(parents=True, exist_ok=True)
+    document = {
+        "cases": [
+            {
+                "producer": producer,
+                "observed_confined": confined,
+                "escaping_paths": escapes or [],
+                "observed_source_sha256": hashlib.sha256(
+                    (tmp_path / producer).read_bytes()
+                ).hexdigest(),
+            }
+        ]
+    }
+    (evidence / "px-os-1067-sandbox-evidence.json").write_text(
+        json.dumps(document), encoding="utf-8"
+    )
+
+
 def test_a_granted_destination_resolves_the_producer(tmp_path: Path) -> None:
     root = _root(tmp_path, [_grant("p.py")], ROOTS)
     (tmp_path / "p.py").write_text("from pathlib import Path\nPath('build/x').write_text('a')\n")
+    _observe(tmp_path)
     verdict = output_root_verdict(root, "p.py", ("filesystem_mutation",))
     assert verdict == {"classification": "exempt", "reason": "authorized_output_root"}
+
+
+def test_without_an_observation_a_grant_alone_never_resolves(tmp_path: Path) -> None:
+    """A grant says where a producer may write; an observation says where it did."""
+    root = _root(tmp_path, [_grant("p.py")], ROOTS)
+    (tmp_path / "p.py").write_text("from pathlib import Path\nPath('build/x').write_text('a')\n")
+    assert output_root_verdict(root, "p.py", ("filesystem_mutation",)) is None
+
+
+def test_an_observation_of_other_bytes_does_not_vouch(tmp_path: Path) -> None:
+    root = _root(tmp_path, [_grant("p.py")], ROOTS)
+    (tmp_path / "p.py").write_text("from pathlib import Path\nPath('build/x').write_text('a')\n")
+    _observe(tmp_path)
+    (tmp_path / "p.py").write_text("from pathlib import Path\nPath('build/y').write_text('b')\n")
+    assert output_root_verdict(root, "p.py", ("filesystem_mutation",)) is None
+
+
+def test_an_observation_that_escaped_does_not_vouch(tmp_path: Path) -> None:
+    root = _root(tmp_path, [_grant("p.py")], ROOTS)
+    (tmp_path / "p.py").write_text("from pathlib import Path\nPath('build/x').write_text('a')\n")
+    _observe(tmp_path, escapes=["../escape.json"])
+    assert output_root_verdict(root, "p.py", ("filesystem_mutation",)) is None
 
 
 def test_one_granted_destination_does_not_authorize_another(tmp_path: Path) -> None:

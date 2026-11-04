@@ -365,8 +365,15 @@ def main() -> int:
         ignored=(args.output,),
         excluded_names=frozenset(args.exclude_name),
     )
-    args.output.parent.mkdir(parents=True, exist_ok=True)
-    args.output.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
+    # Confined, atomic publication. The auditor ignores `args.output` as a file, so the report
+    # is written beside itself; the root is bound here from the repository, and the helper
+    # refuses any destination that resolves outside it.
+    root = Path(__file__).resolve().parents[1]
+    if str(root) not in sys.path:
+        sys.path.insert(0, str(root))
+    from runtime.confined_output import publish_json
+
+    publish_json(root, args.output, result)
     print(
         json.dumps(
             {

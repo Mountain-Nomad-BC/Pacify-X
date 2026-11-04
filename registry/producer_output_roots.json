@@ -1,0 +1,86 @@
+{
+ "authority": "Named output-root grants per ADR-REV1XX-PRODUCER-OUTPUT-ROOT-001. A root is granted by an owner to an enumerated producer and write class for pinned source bytes. Legacy grants without write_class authorize only the default class. No grant authorizes deletion, and revocation is a retained state rather than a deletion of the record.",
+ "grants": [
+  {
+   "deletion_authorized": false,
+   "granted_at": "2026-11-03",
+   "granted_by": "owner decision 2026-11-03",
+   "producer": "scripts/audit_sanitization.py",
+   "root": "REPOSITORY_ROOT",
+   "scope": "Every caller-directed destination this producer publishes, confined to the repository root and published atomically.",
+   "source_sha256": "6e5f3c918caa4ff2936513e7a1d05993d80a9de21edae8fe8f78315ceca2d256",
+   "status": "active",
+   "write_class": "caller_directed_report"
+  },
+  {
+   "deletion_authorized": false,
+   "granted_at": "2026-11-03",
+   "granted_by": "owner decision 2026-11-03",
+   "producer": "scripts/build_integration_disposition.py",
+   "root": "REPOSITORY_ROOT",
+   "scope": "Every caller-directed destination this producer publishes, confined to the repository root and published atomically.",
+   "source_sha256": "f66aa76f192145ed7e8c239a692e38118c323052eccb12a88e1989173150b661",
+   "status": "active",
+   "write_class": "caller_directed_report"
+  },
+  {
+   "deletion_authorized": false,
+   "granted_at": "2026-11-03",
+   "granted_by": "owner decision 2026-11-03",
+   "producer": "scripts/cleanup_python_caches.py",
+   "root": "REPOSITORY_ROOT",
+   "scope": "Every caller-directed destination this producer publishes, confined to the repository root and published atomically.",
+   "source_sha256": "fabaa7fd05c0e9863ff6cf8fcd5d2d6925fee083d2ffacd79405a5ef068a1469",
+   "status": "active",
+   "write_class": "caller_directed_report"
+  },
+  {
+   "deletion_authorized": false,
+   "granted_at": "2026-11-03",
+   "granted_by": "owner decision 2026-11-03",
+   "producer": "scripts/import_adversarial_reaudit.py",
+   "root": "REPOSITORY_ROOT",
+   "scope": "Every caller-directed destination this producer publishes, confined to the repository root and published atomically.",
+   "source_sha256": "32014db808efd8cf01f09b250ddc5460f5efec8afe55fadca948d589865af034",
+   "status": "active",
+   "write_class": "caller_directed_report"
+  },
+  {
+   "deletion_authorized": false,
+   "granted_at": "2026-11-03",
+   "granted_by": "owner decision 2026-11-03",
+   "producer": "scripts/inventory/rehash_inventory_partitions.py",
+   "root": "REPOSITORY_ROOT",
+   "scope": "Every caller-directed destination this producer publishes, confined to the repository root and published atomically.",
+   "source_sha256": "3fb78fe5a7fc925d4dc2cb3fb4dface0424274455b4904bf5f1286cfa2ee5cc6",
+   "status": "active",
+   "write_class": "caller_directed_report"
+  },
+  {
+   "deletion_authorized": false,
+   "granted_at": "2026-11-03",
+   "granted_by": "owner decision 2026-11-03",
+   "producer": "scripts/sanitize_tree.py",
+   "root": "REPOSITORY_ROOT",
+   "scope": "Every caller-directed destination this producer publishes, confined to the repository root and published atomically.",
+   "source_sha256": "2e3582f778482647ee098f7b2561bdd03ee68b7b6dc415888ff28338e4840cbc",
+   "status": "active",
+   "write_class": "caller_directed_report"
+  }
+ ],
+ "roots": {
+  "REPOSITORY_ROOT": {
+   "confinement_evidence": [
+    "runtime/confined_output.py",
+    "tests/test_confined_output.py"
+   ],
+   "deletion_authorized": false,
+   "granted_at": "2026-11-03",
+   "granted_by": "owner decision 2026-11-03",
+   "invocation_model": "caller-directed CLI argument, confined by the producer must resolve strictly inside the repository root before any write",
+   "owner": "repository owner (Ben)",
+   "retention": "run-scoped"
+  }
+ },
+ "schema_version": "px.producer-output-roots/1.0"
+}

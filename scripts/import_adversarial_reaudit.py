@@ -104,12 +104,14 @@ def main() -> int:
     parser.add_argument("--output", required=True, type=Path)
     args = parser.parse_args()
     payload = parse_report(args.report)
-    args.output.parent.mkdir(parents=True, exist_ok=True)
-    args.output.write_text(
-        json.dumps(payload, indent=2, ensure_ascii=False) + "\n",
-        encoding="utf-8",
-        newline="\n",
-    )
+    # Confined, atomic publication inside the repository root.
+    import sys as _sys
+
+    _root = Path(__file__).resolve().parents[1]
+    _sys.path.insert(0, str(_root))
+    from runtime.confined_output import publish_json
+
+    publish_json(_root, args.output, payload)
     print(json.dumps(payload["denominator"], indent=2))
     return 0
 

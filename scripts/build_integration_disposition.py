@@ -34,12 +34,14 @@ def main() -> int:
     if not validation["valid"]:
         print(json.dumps(validation, indent=2))
         return 1
-    args.owner_output.parent.mkdir(parents=True, exist_ok=True)
-    args.disposition_output.parent.mkdir(parents=True, exist_ok=True)
-    args.owner_output.write_text(json.dumps(owners, indent=2) + "\n", encoding="utf-8")
-    args.disposition_output.write_text(
-        json.dumps(dispositions, indent=2) + "\n", encoding="utf-8"
-    )
+    # Confined, atomic publication inside the repository root. This producer writes TWO
+    # caller-selected destinations; both are confined independently, because one authorized
+    # destination never authorizes another.
+    from runtime.confined_output import publish_json
+
+    root = Path(__file__).resolve().parents[1]
+    publish_json(root, args.owner_output, owners)
+    publish_json(root, args.disposition_output, dispositions)
     print(
         json.dumps(
             {

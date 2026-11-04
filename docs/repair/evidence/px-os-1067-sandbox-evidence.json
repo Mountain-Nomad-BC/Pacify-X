@@ -1,0 +1,168 @@
+{
+ "cases": [
+  {
+   "arguments": [
+    "--root",
+    ".",
+    "--output",
+    "reports/audit.json"
+   ],
+   "created": [
+    "reports/audit.json"
+   ],
+   "escaping_paths": [],
+   "exit_code": 1,
+   "modified": [],
+   "observed_confined": true,
+   "observed_source_sha256": "d60f33698dab0e3f9553cc3e9d760501671b747f1c2db2c8f004bc454a200462",
+   "producer": "scripts/audit_sanitization.py",
+   "stderr_tail": []
+  },
+  {
+   "arguments": [
+    "--root",
+    ".",
+    "--output",
+    "reports/sanitize.json"
+   ],
+   "created": [
+    "reports/sanitize.json"
+   ],
+   "escaping_paths": [],
+   "exit_code": 0,
+   "modified": [],
+   "observed_confined": true,
+   "observed_source_sha256": "057981a8b861006864bc75bfb572fa7fada52a8bbe0754c855afeec5c07ca819",
+   "producer": "scripts/sanitize_tree.py",
+   "stderr_tail": []
+  },
+  {
+   "arguments": [
+    "--root",
+    "scripts",
+    "--apply",
+    "--preservation-root",
+    ".px-preserved",
+    "--output",
+    "reports/sanitize.json"
+   ],
+   "created": [
+    ".px-preserved/preservation-receipt.json",
+    "reports/sanitize.json"
+   ],
+   "escaping_paths": [],
+   "exit_code": 0,
+   "modified": [],
+   "observed_confined": true,
+   "observed_source_sha256": "057981a8b861006864bc75bfb572fa7fada52a8bbe0754c855afeec5c07ca819",
+   "producer": "scripts/sanitize_tree.py",
+   "stderr_tail": []
+  },
+  {
+   "arguments": [
+    "--root",
+    ".",
+    "--output",
+    "reports/cache.json"
+   ],
+   "created": [
+    "reports/cache.json"
+   ],
+   "escaping_paths": [],
+   "exit_code": 0,
+   "modified": [],
+   "observed_confined": true,
+   "observed_source_sha256": "d848b641eb4c334b4f8ff059c4d32f72c8ce67fdbdfb14b55a4a59618e32f730",
+   "producer": "scripts/cleanup_python_caches.py",
+   "stderr_tail": []
+  },
+  {
+   "arguments": [
+    "--root",
+    ".",
+    "--apply",
+    "--output",
+    "reports/cache.json"
+   ],
+   "created": [
+    "reports/cache.json"
+   ],
+   "escaping_paths": [],
+   "exit_code": 0,
+   "modified": [],
+   "observed_confined": true,
+   "observed_source_sha256": "d848b641eb4c334b4f8ff059c4d32f72c8ce67fdbdfb14b55a4a59618e32f730",
+   "producer": "scripts/cleanup_python_caches.py",
+   "stderr_tail": []
+  },
+  {
+   "arguments": [
+    "--parts-root",
+    ".",
+    "--output",
+    "reports/rehash.json"
+   ],
+   "created": [
+    "reports/rehash.json"
+   ],
+   "escaping_paths": [],
+   "exit_code": 0,
+   "modified": [],
+   "observed_confined": true,
+   "observed_source_sha256": "c43c18920b9817c0c4d43c03a07e7e369a1b839945a31617ddadd3e1e71cce29",
+   "producer": "scripts/inventory/rehash_inventory_partitions.py",
+   "stderr_tail": []
+  },
+  {
+   "arguments": [
+    "register.md",
+    "--output",
+    "reports/reaudit.json"
+   ],
+   "created": [
+    "reports/reaudit.json"
+   ],
+   "escaping_paths": [],
+   "exit_code": 0,
+   "modified": [],
+   "observed_confined": true,
+   "observed_source_sha256": "32014db808efd8cf01f09b250ddc5460f5efec8afe55fadca948d589865af034",
+   "producer": "scripts/import_adversarial_reaudit.py",
+   "stderr_tail": []
+  },
+  {
+   "arguments": [
+    "--root",
+    ".",
+    "--source",
+    "upstream-source",
+    "--source-alias",
+    "upstream",
+    "--owner-output",
+    "reports/owners.json",
+    "--disposition-output",
+    "reports/disposition.json"
+   ],
+   "created": [],
+   "escaping_paths": [],
+   "exit_code": 1,
+   "modified": [],
+   "observed_confined": false,
+   "observed_source_sha256": "f66aa76f192145ed7e8c239a692e38118c323052eccb12a88e1989173150b661",
+   "producer": "scripts/build_integration_disposition.py",
+   "stderr_tail": [
+    "    return io.open(self, mode, buffering, encoding, errors, newline)",
+    "           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",
+    "FileNotFoundError: [Errno 2] No such file or directory: 'C:\\\\Users\\\\Ben\\\\AppData\\\\Local\\\\Temp\\\\px-sandbox-_qwtbz4a\\\\registry\\\\skill_catalog.toml'"
+   ]
+  }
+ ],
+ "gap_id": "PX-OS-1067",
+ "method": "Each producer ran against a temporary copy of runtime/ and scripts/ with its working directory set to that copy. Writes were observed by comparing before/after snapshots of the sandbox. This measures one run per mode; it is evidence about observed behaviour, not a proof for every input.",
+ "schema_version": "px.sandbox-write-evidence/1.0",
+ "summary": {
+  "cases": 8,
+  "observed_confined": 7,
+  "skipped": 0
+ }
+}

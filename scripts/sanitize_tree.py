@@ -155,6 +155,17 @@ def sanitize_tree(
     if apply:
         if preservation is None:
             raise ValueError("apply requires a recoverable preservation root")
+        # PX-OS-1067: the preservation root is a destination this producer writes, so it must
+        # be confined to the repository. Combined with the existing rule below that it must not
+        # nest inside the sanitized tree, this makes every preserved copy land in a location
+        # the repository owns rather than an arbitrary caller directory.
+        repository_root = Path(__file__).resolve().parents[1]
+        try:
+            preservation.relative_to(repository_root)
+        except ValueError as error:
+            raise ValueError(
+                "apply requires a preservation root inside the repository"
+            ) from error
         preservation_is_nested = True
         try:
             preservation.relative_to(resolved)
@@ -223,9 +234,12 @@ def sanitize_tree(
             "recovery": "Restore a recorded quarantined file to its original relative path only after approved review.",
             "records": preserved,
         }
-        (preservation / "preservation-receipt.json").write_text(
-            json.dumps(receipt, indent=2) + "\n", encoding="utf-8"
-        )
+        from runtime.confined_output import publish_json
+
+        # `preservation` is already confined to the repository above; publishing the receipt
+        # atomically means a crash cannot leave a half-written recovery record beside files
+        # that were already copied out of the tree.
+        publish_json(preservation, preservation / "preservation-receipt.json", receipt)
     for path in paths:
         relative_parts = path.relative_to(resolved).parts
         if any(
@@ -307,8 +321,15 @@ def main() -> int:
         preservation_root=args.preservation_root,
     )
     if args.output:
-        args.output.parent.mkdir(parents=True, exist_ok=True)
-        args.output.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
+        # Confined, atomic publication inside the repository root. The sanitization result is
+        # a report, never a mutation: the apply gate above is unchanged.
+        import sys as _sys
+
+        _root = Path(__file__).resolve().parents[1]
+        _sys.path.insert(0, str(_root))
+        from runtime.confined_output import publish_json
+
+        publish_json(_root, args.output, result)
     print(
         json.dumps(
             {

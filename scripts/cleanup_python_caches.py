@@ -68,6 +68,14 @@ def cleanup(
         raise ValueError(
             "quarantine root must be a bounded directory distinct from the workspace root"
         )
+    # PX-OS-1067: the quarantine root receives every relocated cache, so it is a destination
+    # this producer writes. Confining it to the repository makes that guarantee unconditional
+    # instead of depending on where `--quarantine-root` happened to point.
+    from runtime.confined_output import confined_path, confined_move
+
+    quarantine_base = confined_path(
+        Path(__file__).resolve().parents[1], quarantine_base, label="quarantine_root"
+    )
     walk = bounded_walk(
         resolved,
         limits=WalkLimits(max_files=100_000, max_depth=128, max_bytes=2 * 1024**3),
@@ -116,13 +124,13 @@ def cleanup(
         for directory in directories:
             if directory.exists():
                 target = destination / directory.relative_to(resolved)
-                target.parent.mkdir(parents=True, exist_ok=True)
-                shutil.move(str(directory), str(target))
+                # Confined relocation: the target is re-checked against the repository before
+                # anything moves, and the move is a rename rather than a partial copy.
+                confined_move(directory, target, label="quarantine_target")
         for path in files:
             if path.exists():
                 target = destination / path.relative_to(resolved)
-                target.parent.mkdir(parents=True, exist_ok=True)
-                shutil.move(str(path), str(target))
+                confined_move(path, target, label="quarantine_target")
         for item in inventory:
             active = resolved / str(item["path"])
             quarantined = destination / str(item["path"])
@@ -145,9 +153,12 @@ def cleanup(
             "recovery": "Move a recorded quarantined path back to its original relative source path after review.",
             "records": inventory,
         }
-        (destination / "receipt.json").write_text(
-            json.dumps(receipt, indent=2) + "\n", encoding="utf-8"
-        )
+        from runtime.confined_output import publish_json
+
+        # `destination` is derived from the confined `quarantine_base`, so this receipt is
+        # inside the repository; publishing it atomically means a crash cannot leave a
+        # half-written recovery record pointing at moved files.
+        publish_json(quarantine_base, destination / "receipt.json", receipt)
         quarantine_destination = str(receipt["quarantine_root"])
     return {
         "schema_version": "1.0",
@@ -171,8 +182,10 @@ def main() -> int:
     args = parser.parse_args()
     result = cleanup(args.root, apply=args.apply, quarantine_root=args.quarantine_root)
     if args.output:
-        args.output.parent.mkdir(parents=True, exist_ok=True)
-        args.output.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
+        # Confined, atomic publication inside the repository root.
+        from runtime.confined_output import publish_json
+
+        publish_json(ROOT, args.output, result)
     print(json.dumps(result, indent=2))
     return 0
 
