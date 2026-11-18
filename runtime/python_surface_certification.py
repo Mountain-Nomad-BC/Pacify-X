@@ -82,6 +82,15 @@ def _role(relative: str) -> tuple[str, str, bool]:
         return "source-build-control", "project-release-control", False
     if parts[0] == "examples":
         return "source-example", "public-demonstration", False
+    # Campaign repair tooling written beside the repair workspace. It is real
+    # authored Python with a real owner, so it gets a role rather than an
+    # exclusion: runtime/effect_surface.REPAIR_TOOLING_PATHS already excludes the
+    # specific scripts from the effect census by an explicit per-file list, and a
+    # directory-prefix exclusion is what that list exists to avoid.
+    if parts[:2] == [".engineering-bootstrap", "repair-tools"]:
+        return "repair-tooling", "campaign-repair-tooling", False
+    if parts[:2] == [".engineering-bootstrap", "census-attribution"]:
+        return "repair-tooling", "campaign-repair-tooling", False
     return "unknown", "unowned", False
 
 

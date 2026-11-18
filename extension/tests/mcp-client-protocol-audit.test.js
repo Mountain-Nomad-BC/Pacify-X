@@ -3,6 +3,8 @@ const test=require('node:test');const assert=require('node:assert/strict');
 const cp=require('node:child_process');const {EventEmitter}=require('node:events');const {PassThrough}=require('node:stream');
 const {defaultRunner}=require('../src/mcpModelFabricBridge');
 const {buildPxProviderGatewayInvoker}=require('../src/agentHarness/pxProviderInvoker');
+const {createExecutionContext}=require('../src/agentHarness/executionContext');
+function controlledContext(){return createExecutionContext({run:{runId:'run',revision:1,epoch:1},projectId:'prj-local',sessionId:'run',providerId:'local',authoritySha256:'a'.repeat(64),effectBudgetSha256:'b'.repeat(64)});}
 function controlledChild(t,output){
  const original=cp.spawn;let spawned=0;
  cp.spawn=()=>{spawned++;const child=new EventEmitter();child.stdout=new PassThrough();child.stderr=new PassThrough();child.stdin={end(){queueMicrotask(()=>{child.stdout.write(output);child.emit('close',0);});}};child.kill=()=>{queueMicrotask(()=>child.emit('close',1));return true;};return child;};
@@ -31,13 +33,19 @@ test('consumer exception becomes a rejected owned operation rather than uncaught
 test('harness AbortSignal is adapted to the native bridge cancellation-token interface',async()=>{
  const controller=new AbortController();let token;let called;
  const entered=new Promise(resolve=>{called=resolve;});
+ // Controlled bridge honoring the documented native contract: cancellation settles the
+ // operation with PX_MODEL_CLIENT_CANCELLED rather than leaving it pending.
  const invoke=buildPxProviderGatewayInvoker({profileIdForWorker:()=> 'profile',bridge:{streamChat:async(payload,value)=>{
-  token=value;called();return new Promise((resolve,reject)=>{
-   const registration=value?.onCancellationRequested?.(()=>{registration.dispose();reject(Object.assign(new Error('controlled abort'),{name:'AbortError'}));});
+  token=value;called();return new Promise((resolve,reject)=>{const timer=setTimeout(()=>reject(new Error('controlled bridge cancellation was not propagated')),1000);
+   const cancelled=Object.assign(new Error('Pacify-X model client was cancelled.'),{code:'PX_MODEL_CLIENT_CANCELLED'});
+   const cancel=()=>{clearTimeout(timer);registration?.dispose?.();reject(cancelled);};
+   const registration=value?.onCancellationRequested?.(cancel);
+   if(value?.isCancellationRequested)cancel();
   });}}});
- const turn=invoke({worker:{},task:{taskId:'task'},run:{runId:'run'},message:'inspect',executionContext:{execution_id:'invocation'},signal:controller.signal});
- const result=turn.then(()=> 'success',error=>error.name);await entered;controller.abort();let timer;
- try{assert.equal(await Promise.race([result,new Promise(resolve=>{timer=setTimeout(()=>resolve('unbounded'),150);})]),'AbortError');}
+ const turn=invoke({worker:{},task:{taskId:'task'},run:{runId:'run'},message:'inspect',executionContext:controlledContext(),signal:controller.signal});
+ const result=turn.then(()=> 'success',error=>error.code);await entered;controller.abort();let timer;
+ try{assert.equal(await Promise.race([result,new Promise(resolve=>{timer=setTimeout(()=>resolve('unbounded'),150);})]),'PX_MODEL_CLIENT_CANCELLED');}
  finally{clearTimeout(timer);}
  assert.equal(token.isCancellationRequested,true);
+ assert.equal(controller.signal.aborted,true);
 });

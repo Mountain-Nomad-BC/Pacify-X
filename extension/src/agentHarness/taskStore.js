@@ -26,6 +26,15 @@ class TaskStore {
     if (fence && (fence.epoch !== this.epoch || fence.revision !== current.revision)) throw new Error('task-state-stale-object-writer');
   }
   async flush() { await this.writes; this._healthy(); }
+  initializeDurableState() {
+    if (this.persistence?.synchronous !== true || this.pendingWrites) throw new Error('task-state-synchronous-owner-required');
+    if (this.revision === 0) this._commit(this.tasks, this.runs);
+    if (this.pendingWrites) {
+      this.persistenceError = new Error('task-state-owner-did-not-acknowledge-synchronously');
+      this._restoreCommitted();
+    }
+    this._healthy();
+  }
 
   createTask(input) {
     this._healthy();
@@ -59,14 +68,15 @@ class TaskStore {
     this._commit(tasks, this.runs); return next;
   }
 
-  createRun(taskId) {
+  createRun(taskId, { dispatchMode = 'single' } = {}) {
     const task = this.requireTask(taskId);
     if (['complete', 'failed', 'cancelled'].includes(task.status)) throw new Error('terminal-task-cannot-start-run');
+    if (this.requiresTaskRecovery(taskId)) throw new Error('task-recovery-required');
     if (this.listRuns(taskId).some(run => ['running', 'waiting'].includes(run.status))) throw new Error('task-already-has-live-run');
     if (this.runs.size >= 10000) throw new Error('run-store-capacity');
     const at = nowIso();
     const run = parseImmutable(PxRun, { schemaVersion: 'px.agent-run/1.0', runId: newId('run'), taskId, createdAt: at, updatedAt: at, epoch:this.epoch, revision:1,
-      status: 'running', activeWorkerId: null, providerSessionRef: null, routeHistory: [], round: 0, lastError: null }, 'run');
+      status: 'running', dispatchMode, dispatchPending: false, activeWorkerId: null, providerSessionRef: null, routeHistory: [], round: 0, lastError: null }, 'run');
     const runs = new Map(this.runs); runs.set(run.runId, run);
     this._commit(this.tasks, runs); return run;
   }
@@ -75,7 +85,7 @@ class TaskStore {
     const current = this.requireRun(runId); this._fence(current, fence);
     if (this.requiresRecovery(runId)) throw new Error('run-recovery-required');
     if (['complete', 'failed', 'cancelled'].includes(current.status)) throw new Error('terminal-run-immutable');
-    for (const key of ['runId', 'taskId', 'createdAt', 'schemaVersion']) if (key in patch && patch[key] !== current[key]) throw new Error('run-identity-immutable');
+    for (const key of ['runId', 'taskId', 'createdAt', 'schemaVersion', 'dispatchMode', 'dispatchPending']) if (key in patch && patch[key] !== current[key]) throw new Error('run-identity-immutable');
     const next = parseImmutable(PxRun, { ...current, ...patch, epoch:this.epoch, revision:current.revision + 1, updatedAt: nowIso() }, 'run');
     const runs = new Map(this.runs); runs.set(runId, next);
     this._commit(this.tasks, runs); return next;
@@ -87,6 +97,69 @@ class TaskStore {
   }
 
   requiresRecovery(id) { return this.recoveryRequired.has(id); }
+  async importLegacySnapshot(snapshot) {
+    const previousRecovery = this.recoveryRequired;
+    try {
+      const result = this._importLegacySnapshot(snapshot);
+      await this.flush();
+      return result;
+    } catch (error) { this.recoveryRequired = previousRecovery; throw error; }
+  }
+  importLegacySnapshotSync(snapshot) {
+    if (this.persistence?.synchronous !== true || this.pendingWrites) throw new Error('task-state-synchronous-owner-required');
+    const previousRecovery = this.recoveryRequired;
+    const result = this._importLegacySnapshot(snapshot);
+    this._healthy();
+    if (this.pendingWrites) {
+      this.persistenceError = new Error('task-state-owner-did-not-acknowledge-synchronously');
+      this.recoveryRequired = previousRecovery;
+      this._restoreCommitted();
+      throw this.persistenceError;
+    }
+    return result;
+  }
+  _importLegacySnapshot(snapshot) {
+    this._healthy();
+    // Validate the complete image before touching native maps. The disposable
+    // parser has no disk writer and applies the same restart quarantine rules.
+    const parsed = new TaskStore({ persistence: { load: () => snapshot } });
+    const tasks = new Map(this.tasks), runs = new Map(this.runs);
+    const importedTasks = [], importedRuns = [], recovered = new Set(this.recoveryRequired);
+    for (const task of parsed.listTasks()) {
+      if (tasks.has(task.taskId)) continue;
+      tasks.set(task.taskId, parseImmutable(PxTask, { ...task, epoch: this.epoch }, 'legacy-task'));
+      importedTasks.push(task.taskId);
+    }
+    const admittedTasks = new Set(importedTasks);
+    for (const run of parsed.listRuns()) {
+      // A conflicting native task is not authority to attach legacy runs to it.
+      if (runs.has(run.runId) || !admittedTasks.has(run.taskId)) continue;
+      runs.set(run.runId, parseImmutable(PxRun, { ...run, epoch: this.epoch }, 'legacy-run'));
+      importedRuns.push(run.runId);
+      if (parsed.requiresRecovery(run.runId)) recovered.add(run.runId);
+    }
+    const previousRecovery = this.recoveryRequired;
+    this.recoveryRequired = recovered;
+    try { this._commit(tasks, runs); }
+    catch (error) { this.recoveryRequired = previousRecovery; throw error; }
+    return { importedTasks, importedRuns };
+  }
+  requiresTaskRecovery(taskId) { return this.listRuns(taskId).some(run => this.requiresRecovery(run.runId) || run.dispatchPending === true); }
+
+  beginMeshDispatch(runId) { return this._meshDispatchState(runId, true); }
+  settleMeshDispatch(runId) { return this._meshDispatchState(runId, false); }
+  _meshDispatchState(runId, pending) {
+    const current = this.requireRun(runId);
+    if (this.requiresRecovery(runId)) throw new Error('run-recovery-required');
+    if (current.dispatchMode !== 'mesh') throw new Error('run-dispatch-mode-mismatch');
+    if (pending && current.status !== 'running') throw new Error('run-dispatch-not-running');
+    if (current.dispatchPending === pending) throw new Error('run-dispatch-state-unchanged');
+    // Only the controller's settled branch join may clear this marker, including
+    // after cancellation. Ordinary status edits cannot erase provider custody.
+    const next = parseImmutable(PxRun, { ...current, dispatchPending: pending, revision: current.revision + 1, updatedAt: nowIso() }, 'run');
+    const runs = new Map(this.runs); runs.set(runId, next);
+    this._commit(this.tasks, runs); return next;
+  }
 
   requireTask(id) { this._healthy(); const value = this.tasks.get(id); if (!value) throw new Error('task-not-found'); return value; }
   requireRun(id) { this._healthy(); const value = this.runs.get(id); if (!value) throw new Error('run-not-found'); return value; }
@@ -107,7 +180,16 @@ class TaskStore {
     this.loadedSnapshot = true;
     const tasks = new Map(), runs = new Map();
     for (const row of snap.tasks) { const task=parseImmutable(PxTask,row,'persisted-task'); if (tasks.has(task.taskId)) throw new Error('task-state-duplicate-task'); tasks.set(task.taskId,task); }
-    for (const row of snap.runs) { const run=parseImmutable(PxRun,row,'persisted-run'); if (runs.has(run.runId) || !tasks.has(run.taskId)) throw new Error('task-state-invalid-run-owner'); runs.set(run.runId,run); if (run.activeWorkerId && ['running','waiting'].includes(run.status)) this.recoveryRequired.add(run.runId); }
+    for (const row of snap.runs) {
+      const run=parseImmutable(PxRun,row,'persisted-run');
+      if (runs.has(run.runId) || !tasks.has(run.taskId)) throw new Error('task-state-invalid-run-owner');
+      runs.set(run.runId,run);
+      const live = ['running','waiting','blocked'].includes(run.status);
+      // Legacy images cannot distinguish an undispatched mesh from a lost
+      // provider call, including a terminal cancellation before branch return.
+      if (run.dispatchPending === true || (run.activeWorkerId && live)
+          || (!run.dispatchMode && (live || run.status === 'cancelled'))) this.recoveryRequired.add(run.runId);
+    }
     this.tasks = tasks; this.runs = runs;
   }
 

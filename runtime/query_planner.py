@@ -193,6 +193,7 @@ class QueryPlanner:
     def retrieval_metadata(plan: QueryPlan) -> dict[str, Any]:
         if type(plan) is not QueryPlan:
             raise ValueError("typed QueryPlan required")
+        QueryPlan.validate(plan)
         return {
             "query_plan_sha256": plan.plan_sha256,
             "exact_identifiers": list(plan.exact_identifiers),

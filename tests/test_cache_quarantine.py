@@ -4,7 +4,9 @@ import importlib.util
 import json
 from pathlib import Path
 import tempfile
+import sys
 import unittest
+from unittest.mock import patch
 
 
 SCRIPT = Path(__file__).parents[1] / "scripts" / "cleanup_python_caches.py"
@@ -15,6 +17,151 @@ SPEC.loader.exec_module(MODULE)
 
 
 class CacheQuarantineTests(unittest.TestCase):
+    @unittest.skipUnless(sys.platform == "win32", "Windows cache name casing")
+    def test_windows_cache_directory_casing_is_recognized(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = root / "pkg/__PYCACHE__/metadata.json"
+            source.parent.mkdir(parents=True)
+            source.write_bytes(b"cache metadata")
+            result = MODULE.cleanup(root, apply=True)
+            self.assertEqual(result["cache_directory_count"], 1)
+            self.assertEqual(result["inventoried_file_count"], 1)
+            self.assertFalse(source.exists())
+            destination = root / result["quarantine_destination"]
+            self.assertEqual((destination / "pkg/__PYCACHE__/metadata.json").read_bytes(), b"cache metadata")
+
+    def test_relative_quarantine_uses_selected_project_not_cwd(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            base = Path(directory)
+            root = base / "project"
+            source = root / "pkg/__pycache__/module.pyc"
+            source.parent.mkdir(parents=True)
+            source.write_bytes(b"owned")
+            with patch("os.getcwd", return_value=str(base)):
+                result = MODULE.cleanup(root, apply=True, quarantine_root=Path("retained"))
+            destination = root / result["quarantine_destination"]
+            self.assertTrue(destination.is_relative_to(root / "retained"))
+            self.assertEqual((destination / "pkg/__pycache__/module.pyc").read_bytes(), b"owned")
+            self.assertFalse((base / "retained").exists())
+
+    def test_relative_quarantine_traversal_is_refused_before_moves(self) -> None:
+        from runtime.confined_output import ConfinementError
+        with tempfile.TemporaryDirectory() as directory:
+            base = Path(directory)
+            root = base / "project"
+            source = root / "pkg/__pycache__/module.pyc"
+            source.parent.mkdir(parents=True)
+            source.write_bytes(b"owned")
+            with patch("os.getcwd", return_value=str(base)):
+                with self.assertRaises(ConfinementError):
+                    MODULE.cleanup(root, apply=True, quarantine_root=Path("../escape"))
+            self.assertEqual(source.read_bytes(), b"owned")
+            self.assertFalse((base / "escape").exists())
+
+    def test_cli_relative_report_uses_selected_project(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            base = Path(directory)
+            project, installation = base / "project", base / "installation"
+            project.mkdir()
+            installation.mkdir()
+            with patch.object(MODULE, "ROOT", installation), patch(
+                "sys.argv", ["cleanup", "--root", str(project), "--output", "reports/cache.json"]
+            ):
+                self.assertEqual(MODULE.main(), 0)
+            report = json.loads((project / "reports/cache.json").read_text())
+            self.assertEqual(report["operation"], "quarantine_dry_run")
+            self.assertFalse((installation / "reports").exists())
+
+    def test_cli_absolute_report_inside_selected_project_is_accepted(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            base = Path(directory)
+            project, installation = base / "project", base / "installation"
+            project.mkdir()
+            installation.mkdir()
+            target = project / "reports/cache.json"
+            with patch.object(MODULE, "ROOT", installation), patch(
+                "sys.argv", ["cleanup", "--root", str(project), "--output", str(target)]
+            ):
+                self.assertEqual(MODULE.main(), 0)
+            self.assertEqual(json.loads(target.read_text())["inventoried_file_count"], 0)
+
+    def test_cli_escaping_report_is_refused_before_cache_moves(self) -> None:
+        from runtime.confined_output import ConfinementError
+        with tempfile.TemporaryDirectory() as directory:
+            base = Path(directory)
+            project, installation = base / "project", base / "installation"
+            source = project / "pkg/__pycache__/module.pyc"
+            source.parent.mkdir(parents=True)
+            source.write_bytes(b"owned")
+            installation.mkdir()
+            target = installation / "cache.json"
+            with patch.object(MODULE, "ROOT", installation), patch(
+                "sys.argv", ["cleanup", "--root", str(project), "--apply", "--output", str(target)]
+            ):
+                with self.assertRaises(ConfinementError):
+                    MODULE.main()
+            self.assertEqual(source.read_bytes(), b"owned")
+            self.assertFalse((project / ".agentic_engineering_os_px").exists())
+            self.assertFalse(target.exists())
+
+    def test_repeat_run_preserves_custom_quarantine_and_its_receipt(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = root / "pkg/__pycache__/module.pyc"
+            source.parent.mkdir(parents=True)
+            source.write_bytes(b"compiled")
+            quarantine = root / "retained-cache"
+            first = MODULE.cleanup(root, apply=True, quarantine_root=quarantine)
+            destination = root / first["quarantine_destination"]
+            receipt = (destination / "receipt.json").read_bytes()
+            second = MODULE.cleanup(root, apply=True, quarantine_root=quarantine)
+            self.assertEqual(second["inventoried_file_count"], 0)
+            self.assertIsNone(second["quarantine_destination"])
+            self.assertEqual((destination / "receipt.json").read_bytes(), receipt)
+            self.assertEqual((destination / "pkg/__pycache__/module.pyc").read_bytes(), b"compiled")
+
+    def test_nested_cache_directories_are_relocated_once(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            paths = ["pkg/__pycache__/outer.pyc", "pkg/__pycache__/nested/__pycache__/inner.pyc"]
+            for relative in paths:
+                source = root / relative
+                source.parent.mkdir(parents=True, exist_ok=True)
+                source.write_bytes(relative.encode())
+            result = MODULE.cleanup(root, apply=True)
+            destination = root / result["quarantine_destination"]
+            self.assertEqual(result["cache_directory_count"], 1)
+            self.assertEqual(result["inventoried_file_count"], 2)
+            for relative in paths:
+                self.assertFalse((root / relative).exists())
+                self.assertEqual((destination / relative).read_bytes(), relative.encode())
+
+    def test_quarantine_inside_cache_is_refused_before_any_move(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = root / "pkg/__pycache__/module.pyc"
+            source.parent.mkdir(parents=True)
+            source.write_bytes(b"compiled")
+            quarantine = source.parent / "retained"
+            with self.assertRaisesRegex(ValueError, "quarantine.*inside.*cache"):
+                MODULE.cleanup(root, apply=True, quarantine_root=quarantine)
+            self.assertEqual(source.read_bytes(), b"compiled")
+            self.assertFalse(quarantine.exists())
+
+    def test_quarantine_outside_selected_project_is_refused_before_moves(self) -> None:
+        from runtime.confined_output import ConfinementError
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory) / "project"
+            source = root / "pkg/__pycache__/module.pyc"
+            source.parent.mkdir(parents=True)
+            source.write_bytes(b"owned")
+            outside = Path(directory) / "outside"
+            with self.assertRaises(ConfinementError):
+                MODULE.cleanup(root, apply=True, quarantine_root=outside)
+            self.assertEqual(source.read_bytes(), b"owned")
+            self.assertFalse(outside.exists())
+
     def test_repository_root_pytest_cache_is_external_tool_custody(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

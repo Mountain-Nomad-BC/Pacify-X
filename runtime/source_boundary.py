@@ -460,6 +460,14 @@ BOUNDARY_RULES: tuple[BoundaryRule, ...] = (
     BoundaryRule(".engineering-bootstrap/project-map-history", RUNTIME_STATE, owner="runtime", reason="derived custody tree"),
     BoundaryRule(".engineering-bootstrap/project-map-history-archives", RUNTIME_STATE, owner="runtime", reason="retained project map archives"),
     BoundaryRule(".engineering-bootstrap/project-map-lock-history", RUNTIME_STATE, owner="runtime", reason="derived custody tree"),
+    # NOTE: .engineering-bootstrap/repair-tools and .engineering-bootstrap/census-attribution
+    # are deliberately NOT classified here. runtime/effect_surface.REPAIR_TOOLING_PATHS
+    # excludes campaign repair scripts through an explicit, reviewable per-file list, and
+    # tests/test_repair_tooling_census_scope.py asserts the rule is NOT a directory prefix:
+    # a prefix would hide unrelated producers. A boundary rule is that prefix, so 2026-11-08
+    # added and then REVERTED two such rules after they silently hid 51 files, only one of
+    # which is legitimately excluded (census-attribution/gate.py). The unmapped-surface
+    # count must be resolved by governed regeneration, not by reclassifying the source.
     # Canonical control-directory custody trees that the legacy rule set did not
     # cover. Each is PX-owned runtime state or retained evidence, never authored
     # source, so an explicit rule prevents a control path slipping into the

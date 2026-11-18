@@ -63,34 +63,49 @@ def cleanup(
     quarantine_base = (
         quarantine_root
         or (resolved / ".agentic_engineering_os_px" / "quarantine" / "disposable-cache")
-    ).resolve()
+    )
+    if not quarantine_base.is_absolute():
+        quarantine_base = resolved / quarantine_base
+    quarantine_base = quarantine_base.resolve()
     if quarantine_base == resolved or quarantine_base == Path(quarantine_base.anchor):
         raise ValueError(
             "quarantine root must be a bounded directory distinct from the workspace root"
         )
     # PX-OS-1067: the quarantine root receives every relocated cache, so it is a destination
-    # this producer writes. Confining it to the repository makes that guarantee unconditional
-    # instead of depending on where `--quarantine-root` happened to point.
+    # this producer writes. Confine it to the explicitly selected project, rather than the
+    # directory containing this installed tool. A managed project can live elsewhere.
     from runtime.confined_output import confined_path, confined_move
 
     quarantine_base = confined_path(
-        Path(__file__).resolve().parents[1], quarantine_base, label="quarantine_root"
+        resolved, quarantine_base, label="quarantine_root"
     )
     walk = bounded_walk(
         resolved,
         limits=WalkLimits(max_files=100_000, max_depth=128, max_bytes=2 * 1024**3),
         symlink_policy="skip",
-        exclude=_is_cleanup_excluded,
+        # Retained quarantine is input custody, never a new cleanup candidate.
+        exclude=lambda relative: _inside(resolved / relative, quarantine_base)
+        or _is_cleanup_excluded(relative),
     )
     directories = sorted(
         (
             entry.path
             for entry in walk.entries
-            if entry.kind == "directory" and entry.path.name in CACHE_DIRECTORIES
+            if entry.kind == "directory"
+            and (entry.path.name.casefold() if sys.platform == "win32" else entry.path.name)
+            in CACHE_DIRECTORIES
         ),
         key=lambda path: len(path.parts),
-        reverse=True,
     )
+    cache_directories = set(directories)
+    # Moving a cache already moves all nested caches. Moving its children first
+    # would create overlapping destinations and invalidate the recovery receipt.
+    directories = [
+        path for path in directories
+        if not any(parent in cache_directories for parent in path.parents)
+    ]
+    if any(_inside(quarantine_base, path) for path in directories):
+        raise ValueError("quarantine root must not be inside a selected cache directory")
     files = sorted(
         entry.path
         for entry in walk.files
@@ -126,11 +141,11 @@ def cleanup(
                 target = destination / directory.relative_to(resolved)
                 # Confined relocation: the target is re-checked against the repository before
                 # anything moves, and the move is a rename rather than a partial copy.
-                confined_move(directory, target, label="quarantine_target")
+                confined_move(directory, target, root=resolved, label="quarantine_target")
         for path in files:
             if path.exists():
                 target = destination / path.relative_to(resolved)
-                confined_move(path, target, label="quarantine_target")
+                confined_move(path, target, root=resolved, label="quarantine_target")
         for item in inventory:
             active = resolved / str(item["path"])
             quarantined = destination / str(item["path"])
@@ -180,12 +195,19 @@ def main() -> int:
     parser.add_argument("--quarantine-root", type=Path)
     parser.add_argument("--output", type=Path)
     args = parser.parse_args()
-    result = cleanup(args.root, apply=args.apply, quarantine_root=args.quarantine_root)
-    if args.output:
-        # Confined, atomic publication inside the repository root.
+    root = args.root.resolve()
+    output = None
+    if args.output is not None:
+        from runtime.confined_output import confined_path
+
+        # Reject an invalid report destination before --apply can move caches.
+        output = confined_path(root, args.output)
+    result = cleanup(root, apply=args.apply, quarantine_root=args.quarantine_root)
+    if output is not None:
+        # Reports share the explicitly selected project's confinement boundary.
         from runtime.confined_output import publish_json
 
-        publish_json(ROOT, args.output, result)
+        publish_json(root, output, result)
     print(json.dumps(result, indent=2))
     return 0
 

@@ -32,6 +32,9 @@ from runtime.resource_lifecycle import ResourceManager
 # It remains a real guard: the forbidden-member and required-member audits below
 # still bound what may enter the archive.
 MAX_SOURCE_ARCHIVE_BYTES = 1536 * 1024 * 1024
+# Match the shared archive API's maximum supported member ceiling. Byte budgets
+# alone cannot bound millions of empty headers and retained name identities.
+MAX_SOURCE_ARCHIVE_MEMBERS = 100_000
 ArchiveCommandBuilder = Callable[[Path], Sequence[str]]
 
 
@@ -58,7 +61,10 @@ def _inspect_archive(
     archive_path: Path, *, revision: str, worktree_attributes: bool,
     current_manifest: dict[str, str] | None = None,
 ) -> dict[str, Any]:
+    from runtime.archive_io import portable_member_name, member_identity
+
     members: list[str] = []
+    seen: set[str] = set()
     forbidden: list[str] = []
     total_bytes = 0
     archive_bytes = archive_path.stat().st_size
@@ -74,8 +80,23 @@ def _inspect_archive(
     try:
         with tarfile.open(archive_path, mode="r:*") as archive:
             for member in archive:
+                if len(seen) >= MAX_SOURCE_ARCHIVE_MEMBERS:
+                    raise ValueError("source archive exceeds its member-count budget")
+                name = portable_member_name(member.name, allow_directory=member.isdir())
+                identity = member_identity(name)
+                if identity in seen:
+                    raise ValueError("archive has duplicate or colliding member names")
+                seen.add(identity)
+                if not member.isfile() and not member.isdir():
+                    raise ValueError("source archive contains a link or special file")
+                if _forbidden(identity):
+                    forbidden.append(member.name)
+                if member.isfile():
+                    if member.size < 0 or member.size > MAX_SOURCE_ARCHIVE_BYTES - total_bytes:
+                        raise ValueError("archive exceeds its uncompressed source budget")
+                    total_bytes += member.size
                 if current_manifest is not None:
-                    if not member.isfile() or member.name in members or member.name not in current_manifest:
+                    if not member.isfile() or member.name not in current_manifest:
                         raise ValueError("current archive has an unexpected or duplicate member")
                     image = archive.extractfile(member)
                     if image is None:
@@ -88,10 +109,7 @@ def _inspect_archive(
                 if not member.isfile():
                     continue
                 members.append(member.name)
-                total_bytes += member.size
-                if _forbidden(member.name):
-                    forbidden.append(member.name)
-    except (tarfile.TarError, ValueError) as error:
+    except (tarfile.TarError, ValueError, OSError, EOFError) as error:
         return {
             "schema_version": "px.source-archive-audit/1.0",
             "valid": False,

@@ -22,40 +22,82 @@
    "arguments": [
     "--root",
     ".",
-    "--output",
-    "reports/sanitize.json"
+    "--apply"
    ],
    "created": [
-    "reports/sanitize.json"
+    ".px/usage-memory/subject-manifest.json",
+    ".px/usage-memory/subject-manifest.md"
    ],
    "escaping_paths": [],
-   "exit_code": 0,
+   "exit_code": 1,
    "modified": [],
    "observed_confined": true,
-   "observed_source_sha256": "057981a8b861006864bc75bfb572fa7fada52a8bbe0754c855afeec5c07ca819",
-   "producer": "scripts/sanitize_tree.py",
+   "observed_source_sha256": "c938c8ab047f483394dfa2fc05b490ec3f819962e5a0cd8d7f7a45dc53edbe1d",
+   "producer": "scripts/bootstrap_usage_memory.py",
    "stderr_tail": []
   },
   {
    "arguments": [
     "--root",
-    "scripts",
-    "--apply",
-    "--preservation-root",
-    ".px-preserved",
-    "--output",
-    "reports/sanitize.json"
+    ".",
+    "--apply"
+   ],
+   "created": [],
+   "escaping_paths": [],
+   "exit_code": 1,
+   "modified": [],
+   "observed_confined": false,
+   "observed_source_sha256": "e6fd9af64a4722284889fd606bbf044d55b962dd99b4ae22c13b738cc5910456",
+   "producer": "scripts/build_completion_status.py",
+   "stderr_tail": [
+    "    return io.open(self, mode, buffering, encoding, errors, newline)",
+    "           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",
+    "FileNotFoundError: [Errno 2] No such file or directory: 'C:\\\\Users\\\\Ben\\\\AppData\\\\Local\\\\Temp\\\\px-sandbox-1ivl6668\\\\docs\\\\PX_UNIVERSAL_VISIBILITY_PUNCH_CARDS.md'"
+   ]
+  },
+  {
+   "arguments": [
+    "--root",
+    ".",
+    "--source",
+    "upstream-source",
+    "--source-alias",
+    "upstream",
+    "--owner-output",
+    "reports/owners.json",
+    "--disposition-output",
+    "reports/disposition.json"
    ],
    "created": [
-    ".px-preserved/preservation-receipt.json",
-    "reports/sanitize.json"
+    "reports/disposition.json",
+    "reports/owners.json"
    ],
    "escaping_paths": [],
    "exit_code": 0,
    "modified": [],
    "observed_confined": true,
-   "observed_source_sha256": "057981a8b861006864bc75bfb572fa7fada52a8bbe0754c855afeec5c07ca819",
-   "producer": "scripts/sanitize_tree.py",
+   "observed_source_sha256": "f66aa76f192145ed7e8c239a692e38118c323052eccb12a88e1989173150b661",
+   "producer": "scripts/build_integration_disposition.py",
+   "stderr_tail": []
+  },
+  {
+   "arguments": [
+    "--root",
+    "."
+   ],
+   "created": [
+    ".agentic_engineering_os_px/profiles/cloud-restricted.toml",
+    ".agentic_engineering_os_px/profiles/constrained.toml",
+    ".agentic_engineering_os_px/profiles/default.toml",
+    ".agentic_engineering_os_px/profiles/large-workstation.toml",
+    ".agentic_engineering_os_px/profiles/local-model.toml"
+   ],
+   "escaping_paths": [],
+   "exit_code": 0,
+   "modified": [],
+   "observed_confined": true,
+   "observed_source_sha256": "902bdff2301bf67927eafacd5a3f7cccc6a105bb3fb88c9d4e485f556a98c1dd",
+   "producer": "scripts/build_profile_projections.py",
    "stderr_tail": []
   },
   {
@@ -72,45 +114,36 @@
    "exit_code": 0,
    "modified": [],
    "observed_confined": true,
-   "observed_source_sha256": "d848b641eb4c334b4f8ff059c4d32f72c8ce67fdbdfb14b55a4a59618e32f730",
+   "observed_source_sha256": "b03ff51ddffe5b30ff02b0df67523a550e96af60e38d193f3dc5b46314653631",
    "producer": "scripts/cleanup_python_caches.py",
    "stderr_tail": []
   },
   {
-   "arguments": [
-    "--root",
-    ".",
-    "--apply",
-    "--output",
-    "reports/cache.json"
-   ],
-   "created": [
-    "reports/cache.json"
-   ],
+   "arguments": [],
+   "created": [],
    "escaping_paths": [],
-   "exit_code": 0,
+   "exit_code": 1,
    "modified": [],
-   "observed_confined": true,
-   "observed_source_sha256": "d848b641eb4c334b4f8ff059c4d32f72c8ce67fdbdfb14b55a4a59618e32f730",
-   "producer": "scripts/cleanup_python_caches.py",
-   "stderr_tail": []
+   "observed_confined": false,
+   "observed_source_sha256": "93b92a787515033ad96ac00bdb3f8ff499e70dcbd35c061e99919b80269d829f",
+   "producer": "scripts/declare_plan_corpus_count_owners.py",
+   "stderr_tail": [
+    "    return io.open(self, mode, buffering, encoding, errors, newline)",
+    "           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",
+    "FileNotFoundError: [Errno 2] No such file or directory: 'C:\\\\Users\\\\Ben\\\\AppData\\\\Local\\\\Temp\\\\px-sandbox-86c4dhzq\\\\registry\\\\registry_envelope_inventory.json'"
+   ]
   },
   {
-   "arguments": [
-    "--parts-root",
-    ".",
-    "--output",
-    "reports/rehash.json"
-   ],
-   "created": [
-    "reports/rehash.json"
-   ],
+   "arguments": [],
+   "created": [],
    "escaping_paths": [],
    "exit_code": 0,
-   "modified": [],
+   "modified": [
+    "runtime/source_boundary.py"
+   ],
    "observed_confined": true,
-   "observed_source_sha256": "c43c18920b9817c0c4d43c03a07e7e369a1b839945a31617ddadd3e1e71cce29",
-   "producer": "scripts/inventory/rehash_inventory_partitions.py",
+   "observed_source_sha256": "a593094641b63711aadb0c6530f5c6bba5486c330c364b78c12265b779fd76b6",
+   "producer": "scripts/fix_boundary_rule_matching.py",
    "stderr_tail": []
   },
   {
@@ -132,37 +165,229 @@
   },
   {
    "arguments": [
+    "--parts-root",
+    ".",
+    "--output",
+    "reports/rehash.json"
+   ],
+   "created": [
+    "reports/rehash.json"
+   ],
+   "escaping_paths": [],
+   "exit_code": 0,
+   "modified": [],
+   "observed_confined": true,
+   "observed_source_sha256": "a01dc6b91a8dcd3f88ccfbf68f0dc72e49afab3db2ca08efc4020c1c569246b7",
+   "producer": "scripts/inventory/rehash_inventory_partitions.py",
+   "stderr_tail": []
+  },
+  {
+   "arguments": [],
+   "created": [],
+   "escaping_paths": [],
+   "exit_code": 1,
+   "modified": [
+    "registry/skill_catalog.toml"
+   ],
+   "observed_confined": false,
+   "observed_source_sha256": "6fdde2c6976acb8c305f6321527aa520d7aab19b74ce116a51f16b7fbcfb6095",
+   "producer": "scripts/migration/admit_capability_mining_skills.py",
+   "stderr_tail": [
+    "  File \"C:\\Users\\Ben\\AppData\\Local\\Temp\\px-sandbox-d8tkp2ym\\scripts\\migration\\admit_capability_mining_skills.py\", line 420, in main",
+    "    raise FileNotFoundError(body)",
+    "FileNotFoundError: C:\\Users\\Ben\\AppData\\Local\\Temp\\px-sandbox-d8tkp2ym\\.px\\skills\\audit-source-capabilities\\SKILL.md"
+   ]
+  },
+  {
+   "arguments": [
+    "--root",
+    "."
+   ],
+   "created": [],
+   "escaping_paths": [],
+   "exit_code": 0,
+   "modified": [],
+   "observed_confined": true,
+   "observed_source_sha256": "e3e3c0d02515bdfb14197c31c9e043b4408b2dc9c1126dac8e50597db2f29d18",
+   "producer": "scripts/normalize_contract_ids.py",
+   "stderr_tail": []
+  },
+  {
+   "arguments": [
+    "--root",
+    "."
+   ],
+   "created": [
+    ".agentic_engineering_os_px/test-evidence/implementation-first/phase0-inventory.json"
+   ],
+   "escaping_paths": [],
+   "exit_code": 0,
+   "modified": [],
+   "observed_confined": true,
+   "observed_source_sha256": "1cd0bc6de65800d9ba027a0888c478e5441be983c46d5ffe3a530ec9e17e3476",
+   "producer": "scripts/phase0_inventory.py",
+   "stderr_tail": []
+  },
+  {
+   "arguments": [],
+   "created": [
+    ".tmp/owned-host-probes/cleanup-receipts/process-e375702b3c9448febea0a6d0fa9fc338.json",
+    ".tmp/owned-host-probes/pacifyx-a0phrfrl/beat-0.txt",
+    ".tmp/owned-host-probes/pacifyx-a0phrfrl/beat-1.txt",
+    ".tmp/owned-host-probes/pacifyx-a0phrfrl/beat-10.txt",
+    ".tmp/owned-host-probes/pacifyx-a0phrfrl/beat-11.txt",
+    ".tmp/owned-host-probes/pacifyx-a0phrfrl/beat-12.txt",
+    ".tmp/owned-host-probes/pacifyx-a0phrfrl/beat-13.txt",
+    ".tmp/owned-host-probes/pacifyx-a0phrfrl/beat-14.txt",
+    ".tmp/owned-host-probes/pacifyx-a0phrfrl/beat-15.txt",
+    ".tmp/owned-host-probes/pacifyx-a0phrfrl/beat-16.txt",
+    ".tmp/owned-host-probes/pacifyx-a0phrfrl/beat-17.txt",
+    ".tmp/owned-host-probes/pacifyx-a0phrfrl/beat-18.txt",
+    ".tmp/owned-host-probes/pacifyx-a0phrfrl/beat-19.txt",
+    ".tmp/owned-host-probes/pacifyx-a0phrfrl/beat-2.txt",
+    ".tmp/owned-host-probes/pacifyx-a0phrfrl/beat-20.txt",
+    ".tmp/owned-host-probes/pacifyx-a0phrfrl/beat-21.txt",
+    ".tmp/owned-host-probes/pacifyx-a0phrfrl/beat-22.txt",
+    ".tmp/owned-host-probes/pacifyx-a0phrfrl/beat-23.txt",
+    ".tmp/owned-host-probes/pacifyx-a0phrfrl/beat-24.txt",
+    ".tmp/owned-host-probes/pacifyx-a0phrfrl/beat-25.txt",
+    ".tmp/owned-host-probes/pacifyx-a0phrfrl/beat-26.txt",
+    ".tmp/owned-host-probes/pacifyx-a0phrfrl/beat-27.txt",
+    ".tmp/owned-host-probes/pacifyx-a0phrfrl/beat-28.txt",
+    ".tmp/owned-host-probes/pacifyx-a0phrfrl/beat-29.txt",
+    ".tmp/owned-host-probes/pacifyx-a0phrfrl/beat-3.txt",
+    ".tmp/owned-host-probes/pacifyx-a0phrfrl/beat-30.txt",
+    ".tmp/owned-host-probes/pacifyx-a0phrfrl/beat-31.txt",
+    ".tmp/owned-host-probes/pacifyx-a0phrfrl/beat-32.txt",
+    ".tmp/owned-host-probes/pacifyx-a0phrfrl/beat-33.txt",
+    ".tmp/owned-host-probes/pacifyx-a0phrfrl/beat-34.txt",
+    ".tmp/owned-host-probes/pacifyx-a0phrfrl/beat-35.txt",
+    ".tmp/owned-host-probes/pacifyx-a0phrfrl/beat-36.txt",
+    ".tmp/owned-host-probes/pacifyx-a0phrfrl/beat-37.txt",
+    ".tmp/owned-host-probes/pacifyx-a0phrfrl/beat-38.txt",
+    ".tmp/owned-host-probes/pacifyx-a0phrfrl/beat-39.txt",
+    ".tmp/owned-host-probes/pacifyx-a0phrfrl/beat-4.txt",
+    ".tmp/owned-host-probes/pacifyx-a0phrfrl/beat-40.txt",
+    ".tmp/owned-host-probes/pacifyx-a0phrfrl/beat-41.txt",
+    ".tmp/owned-host-probes/pacifyx-a0phrfrl/beat-42.txt",
+    ".tmp/owned-host-probes/pacifyx-a0phrfrl/beat-43.txt",
+    ".tmp/owned-host-probes/pacifyx-a0phrfrl/beat-44.txt",
+    ".tmp/owned-host-probes/pacifyx-a0phrfrl/beat-45.txt",
+    ".tmp/owned-host-probes/pacifyx-a0phrfrl/beat-46.txt",
+    ".tmp/owned-host-probes/pacifyx-a0phrfrl/beat-47.txt",
+    ".tmp/owned-host-probes/pacifyx-a0phrfrl/beat-48.txt",
+    ".tmp/owned-host-probes/pacifyx-a0phrfrl/beat-49.txt",
+    ".tmp/owned-host-probes/pacifyx-a0phrfrl/beat-5.txt",
+    ".tmp/owned-host-probes/pacifyx-a0phrfrl/beat-50.txt",
+    ".tmp/owned-host-probes/pacifyx-a0phrfrl/beat-51.txt",
+    ".tmp/owned-host-probes/pacifyx-a0phrfrl/beat-52.txt",
+    ".tmp/owned-host-probes/pacifyx-a0phrfrl/beat-53.txt",
+    ".tmp/owned-host-probes/pacifyx-a0phrfrl/beat-54.txt",
+    ".tmp/owned-host-probes/pacifyx-a0phrfrl/beat-55.txt",
+    ".tmp/owned-host-probes/pacifyx-a0phrfrl/beat-56.txt",
+    ".tmp/owned-host-probes/pacifyx-a0phrfrl/beat-57.txt",
+    ".tmp/owned-host-probes/pacifyx-a0phrfrl/beat-58.txt",
+    ".tmp/owned-host-probes/pacifyx-a0phrfrl/beat-59.txt",
+    ".tmp/owned-host-probes/pacifyx-a0phrfrl/beat-6.txt",
+    ".tmp/owned-host-probes/pacifyx-a0phrfrl/beat-60.txt",
+    ".tmp/owned-host-probes/pacifyx-a0phrfrl/beat-61.txt",
+    ".tmp/owned-host-probes/pacifyx-a0phrfrl/beat-62.txt",
+    ".tmp/owned-host-probes/pacifyx-a0phrfrl/beat-63.txt",
+    ".tmp/owned-host-probes/pacifyx-a0phrfrl/beat-64.txt",
+    ".tmp/owned-host-probes/pacifyx-a0phrfrl/beat-65.txt",
+    ".tmp/owned-host-probes/pacifyx-a0phrfrl/beat-66.txt",
+    ".tmp/owned-host-probes/pacifyx-a0phrfrl/beat-7.txt",
+    ".tmp/owned-host-probes/pacifyx-a0phrfrl/beat-8.txt",
+    ".tmp/owned-host-probes/pacifyx-a0phrfrl/beat-9.txt",
+    ".tmp/owned-host-probes/pacifyx-a0phrfrl/heartbeat.py",
+    ".tmp/owned-host-probes/pacifyx-a0phrfrl/operating-proof.json",
+    ".tmp/owned-host-probes/pacifyx-a0phrfrl/ready.json",
+    ".tmp/owned-host-probes/pacifyx-a0phrfrl/workload.py",
+    ".tmp/owned-host-probes/resources.json",
+    ".tmp/owned-host-probes/resources.json.lock"
+   ],
+   "escaping_paths": [],
+   "exit_code": 0,
+   "modified": [],
+   "observed_confined": true,
+   "observed_source_sha256": "039744c369e332c245618f936dc6496a5be308bd1284fb056ffde610c6592bc9",
+   "producer": "scripts/probe_native_job_containment.py",
+   "stderr_tail": []
+  },
+  {
+   "arguments": [
     "--root",
     ".",
-    "--source",
-    "upstream-source",
-    "--source-alias",
-    "upstream",
-    "--owner-output",
-    "reports/owners.json",
-    "--disposition-output",
-    "reports/disposition.json"
+    "--apply"
    ],
    "created": [],
    "escaping_paths": [],
    "exit_code": 1,
    "modified": [],
    "observed_confined": false,
-   "observed_source_sha256": "f66aa76f192145ed7e8c239a692e38118c323052eccb12a88e1989173150b661",
-   "producer": "scripts/build_integration_disposition.py",
+   "observed_source_sha256": "36a7abe155de4b516ce9879ed6022a25317c0a185fd36b568cb337a4305658fb",
+   "producer": "scripts/reconcile_capability_map.py",
    "stderr_tail": [
     "    return io.open(self, mode, buffering, encoding, errors, newline)",
     "           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",
-    "FileNotFoundError: [Errno 2] No such file or directory: 'C:\\\\Users\\\\Ben\\\\AppData\\\\Local\\\\Temp\\\\px-sandbox-_qwtbz4a\\\\registry\\\\skill_catalog.toml'"
+    "FileNotFoundError: [Errno 2] No such file or directory: 'C:\\\\Users\\\\Ben\\\\AppData\\\\Local\\\\Temp\\\\px-sandbox-z2y4ec6k\\\\registry\\\\admission_ledger.json'"
    ]
+  },
+  {
+   "arguments": [],
+   "created": [],
+   "escaping_paths": [],
+   "exit_code": 1,
+   "modified": [],
+   "observed_confined": false,
+   "observed_source_sha256": "4983b9cabef1631e1a9bac22caa93474627a2f57160dc9f9196f081ba7d929c5",
+   "producer": "scripts/reconcile_declared_tool_hashes.py",
+   "stderr_tail": [
+    "    return io.open(self, mode, buffering, encoding, errors, newline)",
+    "           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",
+    "FileNotFoundError: [Errno 2] No such file or directory: 'C:\\\\Users\\\\Ben\\\\AppData\\\\Local\\\\Temp\\\\px-sandbox-9amk5ajx\\\\registry\\\\declared_suite_authoritative_tools.json'"
+   ]
+  },
+  {
+   "arguments": [],
+   "created": [],
+   "escaping_paths": [],
+   "exit_code": 1,
+   "modified": [],
+   "observed_confined": false,
+   "observed_source_sha256": "9f1d5cca2476749bd382fa36617b9b256497a62fa349408d9215ba7034f35163",
+   "producer": "scripts/record_gap_dispositions.py",
+   "stderr_tail": [
+    "    return io.open(self, mode, buffering, encoding, errors, newline)",
+    "           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^",
+    "FileNotFoundError: [Errno 2] No such file or directory: 'C:\\\\Users\\\\Ben\\\\AppData\\\\Local\\\\Temp\\\\px-sandbox-px4yew7e\\\\.agentic_engineering_os_px\\\\registers\\\\gap-reconciliation-receipt.json'"
+   ]
+  },
+  {
+   "arguments": [
+    "--root",
+    ".",
+    "--output",
+    "reports/sanitize.json"
+   ],
+   "created": [
+    "reports/sanitize.json"
+   ],
+   "escaping_paths": [],
+   "exit_code": 0,
+   "modified": [],
+   "observed_confined": true,
+   "observed_source_sha256": "9960b8a50b55b1493f6ac207e547ffd4b4e213ddee5d684484d2c2496a781355",
+   "producer": "scripts/sanitize_tree.py",
+   "stderr_tail": []
   }
  ],
  "gap_id": "PX-OS-1067",
  "method": "Each producer ran against a temporary copy of runtime/ and scripts/ with its working directory set to that copy. Writes were observed by comparing before/after snapshots of the sandbox. This measures one run per mode; it is evidence about observed behaviour, not a proof for every input.",
  "schema_version": "px.sandbox-write-evidence/1.0",
  "summary": {
-  "cases": 8,
-  "observed_confined": 7,
+  "cases": 18,
+  "observed_confined": 12,
   "skipped": 0
  }
 }

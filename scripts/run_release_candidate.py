@@ -10,7 +10,7 @@ Failed or indeterminate owners are never replayed.
 from __future__ import annotations
 
 import argparse
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from datetime import datetime, timedelta, timezone
 import json
 import os
@@ -29,6 +29,7 @@ if str(ROOT) not in sys.path:
 
 from runtime.certification_contract import (  # noqa: E402
     CONTRACT_BY_STEP,
+    STAGE_TIMEOUT_LIMITS,
     PHASE_AFTER,
     PHASE_ORDER,
     RELEASE_STAGE_PHASES,
@@ -237,6 +238,8 @@ class Config:
             raise AutomationBlocked(f"configuration must use {CONFIG_SCHEMA}")
         root_value = Path(_required(raw, "root"))
         root = (root_value if root_value.is_absolute() else path.parent / root_value).resolve()
+        from runtime.release_source_identity import require_release_configuration_mode
+        require_release_configuration_mode(root, current=raw["schema_version"] == CURRENT_CONFIG_SCHEMA)
         automation_state = _inside(
             root, _required(raw, "automation_state"), "automation_state"
         )
@@ -346,8 +349,8 @@ class Config:
         if not isinstance(timeout_values, dict) or set(timeout_values) != set(STEP_ORDER):
             raise AutomationBlocked("timeouts_seconds must bind every canonical step")
         timeouts_seconds = {step: int(timeout_values[step]) for step in STEP_ORDER}
-        if any(value <= 0 or value > 14400 for value in timeouts_seconds.values()):
-            raise AutomationBlocked("step timeouts must be between 1 and 14400 seconds")
+        if any(value <= 0 or value > STAGE_TIMEOUT_LIMITS[step] for step,value in timeouts_seconds.items()):
+            raise AutomationBlocked("step timeout exceeds its bounded stage owner limit")
         identity_manifest = reference if current else raw.get("identity_manifest")
         if not isinstance(identity_manifest, dict):
             raise AutomationBlocked("identity_manifest must be an object")
@@ -367,7 +370,7 @@ class Config:
         artifact_mtime_ns = int(raw.get("artifact_mtime_ns") or 0)
         if not current and (artifact_size <= 0 or artifact_mtime_ns <= 0):
             raise AutomationBlocked("artifact size and mtime_ns must be positive")
-        return cls(
+        result = cls(
             root=root,
             candidate_id=candidate_id,
             candidate_date=candidate_date,
@@ -391,9 +394,60 @@ class Config:
             source_freeze_reference=dict(reference) if current else None,
             artifact_state="planned" if current else "committed_legacy",
         )
+        return current_observed_configuration(result) if current else result
 
     def relative(self, path: Path) -> str:
         return path.relative_to(self.root).as_posix()
+
+
+def paired_stage_configuration(config: Config):
+    from scripts.run_release_stage_owner import Config as StageConfig
+    command = config.owners["identity"][0]
+    positions = [i for i, token in enumerate(command) if token == "--config"]
+    if len(positions) != 1 or positions[0] + 1 >= len(command):
+        raise AutomationBlocked("current candidate has no exact paired stage configuration")
+    path = _inside(config.root, command[positions[0] + 1], "stage configuration")
+    stage = StageConfig.load(path)
+    if (stage.identity_kind != config.identity_kind or stage.source_freeze_reference != config.source_freeze_reference
+        or stage.candidate_id != config.candidate_id or stage.artifact != config.artifact
+        or stage.log_dir != config.log_root):
+        raise AutomationBlocked("current candidate and stage owner configurations differ")
+    return stage
+
+
+def validate_current_realization_plan(config: Config) -> None:
+    """Check the real planned producer and commissioned host before consuming a stage."""
+    if config.identity_kind != "standalone_current_campaign":
+        raise AutomationBlocked("package/install realization owner requires current campaign identity")
+    from runtime.release_process_custody import require_release_host
+    from runtime.release_source_identity import release_configuration_relative
+    from scripts.run_release_stage_owner import current_realization_preflight
+    stage = paired_stage_configuration(config)
+    relative = release_configuration_relative(config.candidate_id, "stage-owner").as_posix()
+    for step in STEP_ORDER[:8]:
+        expected = ("-B", "scripts/run_release_stage_owner.py", "--config", relative, "--step", step, "--execute")
+        commands = config.owners[step]
+        if len(commands) != 1 or commands[0][1:] != expected or Path(commands[0][0]).resolve() != Path(sys.executable).resolve():
+            raise AutomationBlocked("current stage owner argv differs from its exact native binding: " + step)
+    operational = config.owners["installed_operational"][0]
+    if (operational[1:3] != ("-B", "scripts/run_installed_operational_owner.py")
+            or Path(operational[0]).resolve() != Path(sys.executable).resolve()
+            or operational.count("--stage-owner-config") != 1
+            or "--artifact-sha256" in operational or "--artifact-size" in operational or "--artifact-mtime-ns" in operational):
+        raise AutomationBlocked("current operational owner must consume authenticated stage observations")
+    index = operational.index("--stage-owner-config")
+    if index + 1 >= len(operational) or operational[index + 1] != relative:
+        raise AutomationBlocked("current operational owner stage configuration differs")
+    current_realization_preflight(stage, "package")
+    require_release_host(config.root)
+
+
+def current_observed_configuration(config: Config) -> Config:
+    if config.identity_kind != "standalone_current_campaign":
+        return config
+    stage = paired_stage_configuration(config)
+    return replace(config, artifact_state=stage.artifact_state, artifact_sha256=stage.artifact_sha256,
+                   artifact_size=stage.artifact_size, artifact_mtime_ns=stage.artifact_mtime_ns)
 
 
 def plan(config: Config) -> dict[str, Any]:
@@ -440,9 +494,8 @@ def _release(config: Config) -> dict[str, Any]:
 
 
 def _repair(config: Config) -> dict[str, Any]:
-    return _object(
-        config.root / ".agentic_engineering_os_px/processing-order/repair-campaign.json"
-    )
+    from runtime.project_revision_succession import current_campaign_path
+    return _object(current_campaign_path(config.root))
 
 
 def _invalid_active_predecessor_kind(
@@ -534,13 +587,13 @@ def readiness(config: Config) -> dict[str, Any]:
             f"full-profile timeout envelope is unavailable: {type(exc).__name__}"
         )
     if config.artifact_state=="planned":
-        # The current stage owner explicitly refuses planned artifacts at
-        # package/install. Detect that before consuming archive/reconcile/tests,
-        # rather than admitting a candidate that can never complete its graph.
-        errors.append(
-            "planned artifact has no implemented package/install realization owner; "
-            "complete producer custody and exact-artifact binding before starting a release attempt"
-        )
+        try:
+            validate_current_realization_plan(config)
+            # The legacy operational launcher uses raw subprocesses (including a
+            # WSL bridge). It cannot serve as a current native custody owner.
+            raise AutomationBlocked("current installed operational members still lack native custody/effect admission ownership")
+        except (OSError, ValueError, RuntimeError, PermissionError) as exc:
+            errors.append("package/install realization owner preflight failed: " + str(exc))
     elif not config.artifact.is_file() or config.artifact.is_symlink():
         errors.append("immutable artifact is not an exact non-symlink file")
     else:
@@ -775,6 +828,15 @@ def _validate_stage_receipt(
 ) -> dict[str, Any]:
     path = _evidence_file(config, reference, f"{label}_receipt")
     receipt = _object(path)
+    current = config.identity_kind == "standalone_current_campaign"
+    if current:
+        from runtime.studio_authority import StudioAuthorityStore
+        receipt = StudioAuthorityStore.open_existing(config.root).verify_receipt(receipt)
+        mode = receipt.get("realization", {})
+        if (mode.get("schema_version") != "px.current-release-realization/1.0" or mode.get("stage") != label
+            or mode.get("source_freeze") != config.source_freeze_reference
+            or mode.get("owner_command", {}).get("valid") is not True):
+            raise AutomationBlocked("current stage lacks its authenticated realization owner")
     expected = {
         "campaign_id": config.candidate_id,
         "release_identity_sha256": identity.get("release_identity_sha256"),
@@ -819,8 +881,8 @@ def _validate_stage_receipt(
             "encrypted_count": 0,
             "symlink_count": 0,
             "artifact_unchanged": True,
-            "artifact_rebuilt": False,
-            "artifact_touched": False,
+            "artifact_rebuilt": current,
+            "artifact_touched": current,
             "resource_count": 0,
             "active_processes": 0,
             "cleanup_failures": 0,
@@ -838,7 +900,7 @@ def _validate_stage_receipt(
         exact = {
             "install_claim_id": expected_claim_id,
             "exact_version_count": 1,
-            "normalized_package_json_entries": 1,
+            "normalized_package_json_entries": receipt.get("normalized_package_json_entries") if current else 1,
             "missing": [],
             "extra": [],
             "mismatches": [],
@@ -846,8 +908,8 @@ def _validate_stage_receipt(
             "installed_symlinks_before": [],
             "installed_symlinks_after": [],
             "installed_tree_unchanged": True,
-            "machine_mutated": False,
-            "install_command_executed": False,
+            "machine_mutated": current,
+            "install_command_executed": current,
             "release_stage": "passed",
             "processing_phase": "installed",
             "resource_count": 0,
@@ -863,7 +925,9 @@ def _validate_stage_receipt(
             not isinstance(count, int)
             or count <= 0
             or receipt.get("installed_file_count") != count
-            or receipt.get("verified_byte_identical_entries") != count - 1
+            or type(receipt.get("normalized_package_json_entries")) is not int
+            or receipt["normalized_package_json_entries"] not in (0, 1)
+            or receipt.get("verified_byte_identical_entries") != count - receipt["normalized_package_json_entries"]
             or receipt.get("tree_digest_after") != before
             or not isinstance(before, str)
             or not SHA256_RE.fullmatch(before)
@@ -1061,13 +1125,29 @@ class SubprocessOwners:
         self.manager = manager
 
     def run(
-        self, step: str, commands: tuple[tuple[str, ...], ...]
+        self, step: str, commands: tuple[tuple[str, ...], ...], *,
+        admission_event_id: str | None = None, install_admission_event_id: str | None = None,
     ) -> Mapping[str, Any]:
+        if self.config.identity_kind == "standalone_current_campaign":
+            from runtime.release_process_custody import require_release_admission
+            require_release_admission(self.config.root, admission_event_id, (
+                ("read", str(self.config.root)), ("execute", "scripts"),
+                ("write", str(self.config.log_root)),
+            ))
+            if step == "install":
+                from runtime.release_source_identity import release_private_installation_relative
+                require_release_admission(self.config.root, install_admission_event_id,
+                    (("install", str(self.config.root / release_private_installation_relative(self.config.candidate_id))),))
         self.config.log_root.mkdir(parents=True, exist_ok=True)
         if step == "identity":
             _prepare_identity_manifest(self.config)
         environment = dict(os.environ)
         environment.update(PYTHONDONTWRITEBYTECODE="1", PYTHONPATH=str(self.config.root))
+        if self.config.identity_kind == "standalone_current_campaign":
+            environment["PX_RELEASE_ADMISSION_EVENT_ID"] = admission_event_id
+            environment.pop("PX_RELEASE_INSTALL_ADMISSION_EVENT_ID", None)
+            if install_admission_event_id:
+                environment["PX_RELEASE_INSTALL_ADMISSION_EVENT_ID"] = install_admission_event_id
         evidence: list[dict[str, Any]] = []
         valid = True
         timeout_seconds = self.config.timeouts_seconds[step]
@@ -1176,6 +1256,7 @@ class SubprocessOwners:
         return details
 
     def verify(self, step: str) -> None:
+        self.config = current_observed_configuration(self.config)
         if step in {"installed_operational", "card_reconcile", "preflight", "finalize"}:
             validate_installed_summary(self.config)
         release = _release(self.config)
@@ -1293,7 +1374,8 @@ def next_pending_step(config: Config, owners: OwnerRunner) -> str | None:
 
 
 def execute_next(
-    config: Config, owners: OwnerRunner, *, admission_event_id: str, gap_id: str
+    config: Config, owners: OwnerRunner, *, admission_event_id: str, gap_id: str,
+    install_admission_event_id: str | None = None,
 ) -> dict[str, Any]:
     step = next_pending_step(config, owners)
     if step is None:
@@ -1301,11 +1383,16 @@ def execute_next(
     journal = Journal(config)
     journal.start(step, admission_event_id=admission_event_id, gap_id=gap_id)
     try:
-        details = dict(owners.run(step, config.owners[step]))
+        if isinstance(owners, SubprocessOwners):
+            details = dict(owners.run(step, config.owners[step], admission_event_id=admission_event_id,
+                                     install_admission_event_id=install_admission_event_id))
+        else:
+            details = dict(owners.run(step, config.owners[step]))
         details.update(
             admission_event_id=admission_event_id,
             gap_id=gap_id,
             executed_step=step,
+            install_admission_event_id=install_admission_event_id,
         )
         passed = details.get("valid") is True
     except Exception as exc:
@@ -1370,6 +1457,54 @@ class LedgerCampaignGovernance:
         expires = datetime.now(timezone.utc) + timedelta(
             seconds=self.config.timeouts_seconds[step] + 3600
         )
+        current = self.config.identity_kind == "standalone_current_campaign"
+        if current:
+            from runtime.archive_io import reject_path_links
+            reference = self.config.source_freeze_reference
+            if type(reference) is not dict or set(reference) != {"path", "sha256"}:
+                raise AutomationBlocked("current admission requires the exact source-freeze reference")
+            reject_path_links(self.config.root / reference["path"])
+            source = _inside(self.config.root, reference["path"], "source freeze")
+            if not source.is_file() or _sha256(source) != reference["sha256"]:
+                raise AutomationBlocked("current admission source-freeze bytes differ")
+            writes = [self.config.root / ".agentic_engineering_os_px",
+                      self.config.root / "registry", self.config.root / "evidence",
+                      self.config.log_root, self.config.automation_state, *self.config.fresh_paths]
+            if step == "package":
+                writes += [self.config.artifact, self.config.root / "extension/SHA256SUMS.txt"]
+            for output in writes:
+                reject_path_links(output)
+                _inside(self.config.root, output, "current stage output")
+            effect_scopes = [
+                {"effect": "read", "scope": [str(self.config.root.resolve())]},
+                {"effect": "write", "scope": sorted({str(p.resolve()) for p in writes})},
+                {"effect": "execute", "scope": [str((self.config.root / p).resolve())
+                    for p in ("runtime", "scripts", "extension/scripts")] + [str(Path(sys.executable).resolve())]},
+            ]
+            from runtime.studio_authority import studio_authority_locator_environment
+            effect_scopes[0]["scope"].append(studio_authority_locator_environment()["PX_STUDIO_KEY_ROOT"])
+            if step == "package":
+                import shutil
+                node = shutil.which("node")
+                if not node:
+                    raise AutomationBlocked("current package admission requires native Node")
+                effect_scopes[2]["scope"].append(str(Path(node).resolve()))
+            if step == "install":
+                stage_config = paired_stage_configuration(self.config)
+                reject_path_links(stage_config.code_command)
+                effect_scopes[0]["scope"].append(str(stage_config.code_command.parent))
+                effect_scopes[2]["scope"].append(str(stage_config.code_command))
+            evidence = [{"reference": self.config.relative(source), "sha256": reference["sha256"],
+                "claim": "Current stage is admitted against these exact retained source-freeze bytes; artifact observations have separate authenticated stage receipts."}]
+        else:
+            effect_scopes = [
+                {"effect": "read", "scope": [str(self.config.root.resolve())]},
+                {"effect": "write", "scope": [str(self.config.root.resolve())]},
+                {"effect": "execute", "scope": [str(self.config.root.resolve())]},
+            ]
+            evidence = [{"reference": self.config.relative(self.config.artifact),
+                "artifact_sha256": self.config.artifact_sha256, "artifact_size": self.config.artifact_size,
+                "claim": f"The campaign admission is bound to the exact immutable {self.config.candidate_id} VSIX bytes."}]
         event = append_event(
             self.config.root,
             "work_admitted",
@@ -1381,26 +1516,7 @@ class LedgerCampaignGovernance:
                     f"Run the {self.config.candidate_id} {step} owner exactly once "
                     "inside the registered release campaign order."
                 ),
-                "effect_scopes": [
-                    {
-                        "effect": "read",
-                        "scope": [
-                            "Exact candidate configuration, predecessor state, artifact, stage evidence, and lifecycle resources."
-                        ],
-                    },
-                    {
-                        "effect": "write",
-                        "scope": [
-                            "Only the current candidate stage state, registered evidence/logs, governed projections, and this work-session ledger trail."
-                        ],
-                    },
-                    {
-                        "effect": "execute",
-                        "scope": [
-                            f"Exactly one registered {step} owner under its {self.config.timeouts_seconds[step]}-second deadline."
-                        ],
-                    },
-                ],
+                "effect_scopes": effect_scopes,
                 "expected_effect": (
                     f"The {step} owner reaches its exact postcondition once and the "
                     "campaign advances only to the next registered stage."
@@ -1410,23 +1526,37 @@ class LedgerCampaignGovernance:
                     "the campaign, and do not replay the failed owner."
                 ),
                 "expires_utc": expires.isoformat().replace("+00:00", "Z"),
-                "evidence": [{
-                    "reference": self.config.relative(self.config.artifact),
-                    "artifact_sha256": self.config.artifact_sha256,
-                    "artifact_size": self.config.artifact_size,
-                    "claim": (
-                        f"The campaign admission is bound to the exact immutable "
-                        f"{self.config.candidate_id} VSIX bytes."
-                    ),
-                }],
+                "evidence": evidence,
             },
             actor="codex-primary:release-campaign-runner",
         )
-        return {
+        result = {
             "event_id": str(event["event_id"]),
             "session_id": session_id,
             "checkpoint_event_id": str(checkpoint["event_id"]),
         }
+        if current and step == "install":
+            from runtime.release_source_identity import release_private_installation_relative
+            install_session = session_id + ":installation"
+            try:
+                install = append_event(self.config.root, "work_admitted", {
+                    "gap_id": self.gap_id, "checkpoint_event_id": checkpoint["event_id"],
+                    "session_id": install_session, "expires_utc": expires.isoformat(),
+                    "parent_admission_event_id": event["event_id"],
+                    "effect_scopes": [{"effect": "install", "scope": [str(self.config.root /
+                        release_private_installation_relative(self.config.candidate_id))]}],
+                    "authority": "Exactly one private candidate installation; separate single-effect authority.",
+                    "expected_effect": "Create only the candidate's private extension/profile without replacing an existing installation.",
+                    "rollback": "Retain the attempt and evidence on failure; no retry or deletion.",
+                    "evidence": evidence}, actor="codex-primary:release-campaign-runner")
+            except BaseException:
+                append_event(self.config.root, "work_session_closed", {
+                    "gap_id": self.gap_id, "session_id": session_id,
+                    "admission_event_id": event["event_id"], "outcome": "cancelled", "evidence": evidence},
+                    actor="codex-primary:release-campaign-runner")
+                raise
+            result.update(install_event_id=install["event_id"], install_session_id=install_session)
+        return result
 
     def _state_evidence(self, step: str) -> list[dict[str, Any]]:
         if not self.config.automation_state.is_file():
@@ -1442,6 +1572,12 @@ class LedgerCampaignGovernance:
         from runtime.operational_gap_ledger import append_event
 
         evidence = self._state_evidence(step)
+        if admission.get("install_event_id"):
+            append_event(self.config.root, "work_session_closed", {
+                "gap_id": self.gap_id, "session_id": admission["install_session_id"],
+                "admission_event_id": admission["install_event_id"],
+                "outcome": "completed" if passed else "cancelled", "evidence": evidence},
+                actor="codex-primary:release-campaign-runner")
         closure = append_event(
             self.config.root,
             "work_session_closed",
@@ -1560,6 +1696,7 @@ def execute_all(
                 owners,
                 admission_event_id=admission["event_id"],
                 gap_id=gap_id,
+                install_admission_event_id=admission.get("install_event_id"),
             )
             passed = outcome.get("valid") is True
             if not passed:
@@ -1616,6 +1753,7 @@ def parser() -> argparse.ArgumentParser:
     result.add_argument("--confirm-candidate")
     result.add_argument("--gap-id")
     result.add_argument("--admission-event-id")
+    result.add_argument("--install-admission-event-id")
     result.add_argument("--campaign-report", type=Path)
     return result
 
@@ -1665,6 +1803,7 @@ def main(argv: list[str] | None = None) -> int:
         outcome = execute_next(
             config, SubprocessOwners(config), gap_id=args.gap_id,
             admission_event_id=args.admission_event_id,
+            install_admission_event_id=args.install_admission_event_id,
         )
         print(json.dumps(outcome, indent=2))
         return 0

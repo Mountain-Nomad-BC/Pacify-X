@@ -80,3 +80,81 @@ def test_current_world_state_uses_fresh_release_pointer_and_rejects_legacy_locat
     state["world_state_sha256"] = _digest({k:v for k,v in state.items() if k != "world_state_sha256"})
     with pytest.raises(ValueError, match="canonical metadata paths"):
         validate_world_state(state, current_source_revision="a" * 64, root=tmp_path)
+def test_startup_discards_a_project_held_image_that_cannot_hydrate(tmp_path):
+    """A project may legitimately hold no Pacify-X projection.
+
+    A project-held `registry/px_world_state.json` that was authored elsewhere can
+    describe a different release-campaign locator (for example a legacy
+    `.agentic_engineering_os_px/processing-order/release-identity.json`).  That is
+    not this project's canonical state, so startup must discard it and hydrate
+    from metadata instead of raising.  A missing projection is already UNVERIFIED;
+    an unusable foreign one must resolve the same way, and must never surface its
+    foreign metadata as this project's world state.
+    """
+    from runtime.world_state import _digest
+
+    (tmp_path / "registry").mkdir()
+    (tmp_path / "policies").mkdir()
+    (tmp_path / "policies/rev1xx-validation.json").write_text(json.dumps({
+        "schema_version": "px.validation-basis/1.0", "basis": "current_implementation",
+        "authority": "OWNER-FRESH-VALIDATION-001", "campaign_id": "project-campaign"}))
+    processing = tmp_path / ".agentic_engineering_os_px/processing-order"
+    processing.mkdir(parents=True)
+    (processing / "repair-campaign.json").write_text(
+        json.dumps({"campaign_id": "project-campaign", "phase": "repair"}),
+        encoding="utf-8",
+    )
+    canonical = build_world_state(tmp_path, source_revision="a" * 64)
+    foreign = dict(canonical)
+    foreign["release_campaign_id"] = "foreign-campaign"
+    foreign["details"] = {
+        **canonical["details"],
+        "release": ".agentic_engineering_os_px/processing-order/release-identity.json",
+    }
+    foreign["world_state_sha256"] = _digest(
+        {k: v for k, v in foreign.items() if k != "world_state_sha256"}
+    )
+    (tmp_path / "registry/px_world_state.json").write_text(json.dumps(foreign), encoding="utf-8")
+
+    decision = load_world_state_for_startup(tmp_path, current_source_revision="a" * 64)
+
+    assert decision["state"] == "UNVERIFIED"
+    assert decision["reason_codes"] == ["world_state_unusable"]
+    assert decision["hydrate"] == ["startup_core_metadata"]
+    assert decision["world_state"] is None
+
+
+def test_startup_still_fails_closed_on_a_tampered_canonical_image(tmp_path):
+    """Discarding unusable images must not weaken the tamper check.
+
+    A project-held image whose locators *are* canonical but whose content was
+    edited after sealing, or one that claims another source revision, is still
+    refused loudly.
+    """
+    import pytest
+
+    (tmp_path / "registry").mkdir()
+    (tmp_path / "policies").mkdir()
+    (tmp_path / "policies/rev1xx-validation.json").write_text(json.dumps({
+        "schema_version": "px.validation-basis/1.0", "basis": "current_implementation",
+        "authority": "OWNER-FRESH-VALIDATION-001", "campaign_id": "project-campaign"}))
+    processing = tmp_path / ".agentic_engineering_os_px/processing-order"
+    processing.mkdir(parents=True)
+    (processing / "repair-campaign.json").write_text(
+        json.dumps({"campaign_id": "project-campaign", "phase": "repair"}),
+        encoding="utf-8",
+    )
+    canonical = build_world_state(tmp_path, source_revision="a" * 64)
+    tampered = dict(canonical)
+    # Same type and cardinality, different value: only the sealing hash can
+    # distinguish this from the image the owner wrote.
+    tampered["capability_count"] = (canonical["capability_count"] or 0) + 1
+    (tmp_path / "registry/px_world_state.json").write_text(json.dumps(tampered), encoding="utf-8")
+    with pytest.raises(ValueError, match="invalid world state: hash"):
+        load_world_state_for_startup(tmp_path, current_source_revision="a" * 64)
+
+    (tmp_path / "registry/px_world_state.json").write_text(
+        json.dumps(canonical), encoding="utf-8"
+    )
+    with pytest.raises(ValueError, match="stale_source"):
+        load_world_state_for_startup(tmp_path, current_source_revision="b" * 64)

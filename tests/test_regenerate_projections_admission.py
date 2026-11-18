@@ -3,6 +3,42 @@ import pytest
 from scripts import regenerate_projections as driver
 
 
+@pytest.mark.parametrize("mode", ["relative", "absolute", "mixed", "sibling"])
+def test_native_execute_scopes_use_physical_component_containment(tmp_path, monkeypatch, mode):
+    from runtime.operational_gap_ledger import append_event
+    from tests.test_operational_gap_ledger import initialize, card, evidence
+
+    initialize(tmp_path)
+    append_event(tmp_path, "card_discovered", card(), actor="unit")
+    checkpoint = append_event(tmp_path, "work_checkpoint", {
+        "active_gap_id": "PX-GAP-0001", "learned": "Native driver scope fixture.",
+        "next_action": card()["next_action"], "unresolved_branch_gap_ids": [],
+        "newly_discovered_gap_ids": [], "evidence": evidence("unit"),
+    }, actor="unit")
+    write = ["registry", ".agentic_engineering_os_px/runtime-core", ".agentic_engineering_os_px/resource-lifecycle"]
+    execute = ["scripts"]
+    if mode == "absolute":
+        write = [str(tmp_path / path) for path in write]
+        execute = [str(tmp_path / "scripts")]
+    elif mode == "mixed":
+        execute = [str(tmp_path / "scripts"), "unused"]
+    elif mode == "sibling":
+        execute = [str(tmp_path / "scripts-other")]
+    admission = append_event(tmp_path, "work_admitted", {
+        "gap_id": "PX-GAP-0001", "checkpoint_event_id": checkpoint["event_id"],
+        "session_id": "pxsession.driver-unit", "expires_utc": "2099-01-01T00:00:00Z",
+        "effect_scopes": [{"effect": "write", "scope": write}, {"effect": "execute", "scope": execute}],
+        "authority": "Disposable driver fixture only.", "expected_effect": "Check admission; no builders executed.",
+        "rollback": "Retain disposable test fixture until teardown.", "evidence": evidence("unit"),
+    }, actor="unit")
+    monkeypatch.setattr(driver, "ROOT", tmp_path)
+    if mode == "sibling":
+        with pytest.raises(ValueError, match="execute scope omits"):
+            driver.admit_driver(admission["event_id"])
+    else:
+        driver.admit_driver(admission["event_id"])
+
+
 def clean_report():
     return {"build_claims_valid": True, "registry_envelopes_valid": True,
             "registry_valid": True, "provider_route_violations": [],

@@ -29,6 +29,43 @@ from runtime.provider_gateway import (
 ROOT = Path(__file__).resolve().parents[1]
 
 
+@pytest.mark.parametrize("kind", ["ollama", "cold", "llama", "streaming"])
+@pytest.mark.parametrize("status", [301, 302, 303, 307, 308])
+def test_local_adapter_transport_never_follows_redirect(kind, status):
+    from email.message import Message
+    from io import BytesIO
+    from urllib.error import HTTPError
+    from urllib.request import HTTPHandler, Request
+    from urllib.response import addinfourl
+    from runtime.provider_gateway import ColdRuntimeHttpAdapter, LlamaCppHttpAdapter, LlamaCppStreamingHttpAdapter
+
+    origin = "http://127.0.0.1:11434"
+    factories = {
+        "ollama": lambda: OllamaHttpAdapter(origin),
+        "cold": lambda: ColdRuntimeHttpAdapter("airllm-http", origin, endpoint_path="/v1/chat/completions", session_id="session", model_identity="model", runtime_receipt_sha256="a" * 64),
+        "llama": lambda: LlamaCppHttpAdapter(origin, session_id="local-model-session-test", model_sha256="a" * 64),
+        "streaming": lambda: LlamaCppStreamingHttpAdapter(origin, adapter_id="llama-cpp-stream", session_id="local-model-session-test", model_sha256="a" * 64),
+    }
+    observed = []
+
+    class Transport(HTTPHandler):
+        handler_order = 100
+
+        def http_open(self, request):
+            observed.append(request.full_url)
+            headers = Message()
+            headers["Location"] = "http://outside.invalid/private-model-input"
+            response = addinfourl(BytesIO(b"{}"), headers, request.full_url, status if len(observed) == 1 else 200)
+            response.msg = "fixture"
+            return response
+
+    adapter = factories[kind]()
+    adapter._opener.add_handler(Transport())
+    with pytest.raises(HTTPError):
+        adapter._opener.open(Request(origin + "/model", data=b"private input"), timeout=1)
+    assert observed == [origin + "/model"]
+
+
 class FakeAdapter:
     def __init__(
         self,

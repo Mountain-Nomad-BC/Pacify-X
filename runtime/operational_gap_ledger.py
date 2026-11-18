@@ -1747,6 +1747,11 @@ def project_events(
                 normalized_payload["expires_utc"] = expires_utc
                 normalized_payload["effect_scopes"] = normalized_effect_scopes
                 work_session_id_sha256s.add(session_hash)
+            if payload.get("parent_admission_event_id") is not None:
+                _validate_install_companion({"work_admissions": work_admissions,
+                    "work_checkpoints": checkpoints, "work_session_closures": work_session_closures,
+                    "closed_admission_event_id_sha256s": closed_admission_event_id_sha256s},
+                    normalized_payload, actor=event["actor"], now=_iso_utc(event["timestamp"], "timestamp"))
             work_admissions.append({
                 **normalized_payload,
                 "evidence": _evidence(payload.get("evidence")),
@@ -1769,6 +1774,9 @@ def project_events(
                 raise ValueError("work session closure does not bind an admitted session")
             if outcome not in {"completed", "cancelled", "superseded"}:
                 raise ValueError("work session closure outcome is invalid")
+            _validate_parent_session_close({"work_admissions": work_admissions,
+                "work_session_closures": work_session_closures,
+                "closed_admission_event_id_sha256s": closed_admission_event_id_sha256s}, payload)
             admission_hash = _text_sha256(admission_event_id)
             if admission_hash in closed_admission_event_id_sha256s:
                 raise ValueError("work session was already closed")
@@ -2308,7 +2316,7 @@ def _dashboard_index(snapshot: Mapping[str, Any], *, limit: int = 100) -> dict[s
     lacking = set(snapshot.get("progress", {}).get("cards_lacking_required_evidence", []))
     def clipped(value: object, maximum: int) -> str:
         text = str(value or "")
-        return text if len(text) <= maximum else text[: maximum - 1] + "…"
+        return text if len(text) <= maximum else text[: maximum - 1] + "â€¦"
 
     rows = [
         {
@@ -3114,6 +3122,9 @@ def guard_work_admission(
             raise ValueError("work guard effect does not match the session admission")
         admitted_scope = selected.get("scope")
         session_id = admission.get("session_id")
+    if admission.get("parent_admission_event_id") is not None:
+        _validate_install_companion(snapshot, admission, actor=str(admission.get("actor") or ""),
+                                    now=now or datetime.now(timezone.utc))
     if not isinstance(admitted_scope, list) or requested_scope != normalized(admitted_scope):
         raise ValueError("work guard scope does not exactly match the admission")
     return {
@@ -3289,8 +3300,64 @@ def _work_admission_effects(admission: Mapping[str, Any]) -> set[str]:
     return {effect} if effect else set()
 
 
+def _work_session_closed(current: Mapping[str, Any], event_id: str) -> bool:
+    return (_text_sha256(event_id) in current.get("closed_admission_event_id_sha256s", [])
+            or any(row.get("admission_event_id") == event_id for row in current.get("work_session_closures", [])))
+
+
+def _validate_install_companion(current: Mapping[str, Any], payload: Mapping[str, Any], *,
+                                actor: str, now: datetime) -> str | None:
+    """One install capability belongs to an existing owner; it cannot expand that owner."""
+    parent_id = payload.get("parent_admission_event_id")
+    if parent_id is None:
+        return None
+    if type(parent_id) is not str or not parent_id:
+        raise ValueError("install companion requires an exact parent admission")
+    rows = payload.get("effect_scopes")
+    if not isinstance(rows, list) or len(rows) != 1 or rows[0].get("effect") != "install":
+        raise ValueError("install companion must be its own single-effect install admission")
+    parent = next((row for row in current.get("work_admissions", []) if row.get("event_id") == parent_id), None)
+    if (parent is None or parent.get("parent_admission_event_id") is not None
+        or parent.get("actor") != actor or parent.get("gap_id") != payload.get("gap_id")
+        or parent.get("checkpoint_event_id") != payload.get("checkpoint_event_id")
+        or _work_admission_effects(parent) != {"read", "write", "execute"}):
+        raise ValueError("install companion must retain the exact parent actor/gap/checkpoint owner")
+    for row in parent["effect_scopes"]:
+        guard_work_admission(current, gap_id=parent["gap_id"], effect=row["effect"], scope=row["scope"],
+                             admission_event_id=parent_id, now=now)
+    if _iso_utc(payload.get("expires_utc"), "expires_utc") > _iso_utc(parent.get("expires_utc"), "expires_utc"):
+        raise ValueError("install companion cannot outlive its parent")
+    from pathlib import PurePosixPath, PureWindowsPath
+    def physical_text(value):
+        if type(value) is not str or not value or "\0" in value:
+            raise ValueError("install companion requires physical path scopes")
+        text = value.replace(chr(92), "/")
+        path = PureWindowsPath(text) if PureWindowsPath(text).is_absolute() else PurePosixPath(text)
+        if not path.is_absolute() or any(part in {".", ".."} for part in text.split("/")):
+            raise ValueError("install companion scopes must be absolute without traversal")
+        return path
+    writes = [physical_text(scope) for row in parent["effect_scopes"] if row["effect"] == "write" for scope in row["scope"]]
+    scopes = rows[0].get("scope")
+    if not isinstance(scopes, list) or not scopes:
+        raise ValueError("install companion requires exact nonempty install scopes")
+    for scope in scopes:
+        target = physical_text(scope)
+        if not any(target == base or target.is_relative_to(base) for base in writes):
+            raise ValueError("install companion cannot exceed its parent's physical write authority")
+    if any(row.get("parent_admission_event_id") == parent_id and row.get("event_id") != payload.get("event_id")
+           and not _work_session_closed(current, row["event_id"]) for row in current.get("work_admissions", [])):
+        raise ValueError("parent already has an open install companion")
+    return parent_id
+
+
+def _validate_parent_session_close(current: Mapping[str, Any], payload: Mapping[str, Any]) -> None:
+    if any(row.get("parent_admission_event_id") == payload.get("admission_event_id")
+           and not _work_session_closed(current, row["event_id"]) for row in current.get("work_admissions", [])):
+        raise ValueError("close the install companion before its parent session")
+
+
 def _validate_work_admission_append(
-    current: Mapping[str, Any], payload: Mapping[str, Any]
+    current: Mapping[str, Any], payload: Mapping[str, Any], *, actor: str, now: datetime
 ) -> None:
     """Allow concurrent reads, but retain one mutating owner per active gap.
 
@@ -3301,6 +3368,7 @@ def _validate_work_admission_append(
     checkpoint.
     """
 
+    parent_id = _validate_install_companion(current, payload, actor=actor, now=now)
     gap_id = str(payload.get("gap_id") or "")
     checkpoint_event_id = str(payload.get("checkpoint_event_id") or "")
     new_effects = _work_admission_effects(payload)
@@ -3326,6 +3394,8 @@ def _validate_work_admission_append(
             ):
                 continue
         elif existing.get("checkpoint_event_id") != checkpoint_event_id:
+            continue
+        if parent_id is not None and existing.get("event_id") == parent_id:
             continue
         existing_is_mutating = bool(
             _work_admission_effects(existing) & _MUTATING_WORK_EFFECTS
@@ -3587,7 +3657,10 @@ def _prepare_event(
     if event_type == "work_checkpoint":
         _validate_work_checkpoint_append(current, prepared_payload)
     if event_type == "work_admitted":
-        _validate_work_admission_append(current, prepared_payload)
+        _validate_work_admission_append(current, prepared_payload, actor=actor,
+                                       now=_iso_utc(timestamp, "timestamp") if timestamp else datetime.now(timezone.utc))
+    if event_type == "work_session_closed":
+        _validate_parent_session_close(current, prepared_payload)
     if event_type == "card_transition" and prepared_payload.get("to_state") == "reopened":
         gap_id = str(prepared_payload.get("gap_id") or "")
         card = current.get("cards", {}).get(gap_id, {})

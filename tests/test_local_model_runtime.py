@@ -237,3 +237,49 @@ def test_lifecycle_events_are_serialized_and_tampering_fails_closed(tmp_path: Pa
     runtime.event_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
     with pytest.raises(ValueError, match="chain is invalid"):
         runtime._load_events()
+
+
+from runtime.model_pool import ModelPool, PoolModelSpec
+
+def _omission_router_fixture(tmp_path, *, omit):
+    physical={'a':'loaded','b':'unloaded'}
+    calls=[]; events=[]
+    def request(method,url,payload,timeout):
+        calls.append((method,url,payload))
+        if method=='POST':
+            assert url.endswith('/models/unload') and payload=={'model':'a'}
+            if not omit: physical['a']='unloaded'
+            return {}
+        assert method=='GET' and url.endswith('/models')
+        return {'data':[{'id':k,'status':{'value':v}} for k,v in physical.items() if not (omit and k=='a')]}
+    # Genuine native runtime/parser/unload callback; no HTTP, model or real router.
+    native=LocalModelRuntime(tmp_path,allowed_model_roots=[tmp_path],allowed_runtime_roots=[tmp_path],router_request=request)
+    native._router_origin=lambda session:'http://127.0.0.1:12345'
+    native._router_plan_for_session=lambda session:{'models':[{'model_id':x,'admission':{'model_sha256':'a'*64}} for x in ('a','b')]}
+    native.status=lambda session:{'resource_id':'synthetic-resource'}
+    native._append=lambda event,payload:events.append((event,payload))
+    specs=tuple(PoolModelSpec(x,'fixture-'+x,'a'*64,'b'*64,'exclusive_cold',None,'heavy') for x in ('a','b'))
+    pool=ModelPool(specs,load_model=lambda x:physical.__setitem__(x,'loaded') or 'loaded',unload_model=lambda x:native.unload_router_model('synthetic-session',x,supplied_authority=True,timeout_seconds=.05),observe_models=lambda:native.router_model_states('synthetic-session'),max_loaded_models=2)
+    return pool,physical,calls,events
+
+def test_explicit_unloaded_positive_control(tmp_path):
+    pool,physical,calls,events=_omission_router_fixture(tmp_path,omit=False)
+    lease=pool.acquire('a',owner='fixture',supplied_authority=True)
+    pool.drain('a',supplied_authority=True)
+    pool.release(lease)
+    assert pool.entry('a').state=='unloaded' and physical['a']=='unloaded'
+    assert pool.ensure_loaded('b',supplied_authority=True).state=='warm'
+    assert any(e=='router_model_unloaded' for e,p in events)
+
+def test_omitted_inventory_cannot_acknowledge_unload_or_release_capacity(tmp_path):
+    pool,physical,calls,events=_omission_router_fixture(tmp_path,omit=True)
+    lease=pool.acquire('a',owner='fixture',supplied_authority=True)
+    pool.drain('a',supplied_authority=True)
+    error=None
+    try: pool.release(lease)
+    except RuntimeError as caught: error=caught
+    print({'physical':physical,'pool_a':pool.entry('a').state,'native_events':events,'release_error':str(error),'calls':calls})
+    assert physical['a']=='loaded'
+    assert pool.entry('a').state!='unloaded','Partial inventory falsely acknowledged physical unload'
+    assert not any(e=='router_model_unloaded' for e,p in events)
+    with pytest.raises(RuntimeError,match='exclusive'):pool.ensure_loaded('b',supplied_authority=True)

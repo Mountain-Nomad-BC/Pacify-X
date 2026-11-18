@@ -5,10 +5,10 @@ Every candidate-specific path, owner command, artifact identity, installed ident
 Git tag target, and timeout is derived from the supplied build specification and
 the current repository state.
 
-The repository source is expected to have been repaired, reconciled, committed,
-pushed, and converged before this script is used.  The generated control files
-may exist only if release-source classification recognizes them as mutable
-control state; they must never appear in ``blocking_paths``.
+Legacy specifications require committed source and prebuilt identities. Current
+campaign specifications require a retained live source freeze and emit planned
+locators; artifact observations remain deferred to authenticated stage receipts.
+Configuration generation never runs a release stage.
 """
 
 from __future__ import annotations
@@ -30,9 +30,11 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from runtime.certification_contract import STEP_ORDER  # noqa: E402
+from runtime.certification_contract import STEP_ORDER, STAGE_TIMEOUT_LIMITS  # noqa: E402
 
 SPEC_SCHEMA = "px.release-candidate-build-spec/1.0"
+CURRENT_SPEC_SCHEMA = "px.release-candidate-build-spec/2.0"
+OBSERVED_SHA_SLOT = "__PX_OBSERVED_VSIX_SHA256__"
 AUTOMATION_SCHEMA = "px.release-candidate-automation/1.0"
 STAGE_SCHEMA = "px.release-stage-owner-config/1.0"
 DATE_RE = re.compile(r"^20\d{6}$")
@@ -59,7 +61,17 @@ class BuildBlocked(RuntimeError):
     """The candidate config cannot be built without stale or ambiguous state."""
 
 
+def _original_path(path: Path, label: str) -> Path:
+    from runtime.archive_io import reject_path_links
+    try:
+        reject_path_links(path)
+        return path.resolve()
+    except (OSError, ValueError) as error:
+        raise BuildBlocked(f"unsafe or linked {label} path") from error
+
+
 def _object(path: Path) -> dict[str, Any]:
+    _original_path(path, "JSON input")
     value = json.loads(path.read_text(encoding="utf-8"))
     if not isinstance(value, dict):
         raise BuildBlocked(f"expected JSON object: {path}")
@@ -98,7 +110,7 @@ def _git(root: Path, *args: str) -> str:
 
 
 def _relative(root: Path, path: Path, label: str) -> str:
-    target = path.resolve()
+    target = _original_path(path, label)
     try:
         return target.relative_to(root).as_posix()
     except ValueError as exc:
@@ -109,7 +121,7 @@ def _resolve_inside(root: Path, raw: object, label: str) -> Path:
     source = Path(str(raw or ""))
     if not str(source) or ".." in source.parts:
         raise BuildBlocked(f"unsafe {label} path")
-    target = (source if source.is_absolute() else root / source).resolve()
+    target = _original_path(source if source.is_absolute() else root / source, label)
     try:
         target.relative_to(root)
     except ValueError as exc:
@@ -118,14 +130,18 @@ def _resolve_inside(root: Path, raw: object, label: str) -> Path:
 
 
 def _write_new(path: Path, value: object) -> None:
+    rendered = json.dumps(value, indent=2, ensure_ascii=False, allow_nan=False) + "\n"
+    _original_path(path, "control output")
     if path.exists():
         raise BuildBlocked(f"refusing to overwrite candidate control file: {path}")
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(
-        json.dumps(value, indent=2, ensure_ascii=False) + "\n",
-        encoding="utf-8",
-        newline="\n",
-    )
+    try:
+        with path.open("x", encoding="utf-8", newline="\n") as stream:
+            stream.write(rendered)
+            stream.flush()
+            os.fsync(stream.fileno())
+    except FileExistsError as exc:
+        raise BuildBlocked(f"refusing to overwrite candidate control file: {path}") from exc
 
 
 def _zip_counts(path: Path) -> tuple[int, int]:
@@ -248,8 +264,8 @@ def _timeout_map(root: Path, overrides: object) -> dict[str, int]:
             result[str(step)] = int(value)
     if set(result) != set(STEP_ORDER):
         raise BuildBlocked("timeout map does not match canonical STEP_ORDER")
-    if any(value <= 0 or value > 14400 for value in result.values()):
-        raise BuildBlocked("all certification timeouts must be within 1..14400 seconds")
+    if any(value <= 0 or value > STAGE_TIMEOUT_LIMITS[step] for step,value in result.items()):
+        raise BuildBlocked("certification timeout exceeds its bounded stage owner limit")
     section_floor = int(
         governed_section_timeout_envelope(root)["__sequential_stage__"]
     )
@@ -309,14 +325,17 @@ def _release_version(root: Path, expected: object) -> str:
 
 def build(spec_path: Path, automation_output: Path, stage_output: Path) -> dict[str, Any]:
     spec = _object(spec_path)
-    if spec.get("schema_version") != SPEC_SCHEMA:
-        raise BuildBlocked(f"build spec must use {SPEC_SCHEMA}")
+    current = spec.get("schema_version") == CURRENT_SPEC_SCHEMA
+    if spec.get("schema_version") not in (SPEC_SCHEMA, CURRENT_SPEC_SCHEMA):
+        raise BuildBlocked("unknown release build specification schema")
 
-    root = Path(_required(spec, "root")).resolve()
+    root = _original_path(Path(_required(spec, "root")), "root")
     if not root.is_dir():
         raise BuildBlocked(f"repository root is unavailable: {root}")
-    automation_output = automation_output.resolve()
-    stage_output = stage_output.resolve()
+    from runtime.release_source_identity import require_release_configuration_mode
+    require_release_configuration_mode(root, current=current)
+    automation_output = _original_path(automation_output, "automation output")
+    stage_output = _original_path(stage_output, "stage output")
     automation_relative = _relative(root, automation_output, "automation output")
     stage_relative = _relative(root, stage_output, "stage output")
 
@@ -332,50 +351,110 @@ def build(spec_path: Path, automation_output: Path, stage_output: Path) -> dict[
     if not SAFE_PREFIX_RE.fullmatch(prefix):
         raise BuildBlocked("evidence_prefix is not path-safe")
 
-    head, upstream, upstream_head = _validate_frozen_source(root)
-    release_version = _release_version(root, spec.get("release_version"))
-    release_tag = f"v{release_version}"
-    prior_tag_target = _git(root, "rev-list", "-n", "1", release_tag)
-    if not re.fullmatch(r"[0-9a-f]{40}", prior_tag_target):
-        raise BuildBlocked(f"annotated release tag target is unavailable: {release_tag}")
-
-    artifact = _resolve_inside(root, _required(spec, "artifact"), "artifact")
-    if not artifact.is_file():
-        raise BuildBlocked(f"release artifact is unavailable: {artifact}")
-    artifact_stat = artifact.stat()
-    artifact_sha256 = _sha256(artifact)
-    artifact_zip_count, installable_count = _zip_counts(artifact)
-
-    installed = spec.get("install")
-    if not isinstance(installed, dict):
-        raise BuildBlocked("build spec install must be an object")
-    installed_dir = Path(_required(installed, "directory")).resolve()
-    code_command = Path(_required(installed, "code_command")).resolve()
-    if not code_command.is_file():
-        raise BuildBlocked(f"VS Code command is unavailable: {code_command}")
-    installed_file_count, installed_links, installed_digest = _installed_tree(installed_dir)
-    if installed_links:
-        raise BuildBlocked(
-            "installed extension contains symlink/reparse entries: "
-            + ", ".join(installed_links[:16])
-        )
-    installed_version = _installed_version(installed_dir)
-    if installed_file_count != installable_count:
-        raise BuildBlocked(
-            "installed file denominator differs from VSIX installable denominator: "
-            f"{installed_file_count} != {installable_count}"
-        )
+    if current:
+        from types import SimpleNamespace
+        from runtime.release_repository_context import verify_source_anchor
+        from runtime.release_source_identity import release_configuration_relative, release_private_installation_relative
+        from runtime.project_revision_succession import current_campaign_path
+        from runtime.archive_io import reject_path_links
+        from scripts.run_release_stage_owner import extension_identity
+        if automation_output != root / release_configuration_relative(candidate_id, "automation") or stage_output != root / release_configuration_relative(candidate_id, "stage-owner"):
+            raise BuildBlocked("current configurations require their exact native locators")
+        reference = spec.get("source_freeze")
+        verified = verify_source_anchor(root, reference, require_live=True)
+        reference = verified["reference"]
+        repair = _object(current_campaign_path(root))
+        if (repair.get("campaign_id") != repair_campaign_id or repair.get("phase") != "repair_frozen"
+                or repair.get("intake_open") is not False or repair.get("unresolved") != []):
+            raise BuildBlocked("current configuration requires the exact frozen resolved campaign")
+        release_version = _release_version(root, spec.get("release_version"))
+        package = extension_identity(SimpleNamespace(root=root))
+        if package["version"] != release_version:
+            raise BuildBlocked("extension and release versions differ")
+        artifact = _resolve_inside(root, _required(spec, "artifact"), "artifact")
+        if artifact != root / "extension/dist" / (package["name"] + "-" + release_version + ".vsix"):
+            raise BuildBlocked("current artifact differs from exact producer/version locator")
+        reject_path_links(artifact)
+        if artifact.exists():
+            raise BuildBlocked("issued artifact already exists; select a fresh source version")
+        installed = spec.get("install")
+        if type(installed) is not dict or set(installed) != {"directory", "code_command"}:
+            raise BuildBlocked("current install specification requires exact private directory and native executable")
+        private = root / release_private_installation_relative(candidate_id)
+        installed_dir = private / "extensions" / (package["extension_id"] + "-" + release_version)
+        if _original_path(Path(_required(installed,"directory")), "installation") != installed_dir:
+            raise BuildBlocked("current installation differs from candidate private locator")
+        reject_path_links(private)
+        if private.exists():
+            raise BuildBlocked("current private installation destination already exists")
+        code_command = _original_path(Path(_required(installed,"code_command")), "VS Code executable")
+        reject_path_links(code_command)
+        if not code_command.is_file() or (os.name == "nt" and code_command.suffix.lower() != ".exe"):
+            raise BuildBlocked("current install requires a native VS Code executable")
+        if os.name == "nt":
+            from scripts.run_release_stage_owner import vscode_cli_entrypoint, OwnerBlocked
+            try:
+                vscode_cli_entrypoint(code_command)
+            except OwnerBlocked as exc:
+                raise BuildBlocked(str(exc)) from exc
+        # These construction placeholders never enter a current configuration or result.
+        artifact_sha256 = OBSERVED_SHA_SLOT
+        artifact_stat = SimpleNamespace(st_size=0, st_mtime_ns=0)
+        artifact_zip_count = installable_count = 0
+        installed_digest = ""
+        installed_version = release_version
+        release_tag = prior_tag_target = None
+    else:
+        head, upstream, upstream_head = _validate_frozen_source(root)
+        release_version = _release_version(root, spec.get("release_version"))
+        release_tag = f"v{release_version}"
+        prior_tag_target = _git(root, "rev-list", "-n", "1", release_tag)
+        if not re.fullmatch(r"[0-9a-f]{40}", prior_tag_target):
+            raise BuildBlocked(f"annotated release tag target is unavailable: {release_tag}")
+    
+        artifact = _resolve_inside(root, _required(spec, "artifact"), "artifact")
+        if not artifact.is_file():
+            raise BuildBlocked(f"release artifact is unavailable: {artifact}")
+        artifact_stat = artifact.stat()
+        artifact_sha256 = _sha256(artifact)
+        artifact_zip_count, installable_count = _zip_counts(artifact)
+    
+        installed = spec.get("install")
+        if not isinstance(installed, dict):
+            raise BuildBlocked("build spec install must be an object")
+        installed_dir = _original_path(Path(_required(installed, "directory")), "installation")
+        code_command = _original_path(Path(_required(installed, "code_command")), "VS Code executable")
+        if not code_command.is_file():
+            raise BuildBlocked(f"VS Code command is unavailable: {code_command}")
+        installed_file_count, installed_links, installed_digest = _installed_tree(installed_dir)
+        if installed_links:
+            raise BuildBlocked(
+                "installed extension contains symlink/reparse entries: "
+                + ", ".join(installed_links[:16])
+            )
+        installed_version = _installed_version(installed_dir)
+        if installed_file_count != installable_count:
+            raise BuildBlocked(
+                "installed file denominator differs from VSIX installable denominator: "
+                f"{installed_file_count} != {installable_count}"
+            )
 
     python_command = _command_path(spec.get("python_command") or sys.executable, label="python_command")
+    if current and _original_path(Path(python_command), "Python interpreter") != Path(sys.executable).resolve():
+        raise BuildBlocked("current owners require the selected native Python interpreter")
     node_command = _command_path(spec.get("node_command") or "node", label="node_command")
     smoke_timeout = int(spec.get("smoke_timeout_seconds") or 600)
     exhaustive_timeout = int(spec.get("exhaustive_timeout_seconds") or 4200)
     if smoke_timeout <= 0 or exhaustive_timeout <= 0:
         raise BuildBlocked("installed-operational member timeouts must be positive")
     timeouts = _timeout_map(root, spec.get("timeouts_seconds"))
-    if timeouts["installed_operational"] < max(smoke_timeout, exhaustive_timeout):
+    # Smoke members run in parallel, followed by the exhaustive member.
+    # Keep an additional two minutes for orchestration and retained closure.
+    operational_envelope = smoke_timeout + exhaustive_timeout + 120
+    if timeouts["installed_operational"] < operational_envelope:
         raise BuildBlocked(
-            "installed_operational owner timeout must not be below a member timeout"
+            "installed_operational owner timeout must cover sequential smoke/exhaustive "
+            "budgets plus 120 seconds of orchestration allowance"
         )
 
     cohesion_dag = _resolve_inside(root, _required(spec, "cohesion_dag"), "cohesion_dag")
@@ -398,6 +477,10 @@ def build(spec_path: Path, automation_output: Path, stage_output: Path) -> dict[
     stage_logs = f"evidence/release/{prefix}-stage-owner-logs"
     stage_receipts = f"evidence/release/{prefix}-stage-receipts"
     identity_manifest = f".agentic_engineering_os_px/processing-order/{prefix}-source-manifest.json"
+    if current:
+        control = stage_output.parent.relative_to(root).as_posix()
+        automation_state = f"{control}/automation-state.json"
+        log_root = stage_logs = f"{control}/logs"
     exhaustive_output = f"{installed_root}/exhaustive-output"
     exhaustive_receipt = f"{exhaustive_output}/receipt.json"
     exhaustive_report = f"{installed_root}/exhaustive-report.json"
@@ -438,7 +521,7 @@ def build(spec_path: Path, automation_output: Path, stage_output: Path) -> dict[
             shlex.quote(root_wsl),
             "&&",
             f"TMPDIR={shlex.quote(ubuntu_tmpdir)}",
-            shlex.quote(node_command),
+            shlex.quote("node" if current else node_command),
             "extension/scripts/run-installed-vsix-smoke.js",
             "--engine-root",
             shlex.quote(root_wsl),
@@ -472,6 +555,20 @@ def build(spec_path: Path, automation_output: Path, stage_output: Path) -> dict[
         "--report",
         exhaustive_report,
     ]
+
+    if current:
+        from scripts.run_installed_operational_owner import _validate_commands, OwnerBlocked
+        # Validate template structure with its explicitly deferred slot. No digest,
+        # process, installation or receipt observation is asserted here.
+        template = SimpleNamespace(root=root, artifact=artifact, artifact_sha256=OBSERVED_SHA_SLOT,
+            stage_owner_config=stage_output,
+            windows=SimpleNamespace(command=tuple(windows_argv), receipt=root/windows_receipt, lifecycle=root/windows_lifecycle),
+            ubuntu=SimpleNamespace(command=tuple(ubuntu_argv), receipt=root/ubuntu_receipt, lifecycle=root/ubuntu_lifecycle),
+            exhaustive=SimpleNamespace(command=tuple(exhaustive_argv), receipt=root/exhaustive_receipt, report=root/exhaustive_report))
+        try:
+            _validate_commands(template)
+        except OwnerBlocked as error:
+            raise BuildBlocked("current operational command template is invalid: " + str(error)) from error
 
     def stage_owner(step: str) -> list[str]:
         return [
@@ -632,6 +729,11 @@ def build(spec_path: Path, automation_output: Path, stage_output: Path) -> dict[
             signing_key,
         ]]
     }
+    if current:
+        command = owners["installed_operational"]["commands"][0]
+        start = command.index("--artifact-sha256")
+        end = command.index("--smoke-timeout-seconds")
+        command[start:end] = ["--stage-owner-config", stage_relative]
     if tuple(owners) != STEP_ORDER:
         raise BuildBlocked("builder owner insertion order diverges from canonical STEP_ORDER")
 
@@ -694,16 +796,26 @@ def build(spec_path: Path, automation_output: Path, stage_output: Path) -> dict[
         },
     }
 
+    if current:
+        planned = {"state":"planned", "path":artifact_rel, "type":"vsix", "build_owner":"extension/scripts/package-vsix.js"}
+        identity = {"identity_kind":"standalone_current_campaign", "source_freeze":reference}
+        automation["schema_version"] = "px.release-candidate-automation/2.0"
+        automation["artifact"] = dict(planned)
+        automation["identity"] = dict(identity)
+        for key in ("artifact_sha256", "artifact_size", "artifact_mtime_ns", "identity_manifest"):
+            automation.pop(key)
+        automation["fresh_paths"] = list(dict.fromkeys(path for path in automation["fresh_paths"] if path != identity_manifest))
+        stage["schema_version"] = "px.release-stage-owner-config/2.0"
+        stage["artifact"] = dict(planned)
+        stage["identity"] = dict(identity)
+        stage["install"] = {"state":"planned", "directory":str(installed_dir), "code_command":str(code_command)}
+        # Configuration controls are excluded from authored source. Recheck before publication.
+        verify_source_anchor(root, reference, require_live=True)
+
     _write_new(stage_output, stage)
-    try:
-        _write_new(automation_output, automation)
-    except BaseException:
-        # Keep pair creation transactional enough to avoid a misleading half-pair.
-        try:
-            stage_output.unlink()
-        except OSError:
-            pass
-        raise
+    # A failed second publication leaves evidence for explicit recovery. This
+    # path name may already identify another writer's image; never unlink it.
+    _write_new(automation_output, automation)
 
     # Parse the generated pair with the actual current loaders.  This is a schema
     # validation, not an execution or candidate consumption step.
@@ -722,6 +834,12 @@ def build(spec_path: Path, automation_output: Path, stage_output: Path) -> dict[
         raise BuildBlocked("generated config pair has artifact-SHA mismatch")
     if parsed_automation.identity_path_manifest != parsed_stage.path_manifest:
         raise BuildBlocked("generated config pair has identity-manifest mismatch")
+
+    if current:
+        return {"schema_version":"px.release-candidate-build-result/2.0", "valid":True,
+                "candidate_id":candidate_id, "automation_config":automation_relative, "stage_config":stage_relative,
+                "source_freeze":reference, "artifact":dict(planned), "install":dict(stage["install"]),
+                "git_acceptance":{"state":"deferred_by_owner", "satisfied":False}, "timeouts_seconds":timeouts}
 
     return {
         "schema_version": "px.release-candidate-build-result/1.0",
@@ -760,7 +878,7 @@ def main() -> int:
     parser.add_argument("--stage-output", type=Path, required=True)
     args = parser.parse_args()
     try:
-        result = build(args.spec.resolve(), args.automation_output, args.stage_output)
+        result = build(args.spec, args.automation_output, args.stage_output)
     except (BuildBlocked, OSError, ValueError, json.JSONDecodeError, zipfile.BadZipFile) as exc:
         print(
             json.dumps(

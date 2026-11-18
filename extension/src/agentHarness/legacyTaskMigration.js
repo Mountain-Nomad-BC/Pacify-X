@@ -31,6 +31,7 @@ function rejectLinks(target) {
 function readJsonIfPresent(file) {
   rejectLinks(file);
   if (!fs.existsSync(file)) return null;
+  if (fs.statSync(file).size > 16 * 1024 * 1024) throw new Error('legacy-migration-byte-budget');
   const value = JSON.parse(fs.readFileSync(file, 'utf8'));
   return value && typeof value === 'object' && !Array.isArray(value) ? value : null;
 }
@@ -45,7 +46,7 @@ function legacySnapshot(raw) {
   return null;
 }
 
-function migrateLegacyTaskState(projectRoot, legacyRaw, taskStore) {
+async function migrateLegacyTaskState(projectRoot, legacyRaw, taskStore) {
   const snapshot = legacySnapshot(legacyRaw);
   if (snapshot == null) {
     return { schemaVersion: RECEIPT_SCHEMA, status: 'NOTHING_TO_MIGRATE', source_sha256: null, authority_granted: false };
@@ -77,29 +78,18 @@ function migrateLegacyTaskState(projectRoot, legacyRaw, taskStore) {
   }
 
   const receiptPath = path.join(directory, `receipt-${sourceSha256}.json`);
+  const retainedImage = readJsonIfPresent(retained);
+  if (!retainedImage || digest(retainedImage) !== sourceSha256) throw new Error('legacy-retained-source-mismatch');
   const prior = readJsonIfPresent(receiptPath);
   if (prior && prior.schemaVersion === RECEIPT_SCHEMA && prior.source_sha256 === sourceSha256) {
+    if (!Array.isArray(prior.imported_task_ids) || !Array.isArray(prior.imported_run_ids)
+        || prior.imported_task_ids.some(id => !taskStore.tasks.has(id))
+        || prior.imported_run_ids.some(id => !taskStore.runs.has(id))) throw new Error('legacy-migration-native-image-missing');
     // Idempotent: the same exact snapshot was already reconciled.
     return { ...prior, status: 'ALREADY_MIGRATED', authority_granted: false };
   }
 
-  const importedTasks = [];
-  const importedRuns = [];
-  const existingTasks = new Set(taskStore.listTasks().map(task => task.taskId));
-  for (const row of snapshot.tasks) {
-    const taskId = row && row.taskId;
-    if (typeof taskId !== 'string' || existingTasks.has(taskId)) continue;
-    taskStore.tasks.set(taskId, row);
-    existingTasks.add(taskId);
-    importedTasks.push(taskId);
-  }
-  for (const row of snapshot.runs) {
-    const runId = row && row.runId;
-    if (typeof runId !== 'string' || taskStore.runs.has(runId) || !existingTasks.has(row.taskId)) continue;
-    taskStore.runs.set(runId, row);
-    importedRuns.push(runId);
-  }
-  taskStore._persist();
+  const { importedTasks, importedRuns } = await taskStore.importLegacySnapshot(snapshot);
 
   const receipt = {
     schemaVersion: RECEIPT_SCHEMA,

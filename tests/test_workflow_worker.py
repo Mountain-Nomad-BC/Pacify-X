@@ -153,25 +153,13 @@ def test_host_custody_state_path_accepts_only_the_canonical_workflow_ledger(tmp_
         raise AssertionError("non-canonical custody state was admitted")
 
 
-def test_host_recovery_verifier_requires_a_concrete_module_adapter():
+def test_host_recovery_verifier_requires_a_concrete_module_adapter(monkeypatch):
     from runtime.gremlin.host_configuration import resolve_recovery_verifier_from_environment
-    assert resolve_recovery_verifier_from_environment is not None
-    # The adapter is resolved from an admitted environment binding only; an
-    # absent binding is an explicit unavailable state, not a synthetic verifier.
-    import os
-    previous = os.environ.pop("PX_GREMLIN_RECOVERY_VERIFIER", None)
-    try:
-        assert resolve_recovery_verifier_from_environment() is None
-        os.environ["PX_GREMLIN_RECOVERY_VERIFIER"] = "json"
-        try:
-            resolve_recovery_verifier_from_environment()
-        except ValueError as error:
-            assert "module:attribute" in str(error)
-        else:
-            raise AssertionError("malformed verifier binding was admitted")
-    finally:
-        if previous is not None:
-            os.environ["PX_GREMLIN_RECOVERY_VERIFIER"] = previous
+    monkeypatch.delenv("PX_GREMLIN_RECOVERY_VERIFIER", raising=False)
+    assert resolve_recovery_verifier_from_environment() is None
+    monkeypatch.setenv("PX_GREMLIN_RECOVERY_VERIFIER", "json")
+    with pytest.raises(ValueError, match="module:attribute"):
+        resolve_recovery_verifier_from_environment()
 
 
 def test_group_containment_unavailable_is_a_distinct_fail_closed_error():
@@ -245,61 +233,75 @@ def test_worker_rejects_stale_or_rebound_effect_fences_before_execution(tmp_path
         _verify_prepared_effect_intents(tmp_path, task, grants)
 
 
-@pytest.mark.parametrize("effect,scope", [("write", "workspace:group"), ("execute", "runtime")])
-def test_group_effect_binding_maps_only_native_runtime_execution(tmp_path, monkeypatch, effect, scope):
-    from runtime import workflow_worker as worker
-    task, grants, _ = _native_effect_task(tmp_path)
-    task.update(schema_version="px.workflow-node-task/1.0", adapter_id="model-group",
-        executor_binding_id="executor:group", effect_grant_ids=["g"])
-    task["authority_record_hashes"].update({"executor:executor:group": "e" * 64,
-        "binding:executor:group": "b" * 64})
-    # Keep the native run/intent/lease fixture current after binding metadata changed.
-    from runtime.studio_models import digest
+def _group_effect_admission_fixture(tmp_path, monkeypatch, claims=None):
+    # Internal verifier fixture only: model-group remains withheld by the public
+    # executor registry. Authority lookup is injected; intents, leases, durable
+    # run context and prepared plan are native. No model/transport is executed.
     from dataclasses import replace
+    from datetime import datetime, timedelta, timezone
+    from types import SimpleNamespace
+    from runtime import workflow_worker as worker
     from runtime.execution_context import execution_context_from_dict
-    task["execution_context"] = replace(execution_context_from_dict(task["execution_context"]),
-        authority_reference_sha256=digest(task["authority_record_hashes"])).as_dict()
-    class Authority:
-        def verify_receipt(self, value): return value
-        def resolve_executor(self, value): return {"adapter_id": "model-group"}, "e" * 64
-        def resolve_binding(self, *args, **kwargs): return {"effect_grant_ids": ["g"]}, "b" * 64
-        def resolve_grant(self, *args, **kwargs): return grants[0], "a" * 64
-    class AuthorityStore:
-        @staticmethod
-        def open_existing(_root: Path):
-            return Authority()
-
-    monkeypatch.setattr(worker, "StudioAuthorityStore", AuthorityStore)
-    # Native intent execution identity must be rebound to the exact changed authority.
     from runtime.effect_intent import EffectIntentLedger
     from runtime.scope_lease import ScopeLeaseStore
-    from datetime import datetime, timedelta, timezone
-    binding = task["prepared_effect_intents"][0]
-    binding["execution_id"] = "workflow-effect-" + digest({"run_id": task["run_id"],
-        "node_id": task["node_id"], "workflow_version": "1.0.0",
-        "authority": task["authority_record_hashes"]})[:40]
-    # Use a distinct exact scope so this fixture creates a new native fence.
-    binding["effect"] = effect
-    binding["scopes"] = [scope]
-    grants[0]["effects"] = [effect]
-    grants[0]["scope_roots"] = binding["scopes"]
-    binding["idempotency_key"] = "workflow-node-effect:" + digest({"run_id": task["run_id"],
-        "node_id": task["node_id"], "effect": effect, "scope": scope})
-    binding["lease_id"] = "lease:group"
-    EffectIntentLedger(tmp_path).intend(**{k: binding[k] for k in ("idempotency_key", "execution_id", "effect", "scopes")})
-    ScopeLeaseStore(tmp_path).acquire(lease_id=binding["lease_id"], execution_id=binding["execution_id"],
-        effect=effect, scopes=binding["scopes"], reason="native mapping fixture",
-        expires_utc=(datetime.now(timezone.utc)+timedelta(seconds=60)).isoformat())
-    if effect == "write":
-        with pytest.raises(PermissionError, match="exact native execute/origin/gateway effect fences"):
-            worker._verify_group_workflow_effect_receipt(tmp_path, task, task_plan={}, spec=None, placements={})
-    else:
-        spec = object()
-        monkeypatch.setattr(worker, "_spec_for_group", lambda value: spec)
-        task["task_execution_plan"] = {"plan_sha256": "f" * 64}
-        task["node_config"] = {"placements": {"model": {"device": "cpu"}}}
-        kwargs = dict(task_plan={"plan_sha256": "f" * 64}, spec=spec,
-            placements=task["node_config"]["placements"])
-        assert worker._verify_group_workflow_effect_receipt(tmp_path, task, **kwargs)[1] == (binding,)
-        with pytest.raises(PermissionError, match="differs from the signed prepared task"):
-            worker._verify_group_workflow_effect_receipt(tmp_path, task, **{**kwargs, "placements": {}})
+    from runtime.studio_models import digest
+    from runtime.workflow_group_config import required_group_effect_claims
+    from tests.test_model_group_preparation import prepared, plan_for
+    group, _, _, preparation = prepared(1, tmp_path)
+    plan = plan_for(group, preparation)
+    declared = sorted(required_group_effect_claims(plan)) if claims is None else claims
+    task, _, _ = _native_effect_task(tmp_path)
+    grants = {f"g{i}": {"effects": [effect], "scope_roots": [scope]}
+              for i, (effect, scope) in enumerate(declared)}
+    hashes = {"executor:executor:group": "e" * 64, "binding:executor:group": "b" * 64,
+              **{f"grant:{key}": digest(value) for key, value in grants.items()}}
+    task.update(schema_version="px.workflow-node-task/1.0", adapter_id="model-group",
+                executor_binding_id="executor:group", effect_grant_ids=list(grants),
+                authority_record_hashes=hashes, approval_required=True,
+                approval_execution={"required": True, "host_consumed": True,
+                    "approved_by": "unit:workflow-host", "approval_sha256": "b" * 64,
+                    "approval_id_sha256": "c" * 64})
+    task["execution_context"] = replace(execution_context_from_dict(task["execution_context"]),
+        authority_reference_sha256=digest(hashes)).as_dict()
+    execution = "workflow-effect-" + digest({"run_id": task["run_id"], "node_id": task["node_id"],
+        "workflow_version": "1.0.0", "authority": hashes})[:40]
+    bindings = []
+    for index, (effect, scope) in enumerate(declared):
+        binding = {"idempotency_key": "workflow-node-effect:" + digest({"run_id": task["run_id"],
+            "node_id": task["node_id"], "effect": effect, "scope": scope}),
+            "execution_id": execution, "effect": effect, "scopes": [scope]}
+        EffectIntentLedger(tmp_path).intend(**binding)
+        binding["lease_id"] = f"lease:group:{index}"
+        ScopeLeaseStore(tmp_path).acquire(lease_id=binding["lease_id"], execution_id=execution,
+            effect=effect, scopes=[scope], reason="internal effect-verifier fixture",
+            expires_utc=(datetime.now(timezone.utc) + timedelta(seconds=60)).isoformat())
+        bindings.append(binding)
+    task["prepared_effect_intents"] = bindings
+    task["task_execution_plan"] = {"plan_sha256": plan.plan_sha256}
+    task["node_config"] = _group_node_config(_agent_spec())
+    task["node_config"]["prepared_group_reference"].update(plan_id=plan.plan_id, plan_sha256=plan.plan_sha256)
+    task["node_config"]["placements"] = {"model-0": {"model_id": "model-0", "device": "cpu"}}
+    authority = SimpleNamespace(verify_receipt=lambda value: value,
+        resolve_executor=lambda _: ({"adapter_id": "model-group"}, "e" * 64),
+        resolve_binding=lambda *args, **kwargs: ({"effect_grant_ids": list(grants)}, "b" * 64),
+        resolve_grant=lambda key, **kwargs: (grants[key], digest(grants[key])))
+    monkeypatch.setattr(worker, "StudioAuthorityStore", SimpleNamespace(open_existing=lambda _: authority))
+    return plan, task, worker._spec_for_group(task), bindings
+
+
+@pytest.mark.parametrize("effect,scope", [("write", "workspace:group"), ("execute", "runtime")])
+def test_group_effect_binding_requires_complete_native_provider_effects(tmp_path, monkeypatch, effect, scope):
+    from runtime.workflow_worker import _verify_group_workflow_effect_receipt
+    plan, task, spec, _ = _group_effect_admission_fixture(tmp_path, monkeypatch, [(effect, scope)])
+    with pytest.raises(PermissionError, match="exact native execute/origin/gateway effect fences"):
+        _verify_group_workflow_effect_receipt(tmp_path, task, task_plan=plan,
+            spec=spec, placements=task["node_config"]["placements"])
+
+
+def test_group_effect_binding_accepts_complete_plan_and_rejects_rebinding(tmp_path, monkeypatch):
+    from runtime.workflow_worker import _verify_group_workflow_effect_receipt
+    plan, task, spec, bindings = _group_effect_admission_fixture(tmp_path, monkeypatch)
+    kwargs = dict(task_plan=plan, spec=spec, placements=task["node_config"]["placements"])
+    assert _verify_group_workflow_effect_receipt(tmp_path, task, **kwargs)[1] == tuple(bindings)
+    with pytest.raises(PermissionError, match="differs from the signed prepared task"):
+        _verify_group_workflow_effect_receipt(tmp_path, task, **{**kwargs, "placements": {}})

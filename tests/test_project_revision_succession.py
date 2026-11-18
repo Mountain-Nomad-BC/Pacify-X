@@ -580,10 +580,17 @@ def test_second_generation_history_uses_immutable_state_binding_without_rewritin
     )["event"]
     assert validate_history([event_a_b, next_event])["event_count"] == 2
 
-def test_legacy_project_campaign_selection_is_unchanged_without_revision_pointer(tmp_path):
+def test_project_without_revision_pointer_selects_canonical_campaign_and_preserves_legacy(tmp_path):
     from runtime.project_revision_succession import current_revision_root, current_campaign_path
+    # The 2026-10-04 owner contract makes new control state canonical while
+    # preserving legacy bytes. A historical directory is not a revision pointer.
+    legacy = tmp_path / ".engineering-bootstrap/processing-order/repair-campaign.json"
+    legacy.parent.mkdir(parents=True)
+    legacy.write_bytes(b'{"historical":true}\n')
+    before = legacy.read_bytes()
     assert current_revision_root(tmp_path) is None
-    assert current_campaign_path(tmp_path).as_posix().endswith(".engineering-bootstrap/processing-order/repair-campaign.json")
+    assert current_campaign_path(tmp_path) == tmp_path / ".agentic_engineering_os_px/processing-order/repair-campaign.json"
+    assert legacy.read_bytes() == before
 
 
 def test_signed_trusted_evidence_policy_provenance_succeeds_in_isolated_fixture(tmp_path):

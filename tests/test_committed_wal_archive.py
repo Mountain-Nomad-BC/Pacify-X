@@ -1,6 +1,9 @@
 from __future__ import annotations
 
+import hashlib
+import importlib.util
 import json
+import os
 from pathlib import Path
 import zipfile
 import pytest
@@ -20,6 +23,28 @@ def _real_transactions(root):
     for index, name in enumerate(['zz-first', 'aa-second', 'mm-third', 'bb-fourth']):
         wal.commit([JsonArtifact('state', target, {'index': index, 'payload': 'x' * 1000})], transaction_id=name)
     return wal, journal / 'committed'
+
+
+@pytest.mark.parametrize('resume', [False, True])
+def test_archive_replacement_after_verification_preserves_wal_sources(tmp_path, monkeypatch, resume):
+    import scripts.archive_committed_wal as owner
+    _wal, committed = _real_transactions(tmp_path)
+    if resume:
+        def interrupt(*args, **kwargs):
+            raise OSError('interrupt before reclamation')
+        with monkeypatch.context() as patch:
+            patch.setattr(owner, 'reclaim_archived_inventory', interrupt)
+            with pytest.raises(OSError, match='interrupt before reclamation'):
+                owner.apply(tmp_path, keep_latest=2)
+    before = {p.relative_to(committed): p.read_bytes() for p in committed.rglob('*') if p.is_file()}
+    verify = owner._verify_archive
+
+    from tests.support.archive_faults import replace_after_verify
+
+    monkeypatch.setattr(owner, '_verify_archive', replace_after_verify(verify))
+    with pytest.raises(ValueError, match='archive.*changed'):
+        owner.apply(tmp_path, keep_latest=2)
+    assert {p.relative_to(committed): p.read_bytes() for p in committed.rglob('*') if p.is_file()} == before
 
 
 def test_committed_wal_archive_keeps_recent_transactions_recoverable(
@@ -229,3 +254,118 @@ def test_moved_committed_root_link_cannot_redirect_cleanup(tmp_path, monkeypatch
         apply(project, keep_latest=2)
     assert {p.relative_to(outside).as_posix(): p.read_bytes() for p in outside.rglob('*') if p.is_file()} == before
     assert sorted(p.relative_to(outside).as_posix() for p in outside.rglob('*') if p.is_dir()) == directories
+
+
+# --- G09: check-to-reclamation custody window ---------------------------------
+# The earlier tests replace the archive *during* `_verify_archive`, which is
+# earlier than the real interval. These act inside reclamation itself, between
+# the durable intent and the individual unlinks, and assert the sources survive.
+
+
+def _custody_case(tmp_path, monkeypatch, owner, committed, archive_mutator):
+    """Arm a fault at the first in-reclamation decision, then run apply()."""
+    seen = []
+    original = owner.reclaim_archived_inventory
+
+    def armed(root, manifest, **kwargs):
+        def act():
+            archives = list(root.parent.joinpath('archives').glob('*.zip'))
+            assert archives, 'expected a verified archive in custody'
+            archive = archives[0]
+            if not seen:
+                seen.append(archive)
+                archive_mutator(archive)
+        return original(root, manifest, custody_check=act, **kwargs)
+
+    monkeypatch.setattr(owner, 'reclaim_archived_inventory', armed)
+    with pytest.raises(ValueError, match='archive custody image|archive cleanup'):
+        owner.apply(tmp_path, keep_latest=2)
+    assert seen, 'the custody interval was never reached; the test proved nothing'
+
+
+def _snapshot(root):
+    return {p.relative_to(root): p.read_bytes() for p in root.rglob('*') if p.is_file()}
+
+
+def test_archive_replaced_inside_reclamation_interval_preserves_sources(tmp_path, monkeypatch):
+    import scripts.archive_committed_wal as owner
+    _wal, committed = _real_transactions(tmp_path)
+    before = _snapshot(committed)
+
+    _custody_case(tmp_path, monkeypatch, owner, committed,
+                  lambda archive: archive.write_bytes(b'not the verified recovery archive'))
+    assert _snapshot(committed) == before
+
+
+def test_archive_written_in_place_inside_reclamation_interval_preserves_sources(tmp_path, monkeypatch):
+    """Same inode, same size, different bytes: identity checks alone must not pass."""
+    import scripts.archive_committed_wal as owner
+    _wal, committed = _real_transactions(tmp_path)
+    before = _snapshot(committed)
+
+    from tests.support.archive_faults import flip_one_byte
+
+    _custody_case(tmp_path, monkeypatch, owner, committed, flip_one_byte)
+    assert _snapshot(committed) == before
+
+
+def test_archive_renamed_away_inside_reclamation_interval_preserves_sources(tmp_path, monkeypatch):
+    import scripts.archive_committed_wal as owner
+    _wal, committed = _real_transactions(tmp_path)
+    before = _snapshot(committed)
+
+    def displace(archive):
+        archive.rename(archive.with_name(archive.name + '.displaced'))
+
+    _custody_case(tmp_path, monkeypatch, owner, committed, displace)
+    assert _snapshot(committed) == before
+
+
+def test_archive_custody_refuses_before_any_unlink(tmp_path, monkeypatch):
+    """Even the first destructive decision must already be custody-guarded."""
+    import scripts.archive_committed_wal as owner
+    _wal, committed = _real_transactions(tmp_path)
+    def refuse(archive):
+        archive.write_bytes(b'replaced before the first unlink')
+
+    _custody_case(tmp_path, monkeypatch, owner, committed, refuse)
+    assert len([p for p in committed.iterdir() if p.is_dir()]) == 4
+
+
+def test_archive_interrupted_with_replaced_image_refuses_on_restart(tmp_path, monkeypatch):
+    """Interrupt before reclamation, swap the image, then restart."""
+    import scripts.archive_committed_wal as owner
+    _wal, committed = _real_transactions(tmp_path)
+
+    def interrupt(root, manifest, **kwargs):
+        raise OSError('interrupt before reclamation')
+
+    with monkeypatch.context() as patch:
+        patch.setattr(owner, 'reclaim_archived_inventory', interrupt)
+        with pytest.raises(OSError, match='interrupt before reclamation'):
+            owner.apply(tmp_path, keep_latest=2)
+
+    archives = list((committed.parent / 'archives').glob('*.zip'))
+    assert len(archives) == 1
+    archives[0].write_bytes(b'replaced between runs')
+    before = _snapshot(committed)
+    # The resume path re-verifies the archive before custody is re-established,
+    # so either refusal is correct as long as no source is reclaimed.
+    with pytest.raises(ValueError):
+        owner.apply(tmp_path, keep_latest=2)
+    assert _snapshot(committed) == before
+
+
+def test_archive_custody_reports_its_platform_limits(tmp_path):
+    """Custody is identity+digest re-assertion, not a kernel lock; say so."""
+    import scripts.archive_project_map_history as owner
+    _wal, committed = _real_transactions(tmp_path)
+    manifest = owner.bounded_inventory(committed, [p for p in committed.iterdir() if p.is_dir()])
+    assert importlib.util.find_spec('msvcrt') is not None or os.name != 'nt'
+    plain = tmp_path / 'plain.zip'
+    plain.write_bytes(b'recovery image')
+    custody = owner.hold_verified_archive_image(
+        plain, hashlib.sha256(plain.read_bytes()).hexdigest())
+    assert set(custody) == {'path', 'sha256', 'identity'}
+    assert custody['identity'] == {'device': plain.lstat().st_dev, 'inode': plain.lstat().st_ino}
+    assert manifest['files']

@@ -47,10 +47,40 @@ def _admit_projection_write(root: Path, admission_event_id: str | None) -> None:
     # their actual custody scope, not merely the destination projection.
     required = ("registry", ".agentic_engineering_os_px/runtime-core",
                 ".agentic_engineering_os_px/resource-lifecycle")
+    # Each custody root must be admitted explicitly. Neither an ancestor grant
+    # nor a grant for only one child covers the owner's whole custody surface.
+    admitted = _canonical_scopes(root, scope)
     for target in required:
-        if not any(target == str(item).rstrip("/") or
-                   target.startswith(str(item).rstrip("/") + "/") for item in scope):
+        target_path = (Path(root) / target).resolve()
+        if target_path not in admitted:
             raise GuardedProjectionError("publication write scope omits " + target)
+
+
+def _canonical_scopes(root: Path, scope: object) -> list[Path]:
+    """Resolve declared scopes against the repository root for containment tests.
+
+    Scopes may be absolute or repository-relative. Each is resolved (following
+    links) so a symlink cannot launder a target, and a resolved scope that escapes
+    the repository is refused outright. Containment is component-aware
+    (Path.is_relative_to on resolved paths), so a sibling such as ``registry-evil``
+    never satisfies ``registry`` and ``..`` traversal resolves before comparison.
+    The caller requires exact custody roots: neither a repository-root grant nor
+    a grant for an individual child substitutes for a whole custody root.
+    """
+    root = Path(root).resolve()
+    resolved: list[Path] = []
+    for item in scope:
+        text = str(item).strip()
+        if not text or "\x00" in text:
+            raise GuardedProjectionError("publication write scope entry is invalid")
+        candidate = Path(text)
+        if not candidate.is_absolute():
+            candidate = root / candidate
+        target = candidate.resolve()
+        if target != root and not target.is_relative_to(root):
+            raise GuardedProjectionError("publication write scope escapes the repository")
+        resolved.append(target)
+    return resolved
 
 
 def publish_guarded_registry_projection(
@@ -87,10 +117,13 @@ def publish_guarded_studio_operation_mirror(root: Path, relative: str, *, admiss
         snapshot=read_snapshot(root)
         admission=next(row for row in snapshot["work_admissions"] if row["event_id"]==admission_event_id)
         scope=next(row["scope"] for row in admission["effect_scopes"] if row["effect"]=="write")
-        if not any(relative==x.rstrip("/") or relative.startswith(x.rstrip("/")+"/") for x in scope):
+        target = root / relative
+        if not any(target == path or target.is_relative_to(path)
+                   for path in _canonical_scopes(root, scope)):
             raise GuardedProjectionError("Studio mirror target lacks exact write admission")
         read=next((row for row in admission["effect_scopes"] if row["effect"]=="read"),None)
-        if read is None or not any("registry/studio_operations.json"==x.rstrip("/") or "registry/studio_operations.json".startswith(x.rstrip("/")+"/") for x in read["scope"]):
+        if read is None or not any(owner == path or owner.is_relative_to(path)
+                                   for path in _canonical_scopes(root, read["scope"])):
             raise GuardedProjectionError("Studio canonical owner lacks read admission")
         guard_work_admission(snapshot,gap_id=admission["gap_id"],effect="read",scope=read["scope"],admission_event_id=admission_event_id)
     admitted()

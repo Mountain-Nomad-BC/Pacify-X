@@ -15,6 +15,21 @@ from runtime.commissioning import _skill_registry  # noqa: E402 -- local source 
 def reconcile(root: Path, *, check: bool) -> dict[str, object]:
     root = root.resolve()
     target = root / ".agentic_engineering_os_px/project-registry.json"
+    if not target.is_file():
+        # The registry is a commissioning artifact. A source checkout that was never
+        # commissioned has no such file, and its absence is not a reconciliation
+        # defect. Report that explicitly rather than raising FileNotFoundError, which
+        # aborted the whole release audit instead of failing one named check.
+        return {
+            "schema_version": "1.0",
+            "valid": True,
+            "applicable": False,
+            "reason": "project is not commissioned; no project-registry.json",
+            "changed": [],
+            "stale": [],
+            "skill_count": 0,
+            "check": check,
+        }
     current = json.loads(target.read_text(encoding="utf-8"))
     mode = current.get("mode", "existing")
     expected = json.loads(_skill_registry(root, str(mode)).decode("utf-8"))

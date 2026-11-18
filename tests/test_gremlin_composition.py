@@ -78,6 +78,66 @@ def test_host_composition_rejects_recovery_authority_aliasing_nanny(tmp_path) ->
         )
 
 
+def test_cli_commission_preserves_concurrent_host_configuration(tmp_path, monkeypatch):
+    from runtime.cli import _gremlin_command
+    from runtime.studio_authority import StudioAuthorityStore
+    from runtime.gremlin.host_configuration import CONFIGURATION_RELATIVE
+    root = tmp_path / "project"
+    root.mkdir()
+    monkeypatch.setenv("PX_STUDIO_KEY_ROOT", str(tmp_path / "host-keys"))
+    backend = MemoryCredentialBackend()
+    config = root / CONFIGURATION_RELATIVE
+    original = StudioAuthorityStore.sign_receipt
+    def concurrent(self, value):
+        result = original(self, value)
+        config.parent.mkdir(parents=True, exist_ok=True)
+        config.write_bytes(b"concurrent owner evidence")
+        return result
+    monkeypatch.setattr(StudioAuthorityStore, "sign_receipt", concurrent)
+    with pytest.raises(FileExistsError):
+        _gremlin_command(argparse.Namespace(gremlin_action="commission", project=root,
+            nanny_authority_id="local-nanny", recovery_authority_id="local-recovery"), backend=backend)
+    assert config.read_bytes() == b"concurrent owner evidence"
+    assert backend.values == {}
+
+
+@pytest.mark.parametrize("existing", ["legacy", "missing-host-key"])
+def test_cli_commission_does_not_migrate_or_replace_existing_studio_authority(tmp_path, monkeypatch, existing):
+    import json
+    from runtime.cli import _gremlin_command
+    root = tmp_path / "project"
+    authority = root / ".agentic_engineering_os_px/studios/authority"
+    authority.mkdir(parents=True)
+    if existing == "legacy":
+        (authority / ".receipt-key").write_bytes(b"x" * 32)
+    else:
+        (authority / "project-identity.json").write_text(json.dumps({"project_identity":"px-project-existing"}))
+    before = {p.relative_to(root).as_posix():p.read_bytes() for p in root.rglob("*") if p.is_file()}
+    monkeypatch.setenv("PX_STUDIO_KEY_ROOT", str(tmp_path / "host-keys"))
+    backend = MemoryCredentialBackend()
+    with pytest.raises((FileNotFoundError, PermissionError)):
+        _gremlin_command(argparse.Namespace(gremlin_action="commission", project=root,
+            nanny_authority_id="local-nanny", recovery_authority_id="local-recovery"), backend=backend)
+    assert {p.relative_to(root).as_posix():p.read_bytes() for p in root.rglob("*") if p.is_file()} == before
+    assert backend.values == {}
+    assert not (tmp_path / "host-keys").exists()
+
+
+@pytest.mark.parametrize("recovery", ["", "not/an/authority", "x" * 129, "bad\nauthority"])
+def test_cli_commission_rejects_invalid_recovery_identity_before_effects(tmp_path, monkeypatch, recovery):
+    from runtime.cli import _gremlin_command
+    root = tmp_path / "project"
+    root.mkdir()
+    monkeypatch.setenv("PX_STUDIO_KEY_ROOT", str(tmp_path / "host-keys"))
+    backend = MemoryCredentialBackend()
+    with pytest.raises(ValueError, match="authority_id"):
+        _gremlin_command(argparse.Namespace(gremlin_action="commission", project=root,
+            nanny_authority_id="local-nanny", recovery_authority_id=recovery), backend=backend)
+    assert list(root.iterdir()) == []
+    assert backend.values == {}
+    assert not (tmp_path / "host-keys").exists()
+
+
 def test_cli_commission_writes_signed_host_configuration(tmp_path, monkeypatch) -> None:
     """The explicit commissioning CLI is the selected host commissioning entry.
 
@@ -145,3 +205,25 @@ def test_cli_commission_writes_signed_host_configuration(tmp_path, monkeypatch) 
         pass
     else:
         raise AssertionError("recommissioning overwrote a commissioned identity")
+
+
+@pytest.mark.parametrize("nested", [False, True])
+def test_cli_commission_rejects_original_project_alias_before_authority(tmp_path, monkeypatch, nested):
+    from runtime.cli import _gremlin_command
+    actual = tmp_path / "actual"
+    actual.mkdir()
+    alias = tmp_path / "alias"
+    alias.symlink_to(actual, target_is_directory=True)
+    project = alias
+    if nested:
+        (actual / "child").mkdir()
+        project = alias / "child"
+    key_root = tmp_path / "fixture-key-root"
+    monkeypatch.setenv("PX_STUDIO_KEY_ROOT", str(key_root))
+    backend = MemoryCredentialBackend()
+    with pytest.raises(ValueError, match="link|reparse"):
+        _gremlin_command(argparse.Namespace(gremlin_action="commission", project=project,
+            nanny_authority_id="fixture-nanny", recovery_authority_id="fixture-owner"), backend=backend)
+    assert not key_root.exists()
+    assert not backend.values
+    assert not list(actual.rglob("*.json"))

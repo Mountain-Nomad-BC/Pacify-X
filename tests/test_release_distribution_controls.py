@@ -460,6 +460,28 @@ def test_control_subtree_is_pruned_before_projection_budget(tmp_path, monkeypatc
     assert not any(p.startswith('registry/deltas/') or p == 'registry/current.json' for p in paths)
 
 
+@pytest.mark.parametrize('selected', [False, True])
+def test_projection_byte_budget_counts_declared_files_not_possible_file_ancestors(tmp_path, selected):
+    from runtime.archive_io import ArchiveLimits
+    import runtime.release_distribution as owner
+
+    _control_projection_fixture(tmp_path)
+    relative = 'registry/product.json' if selected else 'registry/unselected.bin'
+    (tmp_path / relative).write_bytes(b'x' * 8192)
+    result = owner.generate_artifact_manifest(tmp_path, limits=ArchiveLimits(
+        max_archive_bytes=4096, max_expanded_bytes=4096, max_member_bytes=4096,
+        max_members=100,
+    ))
+    if selected:
+        assert not result['valid']
+        assert any('max_bytes_exceeded' in error for error in result['errors'])
+    else:
+        assert result['valid'], result['errors']
+        paths = {row['source_path'] for row in result['records']}
+        assert 'registry/product.json' in paths
+        assert relative not in paths
+
+
 @pytest.mark.parametrize('pattern', ['registry/*.json', 'registry/deltas/*.json', 'registry/**/*.json'])
 def test_required_wheel_control_overlap_refuses_before_traversal(tmp_path, monkeypatch, pattern):
     import runtime.release_distribution as owner

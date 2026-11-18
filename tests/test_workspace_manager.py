@@ -1131,3 +1131,32 @@ class WorkspaceManagerTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+def test_reseal_changed_config_preserves_config_and_is_idempotent(tmp_path):
+    root = tmp_path / "workspace"
+    initialize_workspace(root, workspace_id="wsp_reseal", apply=True)
+    paths = workspace_runtime.workspace_paths(root)
+    seal = paths.tracking / workspace_runtime.CONFIG_SEAL_NAME
+    prior = seal.read_text(encoding="utf-8").strip()
+    config = root / workspace_runtime.WORKSPACE_CONFIG
+    original = config.read_bytes()
+    changed = original.replace(b"default_minutes = 60", b"default_minutes = 45")
+    assert changed != original
+    config.write_bytes(changed)
+    preview = workspace_runtime.reseal_workspace(root, expected_prior_seal=prior)
+    assert preview["valid"] and not preview["applied"]
+    assert seal.read_text(encoding="utf-8").strip() == prior
+    try:
+        workspace_runtime.reseal_workspace(root, expected_prior_seal="0" * 64, apply=True)
+    except ValueError:
+        pass
+    else:
+        raise AssertionError("wrong prior seal was accepted")
+    applied = workspace_runtime.reseal_workspace(root, expected_prior_seal=prior, apply=True)
+    digest = hashlib.sha256(changed).hexdigest()
+    assert applied["applied"]
+    assert seal.read_text(encoding="utf-8").strip() == digest
+    assert config.read_bytes() == changed
+    repeated = workspace_runtime.reseal_workspace(root, expected_prior_seal=digest, apply=True)
+    assert repeated["already_current"] and not repeated["applied"]

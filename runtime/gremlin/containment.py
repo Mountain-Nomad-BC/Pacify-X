@@ -1,4 +1,4 @@
-"""Gremlin Nanny containment facade — the single enrollment/evaluation API.
+"""Gremlin Nanny containment facade â€” the single enrollment/evaluation API.
 
 This is the canonical entrypoint the rest of PX uses. It ties the discrete
 components together into the required lifecycle::
@@ -42,7 +42,7 @@ from .intervention import Intervention, InterventionTracker
 from .observers import ObserverSet
 from .policy import OBSERVE_ONLY, PolicyBundle, default_policy_bundle
 from .receipts import ContainmentAuthority, ContainmentReceipt
-from .registry import EnrollmentError, ProtectedExecution, ProtectedExecutionRegistry
+from .registry import EnrollmentError, ProtectedExecution, ProtectedExecutionRegistry, TERMINAL_STATES
 from .runtime_identity import GremlinRuntimeIdentityStore, RuntimeIdentityMetadata
 from .supervisor import DeterministicSupervisor, SupervisorUnavailable
 from ..resource_lifecycle import ResourceManager, VerifiedJobMembership
@@ -335,8 +335,15 @@ class GremlinNanny:
     # Health
     # ------------------------------------------------------------------
     def health(self, *, deviation_writer_available: bool = True, telemetry_trusted: bool = True) -> HealthReport:
+        observer_health = self.observers.health.as_dict()
+        active = self.registry.active()
+        if active and all(row.identity.policy_profile == "release-command" for row in active):
+            # Only this dedicated profile claims process-tree observation alone.
+            # Every pre-existing profile retains its previous health denominator.
+            observer_health = {"process_tree": observer_health["process_tree"]
+                               and "process_tree" in self.observers.observers}
         return evaluate_health(
-            observer_health=self.observers.health.as_dict(),
+            observer_health=observer_health,
             policy_integrity_ok=self.policy.integrity_ok(),
             supervisor_healthy=self.supervisor.healthy,
             deviation_writer_available=deviation_writer_available,
@@ -381,11 +388,13 @@ class GremlinNanny:
             verified
             and sandbox_policy_matches
             and execution.released
-            and state not in {"TERMINATED", "DEVIATION_SEALED"}
+            and state not in TERMINAL_STATES | {"TERMINATING"}
             and health.safe_for_high_risk
         )
         if proven:
             reason = "verified containment receipt and admissible containment health"
+        elif state in TERMINAL_STATES | {"TERMINATING"}:
+            reason = "execution is no longer in a protected live state: " + state
         elif not health.safe_for_high_risk:
             reason = "containment health is not admissible: " + health.state
         elif not sandbox_policy_matches:
@@ -634,7 +643,7 @@ class GremlinNanny:
             detail = f"{detail}; supervisor unavailable: {error}" if detail else f"supervisor unavailable: {error}"
             performed = False
         # G06: TERMINATED requires a confirmed OS postcondition. A failed or
-        # unavailable enforcement stays unconfirmed and fails closed — the
+        # unavailable enforcement stays unconfirmed and fails closed â€” the
         # execution is never marked terminated without verified process exit.
         if performed:
             self.registry.transition(event.execution_id, "TERMINATED")

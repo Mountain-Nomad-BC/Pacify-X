@@ -29,6 +29,15 @@ def trusted(memory_id: str = "mem"):
 
 
 class CognitiveAssuranceTests(unittest.TestCase):
+    def test_black_box_event_name_cannot_escape_its_output_directory(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            base = Path(directory)
+            recorder = BlackBoxRecorder(base / "records", runtime_id="runtime")
+            with self.assertRaisesRegex(ValueError, "event_type"):
+                recorder.record("nested/../../outside", {}, evidence_refs=())
+            self.assertFalse((base / "outside.json").exists())
+            self.assertFalse((base / "records").exists())
+
     def test_memory_trust_gate_rejects_poison_stale_revision_and_contradiction(
         self,
     ) -> None:

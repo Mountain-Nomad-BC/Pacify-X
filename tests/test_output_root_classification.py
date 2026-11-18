@@ -151,3 +151,87 @@ def test_and_effect_is_copied_in_classification() -> None:
     source = inspect.getsource(mutating_producer_registry.default_classification)
     assert "output_root_verdict" in source
     assert "authorized_output_root" in mutating_producer_registry.EXEMPTION_REASONS
+
+
+def test_a_local_publisher_named_publish_json_is_not_the_confinement_helper(tmp_path: Path) -> None:
+    """Session 7 regression: `publish_json` in the source text is not proof of confinement.
+
+    The destination emitter treated *any* file containing the token `publish_json` as fully
+    confined, so a module that defines its own publisher of that name was credited with a
+    guarantee it does not have. Only a real call to the canonical helper may do that.
+    """
+    from runtime.output_root_classification import produced_destinations
+
+    producer = tmp_path / "producer.py"
+    producer.write_text(
+        "import json\n\n"
+        "def publish_json(path, payload):\n"
+        "    path.write_text(json.dumps(payload))\n\n"
+        "def main():\n"
+        "    publish_json(somewhere_else, {})\n",
+        encoding="utf-8",
+    )
+    assert produced_destinations(tmp_path, "producer.py") != [
+        "CONFINED_REPOSITORY_ROOT_DESTINATION"
+    ]
+
+
+def test_the_canonical_helper_is_still_recognised(tmp_path: Path) -> None:
+    from runtime.output_root_classification import produced_destinations
+
+    (tmp_path / "producer.py").write_text(
+        "from runtime.confined_output import publish_json\n\n"
+        "def main(argv):\n"
+        "    publish_json(ROOT, argv[1], {})\n",
+        encoding="utf-8",
+    )
+    assert produced_destinations(tmp_path, "producer.py") == [
+        "CONFINED_REPOSITORY_ROOT_DESTINATION"
+    ]
+
+
+def test_a_read_only_handle_is_not_a_write_destination(tmp_path: Path) -> None:
+    """`f = open('p','rb')` names no destination; only the write through it does."""
+    from runtime.output_root_classification import produced_destinations
+
+    (tmp_path / "producer.py").write_text(
+        "def read(path):\n"
+        "    f = open('p', 'rb')\n"
+        "    return f.read()\n",
+        encoding="utf-8",
+    )
+    assert produced_destinations(tmp_path, "producer.py") == []
+
+
+def test_importing_the_helper_does_not_confine_every_destination(tmp_path):
+    """Defect 5: importing `publish_json` was treated as routing every destination through it.
+
+    A producer that imports the canonical publisher *and* performs an unrelated direct write
+    publishes only through the helper; the direct write still names its own, unreviewed
+    destination. Confinement is per call, never per import.
+    """
+    from runtime.output_root_classification import produced_destinations
+
+    (tmp_path / "producer.py").write_text(
+        "from runtime.confined_output import publish_json\n"
+        "def run(root, caller_destination, stale_path):\n"
+        "    publish_json(root, caller_destination, {})\n"
+        "    stale_path.write_text('direct, unconfined')\n",
+        encoding="utf-8",
+    )
+    destinations = produced_destinations(tmp_path, "producer.py")
+    # The helper call is confined; the direct write is reported as its own, unresolvable
+    # destination. Reading the rows first is deliberate: the direct write's *kind* is
+    # UNRESOLVED_RELATIVE_TO_PROCESS_CWD because `stale_path` is a parameter, and what
+    # matters here is that it is not credited as confined.
+    assert "UNRESOLVED_RELATIVE_TO_PROCESS_CWD" in destinations
+    assert destinations != ["CONFINED_REPOSITORY_ROOT_DESTINATION"]
+
+
+def test_unused_canonical_import_does_not_confine_an_independent_write(tmp_path):
+    from runtime.output_root_classification import produced_destinations
+    (tmp_path / 'producer.py').write_text(
+        "from runtime.confined_output import publish_json\n"
+        "def run(destination):\n    destination.write_text('unconfined')\n", encoding='utf-8')
+    destinations = produced_destinations(tmp_path, 'producer.py')
+    assert destinations and 'CONFINED_REPOSITORY_ROOT_DESTINATION' not in destinations

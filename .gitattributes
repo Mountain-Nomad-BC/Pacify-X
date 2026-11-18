@@ -64,5 +64,15 @@ docs/repair/evidence/resume15-checkpoint1.json -text whitespace=cr-at-eol,-blank
 docs/repair/evidence/resume10-project-*.log binary
 docs/repair/evidence/resume10-project-*.json -text whitespace=cr-at-eol,-blank-at-eof
 
+# Retained Day1 evidence preimages must preserve exact historical bytes.
+docs/repair/evidence/day1-source-custody/** -text
+docs/repair/evidence/rev1xx-day1-authority/** -text
+docs/repair/evidence/**/*.py.txt -text
+docs/repair/evidence/*.py.txt -text
+docs/repair/evidence/**/*.ini.txt -text
+docs/repair/evidence/*.csv.txt -text
+docs/repair/evidence/*.z.txt binary
+docs/repair/REPAIR_HANDOFF_LEGACY.md -text
+
 # Owned mesh-cancellation proof retains exact captured process output.
 docs/repair/evidence/resume10-day1-mesh-cancel-*.log binary

@@ -437,6 +437,9 @@ def _gremlin_command(args: argparse.Namespace, *, backend=None) -> dict[str, obj
     """
     if args.gremlin_action != "commission":
         raise ValueError("unsupported Gremlin command")
+    from .gremlin.runtime_identity import _validate_authority_id
+    _validate_authority_id(args.nanny_authority_id.strip())
+    _validate_authority_id(args.recovery_authority_id.strip())
     if args.nanny_authority_id.strip() == args.recovery_authority_id.strip():
         raise ValueError("recovery authority must be independent from the Nanny")
     from .archive_io import reject_path_links
@@ -444,6 +447,8 @@ def _gremlin_command(args: argparse.Namespace, *, backend=None) -> dict[str, obj
     from .gremlin.commissioning import create_local_runtime_identity
     from .gremlin.host_configuration import CONFIGURATION_RELATIVE
 
+    # Validate the supplied spelling before resolution can erase aliases.
+    reject_path_links(args.project)
     root = args.project.resolve(strict=True)
     reject_path_links(root)
     if root == Path(root.anchor):
@@ -453,37 +458,66 @@ def _gremlin_command(args: argparse.Namespace, *, backend=None) -> dict[str, obj
         raise FileExistsError(
             "commissioned Gremlin host configuration already exists; use explicit rotation"
         )
-    store, identity = create_local_runtime_identity(
-        root, args.nanny_authority_id.strip(), backend=backend)
-    try:
-        record = {
-            "schema_version": "px.gremlin-host-configuration/1.0",
+    from .file_lock import FileLock
+    import os
+    authority = root / ".agentic_engineering_os_px/studios/authority"
+    identity_path = authority / "project-identity.json"
+    legacy_key = authority / ".receipt-key"
+    for candidate in (identity_path, legacy_key, config_path):
+        reject_path_links(candidate)
+    if legacy_key.exists():
+        raise PermissionError("explicit Studio key migration is required before Gremlin commissioning")
+    if identity_path.exists():
+        # Refuse before allocation when the existing verification material is missing.
+        StudioAuthorityStore.open_existing(root)
+    reject_path_links(config_path.parent)
+    config_path.parent.mkdir(parents=True, exist_ok=True)
+    reject_path_links(config_path.parent)
+    with FileLock(config_path.parent / "commission.lock", timeout_seconds=30):
+        for candidate in (identity_path, legacy_key, config_path):
+            reject_path_links(candidate)
+        if config_path.exists():
+            raise FileExistsError("Gremlin host configuration appeared during commissioning")
+        if legacy_key.exists():
+            raise PermissionError("explicit Studio key migration is required before Gremlin commissioning")
+        studio = (StudioAuthorityStore.open_existing(root) if identity_path.exists()
+                  else StudioAuthorityStore(root))
+        store, identity = create_local_runtime_identity(
+            root, args.nanny_authority_id.strip(), backend=backend)
+        try:
+            record = {
+                "schema_version": "px.gremlin-host-configuration/1.0",
+                "project_root": root.as_posix(),
+                "backend_id": identity.backend_id,
+                "nanny_authority_id": args.nanny_authority_id.strip(),
+                "recovery_authority_id": args.recovery_authority_id.strip(),
+                "identity_id": identity.identity_id,
+                "identity_generation": identity.generation,
+                "signing_key_sha256": identity.signing_key_sha256,
+            }
+            signed = studio.sign_receipt(record)
+            image = json.dumps(signed, sort_keys=True, allow_nan=False, indent=2).encode("utf-8") + b"\n"
+            if len(image) > 65536:
+                raise ValueError("Gremlin host configuration exceeds bounded size")
+            reject_path_links(config_path)
+            with config_path.open("xb") as stream:
+                stream.write(image)
+                stream.flush()
+                os.fsync(stream.fileno())
+        except BaseException:
+            store.revoke(identity)
+            raise
+        return {
+            "schema_version": "px.gremlin-commissioning-result/1.0",
             "project_root": root.as_posix(),
             "backend_id": identity.backend_id,
-            "nanny_authority_id": args.nanny_authority_id.strip(),
+            "nanny_authority_id": identity.authority_id,
             "recovery_authority_id": args.recovery_authority_id.strip(),
             "identity_id": identity.identity_id,
             "identity_generation": identity.generation,
-            "signing_key_sha256": identity.signing_key_sha256,
+            "configuration_path": config_path.relative_to(root).as_posix(),
+            "recovery_verifier": "external-host-adapter-required",
         }
-        signed = StudioAuthorityStore(root).sign_receipt(record)
-        config_path.parent.mkdir(parents=True, exist_ok=True)
-        from .studio_models import write_json_atomic
-        write_json_atomic(config_path, signed)
-    except BaseException:
-        store.revoke(identity)
-        raise
-    return {
-        "schema_version": "px.gremlin-commissioning-result/1.0",
-        "project_root": root.as_posix(),
-        "backend_id": identity.backend_id,
-        "nanny_authority_id": identity.authority_id,
-        "recovery_authority_id": args.recovery_authority_id.strip(),
-        "identity_id": identity.identity_id,
-        "identity_generation": identity.generation,
-        "configuration_path": config_path.relative_to(root).as_posix(),
-        "recovery_verifier": "external-host-adapter-required",
-    }
 
 
 def parser() -> argparse.ArgumentParser:
@@ -3072,6 +3106,7 @@ def main(argv: list[str] | None = None) -> int:
             ]
             output["valid"] = output["valid"] and output["python_surfaces"]["valid"]
         elif args.command == "declared-suite":
+            from .registry import load_json
             from .declared_suite import (
                 describe_outcome,
                 list_outcomes,
@@ -3091,6 +3126,7 @@ def main(argv: list[str] | None = None) -> int:
             else:
                 output = validate_declared_suite(root)
         elif args.command == "metacognitive":
+            from .registry import load_json
             from .metacognitive_evolution.facade import (
                 describe_capability,
                 list_capabilities,
@@ -3107,6 +3143,7 @@ def main(argv: list[str] | None = None) -> int:
             else:
                 output = validate_layer(root)
         elif args.command == "scheduling":
+            from .registry import load_json
             from .capability_scheduler import (
                 describe_scheduling_capability,
                 list_scheduling_capabilities,

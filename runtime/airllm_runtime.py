@@ -116,6 +116,7 @@ class AirLlmRuntime:
         self.readiness_probe = readiness_probe or self._http_ready
         self._mutex = threading.RLock()
         self._active: dict[str, object] | None = None
+        self._issued_plans: dict[str, str] = {}
 
     @staticmethod
     def _http_ready(origin: str, timeout: float) -> bool:
@@ -127,6 +128,7 @@ class AirLlmRuntime:
             return False
 
     def _admitted_path(self, value: Path, roots: Sequence[Path]) -> Path:
+        reject_path_links(value)
         path = value.resolve(strict=True)
         if not _inside(path, roots):
             raise ValueError("AirLLM path is outside its admitted roots")
@@ -179,6 +181,10 @@ class AirLlmRuntime:
         port: int,
         max_seq_len: int,
     ) -> AirLlmWorkerPlan:
+        if type(prepared) is not PreparedAirModel or self.load_prepared_model(
+            Path(prepared.manifest_path), expected_manifest_sha256=prepared.manifest_sha256
+        ) != prepared:
+            raise ValueError("AirLLM prepared model claims differ from its verified manifest")
         python = self._admitted_path(python_path, self.runtime_roots)
         worker = self._admitted_path(worker_script, self.runtime_roots)
         if not 1024 <= port <= 65535 or type(port) is not int:
@@ -204,12 +210,17 @@ class AirLlmRuntime:
             "host": "127.0.0.1", "port": port, "max_seq_len": max_seq_len,
             "command": list(command), "policy_sha256": self.policy.policy_sha256,
         }
-        return AirLlmWorkerPlan(
+        plan = AirLlmWorkerPlan(
             schema_version="px.airllm-worker-plan/1.0", plan_id=plan_id, prepared_model=prepared,
             python_path=str(python), python_sha256=python_sha256, worker_script=str(worker),
             worker_sha256=worker_sha256, host="127.0.0.1", port=port, max_seq_len=max_seq_len,
             command=tuple(command), policy_sha256=self.policy.policy_sha256, plan_sha256=_sha(identity),
         )
+        with self._mutex:
+            if len(self._issued_plans) >= 1024:
+                raise ValueError("AirLLM pending plan issuance limit reached")
+            self._issued_plans[plan.plan_id] = plan.plan_sha256
+        return plan
 
     def start(
         self,
@@ -223,16 +234,32 @@ class AirLlmRuntime:
             raise PermissionError("AirLLM cold runtime is disabled by policy")
         if supplied_authority is not True:
             raise PermissionError("AirLLM worker start requires explicit effect authority")
+        if type(plan) is not AirLlmWorkerPlan:
+            raise ValueError("AirLLM worker requires an owner-issued plan")
+        with self._mutex:
+            if self._issued_plans.get(plan.plan_id) != plan.plan_sha256:
+                raise ValueError("AirLLM worker plan was not issued by this runtime")
         if need.runtime_id != "airllm":
             raise ValueError("AirLLM runtime requires an airllm resource need")
         if plan.policy_sha256 != self.policy.policy_sha256 or plan.plan_sha256 != _sha(plan.identity_payload()):
             raise ValueError("AirLLM worker plan identity is stale")
+        python = self._admitted_path(Path(plan.python_path), self.runtime_roots)
+        worker = self._admitted_path(Path(plan.worker_script), self.runtime_roots)
+        expected_command = (
+            str(python), str(worker), "--manifest", plan.prepared_model.manifest_path,
+            "--manifest-sha256", plan.prepared_model.manifest_sha256,
+            "--host", "127.0.0.1", "--port", str(plan.port), "--max-seq-len", str(plan.max_seq_len),
+            "--compression", plan.prepared_model.compression,
+            "--prefetching", "true" if plan.prepared_model.prefetching else "false",
+        )
+        if plan.host != "127.0.0.1" or plan.command != expected_command:
+            raise ValueError("AirLLM worker command differs from its closed owner plan")
         if _file_sha(Path(plan.python_path)) != plan.python_sha256 or _file_sha(Path(plan.worker_script)) != plan.worker_sha256:
             raise ValueError("AirLLM worker executable/script identity is stale")
-        manifest = Path(plan.prepared_model.manifest_path)
+        manifest = self._admitted_path(Path(plan.prepared_model.manifest_path), self.prepared_roots)
         if not manifest.is_file() or _file_sha(manifest) != plan.prepared_model.manifest_sha256:
             raise ValueError("AirLLM prepared manifest identity changed after planning")
-        prepared_root = Path(plan.prepared_model.prepared_root)
+        prepared_root = self._admitted_path(Path(plan.prepared_model.prepared_root), self.prepared_roots)
         if not prepared_root.is_dir():
             raise ValueError("AirLLM prepared model root is no longer available")
         timeout = self.policy.airllm_start_timeout_seconds if readiness_timeout_seconds is None else float(readiness_timeout_seconds)
@@ -243,11 +270,13 @@ class AirLlmRuntime:
                 raise RuntimeError("AirLLM cold lane permits one active worker")
             lease = self.interlock.acquire(f"airllm:{plan.prepared_model.model_id}", need, timeout_seconds=0.0)
             record = process = None
+            creation_outcome: dict[str, object] = {}
             try:
                 record, process = self.manager.spawn_owned_process(
                     plan.command, cwd=Path(plan.worker_script).parent,
                     project_id="px-local-model-runtime", run_id=plan.plan_id, lane_id="airllm-cold",
                     creator="runtime.airllm_runtime", ownership="supervised" if os.name == "nt" else "direct",
+                    creation_outcome=creation_outcome,
                 )
                 deadline = time.monotonic() + timeout
                 origin = f"http://127.0.0.1:{plan.port}"
@@ -262,14 +291,26 @@ class AirLlmRuntime:
                 if not ready:
                     raise RuntimeError("AirLLM worker did not become ready within its bounded startup")
                 session_id = f"airllm-session-{uuid4().hex}"
-                self._active = {"session_id": session_id, "plan": plan, "lease": lease, "resource_id": record.resource_id, "pid": process.pid}
+                self._active = {"session_id": session_id, "state": "running", "plan": plan, "lease": lease,
+                                "resource_id": record.resource_id, "pid": process.pid, "resource_lease_id": lease.lease_id}
             except BaseException:
-                cleanup_proven = False
+                cleanup_proven = (type(creation_outcome.get("created")) is bool
+                                  and creation_outcome.get("tree_closed") is True
+                                  and creation_outcome.get("custody_retained") is False)
                 if record is not None:
-                    receipt = self.manager.terminate_owned_process(record.resource_id, graceful_timeout_seconds=self.policy.airllm_cancel_timeout_seconds)
-                    cleanup_proven = receipt.resources_reclaimed == 1 and not receipt.errors
+                    try:
+                        receipt = self.manager.terminate_owned_process(record.resource_id, graceful_timeout_seconds=self.policy.airllm_cancel_timeout_seconds)
+                        cleanup_proven = receipt.resources_reclaimed == 1 and not receipt.errors
+                    except BaseException:
+                        cleanup_proven = False
                 if cleanup_proven:
                     self.interlock.release(lease.lease_id, cleanup_proven=True)
+                else:
+                    self._active = {"session_id": f"airllm-unresolved-{uuid4().hex}",
+                        "state": "creation-unresolved", "plan": plan, "lease": lease,
+                        "resource_id": record.resource_id if record is not None else creation_outcome.get("resource_id"),
+                        "pid": process.pid if process is not None else None,
+                        "resource_lease_id": lease.lease_id, "creation_outcome": dict(creation_outcome)}
                 raise
             body = {
                 "schema_version": "px.airllm-runtime-receipt/1.0", "operation": "start",
@@ -288,6 +329,8 @@ class AirLlmRuntime:
             active = self._active
             if active is None or active["session_id"] != session_id:
                 raise KeyError("AirLLM session is not active")
+            if active.get("state") != "running":
+                raise RuntimeError("AirLLM unresolved creation requires native reconciliation; resource lease retained")
             receipt = self.manager.terminate_owned_process(
                 active["resource_id"], graceful_timeout_seconds=self.policy.airllm_cancel_timeout_seconds,
             )

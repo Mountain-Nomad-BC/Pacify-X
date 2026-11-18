@@ -7,6 +7,7 @@ process/session receipts.
 
 from __future__ import annotations
 
+from contextlib import contextmanager
 from dataclasses import asdict, dataclass
 from datetime import datetime, timezone
 import hashlib
@@ -273,6 +274,97 @@ class RetrievalModelServicesPlan:
     retrieval_policy_sha256: str
     resource_receipt_sha256: str
 
+
+
+class _NativeModelPool(ModelPool):
+    """One native router coordinator; abandoning it never proves model release."""
+
+    def __init__(self, *args, owner_check, owner_finish, owner_release, teardown_authority=False, **kwargs):
+        self._closed = False
+        self._teardown_authority = teardown_authority
+        self._owner_check = owner_check
+        self._owner_finish = owner_finish
+        self._owner_release = owner_release
+        super().__init__(*args, **kwargs)
+
+    def _check_owner(self):
+        if self._closed:
+            raise RuntimeError("native model pool is closed")
+        self._owner_check()
+
+    def snapshot(self):
+        with self._lock:
+            self._check_owner()
+            return super().snapshot()
+
+    def entry(self, model_id):
+        with self._lock:
+            self._check_owner()
+            return super().entry(model_id)
+
+    def release(self, lease):
+        with self._lock:
+            self._check_owner()
+            return super().release(lease)
+
+    def evict_idle(self, **kwargs):
+        with self._lock:
+            self._check_owner()
+            return super().evict_idle(**kwargs)
+
+    def reconcile(self):
+        with self._lock:
+            self._check_owner()
+            return super().reconcile()
+
+    def close(self, *, supplied_authority: bool = False):
+        """Explicitly unload owned models, record clean closure, release coordination.
+
+        Active leases refuse close without invalidating the usable owner. A final
+        observation/publication failure invalidates this wrapper and preserves
+        the actual durable epoch outcome. Only an unclosed epoch requires native
+        router teardown; never reconstruct fictional empty leases.
+        """
+        with self._lock:
+            if self._closed:
+                return
+            if supplied_authority is not True:
+                raise PermissionError("explicit native model teardown authority is required")
+            self._check_owner()
+            if self._leases:
+                raise RuntimeError("native model pool still has active leases")
+            for model_id in tuple(self._entries):
+                self._unload_no_leases(model_id)
+            self._closed = True
+            try:
+                self._owner_finish()
+            finally:
+                self._owner_release()
+
+    def abandon(self):
+        """Release coordination only; an unclosed epoch requires router teardown."""
+        with self._lock:
+            self._closed = True
+            self._owner_release()
+
+    def __enter__(self):
+        self._check_owner()
+        return self
+
+    def __exit__(self, exc_type, exc, traceback):
+        if self._closed:
+            return False
+        if not self._teardown_authority:
+            self.abandon()
+            if exc_type is None:
+                raise PermissionError("context exit requires explicit native model teardown authority")
+            return False
+        try:
+            self.close(supplied_authority=True)
+        except BaseException:
+            self.abandon()
+            raise
+        return False
 
 
 class LocalModelRuntime:
@@ -799,7 +891,7 @@ class LocalModelRuntime:
         deadline = time.monotonic() + timeout
         last = "unknown"
         while time.monotonic() < deadline:
-            last = self.router_model_states(session_id, timeout_seconds=min(2.0, max(0.05, deadline - time.monotonic()))).get(model_id, "unloaded")
+            last = self.router_model_states(session_id, timeout_seconds=min(2.0, max(0.05, deadline - time.monotonic()))).get(model_id, "unknown")
             if last in desired:
                 return last
             if last in {"failed", "error"}:
@@ -807,7 +899,55 @@ class LocalModelRuntime:
             time.sleep(0.05)
         raise RuntimeError(f"router model {model_id} did not reach {sorted(desired)}; last={last}")
 
+    def _pool_owner_lock(self, resource_id: str) -> FileLock:
+        from .archive_io import reject_path_links
+        key = hashlib.sha256(resource_id.encode("utf-8")).hexdigest()
+        path = self.event_path.parent / "pool-owners" / (key + ".lock")
+        reject_path_links(path)
+        return FileLock(path, timeout_seconds=0.25)
+
+    def _require_no_pool_owner(self, resource_id: str) -> None:
+        epoch = None
+        for event in self._load_events():
+            payload = event["payload"]
+            if payload.get("resource_id") != resource_id:
+                continue
+            kind = event["event_type"]
+            if kind == "pool_owner_opened":
+                if (epoch is not None or type(payload.get("epoch_id")) is not str
+                        or not 1 <= len(payload["epoch_id"]) <= 128
+                        or type(payload.get("session_id")) is not str or not payload["session_id"]):
+                    raise RuntimeError("native pool owner epoch history is unresolved")
+                epoch = (payload["epoch_id"], payload["session_id"])
+            elif kind == "pool_owner_closed":
+                if (epoch is None or (payload.get("epoch_id"), payload.get("session_id")) != epoch
+                        or payload.get("all_models_unloaded") is not True):
+                    raise RuntimeError("native pool owner closure lacks verified matching unloaded inventory")
+                epoch = None
+        if epoch is not None:
+            raise RuntimeError("unclosed native pool owner requires verified router teardown and a fresh session")
+
+    @contextmanager
+    def _pool_mutation(self, session_id: str, *, recovery: bool = False):
+        current = self.status(session_id)
+        resource_id = str(current["resource_id"])
+        with self._pool_owner_lock(resource_id):
+            if str(self.status(session_id)["resource_id"]) != resource_id:
+                raise RuntimeError("native router resource identity changed")
+            if not recovery:
+                self._require_no_pool_owner(resource_id)
+            yield
+
     def load_router_model(
+        self, session_id: str, model_id: str, *, supplied_authority: bool, timeout_seconds: float = 60.0
+    ) -> str:
+        if supplied_authority is not True:
+            raise PermissionError("explicit model-load authority is required")
+        timeout = self._router_timeout(timeout_seconds, maximum=300.0)
+        with self._pool_mutation(session_id):
+            return self._load_router_model_owned(session_id, model_id, supplied_authority=True, timeout_seconds=timeout)
+
+    def _load_router_model_owned(
         self, session_id: str, model_id: str, *, supplied_authority: bool, timeout_seconds: float = 60.0
     ) -> str:
         if supplied_authority is not True:
@@ -831,6 +971,15 @@ class LocalModelRuntime:
         if supplied_authority is not True:
             raise PermissionError("explicit model-unload authority is required")
         timeout = self._router_timeout(timeout_seconds, maximum=300.0)
+        with self._pool_mutation(session_id):
+            return self._unload_router_model_owned(session_id, model_id, supplied_authority=True, timeout_seconds=timeout)
+
+    def _unload_router_model_owned(
+        self, session_id: str, model_id: str, *, supplied_authority: bool, timeout_seconds: float = 60.0
+    ) -> str:
+        if supplied_authority is not True:
+            raise PermissionError("explicit model-unload authority is required")
+        timeout = self._router_timeout(timeout_seconds, maximum=300.0)
         self._assert_router_model(session_id, model_id)
         origin = self._router_origin(session_id)
         self.router_request("POST", origin + "/models/unload", {"model": model_id}, min(10.0, timeout))
@@ -845,7 +994,17 @@ class LocalModelRuntime:
         self,
         session_id: str,
         profiles: Mapping[str, ModelRuntimeProfile],
+        *,
+        supplied_teardown_authority: bool = False,
     ) -> ModelPool:
+        """Observe and coordinate one router; never infer unload approval.
+
+        Explicit close requires supplied_authority=True. Context exit can clean
+        models only with supplied_teardown_authority=True bound here; otherwise
+        it abandons coordination and retains an orphan fence for native teardown.
+        """
+        if type(supplied_teardown_authority) is not bool:
+            raise ValueError("native pool teardown authority must be an explicit boolean")
         plan = self._router_plan_for_session(session_id)
         rows = plan.get("models")
         if type(rows) not in (tuple, list):
@@ -886,13 +1045,61 @@ class LocalModelRuntime:
         def sink(event_type: str, payload: Mapping[str, object]) -> object:
             return self._append(event_type, {"session_id": session_id, "resource_id": resource_id, **dict(payload)})
 
-        return ModelPool(
-            tuple(specs),
-            load_model=lambda model_id: self.load_router_model(session_id, model_id, supplied_authority=True),
-            unload_model=lambda model_id: self.unload_router_model(session_id, model_id, supplied_authority=True),
-            observe_models=lambda: self.router_model_states(session_id),
-            event_sink=sink, max_loaded_models=int(plan["models_max"]),
-        )
+        current = self.status(session_id)
+        if current["state"] != "running" or str(current["resource_id"]) != resource_id:
+            raise RuntimeError("native router session is not current")
+        owner_lock = self._pool_owner_lock(str(resource_id))
+        owner_lock.__enter__()
+        active = [True]
+        released = [False]
+        epoch_id = "pool-owner-" + uuid4().hex
+
+        def check_owner():
+            if not active[0]:
+                raise RuntimeError("native model pool ownership was released")
+            current = self.status(session_id)
+            if current["state"] != "running" or current["resource_id"] != resource_id:
+                raise RuntimeError("native model pool router identity is no longer current")
+
+        def release_owner():
+            active[0] = False
+            if not released[0]:
+                owner_lock.__exit__(None, None, None)
+                released[0] = True
+
+        def load_owned(model_id):
+            check_owner()
+            return self._load_router_model_owned(session_id, model_id, supplied_authority=True)
+
+        def unload_owned(model_id):
+            check_owner()
+            return self._unload_router_model_owned(session_id, model_id, supplied_authority=True)
+
+        def finish_owner():
+            check_owner()
+            states = self.router_model_states(session_id)
+            if any(states.get(spec.model_id) != "unloaded" for spec in specs):
+                raise RuntimeError("native model pool closure requires explicit unloaded inventory")
+            self._append("pool_owner_closed", {"session_id": session_id, "resource_id": resource_id,
+                "epoch_id": epoch_id, "all_models_unloaded": True})
+
+        try:
+            self._require_no_pool_owner(str(resource_id))
+            check_owner()
+            self._append("pool_owner_opened", {"session_id": session_id,
+                "resource_id": resource_id, "epoch_id": epoch_id,
+                "teardown_authority_supplied": supplied_teardown_authority})
+            pool = _NativeModelPool(
+                tuple(specs), load_model=load_owned, unload_model=unload_owned,
+                observe_models=lambda: self.router_model_states(session_id),
+                event_sink=sink, max_loaded_models=int(plan["models_max"]),
+                owner_check=check_owner, owner_finish=finish_owner, owner_release=release_owner,
+                teardown_authority=supplied_teardown_authority)
+            pool.reconcile()
+            return pool
+        except BaseException:
+            release_owner()
+            raise
 
 
     def open_docker_model_runtime(self, interlock, *, policy=None, command_runner=None):
@@ -928,6 +1135,12 @@ class LocalModelRuntime:
     def stop(self, session_id: str, *, supplied_authority: bool) -> dict[str, object]:
         if supplied_authority is not True:
             raise PermissionError("explicit stop/unload authority is required")
+        with self._pool_mutation(session_id, recovery=True):
+            return self._stop_owned(session_id, supplied_authority=True)
+
+    def _stop_owned(self, session_id: str, *, supplied_authority: bool) -> dict[str, object]:
+        if supplied_authority is not True:
+            raise PermissionError("explicit stop/unload authority is required")
         current = self.status(session_id)
         resource_id = str(current["resource_id"])
         if current["state"] != "running":
@@ -949,6 +1162,10 @@ class LocalModelRuntime:
         return self.stop(session_id, supplied_authority=supplied_authority)
 
     def recover(self, session_id: str) -> dict[str, object]:
+        with self._pool_mutation(session_id, recovery=True):
+            return self._recover_owned(session_id)
+
+    def _recover_owned(self, session_id: str) -> dict[str, object]:
         current = self.status(session_id)
         if current["state"] != "running":
             return current

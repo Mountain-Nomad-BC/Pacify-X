@@ -103,6 +103,7 @@ class ToolBroker {
 
   _authority(request, suppliedTask, expectedSnapshot = null) {
     try {
+      this.taskStore?.assertCurrent?.();
       if (!this.taskStore || suppliedTask?.taskId !== request.taskId) return null;
       const task = this.taskStore.requireTask(request.taskId); const run = this.taskStore.requireRun(request.runId);
       if (task.status !== 'active' || run.status !== 'running' || run.taskId !== task.taskId || run.activeWorkerId !== request.workerId || this.taskStore.requiresRecovery(run.runId)) return null;

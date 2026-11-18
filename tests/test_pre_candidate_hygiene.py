@@ -237,6 +237,7 @@ def test_quarantine_is_recoverable_hash_bound_and_validated_before_delete(
         validation = validate_quarantine(root, manifest)
     assert validation["valid"] is True
     assert validation["all_items_no_longer_needed"] is True
+    assert validation["hard_delete_authorized_by_user"] is False
     persisted = json.loads((root / manifest).read_text(encoding="utf-8"))
     assert len(persisted["records"][0]["evidence"]["tree_sha256"]) == 64
 
@@ -266,3 +267,36 @@ def test_quarantine_validation_rejects_restored_original(
         validation = validate_quarantine(root, manifest)
     assert validation["valid"] is False
     assert any("original target still exists" in error for error in validation["errors"])
+
+
+def test_resume_does_not_replace_mismatching_before_evidence(tmp_path, monkeypatch):
+    from scripts import pre_candidate_hygiene as owner
+
+    root = tmp_path / "repo"
+    destination = root / ".quarantine/interrupted/workspace/.pytest_cache"
+    destination.mkdir(parents=True)
+    retained = destination / "evidence.txt"
+    retained.write_text("original retained image", encoding="utf-8")
+    before = owner._tree_evidence(destination)
+    retained.write_text("changed retained image", encoding="utf-8")
+    manifest = Path("evidence/release/interrupted.json")
+    (root / manifest).parent.mkdir(parents=True)
+    receipt = {
+        "schema_version": owner.MANIFEST_SCHEMA,
+        "run_id": "interrupted", "workspace": str(root.resolve()), "valid": False,
+        "records": [{"path": str(root / ".pytest_cache"),
+                     "quarantined_path": destination.relative_to(root).as_posix(),
+                     "cleanup_result": "started", "evidence": before}],
+    }
+    (root / manifest).write_text(json.dumps(receipt), encoding="utf-8")
+    monkeypatch.setattr(owner, "cleanup_targets", lambda _: ([], []))
+    with pytest.raises(HygieneError, match="evidence.*differs|differs.*evidence"):
+        quarantine(root, manifest, run_id="interrupted", resume=True)
+    persisted = json.loads((root / manifest).read_text(encoding="utf-8"))
+    assert persisted["records"][0]["evidence"] == before
+    assert persisted["valid"] is False
+    assert retained.read_text(encoding="utf-8") == "changed retained image"
+    retained.write_text("original retained image", encoding="utf-8")
+    recovered = quarantine(root, manifest, run_id="interrupted", resume=True)
+    assert recovered["valid"] is True
+    assert recovered["records"][0]["evidence"] == before

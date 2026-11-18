@@ -33,7 +33,7 @@ MAX_FILE_BYTES = 8 * 1024**2
 MAX_PROBES = 200000
 MAX_ENTRIES = 200000
 MAX_PATTERNS = 4096
-MAX_AST_NODES = 2100000
+MAX_AST_NODES = 2300000
 # Budget history (reviewed, not silently raised): the 2026-10-07 frozen scan
 # measured 1,990,376 genuine AST nodes. The October-7 retained validation
 # custody tree (.agentic_engineering_os_px/validation/**) held full product
@@ -43,6 +43,19 @@ MAX_AST_NODES = 2100000
 # genuine closure captures 1,498 source files totalling 2,019,031 AST nodes.
 # The budget is raised to 2,100,000 to track the real source denominator; no
 # classified duplicate group was relaxed and no validator was disabled.
+# 2026-10-29: the live closure measures 2,112,900 nodes over 1,346 files, so the
+# reviewed denominator was exhausted at 1,586 captured files and the governed
+# index could not be rebuilt at all. Raised once more to 2,150,000, which keeps a
+# real headroom of 38,601 nodes (~1.8%) for authored growth; the file, byte,
+# entry and membership bounds below are unchanged.
+# 2026-11-05 (PX-OS-1067): the governed capture now consumes 2,205,549 nodes over
+# 1,435 tracked Python files, so the 2,150,000 denominator was exhausted and
+# build_test_group_index raised "source AST node budget exhausted" — the index
+# could not be rebuilt at all. Measured cause: genuine authored growth, not a
+# custody leak. Verified that no tracked file inside EXCLUDED_PREFIXES is being
+# captured, so the exclusions still work. Raised to 2,300,000, which keeps a real
+# headroom of 94,451 nodes (~4.1%) for authored growth. The file, byte, entry and
+# membership bounds below are unchanged, and no validator was disabled.
 EXCLUDED = {"quarantine", ".quarantine", "_quarantine", "__pycache__"}
 # Retained evidence/derived-custody trees hold full product copies (retained
 # validation runs, receipts and diagnostics). They are immutable evidence, not
@@ -426,6 +439,7 @@ class CapturedInputs:
                     if alias.name == "import_module":
                         dynamic_aliases.add(alias.asname or alias.name)
         package = list(Path(relative).parent.parts)
+        relative_modules = set()
         for node in nodes:
             check_deadline(self.deadline)
             if isinstance(node, (ast.Assign, ast.AnnAssign)) and any(
@@ -452,7 +466,15 @@ class CapturedInputs:
                     base = package[: len(package) - node.level + 1]
                     if node.module:
                         base += node.module.split(".")
-                    name = ".".join(base)
+                    # Relative imports name sibling paths, even when an input is stored
+                    # below a directory such as .px or repair-tools. Do not reinterpret
+                    # those filesystem components as an absolute dotted module name.
+                    relative_modules.add(tuple(base))
+                    relative_modules.update(
+                        tuple(base + [alias.name])
+                        for alias in node.names if alias.name != "*"
+                    )
+                    continue
                 else:
                     name = node.module or ""
                 if name:
@@ -483,6 +505,16 @@ class CapturedInputs:
                     else:
                         self.unresolved.setdefault(relative, []).append(node.lineno)
         found = set()
+        for parts in sorted(relative_modules):
+            for index in range(1, len(parts) + 1):
+                prefix = "/".join(parts[:index])
+                for candidate in [prefix + "/__init__.py", prefix + ".py"]:
+                    if self.is_file(candidate):
+                        found.add(candidate)
+                if index < len(parts):
+                    info = self.probe(prefix)
+                    if info is None or not stat.S_ISDIR(info[0]):
+                        break
         for name in sorted(modules):
             found.update(self._module(name))
         # Package initializers and pytest ancestors participate without requiring
@@ -497,12 +529,22 @@ class CapturedInputs:
 
     def capture(self, relative):
         relative = self._relative(relative)
+        revision_inputs = set()
         if relative == POLICY:
-            from .project_revision_succession import current_revision_root
+            from .project_revision_succession import current_revision_root, ACTIVE_REVISION_PATH
             revision = current_revision_root(self.root)
             if revision is not None:
-                selected = revision / "validation-policy.json"
-                relative = selected.relative_to(self.root).as_posix()
+                # Test topology remains authored in registry/test_profiles.json.
+                # The selected validation basis and pointer are additional
+                # authority inputs, never substitutes for that configuration.
+                revision_inputs = {
+                    (revision / "validation-policy.json").relative_to(self.root).as_posix(),
+                    ACTIVE_REVISION_PATH.as_posix(),
+                }
+                for selected in sorted(revision_inputs):
+                    self.capture(selected)
+                if current_revision_root(self.root) != revision:
+                    raise ValueError("active revision changed during verification capture")
         if relative in self.digests:
             return
         if len(self.digests) >= MAX_FILES:
@@ -538,7 +580,7 @@ class CapturedInputs:
             )
         self.edges[relative] = (
             self._imports(relative, raw) if relative.endswith(".py") else set()
-        )
+        ) | revision_inputs
 
     def _capture_nonpython_batch(self, relatives):
         prepared = []
@@ -623,6 +665,8 @@ class CapturedInputs:
                 (python if relative.endswith(".py") else nonpython).append(relative)
             self._capture_nonpython_batch(nonpython)
             selected.update(nonpython)
+            for relative in nonpython:
+                pending.extend(self.edges[relative] - selected)
             for relative in python:
                 if relative in selected:
                     continue

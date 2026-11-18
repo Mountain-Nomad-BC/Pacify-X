@@ -100,6 +100,82 @@ function harness(adapter, persistence = null) {
     contextCompiler: new ContextCompiler(), tinyLibrarian: new TinyLibrarian() });
 }
 
+test('mesh conclusions bind the complete branch text', async () => {
+  const text = 'A'.repeat(5000) + 'tail';
+  const owner = harness({ runTurn: async () => ({ text }) });
+  owner.workerRegistry.register({ ...worker(), contextLimit: 100000 }, { runTurn: async () => ({ text }) });
+  try {
+    const result = await owner.sendMeshTurn({ goal: 'inspect local data', message: 'inspect', branches: [{ workerId: 'worker' }] });
+    assert.equal(result.branchResults[0].state, 'completed');
+    assert.equal(result.branchResults[0].conclusionSha256, require('../src/agentHarness/ids').sha256(text));
+  } finally { owner.dispose(); }
+});
+
+test('all-failed mesh cannot persist or emit successful completion', async () => {
+  let persisted, calls = 0;
+  const adapter = { runTurn: async () => { calls += 1; throw new Error('fixture provider failure'); } };
+  const owner = harness(adapter,
+    { save: value => { persisted = JSON.parse(JSON.stringify(value)); } });
+  owner.workerRegistry.register({ ...worker(), contextLimit: 100000 }, adapter);
+  try {
+    const result = await owner.sendMeshTurn({ goal: 'inspect local data', message: 'inspect', branches: [{ workerId: 'worker' }, { workerId: 'worker' }] });
+    assert.equal(result.branchResults.every(branch => branch.state === 'failed'), true);
+    assert.equal(result.run.status, 'failed');
+    assert.equal(calls, 2);
+    assert.equal(persisted.runs.find(run => run.runId === result.run.runId).status, 'failed');
+    assert.equal(owner.eventBus.snapshot().some(event => event.type === 'mesh.completed'), false);
+    const restarted = harness(adapter, { load: () => persisted, save: () => {} });
+    try {
+      assert.equal(restarted.taskStore.requireRun(result.run.runId).status, 'failed');
+      await assert.rejects(restarted.sendMeshTurn({ taskId: result.task.taskId, runId: result.run.runId, message: 'replay', branches: [{ workerId: 'worker' }] }), /terminal-run/);
+      assert.equal(calls, 2);
+    } finally { restarted.dispose(); }
+  } finally { owner.dispose(); }
+});
+
+for (const [states, expected] of [
+  [['completed', 'completed'], 'complete'],
+  [['completed', 'failed'], 'partial'],
+  [['cancelled', 'cancelled'], 'cancelled'],
+  [['failed', 'cancelled'], 'failed'],
+  [['timeout', 'timeout'], 'failed']
+]) test(`mesh ${states.join('/')} preserves its terminal outcome`, async () => {
+  let calls = 0;
+  const adapter = { runTurn: async () => {
+    const state = states[calls++];
+    if (state === 'completed') return { text: 'answer' };
+    throw Object.assign(new Error(`fixture ${state}`), { name: state === 'cancelled' ? 'AbortError' : state === 'timeout' ? 'TimeoutError' : 'Error' });
+  } };
+  const owner = harness(adapter);
+  owner.workerRegistry.register({ ...worker(), contextLimit: 100000 }, adapter);
+  try {
+    const result = await owner.sendMeshTurn({ goal: 'inspect local data', message: 'inspect', branches: states.map(() => ({ workerId: 'worker' })) });
+    assert.equal(calls, states.length);
+    assert.equal(result.convergence.outcome, expected);
+    assert.equal(result.run.status, expected === 'partial' ? 'failed' : expected);
+    assert.equal(result.convergence.quorumMet, expected === 'complete');
+    assert.equal(result.convergence.wholeMeshSupport, result.convergence.supportCount / states.length);
+    assert.equal(owner.eventBus.snapshot().some(event => event.type === 'mesh.completed'), expected === 'complete');
+  } finally { owner.dispose(); }
+});
+
+test('one successful branch out of twelve is partial with whole-mesh support', async () => {
+  const owner = harness({ runTurn: async () => ({ text: 'answer' }) });
+  let index = 0;
+  owner._runMeshBranch = async () => {
+    const branchIndex = index++;
+    return { branchIndex, branchId: `fixture-${branchIndex}`, state: branchIndex === 0 ? 'completed' : 'failed', conclusion: branchIndex === 0 ? 'answer' : '' };
+  };
+  try {
+    const result = await owner.sendMeshTurn({ goal: 'inspect local data', message: 'inspect', branches: Array.from({ length: 12 }, () => ({ workerId: 'worker' })) });
+    assert.equal(result.run.status, 'failed');
+    assert.equal(result.convergence.outcome, 'partial');
+    assert.equal(result.convergence.supportRatio, 1 / 12);
+    assert.equal(result.convergence.agreementAmongCompleted, 1);
+    assert.equal(result.convergence.quorumMet, false);
+  } finally { owner.dispose(); }
+});
+
 test('controller does not dispatch before worker selection is durably acknowledged', async () => {
   let acknowledge;
   const blocked = new Promise(resolve => { acknowledge = resolve; });
@@ -227,3 +303,88 @@ for (const outcome of ['acknowledged', 'unsupported', 'failed']) {
     } finally { owner.active.delete(run.runId); owner.dispose(); }
   });
 }
+
+for (const status of ['running', 'waiting', 'blocked', 'cancelled']) {
+  test(`legacy ${status} snapshot retains recovery custody across repeated loads`, async () => {
+    let snapshot;
+    const first = new TaskStore({ persistence: { save: value => { snapshot = structuredClone(value); } } });
+    const task = first.createTask(input());
+    const run = first.createRun(task.taskId);
+    snapshot.runs[0].status = status;
+    delete snapshot.runs[0].dispatchMode; delete snapshot.runs[0].dispatchPending;
+    for (let restart = 0; restart < 2; restart++) {
+      const store = new TaskStore({ persistence: { load: () => snapshot, save: value => { snapshot = structuredClone(value); } } });
+      assert.equal(store.requiresRecovery(run.runId), true);
+      assert.throws(() => store.createRun(task.taskId), /recovery-required/);
+      assert.throws(() => store.updateRun(run.runId, { status: 'running' }), /recovery-required/);
+      assert.throws(() => store.settleMeshDispatch(run.runId), /recovery-required/);
+    }
+  });
+}
+
+for (const missing of ['dispatchMode', 'dispatchPending']) {
+  test(`partially marked dispatch snapshot refuses missing ${missing}`, () => {
+    let snapshot;
+    const store = new TaskStore({ persistence: { save: value => { snapshot = structuredClone(value); } } });
+    const task = store.createTask(input()); store.createRun(task.taskId, { dispatchMode: 'mesh' });
+    delete snapshot.runs[0][missing];
+    let writes = 0;
+    assert.throws(() => new TaskStore({ persistence: { load: () => snapshot, save: () => { writes++; } } }), /persisted-run-invalid/);
+    assert.equal(writes, 0);
+  });
+}
+
+test('legacy migration durably imports validated immutable rows and preserves recovery fences', async () => {
+  const fs = require('node:fs'), path = require('node:path');
+  const { DurableTaskState } = require('../src/agentHarness/durableTaskState');
+  const { migrateLegacyTaskState } = require('../src/agentHarness/legacyTaskMigration');
+  const project = path.join(process.env.TMPDIR, 'legacy-migration-native'); fs.mkdirSync(project);
+  const source = new TaskStore(); const task = source.createTask(input('legacy-native'));
+  const run = source.createRun(task.taskId, { dispatchMode: 'mesh' }); source.beginMeshDispatch(run.runId);
+  const snapshot = structuredClone(source.snapshot());
+  const store = new TaskStore({ persistence: new DurableTaskState(project) });
+  const receipt = await migrateLegacyTaskState(project, { state: snapshot }, store);
+  assert.equal(receipt.status, 'MIGRATED');
+  assert.deepEqual(receipt.imported_task_ids, [task.taskId]);
+  assert.equal(store.requiresRecovery(run.runId), true);
+  assert.throws(() => { store.requireTask(task.taskId).goal = 'unowned edit'; }, TypeError);
+  const reopened = new TaskStore({ persistence: new DurableTaskState(project) });
+  assert.equal(reopened.requiresRecovery(run.runId), true);
+  assert.throws(() => reopened.createRun(task.taskId), /recovery-required/);
+  const again = await migrateLegacyTaskState(project, snapshot, reopened);
+  assert.equal(again.status, 'ALREADY_MIGRATED');
+  assert.deepEqual(JSON.parse(fs.readFileSync(path.join(project, receipt.retained_source), 'utf8')), snapshot);
+  await assert.rejects(migrateLegacyTaskState(project, snapshot, new TaskStore()), /native-image-missing/);
+});
+
+test('legacy import rejects a malformed later row without exposing earlier rows', async () => {
+  const source = new TaskStore(); source.createTask(input('valid-first'));
+  const snapshot = structuredClone(source.snapshot()); snapshot.tasks.push({ taskId: 'invalid-second' });
+  let writes = 0; const store = new TaskStore({ persistence: { save: () => { writes++; } } });
+  await assert.rejects(store.importLegacySnapshot(snapshot), /persisted-task-invalid/);
+  assert.equal(store.listTasks().length, 0); assert.equal(writes, 0);
+});
+
+test('legacy import cannot attach a run to a conflicting native task', async () => {
+  const source = new TaskStore(); const task = source.createTask(input('same-id')); source.createRun(task.taskId);
+  const target = new TaskStore(); const native = target.createTask({ ...input('same-id'), goal: 'native definition' });
+  const result = await target.importLegacySnapshot(source.snapshot());
+  assert.deepEqual(result, { importedTasks: [], importedRuns: [] });
+  assert.equal(target.requireTask(native.taskId).goal, 'native definition'); assert.equal(target.listRuns().length, 0);
+});
+
+test('legacy migration awaits durable acknowledgement before publishing its receipt', async () => {
+  const fs = require('node:fs'), path = require('node:path');
+  const { migrateLegacyTaskState } = require('../src/agentHarness/legacyTaskMigration');
+  const project = path.join(process.env.TMPDIR, 'legacy-migration-ack'); fs.mkdirSync(project);
+  const source = new TaskStore(); source.createTask(input('await-import'));
+  let acknowledge; const pending = new Promise(resolve => { acknowledge = resolve; });
+  const target = new TaskStore({ persistence: { save: () => pending } });
+  const importing = migrateLegacyTaskState(project, source.snapshot(), target);
+  try {
+    await new Promise(resolve => setImmediate(resolve));
+    const directory = path.join(project, '.agentic_engineering_os_px/runtime-core/agent-console/legacy-migration');
+    assert.equal(fs.readdirSync(directory).some(name => name.startsWith('receipt-')), false);
+  } finally { acknowledge(); }
+  assert.equal((await importing).status, 'MIGRATED');
+});

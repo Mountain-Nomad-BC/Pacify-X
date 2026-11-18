@@ -15,7 +15,7 @@ PACIFY-X is the project and framework. `engineering-bootstrap` is its Python pac
 **Release status:** See [GitHub Releases](https://github.com/Mountain-Nomad-BC/Pacify-X/releases)
 for signed artifacts and their verification evidence.
 
-**Current line:** **v0.9.0** (see [`docs/release-process.md`](docs/release-process.md) for the
+**Current line:** **v0.9.1** (see [`docs/release-process.md`](docs/release-process.md) for the
 canonical release contract and exact artifact verification steps).
 
 **Requires:** Python 3.11–3.14, Git, OpenSSH Client (`ssh-keygen`), and an AI coding assistant.
@@ -191,10 +191,10 @@ These exact counts are checked automatically for drift; ordinary users do not ne
 
 | Layer | Exact count |
 |---|---:|
-| Runtime modules | 420 |
-| Contracts | 196 |
-| Registry artifacts | 515 |
-| Tool and support scripts | 207 |
+| Runtime modules | 481 |
+| Contracts | 214 |
+| Registry artifacts | 535 |
+| Tool and support scripts | 235 |
 
 The machine-readable source for release and inventory claims is [`registry/build_claims.json`](registry/build_claims.json).
 

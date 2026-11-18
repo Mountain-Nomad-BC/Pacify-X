@@ -44,6 +44,114 @@ def test_prepared_manifest_and_worker_plan_are_exactly_bound(tmp_path: Path) -> 
     with pytest.raises(ValueError,match="manifest digest"): rt.load_prepared_model(manifest,expected_manifest_sha256=sha)
 
 
+@pytest.mark.parametrize("mutation", ["command", "host", "port", "manifest-claims"])
+def test_resealed_forged_plan_is_rejected_before_resource_or_spawn(tmp_path, monkeypatch, mutation):
+    from runtime.airllm_runtime import _sha
+
+    runtime, manager, interlock, _, _, plan = _fixture(tmp_path)
+    if mutation == "command":
+        forged = replace(plan, command=(plan.python_path, "-c", "raise SystemExit(0)"))
+    elif mutation == "host":
+        forged = replace(plan, host="0.0.0.0")
+    elif mutation == "port":
+        forged = replace(plan, port=12345)
+    else:
+        forged = replace(plan, prepared_model=replace(plan.prepared_model, model_id="different-model"))
+    forged = replace(forged, plan_sha256=_sha(forged.identity_payload()))
+    calls = []
+
+    def forbidden_spawn(*args, **kwargs):
+        calls.append(args)
+        raise RuntimeError("unexpected spawn")
+
+    monkeypatch.setattr(manager, "spawn_owned_process", forbidden_spawn)
+    with pytest.raises(ValueError, match="issued|plan|command"):
+        runtime.start(forged, ModelResourceNeed("airllm", 1, 0, False, False), supplied_authority=True)
+    assert calls == [] and interlock.snapshot()["leases"] == []
+
+
+def test_proven_spawn_rejection_releases_capacity(tmp_path, monkeypatch):
+    runtime, manager, interlock, _, _, plan = _fixture(tmp_path)
+
+    def rejected(*args, creation_outcome=None, **kwargs):
+        if creation_outcome is not None:
+            creation_outcome.update(created=False, tree_closed=True, custody_retained=False)
+        raise PermissionError("native pre-creation rejection")
+
+    monkeypatch.setattr(manager, "spawn_owned_process", rejected)
+    with pytest.raises(PermissionError, match="pre-creation"):
+        runtime.start(plan, ModelResourceNeed("airllm", 1, 0, False, False), supplied_authority=True)
+    assert interlock.snapshot()["leases"] == []
+    assert runtime.active_session() is None
+
+
+def test_unknown_spawn_outcome_retains_explicit_fence_and_refuses_retry(tmp_path, monkeypatch):
+    runtime, manager, interlock, _, _, plan = _fixture(tmp_path)
+    calls = []
+
+    def ambiguous(*args, **kwargs):
+        calls.append(args)
+        raise RuntimeError("creation outcome unknown")
+
+    monkeypatch.setattr(manager, "spawn_owned_process", ambiguous)
+    with pytest.raises(RuntimeError, match="unknown"):
+        runtime.start(plan, ModelResourceNeed("airllm", 1, 0, False, False), supplied_authority=True)
+    leases = interlock.snapshot()["leases"]
+    assert len(leases) == 1
+    fenced = runtime.active_session()
+    assert fenced is not None and fenced["state"] == "creation-unresolved"
+    assert fenced["resource_lease_id"] == leases[0]["lease_id"]
+    with pytest.raises(RuntimeError, match="reconciliation"):
+        runtime.stop(fenced["session_id"], supplied_authority=True)
+    assert interlock.snapshot()["leases"][0]["lease_id"] == leases[0]["lease_id"]
+    with pytest.raises(RuntimeError, match="one active"):
+        runtime.start(plan, ModelResourceNeed("airllm", 1, 0, False, False), supplied_authority=True)
+    assert len(calls) == 1
+
+
+def test_actual_resource_manager_prevalidation_rejection_releases_capacity(tmp_path, monkeypatch):
+    runtime, manager, interlock, _, _, plan = _fixture(tmp_path)
+    native_spawn = manager.spawn_owned_process
+
+    def invalid_ownership(*args, **kwargs):
+        kwargs["ownership"] = "invalid-fixture-ownership"
+        return native_spawn(*args, **kwargs)
+
+    monkeypatch.setattr(manager, "spawn_owned_process", invalid_ownership)
+    with pytest.raises(ValueError, match="ownership"):
+        runtime.start(plan, ModelResourceNeed("airllm", 1, 0, False, False), supplied_authority=True)
+    assert interlock.snapshot()["leases"] == []
+    assert manager.ledger.load() == ()
+    assert runtime.active_session() is None
+
+
+def test_another_runtime_cannot_adopt_a_self_sealed_plan(tmp_path, monkeypatch):
+    runtime, manager, interlock, _, _, plan = _fixture(tmp_path)
+    other = AirLlmRuntime(tmp_path, manager=manager, interlock=interlock,
+                         allowed_prepared_roots=runtime.prepared_roots,
+                         allowed_runtime_roots=runtime.runtime_roots, policy=runtime.policy)
+    with pytest.raises(ValueError, match="issued"):
+        other.start(plan, ModelResourceNeed("airllm", 1, 0, False, False), supplied_authority=True)
+    assert manager.ledger.load() == () and interlock.snapshot()["leases"] == []
+
+
+def test_worker_plan_rejects_forged_prepared_claims_and_original_path_alias(tmp_path):
+    runtime, manager, interlock, _, _, plan = _fixture(tmp_path)
+    parameters = dict(python_path=Path(plan.python_path), worker_script=Path(plan.worker_script),
+                      port=plan.port, max_seq_len=plan.max_seq_len)
+    with pytest.raises(ValueError, match="manifest"):
+        runtime.plan_worker(replace(plan.prepared_model, model_id="forged"), **parameters)
+    alias = Path(plan.worker_script).with_name("alias.py")
+    try:
+        alias.symlink_to(Path(plan.worker_script))
+    except OSError as error:
+        pytest.skip(f"host cannot create disposable symlink: {error}")
+    parameters["worker_script"] = alias
+    with pytest.raises(ValueError, match="linked"):
+        runtime.plan_worker(plan.prepared_model, **parameters)
+    assert manager.ledger.load() == () and interlock.snapshot()["leases"] == []
+
+
 def test_compression_and_prefetching_are_distinct_incompatible_identities(tmp_path: Path) -> None:
     with pytest.raises(ValueError,match="compression and prefetching"):
         _fixture(tmp_path,compression="4bit",prefetching=True)

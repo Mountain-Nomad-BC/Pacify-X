@@ -11,6 +11,7 @@ import hashlib
 import json
 import re
 import subprocess
+import threading
 from pathlib import Path
 from typing import Callable, Sequence
 
@@ -41,17 +42,31 @@ def _text(value: object, field: str, *, maximum: int = 512) -> str:
     return value.strip()
 
 
-def _digest_strings(value: object) -> set[str]:
-    out: set[str] = set()
-    if isinstance(value, str) and _OCI.fullmatch(value):
-        out.add(value)
-    elif isinstance(value, dict):
-        for item in value.values():
-            out.update(_digest_strings(item))
-    elif isinstance(value, list):
-        for item in value:
-            out.update(_digest_strings(item))
-    return out
+def _inspect_manifest_identity(payload: dict[str, object], *, model_ref: str, expected_digest: str) -> str:
+    # Docker's native Model API exposes the raw-manifest SHA256 as `id`.
+    # Config, annotations and layer strings cannot supply that identity.
+    required = {"id", "created", "config"}
+    if not required <= payload.keys() or not payload.keys() <= required | {"tags"}:
+        raise ValueError("Docker model inspect schema is unsupported or ambiguous")
+    identity = payload["id"]
+    if type(identity) is not str or _OCI.fullmatch(identity) is None or identity != expected_digest:
+        raise ValueError("Docker model inspect does not prove the planned OCI digest")
+    if type(payload["created"]) is not int or not 0 <= payload["created"] <= 2**63 - 1:
+        raise ValueError("Docker model inspect creation timestamp is invalid")
+    if type(payload["config"]) is not dict:
+        raise ValueError("Docker model inspect configuration is invalid")
+    tags = payload.get("tags", [])
+    if type(tags) is not list or len(tags) > 128:
+        raise ValueError("Docker model inspect tags are invalid")
+    for tag in tags:
+        if type(tag) is not str or tag != _text(tag, "inspect tag") or any(c.isspace() for c in tag):
+            raise ValueError("Docker model inspect tag is invalid")
+    if len(set(tags)) != len(tags):
+        raise ValueError("Docker model inspect contains duplicate tags")
+    immutable_reference = model_ref == expected_digest or model_ref.endswith("@" + expected_digest)
+    if not immutable_reference and model_ref not in tags:
+        raise ValueError("Docker model inspect does not bind the exact planned model reference")
+    return identity
 
 
 @dataclass(frozen=True, slots=True)
@@ -94,6 +109,10 @@ class DockerModelPlan:
             raise ValueError("Docker model reference may not contain whitespace or option-like prefixes")
         if _OCI.fullmatch(self.oci_digest) is None:
             raise ValueError("Docker model OCI digest must be exact sha256 identity")
+        if "@" in model_ref:
+            name, reference_digest = model_ref.rsplit("@", 1)
+            if not name or "@" in name or reference_digest != self.oci_digest:
+                raise ValueError("Docker model reference digest differs from the planned OCI digest")
         if self.engine not in policy.docker_approved_engines:
             raise ValueError("Docker model engine is not approved")
         if self.base_url != policy.docker_loopback_origin:
@@ -119,6 +138,8 @@ class DockerModelRuntime:
         self.interlock = interlock
         self._run_command = command_runner or self._default_runner
         self._leases: dict[str, ModelResourceLease] = {}
+        self._state_lock = threading.RLock()
+        self._pending: set[str] = set()
 
     @staticmethod
     def _default_runner(argv: Sequence[str], timeout_seconds: float) -> CommandResult:
@@ -161,12 +182,12 @@ class DockerModelRuntime:
         result = self._command(("docker", "model", "inspect", plan.model_ref), 60.0)
         if result.returncode != 0:
             raise FileNotFoundError("Docker model is not locally cached")
+        from .json_io import decode_json_object
         try:
-            payload = json.loads(result.stdout.decode("utf-8"))
-        except (UnicodeDecodeError, json.JSONDecodeError) as error:
+            payload = decode_json_object(result.stdout, max_bytes=_MAX_OUTPUT, max_nodes=32768)
+        except (UnicodeDecodeError, ValueError) as error:
             raise ValueError("Docker model inspect returned invalid JSON") from error
-        if plan.oci_digest not in _digest_strings(payload):
-            raise ValueError("Docker model inspect does not prove the planned OCI digest")
+        _inspect_manifest_identity(payload, model_ref=plan.model_ref, expected_digest=plan.oci_digest)
         body = {
             "schema_version": "px.docker-model-cache-receipt/1.0",
             "model_id": plan.model_id,
@@ -190,26 +211,43 @@ class DockerModelRuntime:
             raise PermissionError("Docker cold runtime is disabled by policy")
         if supplied_authority is not True:
             raise PermissionError("Docker model load requires explicit effect authority")
-        if plan.plan_sha256 in self._leases:
-            raise ValueError("Docker model plan is already holding a resource lease")
-        cache_receipt = self.verify_cached(plan)
-        if need.runtime_id != "docker_model_runner":
-            raise ValueError("Docker runtime requires a docker_model_runner resource need")
-        lease = self.interlock.acquire(f"docker:{plan.model_id}", need, timeout_seconds=0.0)
-        self._leases[plan.plan_sha256] = lease
         timeout = self.policy.docker_start_timeout_seconds if timeout_seconds is None else timeout_seconds
         if type(timeout) not in (int, float) or type(timeout) is bool or not 0.1 <= float(timeout) <= self.policy.docker_start_timeout_seconds:
             raise ValueError("Docker prewarm timeout exceeds policy")
         timeout = float(timeout)
+        need.validate()
+        if need.runtime_id != "docker_model_runner":
+            raise ValueError("Docker runtime requires a docker_model_runner resource need")
+        with self._state_lock:
+            if plan.plan_sha256 in self._leases or plan.plan_sha256 in self._pending:
+                raise ValueError("Docker model plan is already holding a lease or has an operation in progress")
+            self._pending.add(plan.plan_sha256)
         try:
+            return self._prewarm_reserved(plan, need, timeout)
+        finally:
+            with self._state_lock:
+                self._pending.discard(plan.plan_sha256)
+
+    def _prewarm_reserved(self, plan: DockerModelPlan, need: ModelResourceNeed, timeout: float) -> dict[str, object]:
+        cache_receipt = self.verify_cached(plan)
+        lease = self.interlock.acquire(f"docker:{plan.model_id}", need, timeout_seconds=0.0)
+        run_invoked = False
+        try:
+            with self._state_lock:
+                self._leases[plan.plan_sha256] = lease
+            run_invoked = True
             result = self._command(("docker", "model", "run", "--detach", plan.model_ref), timeout)
             if result.returncode != 0:
                 raise RuntimeError("Docker model prewarm command failed")
         except BaseException:
-            cleanup = self._command(("docker", "model", "unload", plan.model_ref), self.policy.docker_unload_timeout_seconds)
-            if cleanup.returncode == 0:
-                self.interlock.release(lease.lease_id, cleanup_proven=True)
-                self._leases.pop(plan.plan_sha256, None)
+            cleanup_proven = not run_invoked
+            if run_invoked:
+                cleanup = self._command(("docker", "model", "unload", plan.model_ref), self.policy.docker_unload_timeout_seconds)
+                cleanup_proven = cleanup.returncode == 0
+            if cleanup_proven:
+                with self._state_lock:
+                    self.interlock.release(lease.lease_id, cleanup_proven=True)
+                    self._leases.pop(plan.plan_sha256, None)
             raise
         body = {
             "schema_version": "px.docker-model-runtime-receipt/1.0",
@@ -231,6 +269,19 @@ class DockerModelRuntime:
         plan.validate(self.policy)
         if supplied_authority is not True:
             raise PermissionError("Docker model unload requires explicit effect authority")
+        with self._state_lock:
+            if plan.plan_sha256 in self._pending:
+                raise ValueError("Docker model plan has an operation in progress")
+            if plan.plan_sha256 not in self._leases:
+                raise KeyError("Docker model plan does not hold a resource lease")
+            self._pending.add(plan.plan_sha256)
+        try:
+            return self._unload_reserved(plan)
+        finally:
+            with self._state_lock:
+                self._pending.discard(plan.plan_sha256)
+
+    def _unload_reserved(self, plan: DockerModelPlan) -> dict[str, object]:
         lease = self._leases.get(plan.plan_sha256)
         if lease is None:
             raise KeyError("Docker model plan does not hold a resource lease")

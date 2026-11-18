@@ -17,14 +17,21 @@ class BudgetLedger {
     this.policyProvider = policyProvider; this.persistence = options.persistence || null;
     this.entries = []; this.reservations = new Map(); this.revision = 0; this.epoch = 1;
     this.persistenceError = null; this.writes = Promise.resolve();
+    this.ownerBinding = options.ownerBinding ? immutable({ ...options.ownerBinding }) : null;
+    this.knownTaskIds = new Set();
     this.unreconciledTaskIds = new Set(options.legacyTaskIds || []);
     const loaded = this.persistence?.load?.();
     if (loaded) {
+      if (this.ownerBinding && JSON.stringify(loaded.projectBinding) !== JSON.stringify(this.ownerBinding)) throw new Error('budget-store-project-binding-mismatch');
       if (loaded.schemaVersion !== STORE_VERSION || !Number.isSafeInteger(loaded.revision) || loaded.revision < 1 ||
           !Number.isSafeInteger(loaded.epoch) || loaded.epoch < 1 || loaded.snapshotSha256 !== snapshotHash(loaded) ||
           !Array.isArray(loaded.entries) || !Array.isArray(loaded.reservations) || loaded.entries.length + loaded.reservations.length > MAX_ROWS) throw new Error('budget-store-invalid');
-      if (!Array.isArray(loaded.unreconciledTaskIds || []) || (loaded.unreconciledTaskIds || []).some(id => typeof id !== 'string')) throw new Error('budget-store-invalid-legacy-owners');
+      if (!Array.isArray(loaded.unreconciledTaskIds || []) || (loaded.unreconciledTaskIds || []).length > 10000 || (loaded.unreconciledTaskIds || []).some(id => typeof id !== 'string')) throw new Error('budget-store-invalid-legacy-owners');
       this.unreconciledTaskIds = new Set(loaded.unreconciledTaskIds || []);
+      if (this.ownerBinding) {
+        if (!Array.isArray(loaded.knownTaskIds) || loaded.knownTaskIds.length > 10000 || new Set(loaded.knownTaskIds).size !== loaded.knownTaskIds.length) throw new Error('budget-store-invalid-known-tasks');
+        for (const id of loaded.knownTaskIds) { requireSafeId(id, 'known-task'); this.knownTaskIds.add(id); }
+      }
       this.revision = loaded.revision; this.epoch = loaded.epoch + 1;
       const settlements = new Set();
       for (const row of loaded.entries) {
@@ -47,17 +54,45 @@ class BudgetLedger {
         if (!Number.isSafeInteger(row.microunits) || row.microunits < 0 || this.reservations.has(row.executionId)) throw new Error('budget-store-invalid-reservation');
         this.reservations.set(row.executionId, immutable(row));
       }
+      if (this.ownerBinding) {
+        for (const row of [...this.entries, ...this.reservations.values()]) {
+          if (typeof row.taskId !== 'string' || (!this.knownTaskIds.has(row.taskId) && !this.unreconciledTaskIds.has(row.taskId))) throw new Error('budget-store-unattributed-financial-owner');
+        }
+      }
     }
     if (this.persistence) this._persist();
   }
 
   get receipts() { return this.entries.map(row => row.receipt); }
+  _registerCreatedTaskId(taskId) {
+    this._healthy(); requireSafeId(taskId, 'new-task');
+    if (!this.ownerBinding) throw new Error('native-budget-owner-required');
+    if (this.unreconciledTaskIds.has(taskId)) throw new Error('historical-task-cannot-become-known-zero');
+    if (!this.knownTaskIds.has(taskId)) {
+      if (this.knownTaskIds.size >= 10000) throw new Error('budget-store-known-task-capacity');
+      this.knownTaskIds.add(taskId); this._persist();
+    }
+  }
+  reconcilePreexistingTasks(taskIds) {
+    this._healthy();
+    // Workspace usage storage has no native project/generation binding. Even
+    // a valid workspace snapshot cannot certify complete spend history for
+    // tasks recovered from the native owner. Keep those paid tasks fenced.
+    let changed = false;
+    for (const id of taskIds) {
+      requireSafeId(id, 'historical-task');
+      if (this.ownerBinding && this.knownTaskIds.has(id)) continue;
+      if (!this.unreconciledTaskIds.has(id)) { this.unreconciledTaskIds.add(id); changed = true; }
+    }
+    if (changed) this._persist();
+  }
   _healthy() { if (this.persistenceError) throw this.persistenceError; }
   _persist() {
     this._healthy(); this.revision += 1;
     if (!this.persistence?.save) return;
     const snapshot = { schemaVersion: STORE_VERSION, revision: this.revision, epoch: this.epoch,
-      entries: this.entries, reservations: [...this.reservations.values()], unreconciledTaskIds: [...this.unreconciledTaskIds] };
+      entries: this.entries, reservations: [...this.reservations.values()], unreconciledTaskIds: [...this.unreconciledTaskIds],
+      ...(this.ownerBinding ? { projectBinding: this.ownerBinding, knownTaskIds: [...this.knownTaskIds] } : {}) };
     const image = JSON.parse(JSON.stringify({ ...snapshot, snapshotSha256: snapshotHash(snapshot) }));
     if (this.persistence.synchronous === true) {
       try { this.persistence.save(image); } catch (error) { this.persistenceError = error; throw error; }
@@ -85,7 +120,7 @@ class BudgetLedger {
       catch { return { allowed: false, reason: 'task-cost-number-invalid' }; }
       if (maximum === null && p.allow_unbounded_task_cost !== true) return { allowed: false, reason: 'task-cost-ceiling-required' };
       if (!this.persistence?.save) return { allowed: false, reason: 'billing-persistence-unavailable' };
-      if (this.unreconciledTaskIds.has(task.taskId)) return { allowed: false, reason: 'task-historical-spend-unreconciled' };
+      if (this.unreconciledTaskIds.has(task.taskId) || (this.ownerBinding && !this.knownTaskIds.has(task.taskId))) return { allowed: false, reason: 'task-historical-spend-unreconciled' };
       let spent = 0;
       for (const row of this.entries) {
         if (row.receipt.costClass !== 'billable-api') continue;
@@ -108,6 +143,7 @@ class BudgetLedger {
     if (!admission.allowed) throw new Error(admission.reason);
     const row = { taskId: task.taskId, runId, executionId, workerId: worker.workerId, providerId: worker.providerId,
       costClass: worker.costClass, microunits: worker.costClass === 'billable-api' ? microunits(projectedChargeUsd) : 0 };
+    if (this.ownerBinding && !this.knownTaskIds.has(task.taskId) && !this.unreconciledTaskIds.has(task.taskId)) throw new Error('budget-store-unattributed-financial-owner');
     this.reservations.set(executionId, immutable(row)); this._persist(); return row;
   }
 
@@ -124,6 +160,8 @@ class BudgetLedger {
     if (prior) { if (prior.identity !== identity) throw new Error('usage-settlement-conflict'); return prior.receipt; }
     if (executionId !== null && this.entries.some(row => row.executionId === executionId)) throw new Error('usage-execution-already-settled');
     const reservation = this.reservations.get(executionId);
+    if (this.ownerBinding && !this.knownTaskIds.has(taskId) && !this.unreconciledTaskIds.has(taskId)) throw new Error('budget-store-unattributed-financial-owner');
+    if (this.ownerBinding && !reservation) throw new Error('native-usage-reservation-required');
     if (reservation && (reservation.taskId !== taskId || reservation.runId !== runId || reservation.workerId !== receipt.workerId || reservation.providerId !== receipt.providerId || reservation.costClass !== receipt.costClass)) throw new Error('usage-reservation-owner-mismatch');
     if (receipt.costClass === 'billable-api' && (!reservation || typeof settlementId !== 'string' || !/^[a-f0-9]{64}$/.test(settlementId))) throw new Error('billable-settlement-identity-required');
     if (this.entries.length >= MAX_ROWS) throw new Error('billing-ledger-capacity');

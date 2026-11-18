@@ -55,10 +55,14 @@ class Resources:
                     raise ValueError(f"{name} must be a non-negative number, not bool")
                 try:
                     num = float(val)
-                except (TypeError, ValueError):
-                    raise ValueError(f"{name} must be a non-negative number")
+                except (TypeError, ValueError, OverflowError):
+                    raise ValueError(f"{name} must be a non-negative number and finite")
+                if not math.isfinite(num):
+                    raise ValueError(f"{name} must be finite")
                 if num < 0:
                     raise ValueError(f"{name} must be non-negative")
+                if name == "gpu_count" and not num.is_integer():
+                    raise ValueError("gpu_count must be a non-negative integer")
                 result[name] = int(num) if name == "gpu_count" else num
             else:
                 result[name] = val

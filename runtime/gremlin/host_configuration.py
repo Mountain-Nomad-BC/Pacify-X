@@ -43,6 +43,8 @@ def resolve_recovery_verifier_from_environment():
     adapter = getattr(
         importlib.import_module(module_name.strip()), attribute.strip(), None
     )
+    if isinstance(adapter, type):
+        raise ValueError("the bound recovery verifier must be an instance, not an unbound class")
     if adapter is None or not callable(getattr(adapter, "verify", None)):
         raise ValueError(
             "the bound recovery verifier has no concrete verify operation"

@@ -13,6 +13,7 @@ import re
 import sys
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 from pipeline_common import (
     canonical_json,
     parse_roots,
@@ -20,6 +21,8 @@ from pipeline_common import (
     sha256_file,
     simhash64,
 )  # noqa: E402
+from runtime.archive_io import reject_path_links  # noqa: E402
+from runtime.secure_publish import atomic_write_bytes, atomic_write_stream  # noqa: E402
 
 DEFAULT_EXCLUDES = {
     ".git",
@@ -196,6 +199,35 @@ def _structure(text: str) -> dict[str, object]:
     }
 
 
+def _publish_jsonl(path: Path, rows: list[dict]) -> str:
+    digest = hashlib.sha256()
+
+    def write_rows(stream):
+        for row in rows:
+            encoded = (canonical_json(row) + "\n").encode("utf-8")
+            stream.write(encoded)
+            digest.update(encoded)
+
+    atomic_write_stream(path, write_rows)
+    return digest.hexdigest()
+
+
+def _validated_outputs(paths: tuple[Path, ...]) -> tuple[Path, ...]:
+    resolved = []
+    for path in paths:
+        reject_path_links(path.absolute())
+        for parent in path.absolute().parents:
+            if parent.exists() and not parent.is_dir():
+                raise ValueError(f"inventory output parent is not a directory: {parent}")
+        if path.exists() and (not path.is_file() or path.stat().st_nlink != 1):
+            raise ValueError(f"inventory output must be a physical single-link file: {path}")
+        resolved.append(path.resolve())
+    for i, left in enumerate(resolved):
+        if any(left.is_relative_to(right) or right.is_relative_to(left) for right in resolved[i + 1:]):
+            raise ValueError("inventory, errors and summary outputs must be distinct files")
+    return tuple(resolved)
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument(
@@ -215,6 +247,13 @@ def main() -> int:
     if args.max_structure_bytes < 1:
         raise ValueError("--max-structure-bytes must be positive")
     roots = parse_roots(args.root)
+    error_path = args.errors or args.output.with_name("file_inventory_errors.jsonl")
+    summary_path = args.summary or args.output.with_name("file_inventory_summary.json")
+    markdown = args.output.with_name("file_inventory_summary.md")
+    args.output, error_path, summary_path, markdown = _validated_outputs(
+        (args.output, error_path, summary_path, markdown)
+    )
+    generated_paths = {path.resolve() for path in (args.output, error_path, summary_path, markdown)}
     excludes = DEFAULT_EXCLUDES | {value.casefold() for value in args.exclude}
     records: list[dict] = []
     errors: list[dict] = []
@@ -229,6 +268,8 @@ def main() -> int:
             base = Path(directory)
             for filename in sorted(filenames):
                 path = base / filename
+                if path.resolve() in generated_paths:
+                    continue
                 discovered[label] += 1
                 try:
                     relative = path.relative_to(root).as_posix()
@@ -273,24 +314,13 @@ def main() -> int:
                         }
                     )
     records.sort(key=lambda item: (item["source_tree"], item["path"], item["id"]))
-    args.output.parent.mkdir(parents=True, exist_ok=True)
-    digest = hashlib.sha256()
-    with args.output.open("w", encoding="utf-8", newline="\n") as handle:
-        for record in records:
-            line = canonical_json(record) + "\n"
-            handle.write(line)
-            digest.update(line.encode())
-    error_path = args.errors or args.output.with_name("file_inventory_errors.jsonl")
-    with error_path.open("w", encoding="utf-8", newline="\n") as handle:
-        for error in sorted(
-            errors, key=lambda item: (item["source_tree"], item["path"])
-        ):
-            handle.write(canonical_json(error) + "\n")
+    inventory_digest = _publish_jsonl(args.output, records)
+    _publish_jsonl(error_path, sorted(errors, key=lambda item: (item["source_tree"], item["path"])))
     summary = {
         "schema_version": "1.0",
         "record_count": len(records),
         "error_count": len(errors),
-        "inventory_sha256": digest.hexdigest(),
+        "inventory_sha256": inventory_digest,
         "roots": [
             {
                 "label": label,
@@ -312,18 +342,16 @@ def main() -> int:
             Counter(item["extension"] or "[none]" for item in records).most_common()
         ),
     }
-    summary_path = args.summary or args.output.with_name("file_inventory_summary.json")
-    summary_path.write_text(json.dumps(summary, indent=2) + "\n", encoding="utf-8")
-    markdown = args.output.with_name("file_inventory_summary.md")
-    markdown.write_text(
+    atomic_write_bytes(summary_path, (json.dumps(summary, indent=2) + "\n").encode("utf-8"))
+    markdown_text = (
         "# File inventory summary\n\n"
-        f"- Records: {len(records)}\n- Errors: {len(errors)}\n- Inventory SHA-256: `{digest.hexdigest()}`\n"
+        f"- Records: {len(records)}\n- Errors: {len(errors)}\n- Inventory SHA-256: `{inventory_digest}`\n"
         + "".join(
             f"- {item['label']}: {item['records']} records; reconciled={str(item['reconciled']).lower()}\n"
             for item in summary["roots"]
-        ),
-        encoding="utf-8",
+        )
     )
+    atomic_write_bytes(markdown, markdown_text.encode("utf-8"))
     print(json.dumps(summary, indent=2))
     return (
         0 if not errors and all(item["reconciled"] for item in summary["roots"]) else 1

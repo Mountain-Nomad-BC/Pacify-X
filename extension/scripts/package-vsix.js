@@ -71,10 +71,11 @@ function xml(value) {
 }
 
 function findIssuedArtifacts(directory, name, budget = { remaining: 4096 }) {
-  if (!fs.existsSync(directory) || budget.remaining <= 0) return [];
+  if (!fs.existsSync(directory)) return [];
+  if (budget.remaining <= 0) throw new Error('Issued artifact inventory exceeds its entry budget');
   const found = [];
   for (const entry of fs.readdirSync(directory, { withFileTypes: true })) {
-    if ((budget.remaining -= 1) < 0) break;
+    if ((budget.remaining -= 1) < 0) throw new Error('Issued artifact inventory exceeds its entry budget');
     const full = path.join(directory, entry.name);
     if (entry.isSymbolicLink()) continue;
     if (entry.isDirectory()) found.push(...findIssuedArtifacts(full, name, budget));
@@ -87,6 +88,8 @@ function walk(directory, relative = '') {
   const result = [];
   for (const entry of fs.readdirSync(directory, { withFileTypes: true })) {
     const rel = path.posix.join(relative, entry.name);
+    // The generated bundle above is the sole authority for this archive member.
+    if (rel.toLowerCase() === 'src/extension.bundle.js') continue;
     const full = path.join(directory, entry.name);
     if (entry.isSymbolicLink()) continue;
     if (entry.isDirectory()) result.push(...walk(full, rel));
@@ -140,7 +143,7 @@ const end = Buffer.alloc(22);
 end.writeUInt32LE(0x06054b50, 0); end.writeUInt16LE(0, 4); end.writeUInt16LE(0, 6);
 end.writeUInt16LE(entries.length, 8); end.writeUInt16LE(entries.length, 10); end.writeUInt32LE(centralSize, 12); end.writeUInt32LE(offset, 16); end.writeUInt16LE(0, 20);
 fs.mkdirSync(path.dirname(output), { recursive: true });
-fs.writeFileSync(output, Buffer.concat([...locals, ...centrals, end]));
+fs.writeFileSync(output, Buffer.concat([...locals, ...centrals, end]), { flag: 'wx' });
 const digest = crypto.createHash('sha256').update(fs.readFileSync(output)).digest('hex');
 fs.writeFileSync(path.join(root, 'SHA256SUMS.txt'), `${digest}  dist/${path.basename(output)}\n`, 'utf8');
 process.stdout.write(`${output}\nSHA256 ${digest}\n`);

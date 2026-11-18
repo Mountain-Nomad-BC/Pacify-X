@@ -295,7 +295,21 @@ def load_world_state_for_startup(
         if current_source_revision is None
         else current_source_revision
     )
-    validate_world_state(value, current_source_revision=expected, root=root)
+    try:
+        validate_world_state(value, current_source_revision=expected, root=root)
+    except WorldStateRejected:
+        # A project may hold no Pacify-X projection, or hold an image authored for
+        # another release campaign whose detail locators are canonical only there.
+        # Such an image describes no state this project owns, so it is discarded
+        # exactly like a missing projection and never surfaced to startup. Sealed
+        # state that disagrees with the live revision or fails its hash is not
+        # discarded: it remains authoritative and keeps failing closed below.
+        return {
+            "state": "UNVERIFIED",
+            "reason_codes": ["world_state_unusable"],
+            "hydrate": ["startup_core_metadata"],
+            "world_state": None,
+        }
     stale = list(value.get("stale_projection_ids", ()))
     hydrate = ["startup_core_metadata"]
     hydrate.extend(f"projection:{item}" for item in stale)
@@ -309,6 +323,28 @@ def load_world_state_for_startup(
         "hydrate": hydrate,
         "world_state": dict(value),
     }
+
+
+class WorldStateRejected(ValueError):
+    """The stored image is malformed or does not describe this project.
+
+    Only raised when the image cannot be attributed to the current owner at all
+    (schema, detail locators, canonical metadata). A well-formed image that
+    simply disagrees with the live source revision or fails its seal keeps
+    raising a plain ``ValueError``: those are authoritative state, not garbage.
+    """
+
+
+REJECTION_MESSAGES = frozenset(
+    {
+        "invalid world state: exact metadata fields required",
+        "invalid world state: detail locators must be canonical metadata paths",
+    }
+)
+
+
+def _reject(message: str) -> None:
+    raise WorldStateRejected(message)
 
 
 def validate_world_state(
@@ -340,7 +376,7 @@ def validate_world_state(
         "detail_bodies_hydrated",
     }
     if type(state) is not dict or len(state) != len(fields) or set(state) != fields:
-        raise ValueError("invalid world state: exact metadata fields required")
+        _reject("invalid world state: exact metadata fields required")
     _sha(current_source_revision, "current_source_revision")
     _sha(state["source_revision"], "source_revision")
     _sha(state["world_state_sha256"], "world_state_sha256")
@@ -383,7 +419,7 @@ def validate_world_state(
             for key, value in expected_details.items()
         )
     ):
-        raise ValueError(
+        _reject(
             "invalid world state: detail locators must be canonical metadata paths"
         )
     components = state["components"]

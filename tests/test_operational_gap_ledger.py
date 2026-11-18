@@ -2544,3 +2544,60 @@ def test_operator_cli_exposes_disposition_revision_and_admission_backfill(
     assert command.main() == 0
     capsys.readouterr()
     assert calls[-1] == ("transition_admission_backfilled", {"finding_id": "f"})
+
+
+def _install_companion_fixture(tmp_path):
+    from tests.test_publication_custody_guard import _root, _admit, GAP, EVIDENCE
+    root = _root(tmp_path)
+    parent_id = _admit(root, [str(root / 'private')], effects=('read','write','execute'))
+    parent = next(row for row in read_snapshot(root)['work_admissions'] if row['event_id'] == parent_id)
+    payload = {'gap_id':GAP,'checkpoint_event_id':parent['checkpoint_event_id'],
+        'session_id':'fixture-install-capability','parent_admission_event_id':parent_id,
+        'expires_utc':'2098-01-01T00:00:00Z','effect_scopes':[{'effect':'install','scope':[str(root/'private/install')]}],
+        'authority':'Same fixture actor; no live installation authority.',
+        'expected_effect':'Disposable admission guard only.','rollback':'Retain fixture evidence.','evidence':EVIDENCE}
+    return root, parent, payload
+
+
+def test_install_companion_retains_one_owner_and_requires_child_first_closure(tmp_path):
+    root, parent, payload = _install_companion_fixture(tmp_path)
+    child = append_event(root,'work_admitted',payload,actor='pytest')
+    snapshot = read_snapshot(root)
+    assert guard_work_admission(snapshot,gap_id=payload['gap_id'],effect='install',scope=payload['effect_scopes'][0]['scope'],
+                                admission_event_id=child['event_id'])['valid']
+    close_parent={'gap_id':payload['gap_id'],'session_id':parent['session_id'],
+        'admission_event_id':parent['event_id'],'outcome':'completed','evidence':payload['evidence']}
+    with pytest.raises(ValueError,match='companion before'):
+        append_event(root,'work_session_closed',close_parent,actor='pytest')
+    with pytest.raises(ValueError,match='open install companion'):
+        append_event(root,'work_admitted',{**payload,'session_id':'second-install-capability'},actor='pytest')
+    append_event(root,'work_session_closed',{'gap_id':payload['gap_id'],'session_id':payload['session_id'],
+        'admission_event_id':child['event_id'],'outcome':'completed','evidence':payload['evidence']},actor='pytest')
+    append_event(root,'work_session_closed',close_parent,actor='pytest')
+    with pytest.raises(ValueError,match='closed'):
+        guard_work_admission(read_snapshot(root),gap_id=payload['gap_id'],effect='install',
+            scope=payload['effect_scopes'][0]['scope'],admission_event_id=child['event_id'])
+    replay = project_events(read_events(root))
+    assert replay['work_admissions'][-1]['parent_admission_event_id'] == parent['event_id']
+
+
+@pytest.mark.parametrize('defect',['actor','scope','traversal','expiry','effect','nested','closed-parent','absent-parent','independent-owner'])
+def test_install_companion_cannot_expand_or_replace_parent_owner(tmp_path, defect):
+    root, parent, payload = _install_companion_fixture(tmp_path)
+    actor='pytest'
+    if defect == 'actor': actor='unrelated-actor'
+    elif defect == 'scope': payload['effect_scopes'][0]['scope']=[str(root/'unowned')]
+    elif defect == 'traversal': payload['effect_scopes'][0]['scope']=[str(root/'private/../unowned')]
+    elif defect == 'expiry': payload['expires_utc']='2100-01-01T00:00:00Z'
+    elif defect == 'effect': payload['effect_scopes'][0]['effect']='destructive'
+    elif defect == 'nested':
+        child=append_event(root,'work_admitted',payload,actor=actor)
+        payload={**payload,'session_id':'nested-install-capability','parent_admission_event_id':child['event_id']}
+    elif defect == 'closed-parent':
+        append_event(root,'work_session_closed',{'gap_id':payload['gap_id'],'session_id':parent['session_id'],
+            'admission_event_id':parent['event_id'],'outcome':'completed','evidence':payload['evidence']},actor=actor)
+    elif defect == 'absent-parent': payload['parent_admission_event_id']='missing-parent-admission'
+    else: payload.pop('parent_admission_event_id')
+    before = (root/'registry/operational_gap_ledger.jsonl').read_bytes()
+    with pytest.raises(ValueError): append_event(root,'work_admitted',payload,actor=actor)
+    assert (root/'registry/operational_gap_ledger.jsonl').read_bytes() == before

@@ -29,6 +29,9 @@ if str(ROOT) not in sys.path:
 
 from runtime.hardware_routing import hardware_report
 from runtime.model_profile import load_runtime_profiles
+from runtime.archive_io import reject_path_links
+from runtime.confined_output import confined_path
+from runtime.secure_publish import atomic_write_bytes
 
 MAX_CAPTURE_BYTES = 8 * 1024 * 1024
 
@@ -50,16 +53,8 @@ def _bounded_file(value: str, *, executable: bool = False, suffix: str | None = 
 
 
 def _write_json_atomic(path: Path, payload: Mapping[str, object]) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    temporary = path.with_name(path.name + f".{os.getpid()}.tmp")
-    try:
-        temporary.write_text(json.dumps(dict(payload), indent=2, sort_keys=True) + "\n", encoding="utf-8", newline="\n")
-        os.replace(temporary, path)
-    finally:
-        try:
-            temporary.unlink(missing_ok=True)
-        except OSError:
-            pass
+    image = (json.dumps(dict(payload), indent=2, sort_keys=True) + "\n").encode("utf-8")
+    atomic_write_bytes(path, image)
 
 
 def _bench_supports_threads_batch(bench: Path) -> bool:
@@ -186,7 +181,9 @@ def main() -> int:
     parser.add_argument("--output", required=True)
     args = parser.parse_args()
 
+    reject_path_links(Path(args.root))
     root = Path(args.root).resolve(strict=True)
+    output = confined_path(root, Path(args.output), label="benchmark output")
     profiles = {item.profile_id: item for item in load_runtime_profiles(root)}
     if args.profile not in profiles:
         raise SystemExit(f"unknown runtime profile: {args.profile}")
@@ -288,7 +285,6 @@ def main() -> int:
         "promotion_attempted": False,
         "auto_download": False
     }
-    output = Path(args.output)
     _write_json_atomic(output, receipt)
     print(json.dumps({"output": str(output), "profile_id": profile.profile_id, "model_sha256": model_before, "p95_wall_ms": receipt["performance"]["p95_wall_ms"]}, indent=2))
     return 0

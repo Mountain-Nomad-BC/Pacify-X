@@ -57,6 +57,16 @@ GUARDED_OWNER_SCRIPTS = frozenset({
 RETAINED_PROCESS_CUSTODY: dict[str, object] = {}
 
 
+def _scope_covers(scope, target: str) -> bool:
+    """Compare physical path components for relative and absolute admissions."""
+    path = (ROOT / target).resolve()
+    for item in scope:
+        admitted = (ROOT / str(item)).resolve()
+        if path == admitted or path.is_relative_to(admitted):
+            return True
+    return False
+
+
 def admit_driver(admission_event_id: str) -> None:
     """Validate caller-supplied native write/execute scopes without granting work."""
     from runtime.guarded_registry_projection import _admit_projection_write
@@ -71,8 +81,7 @@ def admit_driver(admission_event_id: str) -> None:
     guard_work_admission(snapshot, gap_id=admission["gap_id"], effect="execute",
                          scope=scope, admission_event_id=admission_event_id)
     for _, script, _, _ in PROJECTIONS:
-        if not any(script == str(item).rstrip("/") or
-                   script.startswith(str(item).rstrip("/") + "/") for item in scope):
+        if not _scope_covers(scope, script):
             raise ValueError("projection driver execute scope omits " + script)
 
 
@@ -132,7 +141,7 @@ def run(label: str, script: str, argv: tuple[str, ...], *, admission_event_id: s
         raise ValueError("projection host requires an explicit existing PX_STUDIO_KEY_ROOT binding")
     for target in (".agentic_engineering_os_px/sandbox", ".agentic_engineering_os_px/runtime-core",
                    ".agentic_engineering_os_px/studios/authority", Path(key_root).as_posix()):
-        if not any(target == str(item).rstrip("/") or target.startswith(str(item).rstrip("/") + "/") for item in read_scope):
+        if not _scope_covers(read_scope, target):
             raise ValueError("commissioned projection host read scope omits " + target)
     guard_work_admission(snapshot, gap_id=admission["gap_id"], effect="read",
                          scope=read_scope, admission_event_id=admission_event_id)
@@ -195,8 +204,11 @@ def run(label: str, script: str, argv: tuple[str, ...], *, admission_event_id: s
         resource_id = custody.parent_resource_id
         from runtime.gremlin.host_enforcement_backend import ProcessSupervisorEnforcementBackend
         enforcement_job_id = str(custody.job_object_id or "")
-        if enforcement_job_id:
-            ProcessSupervisorEnforcementBackend.REGISTRY[enforcement_job_id] = supervisor
+        verified = manager.verify_owned_job(resource_id)
+        job = manager._process_jobs.get(resource_id)
+        if not enforcement_job_id or verified.job_object_id != enforcement_job_id or job is None or not job.handle:
+            raise PermissionError("projection enforcement lacks its verified native Job")
+        ProcessSupervisorEnforcementBackend.REGISTRY[enforcement_job_id] = job
         enrollment = enroll_supervised_process(host.nanny, manager, custody,
             execution_id=run_id, agent_id="projection-reconciliation",
             policy_profile="projection-reconciliation", orchestration_id=run_id)

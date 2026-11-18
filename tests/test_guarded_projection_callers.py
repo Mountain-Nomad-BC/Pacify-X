@@ -14,6 +14,8 @@ CASES = (
     ("build_artifact_reachability", "artifact_reachability"),
     ("build_provider_route_index", "provider_route_scan"),
     ("build_contract_ownership_registry", "contract_ownership"),
+    ("build_agency_agent_graph", "agency_agent_graph"),
+    ("build_semantic_capability_index", "semantic_capability_index"),
 )
 
 
@@ -34,6 +36,11 @@ def _builder_inputs(monkeypatch, module, name):
     elif name == "build_provider_route_index":
         monkeypatch.setattr(module, "build_provider_route_index", lambda *a: {
             "records": [], "report": {"valid": True, "violation_count": 0}})
+    elif name == "build_agency_agent_graph":
+        monkeypatch.setattr(module, "build_agent_graph", lambda *a: {"records": []})
+    elif name == "build_semantic_capability_index":
+        monkeypatch.setattr(module, "build_semantic_index", lambda *a: {
+            "record_count": 0, "revision": "controlled-fixture", "records": []})
     else:
         monkeypatch.setattr(module, "certify_exact_tools", lambda *a: {"valid": True})
         monkeypatch.setattr(module, "certify_python_surfaces", lambda *a, **k: {
@@ -73,7 +80,8 @@ def test_missing_admission_cannot_publish(monkeypatch, tmp_path, name, target):
     _builder_inputs(monkeypatch, module, name)
     monkeypatch.setattr("sys.argv", [name, "--root", str(tmp_path)]
                         if name == "build_registry_envelope_inventory" else [name])
-    expected = GuardedProjectionError if name == "build_registry_envelope_inventory" else SystemExit
+    expected = GuardedProjectionError if name in {
+        "build_registry_envelope_inventory", "build_agency_agent_graph"} else SystemExit
     with pytest.raises(expected):
         module.main()
     assert not (tmp_path / "registry").exists()

@@ -20,7 +20,7 @@ def test_packaged_imports_are_fully_classified_and_declared():
         .splitlines()
         if line and not line.startswith("#") and "==" in line
     }
-    assert result["release_dependency_count"] == len(locked) == 13
+    assert result["release_dependency_count"] == len(locked) == 18
     assert result["build_requirements"] == ["setuptools==84.0.0"]
     assert result["lock_hash_counts"]["coverage"] >= 12
     assert result["lock_hash_counts"]["pyyaml"] >= 12
@@ -42,5 +42,5 @@ def test_dependency_inventory_is_deterministic_and_gates_runtime_yaml():
         "module": "jsonschema",
         "distribution": "jsonschema",
         "classification": "test_only",
-        "paths": ["tests/test_cognitive_index_inputs.py"],
+        "paths": ["tests/test_cognitive_index_inputs.py", "tests/test_project_revision_succession.py"],
     }

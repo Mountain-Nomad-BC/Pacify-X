@@ -14,6 +14,37 @@ function host(t, options) {
   view.view = { webview: { postMessage: async message => { messages.push(message); } } };
   return { owner, view, messages };
 }
+
+test('registered console refresh publishes actual catalog provenance', async t => {
+  let calls=0;
+  const {owner,view,messages}=host(t,{modelFabricLister:async()=>{calls++;return {schema_version:'px.vscode-model-list/1.0',authority_granted:false,models:[]};},providerGatewayInvoker:async()=>{assert.fail('no invocation');}});
+  await view._handle({schemaVersion:MESSAGE_VERSION,type:'refreshModels'});
+  assert.ok(calls>=2);
+  assert.equal(messages.at(-1).state.modelCatalog.source,'model-fabric');
+  assert.equal(owner.modelCatalog.state,'current');
+});
+
+test('registered console control messages report unavailable, forward exact fields and surface rejection',async t=>{
+  const {owner,view,messages}=host(t,{});
+  const task=owner.harness.createTask({goal:'controlled task',mode:'ASK'});
+  await view._handle({schemaVersion:MESSAGE_VERSION,type:'sandboxControl',mode:'ON'});
+  assert.ok(messages.some(m=>m.code==='sandbox-unavailable'));
+  let received;
+  view.tieControl=async request=>{received=request;throw new Error('native tie denied');};
+  await view._handle({schemaVersion:MESSAGE_VERSION,type:'tieControl',taskId:task.taskId,action:'retrieve'});
+  assert.deepEqual(received,{taskId:task.taskId,action:'retrieve'});
+  assert.ok(messages.some(m=>m.code==='tie-rejected'));
+  received=null;
+  await view._handle({schemaVersion:MESSAGE_VERSION,type:'tieControl',taskId:'foreign-task',action:'reconcile'});
+  assert.equal(received,null);
+});
+
+test('registered view preserves service, model and explicit resume selections at controller boundary',async t=>{
+  const {owner,view}=host(t,{});let request;
+  owner.harness.sendTurn=async input=>{request=input;};
+  await view._handle({schemaVersion:MESSAGE_VERSION,type:'sendTurn',taskId:null,runId:null,message:'inspect',mode:'ASK',workerId:'auto',maxEffectClass:'READ_ONLY',serviceId:'llama.cpp',modelId:'selected-model',resume:true});
+  assert.equal(request.serviceId,'llama.cpp');assert.equal(request.modelId,'selected-model');assert.equal(request.resume,true);
+});
 test('registered console forwards only the canonical reference to its actual host callback', async t => {
   let received; const result = { status: 'waiting', receipt: 'controlled-host-response' };
   const { owner, view } = host(t, { executePreparedGroup: async value => { received = value; return result; } });

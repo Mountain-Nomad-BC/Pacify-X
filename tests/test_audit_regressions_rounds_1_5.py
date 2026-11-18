@@ -430,17 +430,12 @@ def memory_record(memory_id="memory:one", **changes) -> MemoryRecord:
 
 
 def memory_plan(**changes):
-    values = {
-        "project_id": "project", "subject_id": "task", "actor_id": "actor",
-        "agent_id": "agent", "binding_ids": ("memory:one",),
-        "memory_classes": ("decision",), "tiers": ("L1",), "max_items": 2,
-        "max_bytes": 4096, "max_tokens": 1024, "trust_floor": 0.8,
-        "max_age_seconds": 3600, "conflict_policy": "quarantine",
-        "provenance_required": True, "writeback_policy": "deny",
-        "source_revision": "source-1", "dependency_revisions": {"memory": "revision-1"},
-    }
-    values.update(changes)
-    return build_memory_query_plan(**values)
+    # Delegate to the shared fixture. This was a byte-identical copy of
+    # tests.support.fixtures.plan, which structural integrity reports as
+    # duplicated logic.
+    from tests.support.fixtures import plan as _shared_plan
+
+    return _shared_plan(**changes)
 
 
 def test_m01_duplicate_memory_ids_quarantined_order_independently():
@@ -561,3 +556,17 @@ def test_e01_in_flight_commit_still_works(tmp_path):
     ledger.intend(idempotency_key="k2", execution_id="exec-1", effect="write_file", scopes=["out/x"])
     committed = ledger.commit(idempotency_key="k2", execution_id="exec-1", result_sha256="b" * 64)
     assert committed.state == "committed"
+
+
+def test_e01_empty_authority_configuration_cannot_reconcile_abandoned_intent(tmp_path):
+    ledger = EffectIntentLedger(tmp_path)
+    ledger.intend(idempotency_key="unknown", execution_id="exec-1", effect="write_file", scopes=["out/x"])
+    ledger.reclaim_in_flight(execution_id="exec-1")
+    digest = "c" * 64
+    with pytest.raises(EffectIntentError, match="authority"):
+        ledger.commit(
+            idempotency_key="unknown", execution_id="exec-1", result_sha256=digest,
+            reconciliation={"observed_outcome": "effect_occurred", "evidence_sha256": digest,
+                            "authority": "self-asserted-owner"},
+        )
+    assert ledger.fence("unknown")["disposition"] == "abandoned"

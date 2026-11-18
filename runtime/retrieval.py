@@ -175,6 +175,7 @@ def retrieve(
     rerank_scores: Mapping[str, float] | None = None,
     rerank_weight: float = 0.15,
     query_plan: object | None = None,
+    query_planner: object | None = None,
 ) -> RetrievalDecision:
     if type(query) is not str or not query.strip() or type(max_results) is not int or max_results < 1 or type(max_context_bytes) is not int or max_context_bytes < 1:
         raise ValueError("query and positive integer retrieval budgets are required")
@@ -188,12 +189,21 @@ def retrieve(
     query_plan_sha256: str | None = None
     effective_query = query
     if query_plan is not None:
-        from .query_planner import QueryPlan
+        from .query_planner import QueryPlan, QueryPlanner
         if type(query_plan) is not QueryPlan:
             raise ValueError("query_plan must be a typed QueryPlan")
-        if query_plan.authority_granted:
+        if query_plan.authority_granted is not False:
             raise ValueError("query plans may not grant authority")
         QueryPlan.validate(query_plan)
+        # The lexicon is caller-configured context, never supplied by the plan.
+        # A public digest alone cannot establish that its hints follow the query.
+        planner = QueryPlanner() if query_planner is None else query_planner
+        if type(planner) is not QueryPlanner:
+            raise ValueError("query plan requires a configured QueryPlanner")
+        expected_plan = planner.plan(query)
+        if query_plan != expected_plan:
+            raise ValueError("query plan does not match the query and configured lexicon")
+        query_plan = expected_plan
         query_plan_sha256 = query_plan.plan_sha256
         exact.update(query_plan.exact_identifiers)
         effective_query = " ".join((query_plan.normalized_query, *query_plan.expansions)).strip() or query

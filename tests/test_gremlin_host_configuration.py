@@ -33,3 +33,20 @@ def test_host_configuration_uses_bootstrap_project_namespace():
     # The control namespace is canonical; asserting the legacy spelling here
     # would pin the migrated owner back to the pre-migration name.
     assert CONFIGURATION_RELATIVE.parts[0] == ".agentic_engineering_os_px"
+
+
+def test_environment_recovery_binding_rejects_unbound_verifier_class(monkeypatch):
+    from runtime.gremlin.host_configuration import resolve_recovery_verifier_from_environment
+    monkeypatch.setenv("PX_GREMLIN_RECOVERY_VERIFIER", "runtime.gremlin.recovery_verifier_console:ConsoleHumanApprovalVerifier")
+    with pytest.raises(ValueError, match="instance"):
+        resolve_recovery_verifier_from_environment()
+
+
+def test_console_recovery_adapter_is_a_bound_explicit_instance(monkeypatch):
+    from runtime.gremlin.host_configuration import resolve_recovery_verifier_from_environment
+    from runtime.gremlin.recovery_verifier_console import ConsoleHumanApprovalVerifier
+    import inspect
+    monkeypatch.setenv("PX_GREMLIN_RECOVERY_VERIFIER", "runtime.gremlin.recovery_verifier_console:console_human_approval_verifier")
+    adapter = resolve_recovery_verifier_from_environment()
+    assert isinstance(adapter, ConsoleHumanApprovalVerifier)
+    assert list(inspect.signature(adapter.verify).parameters) == ["challenge", "approval"]

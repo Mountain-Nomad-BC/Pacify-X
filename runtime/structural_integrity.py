@@ -16,6 +16,7 @@ from typing import Any
 
 from .bounded_walk import WalkLimits, bounded_walk
 from .build_claims import expected_build_claims
+from .engineering_os_paths import CONTROL_DIR_NAMES, resolve_project_management
 from .repository_scope import is_external_environment_relative, is_project_source
 
 from .version import VERSION
@@ -269,8 +270,13 @@ def _sha(path: Path) -> str:
 
 
 def _is_committed_wal(parts: tuple[str, ...]) -> bool:
-    """Recognize committed custody below any agentic-engineering-os-px WAL owner."""
-    if not parts or parts[0] != ".agentic_engineering_os_px":
+    """Recognize committed custody below any control-directory WAL owner.
+
+    Both control-directory spellings are accepted: committed custody is custody
+    regardless of which spelling an older tree recorded it under, and excluding it
+    from the source audit is the same decision either way.
+    """
+    if not parts or parts[0] not in CONTROL_DIR_NAMES:
         return False
     try:
         wal_index = parts.index("wal", 1)
@@ -286,7 +292,7 @@ def _is_inactive_derived_path(path: Path, root: Path) -> bool:
     parts = path.relative_to(root).parts
     if _is_committed_wal(parts):
         return True
-    return len(parts) >= 2 and parts[0] == ".agentic_engineering_os_px" and parts[1] in {
+    return len(parts) >= 2 and parts[0] in CONTROL_DIR_NAMES and parts[1] in {
         "environment",
         "diagnostics",
         "project-map",
@@ -306,9 +312,14 @@ def _exclude_structural_path(relative: str) -> bool:
         return True
     if _is_committed_wal(parts):
         return True
-    if parts[:3] == (".agentic_engineering_os_px", "processing-order", "operational-verification"):
+    # Derived control state is derived under either control-directory spelling. Keying
+    # these exclusions on the canonical name alone let a preserved legacy tree feed its
+    # scratch state into the source audit as unreviewed duplicates.
+    if parts[:3] == (parts[0], "processing-order", "operational-verification") and (
+        parts[0] in CONTROL_DIR_NAMES
+    ):
         return True
-    return len(parts) >= 2 and parts[0] == ".agentic_engineering_os_px" and parts[1] in {
+    return len(parts) >= 2 and parts[0] in CONTROL_DIR_NAMES and parts[1] in {
         "environment", "diagnostics", "project-map", "project-map-history",
         "project-map-lock-history", "quarantine",
     }
@@ -479,6 +490,21 @@ def _classify_exact_group(paths: list[str]) -> str | None:
         and len({PurePosixPath(path).name for path in paths}) >= 1
     ):
         return "generated-profile-projections"
+    # The bootstrap workspace mirrors the canonical control directory. A file that
+    # exists byte-identically in both is one authored document with two published
+    # locations, not duplicated logic. This is the same shape as the profile and
+    # domain-tool projection rules above; it was simply missing for these two.
+    if (
+        any(path.startswith(".agentic_engineering_os_px/") for path in paths)
+        and any(path.startswith(".engineering-bootstrap/") for path in paths)
+        and all(
+            path.startswith(".agentic_engineering_os_px/")
+            or path.startswith(".engineering-bootstrap/")
+            for path in paths
+        )
+        and len({PurePosixPath(path).name for path in paths}) == 1
+    ):
+        return "mirrored-control-documents"
     if (
         any(path.startswith(".px/") for path in paths)
         and all(
@@ -1057,7 +1083,11 @@ def _document_errors(root: Path, release_open: bool) -> list[str]:
             or "release-certification-0.5.0.json" in execution_text
         ):
             errors.append("execution-plan document is pinned to revoked release state")
-    state = _json(root / ".agentic_engineering_os_px/project-management/state.json")
+    # Resolve through the namespace owner instead of spelling a control directory inline.
+    # The literal name pinned this audit to one spelling while the commissioning owner
+    # wrote the other, so a tree holding current project-management state failed with
+    # FileNotFoundError rather than being audited.
+    state = _json(resolve_project_management(root, "state.json"))
     lifecycle_next = state.get("lifecycle", {}).get("next_action")
     checkpoint_next = state.get("checkpoint", {}).get("next_safe_action")
     if lifecycle_next != checkpoint_next:
@@ -1202,7 +1232,7 @@ def _marker_result(root: Path) -> dict[str, Any]:
 
 def audit_structural_integrity(root: Path) -> dict[str, Any]:
     root = root.resolve()
-    state = _json(root / ".agentic_engineering_os_px/project-management/state.json")
+    state = _json(resolve_project_management(root, "state.json"))
     release_open = state.get("lifecycle", {}).get("status") != "complete"
     structural_files = _structural_files(root)
     exact_groups, exact_unreviewed = _duplicate_files(root, structural_files)

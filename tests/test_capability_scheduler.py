@@ -138,6 +138,23 @@ class CapabilitySchedulerTests(unittest.TestCase):
             result["execution_authority"], "none; dispatch events are plans only"
         )
 
+    def test_invalid_resource_claims_never_become_dispatch_plans(self) -> None:
+        for resource, value in (("cpu_cores", float("inf")),
+                                ("ram_gb", float("nan")),
+                                ("disk_gb", 10 ** 400),
+                                ("gpu_count", 0.5)):
+            for location in ("capacity", "task"):
+                with self.subTest(resource=resource, location=location):
+                    payload = {"resources": {"cpu_cores": 2, "gpu_count": 1},
+                               "workload": {"tasks": [task("invalid")]}}
+                    destination = (payload["resources"] if location == "capacity"
+                                   else payload["workload"]["tasks"][0]["resources"])
+                    destination[resource] = value
+                    result = simulate_schedule(payload)
+                    self.assertFalse(result["valid"], result)
+                    self.assertTrue(result["errors"])
+                    self.assertNotIn("completed", result)
+
 
 if __name__ == "__main__":
     unittest.main()

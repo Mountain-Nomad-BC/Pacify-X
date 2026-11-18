@@ -28,6 +28,12 @@ def current_campaign(root):
     return True
 
 
+def require_release_configuration_mode(root, *, current):
+    """The native campaign policy owns mode selection, never optional CLI fields."""
+    if type(current) is not bool or current_campaign(root) != current:
+        raise ValueError("release configuration mode differs from authoritative current campaign policy")
+
+
 def source_identity_record(record):
     """Validate typed record data only; authentication remains a native reader duty."""
     if type(record) is not dict: raise ValueError("source identity must be an actual object")
@@ -103,3 +109,9 @@ def release_configuration_relative(candidate_id,kind):
         raise ValueError("candidate identity must be bounded nonempty text")
     if kind not in ("stage-owner","automation"):raise ValueError("unknown native release config kind")
     return Path(".agentic_engineering_os_px/runtime-core/release/configurations")/hashlib.sha256(candidate_id.encode("utf-8")).hexdigest()/(kind+".json")
+
+
+def release_private_installation_relative(candidate_id):
+    """Private profile and extension container for exactly one candidate."""
+    identity = release_configuration_relative(candidate_id, "stage-owner").parent.name
+    return Path(".agentic_engineering_os_px/runtime-core/release/private-deployments") / identity

@@ -170,3 +170,54 @@ def test_certification_freezes_only_measured_placement_not_arbitrary_profile_cha
     tampered["context_tokens"] = profile.context_tokens + 4096
     with pytest.raises(ValueError, match="non-placement profile field: context_tokens"):
         _certified_profile(profile, {"effective_profile": tampered})
+
+
+@pytest.mark.parametrize("invalid_payload", [False, True])
+@pytest.mark.parametrize("writer_module", ["certify_local_model_profiles", "benchmark_local_models"])
+def test_profile_candidate_publication_never_reuses_or_reclaims_foreign_staging(tmp_path, invalid_payload, writer_module):
+    import os
+    import importlib
+    _write_json_atomic = importlib.import_module("scripts." + writer_module)._write_json_atomic
+    target = tmp_path / "candidate.json"
+    target.write_text('{"previous":true}', encoding="utf-8")
+    foreign = target.with_name(target.name + f".{os.getpid()}.tmp")
+    foreign.write_bytes(b"unrelated retained image")
+    if invalid_payload:
+        with pytest.raises(TypeError):
+            _write_json_atomic(target, {"bad": object()})
+        assert target.read_text(encoding="utf-8") == '{"previous":true}'
+    else:
+        _write_json_atomic(target, {"passed": True})
+        import json
+        assert json.loads(target.read_text(encoding="utf-8")) == {"passed": True}
+    assert foreign.read_bytes() == b"unrelated retained image"
+
+
+def test_profile_candidate_output_is_confined_before_evidence_acquisition(tmp_path, monkeypatch):
+    from scripts.certify_local_model_profiles import main
+    from runtime.confined_output import ConfinementError
+    import sys
+    root = tmp_path / "project"
+    root.mkdir()
+    output = tmp_path / "outside.json"
+    monkeypatch.setattr(sys, "argv", ["certify-local", "--root", str(root),
+        "--receipt", str(root / "missing-receipt.json"),
+        "--gates", str(root / "missing-gates.json"), "--output", str(output)])
+    with pytest.raises(ConfinementError):
+        main()
+    assert not output.exists()
+
+
+def test_benchmark_output_is_confined_before_profile_loading(tmp_path, monkeypatch):
+    from scripts.benchmark_local_models import main
+    from runtime.confined_output import ConfinementError
+    import sys
+    root = tmp_path / "project"
+    root.mkdir()
+    output = tmp_path / "outside.json"
+    monkeypatch.setattr(sys, "argv", ["benchmark-local", "--root", str(root),
+        "--profile", "unloaded", "--model", str(root / "missing.gguf"),
+        "--llama-bench", str(root / "missing.exe"), "--output", str(output)])
+    with pytest.raises(ConfinementError):
+        main()
+    assert not output.exists()

@@ -50,12 +50,16 @@ const PxRun = z.object({
   createdAt: Iso,
   updatedAt: Iso,
   status: z.enum(['running', 'waiting', 'blocked', 'complete', 'failed', 'cancelled']),
+  dispatchMode: z.enum(['single', 'mesh']).optional(),
+  dispatchPending: z.boolean().optional(),
   activeWorkerId: Id.nullable(),
   providerSessionRef: z.string().max(512).nullable(),
   routeHistory: z.array(z.object({ workerId: Id, selectedAt: Iso, reason: z.string().max(500) }).strict()).max(100),
   round: z.number().int().nonnegative(),
   lastError: z.string().max(1000).nullable()
-}).strict();
+}).strict().refine(run => (run.dispatchMode === undefined) === (run.dispatchPending === undefined), {
+  message: 'dispatch custody fields must appear together', path: ['dispatchPending']
+});
 
 const LibrarianArtifact = z.object({
   schemaVersion: z.literal('px.librarian-artifact/1.0'),

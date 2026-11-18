@@ -33,11 +33,43 @@ test('identical retransmission contributes one evidence ID', () => {
   const f = fixture(); const verdict = evaluateCompletion(f.task, [f.evidence, { ...f.evidence }], f.run);
   assert.equal(verdict.complete, true); assert.deepEqual(verdict.requirements[0].evidenceIds, ['proof']);
 });
+
+test('contradictory current-run assessments cannot satisfy a requirement', () => {
+  const f = fixture();
+  const failed = { ...f.evidence, evidenceId: 'failed-proof', status: 'fail' };
+  for (const records of [[f.evidence, failed], [failed, f.evidence]]) {
+    const verdict = evaluateCompletion(f.task, records, f.run);
+    assert.equal(verdict.complete, false);
+    assert.deepEqual(verdict.requirements[0].evidenceIds, []);
+  }
+});
+
+test('foreign-run failure cannot veto current-run evidence', () => {
+  const f = fixture();
+  const failed = { ...f.evidence, evidenceId: 'failed-proof', runId: 'previous', status: 'fail' };
+  assert.equal(evaluateCompletion(f.task, [f.evidence, failed], f.run).complete, true);
+});
+
+test('informational evidence does not contradict a passing assessment', () => {
+  const f = fixture();
+  const info = { ...f.evidence, evidenceId: 'info-proof', status: 'info' };
+  assert.equal(evaluateCompletion(f.task, [f.evidence, info], f.run).complete, true);
+});
+
+test('a failed type does not veto an independently passing declared alternative', () => {
+  const f = fixture();
+  const task = { ...f.task, completionContract: [{ ...f.task.completionContract[0], evidenceTypes: ['test-result', 'inspection-result'] }] };
+  const failed = { ...f.evidence, evidenceId: 'failed-proof', status: 'fail' };
+  const alternative = { ...f.evidence, evidenceId: 'inspection-proof', type: 'inspection-result' };
+  const verdict = evaluateCompletion(task, [f.evidence, failed, alternative], f.run);
+  assert.equal(verdict.complete, true);
+  assert.deepEqual(verdict.requirements[0].evidenceIds, ['inspection-proof']);
+});
 test('malformed evidence does not masquerade as a typed pass', () => {
   const f = fixture(); assert.equal(evaluateCompletion(f.task, [{ type: 'test-result', status: 'pass' }], f.run).complete, false);
 });
 
-for (const ownership of ['current', 'foreign-task', 'previous-run']) test(`actual controller completion filters ${ownership} evidence`, async () => {
+for (const ownership of ['current', 'foreign-task', 'previous-run', 'contradictory']) test(`actual controller completion filters ${ownership} evidence`, async () => {
   const { HarnessController } = require('../src/agentHarness/harnessController');
   const { CanonicalEventBus } = require('../src/agentHarness/eventBus');
   const { BudgetLedger } = require('../src/agentHarness/budgetLedger');
@@ -48,6 +80,7 @@ for (const ownership of ['current', 'foreign-task', 'previous-run']) test(`actua
   const harness=new HarnessController({taskStore:f.store,eventBus:bus,budgetLedger:new BudgetLedger(()=>({})),workerRegistry:registry,contextCompiler:new ContextCompiler(),tinyLibrarian:new TinyLibrarian(),hostSettings:()=>({})});
   registry.register({workerId:'worker',adapterId:'controlled',providerId:'local',modelId:'fixture',displayName:'Controlled test adapter',costClass:'local',contextLimit:12000,locality:'local',capabilities:{coding:1,planning:1,review:1,classification:1},supportedEffectClass:'READ_ONLY',enabled:true,reliability:1,latencyClass:'fast'}, {runTurn:async input=>{
     harness.evidence.set(f.task.taskId,[{...f.evidence,taskId:ownership==='foreign-task'?'foreign':input.task.taskId,runId:ownership==='previous-run'?'previous':input.run.runId,capturedAt:new Date().toISOString()}]);
+    if (ownership === 'contradictory') harness.evidence.get(f.task.taskId).push({ ...f.evidence, evidenceId: 'failed-current-assessment', status: 'fail', capturedAt: new Date().toISOString() });
     return {text:'Controlled turn; evidence is a fixture, not a certified execution receipt.'};
   }});
   try {const result=await harness.sendTurn({taskId:f.task.taskId,runId:f.run.runId,message:'inspect'});assert.equal(result.verdict.complete,ownership==='current');assert.equal(result.run.status,'complete');}

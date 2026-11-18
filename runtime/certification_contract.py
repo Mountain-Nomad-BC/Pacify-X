@@ -170,6 +170,10 @@ CONTRACT_BY_STEP: Mapping[str, StageContract] = MappingProxyType(
 )
 
 STEP_ORDER = tuple(item.step for item in CONTRACTS)
+# The section owner serializes all required section clocks. Its aggregate
+# budget is distinct from the four-hour bound on each other stage owner.
+STAGE_TIMEOUT_LIMITS = MappingProxyType({step: 43_200 if step == "sections" else 14_400 for step in STEP_ORDER})
+
 STAGE_OWNER_STEPS = tuple(
     item.step for item in CONTRACTS if item.owner_kind == "stage_owner"
 )

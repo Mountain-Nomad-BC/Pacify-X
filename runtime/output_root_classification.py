@@ -16,6 +16,7 @@ from __future__ import annotations
 
 import ast
 import json
+import os
 import re
 from pathlib import Path
 from typing import Any, Mapping
@@ -107,6 +108,8 @@ def produced_destinations(root: Path, relative: str) -> list[str]:
     from .effect_surface import _call_name
 
     confined = _confinement_symbol(tree, source)
+    bound_helper = _binds_confinement_helper(tree)
+    shadowed_names = _shadowed_names(tree)
     destinations: list[str] = []
     for node in ast.walk(tree):
         if not isinstance(node, ast.Call):
@@ -114,7 +117,14 @@ def produced_destinations(root: Path, relative: str) -> list[str]:
         if not _executed_by_producer(node, tree, source):
             continue
         call_name = _call_name(node)
-        if call_name.rsplit(".", 1)[-1] == "publish_json" and confined is not None:
+        if leaf_name_shadowed(node, shadowed_names):
+            # A name the file binds or receives as a parameter is not the builtin/module
+            # function it is spelled like: `str = attacker; str('abc').replace(...)` and
+            # `def publish(value): value.write_text(...)` are not filesystem destinations.
+            # The effect scanner already refuses these on the same provenance rule; this is
+            # the confinement analyser applying it too.
+            continue
+        if call_name.rsplit(".", 1)[-1] == "publish_json" and bound_helper and confined is not None:
             destinations.append(CONFINED_DESTINATION)
             continue
         if call_name.rsplit(".", 1)[-1] not in {
@@ -142,6 +152,27 @@ def produced_destinations(root: Path, relative: str) -> list[str]:
         text = _argument_text(node)
         if not text:
             continue
+        if _is_confinement_helper(node):
+            # Every destination published through runtime/confined_output is re-checked against
+            # the bound root at write time by the helper itself.
+            destinations.append(CONFINED_DESTINATION)
+            continue
+        receiver = node.func.value if isinstance(node.func, ast.Attribute) else None
+        if isinstance(receiver, ast.Call) and _is_confinement_helper(receiver):
+            # `confined_path(root, d).mkdir()` — the helper resolved this path before the call.
+            destinations.append(CONFINED_DESTINATION)
+            continue
+        if isinstance(receiver, ast.Name) and _is_relative_to_confinement(receiver, tree):
+            # `destination = confined_path(root, ...)` then `destination.mkdir()`.
+            destinations.append(CONFINED_DESTINATION)
+            continue
+        if _anchored_destination(node, text, tree):
+            # `Path(__file__).resolve().parents[1] / 'registry/x.json'` is anchored to the
+            # producer's own repository location, not to the directory the process happens to
+            # run from, so it cannot escape the repository. A bare `Path('x.json')` is NOT
+            # this case and stays cwd-relative below.
+            destinations.append(CONFINED_DESTINATION)
+            continue
         if "args." in text or "namespace." in text or "opts." in text:
             # A caller-selected *output*: relative to a directory the producer does not control,
             # so it can never be proven contained on the strength of the argument alone.
@@ -161,11 +192,178 @@ def produced_destinations(root: Path, relative: str) -> list[str]:
             # `preservation / 'receipt.json'`, `target.parent`, `root / name`: derived from a
             # name already bound to a resolved path, which the producer controls.
             destinations.append(CONFINED_DESTINATION)
+        elif _is_relative_to_confinement(_receiver_or_argument(node), tree):
+            # `_confined_file(summary).write_text(...)` / `_publish(_confined_file(x), ...)`:
+            # the destination expression is itself confined by the helper before the write.
+            destinations.append(CONFINED_DESTINATION)
         else:
             destinations.append(text)
-    if not destinations and "publish_json" in source:
+    if not destinations and bound_helper and "publish_json" in source:
         destinations.append(CONFINED_DESTINATION)
     return sorted(set(destinations))
+
+
+def _is_module_anchor(node: ast.AST) -> bool:
+    """True for an expression rooted at `__file__` (the producer's own module location)."""
+    return any(
+        isinstance(item, ast.Name) and item.id == "__file__" for item in ast.walk(node)
+    )
+
+
+def _anchored_destination(node: ast.Call, text: str, tree: ast.AST) -> bool:
+    """True when the written destination is anchored at `__file__`, directly or via a name.
+
+    Only the write call's own receiver / path-named argument is inspected; a bare name counts
+    only when its assignment is anchored. Judging the whole module would let one anchored
+    constant certify an unrelated cwd-relative write.
+    """
+    candidates: list[ast.AST] = []
+    func = node.func
+    if isinstance(func, ast.Attribute):
+        receiver = func.value
+        if isinstance(receiver, ast.Name):
+            if receiver.id in {"os", "shutil"} and node.args:
+                if not isinstance(node.args[0], ast.Constant):
+                    candidates.append(node.args[0])
+            elif receiver.id not in {"os", "shutil"}:
+                candidates.extend(_assignments(tree, receiver.id))
+        else:
+            candidates.append(receiver)
+    else:
+        # A bare helper call such as `write_atomic(path, payload)` carries its destination first.
+        if node.args and not isinstance(node.args[0], ast.Constant):
+            candidates.append(node.args[0])
+    for keyword in node.keywords:
+        if keyword.arg in _PATH_ARGUMENT_NAMES and not isinstance(keyword.value, ast.Constant):
+            candidates.append(keyword.value)
+    return any(_is_module_anchor(candidate) for candidate in candidates)
+
+
+def _assignments(tree: ast.AST, name: str) -> list[ast.AST]:
+    values: list[ast.AST] = []
+    for item in ast.walk(tree):
+        if isinstance(item, ast.Assign):
+            if any(isinstance(t, ast.Name) and t.id == name for t in item.targets):
+                values.append(item.value)
+        elif isinstance(item, ast.AnnAssign) and isinstance(item.target, ast.Name):
+            if item.target.id == name and item.value is not None:
+                values.append(item.value)
+    return values
+
+
+def _shadowed_names(tree: ast.AST) -> dict[str, list[ast.AST]]:
+    """Every name the file binds, mapped to its binding sites (AST node identity)."""
+    bindings: dict[str, list[ast.AST]] = {}
+    for item in ast.walk(tree):
+        if isinstance(item, ast.Name) and isinstance(item.ctx, ast.Store):
+            bindings.setdefault(item.id, []).append(item)
+        elif isinstance(item, ast.arg):
+            bindings.setdefault(item.arg, []).append(item)
+    return bindings
+
+
+def leaf_name_shadowed(node: ast.Call, shadowed: dict[str, list[ast.AST]]) -> bool:
+    """True when the called leaf name is a parameter or is rebound to something else.
+
+    The leaf of `x.write_text(...)` is `write_text`; it is the real method unless the file
+    binds that exact name (a parameter or an assignment). `str = attacker; str('abc')` binds
+    the *receiver*, not the leaf — that case is judged by the receiver's own bindings.
+    """
+    func = node.func
+    if isinstance(func, ast.Attribute):
+        is_name = func.attr
+    else:
+        is_name = getattr(func, "id", "")
+    if not is_name:
+        return False
+    bindings = shadowed.get(is_name, [])
+    if isinstance(func, ast.Name):
+        # A bare call is the builtin only when the file never binds that name.
+        return bool(bindings)
+    return any(isinstance(item, (ast.arg, ast.FunctionDef)) for item in bindings)
+
+
+def _binds_confinement_helper(tree: ast.AST) -> bool:
+    """True when the producer imports the confinement helper from its canonical module.
+
+    A name alone is not proof of anything; the destination-emitting cases below still require
+    the call itself to be a confinement call. This only decides whether a `publish_json` call
+    in this file is the canonical publisher or an unrelated local of the same name.
+    """
+    for node in ast.walk(tree):
+        if isinstance(node, ast.ImportFrom) and node.module == "runtime.confined_output":
+            if any(alias.name in {"publish_json", "confined_move", "confined_path"} for alias in node.names):
+                return True
+        if isinstance(node, ast.Import):
+            if any(alias.name == "runtime.confined_output" for alias in node.names):
+                return True
+    return False
+
+
+def _is_confinement_helper(node: ast.Call) -> bool:
+    """True for the canonical confined-publication helper imported from
+    `runtime.confined_output`.
+
+    The helper refuses traversal, symlinks, absolute escapes and the root itself, and publishes
+    atomically. Its own source effect rows belong to the helper, not to the producer, so a
+    producer that routes every destination through it is not writing an unconfined path.
+    """
+    from .effect_surface import _call_name
+
+    return _call_name(node).rsplit(".", 1)[-1] in {"publish_json", "confined_move", "confined_path"}
+
+
+def _is_relative_to_confinement(node: ast.AST, tree: ast.AST) -> bool:
+    """True when a name is bound from a path the confinement helper validated.
+
+    `destination.mkdir()` is confined when `destination` is bound to
+    `confined_path(root, ...)` or to a `_confined(...)`-style private helper that itself
+    returns `confined_path(...)` / `confined_output`-checked paths. The binding is read from
+    the AST, so an unrelated name of the same spelling proves nothing.
+    """
+    if isinstance(node, ast.Call):
+        return _is_confinement_helper(node)
+    if not isinstance(node, ast.Name):
+        return False
+    for item in ast.walk(tree):
+        target = None
+        value = None
+        if isinstance(item, ast.Assign) and len(item.targets) == 1 and isinstance(item.targets[0], ast.Name):
+            target, value = item.targets[0].id, item.value
+        elif isinstance(item, ast.AnnAssign) and isinstance(item.target, ast.Name):
+            target, value = item.target.id, item.value
+        if target != node.id or value is None:
+            continue
+        if isinstance(value, ast.Call):
+            if _is_confinement_helper(value):
+                return True
+            if _calls_confining_helper(value, tree):
+                return True
+    return False
+
+
+def _calls_confining_helper(call: ast.Call, tree: ast.AST) -> bool:
+    """True when `call` invokes a same-module helper whose own returns are confined."""
+    from .effect_surface import _call_name
+
+    name = _call_name(call).rsplit(".", 1)[-1]
+    for item in ast.walk(tree):
+        if not isinstance(item, (ast.FunctionDef, ast.AsyncFunctionDef)) or item.name != name:
+            continue
+        for node in ast.walk(item):
+            if isinstance(node, ast.Call) and _is_confinement_helper(node):
+                return True
+            if isinstance(node, ast.Return) and node.value is not None:
+                if any(isinstance(sub, ast.Call) and _is_confinement_helper(sub) for sub in ast.walk(node.value)):
+                    return True
+    return False
+
+
+def _receiver_or_argument(node: ast.Call) -> ast.AST:
+    """The expression that carries the destination for a write or publish call."""
+    if isinstance(node.func, ast.Attribute):
+        return node.func.value
+    return node.args[0] if node.args else ast.Constant(value=None)
 
 
 def _is_path_publication(node: ast.Call) -> bool:
@@ -396,6 +594,10 @@ def _executed_by_producer(node: ast.Call, tree: ast.AST, source: str) -> bool:
 
     if _call_name(node).rsplit(".", 1)[-1] == "publish_json":
         return True
+    if _call_name(node).rsplit(".", 1)[-1] == "open":
+        # `f = open('p','rb')` binds a handle; it creates or changes nothing by itself. The
+        # writes through the handle are separate calls and are classified on their own.
+        return False
     # A call is the producer's own when it is not `module.function(...)` where `module` is an
     # imported runtime module. Writes reached through an import are the helper's business.
     func = node.func
@@ -427,7 +629,9 @@ def _confinement_symbol(tree: ast.AST, source: str) -> str | None:
     return None
 
 
-def _granted_destination(grants: Mapping[str, Any], destination: str, now_utc: str) -> bool:
+def _granted_destination(
+    grants: Mapping[str, Any], destination: str, now_utc: str, repo_root: str
+) -> bool:
     """True when an active, unexpired grant root strictly contains `destination`.
 
     The destination text comes from source, so it carries quotes (`'build/x'`) and sometimes a
@@ -456,10 +660,38 @@ def _granted_destination(grants: Mapping[str, Any], destination: str, now_utc: s
             output_roots.contained_in(
                 output_roots._normalize(root_name), output_roots._normalize(candidate)
             )
+            # A relative literal is resolved against the *repository root*, which is what the
+            # grant names, not against whatever directory the process happens to run from.
+            # `confined_output` resolves the same way and is the mechanism that enforces it.
+            and output_roots.contained_in(
+                repo_root, _resolve_against(repo_root, candidate)
+            )
             for candidate in candidates
         ):
             return True
     return False
+
+
+def root_of(root: Path) -> str:
+    """The repository directory that owns the grant document, resolved."""
+    return os.path.realpath(root)
+
+
+def _resolve_against(repo_root: str, candidate: str) -> str:
+    """Resolve a grant destination against the repository root.
+
+    On Windows `Path('C:x').is_absolute()` is False while the path is *drive-relative*, and
+    `realpath` would anchor it at the drive rather than the repository. Any candidate carrying
+    a drive or a UNC prefix is therefore refused outright, never rejoined.
+    """
+    text = str(candidate)
+    drive_relative = len(text) > 1 and text[1] == ":"
+    if drive_relative or text.startswith(("\\\\", "//")):
+        return ""
+    path = Path(text)
+    if not path.is_absolute():
+        path = Path(repo_root) / path
+    return os.path.realpath(path)
 
 
 def output_root_verdict(
@@ -486,7 +718,10 @@ def output_root_verdict(
     destinations = produced_destinations(root, relative)
     if not destinations:
         return None
-    if not all(_granted_destination(grants, destination, now_utc) for destination in destinations):
+    if not all(
+        _granted_destination(grants, destination, now_utc, os.path.realpath(root))
+        for destination in destinations
+    ):
         return None
     # Observation is required for every producer on this path. A static binding chain is an
     # interpretation; only a run shows where the bytes went. Dropping this for "simple" cases

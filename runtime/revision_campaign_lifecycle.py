@@ -213,3 +213,30 @@ def register_findings(root: Path, *, finding_ids: list[str], admission_event_id:
 
 def resolve_findings(root: Path, *, evidence_by_finding: Mapping[str, str], admission_event_id: str) -> dict[str, Any]:
     return _mutate(root, admission_event_id=admission_event_id, mutation="resolve", payload={"evidence_by_finding": dict(evidence_by_finding)})
+
+
+def advance_release_phase(root: Path, *, before: str, after: str, admission_event_id: str) -> dict[str, Any]:
+    """Advance a release owner phase without invalidating its active revision pointer."""
+    from .certification_contract import STAGE_OWNER_PHASES
+    pairs = {pair for pair in STAGE_OWNER_PHASES.values() if pair[0] != pair[1]}
+    pairs.add(("installed", "installed_operational"))
+    if (before, after) not in pairs:
+        raise RevisionCampaignBlocked("unknown release phase transition")
+    root = Path(root).resolve(strict=True)
+    _guard_succession_effect(root, admission_event_id, "write")
+    lock = root / ".agentic_engineering_os_px/project-revision-succession/activation.lock"
+    with FileLock(lock, timeout_seconds=10.0):
+        path, state, pointer = _load_revision(root)
+        image = path.read_bytes()
+        if (hashlib.sha256(image).hexdigest() != pointer["campaign_sha256"]
+                or state.get("phase") != before or state.get("intake_open") is not False
+                or state.get("unresolved") != []):
+            raise RevisionCampaignBlocked("release transition requires exact closed, resolved predecessor phase")
+        state["phase"] = after
+        history = state.setdefault("phase_history", [])
+        if not isinstance(history, list):
+            raise RevisionCampaignBlocked("release phase history is malformed")
+        history.append({"from":before,"to":after,"admission_event_id":admission_event_id,
+                        "prior_campaign_sha256":hashlib.sha256(image).hexdigest()})
+        _publish_campaign_update(root, path, state, pointer, admission_event_id, image)
+    return status(root)

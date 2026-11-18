@@ -6,7 +6,8 @@ source, and this module is deliberately not wired into producer classification.
 
 from __future__ import annotations
 
-from collections.abc import Iterable, Mapping
+import json
+from collections.abc import Callable, Iterable, Mapping
 from typing import Any
 
 
@@ -145,8 +146,51 @@ def validate_resource_candidate(record: object) -> list[str]:
     return errors
 
 
+def validate_approval_event(
+    event_id: object, resolver: Callable[[str], object] | None
+) -> list[str]:
+    """Verify that a cited approval event actually records an owner decision.
+
+    `owner_approval_event_id` was previously checked only for being non-empty
+    text, so any string satisfied it -- including a ``card_annotated`` ledger
+    annotation, which records a note rather than a custody grant.
+
+    When a resolver is supplied this fails closed: an unresolvable event, an
+    event whose payload carries no owner decision, or a payload that is not an
+    object are all errors. Callers that do not supply a resolver keep the
+    historical text-only check, so no existing classification changes silently.
+    """
+    if not _nonempty_text(event_id):
+        return ["an approved record must cite the approval event"]
+    if resolver is None:
+        return []
+    try:
+        event = resolver(str(event_id))
+    except Exception as error:  # a resolver must never crash the validator
+        return [f"approval event could not be resolved: {type(error).__name__}"]
+    if event is None:
+        return [f"approval event is not present in the live ledger: {event_id}"]
+    if not isinstance(event, Mapping):
+        return ["approval event is not an object"]
+    decision_markers = ("owner decision", "owner_decision", "owner approval", "owner_approval")
+    payload = event.get("payload")
+    note = event.get("note")
+    haystack = " ".join(
+        str(part) for part in (
+            note,
+            json.dumps(payload, sort_keys=True) if isinstance(payload, Mapping) else payload,
+        ) if part is not None
+    ).casefold()
+    if not any(marker in haystack for marker in decision_markers):
+        return [
+            "approval event records no owner decision and cannot authorize custody"
+        ]
+    return []
+
+
 def validate_approved_resource_record(
-    record: object, *, group_members: Iterable[str] = ()
+    record: object, *, group_members: Iterable[str] = (),
+    approval_resolver: Callable[[str], object] | None = None,
 ) -> list[str]:
     """Validate an APPROVED ownership record.
 
@@ -176,8 +220,11 @@ def validate_approved_resource_record(
     owner = record.get("accountable_owner")
     if not _nonempty_text(owner):
         errors.append("an approved record must name an accountable owner")
-    if not _nonempty_text(record.get("owner_approval_event_id")):
-        errors.append("an approved record must cite the approval event")
+    errors.extend(
+        validate_approval_event(
+            record.get("owner_approval_event_id"), approval_resolver
+        )
+    )
     if _nonempty_text(owner):
         normalised_owner = str(owner).replace("\\", "/").strip("/")
         members = {

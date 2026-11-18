@@ -10,6 +10,42 @@ from runtime import plan_registry as plans
 ROOT = Path(__file__).resolve().parents[1]
 
 
+def selected_revision(tmp_path, monkeypatch):
+    root = fixture(tmp_path)
+    legacy = root / "policies/rev1xx-validation.json"
+    revision = root / "revision"
+    revision.mkdir()
+    policy = revision / "validation-policy.json"
+    value = json.loads(legacy.read_text())
+    value["campaign_id"] = "selected-current-campaign"
+    policy.write_text(json.dumps(value))
+    monkeypatch.setattr("runtime.project_revision_succession.current_revision_root", lambda target: revision if Path(target).resolve() == root else None)
+    return root, legacy, policy
+
+
+def test_policy_read_selects_project_revision_not_policies_directory(tmp_path, monkeypatch):
+    root, legacy, policy = selected_revision(tmp_path, monkeypatch)
+    assert plans._planning_object(legacy) == json.loads(policy.read_text())
+
+
+def test_begin_campaign_updates_selected_policy_and_preserves_legacy(tmp_path, monkeypatch):
+    root, legacy, policy = selected_revision(tmp_path, monkeypatch)
+    before = legacy.read_bytes()
+    result = plans.begin_plan_campaign(root)
+    assert result["valid"] and result["campaign_id"] == "selected-current-campaign"
+    assert json.loads(policy.read_text())["status_overlay"] == plans.CURRENT_STATUS_RELATIVE.as_posix()
+    assert legacy.read_bytes() == before
+
+
+def test_foundation_policy_publication_targets_current_revision(tmp_path, monkeypatch):
+    root, legacy, policy = selected_revision(tmp_path, monkeypatch)
+    before = legacy.read_bytes()
+    payload = policy.read_bytes() + b"\n"
+    plans._foundation_owned_write(root, "policies/rev1xx-validation.json", payload)
+    assert policy.read_bytes() == payload
+    assert legacy.read_bytes() == before
+
+
 def fixture(tmp_path):
     policy = json.loads((ROOT / "policies/rev1xx-validation.json").read_text())
     policy.pop("status_overlay", None)

@@ -30,8 +30,12 @@ function currentEvidence(task, evidence, currentRun) {
 
 function evaluateCompletion(task, evidence = [], currentRun = null) {
   const eligible = currentEvidence(task, evidence, currentRun);
+  // Distinct receipt IDs do not resolve contradictory assessments. A failed
+  // assessment vetoes passes of the same type for this task/run; another run's
+  // failures were already excluded by currentEvidence.
+  const failedTypes = new Set(eligible.filter(item => item.status === 'fail').map(item => item.type));
   const rows = task.completionContract.map(requirement => {
-    const matching = eligible.filter(item => requirement.evidenceTypes.includes(item.type) && item.status === 'pass');
+    const matching = eligible.filter(item => requirement.evidenceTypes.includes(item.type) && item.status === 'pass' && !failedTypes.has(item.type));
     return { requirementId: requirement.id, label: requirement.label, required: requirement.required, satisfied: matching.length > 0, evidenceIds: matching.map(item => item.evidenceId) };
   });
   const required = rows.filter(r => r.required);

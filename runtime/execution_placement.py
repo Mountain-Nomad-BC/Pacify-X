@@ -20,6 +20,9 @@ from typing import Any, Mapping, Sequence
 from uuid import uuid4
 
 from .file_lock import FileLock
+from .archive_io import reject_path_links
+from .json_io import load_json_object
+from .secure_publish import atomic_write_bytes
 from .hardware_routing import (
     BenchmarkEvidence,
     Device,
@@ -154,31 +157,40 @@ class PlacementCapacityLedger:
     """Cross-process logical capacity leases for governed model execution."""
 
     def __init__(self, root: Path) -> None:
+        reject_path_links(root)
         self.root = root.resolve()
         self.directory = self.root / ".agentic_engineering_os_px/runtime-core/placement"
         self.state_path = self.directory / "capacity-reservations.json"
         self.lock_path = self.directory / ".capacity-reservations.lock"
 
     def _read(self) -> dict[str, Any]:
+        reject_path_links(self.state_path)
         try:
-            payload = json.loads(self.state_path.read_text(encoding="utf-8"))
-        except (OSError, json.JSONDecodeError):
-            payload = {}
-        active = payload.get("active") if isinstance(payload, Mapping) else None
-        return {
-            "schema_version": "px.placement-capacity-ledger/1.0",
-            "active": dict(active) if isinstance(active, Mapping) else {},
-        }
+            payload = load_json_object(self.state_path, max_bytes=16 * 1024 * 1024)
+        except FileNotFoundError:
+            return {"schema_version": "px.placement-capacity-ledger/1.0", "active": {}}
+        active = payload.get("active")
+        if (payload.get("schema_version") != "px.placement-capacity-ledger/1.0"
+                or type(active) is not dict or len(active) > 10000):
+            raise ValueError("capacity ledger schema or reservation inventory is invalid")
+        for identifier, row in active.items():
+            if (type(row) is not dict
+                    or row.get("schema_version") != "px.placement-capacity-reservation/1.0"
+                    or row.get("reservation_id") != identifier
+                    or type(row.get("run_id")) is not str or not row["run_id"].strip()
+                    or type(row.get("reserved_bytes")) is not int or row["reserved_bytes"] < 0
+                    or row.get("selected_device") not in {"cpu", "cuda"}
+                    or not _valid_hash(row.get("placement_sha256"))
+                    or not _valid_hash(row.get("hardware_fingerprint"))
+                    or row.get("reservation_sha256") != _hash(
+                        {key: value for key, value in row.items() if key != "reservation_sha256"}
+                    )):
+                raise ValueError("capacity ledger reservation is invalid")
+        return payload
 
     def _write(self, payload: Mapping[str, Any]) -> None:
-        self.directory.mkdir(parents=True, exist_ok=True)
-        prepared = self.state_path.with_name(
-            f".{self.state_path.name}.{uuid4().hex}.prepared"
-        )
-        prepared.write_text(
-            json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8"
-        )
-        os.replace(prepared, self.state_path)
+        image = (json.dumps(payload, indent=2, sort_keys=True, allow_nan=False) + "\n").encode("utf-8")
+        atomic_write_bytes(self.state_path, image)
 
     def reserve(self, placement: Mapping[str, Any], *, run_id: str) -> dict[str, Any]:
         unsigned = {
@@ -192,6 +204,7 @@ class PlacementCapacityLedger:
         available = int(placement.get("available_capacity_bytes", -1))
         if required < 0 or available < 0:
             raise ValueError("placement capacity is invalid")
+        reject_path_links(self.directory)
         self.directory.mkdir(parents=True, exist_ok=True)
         with FileLock(self.lock_path, timeout_seconds=10):
             state = self._read()
@@ -231,6 +244,7 @@ class PlacementCapacityLedger:
         reservation_id = str(reservation.get("reservation_id", ""))
         if not reservation_id or not _valid_hash(outcome_sha256):
             raise ValueError("capacity release requires reservation and outcome identities")
+        reject_path_links(self.directory)
         self.directory.mkdir(parents=True, exist_ok=True)
         with FileLock(self.lock_path, timeout_seconds=10):
             state = self._read()

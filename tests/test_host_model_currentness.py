@@ -60,3 +60,23 @@ def test_normal_studio_read_operation_reaches_native_gate(tmp_path):
     payload={**json.loads(json.dumps(asdict(spec))),'instructions':record.with_name('instructions.md').read_text(),'run_id':prepared['run_id'],'task':task}
     result=studio_operation(tmp_path,'agent','check-host-run',payload)
     assert result['run_id']==prepared['run_id']
+
+
+def test_resumed_host_run_uses_exact_current_signed_preparation(tmp_path):
+    controller, spec, _, task, initial = host_fixture(tmp_path)
+    run_id = initial["run_id"]
+    for _ in range(2):
+        controller.request_lifecycle(run_id, "pause", approved=True, approved_by="human:owner")
+        controller.run_control.transition(run_id, "paused", actor=spec.owner, approved=True)
+        resumed = controller.resume_harness(spec, run_id=run_id, task=task, approval=True)
+        before = images(tmp_path)
+        proof = AgentRuntimeController.assert_host_run_current(tmp_path, spec, run_id=run_id, task=task)
+        assert proof["control_sequence"] == resumed["control_sequence"]
+        assert images(tmp_path) == before
+    record = controller._existing_record_path(spec)
+    current = record.parent / "runs" / f"{run_id}-resume-{resumed['control_sequence']}.json"
+    payload = json.loads(current.read_text())
+    payload["task_sha256"] = "0" * 64
+    current.write_text(json.dumps(payload))
+    with pytest.raises((PermissionError, ValueError)):
+        AgentRuntimeController.assert_host_run_current(tmp_path, spec, run_id=run_id, task=task)

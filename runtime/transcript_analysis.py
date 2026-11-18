@@ -20,6 +20,8 @@ from typing import Any, Iterable, Mapping, Sequence
 import uuid
 
 from .contracts import ContractValidationError, validate_instance
+from .archive_io import reject_path_links
+from .confined_output import confined_path
 from .json_io import load_json_object
 
 
@@ -151,6 +153,7 @@ def _source_files(
 ) -> list[Path]:
     paths: list[Path] = []
     for value in inputs:
+        reject_path_links(value)
         resolved = value.resolve(strict=True)
         if resolved.is_symlink():
             raise ValueError(f"symlinked transcript input is not allowed: {value}")
@@ -168,6 +171,8 @@ def _source_files(
             paths.append(resolved)
         else:
             raise ValueError(f"unsupported transcript input: {value}")
+    for path in paths:
+        reject_path_links(path)
     unique = list(dict.fromkeys(path.resolve(strict=True) for path in paths))
     if not unique or len(unique) > max_files:
         raise ValueError(f"transcript input count must be between 1 and {max_files}")
@@ -407,7 +412,8 @@ def write_canonical_records(
     }
     if not apply:
         return result
-    target.write_text(rendered, encoding="utf-8", newline="\n")
+    with target.open("x", encoding="utf-8", newline="\n") as stream:
+        stream.write(rendered)
     manifest["records_sha256"] = result["records_sha256"]
     manifest["run_manifest_sha256"] = _stable(
         {key: value for key, value in manifest.items() if key != "run_manifest_sha256"}
@@ -440,7 +446,12 @@ def validate_run(root: Path, run_dir: Path) -> dict[str, Any]:
             validate_instance(
                 source, root / SOURCE_SCHEMA, contract_root=root / "contracts"
             )
-            copy = run_dir / source["ingested_copy"]
+            relative = Path(source["ingested_copy"])
+            if relative.is_absolute() or ".." in relative.parts:
+                raise ValueError("ingested source copy must be relative to its run")
+            copy = confined_path(
+                run_dir / "sources", run_dir / relative, label="ingested source copy"
+            )
             if not copy.is_file() or _sha(copy) != source["source_sha256"]:
                 errors.append(f"source copy integrity mismatch: {source['source_id']}")
         records = _records(run_dir)
@@ -573,7 +584,8 @@ def export_selected_summary(
         raise FileExistsError(f"transcript export already exists: {output}")
     if apply:
         output.parent.mkdir(parents=True, exist_ok=True)
-        output.write_text(rendered, encoding="utf-8", newline="\n")
+        with output.open("x", encoding="utf-8", newline="\n") as stream:
+            stream.write(rendered)
     return {
         "valid": True,
         "applied": apply,

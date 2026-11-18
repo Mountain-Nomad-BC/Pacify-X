@@ -272,6 +272,80 @@ class MemoryVault:
                 latest[record.memory_id] = record
         return tuple(latest[key] for key in sorted(latest))
 
+    def _query_snapshot_locked(self):
+        """Bind memory revisions to current record content and lifecycle heads."""
+        from .bounded_walk import bounded_walk, WalkLimits
+        bounded_walk(self.root, symlink_policy="reject", limits=WalkLimits(
+            max_files=20_000, max_directories=20_000, max_entries=40_000,
+            max_bytes=64 * 1024 * 1024, max_depth=64, max_duration_seconds=10,
+        ))
+        dependencies = {}
+        effective = []
+        for record in self.latest_records():
+            if record.project_id != self.project_id or record.workspace_id != self.workspace_id:
+                raise PermissionError("memory query owner namespace differs")
+            lifecycle = self._validate_lifecycle(record.memory_id)
+            head = lifecycle[-1]
+            dependencies[record.memory_id] = _stable({
+                "record": _record_payload(record),
+                "lifecycle_head_sha256": head["event_sha256"],
+            })
+            state = head["state"]
+            effective.append(replace(record, certification_status=state,
+                                     retrieval_enabled=state in {"certified", "trusted"}))
+        revisions = {
+            "schema_version": "px.memory-vault-query-revisions/1.0",
+            "workspace_id": self.workspace_id, "project_id": self.project_id,
+            "dependency_revisions": dependencies,
+        }
+        revisions["source_revision"] = _stable(revisions)
+        superseded = {memory_id for record in effective if record.retrieval_enabled
+                      for memory_id in record.supersedes}
+        return revisions, tuple(record for record in effective if record.memory_id not in superseded)
+
+    def _query_lock_path(self) -> Path:
+        from .archive_io import reject_path_links
+        lock = self.root / ".memory-control" / "vault.lock"
+        reject_path_links(lock)
+        reject_path_links(self.knowledge_root)
+        if (self.root == Path(self.root.anchor) or not self.knowledge_root.is_dir()
+                or not lock.is_file()):
+            raise PermissionError("existing bounded memory query owner is unavailable")
+        return lock
+
+    def query_revisions(self) -> dict[str, object]:
+        """Read canonical memory revisions, independent of task-plan generation."""
+        with FileLock(self._query_lock_path()):
+            revisions, _records = self._query_snapshot_locked()
+            return revisions
+
+    def materialize_current_query(self, plan, *, asserted_records=(), now_utc=None):
+        """Resolve current vault records and revisions in one cooperative lock.
+
+        Caller records are optional assertions checked against the owner image;
+        they never supply the materialized content or currentness authority.
+        """
+        from .memory_broker import MemoryQueryPlan, materialize_memory_context
+
+        if type(plan) is not MemoryQueryPlan or plan.project_id != self.project_id:
+            raise PermissionError("memory query plan owner namespace differs")
+        with FileLock(self._query_lock_path()):
+            revisions, records = self._query_snapshot_locked()
+            by_id = {record.memory_id: record for record in records}
+            seen = set()
+            for assertion in asserted_records:
+                if (type(assertion) is not MemoryRecord or assertion.memory_id in seen
+                        or assertion.memory_id not in plan.binding_ids
+                        or assertion.memory_id not in by_id
+                        or _stable(_record_payload(assertion)) != _stable(_record_payload(by_id[assertion.memory_id]))):
+                    raise PermissionError("asserted memory record differs from canonical owner")
+                seen.add(assertion.memory_id)
+            return materialize_memory_context(
+                plan, records, now_utc=now_utc,
+                current_source_revision=revisions["source_revision"],
+                current_dependency_revisions=revisions["dependency_revisions"],
+            )
+
     def _address(self, record: MemoryRecord, content: bytes):
         occupied = tuple(
             f"{item.title} {item.memory_id}" for item in self.latest_records()

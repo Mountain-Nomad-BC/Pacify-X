@@ -19,6 +19,7 @@ import shutil
 import tomllib
 from typing import Iterable, Mapping
 from functools import wraps
+from uuid import uuid4
 
 from .commissioning import commission, project_check
 from .contracts import validate_instance

@@ -18,20 +18,12 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from runtime.archive_io import reject_path_links
-from runtime.json_io import bounded_json_text, load_json_object
+from runtime.archive_io import portable_member_name, reject_path_links
+from runtime.json_io import bounded_json_text, decode_json_object, load_json_object, read_bounded_bytes
 from runtime.model_routing_observability import RouteOutcome, benchmark_route_outcomes, content_sha256
 
 MAX_INPUT_BYTES = 16 * 1024 * 1024
 MAX_OUTPUT_BYTES = 4 * 1024 * 1024
-
-
-def _sha256_file(path: Path) -> str:
-    h = hashlib.sha256()
-    with path.open("rb") as stream:
-        for chunk in iter(lambda: stream.read(65536), b""):
-            h.update(chunk)
-    return h.hexdigest()
 
 
 def _outcome(value: object) -> RouteOutcome:
@@ -61,7 +53,11 @@ def benchmark_payload(root: Path, payload: dict[str, object]) -> dict[str, objec
         raise ValueError("benchmark incumbent/candidate records must be arrays")
     benchmark_policy_path = root / "models" / "benchmark-policy.json"
     reject_path_links(benchmark_policy_path)
-    policy = load_json_object(benchmark_policy_path, max_bytes=262_144)
+    # Decode and identify one acquired image: reopening after scoring could
+    # attribute the receipt to a replacement policy that supplied no controls.
+    policy_image = read_bounded_bytes(benchmark_policy_path, max_bytes=262_144)
+    policy = decode_json_object(policy_image, max_bytes=262_144)
+    policy_sha256 = hashlib.sha256(policy_image).hexdigest()
     route_policy = policy.get("model_routing")
     if type(route_policy) is not dict:
         raise ValueError("benchmark policy does not contain model_routing controls")
@@ -88,7 +84,7 @@ def benchmark_payload(root: Path, payload: dict[str, object]) -> dict[str, objec
     )
     body = {
         "schema_version": "px.model-route-benchmark-envelope/1.0",
-        "benchmark_policy_sha256": _sha256_file(benchmark_policy_path),
+        "benchmark_policy_sha256": policy_sha256,
         "route_evidence": receipt,
         "authority_granted": False,
         "auto_promotion_allowed": False,
@@ -97,6 +93,10 @@ def benchmark_payload(root: Path, payload: dict[str, object]) -> dict[str, objec
 
 
 def _atomic_write(path: Path, text: str) -> None:
+    # Windows normalizes trailing dots/spaces, including ancestor components.
+    # Reject aliases before mkdir or staging can affect a differently named file.
+    for component in path.absolute().parts[1:]:
+        portable_member_name(component, allow_directory=False)
     reject_path_links(path)
     reject_path_links(path.parent)
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -126,6 +126,14 @@ def main() -> int:
     reject_path_links(args.output)
     root = args.root.resolve()
     reject_path_links(root)
+    # Evidence publication must not replace the fixture or the policy whose
+    # identity the receipt claims to measure, including hardlinked aliases.
+    output = args.output.resolve()
+    for protected in (args.input, root / "models" / "benchmark-policy.json"):
+        if output == protected.resolve() or (
+            args.output.exists() and protected.exists() and args.output.samefile(protected)
+        ):
+            raise ValueError("benchmark output must be distinct from its input and benchmark policy")
     payload = load_json_object(args.input, max_bytes=MAX_INPUT_BYTES)
     result = benchmark_payload(root, payload)
     text = bounded_json_text(result, max_bytes=MAX_OUTPUT_BYTES) + "\n"

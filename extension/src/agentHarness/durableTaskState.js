@@ -5,6 +5,18 @@ const path = require('node:path');
 const crypto = require('node:crypto');
 
 const MAX_BYTES = 16 * 1024 * 1024;
+const physicalKey = value => process.platform === 'win32' ? value.toLowerCase() : value;
+function directoryIdentity(root) {
+  rejectLinks(root);
+  const stat = fs.statSync(root, { bigint: true });
+  if (!stat.isDirectory() || stat.ino <= 0n || stat.dev < 0n) throw new Error('task-state-project-directory-identity-unavailable');
+  return Object.freeze({ device: stat.dev.toString(), inode: stat.ino.toString() });
+}
+function validBinding(value, root, identity) {
+  return value && value.physicalRoot === physicalKey(root) && typeof value.taskOwnerId === 'string'
+    && value.directoryIdentity?.device === identity.device && value.directoryIdentity?.inode === identity.inode
+    && /^[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$/.test(value.taskOwnerId);
+}
 
 function rejectLinks(target) {
   let cursor = path.resolve(target);
@@ -29,6 +41,9 @@ class DurableTaskState {
     if (!['task', 'budget'].includes(kind)) throw new Error('snapshot-owner-kind-invalid');
     rejectLinks(projectRoot);
     this.root = fs.realpathSync(projectRoot);
+    this.directoryIdentity = directoryIdentity(this.root);
+    this.kind = kind;
+    this.ownerBinding = kind === 'task' ? Object.freeze({ physicalRoot: physicalKey(this.root), taskOwnerId: crypto.randomUUID(), directoryIdentity: this.directoryIdentity }) : null;
     this.directory = path.join(this.root, '.agentic_engineering_os_px', 'runtime-core', 'agent-console');
     this.schemaVersion = kind === 'budget' ? 'px.agent-budget-store/1.0' : 'px.agent-task-store/2.0';
     this.leaseSchema = kind === 'budget' ? 'px.budget-state-lease/1.0' : 'px.task-state-lease/1.0';
@@ -39,12 +54,23 @@ class DurableTaskState {
   }
 
   load() {
+    this.assertProjectIdentity();
     const value = readObject(this.file);
+    this.assertProjectIdentity();
     if (value) {
       if (value.schemaVersion !== this.schemaVersion || !Number.isSafeInteger(value.revision) || value.revision < 1 || !Number.isSafeInteger(value.epoch) || value.epoch < 1) throw new Error('task-state-invalid-generation');
+      if (this.kind === 'task' && value.projectBinding !== undefined) {
+        if (!validBinding(value.projectBinding, this.root, this.directoryIdentity)) throw new Error('task-state-project-binding-mismatch');
+        this.ownerBinding = Object.freeze({ ...value.projectBinding, directoryIdentity: this.directoryIdentity });
+      }
       this.revision = value.revision; this.epoch = value.epoch;
     }
     return value;
+  }
+
+  assertProjectIdentity() {
+    const current = directoryIdentity(this.root);
+    if (current.device !== this.directoryIdentity.device || current.inode !== this.directoryIdentity.inode) throw new Error('task-state-project-directory-changed');
   }
 
   _acquire() {
@@ -74,16 +100,22 @@ class DurableTaskState {
   }
 
   save(value) {
+    this.assertProjectIdentity();
     this._acquire(); let prepared = null;
     try {
+      this.assertProjectIdentity();
       const current = readObject(this.file);
       if ((current?.revision || 0) !== this.revision || (current?.epoch || 0) !== this.epoch) throw new Error('task-state-stale-writer');
+      if (this.kind === 'task') {
+        if (current?.projectBinding && JSON.stringify(current.projectBinding) !== JSON.stringify(this.ownerBinding)) throw new Error('task-state-project-binding-mismatch');
+        value = { ...value, projectBinding: this.ownerBinding };
+      }
       if (value.schemaVersion !== this.schemaVersion || value.revision !== this.revision + 1 || (value.epoch !== this.epoch && value.epoch !== this.epoch + 1)) throw new Error('task-state-invalid-write-generation');
       const raw = Buffer.from(JSON.stringify(value), 'utf8'); if (raw.length > MAX_BYTES) throw new Error('task-state-byte-budget');
       prepared = path.join(this.directory, `.task-state-${crypto.randomUUID()}.prepared`);
       const fd = fs.openSync(prepared, 'wx');
       try { fs.writeFileSync(fd, raw); fs.fsyncSync(fd); } finally { fs.closeSync(fd); }
-      rejectLinks(this.file); fs.renameSync(prepared, this.file); prepared = null;
+      this.assertProjectIdentity(); rejectLinks(this.file); fs.renameSync(prepared, this.file); prepared = null;
       this.revision = value.revision; this.epoch = value.epoch;
       // Windows may deny directory handles; file content was fsynced before replacement.
       let directoryFd;

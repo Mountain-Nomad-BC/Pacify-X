@@ -1,5 +1,11 @@
 # Pacify-X — Live Repair Session State (append-only durable handoff)
 
+> **STALE — DO NOT USE AS THE ENTRY POINT (noted 2026-11-08).**
+> This file was last written 2026-10-25 for `main @ 67827f97`. It does **not** describe the current
+> repair campaign, which runs on `work/px-os-1067-b7-runtime-state @ 33edd1ec`.
+> **Current entry point: `docs/repair/PX_OS_1067_HANDOFF_2026-11-08.md`.**
+> This file is retained unedited as the historical 2026-10-25 record.
+
 > This file is the **authoritative live handoff artifact**. It is overwritten with current truth at
 > every batch; the history of each batch is preserved in `docs/repair/TRACKING_LOG.md` and in the
 > evidence tree under `.audit-handoff/` and `docs/repair/evidence/`.
@@ -640,3 +646,8 @@ Owned changed-section rerun project-prepared-studio-section-current is active; d
 ### User stop and final handoff — 2026-10-28T21:37:19.894071+00:00
 
 STOPPED at user request. Native prepared approval changes are verified but uncommitted; main 28564f62 is ahead of origin/main by one unpublished commit. Clean Python3.11 focused neighbors:57 passed/1 skipped; custody fixtures:8 passed; governed studio-memory-graph and agent-tool-authority both passed with execution_valid=true. No owned test remains running. Intake remains open; reviewed closures0/105; no production commissioning or certification. Earlier pending/active entries are superseded. Full resume instructions:docs/repair/HANDOFF_PROJECT_REPAIR_2026-10-28.md.
+
+
+### Rev1.xx Day1 user stop — 2026-10-29T03:20:27.006868+00:00
+
+User stopped Day1 repair continuation. Real signed local Rev1.xx successor is active in repair with open intake and112unresolved findings; predecessor campaign bytes unchanged. Controller focused62pass; verification focused180pass. Governed UI/event, task-lifecycle, billing-settlement pass. Gateway integration timed out180.375s, execution_valid=false; runner tree closed/resource inactive. Agent-tool-authority and testing-governance remain pending. HEAD d8e48384 ahead origin by2; all Day1 changes uncommitted and unstaged. Full handoff:docs/repair/REV1XX_DAY1_HANDOFF.md; final machine report:evidence/project-day1-final-verification.json. No certification or independent closure.

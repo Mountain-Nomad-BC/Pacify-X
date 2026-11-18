@@ -14,7 +14,6 @@ from datetime import datetime, timezone
 import hashlib
 import json
 import math
-import os
 from pathlib import Path
 import sys
 from typing import Mapping
@@ -24,6 +23,9 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from runtime.model_profile import ModelRuntimeProfile, load_runtime_profiles, runtime_profile_from_mapping
+from runtime.archive_io import reject_path_links
+from runtime.confined_output import confined_path
+from runtime.secure_publish import atomic_write_bytes
 
 MAX_JSON_BYTES = 4 * 1024 * 1024
 
@@ -44,16 +46,8 @@ def _sha_file(path: Path) -> str:
 
 
 def _write_json_atomic(path: Path, payload: Mapping[str, object]) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    temporary = path.with_name(path.name + f".{os.getpid()}.tmp")
-    try:
-        temporary.write_text(json.dumps(dict(payload), indent=2, sort_keys=True) + "\n", encoding="utf-8", newline="\n")
-        os.replace(temporary, path)
-    finally:
-        try:
-            temporary.unlink(missing_ok=True)
-        except OSError:
-            pass
+    image = (json.dumps(dict(payload), indent=2, sort_keys=True) + "\n").encode("utf-8")
+    atomic_write_bytes(path, image)
 
 
 def _number(value: object, field: str, *, minimum: float = 0.0) -> float:
@@ -157,7 +151,9 @@ def main() -> int:
     parser.add_argument("--output", required=True)
     args = parser.parse_args()
 
+    reject_path_links(Path(args.root).absolute())
     root = Path(args.root).resolve(strict=True)
+    output = confined_path(root, Path(args.output), label="profile certification output")
     receipt_path = Path(args.receipt).resolve(strict=True)
     gate_path = Path(args.gates).resolve(strict=True)
     receipt = _load_object(receipt_path)
@@ -221,7 +217,6 @@ def main() -> int:
         "mutated_runtime_profiles": False,
         "promotion_performed": False,
     }
-    output = Path(args.output)
     _write_json_atomic(output, output_payload)
     print(json.dumps({"output": str(output), "profile_id": profile.profile_id, "passed": passed}, indent=2))
     return 0 if passed else 2

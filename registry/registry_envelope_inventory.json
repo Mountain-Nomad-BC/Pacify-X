@@ -853,25 +853,6 @@
       "schema": "root schema_version plus shared registry-envelope invariant"
     },
     {
-      "builder": "runtime/source_freeze.py",
-      "collection_key": "files",
-      "consumer": "runtime/registry_envelope.py",
-      "count_key": "file_count",
-      "path": "registry/source-freeze/current-campaign/ebe91b2f2902e232ad21218402d3bd2ae0aa6f2076ff26043901d175b896e9a4/receipt-12397ac95d793fd45c405629cf9f8ffd2c695b276502d18577067842c270139b.json",
-      "rule": "length",
-      "schema": "root schema_version plus shared registry-envelope invariant"
-    },
-    {
-      "builder": "runtime/source_freeze.py",
-      "collection_key": "files",
-      "consumer": "runtime/registry_envelope.py",
-      "count_key": "byte_count",
-      "field": "bytes",
-      "path": "registry/source-freeze/current-campaign/ebe91b2f2902e232ad21218402d3bd2ae0aa6f2076ff26043901d175b896e9a4/receipt-12397ac95d793fd45c405629cf9f8ffd2c695b276502d18577067842c270139b.json",
-      "rule": "sum_bytes",
-      "schema": "root schema_version plus shared registry-envelope invariant"
-    },
-    {
       "builder": "runtime/plan_registry.py",
       "collection_key": "files",
       "consumer": "runtime/registry_envelope.py",

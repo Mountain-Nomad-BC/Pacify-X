@@ -1289,3 +1289,21 @@ class CliCommandTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+def test_input_commands_load_json_before_dispatch(tmp_path):
+    payload = {"fixture": [1, "unchanged"]}
+    source = tmp_path / "input.json"
+    source.write_text(json.dumps(payload), encoding="utf-8")
+    cases = [
+        (["declared-suite", "plan", "--kind", "skill", "--id", "fixture"], "runtime.declared_suite.plan_outcome"),
+        (["declared-suite", "run-script", "--id", "fixture"], "runtime.declared_suite.run_script_outcome"),
+        (["metacognitive", "run", "--operation", "fixture"], "runtime.metacognitive_evolution.facade.run_operation"),
+        (["scheduling", "simulate"], "runtime.capability_scheduler.simulate_schedule"),
+    ]
+    for command, operation in cases:
+        with patch(operation, return_value={"valid": True}) as dispatched:
+            with redirect_stdout(StringIO()):
+                status = main(["--root", str(tmp_path), *command, "--input", str(source)])
+        assert status == 0
+        assert dispatched.call_args.args[-1] == payload

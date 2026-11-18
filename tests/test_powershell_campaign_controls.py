@@ -19,6 +19,7 @@ RETIRED = [
     "scripts/cleanup_owned_test_ephemerals.ps1",
     "scripts/cleanup_px_generated_test_fixtures.ps1",
 ]
+REMOVED_LEGACY_HELPERS = frozenset(RETIRED[:3])
 
 
 def test_environment_discovery_does_not_mint_historical_or_certification_authority():
@@ -31,7 +32,11 @@ def test_environment_discovery_does_not_mint_historical_or_certification_authori
 
 @pytest.mark.parametrize("relative", RETIRED)
 def test_legacy_helpers_cannot_launch_broad_checks_or_unowned_deletion(relative):
-    source = (ROOT / relative).read_text(encoding="utf-8-sig")
+    path = ROOT / relative
+    if relative in REMOVED_LEGACY_HELPERS and not path.exists():
+        assert not path.is_symlink()
+        return
+    source = path.read_text(encoding="utf-8-sig")
     assert "throw" in source.lower() and "retired" in source.lower()
     assert not re.search(r"\b(?:Remove-Item|regenerate_projections|pytest|Start-Process)\b", source, re.I)
     assert not re.search(r"\[.*?\]::Delete\s*\(", source, re.I)
@@ -67,6 +72,9 @@ def test_all_repaired_helpers_parse_without_execution(tmp_path):
     paths = RETIRED + ["scripts/cert_env.ps1"]
     command = "$ErrorActionPreference='Stop'; "
     for relative in paths:
+        if relative in REMOVED_LEGACY_HELPERS and not (ROOT / relative).exists():
+            assert not (ROOT / relative).is_symlink()
+            continue
         command += (
             "$tokens=$null;$errors=$null;"
             "[System.Management.Automation.Language.Parser]::ParseFile("
@@ -83,8 +91,13 @@ def test_retired_helpers_fail_before_any_effect(relative, tmp_path):
     canary = tmp_path / "user-owned-canary.txt"
     canary.write_text("retain this data", encoding="utf-8")
     before = canary.read_bytes()
+    removed = relative in REMOVED_LEGACY_HELPERS and not (ROOT / relative).exists()
     code, out, errors = _powershell(tmp_path, "& " + _literal(ROOT / relative))
-    assert code != 0 and "retired" in (out + errors).lower()
+    assert code != 0
+    if removed:
+        assert "CommandNotFoundException" in errors
+    else:
+        assert "retired" in (out + errors).lower()
     assert canary.read_bytes() == before
     assert not list(tmp_path.glob("PX_*.txt"))
 

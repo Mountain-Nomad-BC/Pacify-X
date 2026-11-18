@@ -512,14 +512,22 @@ function activateImplementation(context, transaction) {
 
   // Canonical governed model client, created before the agent harness so the console's
   // workers execute through PX's provider gateway rather than any direct provider call.
+  let agentConsole;
   const modelFabricClient = new McpModelFabricBridge({
     pythonPath: () => settings().pythonPath,
     engineRoot: () => engineRoot(),
-    projectRoot: () => workspaceRoot() || engineRoot()
+    projectRoot: () => {
+      const store = agentConsole?.harness.taskStore;
+      store?.assertCurrent?.();
+      return store?.projectRoot || workspaceRoot() || engineRoot();
+    }
   });
   const publishSandboxPolicy = request => modelFabricClient.setSandboxMode(request);
   const { buildPxProviderGatewayInvoker } = require('./agentHarness/pxProviderInvoker');
-  const agentConsole = registerAgentConsole(vscode, context, {
+  agentConsole = registerAgentConsole(vscode, context, {
+    nativeTaskState: true,
+    workspaceRootsProvider: () => (vscode.workspace.workspaceFolders || []).map(folder => folder.uri.fsPath),
+    legacyTaskRootProvider: () => !vscode.workspace.workspaceFile && vscode.workspace.workspaceFolders?.length === 1 ? vscode.workspace.workspaceFolders[0].uri.fsPath : null,
     settingsProvider: settings,
     workspaceRootProvider: workspaceRoot,
     activityObserver: observeActivity,

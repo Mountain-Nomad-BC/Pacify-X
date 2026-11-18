@@ -979,3 +979,58 @@ def test_installed_summary_rejects_identity_and_receipt_cross_binding_drift(tmp_
     value.installed_summary.write_text(json.dumps(summary), encoding="utf-8")
     with pytest.raises(AutomationBlocked, match="package receipt source_harness_digest"):
         validate_installed_summary(value)
+
+
+def test_current_driver_admission_has_real_native_filesystem_scopes(tmp_path):
+    from dataclasses import replace
+    from tests.test_publication_custody_guard import _root, _checkpoint, GAP
+    from scripts.run_release_candidate import LedgerCampaignGovernance
+    from runtime.release_process_custody import require_release_admission
+    root = _root(tmp_path)
+    _checkpoint(root)
+    source = root / "source-freeze.json"
+    source.write_text('{"fixture": "admission source locator only"}')
+    value = replace(config(root), identity_kind="standalone_current_campaign", artifact_state="planned",
+                    artifact_sha256="", artifact_size=0, artifact_mtime_ns=0,
+                    source_freeze_reference={"path":source.name,"sha256":hashlib.sha256(source.read_bytes()).hexdigest()})
+    admission = LedgerCampaignGovernance(value, GAP).admit("full_profile")
+    row = require_release_admission(root, admission["event_id"], (
+        ("read", "policies"), ("execute", "runtime"),
+        ("write", ".agentic_engineering_os_px/runtime-core"),
+        ("write", str(value.log_root / "current-full_profile.log"))))
+    assert all(Path(scope).is_absolute() for r in row["effect_scopes"] for scope in r["scope"])
+    assert row["evidence"][0]["reference"] == source.name
+    assert "immutable VSIX bytes" not in row["evidence"][0]["claim"]
+    with pytest.raises(PermissionError, match="lacks exact"):
+        require_release_admission(root, admission["event_id"], (("write", str(tmp_path / "unowned")),))
+
+
+def test_current_driver_requires_admission_before_creating_owner_outputs(tmp_path):
+    from dataclasses import replace
+    value = replace(config(tmp_path), identity_kind="standalone_current_campaign")
+    owners = SubprocessOwners(value, manager=SimpleNamespace())
+    with pytest.raises((AutomationBlocked, PermissionError), match="admission"):
+        owners.run("validate", (("not-launched",),))
+    assert not value.log_root.exists()
+
+
+def test_current_driver_child_receives_exact_native_admission(tmp_path, monkeypatch):
+    import sys
+    from dataclasses import replace
+    from tests.test_publication_custody_guard import _root, _checkpoint, GAP
+    from scripts.run_release_candidate import LedgerCampaignGovernance
+    root = _root(tmp_path); _checkpoint(root)
+    source = root / "source-freeze.json"; source.write_text('{"fixture": "admission locator"}')
+    value = replace(config(root), identity_kind="standalone_current_campaign", artifact_state="planned",
+                    source_freeze_reference={"path":source.name,"sha256":hashlib.sha256(source.read_bytes()).hexdigest()})
+    admitted = LedgerCampaignGovernance(value, GAP).admit("validate")
+    owners = SubprocessOwners(value)
+    # Only subprocess environment/closure is under test; no release stage is claimed.
+    monkeypatch.setattr(owners, "verify", lambda step: None)
+    monkeypatch.setenv("PX_RELEASE_ADMISSION_EVENT_ID", "stale-inherited-admission")
+    result = owners.run("validate", ((sys.executable, "-B", "-c",
+        "import os; print(os.environ['PX_RELEASE_ADMISSION_EVENT_ID'])"),),
+        admission_event_id=admitted["event_id"])
+    assert result["valid"] is True
+    assert (value.log_root / "candidate-validate.log").read_text().strip() == admitted["event_id"]
+    assert result["commands"][0]["lifecycle"]["process_tree_closed_verified"] is True

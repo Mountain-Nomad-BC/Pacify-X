@@ -9,6 +9,10 @@ const { buildAgentConsoleProjection, redactEventPayload } = require('./agentCons
 
 class AgentConsoleViewProvider {
   constructor(vscode, context, options) { this.vscode = vscode; this.context = context; this.harness = options.harness; this.workspaceRootProvider = options.workspaceRootProvider; this.openControlPlane = options.openControlPlane; this.onDiagnostic = options.onDiagnostic || (() => {}); this.view = null; this.disposables = [];
+    this.modelCatalog = options.modelCatalog;
+    this.refreshModelCatalog = options.refreshModelCatalog;
+    this.tieControl = options.tieControl;
+    this.sandboxControl = options.sandboxControl;
     this.inspectPreparedGroup = options.inspectPreparedGroup;
     this.executePreparedGroup = options.executePreparedGroup;
     this.disposables.push(this.harness.eventBus.subscribe(event => Promise.all([this._post({ schemaVersion: MESSAGE_VERSION, type: 'event', event: { ...event, payload: redactEventPayload(event) } }), this.publish()]))); }
@@ -53,7 +57,27 @@ class AgentConsoleViewProvider {
         });
         return this.publish();
       }
-      if (message.type === 'ready' || message.type === 'refresh') return this.publish();
+      if (message.type === 'refreshModels') {
+        if (typeof this.refreshModelCatalog !== 'function') await this._error('catalog-unavailable', 'Model catalog refresh is unavailable in this host.');
+        else await this.refreshModelCatalog();
+        return this.publish();
+      }
+      if (message.type === 'tieControl' || message.type === 'sandboxControl') {
+        const tie = message.type === 'tieControl';
+        const handler = tie ? this.tieControl : this.sandboxControl;
+        const prefix = tie ? 'tie' : 'sandbox';
+        if (typeof handler !== 'function') await this._error(`${prefix}-unavailable`, 'This control is unavailable in the current host.');
+        else {
+          if (tie) this.harness.taskStore.requireTask(message.taskId);
+          try { await handler(tie ? { taskId: message.taskId, action: message.action } : { mode: message.mode, allowedEndpoints: message.allowedEndpoints }); }
+          catch (error) { await this._error(`${prefix}-rejected`, String(error?.message || error).slice(0, 900)); }
+        }
+        return this.publish();
+      }
+      if (message.type === 'ready' || message.type === 'refresh') {
+        this.harness._prepareTaskState?.();
+        return this.publish();
+      }
       if (message.type === 'openControlPlane') return this.openControlPlane?.();
       if (message.type === 'cancelRun') { await this.harness.cancelRun(message.runId); return this.publish(); }
       if (message.type === 'newTask') { this.harness.createTask({ goal: message.goal, mode: message.mode, maxEffectClass: message.maxEffectClass, ...this._defaults() }); return this.publish(); }
@@ -61,7 +85,7 @@ class AgentConsoleViewProvider {
         let taskId = message.taskId;
         if (!taskId) taskId = this.harness.createTask({ goal: message.message, mode: message.mode, maxEffectClass: message.maxEffectClass, ...this._defaults() }).taskId;
         else this.harness.taskStore.updateTask(taskId, { mode: message.mode, constraints: { maxEffectClass: message.maxEffectClass } });
-        void this.harness.sendTurn({ taskId, runId: message.runId, message: message.message, workerId: message.workerId, explicitRefs: this._editorRefs() }).catch(error => this._error('run-failed', String(error?.message || error).slice(0, 900)));
+        void this.harness.sendTurn({ taskId, runId: message.runId, message: message.message, workerId: message.workerId, serviceId: message.serviceId, modelId: message.modelId, resume: message.resume, explicitRefs: this._editorRefs() }).catch(error => this._error('run-failed', String(error?.message || error).slice(0, 900)));
         return this.publish();
       }
     } catch (error) { this.onDiagnostic(`agent-console-handler:${error?.stack || error}`); return this._error('host-action-failed', String(error?.message || error).slice(0, 900)); }
@@ -77,7 +101,7 @@ class AgentConsoleViewProvider {
     return [{ refId: 'active-file-ref', kind: 'editor-file', label: `Active file: ${path.basename(selected.file)}`, source: selected.file, content: null, authority: 'active-editor' }];
   }
 
-  async publish() { return this._post({ schemaVersion: MESSAGE_VERSION, type: 'snapshot', assetProtocol: ASSET_PROTOCOL, state: buildAgentConsoleProjection(this.harness.project()) }); }
+  async publish() { return this._post({ schemaVersion: MESSAGE_VERSION, type: 'snapshot', assetProtocol: ASSET_PROTOCOL, state: buildAgentConsoleProjection(this.harness.project(), { modelCatalog: this.modelCatalog }) }); }
   async _error(code, detail) { return this._post({ schemaVersion: MESSAGE_VERSION, type: 'error', code, detail }); }
   async _post(message) { if (!this.view) return; let valid; try { valid = validateOutbound(message); } catch (error) { this.onDiagnostic(`agent-console-outbound-rejected:${error.message}`); return; } await this.view.webview.postMessage(valid); }
 

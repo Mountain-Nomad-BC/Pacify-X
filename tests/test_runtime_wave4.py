@@ -152,17 +152,17 @@ class RuntimeWave4Tests(unittest.TestCase):
         )
         self.assertTrue(
             scheduler.admit(
-                "one", "heavy", {"agents": 0, "memory_percent": 20}
+                "one", "heavy", {"agents": 0, "memory_percent": 20, "gpu_percent": 0, "wsl_memory_percent": 0, "docker_memory_percent": 0}
             ).admitted
         )
         self.assertFalse(
             scheduler.admit(
-                "two", "heavy", {"agents": 0, "memory_percent": 20}
+                "two", "heavy", {"agents": 0, "memory_percent": 20, "gpu_percent": 0, "wsl_memory_percent": 0, "docker_memory_percent": 0}
             ).admitted
         )
         self.assertFalse(
             scheduler.admit(
-                "memory", "light", {"agents": 0, "memory_percent": 99}
+                "memory", "light", {"agents": 0, "memory_percent": 99, "gpu_percent": 0, "wsl_memory_percent": 0, "docker_memory_percent": 0}
             ).admitted
         )
         now = datetime.now(timezone.utc)

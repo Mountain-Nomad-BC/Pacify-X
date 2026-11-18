@@ -12,6 +12,49 @@ from runtime.input_files import cooperative_deadline
 from tests.verification_fixtures import fixture
 
 
+def test_successor_capture_keeps_authored_test_config_and_binds_revision_policy(tmp_path, monkeypatch):
+    from runtime import project_revision_succession as succession
+    policy = fixture(tmp_path, count=2)
+    revision = tmp_path / '.agentic_engineering_os_px/project-revisions/prj_fixture'
+    revision.mkdir(parents=True)
+    validation = revision / 'validation-policy.json'
+    validation.write_text('{"authority":"OWNER-FRESH-VALIDATION-001","campaign_id":"fixture"}')
+    pointer = tmp_path / succession.ACTIVE_REVISION_PATH
+    pointer.parent.mkdir(parents=True)
+    pointer.write_text('{"fixture_generation":1}')
+    # Isolate capture from the independently tested cryptographic selector.
+    # The actual governed CLI regression also exercises the live selector.
+    monkeypatch.setattr(succession, 'current_revision_root', lambda _root: revision)
+    capture = CapturedInputs(tmp_path)
+    capture.capture('registry/test_profiles.json')
+    assert capture.config == policy
+    first = resolve_test_section(tmp_path, 'fixture')
+    assert 'registry/test_profiles.json' in first['inputs']
+    assert validation.relative_to(tmp_path).as_posix() in first['inputs']
+    assert succession.ACTIVE_REVISION_PATH.as_posix() in first['inputs']
+    validation.write_text('{"authority":"OWNER-FRESH-VALIDATION-001","campaign_id":"changed"}')
+    second = resolve_test_section(tmp_path, 'fixture')
+    assert first['input_sha256'] != second['input_sha256']
+    assert first['chunks'][0]['input_sha256'] != second['chunks'][0]['input_sha256']
+
+
+def test_successor_capture_rejects_pointer_changes_after_acquisition(tmp_path, monkeypatch):
+    from runtime import project_revision_succession as succession
+    fixture(tmp_path, count=2)
+    revision = tmp_path / '.agentic_engineering_os_px/project-revisions/prj_fixture'
+    revision.mkdir(parents=True)
+    (revision / 'validation-policy.json').write_text('{"campaign_id":"fixture"}')
+    pointer = tmp_path / succession.ACTIVE_REVISION_PATH
+    pointer.parent.mkdir(parents=True)
+    pointer.write_text('{"fixture_generation":1}')
+    monkeypatch.setattr(succession, 'current_revision_root', lambda _root: revision)
+    capture = CapturedInputs(tmp_path)
+    capture.capture('registry/test_profiles.json')
+    pointer.write_text('{"fixture_generation":2}')
+    with pytest.raises(ValueError, match='changed'):
+        capture.verify()
+
+
 def test_capture_has_no_hidden_timer_and_preserves_explicit_deadline(tmp_path):
     fixture(tmp_path)
     capture = CapturedInputs(tmp_path)
@@ -182,6 +225,22 @@ def test_existing_group_dependency_owner_resolves_relative_and_submodule_imports
     (tmp_path / "runtime/deep.py").write_text("VALUE = 1\n", encoding="utf-8")
     result = owner._local_python_dependencies(tmp_path, ["runtime/shared.py"])
     assert "runtime/deep.py" in result
+
+
+@pytest.mark.parametrize("statement", ["from . import deep", "from .deep import VALUE"])
+def test_capture_relative_imports_under_nonidentifier_directory(tmp_path, statement):
+    package = tmp_path / ".repair-tools/nested-work"
+    package.mkdir(parents=True)
+    (package / "writer.py").write_text(statement + "\n")
+    dependency = package / "deep.py"
+    dependency.write_text("VALUE = 1\n")
+    capture = CapturedInputs(tmp_path)
+    members = capture.closure([".repair-tools/nested-work/writer.py"])
+    assert ".repair-tools/nested-work/deep.py" in members
+    capture.verify()
+    dependency.write_text("VALUE = 2\n")
+    with pytest.raises(ValueError, match="changed"):
+        capture.verify()
 
 
 def test_declared_nonpython_asset_remains_an_input(tmp_path):

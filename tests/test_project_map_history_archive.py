@@ -38,6 +38,30 @@ def _maps(root, count):
     return root / '.agentic_engineering_os_px/project-map-history'
 
 
+@pytest.mark.parametrize('resume', [False, True])
+def test_archive_replacement_after_verification_preserves_history_sources(tmp_path, monkeypatch, resume):
+    import scripts.archive_project_map_history as owner
+    history = _maps(tmp_path, 4)
+    if resume:
+        def interrupt(*args, **kwargs):
+            raise OSError('interrupt before reclamation')
+        with monkeypatch.context() as patch:
+            patch.setattr(owner, 'reclaim_archived_inventory', interrupt)
+            with pytest.raises(OSError, match='interrupt before reclamation'):
+                owner.apply(tmp_path, keep_latest=1)
+    before = {p.relative_to(history): p.read_bytes() for p in history.rglob('*') if p.is_file()}
+    verify = owner._verify_archive
+
+    from tests.support.archive_faults import replace_after_verify
+
+    monkeypatch.setattr(owner, '_verify_archive', replace_after_verify(verify))
+    # Fresh history planning may revalidate ancestry before the final digest
+    # check. Either refusal must precede any source reclamation.
+    with pytest.raises(ValueError):
+        owner.apply(tmp_path, keep_latest=1)
+    assert {p.relative_to(history): p.read_bytes() for p in history.rglob('*') if p.is_file()} == before
+
+
 def test_project_map_history_archive_is_verified_and_recoverable(tmp_path: Path) -> None:
     history = _maps(tmp_path, 4)
     dry_run = plan(tmp_path, keep_latest=1)
@@ -76,6 +100,27 @@ def test_archive_verifier_rejects_duplicate_manifest_before_payload_read(tmp_pat
     monkeypatch.setattr(zipfile.ZipFile, 'open', unexpected)
     with pytest.raises(ValueError, match='duplicate archive member'):
         _verify_archive(path, manifest)
+
+
+def test_archive_verifier_digest_identifies_the_acquired_validated_image(tmp_path, monkeypatch):
+    import hashlib
+    import runtime.archive_io as archive_io
+    import scripts.archive_project_map_history as owner
+    path = tmp_path / 'image.zip'
+    manifest = {'files': []}
+    with zipfile.ZipFile(path, 'w') as archive:
+        archive.writestr('MANIFEST.json', owner._canonical(manifest) + b'\n')
+    expected = hashlib.sha256(path.read_bytes()).hexdigest()
+    acquire = archive_io.read_archive_bytes
+
+    def replace_after_acquisition(*args, **kwargs):
+        image = acquire(*args, **kwargs)
+        path.write_bytes(b'unverified replacement')
+        return image
+
+    monkeypatch.setattr(archive_io, 'read_archive_bytes', replace_after_acquisition)
+    assert owner._verify_archive(path, manifest) == expected
+    assert hashlib.sha256(path.read_bytes()).hexdigest() != expected
 
 
 def test_archive_writer_rejects_changed_source_and_preserves_it(tmp_path):
@@ -175,3 +220,80 @@ def test_restored_history_is_consumed_without_current_freshness_promotion(tmp_pa
     difference = diff_project_maps(restored, tmp_path)
     assert difference['valid'] and 'app.py' in difference['files']['changed']
     assert not validate_project_map(restored, check_freshness=True)['valid']
+
+
+# --- G09: check-to-reclamation custody window ---------------------------------
+
+
+def _history_snapshot(history):
+    return {p.relative_to(history): p.read_bytes() for p in history.rglob('*') if p.is_file()}
+
+
+def _history_case(tmp_path, monkeypatch, history, mutator):
+    import scripts.archive_project_map_history as owner
+    seen = []
+    original = owner.reclaim_archived_inventory
+
+    def armed(root, manifest, **kwargs):
+        def act():
+            archives = list((tmp_path / '.agentic_engineering_os_px'
+                             / 'project-map-history-archives').glob('*.zip'))
+            assert archives, 'expected a verified archive in custody'
+            if not seen:
+                seen.append(archives[0])
+                mutator(archives[0])
+        return original(root, manifest, custody_check=act, **kwargs)
+
+    monkeypatch.setattr(owner, 'reclaim_archived_inventory', armed)
+    with pytest.raises(ValueError, match='archive custody image|archive cleanup|project history'):
+        owner.apply(tmp_path, keep_latest=1)
+    assert seen, 'the custody interval was never reached; the test proved nothing'
+
+
+def test_history_archive_replaced_inside_reclamation_interval_preserves_sources(tmp_path, monkeypatch):
+    history = _maps(tmp_path, 4)
+    before = _history_snapshot(history)
+    _history_case(tmp_path, monkeypatch, history,
+                  lambda archive: archive.write_bytes(b'not the verified recovery archive'))
+    assert _history_snapshot(history) == before
+    assert len([p for p in history.iterdir() if p.is_dir()]) == 3
+
+
+def test_history_archive_written_in_place_inside_reclamation_interval_preserves_sources(tmp_path, monkeypatch):
+    history = _maps(tmp_path, 4)
+    before = _history_snapshot(history)
+
+    from tests.support.archive_faults import flip_one_byte
+
+    _history_case(tmp_path, monkeypatch, history, flip_one_byte)
+    assert _history_snapshot(history) == before
+
+
+def test_history_archive_renamed_away_inside_reclamation_interval_preserves_sources(tmp_path, monkeypatch):
+    history = _maps(tmp_path, 4)
+    before = _history_snapshot(history)
+    _history_case(tmp_path, monkeypatch, history,
+                  lambda archive: archive.rename(archive.with_name(archive.name + '.displaced')))
+    assert _history_snapshot(history) == before
+
+
+def test_history_archive_replaced_during_resume_refuses(tmp_path, monkeypatch):
+    import scripts.archive_project_map_history as owner
+    history = _maps(tmp_path, 4)
+
+    def interrupt(root, manifest, **kwargs):
+        raise OSError('interrupt before reclamation')
+
+    with monkeypatch.context() as patch:
+        patch.setattr(owner, 'reclaim_archived_inventory', interrupt)
+        with pytest.raises(OSError, match='interrupt before reclamation'):
+            owner.apply(tmp_path, keep_latest=1)
+
+    archives = list((tmp_path / '.agentic_engineering_os_px'
+                     / 'project-map-history-archives').glob('*.zip'))
+    assert len(archives) == 1
+    archives[0].write_bytes(b'replaced between runs')
+    before = _history_snapshot(history)
+    with pytest.raises(ValueError):
+        owner.apply(tmp_path, keep_latest=1)
+    assert _history_snapshot(history) == before

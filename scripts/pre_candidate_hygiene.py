@@ -562,20 +562,10 @@ def quarantine(
             after = _tree_evidence(destination)
             before = record.get("evidence")
             if not _evidence_matches(after, before):
-                # Windows may deny traversal while still allowing the parent
-                # entry to be moved.  After exact-path ACL remediation, the
-                # quarantined tree is the strongest available before-state
-                # witness because the same-volume move preserved its bytes.
-                record["evidence"] = {
-                    **after,
-                    "snapshot_custody": "post_move_exact_tree_after_acl_normalization",
-                    "pre_move_traversal_was_denied": True,
-                }
-                record["permission_remediation"] = {
-                    "scope": str(destination),
-                    "action": "grant current user full control on exact disposable tree",
-                    "reason": "Validate quarantined bytes without broadening repository permissions.",
-                }
+                # A current image cannot retroactively establish what existed
+                # before the move. Preserve both retained bytes and the original
+                # witness for explicit recovery instead of adopting new evidence.
+                raise HygieneError(f"quarantine resume evidence differs: {destination}")
             record["cleanup_result"] = "moved"
             record["resulting_state"] = {
                 "original_absent": True,
@@ -680,7 +670,8 @@ def validate_quarantine(root: Path, manifest_path: Path) -> dict[str, Any]:
         "record_count": len(value.get("records", [])),
         "resource_status": resources,
         "all_items_no_longer_needed": not errors,
-        "hard_delete_authorized_by_user": True,
+        # Content/lifecycle validation cannot manufacture user authorization.
+        "hard_delete_authorized_by_user": False,
         "errors": errors,
         "valid": not errors,
     }

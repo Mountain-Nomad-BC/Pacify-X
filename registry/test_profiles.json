@@ -54,6 +54,7 @@
         "tests/test_effect_surface.py",
         "tests/test_clean_source_export.py",
         "tests/test_operational_gap_ledger.py",
+        "scripts/build_release_successor_configs.py",
         "tests/test_build_release_successor_configs.py",
         "tests/test_reconcile_unverified_operational_controls.py",
         "tests/test_operational_control_proof_matrix.py",
@@ -700,7 +701,16 @@
         "docs/architecture/tools/build_atlas.py",
         "docs/architecture/tools/verify_atlas_browser.py",
         "docs/architecture/tools/viewer_template/*",
-        "docs/architecture/schema.json"
+        "docs/architecture/schema.json",
+        "runtime/guarded_registry_projection.py",
+        "runtime/mutating_producer_registry.py",
+        "tests/test_publication_custody_guard.py",
+        "tests/test_guarded_projection_callers.py",
+        "tests/test_mutating_producer_registry_hardening.py",
+        "scripts/build_effect_surface_ownership.py",
+        "scripts/build_contract_ownership_registry.py",
+        "scripts/build_agency_agent_graph.py",
+        "scripts/build_semantic_capability_index.py"
       ],
       "command": [
         "python",
@@ -754,7 +764,10 @@
         "tests/test_wal_migration.py",
         "tests/test_wal_ownership.py",
         "tests/test_architecture_atlas.py",
-        "tests/test_architecture_atlas_reconciliation.py"
+        "tests/test_architecture_atlas_reconciliation.py",
+        "tests/test_publication_custody_guard.py",
+        "tests/test_guarded_projection_callers.py",
+        "tests/test_mutating_producer_registry_hardening.py"
       ],
       "chunk_size": 8,
       "max_parallel_chunks": 1,
@@ -1321,7 +1334,8 @@
         "tests/test_release_feedback_audit.py",
         "tests/test_release_evidence_portability.py",
         "tests/test_prepared_group_operation_approval.py",
-        "tests/test_workflow_approval_boundary.py"
+        "tests/test_workflow_approval_boundary.py",
+        "tests/test_memory_current_owner.py"
       ],
       "command": [
         "python",
@@ -1352,7 +1366,8 @@
         "tests/test_agent_builder_inputs.py",
         "tests/test_studio_api_inputs.py",
         "tests/test_prepared_group_operation_approval.py",
-        "tests/test_workflow_approval_boundary.py"
+        "tests/test_workflow_approval_boundary.py",
+        "tests/test_memory_current_owner.py"
       ],
       "chunk_size": 2,
       "max_parallel_chunks": 1,
@@ -1426,11 +1441,21 @@
       "source_patterns": [
         "runtime/hardware_routing.py",
         "runtime/local_model_runtime.py",
+        "runtime/docker_model_runtime.py",
+        "runtime/airllm_runtime.py",
+        "runtime/model_pool.py",
+        "runtime/model_resource_interlock.py",
+        "models/external-runtime-policy.json",
+        "models/resource-policy.json",
         "runtime/provider_gateway.py",
         "contracts/operations/local-model-runtime.schema.json",
         "registry/provider_adapters.json",
         "policies/hardware-aware-execution.json",
         "tests/test_hardware_routing.py",
+        "tests/test_docker_model_runtime.py",
+        "tests/test_airllm_runtime.py",
+        "tests/test_model_pool.py",
+        "tests/test_model_resource_interlock.py",
         "tests/test_local_model_runtime.py"
       ],
       "command": [
@@ -1441,6 +1466,10 @@
         "-p",
         "no:cacheprovider",
         "tests/test_hardware_routing.py",
+        "tests/test_docker_model_runtime.py",
+        "tests/test_airllm_runtime.py",
+        "tests/test_model_pool.py",
+        "tests/test_model_resource_interlock.py",
         "tests/test_local_model_runtime.py"
       ],
       "timeout_seconds": 90
@@ -2243,7 +2272,14 @@
         "runtime/execution_placement.py",
         "tests/test_model_group_preparation.py",
         "tests/test_execution_placement.py",
-        "tests/test_hardware_routing.py"
+        "tests/test_hardware_routing.py",
+        "runtime/query_planner.py",
+        "tests/test_query_plan_provenance.py",
+        "tests/test_query_plan_regression.py",
+        "tests/test_query_planner.py",
+        "tests/test_source_freeze_rollback.py",
+        "tests/test_memory_current_owner.py",
+        "runtime/cancellation_scope.py"
       ],
       "command": [
         "python",
@@ -2370,7 +2406,12 @@
         "tests/test_agent_governed_integration.py",
         "tests/test_model_group_preparation.py",
         "tests/test_execution_placement.py",
-        "tests/test_hardware_routing.py"
+        "tests/test_hardware_routing.py",
+        "tests/test_query_plan_provenance.py",
+        "tests/test_query_plan_regression.py",
+        "tests/test_query_planner.py",
+        "tests/test_source_freeze_rollback.py",
+        "tests/test_memory_current_owner.py"
       ],
       "chunk_size": 8,
       "max_parallel_chunks": 1,
@@ -2467,7 +2508,8 @@
         "runtime/semantic_entity.py",
         "tests/test_secure_publish.py",
         "registry/test_profiles.json",
-        "tests/test_secure_publish_operating.py"
+        "tests/test_secure_publish_operating.py",
+        "tests/test_source_freeze_rollback.py"
       ],
       "command": [
         "python",
@@ -2477,7 +2519,8 @@
         "-p",
         "no:cacheprovider",
         "tests/test_secure_publish.py",
-        "tests/test_secure_publish_operating.py"
+        "tests/test_secure_publish_operating.py",
+        "tests/test_source_freeze_rollback.py"
       ],
       "chunk_size": 0,
       "max_parallel_chunks": 1,
@@ -2763,6 +2806,8 @@
       "description": "Current candidate/stage/installed owner contracts and mandatory coverage admission; focused fixtures do not execute a release.",
       "source_patterns": [
         "runtime/certification_contract.py",
+        "runtime/release_process_custody.py",
+        "extension/scripts/package-vsix.js",
         "runtime/release_current_acceptance.py",
         "scripts/run_release_candidate.py",
         "scripts/run_release_stage_owner.py",
@@ -2770,6 +2815,7 @@
         "scripts/validate_certification_pipeline.py",
         "tests/test_release_candidate_driver.py",
         "tests/test_release_stage_owner.py",
+        "tests/test_release_source_identity.py",
         "tests/test_run_installed_operational_owner.py",
         "tests/test_certification_readiness.py",
         "tests/test_certification_pipeline_readiness.py",
@@ -2800,6 +2846,7 @@
         "no:cacheprovider",
         "tests/test_release_candidate_driver.py",
         "tests/test_release_stage_owner.py",
+        "tests/test_release_source_identity.py",
         "tests/test_run_installed_operational_owner.py",
         "tests/test_certification_readiness.py",
         "tests/test_certification_pipeline_readiness.py",
@@ -2946,7 +2993,10 @@
         "extension/tests/mcp-client-protocol-audit.test.js",
         "registry/test_profiles.json",
         "extension/tests/mcp-model-fabric-stream.test.js",
-        "extension/tests/px-language-model-provider.test.js"
+        "extension/tests/px-language-model-provider.test.js",
+        "extension/tests/agent-service-model-selection.test.js",
+        "extension/tests/remote-catalog-projection.test.js",
+        "extension/tests/personal-context-boundary.test.js"
       ],
       "command": [
         "node",
@@ -2955,7 +3005,10 @@
         "tests/mcp-client-protocol-audit.test.js",
         "tests/mcp-model-fabric-bridge.test.js",
         "tests/mcp-model-fabric-stream.test.js",
-        "tests/px-language-model-provider.test.js"
+        "tests/px-language-model-provider.test.js",
+        "tests/agent-service-model-selection.test.js",
+        "tests/remote-catalog-projection.test.js",
+        "tests/personal-context-boundary.test.js"
       ],
       "cwd": "extension",
       "chunk_size": 0,
@@ -3032,7 +3085,9 @@
         "tests/test_model_group_preparation.py",
         "tests/test_generation_bound_verdict.py",
         "registry/test_profiles.json",
-        "tests/test_remote_attachment_identity.py"
+        "tests/test_remote_attachment_identity.py",
+        "runtime/cancellation_scope.py",
+        "tests/test_agent_governed_integration.py"
       ],
       "command": [
         "python",
@@ -3044,7 +3099,8 @@
         "tests/test_model_execution_group.py",
         "tests/test_model_group_preparation.py",
         "tests/test_generation_bound_verdict.py",
-        "tests/test_remote_attachment_identity.py"
+        "tests/test_remote_attachment_identity.py",
+        "tests/test_agent_governed_integration.py"
       ],
       "chunk_size": 0,
       "max_parallel_chunks": 1,

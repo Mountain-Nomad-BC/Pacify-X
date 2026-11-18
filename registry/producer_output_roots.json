@@ -61,9 +61,39 @@
    "granted_at": "2026-11-03",
    "granted_by": "owner decision 2026-11-03",
    "producer": "scripts/sanitize_tree.py",
+   "revocation_reason": "pinned fingerprint predates the session-6 confinement edit; the observed bytes are registered separately",
+   "revoked_at": "2026-11-04",
+   "revoked_by": "PX-OS-1067 session 6",
    "root": "REPOSITORY_ROOT",
    "scope": "Every caller-directed destination this producer publishes, confined to the repository root and published atomically.",
    "source_sha256": "2e3582f778482647ee098f7b2561bdd03ee68b7b6dc415888ff28338e4840cbc",
+   "status": "revoked",
+   "write_class": "caller_directed_report"
+  },
+  {
+   "producer": "scripts/sanitize_tree.py",
+   "revocation_reason": "pinned fingerprint predates the session-6 confinement edit; the observed bytes are registered separately",
+   "revoked_at": "2026-11-04",
+   "revoked_by": "PX-OS-1067 session 6",
+   "root": "REPOSITORY_ROOT",
+   "source_sha256": "b0a4f1799bb3bb4881887f58795ccdf90698290490bd981491493fc45445e219",
+   "status": "revoked",
+   "write_class": "caller_directed_report"
+  },
+  {
+   "producer": "scripts/sanitize_tree.py",
+   "revocation_reason": "pinned fingerprint predates the session-6 confinement edit; the observed bytes are registered separately",
+   "revoked_at": "2026-11-04",
+   "revoked_by": "PX-OS-1067 session 6",
+   "root": "REPOSITORY_ROOT",
+   "source_sha256": "e2dada067fd41749220cc8840b12ede0e3a0db76d1762c019fb2c3a36f2e67cb",
+   "status": "revoked",
+   "write_class": "caller_directed_report"
+  },
+  {
+   "producer": "scripts/sanitize_tree.py",
+   "root": "REPOSITORY_ROOT",
+   "source_sha256": "9960b8a50b55b1493f6ac207e547ffd4b4e213ddee5d684484d2c2496a781355",
    "status": "active",
    "write_class": "caller_directed_report"
   }

@@ -12,7 +12,7 @@ form one persistence unit.
 from __future__ import annotations
 
 import json
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 import shutil
 
 from .repository_scope import is_external_environment_relative
@@ -27,22 +27,39 @@ def copy_clean_product(source: Path, destination: Path) -> None:
     """
     source = source.resolve()
     
-    # Identify required deltas before deciding what to exclude
+    # Identify required deltas before deciding what to exclude. A retained head
+    # cannot authorize copying arbitrary host/evidence custody into the product.
+    from .archive_io import reject_path_links
+    from .operational_gap_ledger import DELTA_DIRECTORY_RELATIVE, _referenced_delta_paths
+
     required_deltas = set()
     head_path = source / "registry" / "operational_gap_ledger.head.json"
     if head_path.is_file():
-        try:
-            head = json.load(head_path.open(encoding="utf-8"))
-            if isinstance(head, dict):
-                delta_projection = head.get("delta_projection")
-                if delta_projection and isinstance(delta_projection, dict):
-                    delta_path = delta_projection.get("path")
-                    if delta_path:
-                        # Normalize to relative form for comparison
-                        required_deltas.add(str(delta_path).replace("\\", "/"))
-        except (OSError, json.JSONDecodeError):
-            # If we can't read the head, don't assume deltas are safe to omit
-            pass
+        reject_path_links(head_path)
+        head = json.loads(head_path.read_text(encoding="utf-8"))
+        if not isinstance(head, dict):
+            raise ValueError("retained ledger head must be an object")
+        prefix = DELTA_DIRECTORY_RELATIVE.parts
+        for raw in _referenced_delta_paths(head):
+            reference = PurePosixPath(raw.replace("\\", "/"))
+            if (reference.is_absolute() or ".." in reference.parts
+                    or reference.parts[:len(prefix)] != prefix
+                    or len(reference.parts) <= len(prefix)):
+                raise ValueError("retained ledger delta must stay in the canonical checkpoint directory")
+            delta = source / reference.as_posix()
+            reject_path_links(delta)
+            if not delta.is_file():
+                raise ValueError("required ledger delta is missing: " + reference.as_posix())
+            required_deltas.add(reference.as_posix())
+
+    preserved_dependencies = required_deltas | {
+        parent.as_posix() for relative in required_deltas
+        for parent in PurePosixPath(relative).parents if parent.parts
+    }
+    if required_deltas:
+        # A delta-dependent head and its referenced images form one retained
+        # persistence unit; copying only either half creates an orphan.
+        preserved_dependencies.add(head_path.relative_to(source).as_posix())
     
     generated = shutil.ignore_patterns(
         ".git",
@@ -68,7 +85,7 @@ def copy_clean_product(source: Path, destination: Path) -> None:
             relative_posix = relative.as_posix()
             
             # INVARIANT: Preserve required operational ledger deltas
-            if relative_posix in required_deltas:
+            if relative_posix in preserved_dependencies:
                 ignored.discard(name)
                 continue
             

@@ -7,7 +7,7 @@ import pytest
 
 from runtime import revision_campaign_lifecycle as lifecycle
 from runtime.project_revision_succession import (
-    ACTIVE_REVISION_PATH, SUCCESSION_STATE_PATH, STATE_SCHEMA,
+    ACTIVE_REVISION_PATH, SUCCESSION_STATE_PATH, SUCCESSION_WAL_PATH, STATE_SCHEMA,
     current_revision_root, _digest,
 )
 from runtime.release_signing import canonical_bytes
@@ -35,7 +35,7 @@ def project(tmp_path, monkeypatch):
                 'predecessor_project_record_sha256': hashlib.sha256(canonical_bytes(record)).hexdigest(),
                 'predecessor_validation_policy_sha256': hashlib.sha256(canonical_bytes(policy)).hexdigest()}
     event = _activated_event(planned_event(proposal, {**AUTHORIZATION, **proposal}))
-    revision = tmp_path / '.engineering-bootstrap/project-revisions' / PROPOSAL['successor_project_id']
+    revision = tmp_path / '.agentic_engineering_os_px/project-revisions' / PROPOSAL['successor_project_id']
     revision.mkdir(parents=True)
     campaign = {'schema_version': 'px.repair-campaign/1.0',
                 'project_id': PROPOSAL['successor_project_id'],
@@ -140,7 +140,7 @@ def test_interrupted_revision_closure_recovers_all_three_bound_images(project, m
     monkeypatch.setattr(JsonWal, 'commit', interrupted)
     with pytest.raises(RuntimeError, match='injected phase'):
         close_repair_intake(root, admission_event_id=ADMISSION, closure_authority='fixture-owner')
-    wal = JsonWal(Path('.engineering-bootstrap/project-revision-succession/wal'), root)
+    wal = JsonWal(SUCCESSION_WAL_PATH, root)
     assert wal._pending_transactions()
     wal.recover()
     assert current_revision_root(root) == revision
@@ -206,3 +206,27 @@ def test_policy_change_between_validation_and_publication_is_not_overwritten(pro
         close_repair_intake(root, admission_event_id=ADMISSION, closure_authority='fixture-owner')
     assert (revision / 'repair-campaign.json').read_bytes() == before
     assert (revision / 'validation-policy.json').read_text() == '{"concurrent":true}'
+
+
+def test_release_phase_updates_campaign_policy_and_pointer_together(project):
+    root, revision, parent = project
+    preserved = {p.name:p.read_bytes() for p in parent.iterdir()}
+    repair(project)
+    close_repair_intake(root, admission_event_id=ADMISSION, closure_authority="fixture-owner")
+    freeze_repair_campaign(root, admission_event_id=ADMISSION, evidence_path=receipt(root,revision))
+    result=lifecycle.advance_release_phase(root,before="repair_frozen",after="revision_reconciled",admission_event_id=ADMISSION)
+    assert result["phase"] == "revision_reconciled"
+    assert current_revision_root(root) == revision
+    assert preserved == {p.name:p.read_bytes() for p in parent.iterdir()}
+    with pytest.raises(lifecycle.RevisionCampaignBlocked,match="predecessor phase"):
+        lifecycle.advance_release_phase(root,before="repair_frozen",after="revision_reconciled",admission_event_id=ADMISSION)
+    with pytest.raises(lifecycle.RevisionCampaignBlocked,match="unknown"):
+        lifecycle.advance_release_phase(root,before="revision_reconciled",after="certified",admission_event_id=ADMISSION)
+
+
+def test_release_phase_cannot_consume_open_unresolved_campaign(project):
+    root, revision, _ = project
+    image=(revision/"repair-campaign.json").read_bytes()
+    with pytest.raises(lifecycle.RevisionCampaignBlocked,match="predecessor phase"):
+        lifecycle.advance_release_phase(root,before="repair_frozen",after="revision_reconciled",admission_event_id=ADMISSION)
+    assert (revision/"repair-campaign.json").read_bytes() == image

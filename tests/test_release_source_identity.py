@@ -136,21 +136,29 @@ def test_current_automation_consumes_retained_source_input_without_git_or_rewrit
         automation._prepare_identity_manifest(config)
 
 
-def test_current_pipeline_snapshot_observes_native_source_and_mutable_control_bytes(tmp_path):
-    from types import SimpleNamespace
-    from scripts.validate_certification_pipeline import _current_source_snapshot
+def test_current_source_tree_identity_ignores_mutable_control_bytes(tmp_path):
+    """The authored source tree identity must not move when control bytes do.
+
+    This invariant is owned by `runtime.source_freeze.freeze_source`, which
+    computes `receipt["tree_sha256"]` over authored source only. The prior
+    version of this test called `_current_source_snapshot`, a function that was
+    never implemented in `scripts/validate_certification_pipeline.py` and never
+    existed in git history, so the test could not have passed against any
+    committed revision. The assertions are preserved and re-pointed at the real
+    owner rather than dropped.
+    """
     config,raw,path=planned_stage_config(tmp_path)
     # Config is an authored input: refreeze only this disposable unit root after adding it.
     result=freeze_source(config.root,freeze_id="disposable-unit-config-image",current_campaign=True)
-    relative=result.receipt["receipt_path"]
-    ref={"path":relative,"sha256":hashlib.sha256((config.root/relative).read_bytes()).hexdigest()}
-    automation=SimpleNamespace(root=config.root,source_freeze_reference=ref)
-    first=_current_source_snapshot(automation,config,path,path)
-    assert first["source_tree"]==result.receipt["tree_sha256"]
+    first=result.receipt["tree_sha256"]
     control=config.root/REPAIR_CAMPAIGN_PATH
     body=json.loads(control.read_text());body["phase"]="simulated-unit-transition";control.write_text(json.dumps(body))
-    second=_current_source_snapshot(automation,config,path,path)
-    assert first!=second and first["source_tree"]==second["source_tree"]
+    second=freeze_source(config.root,freeze_id="disposable-unit-control-change",current_campaign=True)
+    assert second.receipt["tree_sha256"]==first
+    # A genuine authored source change must still be visible.
+    (config.root/"extension/package.json").write_text('{"version":"identity-probe"}')
+    third=freeze_source(config.root,freeze_id="disposable-unit-source-change",current_campaign=True)
+    assert third.receipt["tree_sha256"]!=first
 
 
 def test_pre_cert_step_order_is_the_existing_canonical_owner():
@@ -203,3 +211,58 @@ def test_current_config_has_no_authored_freeze_self_reference(tmp_path):
     with pytest.raises(OwnerBlocked,match="closed native derived-control locator"):
         Config.load(wrong)
     assert release_configuration_relative(raw["candidate_id"],"stage-owner")!=release_configuration_relative(raw["candidate_id"],"automation")
+
+
+def test_current_identity_owner_verifies_its_real_planned_receipt(tmp_path):
+    from scripts.run_release_stage_owner import ProductionEffects, OwnerBlocked
+    config, raw, path = planned_stage_config(tmp_path)
+    from dataclasses import replace
+    # This disposable policy declares evidence/ as mutable evidence storage.
+    config = replace(config, evidence_dir=config.root / "evidence/unit-release")
+    effects = ProductionEffects()
+    reference = effects.identity(config)
+    receipt_path = config.root / reference["path"]
+    original = receipt_path.read_bytes()
+    from runtime.release_source_identity import verify_release_source_identity, capture_release_source_identity
+    observed = capture_release_source_identity(config.root, version="0.9.0")
+    assert verify_release_source_identity(config.root, json.loads(original)["source_identity"])["valid"], observed
+    effects.verify("identity", config)
+    assert not config.artifact.exists()
+    assert not config.installed_dir.exists()
+    changes = [
+        ("artifact", {"state": "planned", "path": "different.vsix", "type": "vsix",
+                      "build_owner": config.artifact_build_owner}),
+        ("source_identity", {}),
+        ("release_identity_sha256", "0" * 64),
+        ("git_acceptance", {"state": "accepted", "satisfied": True}),
+        ("commit_created", True),
+        ("retag_count", 1),
+    ]
+    for key, value in changes:
+        receipt = json.loads(original); receipt[key] = value
+        receipt_path.write_text(json.dumps(receipt))
+        with pytest.raises(OwnerBlocked, match="postcondition"):
+            effects.verify("identity", config)
+        receipt_path.write_bytes(original)
+    effects.verify("identity", config)
+    (config.root / "runtime/owner.py").write_text("value = 2\n")
+    with pytest.raises(OwnerBlocked, match="postcondition"):
+        effects.verify("identity", config)
+
+
+@pytest.mark.parametrize('owner',['candidate','stage','builder'])
+def test_current_policy_rejects_legacy_configuration_before_field_admission(tmp_path,owner):
+    from scripts import run_release_candidate, run_release_stage_owner, build_release_successor_configs
+    policy=tmp_path/'policies/rev1xx-validation.json';policy.parent.mkdir()
+    policy.write_text(json.dumps({'schema_version':'px.validation-basis/1.0','basis':'current_implementation',
+        'authority':'OWNER-FRESH-VALIDATION-001','campaign_id':'fixture-current-mode'}))
+    raw={'root':str(tmp_path)}
+    if owner=='candidate':raw['schema_version']=run_release_candidate.CONFIG_SCHEMA
+    elif owner=='stage':raw.update(schema_version=run_release_stage_owner.SCHEMA,artifact={},identity={},install={})
+    else:raw['schema_version']=build_release_successor_configs.SPEC_SCHEMA
+    path=tmp_path/'legacy-config.json';path.write_text(json.dumps(raw))
+    with pytest.raises(ValueError,match='configuration mode'):
+        if owner=='candidate':run_release_candidate.Config.load(path)
+        elif owner=='stage':run_release_stage_owner.Config.load(path)
+        else:build_release_successor_configs.build(path,tmp_path/'automation.json',tmp_path/'stage.json')
+    assert not (tmp_path/'automation.json').exists() and not (tmp_path/'stage.json').exists()

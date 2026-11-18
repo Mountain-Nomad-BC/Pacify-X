@@ -31,11 +31,13 @@ from __future__ import annotations
 from .secure_publish import atomic_write_bytes, atomic_write_stream
 
 import hashlib
+import io
 import json
 import platform
 import sys
 import tomllib
 import zipfile
+import zlib
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
@@ -265,8 +267,79 @@ def read_freeze(root: Path, *, relative: Path = FREEZE_RELATIVE) -> dict[str, An
     return receipt
 
 
+def _rollback_status(root: Path, receipt: dict[str, Any]) -> dict[str, Any]:
+    """Observe bounded retained bytes without extracting or repairing anything."""
+    from .archive_io import portable_member_name, reject_path_links, read_stream_bytes, preflight_zip_directory
+    from .json_io import read_bounded_bytes
+
+    result = {"archive_present": False, "archive_sha_valid": False,
+              "recoverable": False, "rollback_readiness": False}
+    try:
+        descriptor = receipt["archive"]
+        archive = root / portable_member_name(descriptor["path"], allow_directory=False)
+        reject_path_links(archive)
+        result["archive_present"] = archive.is_file()
+        if not result["archive_present"]:
+            return result
+        size = descriptor["byte_size"]
+        if type(size) is not int or not 0 < size <= 512 * 1024 * 1024:
+            return result
+        if archive.stat().st_size != size:
+            return result
+        raw = read_bounded_bytes(archive, max_bytes=size)
+        result["archive_sha_valid"] = len(raw) == size and _sha256_bytes(raw) == descriptor["sha256"]
+        if not result["archive_sha_valid"]:
+            return result
+        rows = receipt["files"]
+        if type(rows) is not list or not 0 < len(rows) <= 100_000:
+            return result
+        expected = {}
+        total = 0
+        identity = hashlib.sha256()
+        for row in rows:
+            name = portable_member_name(row["path"], allow_directory=False)
+            count = row["bytes"]
+            digest = row["sha256"]
+            if name in expected or type(count) is not int or not 0 <= count <= 128 * 1024 * 1024:
+                return result
+            if type(digest) is not str or len(digest) != 64 or any(c not in "0123456789abcdef" for c in digest):
+                return result
+            total += count
+            if total > 512 * 1024 * 1024:
+                return result
+            identity.update(name.encode("utf-8") + b"\0" + bytes.fromhex(digest) + b"\0")
+            expected[name] = row
+        if (len(rows) != receipt["file_count"] or total != receipt["byte_count"]
+                or identity.hexdigest() != receipt["tree_sha256"]):
+            return result
+        preflight_zip_directory(raw, max_members=100_000, max_directory_bytes=32 * 1024 * 1024)
+        with zipfile.ZipFile(io.BytesIO(raw)) as bundle:
+            members = bundle.infolist()
+            if len(members) != len(expected) or {info.filename for info in members} != set(expected):
+                return result
+            for info in members:
+                row = expected[info.filename]
+                if info.file_size != row["bytes"] or info.compress_type not in {zipfile.ZIP_STORED, zipfile.ZIP_DEFLATED}:
+                    return result
+                with bundle.open(info) as stream:
+                    data = read_stream_bytes(stream, max_bytes=row["bytes"] + 1)
+                if len(data) != row["bytes"] or _sha256_bytes(data) != row["sha256"]:
+                    return result
+        result["recoverable"] = True
+        result["rollback_readiness"] = True
+    except (OSError, ValueError, TypeError, KeyError, zipfile.BadZipFile, RuntimeError, EOFError, zlib.error):
+        # A recovery probe reports unavailable evidence; it never heals it.
+        return result
+    return result
+
+
 def verify_freeze(root: Path, *, relative: Path = FREEZE_RELATIVE) -> dict[str, Any]:
-    """Compare the live authored tree against the frozen identity."""
+    """Report live equality and retained archive recovery readiness separately.
+
+    ``valid`` retains its source-equality meaning. Rollback readiness requires
+    an available, hash-bound archive whose entire manifest can be recovered;
+    live drift does not invalidate the retained recovery bytes.
+    """
     root = Path(root).resolve(strict=True)
     receipt = read_freeze(root, relative=relative)
     expected = {row["path"]: row for row in receipt.get("files", [])}
@@ -281,6 +354,8 @@ def verify_freeze(root: Path, *, relative: Path = FREEZE_RELATIVE) -> dict[str, 
     drift = changed or missing or added
     return {
         "valid": not drift,
+        "source_identity_equal": not drift,
+        **_rollback_status(root, receipt),
         "frozen_tree_sha256": receipt["tree_sha256"],
         "frozen_file_count": receipt["file_count"],
         "changed": changed,

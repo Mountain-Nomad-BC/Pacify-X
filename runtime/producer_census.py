@@ -68,8 +68,13 @@ def census(root: Path, producer_paths: list[str] | None = None) -> dict[str, Any
 
     resolved: dict[str, str] = {}
     unresolved: list[str] = []
+    # Every discovered mutation is classified once, here. Re-deriving the unresolved list from
+    # this map rather than from a second loop is what keeps this field and `resolved` from
+    # ever disagreeing about the same producer.
+    verdicts: dict[str, Mapping[str, str] | None] = {}
     for path, effects in mutating.items():
         verdict = default_classification(root, path, effects, records=records)
+        verdicts[path] = verdict
         if verdict is None:
             unresolved.append(path)
         else:
@@ -108,6 +113,14 @@ def census(root: Path, producer_paths: list[str] | None = None) -> dict[str, Any
         "unresolved_by_family": family(unresolved),
         "registry_classified": len(built["producers"]),
         "registry_unclassified": len(built["unclassified"]),
+        "registry_unclassified_paths": sorted(built["unclassified"]),
+        # `resolved` counts this classification pass; the published registry is a separate
+        # artifact. Printing both, with the paths, makes a disagreement visible instead of
+        # leaving two numbers that look like they measure the same thing.
+        "classification_disagrees_with_published_registry": sorted(
+            path for path in mutating
+            if (path in resolved) != (path in (built["producers"] or {}))
+        ),
         "gate_valid": gate["valid"],
         "gate_findings": len(gate["errors"]),
         "duplicate_effect_ids": duplicates,

@@ -7,14 +7,29 @@ from scripts.reconcile_studio_operation_projections import reconcile
 from tests.test_operational_gap_ledger import initialize,card,evidence
 
 @pytest.fixture
-def native(tmp_path):
+def native(tmp_path, request):
     initialize(tmp_path);append_event(tmp_path,"card_discovered",card(),actor="unit")
     checkpoint=append_event(tmp_path,"work_checkpoint",{"active_gap_id":"PX-GAP-0001","learned":"Exact disposable mirror owner.","next_action":card()["next_action"],"unresolved_branch_gap_ids":[],"newly_discovered_gap_ids":[],"evidence":evidence("unit")},actor="unit")
-    admission=append_event(tmp_path,"work_admitted",{"gap_id":"PX-GAP-0001","checkpoint_event_id":checkpoint["event_id"],"session_id":"pxsession.mirror-unit","expires_utc":"2099-01-01T00:00:00Z","effect_scopes":[{"effect":"write","scope":["registry","runtime/studio_operations.json","extension/resources/studio-operations.json",".agentic_engineering_os_px/runtime-core",".agentic_engineering_os_px/resource-lifecycle"]},{"effect":"read","scope":["registry/studio_operations.json"]}],"authority":"Disposable native mirror fixture only.","expected_effect":"Exact two operation contract mirrors.","rollback":"Retain unit source until teardown.","evidence":evidence("unit")},actor="unit")
+    mode = getattr(request, "param", "relative")
+    write_scope = ["registry", "runtime/studio_operations.json", "extension/resources/studio-operations.json",
+                   ".agentic_engineering_os_px/runtime-core", ".agentic_engineering_os_px/resource-lifecycle"]
+    read_scope = ["registry/studio_operations.json"]
+    if mode == "absolute":
+        write_scope = [str(tmp_path / item) for item in write_scope]
+        read_scope = [str(tmp_path / item) for item in read_scope]
+    elif mode == "mixed":
+        write_scope[1] = str(tmp_path / write_scope[1])
+        read_scope = [str(tmp_path / "registry")]
+    elif mode == "write-sibling":
+        write_scope[1] += "-sibling"
+    elif mode == "read-sibling":
+        read_scope[0] += "-sibling"
+    admission=append_event(tmp_path,"work_admitted",{"gap_id":"PX-GAP-0001","checkpoint_event_id":checkpoint["event_id"],"session_id":"pxsession.mirror-unit","expires_utc":"2099-01-01T00:00:00Z","effect_scopes":[{"effect":"write","scope":write_scope},{"effect":"read","scope":read_scope}],"authority":"Disposable native mirror fixture only.","expected_effect":"Exact two operation contract mirrors.","rollback":"Retain unit source until teardown.","evidence":evidence("unit")},actor="unit")
     image={"schema_version":"px.studio-operation-contract/1.0","kinds":{"skill":["intake-foundry-candidate"]}}
     publish_guarded_registry_projection(tmp_path,"registry/studio_operations.json",image,admission_event_id=admission["event_id"])
     return tmp_path,admission["event_id"]
 
+@pytest.mark.parametrize("native", ["relative", "absolute", "mixed"], indirect=True)
 def test_real_reconcile_uses_native_two_mirror_owner_and_exact_bytes(native):
     root,event=native
     result=reconcile(root,check=False,admission_event_id=event)
@@ -105,3 +120,11 @@ def test_preexisting_held_overlap_rejects_before_any_mirror_output(native):
     with pytest.raises(ValueError,match="quarantine"):
         publish_guarded_studio_operation_mirror(root,"runtime/studio_operations.json",admission_event_id=event)
     assert not (root/"runtime/studio_operations.json").exists()
+
+
+@pytest.mark.parametrize("native", ["write-sibling", "read-sibling"], indirect=True)
+def test_sibling_scope_cannot_authorize_mirror_publication(native):
+    root, event = native
+    with pytest.raises(GuardedProjectionError, match="admission"):
+        publish_guarded_studio_operation_mirror(root, "runtime/studio_operations.json", admission_event_id=event)
+    assert not (root / "runtime/studio_operations.json").exists()

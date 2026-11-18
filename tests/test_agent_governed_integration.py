@@ -16,6 +16,7 @@ from runtime.hardware_routing import (
 )
 from runtime.memory_broker import build_memory_query_plan
 from runtime.memory_fabric import MemoryRecord
+from runtime.memory_vault import MemoryVault
 from runtime.model_attachment import build_model_attachment
 from runtime.skill_navigator import CapabilitySummary
 from runtime.studio_models import AgentSpec, CapabilityBinding, EffectGrant
@@ -148,7 +149,8 @@ def _plan(root: Path, benchmark_revision: str):
 
 
 @pytest.mark.parametrize("with_group", [False, True])
-def test_governed_preview_and_execution_resolve_all_brokers_and_cleanup(tmp_path, with_group):
+@pytest.mark.parametrize("memory_case", ["current", "missing-owner", "stale-source", "stale-dependencies", "forged-records", "actor-mismatch", "subject-mismatch"])
+def test_governed_preview_and_execution_resolve_all_brokers_and_cleanup(tmp_path, with_group, memory_case):
     now = datetime.now(timezone.utc)
     workload = WorkloadProfile(
         WorkloadKind.TEXT_ANALYSIS,
@@ -231,7 +233,8 @@ def test_governed_preview_and_execution_resolve_all_brokers_and_cleanup(tmp_path
 
     body = "Use only brokered context and Studio-admitted effects.\n"
     spec, binding, grant = _agent(body)
-    controller = AgentRuntimeController(tmp_path)
+    vault = MemoryVault(tmp_path / 'canonical-memory', workspace_id='workspace', project_id=spec.project_id)
+    controller = AgentRuntimeController(tmp_path, **({} if memory_case == 'missing-owner' else {'memory_vault': vault}))
     controller.create_candidate(spec, body)
     assert controller.test_candidate(spec)["passed"] is True
     controller.register_authority([binding], [grant])
@@ -274,7 +277,7 @@ def test_governed_preview_and_execution_resolve_all_brokers_and_cleanup(tmp_path
         confidence=0.9,
         confidence_method="direct",
         classification="internal",
-        acl=("project", spec.owner),
+        acl=("project", spec.owner, "foreign-actor"),
         observed_at=now,
         effective_at=now,
         certification_status="certified",
@@ -283,6 +286,22 @@ def test_governed_preview_and_execution_resolve_all_brokers_and_cleanup(tmp_path
         visibility="project",
         priority=80,
     )
+    if memory_case != 'missing-owner':
+        vault.append(record)
+        revisions = vault.query_revisions()
+        parameters = memory_plan.as_dict()
+        for key in ('schema_version', 'plan_id', 'plan_sha256'):
+            parameters.pop(key)
+        parameters['source_revision'] = 'stale-source' if memory_case == 'stale-source' else revisions['source_revision']
+        parameters['dependency_revisions'] = {'memory': 'stale'} if memory_case == 'stale-dependencies' else revisions['dependency_revisions']
+        if memory_case == 'actor-mismatch':
+            parameters['actor_id'] = 'foreign-actor'
+        if memory_case == 'subject-mismatch':
+            parameters['subject_id'] = 'foreign-task'
+        memory_plan = build_memory_query_plan(**parameters)
+    if memory_case == 'forged-records':
+        from dataclasses import replace
+        record = replace(record, summary='unverified substituted content')
     packet = create_handoff_packet(
         project_id=spec.project_id,
         task_plan_id=plan.plan_id,
@@ -334,6 +353,21 @@ def test_governed_preview_and_execution_resolve_all_brokers_and_cleanup(tmp_path
         memory_now_utc=now,
         current_context_generation=current_generation,
     )
+    if memory_case != 'current':
+        assert preview['eligible'] is False
+        assert 'memory_bindings_not_runtime_resolved' in preview['blockers']
+        callbacks = []
+        with pytest.raises(PermissionError):
+            controller.execute_governed_plan(
+                spec, task_plan=plan_dict, placement=placement, approval=True,
+                gpu_fn=lambda _: callbacks.append('gpu'), cpu_fn=lambda: callbacks.append('cpu'),
+                member_executor=lambda *args, **kwargs: callbacks.append('member'),
+                memory_query_plan=memory_plan, memory_records=(record,),
+                handoff_inputs=(handoff,), memory_now_utc=now,
+                current_context_generation=current_generation,
+            )
+        assert callbacks == []
+        return
     assert preview["eligible"] is True
     assert preview["memory_context_receipt_sha256"]
     assert preview["handoff_packet_sha256"] == [packet.packet_sha256]
@@ -369,3 +403,162 @@ def test_governed_preview_and_execution_resolve_all_brokers_and_cleanup(tmp_path
     )
     assert blocked["eligible"] is False
     assert "handoff_agents_not_runtime_resolved" in blocked["blockers"]
+
+
+from runtime.cancellation_scope import build_scope, resolve_control, CancellationScopeError
+
+@pytest.mark.parametrize('state,target',[('cancelled','cancelled'),('paused','paused')])
+def test_stable_child_control_reaches_running_root_and_sibling(state,target):
+    scope=build_scope('scope','project','root',('child','sibling'))
+    result=resolve_control(scope,{'root':'running','child':state,'sibling':'running'})
+    assert result['requested_control']==target
+    assert result['adopt']=={'root':target,'sibling':target}
+    assert 'child' not in result['adopt']
+    assert result['authority_granted'] is False
+
+def test_cancelled_child_outranks_other_child_pause_request():
+    scope=build_scope('scope','project','root',('cancelled-child','pausing-child'))
+    result=resolve_control(scope,{'root':'running','cancelled-child':'cancelled','pausing-child':'pause_requested'})
+    assert result['requested_control']=='cancelled'
+    assert result['adopt']=={'root':'cancelled','pausing-child':'cancelled'}
+
+@pytest.mark.parametrize('state,target',[('cancel_requested','cancelled'),('interrupted','cancelled'),('pause_requested','paused')])
+def test_requested_controls_keep_existing_positive_path(state,target):
+    scope=build_scope('scope','project','root',('child',))
+    result=resolve_control(scope,{'root':'running','child':state})
+    assert result['requested_control']==target
+    assert result['adopt']['root']==target
+
+def test_cancelled_root_is_never_resurrected_by_child_pause():
+    scope=build_scope('scope','project','root',('child',))
+    result=resolve_control(scope,{'root':'cancelled','child':'pause_requested'})
+    assert 'root' not in result['adopt']
+    assert 'root' in result['terminal_members']
+
+def test_no_requested_control_keeps_running_members_unchanged():
+    scope=build_scope('scope','project','root',('child',))
+    result=resolve_control(scope,{'root':'running','child':'running'})
+    assert result['requested_control'] is None and result['adopt']=={}
+
+def test_expired_deadline_cancels_running_members():
+    scope=build_scope('scope','project','root',('child',))
+    result=resolve_control(scope,{'root':'running','child':'running'},now_utc='2026-11-16T12:00:00Z',deadline_utc='2026-11-16T11:59:59Z')
+    assert result['adopt']=={'root':'cancelled','child':'cancelled'}
+    assert result['deadline_expired'] is True
+
+def test_foreign_scope_member_cannot_inject_control():
+    scope=build_scope('scope','project','root',('child',))
+    with pytest.raises(CancellationScopeError,match='exact scope membership'):
+        resolve_control(scope,{'root':'running','child':'running','foreign':'cancelled'})
+
+
+@pytest.mark.parametrize('terminal_child',['cancelled','paused','failed','corrupt',None])
+def test_live_group_owner_adopts_already_terminal_child(tmp_path,monkeypatch,terminal_child):
+    from dataclasses import replace
+    from datetime import datetime,timezone
+    import pytest
+    from runtime.agent_runtime import AgentRuntimeController
+    from runtime.model_attachment import build_model_attachment
+    from runtime.model_group_preparation import prepare_model_group
+    from runtime.execution_placement import route_hardware,PlacementCapacityLedger
+    from runtime.hardware_routing import WorkloadProfile,WorkloadKind,HardwareProfile,BenchmarkEvidence
+    from runtime.trusted_evidence import TrustedEvidenceResolver
+    from tests.test_model_group_preparation import prepared,plan_for
+    from tests.test_agent_runtime import fixtures
+
+    root=tmp_path/'project';root.mkdir()
+    monkeypatch.setenv('PX_STUDIO_KEY_ROOT',str(tmp_path/'fixture-authority-keys'))
+    group,attachments,retrievals,_=prepared(2,root)
+    workload=WorkloadProfile(WorkloadKind.TEXT_ANALYSIS,5,1024,False,operation_id='studio-prepared-member')
+    hardware=HardwareProfile(False,None,None,None,0,0,16*1024**3,'windows',8,4,False,(),(),cuda_executor_available=False)
+    benchmark=BenchmarkEvidence(workload.operation_id,hardware.fingerprint,2.0,1.0,True,0,datetime.now(timezone.utc).isoformat(),workload_fingerprint=workload.fingerprint)
+    for model,old in tuple(attachments.items()):
+        attachments[model]=build_model_attachment(root,model_id=old.model_id,model_revision=old.model_revision,artifact_sha256=old.artifact_sha256,runtime=old.runtime,context_tokens=old.context_tokens,modalities=old.modalities,supports_tools=False,privacy=old.privacy,authority_class=old.authority_class,benchmark_revision=benchmark.revision,hardware_requirements=dict(old.hardware_requirements))
+    preparation=prepare_model_group(group,attachments,retrievals,root=root);plan=plan_for(group,preparation)
+    placements={model:route_hardware(plan.as_dict(),model_id=model,workload=workload,hardware=hardware,benchmark=benchmark,project_root=root) for model in group.model_ids}
+    body='Use only the prepared member context.';spec,binding,grant=fixtures(body);spec=replace(spec,project_id=plan.project_id)
+    controller=AgentRuntimeController(root);controller.create_candidate(spec,body)
+    assert controller.test_candidate(spec)['passed'] is True
+    controller.register_authority([binding],[grant]);assert controller.admit(spec)['decision']=='admitted'
+    store=root/'evidence-store';store.mkdir();policy=root/'trust-policy.json';policy.write_text('{}',encoding='utf-8')
+    seen=[];member_ids=[];injected=[];root_ids=[]
+    def execute(invocation,**kwargs):
+        seen.append(invocation.model_id);member_ids.append(kwargs['execution_context'].execution_id);root_ids.append(kwargs['execution_context'].root_execution_id)
+        return {'answer':'bounded real prepared member'}
+    original_release=PlacementCapacityLedger.release
+    def release_then_request(self,reservation,*,outcome_sha256):
+        result=original_release(self,reservation,outcome_sha256=outcome_sha256)
+        if terminal_child in {'cancelled','paused','failed'} and not injected:
+            request='failed' if terminal_child=='failed' else 'cancel_requested' if terminal_child=='cancelled' else 'pause_requested'
+            state=controller.run_control.transition(member_ids[-1],request,actor=spec.owner,approved=True,operation='fixture.external-control-after-native-capacity-release')
+            injected.append(state['run_id'])
+        return result
+    monkeypatch.setattr(PlacementCapacityLedger,'release',release_then_request)
+    def corrupt_member_custody(model, artifact):
+        if not injected:
+            assert PlacementCapacityLedger(root)._read()['active']=={}
+            (controller.run_control.root/member_ids[-1]/'head.json').write_text('{}',encoding='utf-8')
+            injected.append(member_ids[-1])
+        return None # No independent evidence or approval manufactured.
+    def execute_group():
+        return controller.execute_governed_group(spec,task_plan=plan.as_dict(),placements=placements,approval=True,member_executor=execute,generation_observer=lambda:plan.context_generation,evidence_resolver=TrustedEvidenceResolver(store,policy),accepted_producers=set(),attestation_provider=corrupt_member_custody if terminal_child=='corrupt' else None)
+    if terminal_child=='corrupt':
+        with pytest.raises(PermissionError):
+            execute_group()
+        assert seen==[group.model_ids[0]], 'Unreadable member custody must halt sibling dispatch'
+        assert PlacementCapacityLedger(root)._read()['active']=={}
+        reopened=AgentRuntimeController(root)
+        assert reopened.run_control.read(root_ids[0])['state']=='failed'
+        return
+    result=execute_group()
+    assert PlacementCapacityLedger(root)._read()['active']=={}
+    if terminal_child:
+        assert injected and controller.run_control.read(injected[0])['state']==terminal_child
+    print({'terminal_child':terminal_child,'root_state':result['control_state'],'seen':seen,'member_states':[controller.run_control.read(x)['state'] for x in member_ids],'released_capacity':True})
+    if terminal_child:
+        assert result['control_state']==terminal_child,'Group root ignored already-terminal native child'
+        assert seen==[group.model_ids[0]],'Sibling dispatched after child scope halt'
+        assert result['member_failures'][group.model_ids[1]]['state']=='not_admitted'
+        reopened=AgentRuntimeController(root)
+        assert reopened.run_control.read(result['group_run_id'])['state']==terminal_child
+    else:
+        assert seen==list(group.model_ids)
+        assert result['control_state']=='failed' # No independent attestation manufactured.
+        assert all(controller.run_control.read(x)['state']=='succeeded' for x in member_ids)
+
+
+@pytest.mark.parametrize("state", ["queued", "running", "pause_requested", "paused", "cancel_requested", "finalizing", "cancelled", "succeeded", "failed", "interrupted"])
+def test_scope_classifies_every_canonical_durable_state(state):
+    from runtime.studio_run_control import RUN_STATES
+    assert state in RUN_STATES
+    result = resolve_control(build_scope("scope", "project", "root", ("child",)), {"root": "running", "child": state})
+    expected = {"pause_requested": "paused", "paused": "paused", "cancel_requested": "cancelled", "cancelled": "cancelled", "failed": "failed", "interrupted": "cancelled"}.get(state)
+    assert result["requested_control"] == expected
+    assert result["adopt"].get("root") == expected
+    if state in {"succeeded", "failed", "cancelled"}:
+        assert "child" in result["terminal_members"]
+        assert "child" not in result["adopt"]
+
+@pytest.mark.parametrize("other,expected", [("paused", "failed"), ("pause_requested", "failed"), ("cancelled", "cancelled"), ("interrupted", "cancelled")])
+def test_scope_failure_has_one_canonical_precedence(other, expected):
+    result = resolve_control(build_scope("scope", "project", "root", ("failed", "other")), {"root": "running", "failed": "failed", "other": other})
+    assert result["requested_control"] == expected
+    assert result["adopt"]["root"] == expected
+    assert "failed" not in result["adopt"]
+
+@pytest.mark.parametrize("terminal", ["failed", "succeeded", "cancelled"])
+def test_scope_never_resurrects_any_terminal_root(terminal):
+    result = resolve_control(build_scope("scope", "project", "root", ("child",)), {"root": terminal, "child": "pause_requested"})
+    assert "root" not in result["adopt"]
+    assert "root" in result["terminal_members"]
+
+def test_scope_reports_paused_failure_adoption_as_blocked_without_resuming():
+    result = resolve_control(build_scope("scope", "project", "root", ("failed", "paused")), {"root": "running", "failed": "failed", "paused": "paused"})
+    assert result["requested_control"] == "failed"
+    assert result["adopt"] == {"root": "failed"}
+    assert result["blocked_adoptions"] == {"paused": "failed"}
+
+@pytest.mark.parametrize("malformed", [None, True, [], {}, "fictional"])
+def test_scope_rejects_malformed_durable_state(malformed):
+    with pytest.raises(CancellationScopeError):
+        resolve_control(build_scope("scope", "project", "root", ("child",)), {"root": "running", "child": malformed})

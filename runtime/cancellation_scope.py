@@ -19,21 +19,24 @@ from datetime import datetime, timezone
 from types import MappingProxyType
 from typing import Mapping
 
+from .studio_run_control import RUN_STATES, TERMINAL_STATES, TRANSITIONS
+
 SCHEMA_VERSION = "px.cancellation-scope/1.0"
 
 #: Controls that propagate downward through a scope, and the terminal state each
 #: member adopts. A ``pause_requested`` member pauses; ``cancel_requested`` and
 #: ``interrupted`` members cancel; an expired deadline cancels.
-CONTROL_STATES = ("running", "pause_requested", "paused", "cancel_requested", "cancelled", "interrupted")
+CONTROL_STATES = tuple(sorted(RUN_STATES))
 _PROPAGATED_CONTROL = {
     "cancel_requested": "cancelled",
     "cancelled": "cancelled",
     "pause_requested": "paused",
     "paused": "paused",
     "interrupted": "cancelled",
+    "failed": "failed",
 }
 #: A member that is already terminal in a stronger sense must not be resurrected.
-_TERMINAL = frozenset({"cancelled", "failed", "succeeded"})
+_TERMINAL = TERMINAL_STATES
 
 
 class CancellationScopeError(ValueError):
@@ -93,30 +96,32 @@ def resolve_control(scope: CancellationScope, states: Mapping[str, str], *, now_
     ``states`` maps each member execution id to its current durable state. The
     result is the strongest requested control across the scope:
 
-    * any member ``cancel_requested``/``interrupted`` -> whole scope cancels;
-    * else any member ``pause_requested`` -> whole scope pauses;
+    * any member ``cancel_requested``/``cancelled``/``interrupted`` -> whole scope cancels;
+    * else any failed member -> live scope members fail where legally supported;
+    * else any member ``pause_requested``/``paused`` -> whole scope pauses;
     * else an expired ``deadline_utc`` -> whole scope cancels;
     * else no change.
 
     A member already ``cancelled``/``failed``/``succeeded`` is reported as
-    terminal and is never asked to adopt a weaker control.
+    terminal and is never asked to adopt a weaker control. Successful, queued and
+    finalizing members introduce no control request. ``adopt`` expresses desired
+    control, requiring the caller's legal durable transition adapter. Unsupported
+    failure transitions are reported in ``blocked_adoptions``; a paused member
+    must never be resumed merely to fail it.
     """
     if type(scope) is not CancellationScope:
         raise CancellationScopeError("canonical cancellation scope required")
     if not isinstance(states, Mapping) or set(states) != set(scope.members):
         raise CancellationScopeError("control resolution requires the exact scope membership")
     for member, state in states.items():
-        if state not in CONTROL_STATES:
+        if type(state) is not str or state not in CONTROL_STATES:
             raise CancellationScopeError(f"unknown control state for {member}: {state}")
 
     requested: str | None = None
-    for member in scope.members:
-        state = states[member]
-        if state in {"cancel_requested", "interrupted"}:
-            requested = "cancelled"
+    for target in ("cancelled", "failed", "paused"):
+        if any(_PROPAGATED_CONTROL.get(states[member]) == target for member in scope.members):
+            requested = target
             break
-    if requested is None and any(states[member] == "pause_requested" for member in scope.members):
-        requested = "paused"
     expired = False
     if requested is None and deadline_utc is not None:
         moment = now_utc or datetime.now(timezone.utc).isoformat()
@@ -126,11 +131,15 @@ def resolve_control(scope: CancellationScope, states: Mapping[str, str], *, now_
 
     live = [member for member in scope.members if states[member] not in _TERMINAL]
     adopt = {}
+    blocked = {}
     for member in live:
         if requested is None:
             continue
         # A member already at the requested terminal state needs no transition.
         if states[member] == requested:
+            continue
+        if requested == "failed" and requested not in TRANSITIONS[states[member]]:
+            blocked[member] = requested
             continue
         adopt[member] = requested
     return {
@@ -140,6 +149,7 @@ def resolve_control(scope: CancellationScope, states: Mapping[str, str], *, now_
         "deadline_expired": expired,
         "terminal_members": sorted(member for member in scope.members if states[member] in _TERMINAL),
         "adopt": adopt,
+        "blocked_adoptions": blocked,
         "authority_granted": False,
     }
 

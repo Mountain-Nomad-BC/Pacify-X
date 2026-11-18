@@ -23,17 +23,23 @@ REGISTRY = "registry/contract_ownership.json"
 
 
 def test_build_needs_no_published_registry(tmp_path: Path) -> None:
-    committed = ROOT / REGISTRY
-    assert committed.is_file(), "published registry is missing; cannot compare"
     isolated = tmp_path / "root"
     shutil.copytree(ROOT / "contracts", isolated / "contracts")
     assert not (isolated / REGISTRY).exists()
 
     rebuilt = build(isolated)
-    committed_text = committed.read_text(encoding="utf-8")
-
-    assert dump_result(rebuilt) == committed_text
-    assert b"\r\n" not in committed.read_bytes()
+    assert rebuilt == build(ROOT)
+    # Published output can lag source during repair. Independence means neither
+    # absence nor a poisoned published owner can change the source-derived image.
+    published = isolated / REGISTRY
+    published.parent.mkdir(parents=True)
+    poisoned = json.loads(json.dumps(rebuilt))
+    for record in poisoned["records"]:
+        record["owner"] = "runtime/foreign_owner.py"
+        record["enforcement"] = "untrusted_published_label"
+    published.write_text(json.dumps(poisoned), encoding="utf-8")
+    assert build(isolated) == rebuilt
+    assert b"\r\n" not in dump_result(rebuilt).encode("utf-8")
 
 
 def test_every_contract_has_an_explicit_rule() -> None:

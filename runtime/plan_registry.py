@@ -624,7 +624,7 @@ def write_admitted_card_ledger(repository_root: Path, *, manifest_sha256: str,
     from .archive_io import reject_path_links
     from .json_io import read_bounded_bytes
 
-    policy_path = Path(repository_root) / "policies/rev1xx-validation.json"
+    policy_path = _planning_policy_path(Path(repository_root))
     if policy_path.exists():
         _require_current_campaign(_planning_object(policy_path))
     if len(manifest_sha256) != 64 or any(c not in "0123456789abcdef" for c in manifest_sha256):
@@ -738,7 +738,7 @@ def build_card_ledger(entries: Iterable[CardLedgerEntry]) -> dict[str, Any]:
 
 def write_card_ledger(manifest_path: Path, repository_root: Path, *,
                       decision: dict[str, str] | None = None) -> Path:
-    if (Path(repository_root) / "policies/rev1xx-validation.json").exists():
+    if _planning_policy_path(Path(repository_root)).exists():
         from .json_io import read_bounded_bytes
         raw = read_bounded_bytes(Path(manifest_path), max_bytes=8 * 1024**2)
         digest = _sha256_bytes(raw)
@@ -961,7 +961,7 @@ def wave_report(root: Path) -> dict[str, Any]:
 
     try:
         root = Path(root).resolve(strict=True)
-        policy_path = root / "policies/rev1xx-validation.json"
+        policy_path = _planning_policy_path(root)
         reject_path_links(policy_path)
         policy = json.loads(read_bounded_bytes(policy_path, max_bytes=1024 * 1024), object_pairs_hook=_unique_object)
         binding = policy["canonical_waves"]
@@ -1370,7 +1370,7 @@ def readiness_report(root: Path, *, authority: StatusAuthority | None = None) ->
             raise PlanRegistryError("ledger must be an object")
         _require_valid_ledger(ledger)
         status_path = root / "registry/punch_card_status.json"
-        policy_path = root / "policies/rev1xx-validation.json"
+        policy_path = _planning_policy_path(root)
         if policy_path.is_file():
             policy = _planning_object(policy_path)
             if policy.get("status_overlay") == CURRENT_STATUS_RELATIVE.as_posix():
@@ -1400,14 +1400,16 @@ def readiness_report(root: Path, *, authority: StatusAuthority | None = None) ->
                 "errors": [f"{type(error).__name__}: {error}"]}
 
 
+def _planning_policy_path(root: Path) -> Path:
+    from .project_revision_succession import current_validation_policy_path
+    return current_validation_policy_path(root)
+
+
 def _planning_object(path: Path) -> dict[str, Any]:
     from .archive_io import reject_path_links
     from .json_io import read_bounded_bytes
-    from .project_revision_succession import current_revision_root
     if path.name == "rev1xx-validation.json" and path.parent.name == "policies":
-        revision = current_revision_root(path.parent)
-        if revision is not None:
-            path = revision / "validation-policy.json"
+        path = _planning_policy_path(path.parent.parent)
     reject_path_links(path)
     value = json.loads(read_bounded_bytes(path, max_bytes=8 * 1024 * 1024), object_pairs_hook=_unique_object)
     if not isinstance(value, dict):
@@ -1469,7 +1471,8 @@ def _foundation_owned_write(root: Path, relative: str, payload: bytes) -> None:
                 CURRENT_STATUS_RELATIVE.as_posix(), "policies/rev1xx-validation.json"})
             or not 0 < len(payload) <= 8 * 1024**2):
         raise PlanRegistryError("foundation publication escapes its bounded owner")
-    target = root / relative
+    target = (_planning_policy_path(root)
+              if relative == "policies/rev1xx-validation.json" else root / relative)
     reject_path_links(target)
     target.parent.mkdir(parents=True, exist_ok=True)
     temporary = target.with_name("." + target.name + "." + uuid4().hex + ".prepared")
@@ -1706,7 +1709,7 @@ def planning_input_revision(root: Path) -> str:
     relative = policy["canonical_waves"]["path"]
     if not isinstance(relative, str) or not relative.startswith("registry/planning/rev1xx/") or ".." in Path(relative).parts:
         raise PlanRegistryError("current campaign wave binding is invalid")
-    paths = [LEDGER_RELATIVE, Path("policies/rev1xx-validation.json"), Path(relative)]
+    paths = [LEDGER_RELATIVE, _planning_policy_path(root).relative_to(root), Path(relative)]
     rows = []
     for path in paths:
         target = root / path
@@ -1718,7 +1721,7 @@ def planning_input_revision(root: Path) -> str:
 def begin_plan_campaign(root: Path) -> dict[str, Any]:
     """Start fresh without carrying legacy status or erasing current progress."""
     root = Path(root).resolve(strict=True)
-    policy_path = root / "policies/rev1xx-validation.json"
+    policy_path = _planning_policy_path(root)
     policy = _planning_object(policy_path)
     _require_current_campaign(policy)
     ledger = _planning_object(root / LEDGER_RELATIVE)

@@ -139,6 +139,9 @@ def atomic_write_stream(path: Path, writer: Callable[[BinaryIO], object]) -> Non
         prepared = target.parent / name if directory is None else name
         flags = os.O_WRONLY | os.O_CREAT | os.O_EXCL | int(getattr(os, "O_BINARY", 0))
         descriptor = os.open(prepared, flags, 0o600, **kwargs)
+        # Set once os.replace may have consumed the prepared image. Until then the
+        # prepared file is the only copy of what the writer produced.
+        replaced = False
         try:
             with os.fdopen(descriptor, "wb") as stream:
                 writer(stream)
@@ -150,6 +153,7 @@ def atomic_write_stream(path: Path, writer: Callable[[BinaryIO], object]) -> Non
                 while True:
                     try:
                         os.replace(prepared, destination)
+                        replaced = True
                         break
                     except PermissionError:
                         if time.monotonic() >= deadline:
@@ -160,12 +164,38 @@ def atomic_write_stream(path: Path, writer: Callable[[BinaryIO], object]) -> Non
                         check_destination()
             else:
                 os.replace(prepared, destination, src_dir_fd=directory, dst_dir_fd=directory)
+                replaced = True
                 os.fsync(directory)
-        finally:
+        except BaseException as failure:
+            # Failure-path custody: before os.replace, the prepared image is the only
+            # copy of what the writer produced. Record whether it survived the
+            # reclaim below so the causal error names a real retained image and never
+            # claims a reclaim that was not observed.
             try:
                 os.unlink(prepared, **kwargs)
             except FileNotFoundError:
                 pass
+            except OSError:
+                # A sharing/permission refusal is a custody outcome, not a new
+                # failure; it must not replace the causal publication error.
+                pass
+            if not replaced:
+                retained_path = target.parent / name
+                try:
+                    survived = retained_path.exists()
+                except OSError:
+                    survived = None
+                failure.publication_cleanup = {
+                    "retained_image": str(retained_path),
+                    "retained": survived,
+                    # True only when the image is observably gone, so a caller can
+                    # tell a verified reclaim from a refusal it must reconcile.
+                    "cleanup_verified": survived is False,
+                    "reason": "failed_pre_replace_image",
+                }
+                failure.add_note("Unpublished pre-replace image: " + str(retained_path))
+            raise
+        # Success needs no reclaim: os.replace consumed the prepared name.
 
 
 def read_physical_bytes(path: Path, *, max_bytes: int = 8 * 1024 * 1024) -> bytes:

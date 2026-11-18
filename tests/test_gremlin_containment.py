@@ -398,6 +398,16 @@ def test_unhealthy_containment_cannot_prove_protected_execution():
     assert "not admissible" in proof.reason
 
 
+@pytest.mark.parametrize("state", ["TERMINATING", "TERMINATED", "DEVIATION_SEALED", "ANALYSIS_PENDING"])
+def test_terminal_or_terminating_execution_has_no_live_containment_proof(state):
+    nanny = make_nanny()
+    nanny.enroll(identity(), now=NOW)
+    nanny.release("exec-1")
+    assert nanny.containment_proof("exec-1").proven is True
+    nanny.registry.transition("exec-1", state)
+    assert nanny.containment_proof("exec-1").proven is False
+
+
 def test_containment_proof_matches_its_contract():
     from runtime.contracts import validate_instance
     from runtime.isolated_sandbox import establish_sandbox

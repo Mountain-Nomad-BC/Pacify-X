@@ -67,3 +67,8 @@ class ConsoleHumanApprovalVerifier:
         except (OSError, ValueError):
             return False
         return bool(typed) and hmac.compare_digest(typed, str(approval.approval_id))
+
+
+# Explicit module:attribute host binding. Construction performs no IO and grants
+# no approval; verify still requires the human to retype the exact approval ID.
+console_human_approval_verifier = ConsoleHumanApprovalVerifier()

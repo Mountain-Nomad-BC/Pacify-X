@@ -12,7 +12,7 @@ from pathlib import Path
 import time
 from typing import Callable, Iterable, Mapping, Protocol, Sequence
 from urllib.parse import urlsplit
-from urllib.request import ProxyHandler, Request, build_opener
+from urllib.request import HTTPRedirectHandler, ProxyHandler, Request, build_opener
 from urllib.error import HTTPError, URLError
 from email.utils import parsedate_to_datetime
 
@@ -43,6 +43,19 @@ REGISTRY_SCHEMA = Path("contracts/operations/provider-adapter-registry.schema.js
 PROTOCOLS_PATH = Path("models/provider-protocols.json")
 MAX_REQUEST_BYTES = 1_048_576
 MAX_RESPONSE_BYTES = 4_194_304
+
+
+class _RejectLocalRedirects(HTTPRedirectHandler):
+    """Keep local model traffic on the originally validated endpoint."""
+
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        return None
+
+
+def _local_opener():
+    return build_opener(ProxyHandler({}), _RejectLocalRedirects())
+
+
 _DIRECT_PROVIDER_IMPORTS = {
     "anthropic",
     "google.generativeai",
@@ -484,7 +497,7 @@ class OllamaHttpAdapter:
         self.timeout_seconds = float(timeout_seconds)
         # Ignore ambient proxy configuration so a local model request cannot be
         # redirected through a network proxy.
-        self._opener = opener or build_opener(ProxyHandler({}))
+        self._opener = opener or _local_opener()
 
     def invoke(
         self, model_id: str, payload: Mapping[str, object]
@@ -596,7 +609,7 @@ class ColdRuntimeHttpAdapter:
         self.model_identity = model_identity
         self.runtime_receipt_sha256 = runtime_receipt_sha256
         self.timeout_seconds = float(timeout_seconds)
-        self._opener = opener or build_opener(ProxyHandler({}))
+        self._opener = opener or _local_opener()
 
     def invoke(self, model_id: str, payload: Mapping[str, object]) -> ProviderResponse:
         if model_id != self.model_identity:
@@ -671,7 +684,7 @@ class LlamaCppHttpAdapter:
         self.session_id = session_id
         self.model_sha256 = model_sha256
         self.timeout_seconds = float(timeout_seconds)
-        self._opener = opener or build_opener(ProxyHandler({}))
+        self._opener = opener or _local_opener()
 
     def invoke(self, model_id: str, payload: Mapping[str, object]) -> ProviderResponse:
         if model_id != self.model_sha256:
@@ -787,7 +800,7 @@ class LlamaCppStreamingHttpAdapter:
             raise ValueError("llama.cpp wire model name is invalid")
         self.wire_model_name = wire_model_name
         self.timeout_seconds = float(timeout_seconds)
-        self._opener = opener or build_opener(ProxyHandler({}))
+        self._opener = opener or _local_opener()
 
     def _assert_request(self, model_id: str, request: CanonicalModelRequest) -> None:
         if model_id != self.model_sha256:

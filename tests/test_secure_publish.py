@@ -8,6 +8,28 @@ import pytest
 from runtime.secure_publish import atomic_write_bytes
 
 
+def test_cleanup_refusal_does_not_hide_writer_failure_and_exposes_retained_image(tmp_path, monkeypatch):
+    from runtime import secure_publish
+    target = tmp_path / "cleanup-refused.json"
+    target.write_bytes(b"previous")
+    failure = ValueError("primary writer failure")
+    def writer(stream):
+        stream.write(b"unpublished partial image")
+        raise failure
+    def refuse(*args, **kwargs):
+        raise PermissionError("injected cleanup sharing refusal")
+    monkeypatch.setattr(secure_publish.os, "unlink", refuse)
+    with pytest.raises(ValueError) as caught:
+        secure_publish.atomic_write_stream(target, writer)
+    assert caught.value is failure
+    assert target.read_bytes() == b"previous"
+    retained = list(tmp_path.glob("*.prepared"))
+    assert len(retained) == 1
+    assert retained[0].read_bytes() == b"unpublished partial image"
+    assert caught.value.publication_cleanup["retained_image"] == str(retained[0])
+    assert caught.value.publication_cleanup["cleanup_verified"] is False
+
+
 def _writer(case, root, monkeypatch):
     if case in {"intent", "lease", "queue"}:
         from runtime.effect_intent import EffectIntentLedger
@@ -207,3 +229,43 @@ def test_reject_linked_ancestor_before_writing(tmp_path):
             link.unlink()
         else:
             link.rmdir()
+
+
+def test_pre_replace_writer_failure_names_the_image_that_survived(tmp_path, monkeypatch):
+    """A writer failure before os.replace must not erase its own evidence.
+
+    The prepared image is the only copy of what the writer produced. When the
+    reclaim succeeds, the error still names that image and reports the reclaim as
+    observed; when the reclaim is refused, the image is still on disk and the error
+    says so rather than silently looking clean.
+    """
+    from runtime import secure_publish
+
+    target = tmp_path / "pre-replace-failure.json"
+    target.write_bytes(b"previous")
+
+    def writer(stream):
+        stream.write(b"partial image")
+        raise ValueError("writer failed before replace")
+
+    with pytest.raises(ValueError) as caught:
+        secure_publish.atomic_write_stream(target, writer)
+
+    record = caught.value.publication_cleanup
+    assert record["reason"] == "failed_pre_replace_image"
+    assert record["retained_image"].endswith(".prepared")
+    # The destination is untouched and the failure is attributed to the writer,
+    # not to a cleanup attempt.
+    assert target.read_bytes() == b"previous"
+    assert str(caught.value) == "writer failed before replace"
+
+    # Now force the reclaim to be refused: custody must report a retained image.
+    target.write_bytes(b"previous")
+    def refuse(*args, **kwargs):
+        raise PermissionError("injected refusal")
+    monkeypatch.setattr(secure_publish.os, "unlink", refuse)
+    with pytest.raises(ValueError) as refused:
+        secure_publish.atomic_write_stream(target, writer)
+    refused_record = refused.value.publication_cleanup
+    assert refused_record["cleanup_verified"] is False
+    assert refused_record["retained"] is True

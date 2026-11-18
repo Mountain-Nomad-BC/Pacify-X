@@ -20,11 +20,12 @@ from scripts.archive_project_map_history import (
     _read_archive_intent,
     _new_archive_intent,
     _canonical,
+    _archive_sha256,
     _is_reparse,
-    _sha256,
     _verify_archive,
     _write_archive,
     bounded_inventory,
+    hold_verified_archive_image,
     reclaim_archived_inventory,
 )
 
@@ -176,9 +177,9 @@ def apply(root, *, wal_root=Path('.agentic_engineering_os_px/operation-bus/wal')
             if type(name) is not str or Path(name).name != name or not name.endswith('.zip'):
                 raise ValueError('invalid archive locator')
             target = archive_root / name
-            if _sha256(target) != intent['archive_sha256']:
+            verified_archive_sha256 = _verify_archive(target, manifest)
+            if verified_archive_sha256 != intent['archive_sha256']:
                 raise ValueError('retained archive bytes changed')
-            _verify_archive(target, manifest)
             decision = dict(valid=True, apply=False, manifest=manifest, manifest_sha256=digest,
                             selected_count=len(manifest['archived_transactions']))
         else:
@@ -190,22 +191,27 @@ def apply(root, *, wal_root=Path('.agentic_engineering_os_px/operation-bus/wal')
             digest = decision['manifest_sha256']
             target = archive_root / ('committed-' + digest + '.zip')
             intent = _new_archive_intent('px.wal-archive-intent/1.0', manifest, digest, target.name)
-            if target.exists():
-                _verify_archive(target, manifest)
-            else:
+            if not target.exists():
                 _write_archive(wal.journal_root / 'committed', target, manifest)
-                _verify_archive(target, manifest)
+            verified_archive_sha256 = _verify_archive(target, manifest)
             selected = [wal.journal_root / 'committed' / name for name in manifest['archived_transactions']]
             if bounded_inventory(wal.journal_root / 'committed', selected) != {key: manifest[key] for key in ('root_identity', 'files', 'directories')}:
                 raise ValueError('source inventory changed after archive verification')
-            intent['archive_sha256'] = _sha256(target)
+            intent['archive_sha256'] = verified_archive_sha256
             intent_path = archive_root / ('intent-' + digest + '.json')
             if intent_path.exists():
                 raise ValueError('archive disposition already exists')
             _publish(intent_path, intent)
         # The verified archive and durable intent precede every unlink. A
         # resumed partial cleanup accepts only original surviving identities.
-        reclaim_archived_inventory(wal.journal_root / 'committed', manifest, resume=bool(pending))
+        if _archive_sha256(target) != verified_archive_sha256:
+            raise ValueError('retained archive bytes changed before cleanup')
+        # Bind reclamation to the image itself. A single digest read leaves the
+        # rest of cleanup trusting a path; this re-asserts the binding before
+        # each destructive step.
+        custody = hold_verified_archive_image(target, verified_archive_sha256)
+        reclaim_archived_inventory(wal.journal_root / 'committed', manifest, resume=bool(pending),
+                                   archive_custody=custody)
         receipt = dict(schema_version='px.committed-wal-archive-receipt/2.0',
             created_utc=datetime.now(timezone.utc).isoformat(), wal_root=manifest['wal_root'],
             archive=target.relative_to(root).as_posix(), archive_sha256=intent['archive_sha256'],

@@ -12,6 +12,7 @@ import os
 import re
 from pathlib import Path
 import shlex
+import stat
 import subprocess
 import tarfile
 import tomllib
@@ -255,7 +256,18 @@ class _ProjectionInputs:
                 and Path(relative).suffix.casefold() in SKILL_EXCLUDED_SUFFIXES
             ):
                 return True
-            return not selected_or_ancestor(relative)
+            if selected_file(relative):
+                return False
+            if not selected_or_ancestor(relative):
+                return True
+            # Only directories can be ancestors of declared source files.
+            # A regular unselected file must not consume the source byte budget
+            # merely because '**' could descend through a directory of its name.
+            # Retain links/reparse points so the walker still rejects them.
+            info = (root / relative).lstat()
+            return stat.S_ISREG(info.st_mode) and not (
+                int(getattr(info, "st_file_attributes", 0)) & 0x400
+            )
 
         tree = bounded_walk(
             root,

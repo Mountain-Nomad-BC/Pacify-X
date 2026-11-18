@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import os
 from pathlib import Path
 import subprocess
 import sys
@@ -22,6 +23,35 @@ from runtime.transcript_analysis import (
 
 
 ROOT = Path(__file__).resolve().parents[1]
+
+
+@pytest.mark.parametrize("input_is_child", [False, True])
+def test_ingest_rejects_linked_input_before_resolving(
+    tmp_path: Path, input_is_child: bool
+) -> None:
+    source_dir = tmp_path / "original"
+    source_dir.mkdir()
+    source = source_dir / "conversation.txt"
+    source.write_text("Private source\n", encoding="utf-8")
+    linked = tmp_path / "linked"
+    if os.name == "nt":
+        import _winapi
+
+        _winapi.CreateJunction(str(source_dir), str(linked))
+    else:
+        linked.symlink_to(source_dir, target_is_directory=True)
+    output = tmp_path / "output"
+    with pytest.raises(ValueError, match="linked|symlink"):
+        ingest_transcripts(
+            ROOT,
+            [linked / source.name if input_is_child else linked],
+            output,
+            queue_id="queue-a",
+            run_id="linked-input",
+            apply=True,
+        )
+    assert not output.exists()
+    assert source.read_text(encoding="utf-8") == "Private source\n"
 
 
 def _record(source: dict[str, object], **updates: object) -> dict[str, object]:
@@ -238,6 +268,71 @@ def test_run_detects_source_tampering(tmp_path: Path) -> None:
     result = validate_run(ROOT, run)
     assert result["valid"] is False
     assert any("source copy integrity mismatch" in error for error in result["errors"])
+
+
+@pytest.mark.parametrize("operation", ["records", "export"])
+def test_transcript_publication_preserves_a_concurrently_created_file(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, operation: str
+) -> None:
+    run, source = _run(tmp_path)
+    if operation == "export":
+        write_canonical_records(ROOT, run, [_record(source)], apply=True)
+        target = tmp_path / "summary.csv"
+    else:
+        target = run / "data" / "records.jsonl"
+    original_exists = Path.exists
+    raced = False
+
+    def concurrent_create(path: Path) -> bool:
+        nonlocal raced
+        if path == target and not raced:
+            raced = True
+            path.write_bytes(b"concurrent retained evidence\n")
+            return False
+        return original_exists(path)
+
+    monkeypatch.setattr(Path, "exists", concurrent_create)
+    with pytest.raises(FileExistsError):
+        if operation == "records":
+            write_canonical_records(ROOT, run, [_record(source)], apply=True)
+        else:
+            export_selected_summary(
+                ROOT, run, [str(source["conversation_id"])], target, apply=True
+            )
+    assert raced
+    assert target.read_bytes() == b"concurrent retained evidence\n"
+
+
+@pytest.mark.parametrize("absolute", [False, True])
+def test_run_refuses_manifest_source_outside_run_without_reading_it(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, absolute: bool
+) -> None:
+    from runtime.hash_utils import json_utf8_hash
+
+    run, source = _run(tmp_path)
+    external = tmp_path / "outside.txt"
+    external.write_bytes(Path(str(source["source_file"])).read_bytes())
+    manifest_path = run / "run.json"
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    manifest["sources"][0]["ingested_copy"] = (
+        str(external) if absolute else os.path.relpath(external, run)
+    )
+    manifest["run_manifest_sha256"] = json_utf8_hash(
+        {key: value for key, value in manifest.items() if key != "run_manifest_sha256"}
+    )
+    manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+    original_read = Path.read_bytes
+    reads: list[Path] = []
+
+    def record_read(path: Path) -> bytes:
+        reads.append(path.resolve())
+        return original_read(path)
+
+    monkeypatch.setattr(Path, "read_bytes", record_read)
+    result = validate_run(ROOT, run)
+    assert external.resolve() not in reads
+    assert result["valid"] is False
+    assert result["errors"]
 
 
 def test_transcript_cli_and_orchestration(

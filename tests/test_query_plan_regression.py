@@ -100,10 +100,11 @@ class PXAUD100_QueryPlanDigestValidation(unittest.TestCase):
     def test_retrieve_accepts_valid_query_plan(self) -> None:
         """retrieve() accepts a valid QueryPlan from QueryPlanner.plan()."""
         result = retrieve(
-            "python async",
+            self.plan.raw_query,
             self.sources,
             identity_scope=(),
             query_plan=self.plan,
+            query_planner=self.planner,
         )
         # Valid plan is accepted — no exception raised, at least one hit
         self.assertGreaterEqual(len(result.hits), 1)
@@ -117,6 +118,7 @@ class PXAUD100_QueryPlanDigestValidation(unittest.TestCase):
             self.sources,
             identity_scope=(),
             query_plan=self.plan,
+            query_planner=self.planner,
         )
         hit_ids = [hit.source_id for hit in result.hits]
         self.assertIn("src-1", hit_ids)

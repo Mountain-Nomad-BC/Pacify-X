@@ -13,8 +13,21 @@ from scripts.sanitize_tree import (
 
 
 class SanitizeTreeTests(unittest.TestCase):
+    def setUp(self) -> None:
+        # Model an installed repository entirely inside the owned test workspace.
+        # Both the sanitized tree and its sibling preservation root belong to it.
+        repository = tempfile.TemporaryDirectory(prefix='sanitize-project-')
+        self.addCleanup(repository.cleanup)
+        self.project_root = Path(repository.name)
+        for patch in (
+            mock.patch('scripts.sanitize_tree.REPOSITORY_ROOT', self.project_root),
+            mock.patch('scripts.sanitize_tree.__file__', str(self.project_root / 'scripts/sanitize_tree.py')),
+        ):
+            patch.start()
+            self.addCleanup(patch.stop)
+
     def test_preview_and_apply_sanitize_content_and_path(self) -> None:
-        with tempfile.TemporaryDirectory() as directory:
+        with tempfile.TemporaryDirectory(dir=self.project_root) as directory:
             root = Path(directory)
             token = "re" + "my"
             path = root / f"{token}.txt"
@@ -36,7 +49,7 @@ class SanitizeTreeTests(unittest.TestCase):
             )
 
     def test_brand_token_is_removed_even_when_attached_to_a_domain_name(self) -> None:
-        with tempfile.TemporaryDirectory() as directory:
+        with tempfile.TemporaryDirectory(dir=self.project_root) as directory:
             root = Path(directory)
             token = "rh" + "eem" + "global.example"
             path = root / "url.txt"
@@ -51,7 +64,7 @@ class SanitizeTreeTests(unittest.TestCase):
             )
 
     def test_legacy_alias_inside_longer_identifier_is_expanded_once(self) -> None:
-        with tempfile.TemporaryDirectory() as directory:
+        with tempfile.TemporaryDirectory(dir=self.project_root) as directory:
             root = Path(directory)
             legacy = "governed" + "_" + "retrieval"
             canonical = legacy + "_system_with_deterministic_rails"
@@ -76,7 +89,7 @@ class SanitizeTreeTests(unittest.TestCase):
         self.assertTrue(first.endswith(".md"))
 
     def test_colliding_sanitized_paths_preserve_both_files(self) -> None:
-        with tempfile.TemporaryDirectory() as directory:
+        with tempfile.TemporaryDirectory(dir=self.project_root) as directory:
             root = Path(directory)
             legacy = "governed" + "_" + "retrieval"
             canonical = legacy + "_system_with_deterministic_rails"
@@ -94,7 +107,7 @@ class SanitizeTreeTests(unittest.TestCase):
             )
 
     def test_explicit_exclusion_keeps_bounded_run_out_of_named_subtree(self) -> None:
-        with tempfile.TemporaryDirectory() as directory:
+        with tempfile.TemporaryDirectory(dir=self.project_root) as directory:
             root = Path(directory)
             excluded = root / "large-target"
             excluded.mkdir()
@@ -112,7 +125,7 @@ class SanitizeTreeTests(unittest.TestCase):
             )
 
     def test_apply_fails_closed_and_reports_preservation_scan_read_error(self) -> None:
-        with tempfile.TemporaryDirectory() as directory:
+        with tempfile.TemporaryDirectory(dir=self.project_root) as directory:
             root = Path(directory)
             source = root / "source.txt"
             source.write_text("ordinary text", encoding="utf-8")
@@ -126,6 +139,27 @@ class SanitizeTreeTests(unittest.TestCase):
             self.assertEqual(len(raised.exception.errors), 1)
             self.assertIn("source.txt: OSError", raised.exception.errors[0])
             self.assertEqual(source.read_text(encoding="utf-8"), "ordinary text")
+
+    def test_preservation_outside_fixture_repository_is_still_refused(self) -> None:
+        with tempfile.TemporaryDirectory(dir=self.project_root) as directory:
+            root = Path(directory)
+            source = root / 'source.txt'
+            source.write_bytes(b'ordinary text')
+            outside = self.project_root.parent / (self.project_root.name + '-outside')
+            with self.assertRaisesRegex(ValueError, 'inside the repository'):
+                sanitize_tree(root, apply=True, preservation_root=outside)
+            self.assertEqual(source.read_bytes(), b'ordinary text')
+            self.assertFalse(outside.exists())
+
+    def test_preservation_inside_active_tree_is_still_refused(self) -> None:
+        with tempfile.TemporaryDirectory(dir=self.project_root) as directory:
+            root = Path(directory)
+            source = root / 'source.txt'
+            source.write_bytes(b'ordinary text')
+            with self.assertRaisesRegex(ValueError, 'outside the active sanitization tree'):
+                sanitize_tree(root, apply=True, preservation_root=root / 'preserved')
+            self.assertEqual(source.read_bytes(), b'ordinary text')
+            self.assertFalse((root / 'preserved').exists())
 
 
 if __name__ == "__main__":

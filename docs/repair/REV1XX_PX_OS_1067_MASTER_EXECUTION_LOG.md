@@ -240,3 +240,39 @@
 ## Continuation protocol
 
 Update this log and [px-os-1067-progress.json](./evidence/px-os-1067-progress.json) after each meaningful step. Create a fresh checkpoint before significant Git operations. Do not stage or commit inherited paths. Focused commits of session-owned paths are permitted after focused tests and a checkpoint; do not push without separate authorization. A commit is technical progress, never governance acceptance.
+
+## Session 6 — 2026-11-04 — 12 producers resolved from measured evidence
+
+- **Authorization:** Session `px-os-1067-session6-20261104`; checkpoint + admission opened before any edit. Scopes: read all sources; write `runtime/`, `scripts/`, `tests/`, `registry/`, `docs/repair/`; execute evidence tooling and pytest. No network, install, destructive, staging, commit, push, or release authority.
+- **Starting state (re-measured, not inherited):** 1,689 records / 377 producers / 373 mutating / **236 resolved / 137 unresolved** / 318 gate findings / gate invalid. Reproduces the session-5 handoff exactly.
+- **Two inherited failures reproduced before any edit.** `tests/test_mixed_destination_effects.py` compared six fixtures against their pre-Confinement source rows and required an empty output-root registry. Both were stale assertions about *facts P6 changed*, not weakened checks: the fixture rows were re-read from current discovery, and the registry assertion now states the safety property (root-only grants, no deletion authority) instead of an empty registry.
+
+### What changed
+
+| Change | Evidence | Effect |
+|---|---|---|
+| `delegated_publication` extended with a **packaging-projection** branch: a `.px/skills` script is published by the generated `pyproject.toml` block, is inert on import, and is not a predicate-qualified output writer | 13 new tests incl. 6 negative cases; live per-file facts in `px-os-1067-px-skills-packaging-dispositions.json` | **11 `.px/skills` producers resolved** |
+| `sanitize_tree.py` routed every destination through `runtime/confined_output`; grant re-issued through `revoke` + `register` (no fingerprint rewritten) | static proof + sandbox run, 0 escapes | **1 producer resolved** |
+| `output_root_classification` learned anchored (`__file__`-rooted) destinations, confinement-helper receivers, and repository-relative grant resolution (with drive-relative refusal) | 41 focused tests | prerequisite for the above |
+
+**Correction recorded.** A first version of the packaging branch ran *before* the declared-output-target precedence and silently pre-empted **30** producer-specific verdicts (`.px/skills/secure-agent-supply-chain/*` and 29 others), moving `declared_output_target` 76→48. It was narrowed so it applies only to producers the predicate did **not** qualify. The authority counts now reconcile exactly: unchanged 76, `authorized_output_root` 4→5, `delegated_publication` 10→21.
+
+### Measured result
+
+- **1,689 records / 377 producers / 373 mutating / 248 resolved / 125 unresolved / 318 gate findings / gate invalid.**
+- Unresolved families: scripts 73, runtime 52, `.px` 0.
+- **12 resolutions, 0 regressions** (verified by per-producer diff against the baseline census).
+- Focused suite: **102 passed**.
+
+### Disclosed, not absorbed
+
+Three foreign files appeared in the tree during the session — `docs/architecture/tools/{build_atlas,verify_atlas_browser,verify_obsidian_native}.py` and `.github/workflows/*.yml`. They add 29 unresolved producers and **all 29** of the gate-finding increase (289→318). They were not written, modified, staged, or classified by this session.
+
+### Not verified, and why
+
+- `px-os-1067-validate-registries.py` **fails**, correctly: it validates the *published* registry, which still holds the pre-session classification (216/157 and 137 stale entries). Republishing requires zero unresolved producers, which is not true. **0 findings were suppressed.**
+- The census is slow (>2 minutes) and exceeded several interactive windows; it completes and is reproducible, but it is not yet CI-friendly.
+
+### Next
+
+The blocking question is unchanged and is not an engineering task: **who owns durable state that only its own writers touch?** 17 B7 resources are `pending_registration`, 3 are `pending_decision`. Each needs a named custodian outside its group, or a recorded multi-owner decision. Everything else left is mechanical but needs a successful sandbox input per producer.

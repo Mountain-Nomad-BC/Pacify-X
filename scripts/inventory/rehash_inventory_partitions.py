@@ -6,6 +6,12 @@ import argparse
 import hashlib
 import json
 from pathlib import Path
+import sys
+
+if __package__ in {None, ""}:
+    sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+
+from runtime.secure_publish import atomic_write_bytes
 
 
 def _confined(path: Path, label: str) -> Path:
@@ -16,10 +22,16 @@ def _confined(path: Path, label: str) -> Path:
     summary file this producer rewrites, not to the walk origin.
     """
     from runtime.confined_output import ConfinementError
+    from runtime.archive_io import reject_path_links
 
     root = Path(__file__).resolve().parents[2]
     candidate = Path(path)
-    resolved = (candidate if candidate.is_absolute() else root / candidate).resolve()
+    original = candidate if candidate.is_absolute() else root / candidate
+    try:
+        reject_path_links(original)
+    except ValueError as error:
+        raise ConfinementError(f"{label} must not contain links or junctions") from error
+    resolved = original.resolve()
     try:
         resolved.relative_to(root)
     except ValueError as error:
@@ -36,46 +48,68 @@ def _confined_file(path: Path) -> Path:
 
 def _publish(path: Path, text: str) -> None:
     """Atomic replacement so a failure never leaves a half-written summary."""
-    import os
-
-    temporary = path.with_name(f".{path.name}.{os.getpid()}.tmp")
-    try:
-        with temporary.open("w", encoding="utf-8", newline="\n") as handle:
-            handle.write(text)
-            handle.flush()
-            os.fsync(handle.fileno())
-        os.replace(temporary, path)
-    finally:
-        try:
-            temporary.unlink(missing_ok=True)
-        except OSError:
-            pass
+    atomic_write_bytes(path, text.encode("utf-8"))
 
 
-def rehash(parts_root: Path) -> dict[str, object]:
+def _inventory_sha256(path: Path) -> str:
+    # Delegate to the canonical owner; this was a byte-identical copy of
+    # runtime.hash_utils.file_sha256.
+    from runtime.hash_utils import file_sha256
+
+    return file_sha256(path)
+
+
+def rehash(parts_root: Path, *, report_path: Path | None = None) -> dict[str, object]:
     parts_root = _confined(parts_root, "parts_root")
+    if not parts_root.is_dir():
+        raise ValueError(f"parts_root must be an existing directory: {parts_root}")
+    report_path = _confined_file(report_path) if report_path is not None else None
+    if report_path is not None:
+        if report_path.exists() and not report_path.is_file():
+            raise ValueError(f"report must name a regular file: {report_path}")
+        for parent in report_path.parents:
+            if parent.exists() and not parent.is_dir():
+                raise ValueError(f"report parent must be a directory: {parent}")
     updated: list[dict[str, object]] = []
+    publications: list[tuple[Path, str]] = []
     for inventory in sorted(
         parts_root.rglob("inventory.jsonl"), key=lambda path: path.as_posix()
     ):
-        summary = inventory.with_name("file_inventory_summary.json")
+        # Validate original input components before reading any file content.
+        inventory = _confined_file(inventory)
+        summary = _confined_file(inventory.with_name("file_inventory_summary.json"))
+        markdown = _confined_file(inventory.with_name("file_inventory_summary.md"))
+        if report_path is not None and any(
+            report_path == path.resolve() or (
+                report_path.exists() and path.exists() and report_path.samefile(path)
+            )
+            for path in (inventory, summary, markdown)
+        ):
+            raise ValueError("report must be distinct from partition inputs and summaries")
         if not summary.is_file():
             continue
-        digest = hashlib.sha256(inventory.read_bytes()).hexdigest()
+        digest = _inventory_sha256(inventory)
         payload = json.loads(summary.read_text(encoding="utf-8"))
+        if not isinstance(payload, dict):
+            raise ValueError(f"partition summary must be a JSON object: {summary}")
         payload["inventory_sha256"] = digest
-        _publish(_confined_file(summary), json.dumps(payload, indent=2) + "\n")
-        markdown = inventory.with_name("file_inventory_summary.md")
+        publications.append((_confined_file(summary), json.dumps(payload, indent=2) + "\n"))
         if markdown.is_file():
             lines = markdown.read_text(encoding="utf-8").splitlines()
+            if not any(line.startswith("- Inventory SHA-256:") for line in lines):
+                raise ValueError(f"partition markdown is missing its inventory digest marker: {markdown}")
             lines = [
                 f"- Inventory SHA-256: `{digest}`"
                 if line.startswith("- Inventory SHA-256:")
                 else line
                 for line in lines
             ]
-            _publish(_confined_file(markdown), "\n".join(lines) + "\n")
+            publications.append((_confined_file(markdown), "\n".join(lines) + "\n"))
         updated.append({"partition": inventory.parent.name, "inventory_sha256": digest})
+    # Decode and confine the entire batch before the first replacement. Publication
+    # remains atomic per file; an I/O failure during commit is not a batch rollback.
+    for destination, text in publications:
+        _publish(destination, text)
     return {
         "schema_version": "1.0",
         "updated_count": len(updated),
@@ -88,12 +122,14 @@ def main() -> int:
     parser.add_argument("--parts-root", type=Path, required=True)
     parser.add_argument("--output", type=Path)
     args = parser.parse_args()
-    result = rehash(args.parts_root)
-    if args.output:
+    # Refuse invalid report destinations before any partition is rewritten.
+    output = _confined_file(args.output) if args.output is not None else None
+    result = rehash(args.parts_root, report_path=output)
+    if output is not None:
         # Confined, atomic publication inside the repository root.
         from runtime.confined_output import publish_json
 
-        publish_json(Path(__file__).resolve().parents[2], args.output, result)
+        publish_json(Path(__file__).resolve().parents[2], output, result)
     print(json.dumps({"updated_count": result["updated_count"]}, indent=2))
     return 0
 

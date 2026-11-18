@@ -21,6 +21,91 @@ PRODUCT_SHA = "2" * 64
 HARNESS_SHA = "3" * 64
 
 
+@pytest.mark.parametrize("missing_leaf", [False, True])
+def test_owner_preserves_link_provenance_before_resolving_member_path(tmp_path, missing_leaf):
+    from scripts.run_installed_operational_owner import _inside
+
+    real = tmp_path / "real"
+    real.mkdir()
+    alias = tmp_path / "alias"
+    try:
+        alias.symlink_to(real, target_is_directory=True)
+    except OSError as error:
+        pytest.skip(f"host does not permit a disposable directory symlink: {error}")
+    if not missing_leaf:
+        (real / "receipt.json").write_text("{}", encoding="utf-8")
+    with pytest.raises(OwnerBlocked, match="link|alias|unsafe"):
+        _inside(tmp_path, alias / "receipt.json", "member receipt")
+    assert alias.is_symlink()
+
+
+def test_owner_publication_preserves_a_concurrent_receipt(tmp_path, monkeypatch):
+    from scripts.run_installed_operational_owner import _write_json
+
+    target = tmp_path / "summary.json"
+    original_open = Path.open
+    competitor = b'{"owner":"other-run"}\n'
+    injected = False
+
+    def racing_open(path, mode="r", *args, **kwargs):
+        nonlocal injected
+        if not injected and "x" in mode and path.parent == target.parent:
+            injected = True
+            with original_open(target, "wb") as stream:
+                stream.write(competitor)
+        return original_open(path, mode, *args, **kwargs)
+
+    monkeypatch.setattr(Path, "open", racing_open)
+    with pytest.raises((OwnerBlocked, FileExistsError)):
+        _write_json(target, {"owner": "this-run"})
+    assert target.read_bytes() == competitor
+
+
+def test_owner_rejects_unserializable_summary_before_creating_directories(tmp_path):
+    from scripts.run_installed_operational_owner import _write_json
+
+    target = tmp_path / "unallocated" / "summary.json"
+    with pytest.raises((ValueError, TypeError)):
+        _write_json(target, {"invalid": object()})
+    assert not target.parent.exists()
+
+
+def test_owner_rejects_nonfinite_summary_before_publication(tmp_path):
+    from scripts.run_installed_operational_owner import _write_json
+
+    target = tmp_path / "summary.json"
+    with pytest.raises(ValueError):
+        _write_json(target, {"invalid": float("nan")})
+    assert not target.exists()
+
+
+@pytest.mark.parametrize("mutation", ["append", "quoted-text", "substitution"])
+def test_ubuntu_command_rejects_additional_shell_actions_before_any_effect(tmp_path, mutation):
+    from dataclasses import replace
+
+    config = _config(tmp_path)
+    shell = config.ubuntu.command[-1]
+    if mutation == "append":
+        shell += "; echo unexpected-action"
+    elif mutation == "quoted-text":
+        shell = "echo " + shlex.quote(shell)
+    else:
+        shell = "TMPDIR=$(echo unexpected-action) " + shell
+    config = replace(config, ubuntu=replace(config.ubuntu, command=(*config.ubuntu.command[:-1], shell)))
+    with pytest.raises(OwnerBlocked, match="Ubuntu smoke command"):
+        plan(config)
+
+
+def test_ubuntu_command_accepts_exact_builder_working_directory_and_quoted_temp_root(tmp_path):
+    from dataclasses import replace
+    from scripts.run_installed_operational_owner import _wsl_path
+
+    config = _config(tmp_path)
+    shell = "cd " + shlex.quote(_wsl_path(config.root)) + " && TMPDIR=" + shlex.quote("/tmp/private tmp") + " " + config.ubuntu.command[-1]
+    config = replace(config, ubuntu=replace(config.ubuntu, command=(*config.ubuntu.command[:-1], shell)))
+    assert plan(config)["valid"] is True
+
+
 def _write(path: Path, value: object) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(value), encoding="utf-8")
@@ -471,3 +556,98 @@ def test_package_install_receipts_must_use_bound_object_schema(
         execute(config, effects)
     assert effects.events == []
     assert not config.summary_output.exists()
+
+
+def test_installed_owner_reads_selected_campaign_and_preserves_legacy(tmp_path,monkeypatch):
+    from scripts.run_installed_operational_owner import ProductionEffects, _identity
+    from runtime import project_revision_succession
+    config=_config(tmp_path)
+    legacy=tmp_path/".agentic_engineering_os_px/processing-order/repair-campaign.json"
+    selected=tmp_path/"revision-fixture/repair-campaign.json"
+    selected.parent.mkdir();selected.write_bytes(legacy.read_bytes())
+    legacy.write_text('{"phase":"repair","intake_open":true,"unresolved":["legacy-trap"]}')
+    image=legacy.read_bytes()
+    monkeypatch.setattr(project_revision_succession,"current_campaign_path",lambda root:selected)
+    assert _identity(config)[0]["campaign_id"] == config.candidate_id
+    ProductionEffects().advance(config)
+    assert json.loads(selected.read_bytes())["phase"] == "installed_operational"
+    assert legacy.read_bytes() == image
+    selected.rename(selected.with_suffix(".retained"))
+    with pytest.raises(FileNotFoundError):_identity(config)
+
+
+def test_observed_smoke_hash_slot_requires_authenticated_mode_and_exact_digest():
+    from scripts.run_installed_operational_owner import observed_member_argv, OBSERVED_SHA_SLOT
+    raw=json.dumps(['node','smoke.js','--expected-sha256',OBSERVED_SHA_SLOT])
+    assert observed_member_argv(raw,sha256='a'*64,observed=True,label='fixture')[-1]=='a'*64
+    with pytest.raises(OwnerBlocked,match='authenticated'):
+        observed_member_argv(raw,sha256='a'*64,observed=False,label='fixture')
+    with pytest.raises(OwnerBlocked,match='digest'):
+        observed_member_argv(raw,sha256='not-a-digest',observed=True,label='fixture')
+    shell=json.dumps(['wsl.exe','--','bash','-lc','node smoke.js --expected-sha256 '+OBSERVED_SHA_SLOT])
+    assert observed_member_argv(shell,sha256='b'*64,observed=True,label='fixture')[-1].endswith('b'*64)
+
+
+def test_current_operational_owner_refuses_legacy_raw_launch_before_output(tmp_path,monkeypatch):
+    from dataclasses import replace
+    from scripts.run_installed_operational_owner import ProductionEffects
+    config=replace(_config(tmp_path),stage_owner_config=tmp_path/'native-stage.json')
+    def forbidden(*args,**kwargs):pytest.fail('no raw subprocess may launch in current operational mode')
+    monkeypatch.setattr('subprocess.Popen',forbidden)
+    with pytest.raises(OwnerBlocked,match='native process custody'):
+        ProductionEffects().start(config,'windows',config.windows)
+    assert not config.windows.log.exists()
+
+
+@pytest.mark.parametrize('command',[
+    ['node','smoke.js','--other','__PX_OBSERVED_VSIX_SHA256__'],
+    ['node','smoke.js','prefix__PX_OBSERVED_VSIX_SHA256__'],
+    ['node','smoke.js','--expected-sha256','__PX_OBSERVED_VSIX_SHA256__','__PX_OBSERVED_VSIX_SHA256__'],
+    ['wsl.exe','--','bash','-lc','echo __PX_OBSERVED_VSIX_SHA256__'],
+])
+def test_observed_digest_cannot_expand_unrelated_arguments(command):
+    from scripts.run_installed_operational_owner import observed_member_argv
+    with pytest.raises(OwnerBlocked,match='slot'):
+        observed_member_argv(json.dumps(command),sha256='a'*64,observed=True,label='fixture')
+
+
+def test_current_operational_execution_refuses_before_claim_or_output(tmp_path,monkeypatch):
+    from dataclasses import replace
+    from scripts.run_installed_operational_owner import ProductionEffects
+    config=replace(_config(tmp_path),stage_owner_config=tmp_path/'native-stage.json')
+    def forbidden(*args,**kwargs):pytest.fail('unsupported current owner must never consume a native claim')
+    monkeypatch.setattr(ProductionEffects,'claim',forbidden)
+    with pytest.raises(OwnerBlocked,match='before claim'):
+        execute(config)
+    assert not config.summary_output.exists()
+
+
+@pytest.mark.parametrize('entry',['raw_start','receipt','config','execute'])
+def test_authoritative_current_campaign_cannot_downgrade_to_legacy_mode(tmp_path,monkeypatch,entry):
+    from types import SimpleNamespace
+    from scripts import run_installed_operational_owner as owner
+    config=_config(tmp_path)
+    _write(tmp_path/'policies/rev1xx-validation.json',{'schema_version':'px.validation-basis/1.0',
+        'basis':'current_implementation','authority':'OWNER-FRESH-VALIDATION-001','campaign_id':'fixture-current-policy'})
+    from runtime.release_campaign import release_state_relative
+    legacy=tmp_path/'.agentic_engineering_os_px/processing-order/release-identity.json'
+    _write(tmp_path/release_state_relative(tmp_path),json.loads(legacy.read_bytes()))
+    def forbidden(*args,**kwargs):pytest.fail('a current campaign cannot enter legacy launch or claim')
+    monkeypatch.setattr('subprocess.Popen',forbidden)
+    monkeypatch.setattr(owner.ProductionEffects,'claim',forbidden)
+    with pytest.raises((OwnerBlocked,ValueError),match='current|mode'):
+        if entry=='raw_start':owner.ProductionEffects().start(config,'windows',config.windows)
+        elif entry=='execute':owner.execute(config)
+        elif entry=='receipt':
+            release,identity=owner._identity(config)
+            owner._stage_receipt(config,config.package_receipt,label='package',identity=identity,
+                claim_id=release['stages']['package']['claim_id'],artifact=owner._artifact_binding(config))
+        else:
+            args=dict(vars(config))
+            for member in ('windows','ubuntu','exhaustive'):
+                paths=getattr(config,member);args[member+'_argv_json']=json.dumps(list(paths.command))
+                args[member+'_log']=paths.log;args[member+'_receipt']=paths.receipt
+                args[member+'_lifecycle_receipt']=paths.lifecycle
+            args['exhaustive_report']=config.exhaustive.report
+            owner._config(SimpleNamespace(**args))
+    assert not config.windows.log.exists() and not config.summary_output.exists()

@@ -185,11 +185,12 @@ class ValidationBlocked(RuntimeError):
 
 
 def _sha256(path: Path) -> str:
-    digest = hashlib.sha256()
-    with path.open("rb") as stream:
-        for chunk in iter(lambda: stream.read(1024 * 1024), b""):
-            digest.update(chunk)
-    return digest.hexdigest()
+    # Delegate to the canonical owner. This was a byte-identical copy of
+    # runtime.hash_utils.file_sha256, which structural integrity reports as
+    # duplicated logic; one implementation is the correct number.
+    from runtime.hash_utils import file_sha256
+
+    return file_sha256(path)
 
 
 def _git(root: Path, *args: str, binary: bool = False) -> str | bytes:

@@ -109,3 +109,77 @@ def test_local_model_runtime_contract_has_explicit_runtime_ownership() -> None:
     assert record["producers"] == ["runtime/local_model_runtime.py"]
     assert record["enforcement"] == "local_model_lifecycle_runtime_boundary"
     assert "tests/test_local_model_runtime.py" in record["tests"]
+
+
+def test_execution_generation_vector_is_a_versioned_compatibility_contract() -> None:
+    """2.0 is the compatibility contract for the same surface, not a second owner."""
+    result = build(ROOT)
+    records = {row["path"]: row for row in result["records"]}
+    canonical = records["contracts/context-generation-vector.schema.json"]
+    compat = records["contracts/models/execution-generation-vector.schema.json"]
+
+    assert compat["owner"] == canonical["owner"] == "runtime/context_generation.py"
+    assert compat["enforcement"] == "versioned_compatibility_contract_shared_runtime_surface"
+    assert canonical["enforcement"] == "typed_scoped_archivist_metadata_boundary"
+    # One shared runtime producer, with no invented independent runtime path. The
+    # canonical 1.0 contract also names the modules that build 1.0 records
+    # (dependency_invalidation, librarian_semantic_map); the 2.0 compatibility contract
+    # is produced solely by the shared implementation.
+    assert compat["producers"] == ["runtime/context_generation.py"]
+    assert canonical["producers"][0] == "runtime/context_generation.py"
+    # Every producer named for the compatibility contract must be a real, distinct path.
+    assert len(set(compat["producers"])) == len(compat["producers"])
+    for producer in compat["producers"]:
+        assert (ROOT / producer).is_file()
+    # The compatibility surface keeps the verified reader, projection_gate included.
+    assert "runtime/projection_gate.py" in canonical["consumers"]
+    assert "runtime/projection_gate.py" in compat["consumers"]
+    # librarian_semantic_map CONSTRUCTS a vector through context_vector_for_dependencies,
+    # so it is a producer of the canonical surface, not a consumer of it.
+    assert "runtime/librarian_semantic_map.py" in canonical["producers"]
+    assert "runtime/librarian_semantic_map.py" not in canonical["consumers"]
+    # Exactly one record per schema identity.
+    assert [row["path"] for row in result["records"]].count(
+        "contracts/models/execution-generation-vector.schema.json") == 1
+
+
+def test_generation_vector_versions_are_semantically_versioned_not_alias() -> None:
+    """2.0 widens the vector to include execution lineage; it is not a version-only alias."""
+    import json
+
+    canonical = json.loads((ROOT / "contracts/context-generation-vector.schema.json").read_text(encoding="utf-8"))
+    compat = json.loads((ROOT / "contracts/models/execution-generation-vector.schema.json").read_text(encoding="utf-8"))
+    assert canonical["properties"]["schema_version"]["const"] == "px.context-generation-vector/1.0"
+    assert compat["properties"]["schema_version"]["const"] == "px.context-generation-vector/2.0"
+    narrow = canonical["properties"]["vector"]["required"]
+    wide = compat["properties"]["vector"]["required"]
+    assert set(narrow) < set(wide), "2.0 must strictly extend the 1.0 component set"
+    for name in ("model_execution_group_revision", "model_contract_set_revision",
+                 "gremlin_revision", "network_policy_revision", "workflow_adapter_revision"):
+        assert name in wide and name not in narrow
+
+
+def test_runtime_accepts_both_generation_versions_and_both_validate_against_own_contract() -> None:
+    """The shared runtime emits/reads both, and each version obeys only its own contract."""
+    from pathlib import Path
+
+    import pytest
+
+    from runtime.context_generation import (COMPONENTS, EXECUTION_LINEAGE_COMPONENTS,
+                                            context_vector)
+    from runtime.contracts import validate_instance
+
+    def record(lineage):
+        components = {name: "a" * 64 for name in COMPONENTS}
+        components.update({name: "b" * 64 for name in lineage})
+        return context_vector("prj", "scope", components)
+    one, two = record(()), record(EXECUTION_LINEAGE_COMPONENTS)
+    assert one.as_mapping()["schema_version"] == "px.context-generation-vector/1.0"
+    assert two.as_mapping()["schema_version"] == "px.context-generation-vector/2.0"
+    validate_instance(one.as_mapping(), Path(ROOT / "contracts/context-generation-vector.schema.json"))
+    validate_instance(two.as_mapping(), Path(ROOT / "contracts/models/execution-generation-vector.schema.json"))
+    # The compatibility boundary is discriminating, not permissive.
+    with pytest.raises(Exception):
+        validate_instance(one.as_mapping(), Path(ROOT / "contracts/models/execution-generation-vector.schema.json"))
+    with pytest.raises(Exception):
+        validate_instance(two.as_mapping(), Path(ROOT / "contracts/context-generation-vector.schema.json"))

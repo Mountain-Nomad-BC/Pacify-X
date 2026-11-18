@@ -207,7 +207,12 @@ def _validate_object_contract(
 class AgentRuntimeController:
     """Owns artifacts and bounded harness processes; it never grants host authority."""
 
-    def __init__(self, project_root: Path) -> None:
+    def __init__(self, project_root: Path, *, memory_vault=None) -> None:
+        from .memory_vault import MemoryVault
+        if memory_vault is not None and type(memory_vault) is not MemoryVault:
+            raise TypeError("canonical MemoryVault owner required")
+        # Host configuration supplies this owner, never the query plan or turn.
+        self._memory_vault = memory_vault
         self.project_root = project_root.resolve(strict=True)
         if not self.project_root.is_dir() or self.project_root == Path(
             self.project_root.anchor
@@ -1004,9 +1009,8 @@ class AgentRuntimeController:
         memory_now_utc=None,
         current_context_generation=None,
     ) -> dict[str, object]:
-        """Resolve broker memory and acknowledged handoffs without effects."""
+        """Resolve broker memory and acknowledged handoffs before execution."""
         from .agent_handoff import consume_handoff
-        from .memory_broker import materialize_memory_context
 
         _record_path, admission, live_hashes = self._admitted_context(spec)
         errors: list[str] = []
@@ -1017,15 +1021,19 @@ class AgentRuntimeController:
         memory_context = None
         if spec.memory_binding_ids:
             try:
+                if self._memory_vault is None:
+                    raise PermissionError("current canonical memory owner is unavailable")
                 if (
                     memory_query_plan.project_id != spec.project_id
                     or memory_query_plan.agent_id != spec.agent_id
+                    or memory_query_plan.actor_id != spec.owner
+                    or memory_query_plan.subject_id != task_plan.get("plan_id")
                     or tuple(sorted(memory_query_plan.binding_ids))
                     != tuple(sorted(spec.memory_binding_ids))
                 ):
                     raise PermissionError("memory query plan does not bind this agent")
-                memory_context = materialize_memory_context(
-                    memory_query_plan, memory_records, now_utc=memory_now_utc
+                memory_context = self._memory_vault.materialize_current_query(
+                    memory_query_plan, asserted_records=memory_records, now_utc=memory_now_utc
                 )
                 if memory_context.get("eligible") is not True:
                     errors.append("memory_context_quarantined")
@@ -1373,33 +1381,32 @@ class AgentRuntimeController:
             owner, so a member's terminal state resolves to the exact control the
             whole scope must adopt rather than an ad-hoc local mapping.
             """
-            try:
-                member_state = str(self.run_control.read(member_run_id)["state"])
-            except Exception:
-                return None
-            try:
-                current_root = self.run_control.read(group_run_id)
-            except Exception:
-                return None
+            # Unreadable or malformed signed custody halts the scope. It cannot
+            # be treated as absence of a control request.
+            member_state = str(self.run_control.read(member_run_id)["state"])
+            current_root = self.run_control.read(group_run_id)
             if current_root["state"] != "running":
                 return None
-            try:
-                from .cancellation_scope import build_scope, resolve_control, CancellationScopeError
-                scope = build_scope("group:" + group_run_id, plan.project_id, group_run_id,
-                                    [member_run_id])
-                resolution = resolve_control(scope, {group_run_id: "running", member_run_id: member_state})
-                target = resolution["adopt"].get(group_run_id)
-            except (ValueError, CancellationScopeError):
-                # Fall back to the local mapping only when the scope owner cannot
-                # classify the member state; never silently ignore a terminal state.
-                target = ("cancelled" if member_state in {"cancelled", "cancel_requested", "interrupted"}
-                          else "paused" if member_state in {"paused", "pause_requested"}
-                          else "failed" if member_state == "failed" else None)
+            from .cancellation_scope import build_scope, resolve_control
+            scope = build_scope("group:" + group_run_id, plan.project_id, group_run_id,
+                                [member_run_id])
+            resolution = resolve_control(scope, {group_run_id: "running", member_run_id: member_state})
+            target = resolution["adopt"].get(group_run_id)
             if target is None:
                 return None
+            # Durable control requires request -> terminal; never weaken its
+            # transition table or overwrite a concurrent root control change.
+            if target in {"cancelled", "paused"}:
+                request = "cancel_requested" if target == "cancelled" else "pause_requested"
+                current_root = self.run_control.transition(
+                    group_run_id, request, actor=spec.owner, approved=True,
+                    checkpoint={**dict(current_root["checkpoint"]), "phase": "member-control-request-" + target},
+                    operation="agent.governed-group.member-control-request",
+                    expected_sequence=int(current_root["sequence"]))
             self.run_control.transition(group_run_id, target, actor=spec.owner, approved=True,
                 checkpoint={**dict(current_root["checkpoint"]), "phase": "member-terminal-" + target},
-                operation="agent.governed-group.member-terminal")
+                operation="agent.governed-group.member-terminal",
+                expected_sequence=int(current_root["sequence"]))
             return target
 
         try:
@@ -1548,6 +1555,9 @@ class AgentRuntimeController:
                             memory_query_plan=memory_query_plan, memory_records=memory_records,
                             handoff_inputs=handoff_inputs, memory_now_utc=memory_now_utc)
                     except Exception:
+                        # An admitted execution that cannot return its receipt
+                        # halts the scope; missing custody cannot admit siblings.
+                        halted = True
                         ledger.fail(idempotency_key=member_intent_key, execution_id=group_run_id,
                                     failure_type="member-execution-failed")
                         member_intent_active = False
@@ -1741,7 +1751,13 @@ class AgentRuntimeController:
         # lock/lease metadata. Concurrent publication fails closed on readback.
         state = view.run_control._read_unlocked(run_id)
         record_path, admission, live_hashes = view._admitted_context(spec)
-        path = record_path.parent / "runs" / f"{run_id}-prepared.json"
+        # Resume publishes an immutable preparation for this exact generation.
+        # Never fall back to an older signed preparation.
+        receipt_name = (
+            f"{run_id}-resume-{state['sequence']}.json"
+            if state["resume_count"] > 0 else f"{run_id}-prepared.json"
+        )
+        path = record_path.parent / "runs" / receipt_name
         verify_safe_ancestors(view.project_root, path)
         prepared = view.authority.verify_receipt(_read_revision_json(path))
         if (spec.harness_id != "harness:vscode-lm" or spec.model.get("provider") not in {"vscode-lm", "pacify-local"}

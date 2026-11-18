@@ -27,6 +27,7 @@ POLICY_PROFILES = (
     "gn-network-synthetic",
     "gn-high-risk-autonomy",
     "projection-reconciliation",
+    "release-command",
     "gn-observe-only",
 )
 
@@ -205,6 +206,17 @@ def default_policy_bundle() -> PolicyBundle:
         filesystem_enforcement=False,
         process_tree_enforcement=True,
     )
+    # Release owners are trusted frozen code, with CPU admission/lease checks
+    # for writes. Kernel Job custody and host process observation are enforced;
+    # this profile claims neither kernel filesystem nor network enforcement.
+    release_command = PolicyProfile(
+        name="release-command", real_containment=True, default_failure_action="terminate_execution_tree",
+        fail_closed=True, rules=(
+            _supervised_rule("GN-RC-PROC-001", "process_spawn", allow=True),
+            _supervised_rule("GN-RC-SELF-001", "containment_control_interference", allow=False,
+                             action="terminate_execution_tree", severity="critical"),
+        ), network_enforcement=False, filesystem_enforcement=False, process_tree_enforcement=True,
+    )
     observe_only = PolicyProfile(
         name=OBSERVE_ONLY,
         real_containment=False,
@@ -217,7 +229,7 @@ def default_policy_bundle() -> PolicyBundle:
     )
     bundle = PolicyBundle(
         bundle_id="gn-default", revision="gn-default-r1",
-        profiles=(strict, projection_reconciliation, observe_only),
+        profiles=(strict, projection_reconciliation, release_command, observe_only),
     )
     return PolicyBundle(
         bundle_id=bundle.bundle_id,

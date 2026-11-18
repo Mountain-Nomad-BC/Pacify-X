@@ -42,6 +42,62 @@ def _new_archive_intent(schema, manifest, digest, filename):
     return value
 
 
+# Re-checked before every reclamation decision. The interval between two of
+# these checks is the residual window; it is no longer a path-to-path gap
+# spanning intent publication and an arbitrary number of unlinks.
+ARCHIVE_CUSTODY_RECHECKS = 4
+
+
+def _image_identity(path: Path):
+    try:
+        info = path.lstat()
+    except FileNotFoundError as error:
+        raise ValueError('archive custody image disappeared before reclamation') from error
+    if not stat.S_ISREG(info.st_mode):
+        raise ValueError('archive custody image is not a regular file')
+    return {'device': info.st_dev, 'inode': info.st_ino}
+
+
+def hold_verified_archive_image(path: Path, digest: str) -> dict[str, object]:
+    """Bind cleanup to the exact verified recovery image, not to one path name.
+
+    This records the physical identity and bytes of the image that was verified
+    immediately before reclamation. It does not claim to prevent another process
+    from replacing the archive; ``_assert_archive_image`` narrows the interval in
+    which such a replacement could pass unnoticed, and ``reclaim_archived_inventory``
+    re-asserts it before every destructive step.
+    """
+    if type(digest) is not str or len(digest) != 64 or any(c not in '0123456789abcdef' for c in digest):
+        raise ValueError('verified archive digest is malformed')
+    try:
+        current = _archive_sha256(path)
+    except (OSError, ValueError) as error:
+        raise ValueError('retained archive bytes changed before custody binding') from error
+    if current != digest:
+        raise ValueError('retained archive bytes changed before custody binding')
+    return {'path': path, 'sha256': digest, 'identity': _image_identity(path)}
+
+
+def _assert_archive_image(custody) -> None:
+    """Refuse reclamation when the archive is no longer the verified image."""
+    if type(custody) is not dict or set(custody) != {'path', 'sha256', 'identity'}:
+        raise ValueError('archive custody binding is invalid')
+    path = custody['path']
+    try:
+        reparse = _is_reparse(path)
+    except FileNotFoundError as error:
+        raise ValueError('archive custody image disappeared before reclamation') from error
+    if reparse or _image_identity(path) != custody['identity']:
+        raise ValueError('archive custody image was replaced before reclamation')
+    try:
+        current = _archive_sha256(path)
+    except (OSError, ValueError) as error:
+        # An unreadable or malformed image is not the verified image.
+        raise ValueError('archive custody image bytes changed before reclamation') from error
+    if current != custody['sha256']:
+        raise ValueError('archive custody image bytes changed before reclamation')
+
+
 def _inventory_root_identity(root, expected=None):
     from runtime.wal_transaction import _reject_nominal_link_chain
     root = Path(os.path.abspath(root))
@@ -94,13 +150,36 @@ def bounded_inventory(root: Path, selected: list[Path]) -> dict[str, object]:
             'directories': sorted(directories, key=lambda row: row['path'])}
 
 
-def reclaim_archived_inventory(root: Path, manifest, *, resume=False):
+def reclaim_archived_inventory(root: Path, manifest, *, resume=False, archive_custody=None,
+                               custody_check=None):
     """Remove only still-identical archived entries; never recursively delete.
 
     A late unknown file is left in place, and rmdir fails rather than deleting it.
     The caller retains a verified archive and durable cleanup intent first.
+
+    ``archive_custody`` is the binding produced by ``hold_verified_archive_image``.
+    When supplied, it is re-asserted before every destructive step, so reclamation
+    stops if the recovery image is replaced mid-cleanup. ``custody_check`` is a
+    fault-injection seam used by tests to act inside that interval.
     """
     from runtime.wal_transaction import _bounded_image, _reject_nominal_link_chain
+    if archive_custody is not None:
+        _assert_archive_image(archive_custody)
+    if custody_check is not None and not callable(custody_check):
+        raise ValueError('archive custody check must be callable')
+    checks = 0
+
+    def recheck():
+        nonlocal checks
+        if archive_custody is None:
+            return
+        if checks >= ARCHIVE_CUSTODY_RECHECKS * max(1, len(rows) + len(manifest['directories'])):
+            raise ValueError('archive custody recheck budget exceeded')
+        checks += 1
+        if custody_check is not None:
+            custody_check()
+        _assert_archive_image(archive_custody)
+
     root_identity = manifest.get('root_identity')
     if type(root_identity) is not dict or set(root_identity) != {'device', 'inode'}:
         raise ValueError('archive cleanup has no source root identity')
@@ -125,6 +204,7 @@ def reclaim_archived_inventory(root: Path, manifest, *, resume=False):
         if 'sha256' in row and (type(row.get('size_bytes')) is not int or not 0 <= row['size_bytes'] <= 64 * 1024 * 1024):
             raise ValueError('invalid archived size')
         expected[name] = row
+    recheck()
     for row in rows:
         _inventory_root_identity(root, root_identity)
         path = root / row['path']
@@ -142,6 +222,7 @@ def reclaim_archived_inventory(root: Path, manifest, *, resume=False):
                 raise ValueError('archive cleanup source bytes changed')
         elif not stat.S_ISDIR(info.st_mode):
             raise ValueError('archive cleanup directory changed type')
+    recheck()
     for row in manifest['directories']:
         _inventory_root_identity(root, root_identity)
         directory = root / row['path']
@@ -154,6 +235,8 @@ def reclaim_archived_inventory(root: Path, manifest, *, resume=False):
         _inventory_root_identity(root, root_identity)
         path = root / row['path']
         if path.exists():
+            # Repeat the archive custody binding immediately before the exact unlink.
+            recheck()
             # Repeat identity/content checks immediately before the exact unlink.
             info = path.lstat()
             if {'device': info.st_dev, 'inode': info.st_ino} != row['identity'] or _is_reparse(path):
@@ -162,10 +245,12 @@ def reclaim_archived_inventory(root: Path, manifest, *, resume=False):
             if hashlib.sha256(raw).hexdigest() != row['sha256']:
                 raise ValueError('archive cleanup bytes changed before unlink')
             path.unlink()
+    recheck()
     for row in sorted(manifest['directories'], key=lambda item: len(Path(item['path']).parts), reverse=True):
         _inventory_root_identity(root, root_identity)
         path = root / row['path']
         if path.exists():
+            recheck()
             info = path.lstat()
             if {'device': info.st_dev, 'inode': info.st_ino} != row['identity'] or _is_reparse(path):
                 raise ValueError('archive cleanup directory changed before rmdir')
@@ -368,13 +453,20 @@ def _archive_manifest(manifest):
     return expected, raw
 
 
-def _verify_archive(path: Path, manifest: dict[str, object]) -> None:
+def _archive_sha256(path: Path) -> str:
+    from runtime.archive_io import ArchiveLimits, read_archive_bytes
+    return hashlib.sha256(read_archive_bytes(
+        path, ArchiveLimits(max_archive_bytes=272 * 1024 * 1024))).hexdigest()
+
+
+def _verify_archive(path: Path, manifest: dict[str, object]) -> str:
     from runtime.archive_io import ArchiveLimits, read_archive_bytes, read_stream_bytes, validated_zip
     expected, manifest_bytes = _archive_manifest(manifest)
     limits = ArchiveLimits(max_archive_bytes=272 * 1024 * 1024,
         max_expanded_bytes=260 * 1024 * 1024, max_member_bytes=64 * 1024 * 1024,
         max_members=4097)
-    with validated_zip(read_archive_bytes(path, limits), limits) as (archive, infos):
+    image = read_archive_bytes(path, limits)
+    with validated_zip(image, limits) as (archive, infos):
         if {info.filename for info in infos} != {*expected, 'MANIFEST.json'}:
             raise ValueError("project-map archive membership verification failed")
         with archive.open('MANIFEST.json') as stream:
@@ -388,6 +480,8 @@ def _verify_archive(path: Path, manifest: dict[str, object]) -> None:
                     expected_size=row['size_bytes'])
             if hashlib.sha256(raw).hexdigest() != row["sha256"]:
                 raise ValueError(f"project-map archive member hash mismatch: {name}")
+    # Bind custody to the exact acquired image whose members passed validation.
+    return hashlib.sha256(image).hexdigest()
 
 
 def apply(root: Path, *, keep_latest: int = 2):
@@ -442,9 +536,9 @@ def apply(root: Path, *, keep_latest: int = 2):
             if type(locator) is not str or Path(locator).name != locator:
                 raise ValueError('invalid project history archive locator')
             target = archive_root / locator
-            if _sha256(target) != intent['archive_sha256']:
+            verified_archive_sha256 = _verify_archive(target, manifest)
+            if verified_archive_sha256 != intent['archive_sha256']:
                 raise ValueError('project history archive bytes changed')
-            _verify_archive(target, manifest)
             decision = dict(valid=True, apply=False, manifest=manifest, manifest_sha256=digest, selected_count=len(manifest['archived_snapshots']))
         else:
             decision = _plan_history(root, keep_latest, producer_lock_held=True)
@@ -457,16 +551,20 @@ def apply(root: Path, *, keep_latest: int = 2):
             intent = _new_archive_intent('px.project-history-intent/1.0', manifest, digest, target.name)
             if not target.exists():
                 _write_archive(history, target, manifest)
-            _verify_archive(target, manifest)
+            verified_archive_sha256 = _verify_archive(target, manifest)
             selected = [history / name for name in manifest['archived_snapshots']]
             if bounded_inventory(history, selected) != {key: manifest[key] for key in ('root_identity', 'files', 'directories')}:
                 raise ValueError('project history changed after archive verification')
             if hashlib.sha256(_receipt_image(control / 'project-map/map-receipt.json')[0]).hexdigest() != manifest['producer_head_sha256']:
                 raise ValueError('project map head changed before history cleanup')
-            intent['archive_sha256'] = _sha256(target)
+            intent['archive_sha256'] = verified_archive_sha256
             intent_path = archive_root / ('intent-' + digest + '.json')
             _write_new(intent_path, _archive_intent_bytes(intent))
-        reclaim_archived_inventory(history, manifest, resume=bool(pending))
+        if _archive_sha256(target) != verified_archive_sha256:
+            raise ValueError('project history archive bytes changed before cleanup')
+        custody = hold_verified_archive_image(target, verified_archive_sha256)
+        reclaim_archived_inventory(history, manifest, resume=bool(pending),
+                                   archive_custody=custody)
         receipt = dict(schema_version='px.project-map-history-archive-receipt/2.0',
             created_utc=datetime.now(timezone.utc).isoformat(), archive=target.relative_to(root).as_posix(),
             archive_sha256=intent['archive_sha256'], manifest_sha256=digest,

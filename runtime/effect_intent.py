@@ -205,10 +205,7 @@ class EffectIntentLedger:
 
     def _require_reconciliation(self, reconciliation: Mapping[str, object], result_sha256: str) -> None:
         authority = str(reconciliation.get("authority", ""))
-        if not authority or (
-            self._reconciliation_authorities
-            and authority not in self._reconciliation_authorities
-        ):
+        if not authority or authority not in self._reconciliation_authorities:
             raise EffectIntentError("reconciliation requires a trusted host-owned authority")
         if reconciliation.get("observed_outcome") != "effect_occurred":
             raise EffectIntentError("reconciliation must record a trusted observed outcome")

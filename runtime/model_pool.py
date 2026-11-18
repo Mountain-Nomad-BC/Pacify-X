@@ -21,7 +21,7 @@ from uuid import uuid4
 _POOL_STATES = frozenset({"unloaded", "loading", "loaded", "warm", "draining", "unloading", "failed"})
 _RESIDENCIES = frozenset({"resident", "warm", "cold", "exclusive_cold"})
 _ROUTER_LOADED = frozenset({"loaded", "sleeping"})
-_ROUTER_UNLOADED = frozenset({"unloaded", "unknown"})
+_ROUTER_UNLOADED = frozenset({"unloaded"})
 
 
 def _text(value: object, field: str, *, maximum: int = 256) -> str:
@@ -274,8 +274,17 @@ class ModelPool:
             if self._loaded_count() >= self._max_loaded:
                 raise RuntimeError("model pool capacity is exhausted")
             transition_time = self._now()
-            self._set(model_id, state="loading", last_error=None)
-            self._emit("model_load_requested", {"model_id": model_id, "profile_id": entry.spec.profile_id})
+            pending = self._set(model_id, state="loading", last_error=None)
+            try:
+                self._emit("model_load_requested", {"model_id": model_id, "profile_id": entry.spec.profile_id})
+            except BaseException:
+                # No host callback has run. Preserve any reentrant state change
+                # as uncertainty rather than overwriting a newer observation.
+                if self._entries[model_id] is pending:
+                    self._entries[model_id] = entry
+                else:
+                    self._set(model_id, state="failed", last_error="pool changed during failed load-request publication")
+                raise
             try:
                 observed = _text(self._load_model(model_id), "router_state")
                 if observed not in _ROUTER_LOADED:
@@ -300,12 +309,29 @@ class ModelPool:
             entry = self.ensure_loaded(model_id, supplied_authority=supplied_authority)
             if entry.state == "draining":
                 raise RuntimeError(f"model {model_id} is draining")
+            if len(entry.active_leases) >= 1024:
+                raise ValueError("model-pool active lease limit exceeded")
             now = self._now()
             lease = PoolLease(f"model-lease-{uuid4().hex}", model_id, owner, float(now))
+            if lease.lease_id in self._leases:
+                raise ValueError("model-pool lease identity collision")
             self._leases[lease.lease_id] = lease
             leases = tuple(sorted((*entry.active_leases, lease.lease_id)))
-            self._set(model_id, state="loaded", active_leases=leases, last_used_monotonic=float(now))
-            self._emit("model_lease_acquired", {"lease_id": lease.lease_id, "model_id": model_id, "owner": owner})
+            pending = None
+            try:
+                pending = self._set(model_id, state="loaded", active_leases=leases, last_used_monotonic=float(now))
+                self._emit("model_lease_acquired", {"lease_id": lease.lease_id, "model_id": model_id, "owner": owner})
+            except BaseException:
+                self._leases.pop(lease.lease_id, None)
+                if pending is not None:
+                    if self._entries[model_id] is pending:
+                        self._entries[model_id] = entry
+                    else:
+                        current = self._entries[model_id]
+                        self._set(model_id, state="failed",
+                                  active_leases=tuple(item for item in current.active_leases if item != lease.lease_id),
+                                  last_error="pool changed during failed lease publication")
+                raise
             return lease
 
     def release(self, lease: PoolLease) -> PoolEntry:
@@ -328,9 +354,20 @@ class ModelPool:
             else:
                 next_state = "loaded" if leases else "warm"
             updated = self._set(lease.model_id, state=next_state, active_leases=leases, last_used_monotonic=float(now))
-            self._emit("model_lease_released", {"lease_id": lease.lease_id, "model_id": lease.model_id, "owner": lease.owner})
+            publication_error = None
+            try:
+                self._emit("model_lease_released", {"lease_id": lease.lease_id, "model_id": lease.model_id, "owner": lease.owner})
+            except BaseException as error:
+                publication_error = error
             if updated.state == "draining" and not updated.active_leases:
-                return self._unload_no_leases(lease.model_id)
+                try:
+                    updated = self._unload_no_leases(lease.model_id)
+                except BaseException as cleanup_error:
+                    if publication_error is not None:
+                        raise cleanup_error from publication_error
+                    raise
+            if publication_error is not None:
+                raise publication_error
             return updated
 
     def drain(self, model_id: str, *, supplied_authority: bool) -> PoolEntry:
@@ -354,8 +391,15 @@ class ModelPool:
         if entry.state == "unloaded":
             return entry
         transition_time = self._now()
-        self._set(model_id, state="unloading")
-        self._emit("model_unload_requested", {"model_id": model_id, "profile_id": entry.spec.profile_id})
+        pending = self._set(model_id, state="unloading")
+        try:
+            self._emit("model_unload_requested", {"model_id": model_id, "profile_id": entry.spec.profile_id})
+        except BaseException:
+            if self._entries[model_id] is pending:
+                self._entries[model_id] = entry
+            else:
+                self._set(model_id, state="failed", last_error="pool changed during failed unload-request publication")
+            raise
         try:
             observed = _text(self._unload_model(model_id), "router_state")
             if observed not in _ROUTER_UNLOADED:
@@ -418,7 +462,7 @@ class ModelPool:
                     raise ValueError("router model observation contains a duplicate model ID")
                 observed[key] = value.strip().lower()
             for model_id, entry in tuple(self._entries.items()):
-                router_state = observed.get(model_id, "unloaded")
+                router_state = observed.get(model_id, "unknown")
                 if router_state in _ROUTER_LOADED:
                     if entry.state in {"unloaded", "failed"}:
                         target = "loaded" if entry.active_leases else "warm"
@@ -432,6 +476,7 @@ class ModelPool:
                         self._set(model_id, state="unloaded", last_error=None)
                         self._emit("model_reconciled_unloaded", {"model_id": model_id, "router_state": router_state})
                 else:
-                    self._set(model_id, state="failed", last_error=f"unsupported router state {router_state}"[:2048])
+                    detail = " with active leases" if entry.active_leases else ""
+                    self._set(model_id, state="failed", last_error=f"uncertain or unsupported router state {router_state}{detail}"[:2048])
                     self._emit("model_reconcile_failed", {"model_id": model_id, "reason": "unsupported_router_state"})
             return self.snapshot()

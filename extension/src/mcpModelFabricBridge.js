@@ -32,6 +32,11 @@ function nativeFailure(value) {
   return error;
 }
 
+// Operation contract: the caller-supplied cancellation token is either absent, a native
+// { isCancellationRequested, onCancellationRequested } object, or an AbortSignal, which is
+// adapted here. Cancelled operations settle with PX_MODEL_CLIENT_CANCELLED; they never
+// leave the bridge promise pending, and a consumer that aborts only itself observes that
+// through its own promise.
 function defaultRunner({ operation, payload, pythonPath, engineRoot, projectRoot, token, onEvent, timeoutMs = 300000 }) {
   if (token && typeof token.addEventListener === 'function' && typeof token.aborted === 'boolean') {
     const signal = token;
@@ -71,7 +76,9 @@ function defaultRunner({ operation, payload, pythonPath, engineRoot, projectRoot
         providerFailure = nativeFailure(parsed.failure);
       } else throw new ModelFabricBridgeError('PX_MODEL_CLIENT_PROTOCOL', 'Pacify-X model client returned an unsupported event envelope.');
     };
-    const cancellation = token?.onCancellationRequested?.(() => { cancelled = true; terminateProcessTree(child); });
+    let cancellation;
+    try { cancellation = token?.onCancellationRequested?.(() => { cancelled = true; terminateProcessTree(child); }); }
+    catch (error) { finish(error); return undefined; }
     const timer = setTimeout(() => { terminateProcessTree(child); finish(new ModelFabricBridgeError('PX_MODEL_CLIENT_TIMEOUT', 'Pacify-X model client exceeded its bounded deadline.')); }, timeoutMs);
     if (cancelled) { terminateProcessTree(child); finish(new ModelFabricBridgeError('PX_MODEL_CLIENT_CANCELLED', 'Pacify-X model client was cancelled.')); return; }
     child.stdin.end(JSON.stringify(payload || {}));

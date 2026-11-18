@@ -124,3 +124,11 @@ registry/.lock-recovery-receipts/
 
 # Native test-owner recovery receipts remain in local runtime custody.
 .agentic_engineering_os_px/test-evidence/.lock-recovery-receipts/
+
+# Local signed revision activation and mutable campaign custody. Public,
+# reviewable authority copies are retained under docs/repair/evidence.
+.agentic_engineering_os_px/project-record.json
+.agentic_engineering_os_px/processing-order/
+.agentic_engineering_os_px/project-revisions/
+.agentic_engineering_os_px/project-revision-succession/
+.agentic_engineering_os_px/project-revision-authority/

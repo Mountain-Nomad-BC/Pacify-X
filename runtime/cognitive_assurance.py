@@ -352,6 +352,10 @@ class BlackBoxRecorder:
         *,
         evidence_refs: Sequence[str],
     ) -> str:
+        if type(event_type) is not str or re.fullmatch(
+            r"[A-Za-z0-9][A-Za-z0-9_.-]{0,127}", event_type
+        ) is None:
+            raise ValueError("event_type must be a bounded portable filename component")
         prohibited = sorted(key for key in payload if key.casefold() in self.PROHIBITED)
         if prohibited:
             raise ValueError("prohibited black-box fields: " + ", ".join(prohibited))

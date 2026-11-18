@@ -9,7 +9,7 @@ import hashlib
 import json
 import os
 import shlex
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 import signal
 import subprocess
 import sys
@@ -58,10 +58,18 @@ def _object(path: Path) -> dict[str, Any]:
 
 
 def _inside(root: Path, raw: str | Path, label: str) -> Path:
+    from runtime.archive_io import reject_path_links
+
     source = Path(raw)
     if not str(source) or ".." in source.parts:
         raise OwnerBlocked(f"unsafe {label} path")
-    path = (source if source.is_absolute() else root / source).resolve()
+    original = source if source.is_absolute() else root / source
+    try:
+        # Resolving first erases an alias even when its final output is missing.
+        reject_path_links(original)
+        path = original.resolve()
+    except (OSError, ValueError) as exc:
+        raise OwnerBlocked(f"unsafe or linked {label} path") from exc
     try:
         path.relative_to(root)
     except ValueError as exc:
@@ -70,20 +78,24 @@ def _inside(root: Path, raw: str | Path, label: str) -> Path:
 
 
 def _write_json(path: Path, value: object) -> None:
+    from runtime.archive_io import reject_path_links
+    from runtime.json_io import MAX_JSON_BYTES, validate_json_value
+
+    # Serialize completely before allocating any output. Failed publication is
+    # evidence to retain; it must never replace another run's receipt.
+    validate_json_value(value)
+    image = (json.dumps(value, indent=2, sort_keys=True, allow_nan=False) + "\n").encode("utf-8")
+    if len(image) > MAX_JSON_BYTES:
+        raise OwnerBlocked("owner summary exceeds the bounded JSON output limit")
+    reject_path_links(path)
     path.parent.mkdir(parents=True, exist_ok=True)
+    reject_path_links(path)
     if path.exists():
         raise OwnerBlocked(f"fresh output already exists: {path}")
-    prepared = path.with_name(f".{path.name}.{uuid4().hex}.new")
-    try:
-        with prepared.open("x", encoding="utf-8", newline="\n") as stream:
-            json.dump(value, stream, indent=2, sort_keys=True)
-            stream.write("\n")
-            stream.flush()
-            os.fsync(stream.fileno())
-        os.replace(prepared, path)
-    finally:
-        if prepared.exists():
-            prepared.unlink()
+    with path.open("xb") as stream:
+        stream.write(image)
+        stream.flush()
+        os.fsync(stream.fileno())
 
 
 def _ref(root: Path, path: Path) -> dict[str, object]:
@@ -142,6 +154,7 @@ class Config:
     windows: MemberPaths
     ubuntu: MemberPaths
     exhaustive: MemberPaths
+    stage_owner_config: Path | None = None
 
     def relative(self, path: Path) -> str:
         return path.relative_to(self.root).as_posix()
@@ -234,7 +247,13 @@ class ProductionEffects:
         )
 
     def advance(self, config: Config) -> None:
-        path = config.root / ".agentic_engineering_os_px/processing-order/repair-campaign.json"
+        from runtime.project_revision_succession import current_campaign_path, current_revision_root
+        if current_revision_root(config.root) is not None:
+            from runtime.revision_campaign_lifecycle import advance_release_phase
+            advance_release_phase(config.root, before="installed", after="installed_operational",
+                                  admission_event_id=os.environ.get("PX_RELEASE_ADMISSION_EVENT_ID"))
+            return
+        path = current_campaign_path(config.root)
         value = _object(path)
         if (
             value.get("phase") != "installed"
@@ -252,6 +271,9 @@ class ProductionEffects:
         os.replace(prepared, path)
 
     def start(self, config: Config, member: str, paths: MemberPaths) -> Running:
+        from runtime.release_source_identity import current_campaign
+        if config.stage_owner_config is not None or current_campaign(config.root):
+            raise OwnerBlocked("current installed operational members require native process custody and effect admissions; legacy raw launch is forbidden")
         paths.log.parent.mkdir(parents=True, exist_ok=True)
         stream = paths.log.open("x", encoding="utf-8", newline="\n")
         try:
@@ -283,9 +305,8 @@ def _identity(config: Config) -> tuple[dict[str, Any], dict[str, Any]]:
     release = _object(
         config.root / release_state_relative(config.root)
     )
-    repair = _object(
-        config.root / ".agentic_engineering_os_px/processing-order/repair-campaign.json"
-    )
+    from runtime.project_revision_succession import current_campaign_path
+    repair = _object(current_campaign_path(config.root))
     stages = release.get("stages")
     identity = release.get("identity")
     if (
@@ -357,6 +378,27 @@ def _stage_receipt(
     claim_id: object,
     artifact: Mapping[str, object],
 ) -> dict[str, Any]:
+    from runtime.release_source_identity import current_campaign
+    if config.stage_owner_config is None and current_campaign(config.root):
+        raise OwnerBlocked("current campaign cannot consume unsigned legacy stage receipts")
+    if config.stage_owner_config is not None:
+        from scripts.run_release_stage_owner import Config as StageConfig
+        from scripts.run_release_candidate import _validate_stage_receipt, AutomationBlocked
+        stage = StageConfig.load(config.stage_owner_config)
+        if (stage.identity_kind != "standalone_current_campaign" or stage.install_state != "observed_current"
+                or stage.candidate_id != config.candidate_id or stage.artifact != config.artifact
+                or (stage.artifact_sha256,stage.artifact_size,stage.artifact_mtime_ns) !=
+                   (config.artifact_sha256,config.artifact_size,config.artifact_mtime_ns)
+                or path != stage.evidence_dir / (config.candidate_id + "-" + label + ".json")):
+            raise OwnerBlocked("current operational receipt/configuration binding differs")
+        try:
+            receipt = _validate_stage_receipt(stage, _ref(config.root,path), label=label,
+                identity=identity, expected_claim_id=claim_id)
+            if receipt.get("artifact") != dict(artifact):
+                raise OwnerBlocked("current operational receipt artifact argument differs")
+            return receipt
+        except AutomationBlocked as error:
+            raise OwnerBlocked(str(error)) from error
     value = _object(path)
     expected_schema = (
         "px.release-stage-evidence/1.0"
@@ -480,19 +522,38 @@ def _validate_commands(config: Config) -> None:
     if ubuntu[:6] != ("wsl.exe", "-d", "Ubuntu", "--", "bash", "-lc") or len(ubuntu) != 7:
         raise OwnerBlocked("Ubuntu smoke command is not the canonical WSL wrapper")
     shell = ubuntu[6]
-    # Match the builder exactly: paths are emitted through shlex.quote, which
-    # leaves special-char-free WSL paths unquoted and quotes anything else.
-    ubuntu_markers = (
-        "node extension/scripts/run-installed-vsix-smoke.js",
-        f"--engine-root {shlex.quote(_wsl_path(config.root))}",
-        f"--vsix {shlex.quote(_wsl_path(config.artifact))}",
-        f"--expected-sha256 {shlex.quote(config.artifact_sha256)}",
-        f"--receipt {shlex.quote(_wsl_path(config.ubuntu.receipt))}",
-        f"--lifecycle-receipt {shlex.quote(_wsl_path(config.ubuntu.lifecycle))}",
-    )
-    if any(marker not in shell for marker in ubuntu_markers):
+    expected = " ".join(shlex.quote(token) for token in (
+        "node", "extension/scripts/run-installed-vsix-smoke.js",
+        "--engine-root", _wsl_path(config.root),
+        "--vsix", _wsl_path(config.artifact),
+        "--expected-sha256", config.artifact_sha256,
+        "--receipt", _wsl_path(config.ubuntu.receipt),
+        "--lifecycle-receipt", _wsl_path(config.ubuntu.lifecycle),
+    ))
+    # Accept the exact command, or the builder's exact cd/TMPDIR wrapper.
+    # Required fragments inside arbitrary shell text do not bind execution.
+    shell_valid = shell == expected
+    prefix = "cd " + shlex.quote(_wsl_path(config.root)) + " && TMPDIR="
+    suffix = " " + expected
+    if shell.startswith(prefix) and shell.endswith(suffix):
+        literal = shell[len(prefix):-len(suffix)]
+        try:
+            values = shlex.split(literal)
+        except ValueError:
+            values = []
+        if len(values) == 1:
+            temporary = values[0]
+            shell_valid = (
+                len(temporary.encode("utf-8")) <= 4096
+                and PurePosixPath(temporary).is_absolute()
+                and ".." not in PurePosixPath(temporary).parts
+                and shlex.quote(temporary) == literal
+            )
+    if not shell_valid:
         raise OwnerBlocked("Ubuntu smoke command is not exactly config-bound")
     exhaustive = config.exhaustive.command
+    if config.stage_owner_config is not None and (len(windows) != 12 or len(exhaustive) != 9):
+        raise OwnerBlocked("current operational command has unowned additional arguments")
     if (
         len(exhaustive) < 2
         or Path(exhaustive[0]).name.lower() not in {"node", "node.exe"}
@@ -659,6 +720,9 @@ def plan(config: Config) -> dict[str, Any]:
 
 def execute(config: Config, effects: Effects | None = None) -> dict[str, Any]:
     effects = effects or ProductionEffects()
+    from runtime.release_source_identity import current_campaign
+    if type(effects) is ProductionEffects and (config.stage_owner_config is not None or current_campaign(config.root)):
+        raise OwnerBlocked("current installed operational native custody is unavailable; refusing before claim or output")
     _validate_commands(config)
     release, identity = _identity(config)
     artifact = _artifact_binding(config)
@@ -806,14 +870,68 @@ def _argv(value: str, label: str) -> tuple[str, ...]:
     return tuple(parsed)
 
 
+def observed_stage_artifact(root: Path, stage_path: Path, *, candidate_id: str, artifact: Path,
+                            manual_identity: tuple[object, object, object]) -> tuple[str, int, int]:
+    """Use authenticated native observations, never hashes guessed before packaging."""
+    from scripts.run_release_stage_owner import Config as StageConfig
+    from runtime.release_source_identity import release_configuration_relative
+    if any(value is not None for value in manual_identity):
+        raise OwnerBlocked("observed stage identity cannot be combined with manual artifact identity")
+    selected = _inside(root, stage_path, "stage owner configuration")
+    if selected != root / release_configuration_relative(candidate_id, "stage-owner"):
+        raise OwnerBlocked("installed owner requires the candidate's exact native stage configuration")
+    stage = StageConfig.load(selected)
+    if (stage.identity_kind != "standalone_current_campaign" or stage.candidate_id != candidate_id
+            or stage.artifact != artifact or stage.artifact_state != "observed_current"
+            or stage.install_state != "observed_current"):
+        raise OwnerBlocked("installed owner requires authenticated completed package and private installation")
+    return stage.artifact_sha256, stage.artifact_size, stage.artifact_mtime_ns
+
+
+OBSERVED_SHA_SLOT = "__PX_OBSERVED_VSIX_SHA256__"
+
+
+def observed_member_argv(raw: str, *, sha256: str, observed: bool, label: str) -> tuple[str, ...]:
+    command = _argv(raw, label)
+    if not observed:
+        if any(OBSERVED_SHA_SLOT in token for token in command):
+            raise OwnerBlocked("observed hash slot requires authenticated stage configuration")
+        return command
+    if not _is_sha256(sha256):
+        raise OwnerBlocked("observed artifact digest is invalid")
+    # Only this closed slot is replaced. Existing smoke command admission then
+    # validates every argument, including the entire parsed Ubuntu shell command.
+    slots = sum(token.count(OBSERVED_SHA_SLOT) for token in command)
+    if slots:
+        if slots != 1:
+            raise OwnerBlocked("observed digest must occupy exactly one expected-sha256 slot")
+        if OBSERVED_SHA_SLOT in command:
+            index = command.index(OBSERVED_SHA_SLOT)
+            valid = index > 0 and command[index - 1] == "--expected-sha256"
+        elif len(command) >= 3 and command[-2] == "-lc":
+            try:
+                shell = shlex.split(command[-1])
+            except ValueError as error:
+                raise OwnerBlocked("invalid observed smoke shell") from error
+            valid = (shell.count(OBSERVED_SHA_SLOT) == 1
+                     and shell.index(OBSERVED_SHA_SLOT) > 0
+                     and shell[shell.index(OBSERVED_SHA_SLOT) - 1] == "--expected-sha256")
+        else:
+            valid = False
+        if not valid:
+            raise OwnerBlocked("observed digest is outside its exact expected-sha256 slot")
+    return tuple(token.replace(OBSERVED_SHA_SLOT, sha256) for token in command)
+
+
 def parser() -> argparse.ArgumentParser:
     result = argparse.ArgumentParser(description=__doc__)
     result.add_argument("--root", type=Path, default=Path.cwd())
     result.add_argument("--candidate-id", required=True)
     result.add_argument("--artifact", type=Path, required=True)
-    result.add_argument("--artifact-sha256", required=True)
-    result.add_argument("--artifact-size", type=int, required=True)
-    result.add_argument("--artifact-mtime-ns", type=int, required=True)
+    result.add_argument("--artifact-sha256")
+    result.add_argument("--stage-owner-config", type=Path)
+    result.add_argument("--artifact-size", type=int)
+    result.add_argument("--artifact-mtime-ns", type=int)
     result.add_argument("--smoke-timeout-seconds", type=int, default=600)
     result.add_argument("--exhaustive-timeout-seconds", type=int, default=4200)
     result.add_argument("--summary-output", type=Path, required=True)
@@ -833,35 +951,52 @@ def parser() -> argparse.ArgumentParser:
 
 
 def _config(args: argparse.Namespace) -> Config:
+    from runtime.archive_io import reject_path_links
+
+    try:
+        reject_path_links(args.root)
+    except (OSError, ValueError) as exc:
+        raise OwnerBlocked("unsafe or linked repository root") from exc
     root = args.root.resolve(strict=True)
 
     def path(value: Path, label: str) -> Path:
         return _inside(root, value, label)
 
+    artifact = path(args.artifact, "artifact")
+    identity = (args.artifact_sha256, args.artifact_size, args.artifact_mtime_ns)
+    observed = getattr(args, "stage_owner_config", None) is not None
+    from runtime.release_source_identity import require_release_configuration_mode
+    require_release_configuration_mode(root, current=observed)
+    if observed:
+        identity = observed_stage_artifact(root, args.stage_owner_config,
+            candidate_id=args.candidate_id.strip(), artifact=artifact, manual_identity=identity)
+    if any(value is None for value in identity):
+        raise OwnerBlocked("manual immutable artifact identity or authenticated stage configuration is required")
     config = Config(
         root=root,
         candidate_id=args.candidate_id.strip(),
         artifact=path(args.artifact, "artifact"),
-        artifact_sha256=args.artifact_sha256,
-        artifact_size=args.artifact_size,
-        artifact_mtime_ns=args.artifact_mtime_ns,
+        artifact_sha256=identity[0],
+        artifact_size=identity[1],
+        artifact_mtime_ns=identity[2],
         summary_output=path(args.summary_output, "summary_output"),
         package_receipt=path(args.package_receipt, "package_receipt"),
         install_receipt=path(args.install_receipt, "install_receipt"),
         smoke_timeout_seconds=args.smoke_timeout_seconds,
         exhaustive_timeout_seconds=args.exhaustive_timeout_seconds,
         windows=MemberPaths(
-            _argv(args.windows_argv_json, "windows argv"),
+            observed_member_argv(args.windows_argv_json, sha256=identity[0], observed=observed, label="windows argv"),
             path(args.windows_log, "windows log"),
             path(args.windows_receipt, "windows receipt"),
             lifecycle=path(args.windows_lifecycle_receipt, "windows lifecycle"),
         ),
         ubuntu=MemberPaths(
-            _argv(args.ubuntu_argv_json, "ubuntu argv"),
+            observed_member_argv(args.ubuntu_argv_json, sha256=identity[0], observed=observed, label="ubuntu argv"),
             path(args.ubuntu_log, "ubuntu log"),
             path(args.ubuntu_receipt, "ubuntu receipt"),
             lifecycle=path(args.ubuntu_lifecycle_receipt, "ubuntu lifecycle"),
         ),
+        stage_owner_config=path(args.stage_owner_config,"stage owner configuration") if observed else None,
         exhaustive=MemberPaths(
             _argv(args.exhaustive_argv_json, "exhaustive argv"),
             path(args.exhaustive_log, "exhaustive log"),

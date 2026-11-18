@@ -37,7 +37,23 @@ RETAINED_REJECTED_VSIX = (
     "evidence/release/rejected-marketplace-upload/"
     "pacify-x-vscode-0.6.87-c412addf-rejected-license-path.vsix"
 )
-DECLARED_PACKAGED_EVIDENCE = ()  # OWNER-FRESH-VALIDATION-001 retires historical package inputs.
+# Explicit manifest-selected references, independent of materializer discovery.
+# OWNER-FRESH-VALIDATION-001 forbids inheriting historical acceptance claims;
+# these retained package inputs remain reference/rollback data only.
+DECLARED_PACKAGED_EVIDENCE = (
+    "evidence/archive-catalog.json",
+    "evidence/capability-mining-receipt.json",
+    "evidence/contract-disposition-receipt.json",
+    "evidence/corpus-intake-receipt.json",
+    "evidence/domain-reference-receipt.json",
+    "evidence/external-source-admission-receipt.json",
+    "evidence/process-audit-intake-receipt.json",
+    "evidence/source-intake-receipt.json",
+    "evidence/source-migration-receipt.json",
+    "evidence/source-corpus-completeness.json",
+    "evidence/bundles/archive-custody-20260803/manifest.json",
+    "evidence/bundles/archive-custody-20260803/complete_file_inventory.jsonl",
+)
 
 
 def _minimal_tree() -> Path:
@@ -773,6 +789,12 @@ def test_materialized_release_source_is_bounded_and_complete() -> None:
         ).read_bytes()
         assert (destination / "runtime/release_artifacts.py").is_file()
         assert (destination / "policies/rev1xx-validation.json").is_file()
+        validation = json.loads(
+            (destination / "policies/rev1xx-validation.json").read_text(encoding="utf-8")
+        )
+        assert validation["historical_evidence_role"] == "reference_and_rollback_only"
+        assert "fresh_execution_evidence" in validation["required_checks"]
+        assert "previous_certification_inherited" in validation["prohibited_claims"]
         assert not (destination / "registry/operational_gap_ledger.jsonl").exists()
         assert not (
             destination / "registry/operational_gap_ledger.snapshot.json"
@@ -1259,3 +1281,118 @@ def test_released_campaign_state_validates() -> None:
     )
     # `_validate` is the campaign invariant oracle; it must accept the result.
     _validate(campaign)
+
+
+# --- Evidence-suffix hardening: .bin / .diff admission is contained, not a hole ---
+#
+# The policy admits .bin and .diff as *evidence* because review packages emit
+# current-source.bin and review deltas. These tests prove that admission is
+# narrow: it applies only beneath a declared evidence root, it never makes a
+# file product input, and it never admits an executable.
+
+
+def test_bin_and_diff_are_admitted_only_as_evidence_output() -> None:
+    root = _minimal_tree()
+    (root / "evidence").mkdir()
+    (root / "evidence/review").mkdir()
+    (root / "evidence/review/current-source.bin").write_bytes(b"\x00\x01binary image")
+    (root / "evidence/review/source.diff").write_text("--- a\n+++ b\n")
+
+    result = classify_tree(root)
+
+    assert result["valid"], result["errors"]
+    by_path = {item["path"]: item for item in result["records"]}
+    for relative in ("evidence/review/current-source.bin", "evidence/review/source.diff"):
+        assert by_path[relative]["classification"] == "evidence_output"
+
+
+def test_bin_outside_evidence_root_is_unclassified_and_fails_closed() -> None:
+    """Outside a declared root, a binary is still refused.
+
+    A product root accepts arbitrary file types by design, so the suffix rule is
+    not what protects product inputs. What must hold is that a binary landing
+    *outside* every declared root is never silently admitted.
+    """
+    root = _minimal_tree()
+    (root / "payload.bin").write_bytes(b"\x00\x01binary payload")
+    result = classify_tree(root)
+    assert not result["valid"]
+    assert any("unclassified release artifact" in item for item in result["errors"])
+
+
+def test_diff_outside_evidence_root_is_unclassified_and_fails_closed() -> None:
+    root = _minimal_tree()
+    (root / "patch.diff").write_text("--- a\n+++ b\n")
+    result = classify_tree(root)
+    assert not result["valid"]
+    assert any("unclassified release artifact" in item for item in result["errors"])
+
+
+def test_evidence_suffix_admission_does_not_extend_to_other_roots() -> None:
+    """Admitting .bin/.diff in evidence must not change how audit roots treat them."""
+    root = _minimal_tree()
+    (root / ".agentic_engineering_os_px").mkdir()
+    (root / ".agentic_engineering_os_px/runtime/blob.bin").parent.mkdir(parents=True)
+    (root / ".agentic_engineering_os_px/runtime/blob.bin").write_bytes(b"\x00")
+    result = classify_tree(root)
+    by_path = {item["path"]: item for item in result["records"]}
+    # audit_allowed_suffixes has no .bin: it must not inherit the evidence allowlist.
+    assert by_path[".agentic_engineering_os_px/runtime/blob.bin"]["classification"] != "evidence_output"
+
+
+def test_executable_payload_still_refused_inside_evidence_root() -> None:
+    """The pre-existing guard must survive the suffix change."""
+    root = _minimal_tree()
+    (root / "evidence").mkdir()
+    for name in ("tool.py", "tool.exe", "tool.dll", "tool.so"):
+        (root / ("evidence/" + name)).write_bytes(b"payload")
+    result = classify_tree(root)
+    assert not result["valid"]
+    assert sum("evidence payload" in item for item in result["errors"]) == 4
+
+
+def test_evidence_symlink_is_rejected_outright() -> None:
+    root = _minimal_tree()
+    (root / "evidence").mkdir()
+    outside = Path(tempfile.mkdtemp()) / "outside.bin"
+    outside.write_bytes(b"\x00secret")
+    link = root / "evidence/linked.bin"
+    try:
+        link.symlink_to(outside)
+    except (OSError, NotImplementedError):
+        pytest.skip("symlink creation unavailable on this platform")
+    result = classify_tree(root)
+    assert not result["valid"]
+
+
+def test_evidence_path_traversal_is_not_classified() -> None:
+    """A traversal-shaped name must never resolve to an evidence record."""
+    root = _minimal_tree()
+    (root / "evidence").mkdir()
+    (root / "evidence/../escape.bin").write_bytes(b"\x00")
+    result = classify_tree(root)
+    # The filesystem normalises the traversal away; the escaped name must be
+    # absent, and the real file must be refused rather than admitted as evidence.
+    paths = {item["path"] for item in result["records"]}
+    assert not any(".." in path for path in paths)
+    assert not result["valid"]
+    by_path = {item["path"]: item for item in result["records"]}
+    assert by_path["escape.bin"]["classification"] == "unclassified"
+
+
+def test_malformed_binary_evidence_is_recorded_by_digest_not_trusted() -> None:
+    """Evidence content is hashed into the inventory; it is never executed."""
+    root = _minimal_tree()
+    (root / "evidence").mkdir()
+    payload = b"\x7fELF" + b"\x00" * 60
+    (root / "evidence/blob.bin").write_bytes(payload)
+
+    result = classify_tree(root)
+
+    assert result["valid"], result["errors"]
+    record = next(item for item in result["records"] if item["path"] == "evidence/blob.bin")
+    assert record["size"] == len(payload)
+    assert record["classification"] == "evidence_output"
+    # Evidence is not part of the product digest, so admitting it cannot alter
+    # what the release ships.
+    assert "evidence/blob.bin" not in json.dumps(result.get("product_digest", {}))

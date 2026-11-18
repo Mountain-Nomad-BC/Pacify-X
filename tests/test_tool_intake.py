@@ -63,8 +63,8 @@ class ToolIntakeTests(unittest.TestCase):
                     project=root,
                     approved_executable=scanner,
                     corpus_digest="a" * 64,
-                    network_allowed=False,
-                    network_isolation_enforced=True,
+                    network_allowed=True,
+                    network_isolation_enforced=False,
                 )
 
     def test_scanner_environment_is_scrubbed(self) -> None:
@@ -83,13 +83,13 @@ class ToolIntakeTests(unittest.TestCase):
                 project=root,
                 approved_executable=scanner,
                 corpus_digest="a" * 64,
-                network_allowed=False,
-                network_isolation_enforced=True,
+                network_allowed=True,
+                network_isolation_enforced=False,
                 runner=runner,
             )
             self.assertNotIn("SECRET", captured)
             self.assertNotIn("HOME", captured)
-            self.assertEqual(captured["ENGINEERING_BOOTSTRAP_NETWORK"], "deny")
+            self.assertEqual(captured["ENGINEERING_BOOTSTRAP_NETWORK"], "allow")
 
     def test_scanner_result_is_bound_to_input_digest(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -141,15 +141,49 @@ class ToolIntakeTests(unittest.TestCase):
                 project=root,
                 approved_executable=scanner,
                 corpus_digest="d" * 64,
-                network_allowed=False,
-                network_isolation_enforced=True,
+                network_allowed=True,
+                network_isolation_enforced=False,
                 runner=lambda *a, **k: (
                     seen.update(k["env"])
                     or subprocess.CompletedProcess(a[0], 0, "{}", "")
                 ),
             )
-            self.assertEqual(seen["ENGINEERING_BOOTSTRAP_NETWORK"], "deny")
+            self.assertEqual(seen["ENGINEERING_BOOTSTRAP_NETWORK"], "allow")
 
 
 if __name__ == "__main__":
     unittest.main()
+
+import pytest
+
+
+@pytest.mark.parametrize('allowed,enforced', [
+    (False, True), (False, 'yes'), (False, 1),
+    (0, False), (1, False), ('false', False), ([], False), ({}, False),
+    (True, True), (False, False),
+])
+def test_scanner_caller_flags_cannot_impersonate_native_isolation(tmp_path, allowed, enforced):
+    scanner = tmp_path / 'inert-scanner.exe'
+    scanner.write_bytes(b'Never executed; counting runner only')
+    calls = []
+    def runner(argv, **kwargs):
+        calls.append(argv)
+        return subprocess.CompletedProcess(argv, 0, 'fixture-scanner 1.0' if argv[-1] == '--version' else '{}', '')
+    with pytest.raises(PermissionError):
+        execute_scanner([str(scanner), '--scan'], project=tmp_path,
+            approved_executable=scanner, corpus_digest='a' * 64,
+            network_allowed=allowed, network_isolation_enforced=enforced, runner=runner)
+    assert calls == []
+
+
+@pytest.mark.parametrize('allowed,enforced', [(0, False), (False, True), (False, False), (True, True)])
+def test_scanner_public_entry_checks_network_contract_before_inventory(tmp_path, monkeypatch, allowed, enforced):
+    calls = []
+    def inventory(_):
+        calls.append('inventory')
+        raise AssertionError('Unaccepted scanner policy reached inventory')
+    monkeypatch.setattr('runtime.tool_intake._inventory', inventory)
+    with pytest.raises(PermissionError):
+        scan_project_tooling(tmp_path, ROOT, execute_scanners=True, scanner_approval=True,
+            scanner_network_allowed=allowed, scanner_network_isolation_enforced=enforced)
+    assert calls == []

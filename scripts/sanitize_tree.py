@@ -11,6 +11,8 @@ import re
 import shutil
 import tempfile
 
+from runtime.confined_output import ConfinementError, confined_path, publish_json
+
 
 TERMS = ("r" + "ie", "re" + "my", "rh" + "eem")
 REPLACEMENTS = (
@@ -29,6 +31,9 @@ LEGACY_PATTERN = re.compile(
 LEGACY_MAPPING = dict(zip(LEGACY_TERMS, REPLACEMENTS[:2]))
 SKIP_DIRECTORIES = {".git", "__pycache__", ".pytest_cache"}
 MAX_SAFE_COMPONENT = 240
+# The repository this producer lives in. Every write below is re-checked against it, so a
+# caller-chosen root can never move a write outside the tree that owns these files.
+REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
 
 
 class SanitizationPreflightError(RuntimeError):
@@ -94,6 +99,28 @@ def _text_requires_change(path: Path) -> bool:
         return any(sanitize(line) != line for line in handle)
 
 
+def _confined_rewrite_source(path: Path) -> Path:
+    """Re-check the source of an in-tree rewrite against the repository before writing.
+
+    `root` is caller-chosen but the walk starts at `resolved`, so every path that reaches here
+    is already a descendant of that resolved root; this adds the repository boundary itself, so
+    a caller root outside the repository can never be rewritten by this producer.
+    """
+    return confined_path(REPOSITORY_ROOT, path, label="rewrite source")
+
+
+def _confined_rewrite_target(path: Path, temporary_name: str) -> Path:
+    """The prepared temporary that is about to replace `path`.
+
+    `tempfile` returns a bare file name in its `dir`; resolved against the source's own parent
+    it is that file, and it is checked against the repository before the rename can touch it.
+    """
+    candidate = confined_path(REPOSITORY_ROOT, path.parent / temporary_name, label="rewrite temporary")
+    if candidate.parent != path.parent:
+        raise ConfinementError("rewrite temporary must sit beside its source")
+    return candidate
+
+
 def _rewrite_text(path: Path, failed_temporary_quarantine: Path) -> None:
     temporary_name: str | None = None
     try:
@@ -110,22 +137,26 @@ def _rewrite_text(path: Path, failed_temporary_quarantine: Path) -> None:
             with path.open("r", encoding="utf-8", newline="") as source:
                 for line in source:
                     destination.write(sanitize(line))
-        temporary = Path(temporary_name)
+        temporary = _confined_rewrite_target(path, temporary_name)
         shutil.copystat(path, temporary)
         os.replace(temporary, path)
         temporary_name = None
     finally:
         if temporary_name:
-            temporary = Path(temporary_name)
+            temporary = _confined_rewrite_target(path, temporary_name)
             if temporary.exists():
-                failed_temporary_quarantine.mkdir(parents=True, exist_ok=True)
-                target = failed_temporary_quarantine / temporary.name
+                quarantine = confined_path(
+                    REPOSITORY_ROOT, failed_temporary_quarantine, label="failure quarantine"
+                )
+                quarantine.mkdir(parents=True, exist_ok=True)
+                target = confined_path(quarantine, temporary.name, label="failure quarantine entry")
                 if target.exists():
-                    target = (
-                        failed_temporary_quarantine
-                        / f"{temporary.stem}-{hashlib.sha256(temporary.read_bytes()).hexdigest()[:12]}{temporary.suffix}"
+                    target = confined_path(
+                        quarantine,
+                        f"{temporary.stem}-{hashlib.sha256(temporary.read_bytes()).hexdigest()[:12]}{temporary.suffix}",
+                        label="failure quarantine entry",
                     )
-                shutil.move(str(temporary), str(target))
+                os.replace(temporary, target)
 
 
 def _binary_has_private_term(path: Path) -> bool:
@@ -177,6 +208,7 @@ def sanitize_tree(
             )
         if preservation.exists() and any(preservation.iterdir()):
             raise ValueError("preservation root must not contain an earlier run")
+        preservation = confined_path(REPOSITORY_ROOT, preservation, label="preservation root")
         preservation.mkdir(parents=True, exist_ok=True)
     content_changes: list[str] = []
     path_changes: list[dict[str, str]] = []
@@ -218,15 +250,22 @@ def sanitize_tree(
         for path in sorted(affected, key=lambda item: item.as_posix().casefold()):
             relative = path.relative_to(resolved)
             target = preservation / relative
+            # Re-checked at write time: the walk can visit a name that is now a link to
+            # somewhere else, and the preservation copy must never follow it out of the root.
+            target = confined_path(REPOSITORY_ROOT, target, label="preservation target")
             target.parent.mkdir(parents=True, exist_ok=True)
             shutil.copy2(path, target)
             preserved.append(
                 {
                     "path": relative.as_posix(),
-                    "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
+                    "sha256": hashlib.sha256(
+                        confined_path(REPOSITORY_ROOT, path, label="preservation source").read_bytes()
+                    ).hexdigest(),
                     "bytes": path.stat().st_size,
                 }
             )
+        from runtime.confined_output import publish_json as _publish_json
+
         receipt = {
             "schema_version": "1.0",
             "operation": "pre_sanitization_preservation_copy",
@@ -234,12 +273,10 @@ def sanitize_tree(
             "recovery": "Restore a recorded quarantined file to its original relative path only after approved review.",
             "records": preserved,
         }
-        from runtime.confined_output import publish_json
-
         # `preservation` is already confined to the repository above; publishing the receipt
         # atomically means a crash cannot leave a half-written recovery record beside files
         # that were already copied out of the tree.
-        publish_json(preservation, preservation / "preservation-receipt.json", receipt)
+        _publish_json(preservation, preservation / "preservation-receipt.json", receipt)
     for path in paths:
         relative_parts = path.relative_to(resolved).parts
         if any(
@@ -265,7 +302,8 @@ def sanitize_tree(
                         if apply:
                             assert preservation is not None
                             _rewrite_text(
-                                path, preservation / "_failed-sanitizer-temporary"
+                                _confined_rewrite_source(path),
+                                preservation / "_failed-sanitizer-temporary",
                             )
             except (OSError, UnicodeDecodeError) as error:
                 errors.append(
@@ -323,13 +361,7 @@ def main() -> int:
     if args.output:
         # Confined, atomic publication inside the repository root. The sanitization result is
         # a report, never a mutation: the apply gate above is unchanged.
-        import sys as _sys
-
-        _root = Path(__file__).resolve().parents[1]
-        _sys.path.insert(0, str(_root))
-        from runtime.confined_output import publish_json
-
-        publish_json(_root, args.output, result)
+        publish_json(REPOSITORY_ROOT, args.output, result)
     print(
         json.dumps(
             {

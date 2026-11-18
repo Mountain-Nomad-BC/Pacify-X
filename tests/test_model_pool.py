@@ -48,6 +48,149 @@ def _pool(specs: tuple[PoolModelSpec, ...], *, states: dict[str, str] | None = N
     return pool, states, events
 
 
+@pytest.mark.parametrize("observation", ["unknown", "missing"])
+def test_uncertain_router_inventory_cannot_release_exclusive_occupancy(observation):
+    pool, states, _ = _pool((_spec("a", exclusive="heavy"), _spec("b", exclusive="heavy")))
+    pool.ensure_loaded("a", supplied_authority=True)
+    if observation == "unknown":
+        states["a"] = "unknown"
+    else:
+        states.pop("a")
+    states["b"] = "unloaded"
+    pool.reconcile()
+    with pytest.raises(RuntimeError, match="exclusive"):
+        pool.ensure_loaded("b", supplied_authority=True)
+    states["a"] = "unloaded"
+    pool.reconcile()
+    assert pool.ensure_loaded("b", supplied_authority=True).state == "warm"
+
+
+def test_load_request_event_failure_rolls_back_before_host_callback_and_allows_retry():
+    pool, states, events = _pool((_spec("m"),))
+    ordinary = pool._event_sink
+
+    def fail_request(name, payload):
+        if name == "model_load_requested":
+            raise OSError("publication failed before host load")
+        ordinary(name, payload)
+
+    pool._event_sink = fail_request
+    with pytest.raises(OSError, match="publication failed"):
+        pool.ensure_loaded("m", supplied_authority=True)
+    assert pool.entry("m").state == "unloaded" and states == {}
+    pool._event_sink = ordinary
+    assert pool.ensure_loaded("m", supplied_authority=True).state == "warm"
+
+
+def test_last_draining_lease_still_unloads_when_release_event_fails():
+    pool, states, _ = _pool((_spec("m"),))
+    lease = pool.acquire("m", owner="test", supplied_authority=True)
+    pool.drain("m", supplied_authority=True)
+    ordinary = pool._event_sink
+
+    def fail_release(name, payload):
+        if name == "model_lease_released":
+            raise OSError("release notification failed")
+        ordinary(name, payload)
+
+    pool._event_sink = fail_release
+    with pytest.raises(OSError, match="notification failed"):
+        pool.release(lease)
+    assert states["m"] == "unloaded" and pool.entry("m").state == "unloaded"
+    assert pool.entry("m").active_leases == () and pool._leases == {}
+
+
+def test_rejected_1025th_lease_leaves_both_indexes_unchanged_and_all_valid_leases_release():
+    pool, _, _ = _pool((_spec("m"),))
+    leases = [pool.acquire("m", owner=f"owner-{i}", supplied_authority=True) for i in range(1024)]
+    before = pool.entry("m")
+    with pytest.raises(ValueError, match="lease"):
+        pool.acquire("m", owner="overflow", supplied_authority=False)
+    assert pool.entry("m") == before
+    assert set(pool._leases) == set(before.active_leases)
+    for lease in leases:
+        pool.release(lease)
+    assert pool._leases == {} and pool.entry("m").active_leases == ()
+
+
+def test_failed_acquisition_notification_does_not_orphan_an_unreturned_lease():
+    pool, _, _ = _pool((_spec("m"),))
+
+    def failed_sink(name, payload):
+        if name == "model_lease_acquired":
+            raise OSError("acquisition notification failed")
+
+    pool._event_sink = failed_sink
+    with pytest.raises(OSError):
+        pool.acquire("m", owner="test", supplied_authority=True)
+    assert pool._leases == {} and pool.entry("m").active_leases == ()
+
+
+def test_uncertain_unload_after_release_event_failure_keeps_exclusive_capacity():
+    pool, states, _ = _pool((_spec("a", exclusive="heavy"), _spec("b", exclusive="heavy")))
+    lease = pool.acquire("a", owner="task", supplied_authority=True)
+    pool.drain("a", supplied_authority=True)
+    ordinary_sink, ordinary_unload = pool._event_sink, pool._unload_model
+
+    def failed_sink(name, payload):
+        if name == "model_lease_released":
+            raise OSError("release notification failed")
+        ordinary_sink(name, payload)
+
+    pool._event_sink = failed_sink
+    pool._unload_model = lambda model: "unknown"
+    with pytest.raises(RuntimeError, match="non-unloaded") as error:
+        pool.release(lease)
+    assert isinstance(error.value.__cause__, OSError)
+    assert pool.entry("a").state == "failed" and states["a"] == "loaded"
+    assert pool._leases == {} and pool.entry("a").active_leases == ()
+    with pytest.raises(RuntimeError, match="exclusive"):
+        pool.ensure_loaded("b", supplied_authority=True)
+    pool._event_sink, pool._unload_model = ordinary_sink, ordinary_unload
+    pool.unload("a", supplied_authority=True)
+    assert pool.ensure_loaded("b", supplied_authority=True).state == "warm"
+
+
+def test_unload_request_publication_failure_restores_state_before_host_effect():
+    pool, states, _ = _pool((_spec("m"),))
+    pool.ensure_loaded("m", supplied_authority=True)
+    before, ordinary = pool.entry("m"), pool._event_sink
+
+    def failed_sink(name, payload):
+        if name == "model_unload_requested":
+            raise OSError("unload publication failed")
+        ordinary(name, payload)
+
+    pool._event_sink = failed_sink
+    with pytest.raises(OSError):
+        pool.unload("m", supplied_authority=True)
+    assert pool.entry("m") == before and states["m"] == "loaded"
+    pool._event_sink = ordinary
+    assert pool.unload("m", supplied_authority=True).state == "unloaded"
+
+
+def test_concurrent_lease_overflow_leaves_exactly_1024_returned_leases():
+    from concurrent.futures import ThreadPoolExecutor
+
+    pool, _, _ = _pool((_spec("m"),))
+    leases = [pool.acquire("m", owner=f"before-{i}", supplied_authority=True) for i in range(1008)]
+
+    def acquire(i):
+        try:
+            return pool.acquire("m", owner=f"concurrent-{i}", supplied_authority=False)
+        except ValueError:
+            return None
+
+    with ThreadPoolExecutor(max_workers=8) as workers:
+        results = list(workers.map(acquire, range(32)))
+    leases.extend(value for value in results if value is not None)
+    assert len(leases) == 1024 and sum(value is None for value in results) == 16
+    assert set(pool._leases) == set(pool.entry("m").active_leases) == {lease.lease_id for lease in leases}
+    for lease in leases:
+        pool.release(lease)
+    assert pool._leases == {} and pool.entry("m").active_leases == ()
+
+
 def test_resource_policy_locks_operator_and_deep_candidates_without_granting_authority() -> None:
     policy = load_model_resource_policy(ROOT)
     assert policy.models_max == 2
@@ -445,6 +588,7 @@ def test_router_timeout_and_unplanned_router_models_fail_before_side_effect(tmp_
     lease = child_pool.acquire(profile.model_id, owner="operator-query", supplied_authority=False)
     child_pool.release(lease)
     assert runtime.status(started["session_id"])["state"] == "running"
+    child_pool.close(supplied_authority=True)
     router_rows.append({"id": "unplanned-model", "status": {"value": "loaded"}})
     with pytest.raises(ValueError, match="outside the admitted router plan"):
         runtime.router_model_states(started["session_id"])
@@ -617,3 +761,221 @@ def test_router_pool_plan_binds_certified_profiles_through_a_commissioned_preset
             preset_format=declaration,
             verify_preset_format=lambda _decl, _fp: None,
         )
+
+
+from types import SimpleNamespace
+from runtime.local_model_runtime import LocalModelRuntime
+
+def _native_pool_state(tmp_path):
+    physical={"a":"unloaded","b":"unloaded"};calls=[];opened=[]
+    profiles={x:_certified_profile(x,residency="exclusive_cold",exclusive_heavy=True) for x in physical}
+    plan={"schema_version":"px.local-model-router-pool-plan/1.0","models_max":2,"models":[{"model_id":x,"admission":{"model_sha256":"a"*64}} for x in physical]}
+    state={"state":"running","resource_id":"fixture-same-physical-router"}
+    class Manager:
+        _processes={state["resource_id"]:object()}
+        def terminate_owned_process(self, resource):
+            calls.append(("terminate",resource));state["state"]="stopped"
+            return SimpleNamespace(resources_reclaimed=1,errors=[],cleanup_id="fixture-native-stop")
+    def request(method,url,payload,timeout):
+        calls.append((method,url,payload))
+        if method=="POST":
+            physical[payload["model"]]="unloaded" if url.endswith("/models/unload") else "loaded"
+            return {}
+        return {"data":[{"id":x,"status":{"value":v}} for x,v in physical.items()]}
+    def owner():
+        native=LocalModelRuntime(tmp_path,allowed_model_roots=[tmp_path],allowed_runtime_roots=[tmp_path],router_request=request,manager=Manager())
+        native._router_plan_for_session=lambda session:plan
+        native._router_origin=lambda session:"http://127.0.0.1:12345"
+        native.status=lambda session:dict(state)
+        actual_open=native.open_model_pool
+        def tracked_open(*args,**kwargs):
+            pool=actual_open(*args,**kwargs);opened.append(pool);return pool
+        native.open_model_pool=tracked_open
+        return native
+    return owner,profiles,physical,calls,state,opened
+
+@pytest.fixture
+def native_pool_fixture(tmp_path):
+    values=_native_pool_state(tmp_path)
+    yield values[:5]
+    opened=values[5]
+    for pool in reversed(opened):
+        if not hasattr(pool,"close"):continue
+        try:
+            for lease in tuple(pool._leases.values()):pool.release(lease)
+            pool.close(supplied_authority=True)
+        except Exception:
+            if hasattr(pool,"abandon"):pool.abandon()
+
+@pytest.mark.parametrize("observed",["loaded","unknown","unloaded"])
+def test_native_pool_reconciles_initial_inventory(native_pool_fixture,observed):
+    owner,profiles,physical,calls,state=native_pool_fixture
+    physical["a"]=observed
+    pool=owner().open_model_pool("session",profiles)
+    if observed=="unloaded":
+        pool.ensure_loaded("b",supplied_authority=True)
+        assert physical["b"]=="loaded"
+    else:
+        with pytest.raises(RuntimeError):pool.ensure_loaded("b",supplied_authority=True)
+        assert physical["b"]=="unloaded"
+
+
+def test_native_pool_second_runtime_cannot_forget_live_lease(native_pool_fixture):
+    owner,profiles,physical,calls,state=native_pool_fixture
+    first=owner().open_model_pool("session",profiles)
+    first.acquire("a",owner="first",supplied_authority=True)
+    with pytest.raises(RuntimeError):owner().open_model_pool("session",profiles)
+    assert physical["b"]=="unloaded"
+
+@pytest.mark.parametrize("operation",["load","unload","stop"])
+def test_native_direct_mutation_cannot_bypass_active_pool(native_pool_fixture,operation):
+    owner,profiles,physical,calls,state=native_pool_fixture
+    native=owner();pool=native.open_model_pool("session",profiles)
+    pool.acquire("a",owner="first",supplied_authority=True)
+    before=list(calls)
+    with pytest.raises(RuntimeError):
+        if operation=="stop":native.stop("session",supplied_authority=True)
+        elif operation=="load":native.load_router_model("session","b",supplied_authority=True)
+        else:native.unload_router_model("session","a",supplied_authority=True)
+    assert calls==before
+
+
+def test_native_pool_close_preserves_leases_then_invalidates_old_wrapper(native_pool_fixture):
+    owner,profiles,physical,calls,state=native_pool_fixture
+    native=owner();pool=native.open_model_pool("session",profiles)
+    lease=pool.acquire("a",owner="first",supplied_authority=True)
+    with pytest.raises(RuntimeError):pool.close(supplied_authority=True)
+    assert pool.entry("a").active_leases==(lease.lease_id,)
+    pool.release(lease);pool.close(supplied_authority=True)
+    assert physical=={"a":"unloaded","b":"unloaded"}
+    with pytest.raises(RuntimeError):pool.acquire("b",owner="stale",supplied_authority=True)
+    successor=owner().open_model_pool("session",profiles)
+    successor.acquire("b",owner="successor",supplied_authority=True)
+
+
+def test_native_pool_unclosed_epoch_is_not_adopted_as_empty_leases(native_pool_fixture):
+    owner,profiles,physical,calls,state=native_pool_fixture
+    native=owner()
+    native._append("pool_owner_opened",{"session_id":"session","resource_id":state["resource_id"],"epoch_id":"lost-owner"})
+    with pytest.raises(RuntimeError):owner().open_model_pool("session",profiles)
+    assert not calls
+
+
+def _native_pool_child(root,mode):
+    import os,sys
+    from runtime.resource_lifecycle import ResourceManager
+    from runtime.process_supervisor import ProcessSupervisor
+    repository=Path(__file__).resolve().parents[1]
+    script="""import sys,runpy,os
+from pathlib import Path
+factory=runpy.run_path(sys.argv[1])['_native_pool_state']
+owner,profiles,physical,calls,state,opened=factory(Path(sys.argv[2]))
+if sys.argv[3]=='die':
+ pool=owner().open_model_pool('session',profiles)
+ pool.acquire('a',owner='departing-owner',supplied_authority=True)
+ os._exit(0)
+try:pool=owner().open_model_pool('session',profiles)
+except RuntimeError:print('denied')
+else:raise SystemExit(3)
+"""
+    manager=ResourceManager(root/'owned-child-ledger.json')
+    budget=dict(startup_timeout_seconds=20,idle_timeout_seconds=20,total_timeout_seconds=20,graceful_shutdown_seconds=2,force_shutdown_seconds=5,stdout_limit_bytes=65536,stderr_limit_bytes=65536)
+    action=dict(action_id='native-pool-'+mode,effects=['process'],allowed_effects=['process'],owned_paths=[str(repository),str(root)],target_paths=[str(repository),str(root)],budget=budget,limits=budget,approval=True,policy_override_requested=False)
+    result=ProcessSupervisor(manager).run([sys.executable,'-B','-c',script,str(Path(__file__).resolve()),str(root),mode],cwd=repository,action=action,project_id='native-pool-fixture',run_id='native-pool-'+mode,lane_id='repair-fixture',creator='tests.native-pool',environment=dict(os.environ))
+    assert result.tree_closed
+    assert result.exit_code==0, (result.exit_code,result.stdout.text,result.stderr.text)
+    return result
+
+
+def test_native_pool_real_child_cannot_open_competing_coordinator(native_pool_fixture,tmp_path):
+    owner,profiles,physical,calls,state=native_pool_fixture
+    first=owner().open_model_pool('session',profiles)
+    first.acquire('a',owner='parent-owner',supplied_authority=True)
+    result=_native_pool_child(tmp_path,'probe')
+    assert 'denied' in result.stdout.text
+
+
+def test_native_pool_real_owner_death_preserves_orphan_epoch(native_pool_fixture,tmp_path):
+    owner,profiles,physical,calls,state=native_pool_fixture
+    _native_pool_child(tmp_path,'die')
+    with pytest.raises(RuntimeError):owner().open_model_pool('session',profiles)
+    assert not calls
+
+
+def test_native_pool_close_requires_explicit_teardown_authority(native_pool_fixture):
+    owner,profiles,physical,calls,state=native_pool_fixture
+    physical['a']='loaded'
+    pool=owner().open_model_pool('session',profiles)
+    before=list(calls)
+    with pytest.raises(PermissionError):pool.close()
+    assert calls==before
+    assert physical['a']=='loaded'
+    assert pool.entry('a').state=='warm'
+
+
+def test_native_pool_context_exit_cannot_grant_teardown_authority(native_pool_fixture):
+    owner,profiles,physical,calls,state=native_pool_fixture
+    physical['a']='loaded'
+    with pytest.raises(PermissionError):
+        with owner().open_model_pool('session',profiles):
+            pass
+    assert physical['a']=='loaded'
+    assert not [x for x in calls if x[0]=='POST']
+
+@pytest.mark.parametrize('unverified',[None,False,'true'])
+def test_native_pool_epoch_rejects_unverified_close(native_pool_fixture,unverified):
+    owner,profiles,physical,calls,state=native_pool_fixture
+    native=owner()
+    native._append('pool_owner_opened',{'session_id':'session','resource_id':state['resource_id'],'epoch_id':'lost-owner'})
+    native._append('pool_owner_closed',{'session_id':'session','resource_id':state['resource_id'],'epoch_id':'lost-owner','all_models_unloaded':unverified})
+    with pytest.raises(RuntimeError):owner().open_model_pool('session',profiles)
+    assert not calls
+
+
+def test_native_pool_context_explicit_teardown_closes_cleanly(native_pool_fixture):
+    owner,profiles,physical,calls,state=native_pool_fixture
+    physical['a']='loaded'
+    with owner().open_model_pool('session',profiles,supplied_teardown_authority=True):
+        assert physical['a']=='loaded'
+    assert physical=={'a':'unloaded','b':'unloaded'}
+    successor=owner().open_model_pool('session',profiles)
+    assert successor.entry('a').state=='unloaded'
+
+@pytest.mark.parametrize('committed',[False,True])
+def test_native_pool_close_publication_failure_cannot_reuse_old_wrapper(native_pool_fixture,committed):
+    owner,profiles,physical,calls,state=native_pool_fixture
+    native=owner();pool=native.open_model_pool('session',profiles)
+    lease=pool.acquire('a',owner='first',supplied_authority=True);pool.release(lease)
+    actual=native._append
+    def fail_close(kind,payload):
+        if kind=='pool_owner_closed':
+            if committed:actual(kind,payload)
+            raise OSError('injected owner closure publication failure')
+        return actual(kind,payload)
+    native._append=fail_close
+    with pytest.raises(OSError):pool.close(supplied_authority=True)
+    assert physical=={'a':'unloaded','b':'unloaded'}
+    with pytest.raises(RuntimeError):pool.acquire('b',owner='stale',supplied_authority=True)
+    if committed:
+        successor=owner().open_model_pool('session',profiles)
+        successor.acquire('b',owner='successor',supplied_authority=True)
+    else:
+        with pytest.raises(RuntimeError):owner().open_model_pool('session',profiles)
+
+@pytest.mark.parametrize('committed',[False,True])
+def test_native_pool_open_publication_failure_retains_only_real_epoch(native_pool_fixture,committed):
+    owner,profiles,physical,calls,state=native_pool_fixture
+    native=owner();actual=native._append
+    def fail_open(kind,payload):
+        if kind=='pool_owner_opened':
+            if committed:actual(kind,payload)
+            raise OSError('injected owner open publication failure')
+        return actual(kind,payload)
+    native._append=fail_open
+    with pytest.raises(OSError):native.open_model_pool('session',profiles)
+    assert not calls
+    if committed:
+        with pytest.raises(RuntimeError):owner().open_model_pool('session',profiles)
+    else:
+        successor=owner().open_model_pool('session',profiles)
+        successor.acquire('b',owner='successor',supplied_authority=True)

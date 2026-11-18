@@ -20,10 +20,11 @@ It never creates the root and never deletes anything else.
 
 from __future__ import annotations
 
-import json
-import os
 from pathlib import Path
 from typing import Any, Mapping
+
+from .secure_publish import atomic_write_bytes
+from .json_io import bounded_json_text
 
 MAX_PAYLOAD_BYTES = 64 * 1024 * 1024
 
@@ -36,54 +37,61 @@ def confined_path(root: Path, destination: Path, *, label: str = "output") -> Pa
     """Resolve `destination` and refuse anything not strictly inside `root`."""
     root = Path(root).resolve()
     candidate = Path(destination)
-    resolved = (candidate if candidate.is_absolute() else root / candidate).resolve()
+    original = candidate if candidate.is_absolute() else root / candidate
+    # Check original components: resolve() erases both internal and dangling
+    # links, allowing an alias to mutate a different retained file in the root.
+    from .archive_io import reject_path_links
+
+    try:
+        reject_path_links(original)
+    except ValueError as error:
+        raise ConfinementError(f"{label} must not contain symbolic links or junctions") from error
+    resolved = original.resolve()
     try:
         relative = resolved.relative_to(root)
     except ValueError as error:
         raise ConfinementError(f"{label} must stay inside the repository root: {resolved}") from error
     if not relative.parts:
         raise ConfinementError(f"{label} must be strictly below the repository root, not the root itself")
-    # `..` cannot survive resolve(), but a symlinked destination could point back out.
-    if Path(root, relative).is_symlink():
-        raise ConfinementError(f"{label} must not be a symbolic link: {resolved}")
     return resolved
 
 
-def confined_move(source: Path, destination: Path, *, label: str = "move") -> Path:
-    """Move `source` to `destination` when the destination is inside the repository.
+def confined_move(source: Path, destination: Path, *, label: str = "move", root: Path | None = None) -> Path:
+    """Move between paths strictly inside the selected project (repository by default).
 
     Used by quarantine and preservation paths, which relocate files rather than publish
     payloads. The destination must be a confined, resolved path; the parent is created, and
     the move publishes by rename so a crash cannot leave a half-copied file.
     """
-    import shutil as _shutil
-
-    target = Path(destination)
-    root = Path(__file__).resolve().parents[1]
-    confined_path(root, target, label=label)
+    root = Path(root).resolve() if root is not None else Path(__file__).resolve().parents[1]
+    target = confined_path(root, destination, label=label)
+    origin = confined_path(root, source, label="move source")
+    if target.exists():
+        raise ConfinementError(f"{label} destination already exists: {target}")
+    if target.is_relative_to(origin):
+        raise ConfinementError(f"{label} destination must not be inside its source")
     target.parent.mkdir(parents=True, exist_ok=True)
-    _shutil.move(str(Path(source)), str(target))
+    # A cross-device rename must fail rather than silently copying and deleting
+    # the original. Quarantine requires a complete relocated recovery image.
+    origin.rename(target)
     return target
 
 
 def publish_json(root: Path, destination: Path, payload: Mapping[str, Any] | Any, *, label: str = "output") -> Path:
-    """Atomically publish `payload` as JSON at a confined, repository-relative destination."""
+    """Publish bounded strict JSON values at a confined, repository-relative destination.
+
+    Payloads use JSON dictionaries/lists with string keys and finite numbers.
+    Validation and rendering finish before staging or destination creation.
+    """
     target = confined_path(root, destination, label=label)
-    text = json.dumps(payload, indent=2, sort_keys=False) + "\n"
-    encoded = text.encode("utf-8")
-    if len(encoded) > MAX_PAYLOAD_BYTES:
-        raise ConfinementError(f"{label} payload exceeds {MAX_PAYLOAD_BYTES} bytes")
-    target.parent.mkdir(parents=True, exist_ok=True)
-    temporary = target.with_name(f".{target.name}.{os.getpid()}.tmp")
     try:
-        with temporary.open("wb") as handle:
-            handle.write(encoded)
-            handle.flush()
-            os.fsync(handle.fileno())
-        os.replace(temporary, target)
-    finally:
-        try:
-            temporary.unlink(missing_ok=True)
-        except OSError:
-            pass
+        # Reserve the newline within the publication ceiling. The shared
+        # renderer bounds structure and strings before encoder allocation.
+        text = bounded_json_text(payload, max_bytes=MAX_PAYLOAD_BYTES - 1) + "\n"
+        encoded = text.encode("utf-8")
+    except ValueError as error:
+        raise ConfinementError(f"{label} payload is not bounded valid JSON: {error}") from error
+    # The registered secure publisher owns exclusive randomized staging and
+    # cleanup. Never truncate or reclaim a pre-existing PID-named file here.
+    atomic_write_bytes(target, encoded)
     return target

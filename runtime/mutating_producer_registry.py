@@ -22,11 +22,13 @@ from __future__ import annotations
 
 import hashlib
 import json
+import sys
 from pathlib import Path
 from typing import Any, Mapping
 
 from .effect_surface import (
     discover_effect_surfaces,
+    classify_source_file,
 )
 
 SCHEMA_VERSION = "px.mutating-producer-registry/1.0"
@@ -77,6 +79,13 @@ EXEMPTION_REASONS = (
     # P6: every destination this producer writes lies strictly below an authorized output
     # root, under a per-class grant. One destination never authorizes another.
     "authorized_output_root",
+    # §4.1: every effect the producer has is proved, from current source, to be published
+    # by a helper that retains the resource it was given. This is *not* an assignment of
+    # ownership — no component is named as custodian here. It says only that the producer
+    # performs no durable write of its own: it either delegates into an object it holds (the
+    # helper writes the resource), hands a path to a callee (the callee classifies it), or
+    # owns an ephemeral it removes. Blocked because such a write has no accountable owner
+    # is a different claim from "this producer writes" and is not proved by this reason.
 )
 
 NATIVE_CONTROL_CUSTODY_OWNERS = frozenset(
@@ -252,12 +261,16 @@ def _delegated_publication_verdict(
 
     path = root / relative
     owner = root / PUBLICATION_OWNER
-    if not path.is_file() or not owner.is_file():
+    if not path.is_file():
         return None
-    if PUBLICATION_FUNCTION not in owner.read_text(encoding="utf-8"):
-        return None
-
     source = path.read_text(encoding="utf-8-sig")
+
+    # The guarded-registry delegation and the packaging-projection delegation are two
+    # independent publication surfaces. Neither may be skipped merely because the producer
+    # does not use the other one.
+    if not owner.is_file() or PUBLICATION_FUNCTION not in owner.read_text(encoding="utf-8"):
+        return _packaging_projection_verdict(root, relative, source)
+
     tree = _ast.parse(source)
     imported = False
     call_lines: set[int] = set()
@@ -275,12 +288,13 @@ def _delegated_publication_verdict(
             if name == PUBLICATION_FUNCTION:
                 call_lines.add(node.lineno)
     if not imported or not call_lines:
-        return None
+        return _packaging_projection_verdict(root, relative, source)
 
     if records is None:
         from .effect_surface import discover_effect_surfaces
 
         records = discover_effect_surfaces(root)
+    calls_publication = False
     for record in records:
         if record["path"] != relative:
             continue
@@ -288,7 +302,329 @@ def _delegated_publication_verdict(
             continue
         if int(record["line"]) not in call_lines:
             return None
+        calls_publication = True
+    if calls_publication:
+        return {"classification": "exempt", "reason": "delegated_publication"}
+    return _packaging_projection_verdict(root, relative, source)
+
+
+# The generated packaging block in pyproject.toml is rendered by the canonical renderer below.
+# A skill script that is *shipped* through that block has its lifecycle published by the
+# package projection, not by the script. This is the same delegation fact as above, measured
+# on the packaging surface instead of the guarded-registry surface.
+PACKAGING_RENDERER = "scripts/migration/sync_skill_packaging.py"
+PACKAGING_BLOCK_START = "# BEGIN GENERATED OPERATIONAL SKILL DATA FILES"
+PACKAGING_BLOCK_END = "# END GENERATED OPERATIONAL SKILL DATA FILES"
+
+
+_PACKAGING_TRACKED: dict[str, bool] = {}
+
+
+def _tracked_skill(root: Path, skill_root: str) -> bool:
+    """Cached `git ls-files` answer: is this skill directory tracked at all?"""
+    import subprocess
+
+    key = f"{root}\0{skill_root}"
+    if key in _PACKAGING_TRACKED:
+        return _PACKAGING_TRACKED[key]
+    try:
+        tracked = subprocess.run(
+            ["git", "ls-files", "--", skill_root],
+            cwd=str(root),
+            capture_output=True,
+            text=True,
+            timeout=30,
+        )
+    except (OSError, subprocess.SubprocessError):
+        _PACKAGING_TRACKED[key] = False
+        return False
+    result = tracked.returncode == 0 and bool(tracked.stdout.strip())
+    _PACKAGING_TRACKED[key] = result
+    return result
+
+
+def _packaging_projection_verdict(root: Path, relative: str, source: str) -> dict[str, str] | None:
+    """Delegated publication measured against the generated packaging block.
+
+    Every condition is read from the current tree, never from a stored label:
+
+    1. the script is an immutable authored asset of a tracked skill (`.px/skills/<id>/...`,
+       no `..`, and the skill directory is tracked by Git);
+    2. the script defines no import-time work: all executable statements sit inside function
+       definitions, so importing it has no effect and only an explicit call reaches a write;
+    3. the script's module code mutates nothing it owns, which the caller already established
+       by finding no mutation outside its publication call sites;
+    4. the canonical packaging renderer exists and still emits the block;
+    5. the current pyproject lists this exact file inside that generated block, so the
+       package projection is what carries the shipped bytes.
+    """
+    import ast as _ast
+
+    parts = relative.split("/")
+    if len(parts) < 3 or parts[0] != ".px" or parts[1] != "skills" or ".." in parts:
+        return None
+    skill_root = "/".join(parts[:3])
+    renderer = root / PACKAGING_RENDERER
+    pyproject = root / "pyproject.toml"
+    if not renderer.is_file() or not pyproject.is_file():
+        return None
+    renderer_source = renderer.read_text(encoding="utf-8")
+    if PACKAGING_BLOCK_START not in renderer_source or ".px/skills" not in renderer_source:
+        return None
+    if not _tracked_skill(root, skill_root):
+        return None
+    text = pyproject.read_text(encoding="utf-8")
+    if text.count(PACKAGING_BLOCK_START) != 1 or text.count(PACKAGING_BLOCK_END) != 1:
+        return None
+    block = text.split(PACKAGING_BLOCK_START, 1)[1].split(PACKAGING_BLOCK_END, 1)[0]
+    if f'"{relative}"' not in block:
+        return None
+    tree = _ast.parse(source)
+    # A script below the repository root must put that root on `sys.path` before it can import
+    # `runtime`; the insertion is in-process only. It is admitted only when the path expression
+    # is anchored at the script's own location, so no caller-supplied or environment path is.
+    for node in tree.body:
+        if isinstance(node, _ast.Expr) and _import_path_insertion(node, tree):
+            continue
+        if isinstance(node, (_ast.Import, _ast.ImportFrom)):
+            # Module-level imports are real. `_import_inert` decides which; the producer's own
+            # `sys.path` binding above only makes the imported module resolvable.
+            if not _import_inert(node):
+                return None
+            continue
+        if isinstance(node, (_ast.FunctionDef, _ast.AsyncFunctionDef, _ast.ClassDef)):
+            continue
+        if isinstance(node, _ast.Expr) and isinstance(node.value, _ast.Constant):
+            continue
+        if isinstance(node, _ast.Assign) and node.value is not None and _value_inert(node.value):
+            continue
+        if isinstance(node, _ast.AnnAssign) and (node.value is None or _value_inert(node.value)):
+            continue
+        if isinstance(node, (_ast.If, _ast.Try)) and _guard_block_inert(node):
+            continue
+        return None
     return {"classification": "exempt", "reason": "delegated_publication"}
+
+
+def _guard_block_inert(node: object) -> bool:
+    """A top-level `if`/`try` that performs no work when the module is imported.
+
+    Two shapes qualify:
+
+    * the standard script guard `if __name__ == '__main__': ...` — importing the file runs
+      nothing in its body, so whatever the body does is reachable only on explicit execution;
+    * a module-level `try:` around imports — the handlers' *type expressions* are not executed
+      at import, but every handler body is, so handler bodies must be inert themselves.
+
+    Any other top-level condition may run work at import and is not inert.
+    """
+    import ast as _ast
+
+    if isinstance(node, _ast.If):
+        test = node.test
+        return bool(
+            isinstance(test, _ast.Compare)
+            and isinstance(test.left, _ast.Name)
+            and test.left.id == "__name__"
+            and len(test.comparators) == 1
+            and isinstance(test.comparators[0], _ast.Constant)
+            and test.comparators[0].value == "__main__"
+        )
+    if not isinstance(node, _ast.Try):
+        return False
+    # The handlers' *type* expressions are not executed at import; only their bodies are.
+    body = list(node.body)
+    body.extend(node.orelse)
+    body.extend(node.finalbody)
+    body.extend(node.handlers)
+    return all(_statement_inert(item) for item in body)
+
+
+def _statement_inert(node: object) -> bool:
+    """A statement that performs no work when the module is imported."""
+    import ast as _ast
+
+    if isinstance(node, (_ast.FunctionDef, _ast.AsyncFunctionDef, _ast.ClassDef, _ast.Pass)):
+        return True
+    if isinstance(node, (_ast.Import, _ast.ImportFrom)):
+        return _import_inert(node)
+    if isinstance(node, _ast.ExceptHandler):
+        return all(_statement_inert(item) for item in node.body)
+    if isinstance(node, _ast.Expr) and isinstance(node.value, _ast.Constant):
+        return True
+    if isinstance(node, _ast.Raise):
+        # `raise SystemExit(main())` inside a `__main__` guard: the guard itself is what keeps
+        # it from running on import, so the call is scoped to the guarded branch. A bare
+        # `raise` at module level is not inert.
+        return _guard_body_scoped(node)
+    if isinstance(node, _ast.Assign):
+        return _value_inert(node.value)
+    if isinstance(node, _ast.AnnAssign):
+        return node.value is None or _value_inert(node.value)
+    return False
+
+
+def _guard_body_scoped(node: object) -> bool:
+    """`raise SystemExit(main())` / `raise SystemExit(code)` — the standard guarded exit."""
+    import ast as _ast
+
+    if not isinstance(node, _ast.Raise) or node.exc is None:
+        return False
+    exc = node.exc
+    if not isinstance(exc, _ast.Call):
+        return isinstance(exc, _ast.Name) and exc.id == "SystemExit"
+    func = exc.func
+    return isinstance(func, _ast.Name) and func.id == "SystemExit"
+
+
+def _import_inert(node: object) -> bool:
+    """An import that cannot execute a sibling's code by itself.
+
+    A plain `import x` / `from x import y` runs `x/__init__`. That is inert when `x` is a
+    standard-library module or a dotted runtime package; it is not proven inert for a
+    sibling-relative import, so those keep the producer unresolved.
+    """
+    import ast as _ast
+
+    if isinstance(node, _ast.Import):
+        names = [alias.name for alias in node.names]
+    else:
+        names = [getattr(node, "module", None) or ""]
+        if isinstance(node, _ast.ImportFrom) and (node.level or 0) > 0:
+            return False
+    if not names:
+        return False
+    for name in names:
+        head = name.split(".", 1)[0]
+        if head in {"runtime", "__future__"}:
+            continue
+        if head in INERT_STDLIB_MODULES:
+            continue
+        return False
+    return True
+
+
+def _import_path_insertion(node: object, tree: object) -> bool:
+    """`sys.path.insert(0, str(<the producer's own repository>))` — no filesystem write.
+
+    A script that lives below the repository root must put the root on `sys.path` before it can
+    import `runtime`; that lookup is in-process only. The path expression must be anchored at
+    the script's own location — `str(__file__…)` directly, or a name whose module-level
+    assignment is so anchored (`ROOT = Path(__file__).resolve().parents[4]`). A caller-supplied
+    directory or an environment value is never admitted by this.
+    """
+    import ast as _ast
+
+    if not isinstance(node, _ast.Expr) or not isinstance(node.value, _ast.Call):
+        return False
+    call = node.value
+    func = call.func
+    if not (isinstance(func, _ast.Attribute) and func.attr == "insert"):
+        return False
+    receiver = func.value
+    if not (
+        isinstance(receiver, _ast.Attribute)
+        and receiver.attr == "path"
+        and isinstance(receiver.value, _ast.Name)
+        and receiver.value.id == "sys"
+    ):
+        return False
+    if len(call.args) != 2 or not isinstance(call.args[0], _ast.Constant):
+        return False
+    expression = call.args[1]
+    if _is_module_anchor(expression):
+        return True
+    if isinstance(expression, _ast.Call) and isinstance(expression.func, _ast.Name):
+        # `str(ROOT)` / `ROOT.as_posix()` over an anchored name is still anchored.
+        if expression.func.id in {"str", "repr"} and expression.args:
+            expression = expression.args[0]
+    if isinstance(expression, _ast.Name):
+        return _name_bound_to_own_root(tree, expression.id)
+    return False
+
+
+def _name_bound_to_own_root(tree: object, name: str) -> bool:
+    """True when module-level assignments of `name` are anchored at the producer."""
+    import ast as _ast
+
+    values: list[object] = []
+    for node in getattr(tree, "body", ()):
+        if isinstance(node, _ast.Assign):
+            if any(isinstance(t, _ast.Name) and t.id == name for t in node.targets):
+                values.append(node.value)
+        elif isinstance(node, _ast.AnnAssign) and node.value is not None:
+            if isinstance(node.target, _ast.Name) and node.target.id == name:
+                values.append(node.value)
+    return bool(values) and any(_is_module_anchor(value) for value in values)
+
+
+def _is_module_anchor(node: object) -> bool:
+    import ast as _ast
+
+    return any(isinstance(item, _ast.Name) and item.id == "__file__" for item in _ast.walk(node))
+
+
+def _module_binds_own_root(tree: object) -> bool:
+    """True when a module-level assignment names the producer's own location."""
+    import ast as _ast
+
+    for node in getattr(tree, "body", ()):
+        values = []
+        if isinstance(node, _ast.Assign):
+            values.append(node.value)
+        elif isinstance(node, _ast.AnnAssign) and node.value is not None:
+            values.append(node.value)
+        if any(_is_module_anchor(value) for value in values):
+            return True
+    return False
+
+
+def _value_inert(value: object) -> bool:
+    """A module-level value that creates no file and starts no process.
+
+    Comprehensions, generators and lambdas are values: building one runs nothing. A call is
+    inert when it is one of the names below — compile, convert, or locate a path; none of them
+    opens, creates, renames or deletes a file and none spawns a process. Every other call keeps
+    the producer unresolved rather than being assumed harmless.
+    """
+    import ast as _ast
+
+    if isinstance(value, (_ast.ListComp, _ast.SetComp, _ast.DictComp, _ast.GeneratorExp, _ast.Lambda)):
+        return True
+    for node in _ast.walk(value):
+        if isinstance(node, (_ast.Await, _ast.Yield, _ast.YieldFrom)):
+            return False
+        if not isinstance(node, _ast.Call):
+            continue
+        func = node.func
+        name = func.attr if isinstance(func, _ast.Attribute) else getattr(func, "id", "")
+        if name not in INERT_BUILD_CALLS:
+            return False
+    return True
+
+
+# Standard-library modules whose import has no side effects relied on as state. Membership is
+# checked against the interpreter the producer would run on, not against a list of names that
+# "look" safe: an unlisted module keeps the producer unresolved rather than being assumed
+# harmless.
+INERT_STDLIB_MODULES = frozenset(sys.stdlib_module_names) - {
+    "antigravity", "this", "__hello__", "__phello__", "idlelib", "turtledemo",
+}
+
+# Builtins and constructors that compute, compile or locate a value without touching the
+# filesystem or starting a process. Membership is a fact about each callable, not a pattern:
+# anything absent keeps the producer unresolved.
+INERT_BUILD_CALLS = frozenset(
+    {
+        "tuple", "list", "dict", "set", "frozenset", "str", "int", "float", "bool",
+        "bytes", "len", "sorted", "reversed", "enumerate", "zip", "range", "min", "max",
+        "sum", "any", "all", "abs", "round", "repr", "format", "join", "strip", "split",
+        "rsplit", "casefold", "lower", "upper", "removeprefix", "removesuffix",
+        "compile", "escape", "Path", "PurePath", "PurePosixPath", "joinpath", "resolve",
+        "parents", "parent", "with_name", "with_suffix", "as_posix", "anchor", "cwd",
+        "values", "keys", "items", "get", "partition", "startswith", "endswith", "count",
+    }
+)
 
 
 def _matches_native_owner(root: Path, relative: str) -> bool:
@@ -346,6 +682,14 @@ def _registry_owned_verdict(root: Path, relative: str) -> Mapping[str, str] | No
             continue
         if _normalize(str(owner)) in normalised:
             continue
+        # A registered entry is only authoritative if it satisfies the accepted
+        # resource contract. Without this the registry conferred custody from a
+        # record carrying as little as {resource_id, accountable_owner}: no
+        # authorization, lifecycle, concurrency, recovery or approval event.
+        # Proof: deleting every other field still yielded "exempt". Fails closed.
+        from .runtime_state_ownership import validate_approved_resource_record
+        if validate_approved_resource_record(record, group_members=group):
+            continue
         return {"classification": "exempt", "reason": "owned_durable_resource"}
     return None
 
@@ -385,16 +729,32 @@ def default_classification(
     granted = output_root_verdict(root, relative, effects)
     if granted is not None:
         return granted
-    # B1 delegated_publication is evaluated from the caller's own source, before the pinned
-    # table, because the table's owner fingerprint had drifted for six entries (two different
-    # hashes for one owner module), which made those entries unresolvable regardless of the
-    # source. The live check is stricter than the table: it requires the canonical import, the
-    # call, the owner's current definition, and no owned filesystem mutation.
-    if relative in REVIEWED_DELEGATED_PUBLICATION:
-        delegated_verdict = _delegated_publication_verdict(root, relative, records)
-        if delegated_verdict is not None:
-            return delegated_verdict
+    # Reviewed delegation requires both caller and owner to match their approved bytes.
+    # Structural routing proof cannot override an expired review fingerprint.
     delegated = REVIEWED_DELEGATED_PUBLICATION.get(relative)
+    if relative not in REVIEWED_DELEGATED_PUBLICATION:
+        from .mutating_producer_custody_reviewed import (
+            DECLARED_OUTPUT_TARGET_RECONCILED as _RECONCILED,
+        )
+
+        # The packaging projection is a second, independent publication surface: a shipped
+        # skill script whose lifecycle is published by the generated pyproject block. It is
+        # established from the live tree on every run, so it needs no reviewed table, and it
+        # is consulted only after every reviewed authority above has declined.
+        #
+        # A producer the predicate *qualified* already has an individual review decision, so
+        # this whole-file property must never override it. A producer the predicate **audited and
+        # rejected** is a different case: that rejection says "this is not a caller-directed
+        # output", it does not say "this is not published by the package projection". Such a
+        # producer is therefore eligible, but only after the rejected branch above has declined.
+        shipped = None
+        if relative.startswith(".px/skills/") and relative not in _RECONCILED:
+            shipped = _packaging_projection_verdict(
+                root, relative, (root / relative).read_text(encoding="utf-8-sig")
+                if (root / relative).is_file() else ""
+            )
+        if shipped is not None:
+            return shipped
     if delegated is not None:
         caller, owner = root / relative, root / delegated["owner"]
         if (caller.is_file() and owner.is_file()

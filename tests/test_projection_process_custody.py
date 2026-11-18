@@ -7,7 +7,7 @@ from runtime.gremlin import enrollment
 
 
 @pytest.fixture
-def native_host_fixture(monkeypatch, tmp_path):
+def native_host_fixture(monkeypatch, tmp_path, request):
     monkeypatch.setattr(driver, "ROOT", tmp_path)
     monkeypatch.setenv("PX_STUDIO_KEY_ROOT", str(tmp_path / "host-keys"))
     monkeypatch.setattr(driver, "_host_configuration_digest", lambda: "c" * 64)
@@ -18,6 +18,15 @@ def native_host_fixture(monkeypatch, tmp_path):
                  "gap_id": "fixture-gap", "effect_scopes": [{"effect": "read",
                  "scope": [".agentic_engineering_os_px/sandbox", ".agentic_engineering_os_px/runtime-core",
                            ".agentic_engineering_os_px/studios/authority", (tmp_path / "host-keys").as_posix()]}]}
+    mode = getattr(request, "param", "relative")
+    if mode == "absolute":
+        admission["effect_scopes"][0]["scope"] = [
+            str(tmp_path / path) for path in admission["effect_scopes"][0]["scope"]
+        ]
+    elif mode == "mixed":
+        admission["effect_scopes"][0]["scope"][0] = str(tmp_path / ".agentic_engineering_os_px/sandbox")
+    elif mode == "sibling":
+        admission["effect_scopes"][0]["scope"][0] += "-other"
     monkeypatch.setattr(operational_gap_ledger, "read_snapshot", lambda root: {"work_admissions": [admission]})
     monkeypatch.setattr(operational_gap_ledger, "guard_work_admission", lambda *a, **kw: {"valid": True})
     calls = []
@@ -35,20 +44,33 @@ def native_host_fixture(monkeypatch, tmp_path):
     monkeypatch.setattr(driver, "_configured_host", lambda: SimpleNamespace(nanny=nanny))
     monkeypatch.setattr(enrollment, "enroll_supervised_process", lambda *args, **kwargs: calls.append(("enrolled", args, kwargs)) or SimpleNamespace())
     capture = {}
+    job = SimpleNamespace(handle=123, terminate=lambda code: None)
+    manager.verify_owned_job = lambda resource: SimpleNamespace(job_object_id="fixture-projection-job")
     class Supervisor:
         def __init__(self, owner):
             assert owner is manager
+            capture["supervisor"] = self
         def run(self, command, **kwargs):
             capture.update(command=command, **kwargs)
             kwargs["assert_execution_current"](kwargs["execution_context"])
-            kwargs["before_release"](SimpleNamespace(parent_resource_id="process-id"))
+            manager._process_jobs["process-id"] = job
+            kwargs["before_release"](SimpleNamespace(parent_resource_id="process-id", job_object_id="fixture-projection-job"))
+            manager._process_jobs.pop("process-id")
             return SimpleNamespace(exit_code=0, status="exited", tree_closed=True, resource_id="process-id",
                 receipt_path="native-process-receipt.json", stdout=SimpleNamespace(text="normal output"),
                 stderr=SimpleNamespace(text=""))
     monkeypatch.setattr(process_supervisor, "ProcessSupervisor", Supervisor)
+    from runtime.gremlin.host_enforcement_backend import ProcessSupervisorEnforcementBackend
+    def enrolled(*args, **kwargs):
+        custody = args[2]
+        assert ProcessSupervisorEnforcementBackend.REGISTRY[custody.job_object_id] is job
+        calls.append(("enrolled", args, kwargs))
+        return SimpleNamespace()
+    monkeypatch.setattr(enrollment, "enroll_supervised_process", enrolled)
     return manager, calls, capture
 
 
+@pytest.mark.parametrize("native_host_fixture", ["relative", "absolute", "mixed"], indirect=True)
 def test_configured_native_host_owns_release_context_and_cleanup(native_host_fixture):
     manager, calls, capture = native_host_fixture
     result = driver.run("index", "scripts/owner.py", (), admission_event_id="fixture-admission")
@@ -61,6 +83,16 @@ def test_configured_native_host_owns_release_context_and_cleanup(native_host_fix
     assert calls[1][0] == "enrolled" and calls[2][0] == "closed"
     assert result["tree_closed"] and result["supervision_receipt"] == "native-process-receipt.json"
     assert result["workspace_cleanup_id"] == "cleanup-id"
+    from runtime.gremlin.host_enforcement_backend import ProcessSupervisorEnforcementBackend
+    assert "fixture-projection-job" not in ProcessSupervisorEnforcementBackend.REGISTRY
+
+
+@pytest.mark.parametrize("native_host_fixture", ["sibling"], indirect=True)
+def test_read_sibling_cannot_reach_workspace_or_process_creation(native_host_fixture):
+    _, calls, capture = native_host_fixture
+    with pytest.raises(ValueError, match="read scope omits"):
+        driver.run("index", "scripts/owner.py", (), admission_event_id="fixture-admission")
+    assert calls == [] and capture == {}
 
 
 def test_missing_commissioned_host_creates_no_workspace_or_process(native_host_fixture, monkeypatch):
@@ -82,6 +114,8 @@ def test_uncertain_native_custody_retains_real_owner_and_blocks_cleanup(native_h
         retained = next(iter(driver.RETAINED_PROCESS_CUSTODY.values()))
         assert retained["manager"] is manager
         assert not any(call[0] == "update" for call in calls)
+        from runtime.gremlin.host_enforcement_backend import ProcessSupervisorEnforcementBackend
+        assert "fixture-projection-job" not in ProcessSupervisorEnforcementBackend.REGISTRY
     finally:
         driver.RETAINED_PROCESS_CUSTODY.clear()
 
@@ -119,3 +153,16 @@ def test_cancelled_projection_creates_no_workspace_or_process(native_host_fixtur
     with pytest.raises(PermissionError, match="cancelled"):
         driver.run("index", "scripts/owner.py", (), admission_event_id="fixture-admission", cancel_event=cancelled)
     assert calls == [] and capture == {}
+
+
+def test_projection_rejects_a_job_from_different_custody(native_host_fixture):
+    manager, calls, capture = native_host_fixture
+    manager.verify_owned_job = lambda resource: SimpleNamespace(job_object_id="different-job")
+    try:
+        with pytest.raises(PermissionError, match="verified native Job"):
+            driver.run("index", "scripts/owner.py", (), admission_event_id="fixture-admission")
+        assert not any(row[0] == "enrolled" for row in calls)
+        from runtime.gremlin.host_enforcement_backend import ProcessSupervisorEnforcementBackend
+        assert "fixture-projection-job" not in ProcessSupervisorEnforcementBackend.REGISTRY
+    finally:
+        driver.RETAINED_PROCESS_CUSTODY.clear()

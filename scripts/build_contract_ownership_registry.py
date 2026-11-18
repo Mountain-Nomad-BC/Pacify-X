@@ -4,10 +4,32 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
+from collections.abc import Sequence
 from pathlib import Path
 
 
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+from runtime.guarded_registry_projection import publish_guarded_registry_projection  # noqa: E402
+
+
 ROOT_OWNERS = {
+    # Functional ownership, not direct consumption: no module imports, references or
+    # depends on this schema document or its id (verified: zero references across
+    # runtime/, scripts/, tests/ and extension/src/). The declared owner is the module
+    # that constructs the node config and enforces this schema's own `execution_mode`
+    # const ("prepared-model-group") in native code at runtime/studio_models.py:931
+    # and :964, then routes it to the semantic parser it names below. The parser,
+    # runtime/workflow_group_config.py, is recorded as a related enforcement
+    # component rather than a second owner: it performs the deeper validation without
+    # referencing the schema either.
+    'workflow-model-group-node-config.schema.json': (
+        'runtime/studio_models.py',
+        ['runtime/studio_models.py'],
+        'functional_owner_related_semantic_enforcement',
+        ['tests/test_workflow_group_config.py'],
+    ),
     'work-disposition.schema.json': ('runtime/work_disposition.py', ['runtime/work_disposition.py', 'runtime/model_convergence.py'], 'explicit_terminal_work_denominator_boundary', ['tests/test_group_convergence_boundary.py']),
     'remote_model_attachment.schema.json': ('runtime/remote_model_attachment.py', ['runtime/remote_model_attachment.py', 'runtime/model_attachment.py'], 'typed_remote_service_identity_boundary', ['tests/test_model_attachment.py', 'tests/test_model_group_preparation.py', 'tests/test_remote_attachment_identity.py']),
     'model-execution-group.schema.json': ('runtime/model_execution_group.py', ['runtime/model_execution_group.py', 'runtime/task_execution_plan.py'], 'bounded_group_declaration_boundary', ['tests/test_model_execution_group.py', 'tests/test_model_group_preparation.py']),
@@ -16,16 +38,60 @@ ROOT_OWNERS = {
     'member-execution-input.schema.json': ('runtime/model_group_preparation.py', ['runtime/model_group_preparation.py', 'runtime/agent_runtime.py'], 'exact_member_input_boundary', ['tests/test_model_group_preparation.py']),
     'model-branch-artifact.schema.json': ('runtime/model_branch_artifacts.py', ['runtime/model_branch_artifacts.py', 'runtime/agent_runtime.py'], 'committed_member_evidence_boundary', ['tests/test_model_group_preparation.py']),
     'cancellation-scope.schema.json': ('runtime/cancellation_scope.py', ['runtime/cancellation_scope.py'], 'runtime_enforced', ['tests/test_contract_runtime.py', 'tests/test_agent_governed_integration.py']),
-    'context-generation-vector.schema.json': ('runtime/context_generation.py', ['runtime/context_generation.py', 'runtime/dependency_invalidation.py'], 'typed_scoped_archivist_metadata_boundary', ['tests/test_contract_runtime.py', 'tests/test_context_generation.py', 'tests/test_contract_ownership_registry.py']),
+    # Producers/consumers verified by call chain, not by history:
+    #   context_generation.py defines ContextGenerationVector and validates records.
+    #   dependency_invalidation.py:context_vector_for_dependencies(...) constructs it.
+    #   librarian_semantic_map.py imports ContextGenerationVector (:26) and builds one
+    #     in _map_context (:419-420), serving it as generation_vector() (:339-340) and
+    #     evaluating currentness on it (:342-344). It also hashes every contract file
+    #     as generic metadata input, but that is inventory, not semantic use, so it is
+    #     listed as a producer/consumer because of the typed construction above.
+    #   projection_gate.py is listed: evaluate_projection(projection_id, recorded:
+    #     ContextGenerationVector, current: ContextGenerationVector) (:46-51) rejects
+    #     anything that is not an observed typed vector and compares project/scope
+    #     (:53), deriving recorded_vector_sha256/current_vector_sha256 for the status.
+    #     It consumes the generation surface semantically; it is not a producer.
+    'context-generation-vector.schema.json': (
+        'runtime/context_generation.py',
+        ['runtime/context_generation.py', 'runtime/dependency_invalidation.py',
+         'runtime/librarian_semantic_map.py'],
+        'typed_scoped_archivist_metadata_boundary',
+        ['tests/test_contract_runtime.py', 'tests/test_context_generation.py',
+         'tests/test_contract_ownership_registry.py'],
+    ),
     'dependency-identity.schema.json': ('runtime/dependency_identity.py', ['runtime/dependency_identity.py', 'runtime/dependency_invalidation.py'], 'canonical_dependency_observation_boundary', ['tests/test_contract_runtime.py', 'tests/test_dependency_invalidation.py', 'tests/test_dependency_contracts.py']),
     'execution-context.schema.json': ('runtime/execution_context.py', ['runtime/execution_context.py', 'runtime/vscode_model_bridge.py'], 'execution_identity_and_currentness_boundary', ['tests/test_contract_runtime.py', 'tests/test_execution_context.py', 'tests/test_agent_governed_integration.py']),
-    # Declared below by the merged tree but absent from this table, so `build()`
+    # Declared by the merged tree but absent from this table originally, so `build()`
     # refused to guess. Each owner was found from the contract's own
     # `schema_version` const or filename stem in runtime/, not assumed:
-    #   px.context-generation-vector/2.0 -> runtime/context_generation.py
     #   px.governed-exception/1.0       -> runtime/governed_exception.py
     #   px.model-router-preset*/1.0     -> runtime/model_router_preset.py
-    'execution-generation-vector.schema.json': ('runtime/context_generation.py', ['runtime/context_generation.py'], 'typed_scoped_archivist_metadata_boundary', ['tests/test_contract_runtime.py', 'tests/test_context_generation.py']),
+    #
+    # VERSIONED COMPATIBILITY CONTRACT, verified rather than assumed.
+    #
+    # context-generation-vector.schema.json is the canonical 1.0 contract;
+    # execution-generation-vector.schema.json is the 2.0 compatibility contract for the
+    # SAME runtime semantic surface. It is not an independent implementation and it is
+    # not retired. Evidence:
+    #   * 2.0 differs from 1.0 only by widening the vector: 14 components versus 9,
+    #     adding model_execution_group_revision, model_contract_set_revision,
+    #     gremlin_revision, network_policy_revision and workflow_adapter_revision.
+    #   * runtime/context_generation.py implements both versions on one code path:
+    #     :11-21 declares SCHEMA_VERSION 1.0 plus EXECUTION_LINEAGE_COMPONENTS, :60
+    #     emits the 2.0 const when lineage components are present, :85 selects the
+    #     component set, and :94-96 accepts either const when reading.
+    #   * Each document validates only against its own contract; a 1.0 vector is
+    #     rejected by the 2.0 schema and vice versa.
+    #   * 32 contexts declare px.context-generation-vector/2.0, so backward
+    #     compatibility is required.
+    # One owner and one producer: the shared runtime. No second runtime path exists.
+    'execution-generation-vector.schema.json': (
+        'runtime/context_generation.py',
+        ['runtime/context_generation.py'],
+        'versioned_compatibility_contract_shared_runtime_surface',
+        ['tests/test_contract_runtime.py', 'tests/test_context_generation.py',
+         'tests/test_contract_ownership_registry.py'],
+    ),
     'governed-exception.schema.json': ('runtime/governed_exception.py', ['runtime/governed_exception.py'], 'runtime_enforced', ['tests/test_contract_runtime.py', 'tests/test_model_pool.py']),
     'model-router-preset-format.schema.json': ('runtime/model_router_preset.py', ['runtime/model_router_preset.py'], 'runtime_enforced', ['tests/test_contract_runtime.py', 'tests/test_refines_mesh_integration.py']),
     'model-router-preset.schema.json': ('runtime/model_router_preset.py', ['runtime/model_router_preset.py', 'runtime/local_model_runtime.py'], 'runtime_enforced', ['tests/test_contract_runtime.py', 'tests/test_refines_mesh_integration.py']),
@@ -35,7 +101,17 @@ ROOT_OWNERS = {
     'gremlin-recovery-replay-ledger.schema.json': ('runtime/gremlin/recovery_authority.py', ['runtime/gremlin/recovery_authority.py'], 'runtime_enforced', ['tests/test_contract_runtime.py', 'tests/test_gremlin_recovery_authority.py']),
     'gremlin-runtime-identity.schema.json': ('runtime/gremlin/runtime_identity.py', ['runtime/gremlin/runtime_identity.py'], 'runtime_enforced', ['tests/test_contract_runtime.py', 'tests/test_gremlin_runtime_identity.py']),
     'isolated-agent-sandbox.schema.json': ('runtime/isolated_sandbox.py', ['runtime/isolated_sandbox.py'], 'runtime_enforced', ['tests/test_contract_runtime.py', 'tests/test_isolated_agent_sandbox.py']),
-    'projection-status.schema.json': ('runtime/projection_gate.py', ['runtime/projection_gate.py'], 'typed_scoped_archivist_metadata_boundary', ['tests/test_contract_runtime.py', 'tests/test_projection_gate.py', 'tests/test_contract_ownership_registry.py']),
+    # projection-status is owned by projection_gate.py (evaluate_projection derives it)
+    # and produced jointly: librarian_semantic_map.py builds the status document through
+    # projection_status() using the gate's evaluation (:343-344). projection_gate.py is
+    # also a verified CONSUMER of both generation-vector versions (see CONSUMERS).
+    'projection-status.schema.json': (
+        'runtime/projection_gate.py',
+        ['runtime/projection_gate.py', 'runtime/librarian_semantic_map.py'],
+        'typed_scoped_archivist_metadata_boundary',
+        ['tests/test_contract_runtime.py', 'tests/test_projection_gate.py',
+         'tests/test_contract_ownership_registry.py'],
+    ),
     'workflow-resume-decision.schema.json': ('runtime/workflow_resume.py', ['runtime/workflow_resume.py'], 'runtime_enforced', ['tests/test_contract_runtime.py', 'tests/test_workflow_resume.py']),
     "agent_handoff_packet.schema.json": (
         "runtime/agent_handoff.py",
@@ -535,7 +611,20 @@ COGNITIVE_DIR_PRODUCERS = {
 }
 
 OPERATIONS_DIR_OWNERS = {
-    "remote-provider-profile.schema.json": ("runtime/remote_provider_profiles.py", "signed_remote_profile_configuration_boundary"),
+    # Both boundaries are implemented, so both are named rather than picking one.
+    # Traced in runtime/remote_provider_profiles.py:load_profiles:
+    #   :49-50 StudioAuthorityStore.verify_receipt authenticates the HMAC receipt
+    #          (runtime/studio_authority.py:284 verify) and rejects a record signed for
+    #          another project or with a bad mac;
+    #   :51-57 approved state, approver and non-expired configuration required;
+    #   :58-61 validate_instance(config, contracts/operations/remote-provider-profile.schema.json)
+    #          validates the document against this very contract.
+    # Configuration therefore never admits a provider (module docstring) but it is
+    # only useable after receipt authentication AND contract validation.
+    "remote-provider-profile.schema.json": (
+        "runtime/remote_provider_profiles.py",
+        "signed_remote_profile_runtime_boundary",
+    ),
     "health-model-registry.schema.json": ("runtime/health_model.py", "runtime_control_equivalent"),
     "health-report.schema.json": ("runtime/health_model.py", "runtime_control_equivalent"),
     "operation-event.schema.json": (
@@ -565,6 +654,9 @@ OPERATIONS_DIR_OWNERS = {
 }
 
 OPERATIONS_DIR_PRODUCERS = {
+    # Only studio_authority produces the record: it signs it at creation. The profile
+    # module reads runtime-core/remote-models/profiles.json (verified: CONFIG is used
+    # solely at :45) and is the owner/consumer, never a producer.
     "remote-provider-profile.schema.json": ["runtime/studio_authority.py"],
     "health-model-registry.schema.json": ["registry/health_taxonomy.json"],
     "health-report.schema.json": ["runtime/health_model.py"],
@@ -594,9 +686,9 @@ SEMANTIC_DIR_OWNERS = {
     # owner is the module that performs that derivation and its durable snapshot.
     "semantic-entity.schema.json": (
         "runtime/semantic_entity.py",
-        ["runtime/semantic_entity.py"],
+        ["runtime/semantic_entity.py", "runtime/librarian_semantic_map.py"],
         "runtime_enforced",
-        ["tests/test_semantic_entity_contract.py"],
+        ["tests/test_semantic_entity_contract.py", "tests/test_librarian_semantic_map.py"],
     ),
     # The remaining semantic surfaces were declared by the merged tree. Each
     # owner below was located from the contract's own `schema_version` const in
@@ -607,29 +699,74 @@ SEMANTIC_DIR_OWNERS = {
     #   px.source-census-binding/1.0  -> runtime/semantic_surfaces.py
     "compact-address-record.schema.json": (
         "runtime/compact_address.py",
-        ["runtime/compact_address.py"],
+        ["runtime/compact_address.py", "runtime/librarian_semantic_map.py"],
         "runtime_enforced",
-        ["tests/test_contract_runtime.py"],
+        ["tests/test_contract_runtime.py", "tests/test_librarian_semantic_map.py"],
     ),
     "locator-record.schema.json": (
         "runtime/semantic_locator.py",
-        ["runtime/semantic_locator.py"],
+        ["runtime/semantic_locator.py", "runtime/librarian_semantic_map.py"],
         "runtime_enforced",
-        ["tests/test_contract_runtime.py"],
+        ["tests/test_contract_runtime.py", "tests/test_librarian_semantic_map.py"],
     ),
     "relation-record.schema.json": (
         "runtime/semantic_locator.py",
-        ["runtime/semantic_locator.py"],
+        ["runtime/semantic_locator.py", "runtime/librarian_semantic_map.py"],
         "runtime_enforced",
-        ["tests/test_contract_runtime.py"],
+        ["tests/test_contract_runtime.py", "tests/test_librarian_semantic_map.py"],
     ),
     "source-census-binding.schema.json": (
         "runtime/semantic_surfaces.py",
-        ["runtime/semantic_surfaces.py"],
+        ["runtime/semantic_surfaces.py", "runtime/semantic_taxonomy_census.py",
+         "runtime/semantic_prefreeze_census.py"],
         "runtime_enforced",
-        ["tests/test_contract_runtime.py"],
+        ["tests/test_contract_runtime.py", "tests/test_semantic_surfaces.py"],
     ),
 }
+
+# Explicit consumer lists. runtime/contracts.py (the validator) is added for every
+# record automatically; these name the modules that actually read the surface's
+# semantic content. Verified by call chain, never copied from history.
+CONSUMERS = {
+    "semantic-entity.schema.json": ["runtime/contracts.py", "runtime/librarian_semantic_map.py"],
+    "compact-address-record.schema.json": ["runtime/contracts.py", "runtime/librarian_semantic_map.py"],
+    "locator-record.schema.json": ["runtime/contracts.py", "runtime/librarian_semantic_map.py"],
+    "relation-record.schema.json": ["runtime/contracts.py", "runtime/librarian_semantic_map.py"],
+    "source-census-binding.schema.json": [
+        "runtime/contracts.py", "runtime/semantic_taxonomy_census.py",
+        "runtime/semantic_prefreeze_census.py",
+    ],
+    # load_profiles authenticates the signed receipt, then validates the document
+    # against this exact schema at runtime/remote_provider_profiles.py:58-61.
+    # None of these re-implements validation: group_provider_adapters.py:38,44 and
+    # remote_model_bridge.py:9,14,51 all obtain profiles through load_profiles, so they
+    # consume the surface only via the enforced signed-receipt + contract-validation path.
+    "remote-provider-profile.schema.json": [
+        "runtime/remote_provider_profiles.py", "runtime/group_provider_adapters.py",
+        "runtime/remote_model_bridge.py",
+    ],
+    # librarian_semantic_map builds a ContextGenerationVector through
+    # dependency_invalidation.context_vector_for_dependencies and evaluates
+    # currentness on it; that is semantic consumption, not generic hashing.
+    "context-generation-vector.schema.json": [
+        "runtime/context_generation.py", "runtime/dependency_invalidation.py",
+        "runtime/projection_gate.py",
+    ],
+    # projection_gate.py evaluates currentness FROM two typed ContextGenerationVector
+    # instances and derives recorded_vector_sha256/current_vector_sha256; librarian
+    # imports evaluate_projection and consumes the returned ProjectionStatus in
+    # projection_status()/assert_current() (:343-349).
+    "projection-status.schema.json": [
+        "runtime/projection_gate.py", "runtime/librarian_semantic_map.py",
+    ],
+    # The 2.0 compatibility contract shares the entire 1.0 semantic surface, so its
+    # consumers are the same verified modules, not a new set.
+    "execution-generation-vector.schema.json": [
+        "runtime/context_generation.py", "runtime/dependency_invalidation.py",
+        "runtime/projection_gate.py",
+    ],
+}
+
 
 CONTROL_OWNERS = {
     "certification-readiness.schema.json": (
@@ -836,11 +973,12 @@ def build(root: Path) -> dict[str, object]:
                 "title": schema.get("title", name),
                 "owner": owner,
                 "producers": producers,
-                "consumers": (["runtime/contracts.py", "runtime/project_revision_succession.py",
-                               "runtime/revision_campaign_lifecycle.py", "runtime/test_profiles.py"]
-                              if path.parent.name == "project_revision_succession"
-                              else ["runtime/contracts.py", "runtime/remote_provider_profiles.py", "runtime/remote_model_bridge.py"]
-                              if name == "remote-provider-profile.schema.json" else ["runtime/contracts.py"]),
+                "consumers": (
+                    ["runtime/contracts.py", "runtime/project_revision_succession.py",
+                     "runtime/revision_campaign_lifecycle.py", "runtime/test_profiles.py"]
+                    if path.parent.name == "project_revision_succession"
+                    else CONSUMERS.get(name, ["runtime/contracts.py"])
+                ),
                 "enforcement": enforcement,
                 "packaged": True,
                 "tests": list(
@@ -865,12 +1003,29 @@ def dump_result(result: dict[str, object]) -> str:
     return json.dumps(ordered, indent=2) + "\n"
 
 
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--root", type=Path, default=Path.cwd())
-    args = parser.parse_args()
+def main(argv: Sequence[str] | None = None) -> int:
+    """Publish the ownership image only through the admitted projection boundary.
+
+    Like every other guarded registry builder, a missing admission fails closed at
+    argument parsing. Publication itself re-validates the admission, takes native
+    custody of its lease, effect intent and temporary workspace, and read back
+    verifies the exact image before settlement.
+    """
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--admission-event-id", required=True)
+    parser.add_argument("--root", type=Path, default=ROOT)
+    args = parser.parse_args(argv)
     root = args.root.resolve()
     result = build(root)
-    target = root / "registry" / "contract_ownership.json"
-    target.write_text(dump_result(result), encoding="utf-8", newline="\n")
+    publish_guarded_registry_projection(
+        root,
+        "registry/contract_ownership.json",
+        result,
+        admission_event_id=args.admission_event_id,
+    )
     print(json.dumps({"contract_count": result["contract_count"]}, indent=2))
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

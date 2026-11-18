@@ -315,6 +315,35 @@ def test_governed_hardware_route_rejects_stale_benchmark_and_overbooking(tmp_pat
         ledger.reserve(placement, run_id="run-2")
 
 
+@pytest.mark.parametrize("damage", ["truncated", "wrong-schema", "invalid-active", "negative-reservation"])
+def test_capacity_ledger_corruption_never_becomes_available_capacity(tmp_path, damage):
+    import json
+
+    workload = _workload()
+    benchmark = _benchmark(workload)
+    placement = route_hardware(_plan(benchmark.revision), workload=workload,
+                               hardware=_hardware(), benchmark=benchmark)
+    ledger = PlacementCapacityLedger(tmp_path)
+    reservation = ledger.reserve(placement, run_id="existing-run")
+    state = json.loads(ledger.state_path.read_text())
+    if damage == "truncated":
+        image = b'{"active":'
+    else:
+        if damage == "wrong-schema":
+            state["schema_version"] = "unsupported"
+        elif damage == "invalid-active":
+            state["active"] = []
+        else:
+            row = state["active"][reservation["reservation_id"]]
+            row["reserved_bytes"] = -placement["available_capacity_bytes"]
+            row["reservation_sha256"] = _hash({k: v for k, v in row.items() if k != "reservation_sha256"})
+        image = json.dumps(state).encode("utf-8")
+    ledger.state_path.write_bytes(image)
+    with pytest.raises(ValueError):
+        ledger.reserve(placement, run_id="new-run")
+    assert ledger.state_path.read_bytes() == image
+
+
 def test_agent_plan_execution_receipts_outcome_and_releases_capacity(tmp_path):
     workload = _workload()
     benchmark = _benchmark(workload)

@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import argparse
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from datetime import datetime, timezone
 import hashlib
 import json
@@ -11,6 +11,7 @@ import os
 from pathlib import Path, PurePosixPath
 import re
 import signal
+import shutil
 import socket
 import stat
 import subprocess
@@ -55,7 +56,17 @@ def sha256(path: Path) -> str:
     return file_sha256(path)
 
 
+def _original_path(path: Path, label: str) -> Path:
+    from runtime.archive_io import reject_path_links
+    try:
+        reject_path_links(path)
+        return path.resolve()
+    except (OSError, ValueError) as error:
+        raise OwnerBlocked(f"unsafe or linked {label} path") from error
+
+
 def load_object(path: Path) -> dict[str, Any]:
+    _original_path(path, "JSON input")
     value = json.loads(path.read_text(encoding="utf-8"))
     if not isinstance(value, dict):
         raise OwnerBlocked(f"expected JSON object: {path}")
@@ -137,9 +148,9 @@ class Config:
         if raw.get("schema_version") not in (SCHEMA,CURRENT_SCHEMA):
             raise OwnerBlocked(f"config must use {SCHEMA}")
         root_raw = Path(str(raw.get("root") or ""))
-        root = (
-            root_raw if root_raw.is_absolute() else path.parent / root_raw
-        ).resolve()
+        root = _original_path(
+            root_raw if root_raw.is_absolute() else path.parent / root_raw, "root"
+        )
         artifact = raw.get("artifact")
         identity = raw.get("identity")
         install = raw.get("install")
@@ -150,6 +161,8 @@ class Config:
         ):
             raise OwnerBlocked("artifact, identity, and install objects are required")
         current = raw["schema_version"] == CURRENT_SCHEMA
+        from runtime.release_source_identity import require_release_configuration_mode
+        require_release_configuration_mode(root, current=current)
         if current:
             from runtime.release_source_identity import current_campaign
             if not current_campaign(root) or set(identity)!={"identity_kind","source_freeze"} or identity.get("identity_kind")!="standalone_current_campaign":
@@ -186,8 +199,8 @@ class Config:
             release_tag=str(identity.get("release_tag") or "").strip(),
             prior_tag_target=str(identity.get("prior_tag_target") or "").strip(),
             zip_entry_count=int(artifact.get("entry_count") or 0),
-            installed_dir=Path(str(install.get("directory") or "")).resolve(),
-            code_command=Path(str(install.get("code_command") or "")).resolve(),
+            installed_dir=_original_path(Path(str(install.get("directory") or "")), "installation"),
+            code_command=_original_path(Path(str(install.get("code_command") or "")), "VS Code executable"),
             installed_tree_digest=str(install.get("tree_digest") or ""),
             installed_version=str(install.get("version") or "").strip(),
             installable_entry_count=int(install.get("entry_count") or 0),
@@ -212,7 +225,7 @@ class Config:
                 or not result.release_tag.startswith("v") or len(result.prior_tag_target) != 40))
         ):
             raise OwnerBlocked("config contains an incomplete exact owner contract")
-        return result
+        return observe_completed_stages(result) if current else result
 
     def relative(self, path: Path) -> str:
         return path.relative_to(self.root).as_posix()
@@ -223,10 +236,215 @@ def release(config: Config) -> dict[str, Any]:
     return load_object(config.root / release_state_relative(config.root))
 
 
+def private_installation_root(config: Config) -> Path:
+    from runtime.release_source_identity import release_private_installation_relative
+    return config.root / release_private_installation_relative(config.candidate_id)
+
+
+def extension_identity(config: Config) -> dict[str, str]:
+    from runtime.archive_io import reject_path_links, portable_member_name
+    from runtime.json_io import load_json_object
+    path = config.root / "extension/package.json"
+    reject_path_links(path)
+    package = load_json_object(path, max_bytes=1024 * 1024)
+    for key in ("name", "publisher"):
+        if type(package.get(key)) is not str or not re.fullmatch(r"[a-z0-9][a-z0-9-]{0,127}", package[key]):
+            raise OwnerBlocked("current package requires a portable extension identity")
+    version = package.get("version")
+    if type(version) is not str or not re.fullmatch(r"\d+\.\d+\.\d+(?:[-+][A-Za-z0-9.-]+)?", version):
+        raise OwnerBlocked("current package version is invalid")
+    portable_member_name(f"{package['name']}-{version}.vsix", allow_directory=False)
+    return {"name": package["name"], "publisher": package["publisher"], "version": version,
+            "extension_id": f"{package['publisher']}.{package['name']}"}
+
+
+def observe_package(config: Config) -> dict[str, Any]:
+    """Inspect one bounded VSIX image without extracting any archive path."""
+    from runtime.archive_io import read_archive_bytes, validated_zip, read_stream_bytes, reject_path_links
+    from runtime.json_io import decode_json_object
+    from xml.etree import ElementTree
+    identity = extension_identity(config)
+    before = config.artifact.stat()
+    image = read_archive_bytes(config.artifact)
+    with validated_zip(image) as (archive, rows):
+        def member(name):
+            with archive.open(name) as stream:
+                return bytes(read_stream_bytes(stream, max_bytes=1024 * 1024))
+        package = decode_json_object(member("extension/package.json"), max_bytes=1024 * 1024)
+        if any(package.get(key) != identity[key] for key in ("name", "publisher", "version")):
+            raise OwnerBlocked("built VSIX extension identity differs from frozen source")
+        main = package.get("main")
+        if type(main) is not str or main != "./src/extension.bundle.js":
+            raise OwnerBlocked("built VSIX does not select its generated bundle")
+        archive.getinfo("extension/src/extension.bundle.js")
+        manifest = member("extension.vsixmanifest")
+        if b"\0" in manifest or b"<!DOCTYPE" in manifest.upper() or b"<!ENTITY" in manifest.upper():
+            raise OwnerBlocked("VSIX manifest declarations are forbidden")
+        element = ElementTree.fromstring(manifest)
+        declared = element.find("{*}Metadata/{*}Identity")
+        if declared is None or any(declared.get(key) != identity[value] for key, value in (
+            ("Id", "name"), ("Publisher", "publisher"), ("Version", "version"))):
+            raise OwnerBlocked("VSIX manifest identity differs from frozen source")
+        if archive.testzip() is not None:
+            raise OwnerBlocked("built VSIX failed CRC verification")
+        installable = sum(not row.is_dir() and row.filename.startswith("extension/") for row in rows) + 1
+        if any(row.filename.casefold() == "extension/.vsixmanifest" for row in rows):
+            raise OwnerBlocked("VSIX contains an installed manifest collision")
+        count = len(rows)
+    reject_path_links(config.artifact)
+    after = config.artifact.stat()
+    if any(getattr(before, field) != getattr(after, field) for field in (
+        "st_dev", "st_ino", "st_size", "st_mtime_ns", "st_ctime_ns")) or len(image) != after.st_size:
+        raise OwnerBlocked("VSIX changed during bounded observation")
+    return {"sha256": hashlib.sha256(image).hexdigest(), "size": len(image), "mtime_ns": after.st_mtime_ns,
+            "entry_count": count, "installable_entry_count": installable,
+            "version": identity["version"], "extension_id": identity["extension_id"]}
+
+
+def with_observed_package(config: Config, observation: Mapping[str, Any]) -> Config:
+    return replace(config, artifact_state="observed_current", artifact_sha256=observation["sha256"],
+        artifact_size=observation["size"], artifact_mtime_ns=observation["mtime_ns"],
+        zip_entry_count=observation["entry_count"], installable_entry_count=observation["installable_entry_count"],
+        installed_version=observation["version"])
+
+
+def vscode_cli_entrypoint(executable: Path) -> Path:
+    """Resolve only the traditional layout or the installed Windows wrapper's exact target."""
+    from runtime.archive_io import reject_path_links
+    reject_path_links(executable)
+    direct = executable.parent / "resources/app/out/cli.js"
+    reject_path_links(direct)
+    if direct.is_file():
+        return direct
+    wrapper = executable.parent / "bin/code.cmd"
+    reject_path_links(wrapper)
+    if not wrapper.is_file() or wrapper.stat().st_size > 65536:
+        raise OwnerBlocked("native VS Code CLI entrypoint is unavailable")
+    with wrapper.open("rb") as stream:
+        image = stream.read(65537)
+    if len(image) > 65536:
+        raise OwnerBlocked("native VS Code wrapper exceeds its bounded size")
+    targets = []
+    for line in image.decode("utf-8-sig").splitlines():
+        match = re.fullmatch(r'"%~dp0\.\.\\Code\.exe" "%~dp0\.\.\\([0-9a-f]{10})\\resources\\app\\out\\cli\.js" %\*', line.strip())
+        if match:
+            targets.append(executable.parent / match[1] / "resources/app/out/cli.js")
+    if len(targets) != 1:
+        raise OwnerBlocked("native VS Code wrapper must identify exactly one bounded CLI entrypoint")
+    cli = targets[0]
+    reject_path_links(cli)
+    if not cli.is_file():
+        raise OwnerBlocked("native VS Code wrapper CLI entrypoint is unavailable")
+    return cli
+
+
+def vscode_cli_argv(config: Config, *arguments: str) -> list[str]:
+    from runtime.archive_io import reject_path_links
+    reject_path_links(config.code_command)
+    if not config.code_command.is_file():
+        raise OwnerBlocked("configured native VS Code executable is unavailable")
+    command = [str(config.code_command)]
+    if os.name == "nt":
+        if config.code_command.suffix.lower() != ".exe":
+            raise OwnerBlocked("Windows private installation requires the native VS Code executable")
+        cli = vscode_cli_entrypoint(config.code_command)
+        command.append(str(cli))
+    return [*command, *arguments]
+
+
+def current_realization_preflight(config: Config, step: str) -> dict[str, Any]:
+    from runtime.archive_io import reject_path_links
+    if config.identity_kind != "standalone_current_campaign" or step not in {"package", "install"}:
+        raise OwnerBlocked("current package/install owner requires its closed current contract")
+    identity = extension_identity(config)
+    expected = config.root / "extension/dist" / f"{identity['name']}-{identity['version']}.vsix"
+    if config.artifact != expected or config.artifact_build_owner != "extension/scripts/package-vsix.js":
+        raise OwnerBlocked("planned artifact must use its exact extension producer/version locator")
+    private = private_installation_root(config)
+    installed = private / "extensions" / f"{identity['extension_id']}-{identity['version']}"
+    if config.installed_dir != installed:
+        raise OwnerBlocked("current installation must use the candidate's private extension/profile root")
+    reject_path_links(config.artifact)
+    reject_path_links(private)
+    if private.exists():
+        raise OwnerBlocked("private installation output already exists; no replacement or replay")
+    vscode_cli_argv(config)
+    if step == "package":
+        node = shutil.which("node")
+        if not node:
+            raise OwnerBlocked("native Node package producer is unavailable")
+        reject_path_links(Path(node))
+        if config.artifact.exists():
+            raise OwnerBlocked("issued VSIX already exists; select a fresh source version")
+        if not (config.root / config.artifact_build_owner).is_file():
+            raise OwnerBlocked("declared package producer is unavailable")
+    elif config.artifact_state != "observed_current":
+        raise OwnerBlocked("installation requires an authenticated observed package")
+    return identity
+
+
+def observe_completed_stages(config: Config) -> Config:
+    """Hydrate current observations only from authenticated, passed native claims."""
+    from runtime.archive_io import reject_path_links
+    from runtime.json_io import load_json_object
+    from runtime.release_campaign import release_campaign_status
+    from runtime.studio_authority import StudioAuthorityStore
+    current = release(config)
+    stages = current.get("stages", {})
+    if current.get("campaign_id") != config.candidate_id or stages.get("package", {}).get("status") != "passed":
+        return config
+    status = release_campaign_status(config.root, verify_source=True)
+    if status.get("valid") is not True or status.get("campaign_id") != config.candidate_id:
+        raise OwnerBlocked("observed release stages lack a current native source identity")
+    authority = StudioAuthorityStore.open_existing(config.root)
+    for stage in ("package", "install"):
+        native = stages.get(stage, {})
+        if native.get("status") != "passed":
+            break
+        path = config.evidence_dir / f"{config.candidate_id}-{stage}.json"
+        reject_path_links(path)
+        body = authority.verify_receipt(load_json_object(path, max_bytes=4 * 1024 * 1024))
+        mode = body.get("realization", {})
+        kernel = status["identity"]
+        if (body.get("valid") is not True or body.get("campaign_id") != config.candidate_id
+            or body.get("claim_id") != native.get("claim_id")
+            or any(body.get(key) != kernel.get(key) for key in (
+                "release_identity_sha256", "source_product_digest", "source_harness_digest"))
+            or mode.get("schema_version") != "px.current-release-realization/1.0"
+            or mode.get("stage") != stage or mode.get("source_freeze") != config.source_freeze_reference
+            or mode.get("owner_command", {}).get("valid") is not True):
+            raise OwnerBlocked("current realization receipt differs from its native stage/source")
+        command = mode["owner_command"]
+        log = inside(config.root, command.get("path"), "realization command log")
+        from runtime.json_io import read_bounded_bytes
+        log_image = read_bounded_bytes(log, max_bytes=2 * 1024 * 1024)
+        if hashlib.sha256(log_image).hexdigest() != command.get("sha256") or len(log_image) != command.get("size"):
+            raise OwnerBlocked("current realization command log differs from its signed receipt")
+        if body.get("schema_version") != STAGE_RECEIPT_SCHEMAS[stage] or (
+            stage == "package" and (body.get("artifact_rebuilt") is not True or body.get("artifact_touched") is not True)) or (
+            stage == "install" and (body.get("machine_mutated") is not True or body.get("install_command_executed") is not True)):
+            raise OwnerBlocked("current realization receipt contradicts its executed effects")
+        observed = observe_package(config)
+        if observed != body.get("artifact_observation") or body.get("artifact") != {
+            "path": config.relative(config.artifact), "sha256": observed["sha256"], "size": observed["size"]}:
+            raise OwnerBlocked("realization receipt differs from actual VSIX bytes")
+        config = with_observed_package(config, observed)
+        if stage == "install":
+            observation = body.get("installation_observation", {})
+            files, links, tree_digest = ProductionEffects().tree(config.installed_dir)
+            if (observation != {"directory": str(config.installed_dir), "tree_digest": tree_digest,
+                "file_count": len(files), "version": config.installed_version,
+                "profile": str(private_installation_root(config) / "user-data")}
+                or links or len(files) != config.installable_entry_count
+                or body.get("tree_digest_after") != tree_digest):
+                raise OwnerBlocked("realization receipt differs from actual installed bytes")
+            config = replace(config, install_state="observed_current", installed_tree_digest=tree_digest)
+    return config
+
+
 def repair(config: Config) -> dict[str, Any]:
-    return load_object(
-        config.root / ".agentic_engineering_os_px/processing-order/repair-campaign.json"
-    )
+    from runtime.project_revision_succession import current_campaign_path
+    return load_object(current_campaign_path(config.root))
 
 
 def identity_manifest(config: Config) -> tuple[list[str], list[str]]:
@@ -375,7 +593,12 @@ def check(config: Config, step: str) -> dict[str, Any]:
     if step not in STEPS:
         errors.append("unsupported step")
     if config.artifact_state == "planned":
-        if step not in {"archive_clear", "reconcile", "identity", "sections", "full_profile", "validate"}:
+        if step == "package" and config.identity_kind == "standalone_current_campaign":
+            try:
+                current_realization_preflight(config, step)
+            except (OSError, ValueError, OwnerBlocked) as error:
+                errors.append("planned artifact cannot satisfy current package preflight: " + str(error))
+        elif step not in {"archive_clear", "reconcile", "identity", "sections", "full_profile", "validate"}:
             errors.append("planned artifact cannot satisfy package/install or downstream artifact evidence")
     elif not config.artifact.is_file() or config.artifact.is_symlink():
         errors.append("artifact is not a regular file")
@@ -539,6 +762,95 @@ class Effects(Protocol):
 
 
 class ProductionEffects:
+    def current_realization(self, config: Config, step: str) -> Mapping[str, Any]:
+        """Create one private package/install under the native, non-replayable claim."""
+        from runtime.release_process_custody import require_release_host, require_release_admission
+        from runtime.release_campaign import claim_release_stage, finish_release_stage
+        from runtime.studio_authority import StudioAuthorityStore
+        from runtime.resource_lifecycle import ResourceManager, ResourceClassification, RunState
+        require_release_host(config.root)
+        require_release_admission(config.root, os.environ.get("PX_RELEASE_ADMISSION_EVENT_ID"), (
+            ("read", str(config.root)), ("write", str(config.evidence_dir)),
+            ("write", str(config.log_dir)), ("execute", "runtime")))
+        authority = StudioAuthorityStore.open_existing(config.root)
+        identity = current_realization_preflight(config, step)
+        private = private_installation_root(config)
+        if step == "install":
+            require_release_admission(config.root, os.environ.get("PX_RELEASE_INSTALL_ADMISSION_EVENT_ID"),
+                                      (("install", str(private)),))
+        path = config.evidence_dir / f"{config.candidate_id}-{step}.json"
+        self.probe_output(path)
+        claim = claim_release_stage(config.root, step)
+        finished = False
+        installation_manager = None
+        installation_run = "private-installation-" + hashlib.sha256(config.candidate_id.encode()).hexdigest()
+        receipt_written = False
+        try:
+            atomic_json(path, {"schema_version": "px.release-stage-owner-terminal-marker/1.0",
+                "candidate_id": config.candidate_id, "step": step, "claim_id": claim["claim_id"],
+                "status": "running", "valid": False, "retry_policy": "no-replay; inspect canonical state"})
+            if step == "package":
+                command = self.command(config, "package-build", [shutil.which("node"),
+                    str(config.root / config.artifact_build_owner)], timeout_seconds=600)
+                observation = observe_package(config)
+                config = with_observed_package(config, observation)
+                payload = self.package_audit(config, claim)
+                payload.update(artifact_rebuilt=True, artifact_touched=True)
+            else:
+                observation = observe_package(config)
+                if (observation["sha256"], observation["size"], observation["mtime_ns"]) != (
+                    config.artifact_sha256, config.artifact_size, config.artifact_mtime_ns):
+                    raise OwnerBlocked("package changed before private installation")
+                installation_manager = ResourceManager(config.root / ".agentic_engineering_os_px/resource-lifecycle/ledger.json")
+                private.parent.mkdir(parents=True, exist_ok=True)
+                installation_manager.register_path(private, allowed_cleanup_root=private.parent,
+                    project_id=str(config.root), run_id=installation_run, lane_id="install",
+                    creator="native-release-owner", classification=ResourceClassification.PROTECTED,
+                    retention_required=True, expected_cleanup_event="explicit owner retirement only")
+                private.mkdir(exist_ok=False)
+                command = self.command(config, "install-realize", vscode_cli_argv(config,
+                    "--user-data-dir", str(private / "user-data"), "--extensions-dir", str(private / "extensions"),
+                    "--install-extension", str(config.artifact)), timeout_seconds=900)
+                files, links, tree_digest = self.tree(config.installed_dir)
+                if links or len(files) != config.installable_entry_count:
+                    raise OwnerBlocked("private installation tree denominator differs from observed package")
+                config = replace(config, installed_tree_digest=tree_digest, install_state="observed_current")
+                payload = self.install_audit(config, claim)
+                payload.update(machine_mutated=True, install_command_executed=True,
+                    installation_observation={"directory": str(config.installed_dir), "tree_digest": tree_digest,
+                        "file_count": len(files), "version": identity["version"],
+                        "profile": str(private / "user-data")})
+            if payload.get("valid") is not True or command.get("valid") is not True:
+                raise OwnerBlocked(f"current {step} did not reach its exact observed postcondition")
+            payload.update(artifact_observation=observation, realization={
+                "schema_version": "px.current-release-realization/1.0", "stage": step,
+                "source_freeze": config.source_freeze_reference, "owner_command": command})
+            if installation_manager is not None:
+                installation_manager.mark_run_ended(installation_run, RunState.COMPLETED,
+                    retain_reason="Private installed extension and profile; no automatic deletion authority")
+            signed = authority.sign_receipt(payload)
+            authority.verify_receipt(signed)
+            terminal = finish_release_stage(config.root, stage=step, claim_id=claim["claim_id"], passed=True)
+            finished = True
+            if terminal.get("valid") is not True or terminal.get("stages", {}).get(step, {}).get("status") != "passed":
+                raise OwnerBlocked("native realization stage did not pass its final source check")
+            reference = self.receipt(config, step, signed)
+            receipt_written = True
+            self.advance(config, *PHASES[step])
+            return reference
+        except BaseException as error:
+            if not finished:
+                finish_release_stage(config.root, stage=step, claim_id=claim["claim_id"], passed=False)
+            if not receipt_written:
+                atomic_json(path, {"schema_version": "px.release-stage-owner-terminal-marker/1.0",
+                    "candidate_id": config.candidate_id, "step": step, "claim_id": claim["claim_id"],
+                    "status": "indeterminate" if finished else "failed", "valid": False,
+                    "failure_type": type(error).__name__, "retry_policy": "no-replay; inspect canonical state"})
+            if installation_manager is not None:
+                installation_manager.mark_run_ended(installation_run, RunState.FAILED,
+                    retain_reason="Retained private installation attempt; never replay or delete automatically")
+            raise
+
     def probe_output(self, path: Path) -> None:
         path.parent.mkdir(parents=True, exist_ok=True)
         if path.exists():
@@ -566,9 +878,13 @@ class ProductionEffects:
         }
 
     def advance(self, config: Config, before: str, after: str) -> None:
-        path = (
-            config.root / ".agentic_engineering_os_px/processing-order/repair-campaign.json"
-        )
+        from runtime.project_revision_succession import current_campaign_path, current_revision_root
+        if current_revision_root(config.root) is not None:
+            from runtime.revision_campaign_lifecycle import advance_release_phase
+            advance_release_phase(config.root, before=before, after=after,
+                                  admission_event_id=os.environ.get("PX_RELEASE_ADMISSION_EVENT_ID"))
+            return
+        path = current_campaign_path(config.root)
         value = load_object(path)
         if (
             value.get("phase") != before
@@ -587,6 +903,9 @@ class ProductionEffects:
         *,
         timeout_seconds: int,
     ) -> dict[str, Any]:
+        if config.identity_kind == "standalone_current_campaign":
+            from runtime.release_process_custody import run_release_command
+            return run_release_command(config, name, argv, timeout_seconds=timeout_seconds)
         config.log_dir.mkdir(parents=True, exist_ok=True)
         log = config.log_dir / f"{config.candidate_id}-{name}.log"
         with log.open("x", encoding="utf-8", newline="\n") as stream:
@@ -843,13 +1162,17 @@ class ProductionEffects:
         )
 
     def package_audit(self, config: Config, claim: Mapping[str, Any]) -> dict[str, Any]:
+        from runtime.archive_io import read_archive_bytes, validated_zip
+
+        image = read_archive_bytes(config.artifact)
         before = (
-            sha256(config.artifact),
-            config.artifact.stat().st_size,
+            hashlib.sha256(image).hexdigest(),
+            len(image),
             config.artifact.stat().st_mtime_ns,
         )
-        with zipfile.ZipFile(config.artifact) as archive:
-            rows = archive.infolist()
+        # Validate directory, portable identities, compression and byte budgets
+        # before any member is expanded for CRC verification.
+        with validated_zip(image) as (archive, rows):
             names = [row.filename for row in rows]
             bad_crc = archive.testzip()
         unsafe = [
@@ -914,43 +1237,50 @@ class ProductionEffects:
         }
 
     def tree(self, root: Path) -> tuple[dict[str, Path], list[str], str]:
+        from runtime.archive_io import DEFAULT_LIMITS, reject_path_links, portable_member_name
+        from runtime.json_io import read_bounded_bytes
+        reject_path_links(root)
+        if not root.is_dir():
+            raise OwnerBlocked("installed extension tree is unavailable")
         files: dict[str, Path] = {}
         links: list[str] = []
-        for current, directories, names in os.walk(
-            root, topdown=True, followlinks=False
-        ):
-            base = Path(current)
-            retained: list[str] = []
-            for name in sorted(directories):
-                path = base / name
-                flags = int(getattr(path.lstat(), "st_file_attributes", 0))
-                if path.is_symlink() or flags & int(
-                    getattr(stat, "FILE_ATTRIBUTE_REPARSE_POINT", 0x400)
-                ):
-                    links.append(path.relative_to(root).as_posix() + "/")
-                else:
-                    retained.append(name)
-            directories[:] = retained
-            for name in sorted(names):
-                path = base / name
-                relative = path.relative_to(root).as_posix()
-                flags = int(getattr(path.lstat(), "st_file_attributes", 0))
-                if path.is_symlink() or flags & int(
-                    getattr(stat, "FILE_ATTRIBUTE_REPARSE_POINT", 0x400)
-                ):
-                    links.append(relative)
-                elif path.is_file():
-                    files[relative] = path
+        pending = [root]
+        entries = 0
+        identities = set()
+        while pending:
+            directory = pending.pop()
+            with os.scandir(directory) as children:
+                for child in children:
+                    entries += 1
+                    if entries > DEFAULT_LIMITS.max_members + 2048:
+                        raise OwnerBlocked("installed tree entry budget exceeded")
+                    path = Path(child.path)
+                    relative = path.relative_to(root).as_posix()
+                    portable_member_name(relative, allow_directory=False)
+                    identity = relative.casefold()
+                    if identity in identities:
+                        raise OwnerBlocked("installed tree has a portable path alias")
+                    identities.add(identity)
+                    info = child.stat(follow_symlinks=False)
+                    if child.is_symlink() or getattr(info, "st_file_attributes", 0) & 0x400:
+                        links.append(relative)
+                    elif stat.S_ISDIR(info.st_mode):
+                        pending.append(path)
+                    elif stat.S_ISREG(info.st_mode):
+                        if len(files) >= DEFAULT_LIMITS.max_members:
+                            raise OwnerBlocked("installed file count budget exceeded")
+                        files[relative] = path
+                    else:
+                        raise OwnerBlocked("installed tree contains an unsupported filesystem entry")
         digest = hashlib.sha256()
+        total = 0
         for relative in sorted(files):
-            payload = files[relative].read_bytes()
-            for part in (
-                relative.encode(),
-                b"\0",
-                str(len(payload)).encode(),
-                b"\0",
-                hashlib.sha256(payload).digest(),
-            ):
+            reject_path_links(files[relative])
+            payload = read_bounded_bytes(files[relative], max_bytes=DEFAULT_LIMITS.max_member_bytes)
+            total += len(payload)
+            if total > DEFAULT_LIMITS.max_expanded_bytes:
+                raise OwnerBlocked("installed tree expanded byte budget exceeded")
+            for part in (relative.encode(), b"\0", str(len(payload)).encode(), b"\0", hashlib.sha256(payload).digest()):
                 digest.update(part)
         return files, sorted(links), digest.hexdigest()
 
@@ -959,6 +1289,13 @@ class ProductionEffects:
     ) -> subprocess.CompletedProcess[str]:
         """Query the exact extension root without inheriting an IDE host profile."""
 
+        if config.identity_kind == "standalone_current_campaign":
+            from runtime.json_io import read_bounded_bytes
+            command = vscode_cli_argv(config, "--user-data-dir", str(private_installation_root(config) / "user-data"),
+                "--extensions-dir", str(config.installed_dir.parent), "--list-extensions", "--show-versions")
+            receipt = self.command(config, "install-list", command, timeout_seconds=60)
+            text = bytes(read_bounded_bytes(config.root / receipt["path"], max_bytes=2 * 1024 * 1024)).decode("utf-8")
+            return subprocess.CompletedProcess(command, 0, text, "")
         environment = {
             key: value
             for key, value in os.environ.items()
@@ -988,9 +1325,11 @@ class ProductionEffects:
             )
 
     def install_audit(self, config: Config, claim: Mapping[str, Any]) -> dict[str, Any]:
+        from runtime.archive_io import read_archive_bytes, validated_zip, DEFAULT_LIMITS, reject_path_links
+        from runtime.json_io import read_bounded_bytes
         before_files, before_links, before_digest = self.tree(config.installed_dir)
         listed = self.list_installed_extensions(config)
-        with zipfile.ZipFile(config.artifact) as archive:
+        with validated_zip(read_archive_bytes(config.artifact)) as (archive, _):
             entries = {
                 row.filename.removeprefix("extension/"): row
                 for row in archive.infolist()
@@ -1005,7 +1344,8 @@ class ProductionEffects:
             normalized = 0
             for relative in sorted(set(entries) & set(before_files)):
                 expected = archive.read(entries[relative])
-                observed = before_files[relative].read_bytes()
+                reject_path_links(before_files[relative])
+                observed = bytes(read_bounded_bytes(before_files[relative], max_bytes=DEFAULT_LIMITS.max_member_bytes))
                 if expected == observed:
                     identical += 1
                 elif relative == "package.json":
@@ -1019,20 +1359,21 @@ class ProductionEffects:
                 else:
                     mismatches.append(relative)
         _, after_links, after_digest = self.tree(config.installed_dir)
-        owned = sorted(
-            line.strip()
-            for line in listed.stdout.splitlines()
-            if line.strip().lower().startswith("mountain-nomad-bc.pacify-x-vscode@")
-        )
+        extension_id = (extension_identity(config)["extension_id"]
+                        if config.identity_kind == "standalone_current_campaign"
+                        else "mountain-nomad-bc.pacify-x-vscode")
+        owned = sorted(line.strip() for line in listed.stdout.splitlines()
+                       if line.strip().lower().startswith(extension_id + "@"))
         valid = (
             listed.returncode == 0
             and owned
-            == [f"mountain-nomad-bc.pacify-x-vscode@{config.installed_version}"]
+            == [f"{extension_id}@{config.installed_version}"]
             and len(entries) == config.installable_entry_count
             and not missing
             and not extra
             and not mismatches
-            and normalized == 1
+            and (normalized in (0, 1) if config.identity_kind == "standalone_current_campaign" else normalized == 1)
+            and identical + normalized == len(entries)
             and bad_crc is None
             and not before_links
             and not after_links
@@ -1079,6 +1420,8 @@ class ProductionEffects:
         }
 
     def execute(self, step: str, config: Config) -> Mapping[str, Any]:
+        if config.identity_kind == "standalone_current_campaign" and step in {"package", "install"}:
+            return self.current_realization(config, step)
         from runtime.release_campaign import (
             claim_release_stage,
             finish_release_stage,
@@ -1383,6 +1726,8 @@ class ProductionEffects:
         return receipt
 
     def verify(self, step: str, config: Config) -> None:
+        if config.identity_kind == "standalone_current_campaign" and step in {"package", "install"}:
+            config = observe_completed_stages(config)
         current_release = release(config)
         current_repair = repair(config)
         if step == "archive_clear":
@@ -1436,7 +1781,30 @@ class ProductionEffects:
             if step == "install" and actual_claim is None:
                 actual_claim = receipt.get("install_claim_id")
             receipt_valid = receipt_valid and actual_claim == expected_claim
-        if step in {"identity", "package", "install"}:
+        if step == "identity" and config.identity_kind == "standalone_current_campaign":
+            from runtime.release_source_identity import verify_release_source_identity
+
+            source = receipt.get("source_identity")
+            source_valid = verify_release_source_identity(config.root, source).get("valid") is True
+            kernel = current_release.get("identity", {})
+            receipt_valid = (
+                receipt_valid
+                and source_valid
+                and isinstance(source, dict)
+                and source.get("source_freeze") == config.source_freeze_reference
+                and source.get("campaign_id") == config.candidate_id
+                and all(receipt.get(key) == kernel.get(key) for key in (
+                    "release_identity_sha256", "source_product_digest", "source_harness_digest"))
+                and receipt.get("git_acceptance") == {"state": "deferred_by_owner", "satisfied": False}
+                and receipt.get("commit_created") is False
+                and type(receipt.get("retag_count")) is int
+                and receipt["retag_count"] == 0
+                and receipt.get("artifact") == {
+                    "state": "planned", "path": config.relative(config.artifact),
+                    "type": config.artifact_type, "build_owner": config.artifact_build_owner,
+                }
+            )
+        elif step in {"identity", "package", "install"}:
             artifact = receipt.get("artifact")
             receipt_valid = receipt_valid and artifact == {
                 "path": config.relative(config.artifact),
@@ -1565,7 +1933,7 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
     config: Config | None = None
     try:
-        config = Config.load(args.config.resolve(strict=True))
+        config = Config.load(args.config)
         if not args.check and not args.execute:
             output = plan(config, args.step)
         elif args.check:

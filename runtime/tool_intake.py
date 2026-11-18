@@ -64,6 +64,16 @@ def _corpus_digest(project: Path) -> str:
     ).hexdigest()
 
 
+def _require_scanner_network_policy(allowed: object, isolation_claim: object) -> None:
+    """Caller flags cannot establish native isolation or relax its absence."""
+    if type(allowed) is not bool:
+        raise PermissionError("scanner network policy must be an explicit boolean")
+    if allowed is False or isolation_claim is not False:
+        raise PermissionError(
+            "verified native scanner isolation is unavailable; caller isolation assertions are not evidence"
+        )
+
+
 def execute_scanner(
     command: list[str],
     *,
@@ -80,12 +90,7 @@ def execute_scanner(
         raise ValueError("scanner timeout must be positive")
     if not re.fullmatch(r"[0-9a-f]{64}", corpus_digest):
         raise ValueError("scanner corpus digest must be a lowercase SHA-256")
-    if network_allowed is None:
-        raise PermissionError("scanner network policy must be explicit")
-    if network_allowed is False and not network_isolation_enforced:
-        raise PermissionError(
-            "network-denied scanner requires an enforced isolation adapter"
-        )
+    _require_scanner_network_policy(network_allowed, network_isolation_enforced)
     executable = approved_executable.resolve(strict=True)
     if not executable.is_file() or not os.path.isabs(str(approved_executable)):
         raise PermissionError("scanner executable must be an absolute regular file")
@@ -272,6 +277,12 @@ def scan_project_tooling(
     allowed_licenses: Iterable[str] = (),
     runner: Runner = subprocess.run,
 ) -> dict[str, Any]:
+    if type(execute_scanners) is not bool:
+        raise PermissionError("scanner execution selection must be an explicit boolean")
+    if execute_scanners:
+        if scanner_approval is not True:
+            raise PermissionError("external scanner execution requires explicit scanner approval")
+        _require_scanner_network_policy(scanner_network_allowed, scanner_network_isolation_enforced)
     project = project.resolve()
     if not project.is_dir():
         raise ValueError("project root does not exist")
@@ -279,14 +290,6 @@ def scan_project_tooling(
     allowed = {value.casefold() for value in allowed_licenses}
     recipes = _recipes({item["ecosystem"] for item in components}, project)
     scanners: list[dict[str, Any]] = []
-    if execute_scanners and not scanner_approval:
-        raise PermissionError(
-            "external scanner execution requires explicit scanner approval"
-        )
-    if execute_scanners and scanner_network_allowed is None:
-        raise PermissionError(
-            "external scanner execution requires an explicit network policy"
-        )
     if execute_scanners:
         corpus_digest = _corpus_digest(project)
         for scanner_id, command in recipes:

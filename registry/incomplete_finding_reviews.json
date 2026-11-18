@@ -1,1219 +1,1229 @@
 {
-  "schema_version": "2.0",
-  "records": [
-    {
-      "id": "19a447161ece9d566843",
-      "path": ".px/skills/audit-incomplete-implementations/scripts/audit_incomplete.py",
-      "line": 39,
-      "rule": "todo-comment",
-      "classification": "detector_literal",
-      "rationale": "The scanner must contain the marker vocabulary it detects.",
-      "owner": "audit-incomplete-implementations",
-      "review_condition": "review whenever detector vocabulary changes"
-    },
-    {
-      "id": "fe075cefe4df1d3ab731",
-      "path": ".px/skills/audit-incomplete-implementations/scripts/audit_incomplete.py",
-      "line": 40,
-      "rule": "unimplemented-error",
-      "classification": "detector_literal",
-      "rationale": "The scanner must contain the unimplemented phrase it detects.",
-      "owner": "audit-incomplete-implementations",
-      "review_condition": "review whenever detector vocabulary changes"
-    },
-    {
-      "id": "6d685fce8c0895bfeb03",
-      "path": ".px/skills/audit-incomplete-implementations/scripts/audit_incomplete.py",
-      "line": 76,
-      "rule": "unimplemented-error",
-      "classification": "detector_literal",
-      "rationale": "The AST detector names the exception type it detects.",
-      "owner": "audit-incomplete-implementations",
-      "review_condition": "review whenever Python stub rules change"
-    },
-    {
-      "id": "1372fbfedc7bcba00346",
-      "path": "px/py_cert/scripts/run_pre_cert_repository_convergence.py",
-      "line": 140,
-      "rule": "python-pass",
-      "classification": "expected_control_flow",
-      "rationale": "The ValueError branch is the successful outcome of proving output_root is outside the repository.",
-      "owner": "pre-cert-convergence",
-      "review_condition": "review whenever output-root containment validation changes"
-    },
-    {
-      "id": "8d51001e7fb188a71f61",
-      "path": "px/py_cert/scripts/run_release_stage_owner.py",
-      "line": 481,
-      "rule": "python-ellipsis-body",
-      "classification": "protocol_contract",
-      "rationale": "Effects.execute is a typing Protocol declaration; an ellipsis body defines the required structural interface and is not an implementation stub.",
-      "owner": "release-stage-owner",
-      "review_condition": "review whenever the release-stage effects protocol changes"
-    },
-    {
-      "id": "e356fa8e9a2aeb263e98",
-      "path": "px/py_cert/scripts/run_release_stage_owner.py",
-      "line": 482,
-      "rule": "python-ellipsis-body",
-      "classification": "protocol_contract",
-      "rationale": "Effects.verify is a typing Protocol declaration; an ellipsis body defines the required structural interface and is not an implementation stub.",
-      "owner": "release-stage-owner",
-      "review_condition": "review whenever the release-stage effects protocol changes"
-    },
-    {
-      "id": "6ab059c47ec859a87ce6",
-      "path": "px/py_cert/scripts/run_release_stage_owner.py",
-      "line": 1211,
-      "rule": "python-pass",
-      "classification": "safe_degradation",
-      "rationale": "Failure to write the secondary failure-stage receipt is intentionally suppressed so the original governed-section failure remains authoritative.",
-      "owner": "release-stage-owner",
-      "review_condition": "review whenever governed-section failure cleanup changes"
-    },
-    {
-      "id": "21788835f75ce060af7f",
-      "path": "runtime/agent_runtime.py",
-      "line": 1735,
-      "rule": "python-pass",
-      "classification": "expected_control_flow",
-      "rationale": "A guarded resume harness exception keeps the original failure visible while ensuring harness admission checks can report contract violations.",
-      "owner": "agent-runtime",
-      "review_condition": "review whenever resume-harness recovery handling changes"
-    },
-    {
-      "id": "7101eeddce6480e7165a",
-      "path": "runtime/authoritative_json.py",
-      "line": 224,
-      "rule": "python-pass",
-      "classification": "safe_degradation",
-      "rationale": "If both authoritative recovery-receipt writes fail, the original intent path remains the recoverable custody locator and the primary quarantine failure is still raised without inventing replacement state.",
-      "owner": "authoritative-json",
-      "review_condition": "review whenever authoritative quarantine recovery or receipt fallback semantics change"
-    },
-    {
-      "id": "3d5d378d35c05a62bebe",
-      "path": "runtime/cli.py",
-      "line": 3403,
-      "rule": "python-pass",
-      "classification": "safe_degradation",
-      "rationale": "Failure to publish a secondary failed-stage transition must not replace or hide the original command exception returned to the operator; the campaign remains fail-closed and the primary error is preserved.",
-      "owner": "runtime-cli",
-      "review_condition": "review whenever release-stage exception finalization changes"
-    },
-    {
-      "id": "3588b0d9af5788d0fa38",
-      "path": "runtime/commissioning.py",
-      "line": 780,
-      "rule": "todo-comment",
-      "classification": "validation_literal",
-      "rationale": "Commissioning rejects skill templates that retain an incomplete marker.",
-      "owner": "commission-project",
-      "review_condition": "review whenever skill-template validation changes"
-    },
-    {
-      "id": "d7768ec131a2200f487d",
-      "path": "runtime/evidence_portability.py",
-      "line": 91,
-      "rule": "python-pass",
-      "classification": "expected_control_flow",
-      "rationale": "A failed root-relative conversion deliberately falls through so the locator is recorded as an external reference.",
-      "owner": "runtime",
-      "review_condition": "review whenever evidence locator classification changes"
-    },
-    {
-      "id": "2c7131ae941a502957f3",
-      "path": "runtime/file_lock.py",
-      "line": 334,
-      "rule": "python-pass",
-      "classification": "expected_control_flow",
-      "rationale": "A platform unlock error cannot restore ownership; the stream is still closed and the token-fenced lease record remains the recovery authority.",
-      "owner": "runtime",
-      "review_condition": "review whenever lock release semantics change"
-    },
-    {
-      "id": "8977048be67e52991b6a",
-      "path": "runtime/hardware_routing.py",
-      "line": 259,
-      "rule": "python-pass",
-      "classification": "safe_degradation",
-      "rationale": "An optional CUDA memory-detail probe may be absent even when CUDA is otherwise usable; retaining the already discovered device properties is the intended bounded fallback.",
-      "owner": "hardware-aware-execution-routing",
-      "review_condition": "review whenever CUDA probe fallback behavior changes"
-    },
-    {
-      "id": "fd71945296653a8e21ae",
-      "path": "runtime/lifecycle.py",
-      "line": 23,
-      "rule": "python-ellipsis-body",
-      "classification": "protocol_contract",
-      "rationale": "The ellipsis declares a typing Protocol method implemented by concrete checkpoint sinks.",
-      "owner": "runtime",
-      "review_condition": "review if the protocol becomes a concrete class"
-    },
-    {
-      "id": "6f12652da28305cf3d12",
-      "path": "runtime/model_protocol_translate.py",
-      "line": 546,
-      "rule": "python-pass",
-      "classification": "expected_control_flow",
-      "rationale": "message_delta stop_reason is intentionally observed without terminalizing; message_stop remains the deterministic terminal event.",
-      "owner": "model-protocol-translate",
-      "review_condition": "review whenever Anthropic stream terminalization semantics change"
-    },
-    {
-      "id": "c5269a7488812df5bb3a",
-      "path": "runtime/operational_observers.py",
-      "line": 288,
-      "rule": "python-ellipsis-body",
-      "classification": "protocol_contract",
-      "rationale": "The observer probe method is a typing Protocol implemented by admitted platform adapters.",
-      "owner": "operational-observers",
-      "review_condition": "review whenever the observer protocol changes"
-    },
-    {
-      "id": "9028a9c80cc00d95dd99",
-      "path": "runtime/operational_observers.py",
-      "line": 290,
-      "rule": "python-ellipsis-body",
-      "classification": "protocol_contract",
-      "rationale": "The observer start method is a typing Protocol implemented by admitted platform adapters.",
-      "owner": "operational-observers",
-      "review_condition": "review whenever the observer protocol changes"
-    },
-    {
-      "id": "c7f184905d5812ce74f2",
-      "path": "runtime/operational_observers.py",
-      "line": 292,
-      "rule": "python-ellipsis-body",
-      "classification": "protocol_contract",
-      "rationale": "The observer read method is a typing Protocol implemented by admitted platform adapters.",
-      "owner": "operational-observers",
-      "review_condition": "review whenever the observer protocol changes"
-    },
-    {
-      "id": "6b8a818e58b750e8c3ce",
-      "path": "runtime/operational_observers.py",
-      "line": 294,
-      "rule": "python-ellipsis-body",
-      "classification": "protocol_contract",
-      "rationale": "The observer stop method is a typing Protocol implemented by admitted platform adapters.",
-      "owner": "operational-observers",
-      "review_condition": "review whenever the observer protocol changes"
-    },
-    {
-      "id": "51c539d4f8438f02b7d5",
-      "path": "runtime/operational_observers.py",
-      "line": 296,
-      "rule": "python-ellipsis-body",
-      "classification": "protocol_contract",
-      "rationale": "The observer uninstall method is a typing Protocol implemented by admitted platform adapters.",
-      "owner": "operational-observers",
-      "review_condition": "review whenever the observer protocol changes"
-    },
-    {
-      "id": "8b09f792047d90cb27f0",
-      "path": "runtime/operational_observers.py",
-      "line": 300,
-      "rule": "python-ellipsis-body",
-      "classification": "protocol_contract",
-      "rationale": "The command-runner method is a typing Protocol; concrete execution remains fixed-vector, non-shell, and consent gated.",
-      "owner": "operational-observers",
-      "review_condition": "review whenever the command runner contract changes"
-    },
-    {
-      "id": "424507ca699be4f17d14",
-      "path": "runtime/orchestrator.py",
-      "line": 68,
-      "rule": "python-ellipsis-body",
-      "classification": "protocol_contract",
-      "rationale": "The ellipsis declares the handler callable Protocol, not an implementation stub.",
-      "owner": "runtime",
-      "review_condition": "review if handler typing changes"
-    },
-    {
-      "id": "36963e3adadb0d9d475a",
-      "path": "runtime/process_supervisor.py",
-      "line": 488,
-      "rule": "python-pass",
-      "classification": "safe_degradation",
-      "rationale": "A failed process-group signal falls through to identity-verified descendant signaling and bounded wait/closure verification.",
-      "owner": "process-supervisor",
-      "review_condition": "review whenever process-tree shutdown escalation changes"
-    },
-    {
-      "id": "b74ccc3e4e94ad7237bb",
-      "path": "runtime/project_intelligence.py",
-      "line": 3096,
-      "rule": "python-pass",
-      "classification": "expected_control_flow",
-      "rationale": "A failed custody move intentionally leaves the mapping lock in place for recoverable operator review; deleting or masking it would violate the preservation contract.",
-      "owner": "map-project-intelligence",
-      "review_condition": "review whenever mapping lock custody or cleanup behavior changes"
-    },
-    {
-      "id": "900ddf0c1211163bc141",
-      "path": "runtime/provider_certification.py",
-      "line": 16,
-      "rule": "python-ellipsis-body",
-      "classification": "protocol_contract",
-      "rationale": "The method belongs to the optional provider Protocol certified through concrete adapters.",
-      "owner": "runtime",
-      "review_condition": "review if the provider Protocol changes"
-    },
-    {
-      "id": "8ec10e4e790ff92d7d6c",
-      "path": "runtime/provider_certification.py",
-      "line": 17,
-      "rule": "python-ellipsis-body",
-      "classification": "protocol_contract",
-      "rationale": "The method belongs to the optional provider Protocol certified through concrete adapters.",
-      "owner": "runtime",
-      "review_condition": "review if the provider Protocol changes"
-    },
-    {
-      "id": "288b2df4e05b25ba0cd5",
-      "path": "runtime/provider_certification.py",
-      "line": 18,
-      "rule": "python-ellipsis-body",
-      "classification": "protocol_contract",
-      "rationale": "The method belongs to the optional provider Protocol certified through concrete adapters.",
-      "owner": "runtime",
-      "review_condition": "review if the provider Protocol changes"
-    },
-    {
-      "id": "79c04733be5907023ea5",
-      "path": "runtime/provider_certification.py",
-      "line": 19,
-      "rule": "python-ellipsis-body",
-      "classification": "protocol_contract",
-      "rationale": "The method belongs to the optional provider Protocol certified through concrete adapters.",
-      "owner": "runtime",
-      "review_condition": "review if the provider Protocol changes"
-    },
-    {
-      "id": "096feb39c58082bf0b3f",
-      "path": "runtime/provider_certification.py",
-      "line": 20,
-      "rule": "python-ellipsis-body",
-      "classification": "protocol_contract",
-      "rationale": "The method belongs to the optional provider Protocol certified through concrete adapters.",
-      "owner": "runtime",
-      "review_condition": "review if the provider Protocol changes"
-    },
-    {
-      "id": "ba19c0e291e3028ca090",
-      "path": "runtime/provider_certification.py",
-      "line": 21,
-      "rule": "python-ellipsis-body",
-      "classification": "protocol_contract",
-      "rationale": "The method belongs to the optional provider Protocol certified through concrete adapters.",
-      "owner": "runtime",
-      "review_condition": "review if the provider Protocol changes"
-    },
-    {
-      "id": "84035f89bba6867f980a",
-      "path": "runtime/provider_gateway.py",
-      "line": 54,
-      "rule": "python-ellipsis-body",
-      "classification": "protocol_contract",
-      "rationale": "The provider invoke method is a typing Protocol implemented only by admitted provider adapters.",
-      "owner": "provider-gateway",
-      "review_condition": "review whenever provider adapter contracts change"
-    },
-    {
-      "id": "a95d6bc5afe8ab652710",
-      "path": "runtime/provider_gateway.py",
-      "line": 149,
-      "rule": "python-ellipsis-body",
-      "classification": "protocol_contract",
-      "rationale": "StreamingProviderAdapter.stream is a typing Protocol declaration and intentionally uses an ellipsis body.",
-      "owner": "provider-gateway",
-      "review_condition": "review whenever streaming adapter protocol methods change"
-    },
-    {
-      "id": "be9ec79e2a580a9b3827",
-      "path": "runtime/provider_gateway.py",
-      "line": 156,
-      "rule": "python-ellipsis-body",
-      "classification": "protocol_contract",
-      "rationale": "StreamingProviderAdapter.count_tokens is a typing Protocol declaration and intentionally uses an ellipsis body.",
-      "owner": "provider-gateway",
-      "review_condition": "review whenever streaming adapter protocol methods change"
-    },
-    {
-      "id": "4a0884fad438b7f4a126",
-      "path": "runtime/provider_gateway.py",
-      "line": 158,
-      "rule": "python-ellipsis-body",
-      "classification": "protocol_contract",
-      "rationale": "StreamingProviderAdapter.provider_usage is a typing Protocol declaration and intentionally uses an ellipsis body.",
-      "owner": "provider-gateway",
-      "review_condition": "review whenever streaming adapter protocol methods change"
-    },
-    {
-      "id": "8f5865fbf5cca2eaf5c9",
-      "path": "runtime/provider_gateway.py",
-      "line": 427,
-      "rule": "python-pass",
-      "classification": "safe_degradation",
-      "rationale": "Failure to publish compensating telemetry cannot replace the original invocation failure; the gateway immediately publishes a separate failed lifecycle and preserves the primary exception.",
-      "owner": "provider-gateway",
-      "review_condition": "review whenever provider failure compensation changes"
-    },
-    {
-      "id": "782d0d6b25dbb50dd27c",
-      "path": "runtime/provider_gateway.py",
-      "line": 1494,
-      "rule": "unimplemented-error",
-      "classification": "validation_literal",
-      "rationale": "The phrase 'not implemented for streaming' is the explicit fail-closed PermissionError for a protocol capability whose registry record is not admitted; it is not a Python implementation stub.",
-      "owner": "provider-gateway",
-      "review_condition": "review whenever provider streaming admission wording or capability validation changes"
-    },
-    {
-      "id": "f667de56c475f65a698e",
-      "path": "runtime/release_artifacts.py",
-      "line": 274,
-      "rule": "python-pass",
-      "classification": "expected_control_flow",
-      "rationale": "A release fixture destination outside the source root is the required safe case; only a successful relative-to-source conversion enters the rejecting branch.",
-      "owner": "release-artifacts",
-      "review_condition": "review whenever release fixture containment rules change"
-    },
-    {
-      "id": "266d8a3d998a21653f2a",
-      "path": "runtime/release_boundary.py",
-      "line": 45,
-      "rule": "python-pass",
-      "classification": "safe_degradation",
-      "rationale": "Unreadable hash-ledger head metadata intentionally does not authorize omission of deltas; the conservative fallback retains content.",
-      "owner": "release-boundary",
-      "review_condition": "review whenever release-boundary delta omission logic changes"
-    },
-    {
-      "id": "b3661d78263ea2692140",
-      "path": "runtime/release_certification.py",
-      "line": 775,
-      "rule": "python-pass",
-      "classification": "expected_control_flow",
-      "rationale": "A signing key outside the repository is the intended secure case and requires no relative-path rejection.",
-      "owner": "release-certification",
-      "review_condition": "review whenever signing-key custody rules change"
-    },
-    {
-      "id": "3e1db89cf32604034b0b",
-      "path": "runtime/resource_lifecycle.py",
-      "line": 433,
-      "rule": "python-pass",
-      "classification": "safe_degradation",
-      "rationale": "A transient stat failure during a read-only inventory omits only that file's byte count while preserving the resource, traversal bounds, and recoverable reconciliation state.",
-      "owner": "manage-resource-lifecycle",
-      "review_condition": "review whenever resource inventory error handling changes"
-    },
-    {
-      "id": "17bba5e5587b4062f259",
-      "path": "runtime/semantic_code_backend.py",
-      "line": 24,
-      "rule": "unimplemented-error",
-      "classification": "protocol_contract",
-      "rationale": "SemanticBackend.analyze is an abstractmethod and raises NotImplementedError to define the required backend contract.",
-      "owner": "semantic-code",
-      "review_condition": "review whenever the semantic backend abstract interface changes"
-    },
-    {
-      "id": "db5fb78b7128f65c16bd",
-      "path": "runtime/semantic_code_document.py",
-      "line": 15,
-      "rule": "python-pass",
-      "classification": "protocol_contract",
-      "rationale": "SemanticDocumentError is a semantic exception marker class and intentionally adds no behavior.",
-      "owner": "semantic-code",
-      "review_condition": "review whenever semantic document error taxonomy changes"
-    },
-    {
-      "id": "b0d2de0fa043a0f0d4d9",
-      "path": "runtime/semantic_code_paths.py",
-      "line": 9,
-      "rule": "python-pass",
-      "classification": "protocol_contract",
-      "rationale": "SemanticPathError is a semantic exception marker class and intentionally adds no behavior.",
-      "owner": "semantic-code",
-      "review_condition": "review whenever semantic path error taxonomy changes"
-    },
-    {
-      "id": "56affebc7ef6259bb41c",
-      "path": "runtime/semantic_code_registry.py",
-      "line": 13,
-      "rule": "python-pass",
-      "classification": "protocol_contract",
-      "rationale": "BackendRegistrationError is a semantic exception marker class and intentionally adds no behavior.",
-      "owner": "semantic-code",
-      "review_condition": "review whenever semantic backend registration errors change"
-    },
-    {
-      "id": "a18aed395032fc7e464a",
-      "path": "runtime/semantic_lsp_adapters.py",
-      "line": 22,
-      "rule": "python-ellipsis-body",
-      "classification": "protocol_contract",
-      "rationale": "Adapter.discover_argv is a typing Protocol declaration and intentionally uses an ellipsis body.",
-      "owner": "semantic-lsp",
-      "review_condition": "review whenever semantic LSP adapter discovery protocol changes"
-    },
-    {
-      "id": "030f47c44c1ee94d0af3",
-      "path": "runtime/semantic_lsp_adapters.py",
-      "line": 23,
-      "rule": "python-ellipsis-body",
-      "classification": "protocol_contract",
-      "rationale": "Adapter.language_id_for_path is a typing Protocol declaration and intentionally uses an ellipsis body.",
-      "owner": "semantic-lsp",
-      "review_condition": "review whenever semantic LSP adapter language mapping protocol changes"
-    },
-    {
-      "id": "96f9c97e238aa93d830d",
-      "path": "runtime/semantic_lsp_client.py",
-      "line": 195,
-      "rule": "python-pass",
-      "classification": "safe_degradation",
-      "rationale": "Shutdown notification failures are intentionally suppressed so bounded process termination and local cleanup still execute.",
-      "owner": "semantic-lsp",
-      "review_condition": "review whenever LSP shutdown sequencing changes"
-    },
-    {
-      "id": "cda619b5ebaa1266cb2a",
-      "path": "runtime/semantic_lsp_documents.py",
-      "line": 30,
-      "rule": "python-pass",
-      "classification": "protocol_contract",
-      "rationale": "DocumentSyncError is an exception marker class and intentionally adds no behavior.",
-      "owner": "semantic-lsp",
-      "review_condition": "review whenever LSP document synchronization error taxonomy changes"
-    },
-    {
-      "id": "5ff7e8d14d33d21828b9",
-      "path": "runtime/semantic_lsp_encoding.py",
-      "line": 8,
-      "rule": "python-pass",
-      "classification": "protocol_contract",
-      "rationale": "LspPositionError is an exception marker class and intentionally adds no behavior.",
-      "owner": "semantic-lsp",
-      "review_condition": "review whenever LSP position error taxonomy changes"
-    },
-    {
-      "id": "496386b329dbc730d3e7",
-      "path": "runtime/semantic_lsp_framing.py",
-      "line": 9,
-      "rule": "python-pass",
-      "classification": "protocol_contract",
-      "rationale": "LspFramingError is an exception marker class and intentionally adds no behavior.",
-      "owner": "semantic-lsp",
-      "review_condition": "review whenever LSP framing error taxonomy changes"
-    },
-    {
-      "id": "e3841d35e08a75a2c598",
-      "path": "runtime/semantic_lsp_health.py",
-      "line": 13,
-      "rule": "python-pass",
-      "classification": "protocol_contract",
-      "rationale": "ServerQuarantinedError is an exception marker class and intentionally adds no behavior.",
-      "owner": "semantic-lsp",
-      "review_condition": "review whenever LSP health quarantine semantics change"
-    },
-    {
-      "id": "dee382489f5edeaf0bce",
-      "path": "runtime/semantic_lsp_manager.py",
-      "line": 20,
-      "rule": "python-pass",
-      "classification": "protocol_contract",
-      "rationale": "LanguageServerUnavailable is an exception marker class and intentionally adds no behavior.",
-      "owner": "semantic-lsp",
-      "review_condition": "review whenever language-server availability semantics change"
-    },
-    {
-      "id": "fe2b15cf01524dbce58f",
-      "path": "runtime/semantic_lsp_process.py",
-      "line": 174,
-      "rule": "python-pass",
-      "classification": "safe_degradation",
-      "rationale": "A secondary process.kill OSError is intentionally suppressed during bounded termination fallback before subsequent wait/reap handling.",
-      "owner": "semantic-lsp",
-      "review_condition": "review whenever language-server process termination fallback changes"
-    },
-    {
-      "id": "6416fe33cfd700c76447",
-      "path": "runtime/semantic_lsp_protocol.py",
-      "line": 15,
-      "rule": "python-pass",
-      "classification": "protocol_contract",
-      "rationale": "LspProtocolError is an exception marker class and intentionally adds no behavior.",
-      "owner": "semantic-lsp",
-      "review_condition": "review whenever LSP protocol error taxonomy changes"
-    },
-    {
-      "id": "ed205504aebdb34ab4d5",
-      "path": "runtime/semantic_lsp_queries.py",
-      "line": 18,
-      "rule": "python-pass",
-      "classification": "protocol_contract",
-      "rationale": "UnsupportedLspCapability is an exception marker class and intentionally adds no behavior.",
-      "owner": "semantic-lsp",
-      "review_condition": "review whenever capability validation semantics change"
-    },
-    {
-      "id": "818f4a9967805ef3633e",
-      "path": "runtime/semantic_lsp_transaction.py",
-      "line": 62,
-      "rule": "python-pass",
-      "classification": "safe_degradation",
-      "rationale": "A secondary os.close failure is intentionally suppressed while transactional cleanup unlinks the staged path and re-raises the primary failure.",
-      "owner": "semantic-lsp",
-      "review_condition": "review whenever workspace-edit transaction cleanup changes"
-    },
-    {
-      "id": "20fec4ac73039ab9657c",
-      "path": "runtime/semantic_lsp_transport.py",
-      "line": 192,
-      "rule": "python-pass",
-      "classification": "safe_degradation",
-      "rationale": "Failure to send cancellation after a request timeout is intentionally suppressed because the timeout remains authoritative and pending state is already removed.",
-      "owner": "semantic-lsp",
-      "review_condition": "review whenever LSP request timeout/cancellation handling changes"
-    },
-    {
-      "id": "c4b1496648c1d15686f0",
-      "path": "runtime/semantic_lsp_uri.py",
-      "line": 12,
-      "rule": "python-pass",
-      "classification": "protocol_contract",
-      "rationale": "LspUriError is an exception marker class and intentionally adds no behavior.",
-      "owner": "semantic-lsp",
-      "review_condition": "review whenever LSP URI error taxonomy changes"
-    },
-    {
-      "id": "9cfafcaba2e930a3d1e2",
-      "path": "runtime/semantic_lsp_workspace.py",
-      "line": 17,
-      "rule": "python-pass",
-      "classification": "protocol_contract",
-      "rationale": "WorkspaceEditError is an exception marker class and intentionally adds no behavior.",
-      "owner": "semantic-lsp",
-      "review_condition": "review whenever workspace-edit error taxonomy changes"
-    },
-    {
-      "id": "f01b14e46717f526dbdc",
-      "path": "runtime/studio_authority.py",
-      "line": 55,
-      "rule": "python-pass",
-      "classification": "safe_degradation",
-      "rationale": "POSIX mode hardening is best-effort on platforms such as Windows where repository custody is governed by inherited ACLs; failure does not bypass record authentication or expose the key through PX exports.",
-      "owner": "studio-authority",
-      "review_condition": "review whenever Studio key custody or platform permission handling changes"
-    },
-    {
-      "id": "15bb7b5aee04a3fe1fa4",
-      "path": "runtime/studio_models.py",
-      "line": 1199,
-      "rule": "python-pass",
-      "classification": "safe_degradation",
-      "rationale": "Best-effort temporary directory cleanup tolerates pre-existing filesystem state but keeps caller ownership and model generation semantics unchanged.",
-      "owner": "studio-models",
-      "review_condition": "review whenever temporary model-file cleanup paths change"
-    },
-    {
-      "id": "6ebefb620af1f712f118",
-      "path": "runtime/studio_terminal_observer.py",
-      "line": 128,
-      "rule": "python-pass",
-      "classification": "safe_degradation",
-      "rationale": "Failure to write the non-authoritative observer diagnostic must not suppress the bounded transient lifecycle retry or replace the original finalization error.",
-      "owner": "studio-runtime",
-      "review_condition": "review whenever terminal-observer retry or diagnostic publication changes"
-    },
-    {
-      "id": "f3be69afadccf2203b79",
-      "path": "runtime/studio_worker_launch.py",
-      "line": 354,
-      "rule": "python-pass",
-      "classification": "safe_degradation",
-      "rationale": "Annotation failure is suppressed so the original request-publication custody exception remains causal.",
-      "owner": "studio-worker-launch",
-      "review_condition": "Recheck if exception-note or request custody behavior changes."
-    },
-    {
-      "id": "5b72f07be31ccf6ee19a",
-      "path": "runtime/test_runner.py",
-      "line": 384,
-      "rule": "python-pass",
-      "classification": "safe_degradation",
-      "rationale": "A failed secondary note cannot mask the original owned-workspace failure.",
-      "owner": "test-runner",
-      "review_condition": "Recheck if cleanup-error aggregation or add_note handling changes."
-    },
-    {
-      "id": "66b551efc7c87fdb379d",
-      "path": "runtime/verification_receipts.py",
-      "line": 88,
-      "rule": "python-pass",
-      "classification": "validation_literal",
-      "rationale": "Null and boolean leaves are accepted by this bounded receipt value grammar; surrounding traversal still accounts for nodes and bytes.",
-      "owner": "verification-receipts",
-      "review_condition": "Recheck if receipt leaf grammar or total budget changes."
-    },
-    {
-      "id": "443b59404392413586fb",
-      "path": "runtime/wal_transaction.py",
-      "line": 171,
-      "rule": "python-pass",
-      "classification": "safe_degradation",
-      "rationale": "Failure while attaching secondary WAL outcome notes is suppressed to preserve the original transaction exception.",
-      "owner": "wal-transaction",
-      "review_condition": "Recheck if WAL error custody or note attachment changes."
-    },
-    {
-      "id": "f00c1195316dba51ef68",
-      "path": "runtime/work_admission.py",
-      "line": 38,
-      "rule": "python-pass",
-      "classification": "expected_control_flow",
-      "rationale": "The explicit timeout exception class is intentionally a sentinel with no extra behavior.",
-      "owner": "work-admission",
-      "review_condition": "review whenever work admission timeout semantics change"
-    },
-    {
-      "id": "b7848e542482bf21a1a2",
-      "path": "scripts/benchmark_local_models.py",
-      "line": 65,
-      "rule": "python-pass",
-      "classification": "safe_degradation",
-      "rationale": "Failure to unlink an atomic-write temporary file is intentionally suppressed after the primary write/replace path has determined the outcome.",
-      "owner": "local-model-benchmark",
-      "review_condition": "review whenever local-model benchmark atomic write cleanup changes"
-    },
-    {
-      "id": "6020305c151c060ccd7f",
-      "path": "scripts/benchmark_model_routes.py",
-      "line": 114,
-      "rule": "python-pass",
-      "classification": "safe_degradation",
-      "rationale": "FileNotFoundError during rollback unlink is intentionally suppressed because the temporary file is already absent.",
-      "owner": "model-route-benchmark",
-      "review_condition": "review whenever model-route benchmark atomic write cleanup changes"
-    },
-    {
-      "id": "2d60299a88c0fdaf3efa",
-      "path": "scripts/benchmark_operational_gap_ledger.py",
-      "line": 161,
-      "rule": "python-pass",
-      "classification": "expected_control_flow",
-      "rationale": "The inner lock acquisition must fail; the pass body makes an unexpected acquisition observable through the unchanged false rejection flag.",
-      "owner": "operational-gap-ledger-benchmark",
-      "review_condition": "review whenever the benchmark lock-contention probe changes"
-    },
-    {
-      "id": "f0cab86683b39fd985ee",
-      "path": "scripts/build_release_successor_configs.py",
-      "line": 708,
-      "rule": "python-pass",
-      "classification": "safe_degradation",
-      "rationale": "Failure to remove the first config after second-config creation fails is intentionally suppressed so the original pair-creation failure is preserved.",
-      "owner": "release-successor-config",
-      "review_condition": "review whenever release successor pair rollback changes"
-    },
-    {
-      "id": "3cf905571dbe8a83b65f",
-      "path": "scripts/certify_local_model_profiles.py",
-      "line": 59,
-      "rule": "python-pass",
-      "classification": "safe_degradation",
-      "rationale": "Failure to unlink an atomic-write temporary file is intentionally suppressed after the primary write/replace path has determined the outcome.",
-      "owner": "local-model-certification",
-      "review_condition": "review whenever local-model profile atomic write cleanup changes"
-    },
-    {
-      "id": "b7e361acbb4a80837ce4",
-      "path": "scripts/clean_source_export.py",
-      "line": 551,
-      "rule": "python-pass",
-      "classification": "safe_degradation",
-      "rationale": "Export failure preserves the primary exception while individual registered staging-resource cleanup failures remain receipted by the resource manager for later reconciliation.",
-      "owner": "release-export",
-      "review_condition": "review whenever clean-export staging custody changes"
-    },
-    {
-      "id": "9b129c0ce6a1c078ffd2",
-      "path": "scripts/reconcile_cohesion_cards.py",
-      "line": 255,
-      "rule": "python-pass",
-      "classification": "safe_degradation",
-      "rationale": "An unsuccessful secondary exception attribute cannot replace the original reconciliation failure.",
-      "owner": "cohesion-reconciliation",
-      "review_condition": "Recheck if reconciliation exception custody changes."
-    },
-    {
-      "id": "87b9982cccbe116e5092",
-      "path": "scripts/run_installed_operational_owner.py",
-      "line": 152,
-      "rule": "python-ellipsis-body",
-      "classification": "protocol_contract",
-      "rationale": "The ellipsis declares the bounded running-process Protocol wait method implemented by the supervised process wrapper.",
-      "owner": "installed-operational-owner",
-      "review_condition": "review whenever installed operational process supervision changes"
-    },
-    {
-      "id": "e1496fd26676cfa404e5",
-      "path": "scripts/run_installed_operational_owner.py",
-      "line": 156,
-      "rule": "python-ellipsis-body",
-      "classification": "protocol_contract",
-      "rationale": "The ellipsis declares the installed operational Effects claim contract implemented by production and test effects.",
-      "owner": "installed-operational-owner",
-      "review_condition": "review whenever the Effects protocol changes"
-    },
-    {
-      "id": "24ef9bb53dd52bd74f07",
-      "path": "scripts/run_installed_operational_owner.py",
-      "line": 157,
-      "rule": "python-ellipsis-body",
-      "classification": "protocol_contract",
-      "rationale": "The ellipsis declares the installed operational Effects finish contract implemented by production and test effects.",
-      "owner": "installed-operational-owner",
-      "review_condition": "review whenever the Effects protocol changes"
-    },
-    {
-      "id": "49a973e8c29e63132c34",
-      "path": "scripts/run_installed_operational_owner.py",
-      "line": 158,
-      "rule": "python-ellipsis-body",
-      "classification": "protocol_contract",
-      "rationale": "The ellipsis declares the installed operational Effects phase-advance contract implemented by production and test effects.",
-      "owner": "installed-operational-owner",
-      "review_condition": "review whenever the Effects protocol changes"
-    },
-    {
-      "id": "8f9eb5bbcb281c2ec668",
-      "path": "scripts/run_installed_operational_owner.py",
-      "line": 159,
-      "rule": "python-ellipsis-body",
-      "classification": "protocol_contract",
-      "rationale": "The ellipsis declares the installed operational Effects member-start contract implemented by production and test effects.",
-      "owner": "installed-operational-owner",
-      "review_condition": "review whenever the Effects protocol changes"
-    },
-    {
-      "id": "d683b20a048a102914ca",
-      "path": "scripts/run_release_candidate.py",
-      "line": 511,
-      "rule": "python-ellipsis-body",
-      "classification": "protocol_contract",
-      "rationale": "The ellipsis declares the release candidate owner runner execution contract implemented by the production runner and fixtures.",
-      "owner": "release-candidate-owner",
-      "review_condition": "review whenever candidate owner dispatch changes"
-    },
-    {
-      "id": "4e934dccb06c9987e3d5",
-      "path": "scripts/run_release_candidate.py",
-      "line": 513,
-      "rule": "python-ellipsis-body",
-      "classification": "protocol_contract",
-      "rationale": "The ellipsis declares the release candidate owner runner verification contract implemented by the production runner and fixtures.",
-      "owner": "release-candidate-owner",
-      "review_condition": "review whenever candidate owner verification changes"
-    },
-    {
-      "id": "34437d5abc5c546a28d8",
-      "path": "scripts/run_release_stage_owner.py",
-      "line": 382,
-      "rule": "python-ellipsis-body",
-      "classification": "protocol_contract",
-      "rationale": "The ellipsis declares the release-stage Effects execution contract implemented by production and test effects.",
-      "owner": "release-stage-owner",
-      "review_condition": "review whenever release-stage Effects execution changes"
-    },
-    {
-      "id": "61a6dcabee30435a6105",
-      "path": "scripts/run_release_stage_owner.py",
-      "line": 383,
-      "rule": "python-ellipsis-body",
-      "classification": "protocol_contract",
-      "rationale": "The ellipsis declares the release-stage Effects verification contract implemented by production and test effects.",
-      "owner": "release-stage-owner",
-      "review_condition": "review whenever release-stage Effects verification changes"
-    },
-    {
-      "id": "f7a3b2024643aeb8cf4c",
-      "path": "scripts/run_release_stage_owner.py",
-      "line": 944,
-      "rule": "python-pass",
-      "classification": "safe_degradation",
-      "rationale": "Failure to publish the secondary failed-stage transition must not replace the original section-owner exception; the campaign remains fail-closed.",
-      "owner": "release-stage-owner",
-      "review_condition": "review whenever section failure finalization changes"
-    },
-    {
-      "id": "c13cf351e6861188280b",
-      "path": "scripts/validate_certification_pipeline.py",
-      "line": 79,
-      "rule": "python-pass",
-      "classification": "protocol_contract",
-      "rationale": "ValidationBlocked is the certification validator's marker exception type and intentionally adds no behavior.",
-      "owner": "certification-pipeline",
-      "review_condition": "review whenever certification-pipeline blocking semantics change"
-    },
-    {
-      "id": "b7a8c136928798e723d9",
-      "path": "tests/test_archive_io.py",
-      "line": 645,
-      "rule": "python-pass",
-      "classification": "test_fixture",
-      "rationale": "The empty body enters an owned archive context solely to assert that its budget rejects before user work.",
-      "owner": "archive-tests",
-      "review_condition": "Recheck if archive context admission order changes."
-    },
-    {
-      "id": "d837b4d671d2d5b70ea1",
-      "path": "tests/test_bounded_walk.py",
-      "line": 16,
-      "rule": "unimplemented-error",
-      "classification": "test_fixture",
-      "rationale": "The test helper skips platforms that cannot create symbolic links and names the platform exception it handles.",
-      "owner": "tests",
-      "review_condition": "review whenever symlink test portability changes"
-    },
-    {
-      "id": "8c2c283a843b1f63e15f",
-      "path": "tests/test_capability_mining_skills.py",
-      "line": 176,
-      "rule": "unimplemented-error",
-      "classification": "test_fixture",
-      "rationale": "The generated excluded file intentionally contains an incomplete marker to test exclusion accounting.",
-      "owner": "tests",
-      "review_condition": "review if the fixture or exclusion policy changes"
-    },
-    {
-      "id": "30dfa8c217e2136a82b9",
-      "path": "tests/test_file_lock_contention.py",
-      "line": 42,
-      "rule": "python-pass",
-      "classification": "test_fixture",
-      "rationale": "The empty context body exists only to hold a contended lock until the expected timeout is raised.",
-      "owner": "tests",
-      "review_condition": "review whenever file-lock contention tests change"
-    },
-    {
-      "id": "f153254c3c14f9ef64aa",
-      "path": "tests/test_instrumentation_sdk.py",
-      "line": 52,
-      "rule": "python-pass",
-      "classification": "test_fixture",
-      "rationale": "The empty context body isolates and proves start/completion lifecycle emission by the instrumentation context manager.",
-      "owner": "tests",
-      "review_condition": "review whenever instrumentation lifecycle tests change"
-    },
-    {
-      "id": "726280b1cf380def79de",
-      "path": "tests/test_native_skills.py",
-      "line": 112,
-      "rule": "todo-comment",
-      "classification": "test_fixture",
-      "rationale": "The assertion rejects incomplete markers from every Codex-visible facade skill body.",
-      "owner": "tests",
-      "review_condition": "review whenever facade skill validation changes"
-    },
-    {
-      "id": "decc9967515d914b2f0b",
-      "path": "tests/test_observer_input_contracts.py",
-      "line": 398,
-      "rule": "python-pass",
-      "classification": "test_fixture",
-      "rationale": "The empty string subclass is a wrong-type negative input for observer consent validation.",
-      "owner": "observer-tests",
-      "review_condition": "Recheck if exact string-type admission changes."
-    },
-    {
-      "id": "cafab297a717168b2161",
-      "path": "tests/test_process_lifecycle_retained_custody_recovery.py",
-      "line": 225,
-      "rule": "python-pass",
-      "classification": "test_fixture",
-      "rationale": "The fake job's no-op terminate simulates a noncooperative owner for retained-custody recovery.",
-      "owner": "lifecycle-tests",
-      "review_condition": "Recheck if noncooperative-job custody assertions change."
-    },
-    {
-      "id": "72e1b3b7ec04ab394185",
-      "path": "tests/test_provider_gateway_streaming.py",
-      "line": 322,
-      "rule": "unimplemented-error",
-      "classification": "test_fixture",
-      "rationale": "The 'not implemented for streaming' literal is the expected fail-closed error asserted by this provider gateway test.",
-      "owner": "provider-gateway-tests",
-      "review_condition": "review whenever provider streaming rejection behavior changes"
-    },
-    {
-      "id": "3dc10f33748a6f56be85",
-      "path": "tests/test_semantic_code_lifecycle.py",
-      "line": 27,
-      "rule": "python-pass",
-      "classification": "test_fixture",
-      "rationale": "The pass statement is the successful branch of a test that requires an evicted semantic session to raise RuntimeError.",
-      "owner": "semantic-code-tests",
-      "review_condition": "review whenever semantic session eviction behavior changes"
-    },
-    {
-      "id": "232ea857d71364a58f78",
-      "path": "tests/test_semantic_code_paths.py",
-      "line": 27,
-      "rule": "unimplemented-error",
-      "classification": "test_fixture",
-      "rationale": "NotImplementedError is an operating-system capability exception handled by the symlink test to skip unsupported environments.",
-      "owner": "semantic-code-tests",
-      "review_condition": "review whenever semantic path symlink coverage changes"
-    },
-    {
-      "id": "e27aa1c2cd53d7e09e8a",
-      "path": "tests/test_semantic_code_types.py",
-      "line": 21,
-      "rule": "python-pass",
-      "classification": "test_fixture",
-      "rationale": "The pass statements mark expected ValueError branches in fail-closed Position/TextRange validation tests.",
-      "owner": "semantic-code-tests",
-      "review_condition": "review whenever semantic position/range validation tests change"
-    },
-    {
-      "id": "2c07bb454ecead4b2f6c",
-      "path": "tests/test_skill_library.py",
-      "line": 111,
-      "rule": "todo-comment",
-      "classification": "test_fixture",
-      "rationale": "The assertion rejects template markers from every shipped skill body.",
-      "owner": "tests",
-      "review_condition": "review if skill-library marker policy changes"
-    },
-    {
-      "id": "95a75f6134707ccf131c",
-      "path": "tests/test_studio_api.py",
-      "line": 387,
-      "rule": "python-pass",
-      "classification": "test_fixture",
-      "rationale": "The fixture class intentionally keeps a minimal pass-through implementation for controlled API interaction tests.",
-      "owner": "studio-api",
-      "review_condition": "review whenever test fixture stub contracts evolve"
-    },
-    {
-      "id": "e22e9edda7b7cff27bab",
-      "path": "tests/test_wal_transaction.py",
-      "line": 31,
-      "rule": "unimplemented-error",
-      "classification": "test_fixture",
-      "rationale": "The test fixture catches the platform NotImplementedError raised when symbolic-link creation is unavailable and skips that platform-specific case.",
-      "owner": "wal-transaction-tests",
-      "review_condition": "review whenever the symbolic-link fixture boundary changes"
-    },
-    {
-      "id": "f5b85bfe72fdc7dcdbc2",
-      "path": "tests/test_workspace_manager.py",
-      "line": 793,
-      "rule": "python-pass",
-      "classification": "test_fixture",
-      "rationale": "Acquiring the lock would leave the observation false; the timeout branch proves configuration was loaded while locked.",
-      "owner": "tests",
-      "review_condition": "review whenever workspace mutation lock tests change"
-    },
-    {
-      "id": "ec4f7e301e5cc6ad0fdf",
-      "path": "px/py_cert/scripts/validate_certification_pipeline.py",
-      "line": 79,
-      "rule": "python-pass",
-      "classification": "expected_control_flow",
-      "rationale": "Empty exception-type body; the type carries the blocking semantics.",
-      "owner": "pacify-x-repair",
-      "review_condition": "Exception is intentionally swallowed to preserve an already-raised causal failure (the enclosing re-raise or primary error is the authoritative outcome). Suppression here cannot fabricate success."
-    },
-    {
-      "id": "7f417f023624ece72212",
-      "path": "runtime/containment_invariants.py",
-      "line": 247,
-      "rule": "python-pass",
-      "classification": "expected_control_flow",
-      "rationale": "Refusal is the asserted outcome of this probe; the else-branch records a violation.",
-      "owner": "pacify-x-repair",
-      "review_condition": "Control-flow probe: the following branch asserts the *rejection* path, so consuming this exception is the expected outcome, not an unimplemented feature."
-    },
-    {
-      "id": "35d76534ed31b4092054",
-      "path": "runtime/containment_invariants.py",
-      "line": 259,
-      "rule": "unimplemented-error",
-      "classification": "safe_degradation",
-      "rationale": "Missing verified child enrollment is reported as an explicit GN-INV-013 violation.",
-      "owner": "pacify-x-repair",
-      "review_condition": "Fail-closed degradation: the absence of this capability is recorded as an explicit violation/blocked result elsewhere, never as a pass."
-    },
-    {
-      "id": "e8571c126430126ff05d",
-      "path": "runtime/gremlin/recovery_authority.py",
-      "line": 187,
-      "rule": "python-ellipsis-body",
-      "classification": "protocol_contract",
-      "rationale": "Independent verifier contract; concrete verifier is host-supplied.",
-      "owner": "pacify-x-repair",
-      "review_condition": "Protocol declaration: the body is deliberately empty because the contract is structural. Implementations are supplied by concrete backends and are exercised by their own tests; this is not unreachable incomplete behaviour."
-    },
-    {
-      "id": "7f3cc8e13ec2a67222db",
-      "path": "runtime/gremlin/recovery_authority.py",
-      "line": 197,
-      "rule": "python-ellipsis-body",
-      "classification": "protocol_contract",
-      "rationale": "Durable replay ledger contract.",
-      "owner": "pacify-x-repair",
-      "review_condition": "Protocol declaration: the body is deliberately empty because the contract is structural. Implementations are supplied by concrete backends and are exercised by their own tests; this is not unreachable incomplete behaviour."
-    },
-    {
-      "id": "424d82b697a5c23ed240",
-      "path": "runtime/gremlin/recovery_authority.py",
-      "line": 199,
-      "rule": "python-ellipsis-body",
-      "classification": "protocol_contract",
-      "rationale": "Durable replay ledger contract.",
-      "owner": "pacify-x-repair",
-      "review_condition": "Protocol declaration: the body is deliberately empty because the contract is structural. Implementations are supplied by concrete backends and are exercised by their own tests; this is not unreachable incomplete behaviour."
-    },
-    {
-      "id": "e1facdc7d393b27d2269",
-      "path": "runtime/gremlin/recovery_authority.py",
-      "line": 201,
-      "rule": "python-ellipsis-body",
-      "classification": "protocol_contract",
-      "rationale": "Durable replay ledger contract.",
-      "owner": "pacify-x-repair",
-      "review_condition": "Protocol declaration: the body is deliberately empty because the contract is structural. Implementations are supplied by concrete backends and are exercised by their own tests; this is not unreachable incomplete behaviour."
-    },
-    {
-      "id": "8987dec142d5ab673eb7",
-      "path": "runtime/gremlin/runtime_identity.py",
-      "line": 56,
-      "rule": "python-ellipsis-body",
-      "classification": "protocol_contract",
-      "rationale": "OS-protected credential backend contract.",
-      "owner": "pacify-x-repair",
-      "review_condition": "Protocol declaration: the body is deliberately empty because the contract is structural. Implementations are supplied by concrete backends and are exercised by their own tests; this is not unreachable incomplete behaviour."
-    },
-    {
-      "id": "034daa057fe40de557bd",
-      "path": "runtime/gremlin/runtime_identity.py",
-      "line": 58,
-      "rule": "python-ellipsis-body",
-      "classification": "protocol_contract",
-      "rationale": "OS-protected credential backend contract.",
-      "owner": "pacify-x-repair",
-      "review_condition": "Protocol declaration: the body is deliberately empty because the contract is structural. Implementations are supplied by concrete backends and are exercised by their own tests; this is not unreachable incomplete behaviour."
-    },
-    {
-      "id": "45db9a8d84af09dd52c5",
-      "path": "runtime/gremlin/runtime_identity.py",
-      "line": 60,
-      "rule": "python-ellipsis-body",
-      "classification": "protocol_contract",
-      "rationale": "OS-protected credential backend contract.",
-      "owner": "pacify-x-repair",
-      "review_condition": "Protocol declaration: the body is deliberately empty because the contract is structural. Implementations are supplied by concrete backends and are exercised by their own tests; this is not unreachable incomplete behaviour."
-    },
-    {
-      "id": "c90ab3936720fce4156e",
-      "path": "runtime/gremlin/runtime_identity.py",
-      "line": 62,
-      "rule": "python-ellipsis-body",
-      "classification": "protocol_contract",
-      "rationale": "OS-protected credential backend contract.",
-      "owner": "pacify-x-repair",
-      "review_condition": "Protocol declaration: the body is deliberately empty because the contract is structural. Implementations are supplied by concrete backends and are exercised by their own tests; this is not unreachable incomplete behaviour."
-    },
-    {
-      "id": "7eb72feae56baf7ebb91",
-      "path": "runtime/gremlin/supervisor.py",
-      "line": 36,
-      "rule": "python-ellipsis-body",
-      "classification": "protocol_contract",
-      "rationale": "Host-supplied OS enforcement primitive; availability is reported via available.",
-      "owner": "pacify-x-repair",
-      "review_condition": "Protocol declaration: the body is deliberately empty because the contract is structural. Implementations are supplied by concrete backends and are exercised by their own tests; this is not unreachable incomplete behaviour."
-    },
-    {
-      "id": "5007435579e209ce0adc",
-      "path": "runtime/gremlin/supervisor.py",
-      "line": 39,
-      "rule": "python-ellipsis-body",
-      "classification": "protocol_contract",
-      "rationale": "Host-supplied OS enforcement primitive; availability is reported via available.",
-      "owner": "pacify-x-repair",
-      "review_condition": "Protocol declaration: the body is deliberately empty because the contract is structural. Implementations are supplied by concrete backends and are exercised by their own tests; this is not unreachable incomplete behaviour."
-    },
-    {
-      "id": "ba649cba52ec7e90f6a7",
-      "path": "runtime/guarded_registry_projection.py",
-      "line": 27,
-      "rule": "python-pass",
-      "classification": "safe_degradation",
-      "rationale": "Best-effort note attachment must not replace the primary failure.",
-      "owner": "pacify-x-repair",
-      "review_condition": "Exception is intentionally swallowed to preserve an already-raised causal failure (the enclosing re-raise or primary error is the authoritative outcome). Suppression here cannot fabricate success."
-    },
-    {
-      "id": "0ff4fb43f42785d6e43f",
-      "path": "runtime/project_revision_succession.py",
-      "line": 37,
-      "rule": "python-pass",
-      "classification": "expected_control_flow",
-      "rationale": "Empty exception-type body; the type carries the blocking semantics.",
-      "owner": "pacify-x-repair",
-      "review_condition": "Exception is intentionally swallowed to preserve an already-raised causal failure (the enclosing re-raise or primary error is the authoritative outcome). Suppression here cannot fabricate success."
-    },
-    {
-      "id": "567537a0cf70feba3d1f",
-      "path": "runtime/revision_campaign_lifecycle.py",
-      "line": 22,
-      "rule": "python-pass",
-      "classification": "expected_control_flow",
-      "rationale": "Empty exception-type body; the type carries the blocking semantics.",
-      "owner": "pacify-x-repair",
-      "review_condition": "Exception is intentionally swallowed to preserve an already-raised causal failure (the enclosing re-raise or primary error is the authoritative outcome). Suppression here cannot fabricate success."
-    },
-    {
-      "id": "53da6dfeb3d900a2eb28",
-      "path": "runtime/secure_publish.py",
-      "line": 70,
-      "rule": "python-pass",
-      "classification": "expected_control_flow",
-      "rationale": "Directory creation is idempotent; an existing directory satisfies the post-condition.",
-      "owner": "pacify-x-repair",
-      "review_condition": "Idempotent directory/file creation guard: an existing path is the expected post-condition, so the exception is consumed and execution continues."
-    }
-  ],
-  "historical_records": [
-    {
-      "id": "17711ec8297f3d9cdafa",
-      "path": "runtime/tool_recommendations.py",
-      "line": 57,
-      "rule": "python-pass",
-      "classification": "safe_degradation",
-      "rationale": "An unavailable or timed-out optional ripgrep executable deliberately falls back to the deterministic Python scanner.",
-      "owner": "runtime",
-      "review_condition": "review whenever optional scanner fallback behavior changes",
-      "retired_reason": "The previously reviewed python-pass marker no longer exists at its recorded source identity after repair; retained for historical review custody."
-    },
-    {
-      "id": "dade03c3c17e2ef39f7c",
-      "path": "tests/test_test_runner_controls.py",
-      "line": 42,
-      "rule": "python-pass",
-      "classification": "test_fixture",
-      "rationale": "The pass branch records that the timed-out child process no longer exists; the else branch fails if it survived.",
-      "owner": "tests",
-      "review_condition": "review whenever process-tree termination tests change",
-      "retired_reason": "The previously reviewed python-pass marker no longer exists at its recorded source identity after repair; retained for historical review custody."
-    }
-  ]
+ "historical_records": [
+  {
+   "classification": "safe_degradation",
+   "id": "17711ec8297f3d9cdafa",
+   "line": 57,
+   "owner": "runtime",
+   "path": "runtime/tool_recommendations.py",
+   "rationale": "An unavailable or timed-out optional ripgrep executable deliberately falls back to the deterministic Python scanner.",
+   "retired_reason": "The previously reviewed python-pass marker no longer exists at its recorded source identity after repair; retained for historical review custody.",
+   "review_condition": "review whenever optional scanner fallback behavior changes",
+   "rule": "python-pass"
+  },
+  {
+   "classification": "test_fixture",
+   "id": "dade03c3c17e2ef39f7c",
+   "line": 42,
+   "owner": "tests",
+   "path": "tests/test_test_runner_controls.py",
+   "rationale": "The pass branch records that the timed-out child process no longer exists; the else branch fails if it survived.",
+   "retired_reason": "The previously reviewed python-pass marker no longer exists at its recorded source identity after repair; retained for historical review custody.",
+   "review_condition": "review whenever process-tree termination tests change",
+   "rule": "python-pass"
+  },
+  {
+   "classification": "protocol_contract",
+   "id": "8d51001e7fb188a71f61",
+   "line": 481,
+   "owner": "px",
+   "path": "px/py_cert/scripts/run_release_stage_owner.py",
+   "rationale": "Effects.execute is a typing Protocol declaration; an ellipsis body defines the required structural interface and is not an implementation stub.",
+   "retired_reason": "The reviewed body no longer exists at this path: px/py_cert/scripts/run_release_stage_owner.py is a 16-line compatibility shim and has no line 481. Retired under Option 2 (re-review) with the historical record preserved; the site remains unreviewed and no replacement review was written.",
+   "retirement_kind": "relocated",
+   "review_condition": "review whenever this source path is restored or re-implemented",
+   "rule": "python-ellipsis-body"
+  },
+  {
+   "classification": "protocol_contract",
+   "id": "e356fa8e9a2aeb263e98",
+   "line": 482,
+   "owner": "px",
+   "path": "px/py_cert/scripts/run_release_stage_owner.py",
+   "rationale": "Effects.verify is a typing Protocol declaration; an ellipsis body defines the required structural interface and is not an implementation stub.",
+   "retired_reason": "The reviewed body no longer exists at this path: the same 16-line compatibility shim has no line 482. Retired under Option 2 (re-review) with the historical record preserved; the site remains unreviewed and no replacement review was written.",
+   "retirement_kind": "relocated",
+   "review_condition": "review whenever this source path is restored or re-implemented",
+   "rule": "python-ellipsis-body"
+  },
+  {
+   "classification": "safe_degradation",
+   "id": "6ab059c47ec859a87ce6",
+   "line": 1211,
+   "owner": "px",
+   "path": "px/py_cert/scripts/run_release_stage_owner.py",
+   "rationale": "Failure to write the secondary failure-stage receipt is intentionally suppressed so the original governed-section failure remains authoritative.",
+   "retired_reason": "The reviewed body no longer exists at this path: the same 16-line compatibility shim has no line 1211. Retired under Option 2 (re-review) with the historical record preserved; the site remains unreviewed and no replacement review was written.",
+   "retirement_kind": "relocated",
+   "review_condition": "review whenever this source path is restored or re-implemented",
+   "rule": "python-pass"
+  },
+  {
+   "classification": "expected_control_flow",
+   "id": "6f12652da28305cf3d12",
+   "line": 546,
+   "owner": "runtime",
+   "path": "runtime/model_protocol_translate.py",
+   "rationale": "message_delta stop_reason is intentionally observed without terminalizing; message_stop remains the deterministic terminal event.",
+   "retired_reason": "The reviewed pass body no longer exists at runtime/model_protocol_translate.py:546, which now raises a range-check ValueError. Retired under Option 2 (re-review) with the historical record preserved; the site remains unreviewed and no replacement review was written.",
+   "retirement_kind": "body_changed",
+   "review_condition": "review whenever this source path is restored or re-implemented",
+   "rule": "python-pass"
+  },
+  {
+   "classification": "expected_control_flow",
+   "id": "ec4f7e301e5cc6ad0fdf",
+   "line": 79,
+   "owner": "px",
+   "path": "px/py_cert/scripts/validate_certification_pipeline.py",
+   "rationale": "Empty exception-type body; the type carries the blocking semantics.",
+   "retired_reason": "The reviewed body no longer exists at this path: px/py_cert/scripts/validate_certification_pipeline.py is a 16-line compatibility shim and has no line 79. Retired under Option 2 (re-review) with the historical record preserved; the site remains unreviewed and no replacement review was written.",
+   "retirement_kind": "relocated",
+   "review_condition": "review whenever this source path is restored or re-implemented",
+   "rule": "python-pass"
+  }
+ ],
+ "records": [
+  {
+   "classification": "detector_literal",
+   "id": "19a447161ece9d566843",
+   "line": 39,
+   "owner": "audit-incomplete-implementations",
+   "path": ".px/skills/audit-incomplete-implementations/scripts/audit_incomplete.py",
+   "rationale": "The scanner must contain the marker vocabulary it detects.",
+   "review_condition": "review whenever detector vocabulary changes",
+   "rule": "todo-comment"
+  },
+  {
+   "classification": "detector_literal",
+   "id": "fe075cefe4df1d3ab731",
+   "line": 40,
+   "owner": "audit-incomplete-implementations",
+   "path": ".px/skills/audit-incomplete-implementations/scripts/audit_incomplete.py",
+   "rationale": "The scanner must contain the unimplemented phrase it detects.",
+   "review_condition": "review whenever detector vocabulary changes",
+   "rule": "unimplemented-error"
+  },
+  {
+   "classification": "detector_literal",
+   "id": "6d685fce8c0895bfeb03",
+   "line": 76,
+   "owner": "audit-incomplete-implementations",
+   "path": ".px/skills/audit-incomplete-implementations/scripts/audit_incomplete.py",
+   "rationale": "The AST detector names the exception type it detects.",
+   "review_condition": "review whenever Python stub rules change",
+   "rule": "unimplemented-error"
+  },
+  {
+   "classification": "expected_control_flow",
+   "id": "1372fbfedc7bcba00346",
+   "line": 140,
+   "owner": "pre-cert-convergence",
+   "path": "px/py_cert/scripts/run_pre_cert_repository_convergence.py",
+   "rationale": "The ValueError branch is the successful outcome of proving output_root is outside the repository.",
+   "review_condition": "review whenever output-root containment validation changes",
+   "rule": "python-pass"
+  },
+  {
+   "classification": "expected_control_flow",
+   "id": "21788835f75ce060af7f",
+   "line": 1735,
+   "owner": "agent-runtime",
+   "path": "runtime/agent_runtime.py",
+   "rationale": "A guarded resume harness exception keeps the original failure visible while ensuring harness admission checks can report contract violations.",
+   "review_condition": "review whenever resume-harness recovery handling changes",
+   "rule": "python-pass"
+  },
+  {
+   "classification": "safe_degradation",
+   "id": "7101eeddce6480e7165a",
+   "line": 224,
+   "owner": "authoritative-json",
+   "path": "runtime/authoritative_json.py",
+   "rationale": "If both authoritative recovery-receipt writes fail, the original intent path remains the recoverable custody locator and the primary quarantine failure is still raised without inventing replacement state.",
+   "review_condition": "review whenever authoritative quarantine recovery or receipt fallback semantics change",
+   "rule": "python-pass"
+  },
+  {
+   "classification": "safe_degradation",
+   "id": "3d5d378d35c05a62bebe",
+   "line": 3403,
+   "owner": "runtime-cli",
+   "path": "runtime/cli.py",
+   "rationale": "Failure to publish a secondary failed-stage transition must not replace or hide the original command exception returned to the operator; the campaign remains fail-closed and the primary error is preserved.",
+   "review_condition": "review whenever release-stage exception finalization changes",
+   "rule": "python-pass"
+  },
+  {
+   "classification": "validation_literal",
+   "id": "3588b0d9af5788d0fa38",
+   "line": 780,
+   "owner": "commission-project",
+   "path": "runtime/commissioning.py",
+   "rationale": "Commissioning rejects skill templates that retain an incomplete marker.",
+   "review_condition": "review whenever skill-template validation changes",
+   "rule": "todo-comment"
+  },
+  {
+   "classification": "expected_control_flow",
+   "id": "d7768ec131a2200f487d",
+   "line": 91,
+   "owner": "runtime",
+   "path": "runtime/evidence_portability.py",
+   "rationale": "A failed root-relative conversion deliberately falls through so the locator is recorded as an external reference.",
+   "review_condition": "review whenever evidence locator classification changes",
+   "rule": "python-pass"
+  },
+  {
+   "classification": "expected_control_flow",
+   "id": "2c7131ae941a502957f3",
+   "line": 334,
+   "owner": "runtime",
+   "path": "runtime/file_lock.py",
+   "rationale": "A platform unlock error cannot restore ownership; the stream is still closed and the token-fenced lease record remains the recovery authority.",
+   "review_condition": "review whenever lock release semantics change",
+   "rule": "python-pass"
+  },
+  {
+   "classification": "safe_degradation",
+   "id": "8977048be67e52991b6a",
+   "line": 259,
+   "owner": "hardware-aware-execution-routing",
+   "path": "runtime/hardware_routing.py",
+   "rationale": "An optional CUDA memory-detail probe may be absent even when CUDA is otherwise usable; retaining the already discovered device properties is the intended bounded fallback.",
+   "review_condition": "review whenever CUDA probe fallback behavior changes",
+   "rule": "python-pass"
+  },
+  {
+   "classification": "protocol_contract",
+   "id": "fd71945296653a8e21ae",
+   "line": 23,
+   "owner": "runtime",
+   "path": "runtime/lifecycle.py",
+   "rationale": "The ellipsis declares a typing Protocol method implemented by concrete checkpoint sinks.",
+   "review_condition": "review if the protocol becomes a concrete class",
+   "rule": "python-ellipsis-body"
+  },
+  {
+   "classification": "protocol_contract",
+   "id": "c5269a7488812df5bb3a",
+   "line": 288,
+   "owner": "operational-observers",
+   "path": "runtime/operational_observers.py",
+   "rationale": "The observer probe method is a typing Protocol implemented by admitted platform adapters.",
+   "review_condition": "review whenever the observer protocol changes",
+   "rule": "python-ellipsis-body"
+  },
+  {
+   "classification": "protocol_contract",
+   "id": "9028a9c80cc00d95dd99",
+   "line": 290,
+   "owner": "operational-observers",
+   "path": "runtime/operational_observers.py",
+   "rationale": "The observer start method is a typing Protocol implemented by admitted platform adapters.",
+   "review_condition": "review whenever the observer protocol changes",
+   "rule": "python-ellipsis-body"
+  },
+  {
+   "classification": "protocol_contract",
+   "id": "c7f184905d5812ce74f2",
+   "line": 292,
+   "owner": "operational-observers",
+   "path": "runtime/operational_observers.py",
+   "rationale": "The observer read method is a typing Protocol implemented by admitted platform adapters.",
+   "review_condition": "review whenever the observer protocol changes",
+   "rule": "python-ellipsis-body"
+  },
+  {
+   "classification": "protocol_contract",
+   "id": "6b8a818e58b750e8c3ce",
+   "line": 294,
+   "owner": "operational-observers",
+   "path": "runtime/operational_observers.py",
+   "rationale": "The observer stop method is a typing Protocol implemented by admitted platform adapters.",
+   "review_condition": "review whenever the observer protocol changes",
+   "rule": "python-ellipsis-body"
+  },
+  {
+   "classification": "protocol_contract",
+   "id": "51c539d4f8438f02b7d5",
+   "line": 296,
+   "owner": "operational-observers",
+   "path": "runtime/operational_observers.py",
+   "rationale": "The observer uninstall method is a typing Protocol implemented by admitted platform adapters.",
+   "review_condition": "review whenever the observer protocol changes",
+   "rule": "python-ellipsis-body"
+  },
+  {
+   "classification": "protocol_contract",
+   "id": "8b09f792047d90cb27f0",
+   "line": 300,
+   "owner": "operational-observers",
+   "path": "runtime/operational_observers.py",
+   "rationale": "The command-runner method is a typing Protocol; concrete execution remains fixed-vector, non-shell, and consent gated.",
+   "review_condition": "review whenever the command runner contract changes",
+   "rule": "python-ellipsis-body"
+  },
+  {
+   "classification": "protocol_contract",
+   "id": "424507ca699be4f17d14",
+   "line": 68,
+   "owner": "runtime",
+   "path": "runtime/orchestrator.py",
+   "rationale": "The ellipsis declares the handler callable Protocol, not an implementation stub.",
+   "review_condition": "review if handler typing changes",
+   "rule": "python-ellipsis-body"
+  },
+  {
+   "classification": "safe_degradation",
+   "id": "36963e3adadb0d9d475a",
+   "line": 488,
+   "owner": "process-supervisor",
+   "path": "runtime/process_supervisor.py",
+   "rationale": "A failed process-group signal falls through to identity-verified descendant signaling and bounded wait/closure verification.",
+   "review_condition": "review whenever process-tree shutdown escalation changes",
+   "rule": "python-pass"
+  },
+  {
+   "classification": "expected_control_flow",
+   "id": "b74ccc3e4e94ad7237bb",
+   "line": 3096,
+   "owner": "map-project-intelligence",
+   "path": "runtime/project_intelligence.py",
+   "rationale": "A failed custody move intentionally leaves the mapping lock in place for recoverable operator review; deleting or masking it would violate the preservation contract.",
+   "review_condition": "review whenever mapping lock custody or cleanup behavior changes",
+   "rule": "python-pass"
+  },
+  {
+   "classification": "protocol_contract",
+   "id": "900ddf0c1211163bc141",
+   "line": 16,
+   "owner": "runtime",
+   "path": "runtime/provider_certification.py",
+   "rationale": "The method belongs to the optional provider Protocol certified through concrete adapters.",
+   "review_condition": "review if the provider Protocol changes",
+   "rule": "python-ellipsis-body"
+  },
+  {
+   "classification": "protocol_contract",
+   "id": "8ec10e4e790ff92d7d6c",
+   "line": 17,
+   "owner": "runtime",
+   "path": "runtime/provider_certification.py",
+   "rationale": "The method belongs to the optional provider Protocol certified through concrete adapters.",
+   "review_condition": "review if the provider Protocol changes",
+   "rule": "python-ellipsis-body"
+  },
+  {
+   "classification": "protocol_contract",
+   "id": "288b2df4e05b25ba0cd5",
+   "line": 18,
+   "owner": "runtime",
+   "path": "runtime/provider_certification.py",
+   "rationale": "The method belongs to the optional provider Protocol certified through concrete adapters.",
+   "review_condition": "review if the provider Protocol changes",
+   "rule": "python-ellipsis-body"
+  },
+  {
+   "classification": "protocol_contract",
+   "id": "79c04733be5907023ea5",
+   "line": 19,
+   "owner": "runtime",
+   "path": "runtime/provider_certification.py",
+   "rationale": "The method belongs to the optional provider Protocol certified through concrete adapters.",
+   "review_condition": "review if the provider Protocol changes",
+   "rule": "python-ellipsis-body"
+  },
+  {
+   "classification": "protocol_contract",
+   "id": "096feb39c58082bf0b3f",
+   "line": 20,
+   "owner": "runtime",
+   "path": "runtime/provider_certification.py",
+   "rationale": "The method belongs to the optional provider Protocol certified through concrete adapters.",
+   "review_condition": "review if the provider Protocol changes",
+   "rule": "python-ellipsis-body"
+  },
+  {
+   "classification": "protocol_contract",
+   "id": "ba19c0e291e3028ca090",
+   "line": 21,
+   "owner": "runtime",
+   "path": "runtime/provider_certification.py",
+   "rationale": "The method belongs to the optional provider Protocol certified through concrete adapters.",
+   "review_condition": "review if the provider Protocol changes",
+   "rule": "python-ellipsis-body"
+  },
+  {
+   "classification": "protocol_contract",
+   "id": "84035f89bba6867f980a",
+   "line": 54,
+   "owner": "provider-gateway",
+   "path": "runtime/provider_gateway.py",
+   "rationale": "The provider invoke method is a typing Protocol implemented only by admitted provider adapters.",
+   "review_condition": "review whenever provider adapter contracts change",
+   "rule": "python-ellipsis-body"
+  },
+  {
+   "classification": "protocol_contract",
+   "id": "a95d6bc5afe8ab652710",
+   "line": 149,
+   "owner": "provider-gateway",
+   "path": "runtime/provider_gateway.py",
+   "rationale": "StreamingProviderAdapter.stream is a typing Protocol declaration and intentionally uses an ellipsis body.",
+   "review_condition": "review whenever streaming adapter protocol methods change",
+   "rule": "python-ellipsis-body"
+  },
+  {
+   "classification": "protocol_contract",
+   "id": "be9ec79e2a580a9b3827",
+   "line": 156,
+   "owner": "provider-gateway",
+   "path": "runtime/provider_gateway.py",
+   "rationale": "StreamingProviderAdapter.count_tokens is a typing Protocol declaration and intentionally uses an ellipsis body.",
+   "review_condition": "review whenever streaming adapter protocol methods change",
+   "rule": "python-ellipsis-body"
+  },
+  {
+   "classification": "protocol_contract",
+   "id": "4a0884fad438b7f4a126",
+   "line": 158,
+   "owner": "provider-gateway",
+   "path": "runtime/provider_gateway.py",
+   "rationale": "StreamingProviderAdapter.provider_usage is a typing Protocol declaration and intentionally uses an ellipsis body.",
+   "review_condition": "review whenever streaming adapter protocol methods change",
+   "rule": "python-ellipsis-body"
+  },
+  {
+   "classification": "safe_degradation",
+   "id": "8f5865fbf5cca2eaf5c9",
+   "line": 427,
+   "owner": "provider-gateway",
+   "path": "runtime/provider_gateway.py",
+   "rationale": "Failure to publish compensating telemetry cannot replace the original invocation failure; the gateway immediately publishes a separate failed lifecycle and preserves the primary exception.",
+   "review_condition": "review whenever provider failure compensation changes",
+   "rule": "python-pass"
+  },
+  {
+   "classification": "validation_literal",
+   "id": "782d0d6b25dbb50dd27c",
+   "line": 1494,
+   "owner": "provider-gateway",
+   "path": "runtime/provider_gateway.py",
+   "rationale": "The phrase 'not implemented for streaming' is the explicit fail-closed PermissionError for a protocol capability whose registry record is not admitted; it is not a Python implementation stub.",
+   "review_condition": "review whenever provider streaming admission wording or capability validation changes",
+   "rule": "unimplemented-error"
+  },
+  {
+   "classification": "expected_control_flow",
+   "id": "f667de56c475f65a698e",
+   "line": 274,
+   "owner": "release-artifacts",
+   "path": "runtime/release_artifacts.py",
+   "rationale": "A release fixture destination outside the source root is the required safe case; only a successful relative-to-source conversion enters the rejecting branch.",
+   "review_condition": "review whenever release fixture containment rules change",
+   "rule": "python-pass"
+  },
+  {
+   "classification": "safe_degradation",
+   "id": "266d8a3d998a21653f2a",
+   "line": 45,
+   "owner": "release-boundary",
+   "path": "runtime/release_boundary.py",
+   "rationale": "Unreadable hash-ledger head metadata intentionally does not authorize omission of deltas; the conservative fallback retains content.",
+   "review_condition": "review whenever release-boundary delta omission logic changes",
+   "rule": "python-pass"
+  },
+  {
+   "classification": "expected_control_flow",
+   "id": "b3661d78263ea2692140",
+   "line": 775,
+   "owner": "release-certification",
+   "path": "runtime/release_certification.py",
+   "rationale": "A signing key outside the repository is the intended secure case and requires no relative-path rejection.",
+   "review_condition": "review whenever signing-key custody rules change",
+   "rule": "python-pass"
+  },
+  {
+   "classification": "safe_degradation",
+   "id": "3e1db89cf32604034b0b",
+   "line": 433,
+   "owner": "manage-resource-lifecycle",
+   "path": "runtime/resource_lifecycle.py",
+   "rationale": "A transient stat failure during a read-only inventory omits only that file's byte count while preserving the resource, traversal bounds, and recoverable reconciliation state.",
+   "review_condition": "review whenever resource inventory error handling changes",
+   "rule": "python-pass"
+  },
+  {
+   "classification": "protocol_contract",
+   "id": "17bba5e5587b4062f259",
+   "line": 24,
+   "owner": "semantic-code",
+   "path": "runtime/semantic_code_backend.py",
+   "rationale": "SemanticBackend.analyze is an abstractmethod and raises NotImplementedError to define the required backend contract.",
+   "review_condition": "review whenever the semantic backend abstract interface changes",
+   "rule": "unimplemented-error"
+  },
+  {
+   "classification": "protocol_contract",
+   "id": "db5fb78b7128f65c16bd",
+   "line": 15,
+   "owner": "semantic-code",
+   "path": "runtime/semantic_code_document.py",
+   "rationale": "SemanticDocumentError is a semantic exception marker class and intentionally adds no behavior.",
+   "review_condition": "review whenever semantic document error taxonomy changes",
+   "rule": "python-pass"
+  },
+  {
+   "classification": "protocol_contract",
+   "id": "b0d2de0fa043a0f0d4d9",
+   "line": 9,
+   "owner": "semantic-code",
+   "path": "runtime/semantic_code_paths.py",
+   "rationale": "SemanticPathError is a semantic exception marker class and intentionally adds no behavior.",
+   "review_condition": "review whenever semantic path error taxonomy changes",
+   "rule": "python-pass"
+  },
+  {
+   "classification": "protocol_contract",
+   "id": "56affebc7ef6259bb41c",
+   "line": 13,
+   "owner": "semantic-code",
+   "path": "runtime/semantic_code_registry.py",
+   "rationale": "BackendRegistrationError is a semantic exception marker class and intentionally adds no behavior.",
+   "review_condition": "review whenever semantic backend registration errors change",
+   "rule": "python-pass"
+  },
+  {
+   "classification": "protocol_contract",
+   "id": "a18aed395032fc7e464a",
+   "line": 22,
+   "owner": "semantic-lsp",
+   "path": "runtime/semantic_lsp_adapters.py",
+   "rationale": "Adapter.discover_argv is a typing Protocol declaration and intentionally uses an ellipsis body.",
+   "review_condition": "review whenever semantic LSP adapter discovery protocol changes",
+   "rule": "python-ellipsis-body"
+  },
+  {
+   "classification": "protocol_contract",
+   "id": "030f47c44c1ee94d0af3",
+   "line": 23,
+   "owner": "semantic-lsp",
+   "path": "runtime/semantic_lsp_adapters.py",
+   "rationale": "Adapter.language_id_for_path is a typing Protocol declaration and intentionally uses an ellipsis body.",
+   "review_condition": "review whenever semantic LSP adapter language mapping protocol changes",
+   "rule": "python-ellipsis-body"
+  },
+  {
+   "classification": "safe_degradation",
+   "id": "96f9c97e238aa93d830d",
+   "line": 195,
+   "owner": "semantic-lsp",
+   "path": "runtime/semantic_lsp_client.py",
+   "rationale": "Shutdown notification failures are intentionally suppressed so bounded process termination and local cleanup still execute.",
+   "review_condition": "review whenever LSP shutdown sequencing changes",
+   "rule": "python-pass"
+  },
+  {
+   "classification": "protocol_contract",
+   "id": "cda619b5ebaa1266cb2a",
+   "line": 30,
+   "owner": "semantic-lsp",
+   "path": "runtime/semantic_lsp_documents.py",
+   "rationale": "DocumentSyncError is an exception marker class and intentionally adds no behavior.",
+   "review_condition": "review whenever LSP document synchronization error taxonomy changes",
+   "rule": "python-pass"
+  },
+  {
+   "classification": "protocol_contract",
+   "id": "5ff7e8d14d33d21828b9",
+   "line": 8,
+   "owner": "semantic-lsp",
+   "path": "runtime/semantic_lsp_encoding.py",
+   "rationale": "LspPositionError is an exception marker class and intentionally adds no behavior.",
+   "review_condition": "review whenever LSP position error taxonomy changes",
+   "rule": "python-pass"
+  },
+  {
+   "classification": "protocol_contract",
+   "id": "496386b329dbc730d3e7",
+   "line": 9,
+   "owner": "semantic-lsp",
+   "path": "runtime/semantic_lsp_framing.py",
+   "rationale": "LspFramingError is an exception marker class and intentionally adds no behavior.",
+   "review_condition": "review whenever LSP framing error taxonomy changes",
+   "rule": "python-pass"
+  },
+  {
+   "classification": "protocol_contract",
+   "id": "e3841d35e08a75a2c598",
+   "line": 13,
+   "owner": "semantic-lsp",
+   "path": "runtime/semantic_lsp_health.py",
+   "rationale": "ServerQuarantinedError is an exception marker class and intentionally adds no behavior.",
+   "review_condition": "review whenever LSP health quarantine semantics change",
+   "rule": "python-pass"
+  },
+  {
+   "classification": "protocol_contract",
+   "id": "dee382489f5edeaf0bce",
+   "line": 20,
+   "owner": "semantic-lsp",
+   "path": "runtime/semantic_lsp_manager.py",
+   "rationale": "LanguageServerUnavailable is an exception marker class and intentionally adds no behavior.",
+   "review_condition": "review whenever language-server availability semantics change",
+   "rule": "python-pass"
+  },
+  {
+   "classification": "safe_degradation",
+   "id": "fe2b15cf01524dbce58f",
+   "line": 174,
+   "owner": "semantic-lsp",
+   "path": "runtime/semantic_lsp_process.py",
+   "rationale": "A secondary process.kill OSError is intentionally suppressed during bounded termination fallback before subsequent wait/reap handling.",
+   "review_condition": "review whenever language-server process termination fallback changes",
+   "rule": "python-pass"
+  },
+  {
+   "classification": "protocol_contract",
+   "id": "6416fe33cfd700c76447",
+   "line": 15,
+   "owner": "semantic-lsp",
+   "path": "runtime/semantic_lsp_protocol.py",
+   "rationale": "LspProtocolError is an exception marker class and intentionally adds no behavior.",
+   "review_condition": "review whenever LSP protocol error taxonomy changes",
+   "rule": "python-pass"
+  },
+  {
+   "classification": "protocol_contract",
+   "id": "ed205504aebdb34ab4d5",
+   "line": 18,
+   "owner": "semantic-lsp",
+   "path": "runtime/semantic_lsp_queries.py",
+   "rationale": "UnsupportedLspCapability is an exception marker class and intentionally adds no behavior.",
+   "review_condition": "review whenever capability validation semantics change",
+   "rule": "python-pass"
+  },
+  {
+   "classification": "safe_degradation",
+   "id": "818f4a9967805ef3633e",
+   "line": 62,
+   "owner": "semantic-lsp",
+   "path": "runtime/semantic_lsp_transaction.py",
+   "rationale": "A secondary os.close failure is intentionally suppressed while transactional cleanup unlinks the staged path and re-raises the primary failure.",
+   "review_condition": "review whenever workspace-edit transaction cleanup changes",
+   "rule": "python-pass"
+  },
+  {
+   "classification": "safe_degradation",
+   "id": "20fec4ac73039ab9657c",
+   "line": 192,
+   "owner": "semantic-lsp",
+   "path": "runtime/semantic_lsp_transport.py",
+   "rationale": "Failure to send cancellation after a request timeout is intentionally suppressed because the timeout remains authoritative and pending state is already removed.",
+   "review_condition": "review whenever LSP request timeout/cancellation handling changes",
+   "rule": "python-pass"
+  },
+  {
+   "classification": "protocol_contract",
+   "id": "c4b1496648c1d15686f0",
+   "line": 12,
+   "owner": "semantic-lsp",
+   "path": "runtime/semantic_lsp_uri.py",
+   "rationale": "LspUriError is an exception marker class and intentionally adds no behavior.",
+   "review_condition": "review whenever LSP URI error taxonomy changes",
+   "rule": "python-pass"
+  },
+  {
+   "classification": "protocol_contract",
+   "id": "9cfafcaba2e930a3d1e2",
+   "line": 17,
+   "owner": "semantic-lsp",
+   "path": "runtime/semantic_lsp_workspace.py",
+   "rationale": "WorkspaceEditError is an exception marker class and intentionally adds no behavior.",
+   "review_condition": "review whenever workspace-edit error taxonomy changes",
+   "rule": "python-pass"
+  },
+  {
+   "classification": "safe_degradation",
+   "id": "f01b14e46717f526dbdc",
+   "line": 55,
+   "owner": "studio-authority",
+   "path": "runtime/studio_authority.py",
+   "rationale": "POSIX mode hardening is best-effort on platforms such as Windows where repository custody is governed by inherited ACLs; failure does not bypass record authentication or expose the key through PX exports.",
+   "review_condition": "review whenever Studio key custody or platform permission handling changes",
+   "rule": "python-pass"
+  },
+  {
+   "classification": "safe_degradation",
+   "id": "15bb7b5aee04a3fe1fa4",
+   "line": 1199,
+   "owner": "studio-models",
+   "path": "runtime/studio_models.py",
+   "rationale": "Best-effort temporary directory cleanup tolerates pre-existing filesystem state but keeps caller ownership and model generation semantics unchanged.",
+   "review_condition": "review whenever temporary model-file cleanup paths change",
+   "rule": "python-pass"
+  },
+  {
+   "classification": "safe_degradation",
+   "id": "6ebefb620af1f712f118",
+   "line": 128,
+   "owner": "studio-runtime",
+   "path": "runtime/studio_terminal_observer.py",
+   "rationale": "Failure to write the non-authoritative observer diagnostic must not suppress the bounded transient lifecycle retry or replace the original finalization error.",
+   "review_condition": "review whenever terminal-observer retry or diagnostic publication changes",
+   "rule": "python-pass"
+  },
+  {
+   "classification": "safe_degradation",
+   "id": "f3be69afadccf2203b79",
+   "line": 354,
+   "owner": "studio-worker-launch",
+   "path": "runtime/studio_worker_launch.py",
+   "rationale": "Annotation failure is suppressed so the original request-publication custody exception remains causal.",
+   "review_condition": "Recheck if exception-note or request custody behavior changes.",
+   "rule": "python-pass"
+  },
+  {
+   "classification": "safe_degradation",
+   "id": "5b72f07be31ccf6ee19a",
+   "line": 384,
+   "owner": "test-runner",
+   "path": "runtime/test_runner.py",
+   "rationale": "A failed secondary note cannot mask the original owned-workspace failure.",
+   "review_condition": "Recheck if cleanup-error aggregation or add_note handling changes.",
+   "rule": "python-pass"
+  },
+  {
+   "classification": "validation_literal",
+   "id": "66b551efc7c87fdb379d",
+   "line": 88,
+   "owner": "verification-receipts",
+   "path": "runtime/verification_receipts.py",
+   "rationale": "Null and boolean leaves are accepted by this bounded receipt value grammar; surrounding traversal still accounts for nodes and bytes.",
+   "review_condition": "Recheck if receipt leaf grammar or total budget changes.",
+   "rule": "python-pass"
+  },
+  {
+   "classification": "safe_degradation",
+   "id": "443b59404392413586fb",
+   "line": 171,
+   "owner": "wal-transaction",
+   "path": "runtime/wal_transaction.py",
+   "rationale": "Failure while attaching secondary WAL outcome notes is suppressed to preserve the original transaction exception.",
+   "review_condition": "Recheck if WAL error custody or note attachment changes.",
+   "rule": "python-pass"
+  },
+  {
+   "classification": "expected_control_flow",
+   "id": "f00c1195316dba51ef68",
+   "line": 38,
+   "owner": "work-admission",
+   "path": "runtime/work_admission.py",
+   "rationale": "The explicit timeout exception class is intentionally a sentinel with no extra behavior.",
+   "review_condition": "review whenever work admission timeout semantics change",
+   "rule": "python-pass"
+  },
+  {
+   "classification": "safe_degradation",
+   "id": "b7848e542482bf21a1a2",
+   "line": 65,
+   "owner": "local-model-benchmark",
+   "path": "scripts/benchmark_local_models.py",
+   "rationale": "Failure to unlink an atomic-write temporary file is intentionally suppressed after the primary write/replace path has determined the outcome.",
+   "review_condition": "review whenever local-model benchmark atomic write cleanup changes",
+   "rule": "python-pass"
+  },
+  {
+   "classification": "safe_degradation",
+   "id": "6020305c151c060ccd7f",
+   "line": 114,
+   "owner": "model-route-benchmark",
+   "path": "scripts/benchmark_model_routes.py",
+   "rationale": "FileNotFoundError during rollback unlink is intentionally suppressed because the temporary file is already absent.",
+   "review_condition": "review whenever model-route benchmark atomic write cleanup changes",
+   "rule": "python-pass"
+  },
+  {
+   "classification": "expected_control_flow",
+   "id": "2d60299a88c0fdaf3efa",
+   "line": 161,
+   "owner": "operational-gap-ledger-benchmark",
+   "path": "scripts/benchmark_operational_gap_ledger.py",
+   "rationale": "The inner lock acquisition must fail; the pass body makes an unexpected acquisition observable through the unchanged false rejection flag.",
+   "review_condition": "review whenever the benchmark lock-contention probe changes",
+   "rule": "python-pass"
+  },
+  {
+   "classification": "safe_degradation",
+   "id": "f0cab86683b39fd985ee",
+   "line": 708,
+   "owner": "release-successor-config",
+   "path": "scripts/build_release_successor_configs.py",
+   "rationale": "Failure to remove the first config after second-config creation fails is intentionally suppressed so the original pair-creation failure is preserved.",
+   "review_condition": "review whenever release successor pair rollback changes",
+   "rule": "python-pass"
+  },
+  {
+   "classification": "safe_degradation",
+   "id": "3cf905571dbe8a83b65f",
+   "line": 59,
+   "owner": "local-model-certification",
+   "path": "scripts/certify_local_model_profiles.py",
+   "rationale": "Failure to unlink an atomic-write temporary file is intentionally suppressed after the primary write/replace path has determined the outcome.",
+   "review_condition": "review whenever local-model profile atomic write cleanup changes",
+   "rule": "python-pass"
+  },
+  {
+   "classification": "safe_degradation",
+   "id": "b7e361acbb4a80837ce4",
+   "line": 551,
+   "owner": "release-export",
+   "path": "scripts/clean_source_export.py",
+   "rationale": "Export failure preserves the primary exception while individual registered staging-resource cleanup failures remain receipted by the resource manager for later reconciliation.",
+   "review_condition": "review whenever clean-export staging custody changes",
+   "rule": "python-pass"
+  },
+  {
+   "classification": "safe_degradation",
+   "id": "9b129c0ce6a1c078ffd2",
+   "line": 255,
+   "owner": "cohesion-reconciliation",
+   "path": "scripts/reconcile_cohesion_cards.py",
+   "rationale": "An unsuccessful secondary exception attribute cannot replace the original reconciliation failure.",
+   "review_condition": "Recheck if reconciliation exception custody changes.",
+   "rule": "python-pass"
+  },
+  {
+   "classification": "protocol_contract",
+   "id": "87b9982cccbe116e5092",
+   "line": 152,
+   "owner": "installed-operational-owner",
+   "path": "scripts/run_installed_operational_owner.py",
+   "rationale": "The ellipsis declares the bounded running-process Protocol wait method implemented by the supervised process wrapper.",
+   "review_condition": "review whenever installed operational process supervision changes",
+   "rule": "python-ellipsis-body"
+  },
+  {
+   "classification": "protocol_contract",
+   "id": "e1496fd26676cfa404e5",
+   "line": 156,
+   "owner": "installed-operational-owner",
+   "path": "scripts/run_installed_operational_owner.py",
+   "rationale": "The ellipsis declares the installed operational Effects claim contract implemented by production and test effects.",
+   "review_condition": "review whenever the Effects protocol changes",
+   "rule": "python-ellipsis-body"
+  },
+  {
+   "classification": "protocol_contract",
+   "id": "24ef9bb53dd52bd74f07",
+   "line": 157,
+   "owner": "installed-operational-owner",
+   "path": "scripts/run_installed_operational_owner.py",
+   "rationale": "The ellipsis declares the installed operational Effects finish contract implemented by production and test effects.",
+   "review_condition": "review whenever the Effects protocol changes",
+   "rule": "python-ellipsis-body"
+  },
+  {
+   "classification": "protocol_contract",
+   "id": "49a973e8c29e63132c34",
+   "line": 158,
+   "owner": "installed-operational-owner",
+   "path": "scripts/run_installed_operational_owner.py",
+   "rationale": "The ellipsis declares the installed operational Effects phase-advance contract implemented by production and test effects.",
+   "review_condition": "review whenever the Effects protocol changes",
+   "rule": "python-ellipsis-body"
+  },
+  {
+   "classification": "protocol_contract",
+   "id": "8f9eb5bbcb281c2ec668",
+   "line": 159,
+   "owner": "installed-operational-owner",
+   "path": "scripts/run_installed_operational_owner.py",
+   "rationale": "The ellipsis declares the installed operational Effects member-start contract implemented by production and test effects.",
+   "review_condition": "review whenever the Effects protocol changes",
+   "rule": "python-ellipsis-body"
+  },
+  {
+   "classification": "protocol_contract",
+   "id": "d683b20a048a102914ca",
+   "line": 511,
+   "owner": "release-candidate-owner",
+   "path": "scripts/run_release_candidate.py",
+   "rationale": "The ellipsis declares the release candidate owner runner execution contract implemented by the production runner and fixtures.",
+   "review_condition": "review whenever candidate owner dispatch changes",
+   "rule": "python-ellipsis-body"
+  },
+  {
+   "classification": "protocol_contract",
+   "id": "4e934dccb06c9987e3d5",
+   "line": 513,
+   "owner": "release-candidate-owner",
+   "path": "scripts/run_release_candidate.py",
+   "rationale": "The ellipsis declares the release candidate owner runner verification contract implemented by the production runner and fixtures.",
+   "review_condition": "review whenever candidate owner verification changes",
+   "rule": "python-ellipsis-body"
+  },
+  {
+   "classification": "protocol_contract",
+   "id": "34437d5abc5c546a28d8",
+   "line": 382,
+   "owner": "release-stage-owner",
+   "path": "scripts/run_release_stage_owner.py",
+   "rationale": "The ellipsis declares the release-stage Effects execution contract implemented by production and test effects.",
+   "review_condition": "review whenever release-stage Effects execution changes",
+   "rule": "python-ellipsis-body"
+  },
+  {
+   "classification": "protocol_contract",
+   "id": "61a6dcabee30435a6105",
+   "line": 383,
+   "owner": "release-stage-owner",
+   "path": "scripts/run_release_stage_owner.py",
+   "rationale": "The ellipsis declares the release-stage Effects verification contract implemented by production and test effects.",
+   "review_condition": "review whenever release-stage Effects verification changes",
+   "rule": "python-ellipsis-body"
+  },
+  {
+   "classification": "safe_degradation",
+   "id": "f7a3b2024643aeb8cf4c",
+   "line": 944,
+   "owner": "release-stage-owner",
+   "path": "scripts/run_release_stage_owner.py",
+   "rationale": "Failure to publish the secondary failed-stage transition must not replace the original section-owner exception; the campaign remains fail-closed.",
+   "review_condition": "review whenever section failure finalization changes",
+   "rule": "python-pass"
+  },
+  {
+   "classification": "protocol_contract",
+   "id": "c13cf351e6861188280b",
+   "line": 79,
+   "owner": "certification-pipeline",
+   "path": "scripts/validate_certification_pipeline.py",
+   "rationale": "ValidationBlocked is the certification validator's marker exception type and intentionally adds no behavior.",
+   "review_condition": "review whenever certification-pipeline blocking semantics change",
+   "rule": "python-pass"
+  },
+  {
+   "classification": "test_fixture",
+   "id": "b7a8c136928798e723d9",
+   "line": 645,
+   "owner": "archive-tests",
+   "path": "tests/test_archive_io.py",
+   "rationale": "The empty body enters an owned archive context solely to assert that its budget rejects before user work.",
+   "review_condition": "Recheck if archive context admission order changes.",
+   "rule": "python-pass"
+  },
+  {
+   "classification": "test_fixture",
+   "id": "d837b4d671d2d5b70ea1",
+   "line": 16,
+   "owner": "tests",
+   "path": "tests/test_bounded_walk.py",
+   "rationale": "The test helper skips platforms that cannot create symbolic links and names the platform exception it handles.",
+   "review_condition": "review whenever symlink test portability changes",
+   "rule": "unimplemented-error"
+  },
+  {
+   "classification": "test_fixture",
+   "id": "8c2c283a843b1f63e15f",
+   "line": 176,
+   "owner": "tests",
+   "path": "tests/test_capability_mining_skills.py",
+   "rationale": "The generated excluded file intentionally contains an incomplete marker to test exclusion accounting.",
+   "review_condition": "review if the fixture or exclusion policy changes",
+   "rule": "unimplemented-error"
+  },
+  {
+   "classification": "test_fixture",
+   "id": "30dfa8c217e2136a82b9",
+   "line": 42,
+   "owner": "tests",
+   "path": "tests/test_file_lock_contention.py",
+   "rationale": "The empty context body exists only to hold a contended lock until the expected timeout is raised.",
+   "review_condition": "review whenever file-lock contention tests change",
+   "rule": "python-pass"
+  },
+  {
+   "classification": "test_fixture",
+   "id": "f153254c3c14f9ef64aa",
+   "line": 52,
+   "owner": "tests",
+   "path": "tests/test_instrumentation_sdk.py",
+   "rationale": "The empty context body isolates and proves start/completion lifecycle emission by the instrumentation context manager.",
+   "review_condition": "review whenever instrumentation lifecycle tests change",
+   "rule": "python-pass"
+  },
+  {
+   "classification": "test_fixture",
+   "id": "726280b1cf380def79de",
+   "line": 112,
+   "owner": "tests",
+   "path": "tests/test_native_skills.py",
+   "rationale": "The assertion rejects incomplete markers from every Codex-visible facade skill body.",
+   "review_condition": "review whenever facade skill validation changes",
+   "rule": "todo-comment"
+  },
+  {
+   "classification": "test_fixture",
+   "id": "decc9967515d914b2f0b",
+   "line": 398,
+   "owner": "observer-tests",
+   "path": "tests/test_observer_input_contracts.py",
+   "rationale": "The empty string subclass is a wrong-type negative input for observer consent validation.",
+   "review_condition": "Recheck if exact string-type admission changes.",
+   "rule": "python-pass"
+  },
+  {
+   "classification": "test_fixture",
+   "id": "cafab297a717168b2161",
+   "line": 225,
+   "owner": "lifecycle-tests",
+   "path": "tests/test_process_lifecycle_retained_custody_recovery.py",
+   "rationale": "The fake job's no-op terminate simulates a noncooperative owner for retained-custody recovery.",
+   "review_condition": "Recheck if noncooperative-job custody assertions change.",
+   "rule": "python-pass"
+  },
+  {
+   "classification": "test_fixture",
+   "id": "72e1b3b7ec04ab394185",
+   "line": 322,
+   "owner": "provider-gateway-tests",
+   "path": "tests/test_provider_gateway_streaming.py",
+   "rationale": "The 'not implemented for streaming' literal is the expected fail-closed error asserted by this provider gateway test.",
+   "review_condition": "review whenever provider streaming rejection behavior changes",
+   "rule": "unimplemented-error"
+  },
+  {
+   "classification": "test_fixture",
+   "id": "3dc10f33748a6f56be85",
+   "line": 27,
+   "owner": "semantic-code-tests",
+   "path": "tests/test_semantic_code_lifecycle.py",
+   "rationale": "The pass statement is the successful branch of a test that requires an evicted semantic session to raise RuntimeError.",
+   "review_condition": "review whenever semantic session eviction behavior changes",
+   "rule": "python-pass"
+  },
+  {
+   "classification": "test_fixture",
+   "id": "232ea857d71364a58f78",
+   "line": 27,
+   "owner": "semantic-code-tests",
+   "path": "tests/test_semantic_code_paths.py",
+   "rationale": "NotImplementedError is an operating-system capability exception handled by the symlink test to skip unsupported environments.",
+   "review_condition": "review whenever semantic path symlink coverage changes",
+   "rule": "unimplemented-error"
+  },
+  {
+   "classification": "test_fixture",
+   "id": "e27aa1c2cd53d7e09e8a",
+   "line": 21,
+   "owner": "semantic-code-tests",
+   "path": "tests/test_semantic_code_types.py",
+   "rationale": "The pass statements mark expected ValueError branches in fail-closed Position/TextRange validation tests.",
+   "review_condition": "review whenever semantic position/range validation tests change",
+   "rule": "python-pass"
+  },
+  {
+   "classification": "test_fixture",
+   "id": "2c07bb454ecead4b2f6c",
+   "line": 111,
+   "owner": "tests",
+   "path": "tests/test_skill_library.py",
+   "rationale": "The assertion rejects template markers from every shipped skill body.",
+   "review_condition": "review if skill-library marker policy changes",
+   "rule": "todo-comment"
+  },
+  {
+   "classification": "test_fixture",
+   "id": "95a75f6134707ccf131c",
+   "line": 387,
+   "owner": "studio-api",
+   "path": "tests/test_studio_api.py",
+   "rationale": "The fixture class intentionally keeps a minimal pass-through implementation for controlled API interaction tests.",
+   "review_condition": "review whenever test fixture stub contracts evolve",
+   "rule": "python-pass"
+  },
+  {
+   "classification": "test_fixture",
+   "id": "e22e9edda7b7cff27bab",
+   "line": 31,
+   "owner": "wal-transaction-tests",
+   "path": "tests/test_wal_transaction.py",
+   "rationale": "The test fixture catches the platform NotImplementedError raised when symbolic-link creation is unavailable and skips that platform-specific case.",
+   "review_condition": "review whenever the symbolic-link fixture boundary changes",
+   "rule": "unimplemented-error"
+  },
+  {
+   "classification": "test_fixture",
+   "id": "f5b85bfe72fdc7dcdbc2",
+   "line": 793,
+   "owner": "tests",
+   "path": "tests/test_workspace_manager.py",
+   "rationale": "Acquiring the lock would leave the observation false; the timeout branch proves configuration was loaded while locked.",
+   "review_condition": "review whenever workspace mutation lock tests change",
+   "rule": "python-pass"
+  },
+  {
+   "classification": "expected_control_flow",
+   "id": "7f417f023624ece72212",
+   "line": 247,
+   "owner": "pacify-x-repair",
+   "path": "runtime/containment_invariants.py",
+   "rationale": "Refusal is the asserted outcome of this probe; the else-branch records a violation.",
+   "review_condition": "Control-flow probe: the following branch asserts the *rejection* path, so consuming this exception is the expected outcome, not an unimplemented feature.",
+   "rule": "python-pass"
+  },
+  {
+   "classification": "safe_degradation",
+   "id": "35d76534ed31b4092054",
+   "line": 259,
+   "owner": "pacify-x-repair",
+   "path": "runtime/containment_invariants.py",
+   "rationale": "Missing verified child enrollment is reported as an explicit GN-INV-013 violation.",
+   "review_condition": "Fail-closed degradation: the absence of this capability is recorded as an explicit violation/blocked result elsewhere, never as a pass.",
+   "rule": "unimplemented-error"
+  },
+  {
+   "classification": "protocol_contract",
+   "id": "e8571c126430126ff05d",
+   "line": 187,
+   "owner": "pacify-x-repair",
+   "path": "runtime/gremlin/recovery_authority.py",
+   "rationale": "Independent verifier contract; concrete verifier is host-supplied.",
+   "review_condition": "Protocol declaration: the body is deliberately empty because the contract is structural. Implementations are supplied by concrete backends and are exercised by their own tests; this is not unreachable incomplete behaviour.",
+   "rule": "python-ellipsis-body"
+  },
+  {
+   "classification": "protocol_contract",
+   "id": "7f3cc8e13ec2a67222db",
+   "line": 197,
+   "owner": "pacify-x-repair",
+   "path": "runtime/gremlin/recovery_authority.py",
+   "rationale": "Durable replay ledger contract.",
+   "review_condition": "Protocol declaration: the body is deliberately empty because the contract is structural. Implementations are supplied by concrete backends and are exercised by their own tests; this is not unreachable incomplete behaviour.",
+   "rule": "python-ellipsis-body"
+  },
+  {
+   "classification": "protocol_contract",
+   "id": "424d82b697a5c23ed240",
+   "line": 199,
+   "owner": "pacify-x-repair",
+   "path": "runtime/gremlin/recovery_authority.py",
+   "rationale": "Durable replay ledger contract.",
+   "review_condition": "Protocol declaration: the body is deliberately empty because the contract is structural. Implementations are supplied by concrete backends and are exercised by their own tests; this is not unreachable incomplete behaviour.",
+   "rule": "python-ellipsis-body"
+  },
+  {
+   "classification": "protocol_contract",
+   "id": "e1facdc7d393b27d2269",
+   "line": 201,
+   "owner": "pacify-x-repair",
+   "path": "runtime/gremlin/recovery_authority.py",
+   "rationale": "Durable replay ledger contract.",
+   "review_condition": "Protocol declaration: the body is deliberately empty because the contract is structural. Implementations are supplied by concrete backends and are exercised by their own tests; this is not unreachable incomplete behaviour.",
+   "rule": "python-ellipsis-body"
+  },
+  {
+   "classification": "protocol_contract",
+   "id": "8987dec142d5ab673eb7",
+   "line": 56,
+   "owner": "pacify-x-repair",
+   "path": "runtime/gremlin/runtime_identity.py",
+   "rationale": "OS-protected credential backend contract.",
+   "review_condition": "Protocol declaration: the body is deliberately empty because the contract is structural. Implementations are supplied by concrete backends and are exercised by their own tests; this is not unreachable incomplete behaviour.",
+   "rule": "python-ellipsis-body"
+  },
+  {
+   "classification": "protocol_contract",
+   "id": "034daa057fe40de557bd",
+   "line": 58,
+   "owner": "pacify-x-repair",
+   "path": "runtime/gremlin/runtime_identity.py",
+   "rationale": "OS-protected credential backend contract.",
+   "review_condition": "Protocol declaration: the body is deliberately empty because the contract is structural. Implementations are supplied by concrete backends and are exercised by their own tests; this is not unreachable incomplete behaviour.",
+   "rule": "python-ellipsis-body"
+  },
+  {
+   "classification": "protocol_contract",
+   "id": "45db9a8d84af09dd52c5",
+   "line": 60,
+   "owner": "pacify-x-repair",
+   "path": "runtime/gremlin/runtime_identity.py",
+   "rationale": "OS-protected credential backend contract.",
+   "review_condition": "Protocol declaration: the body is deliberately empty because the contract is structural. Implementations are supplied by concrete backends and are exercised by their own tests; this is not unreachable incomplete behaviour.",
+   "rule": "python-ellipsis-body"
+  },
+  {
+   "classification": "protocol_contract",
+   "id": "c90ab3936720fce4156e",
+   "line": 62,
+   "owner": "pacify-x-repair",
+   "path": "runtime/gremlin/runtime_identity.py",
+   "rationale": "OS-protected credential backend contract.",
+   "review_condition": "Protocol declaration: the body is deliberately empty because the contract is structural. Implementations are supplied by concrete backends and are exercised by their own tests; this is not unreachable incomplete behaviour.",
+   "rule": "python-ellipsis-body"
+  },
+  {
+   "classification": "protocol_contract",
+   "id": "7eb72feae56baf7ebb91",
+   "line": 36,
+   "owner": "pacify-x-repair",
+   "path": "runtime/gremlin/supervisor.py",
+   "rationale": "Host-supplied OS enforcement primitive; availability is reported via available.",
+   "review_condition": "Protocol declaration: the body is deliberately empty because the contract is structural. Implementations are supplied by concrete backends and are exercised by their own tests; this is not unreachable incomplete behaviour.",
+   "rule": "python-ellipsis-body"
+  },
+  {
+   "classification": "protocol_contract",
+   "id": "5007435579e209ce0adc",
+   "line": 39,
+   "owner": "pacify-x-repair",
+   "path": "runtime/gremlin/supervisor.py",
+   "rationale": "Host-supplied OS enforcement primitive; availability is reported via available.",
+   "review_condition": "Protocol declaration: the body is deliberately empty because the contract is structural. Implementations are supplied by concrete backends and are exercised by their own tests; this is not unreachable incomplete behaviour.",
+   "rule": "python-ellipsis-body"
+  },
+  {
+   "classification": "safe_degradation",
+   "id": "ba649cba52ec7e90f6a7",
+   "line": 27,
+   "owner": "pacify-x-repair",
+   "path": "runtime/guarded_registry_projection.py",
+   "rationale": "Best-effort note attachment must not replace the primary failure.",
+   "review_condition": "Exception is intentionally swallowed to preserve an already-raised causal failure (the enclosing re-raise or primary error is the authoritative outcome). Suppression here cannot fabricate success.",
+   "rule": "python-pass"
+  },
+  {
+   "classification": "expected_control_flow",
+   "id": "0ff4fb43f42785d6e43f",
+   "line": 37,
+   "owner": "pacify-x-repair",
+   "path": "runtime/project_revision_succession.py",
+   "rationale": "Empty exception-type body; the type carries the blocking semantics.",
+   "review_condition": "Exception is intentionally swallowed to preserve an already-raised causal failure (the enclosing re-raise or primary error is the authoritative outcome). Suppression here cannot fabricate success.",
+   "rule": "python-pass"
+  },
+  {
+   "classification": "expected_control_flow",
+   "id": "567537a0cf70feba3d1f",
+   "line": 22,
+   "owner": "pacify-x-repair",
+   "path": "runtime/revision_campaign_lifecycle.py",
+   "rationale": "Empty exception-type body; the type carries the blocking semantics.",
+   "review_condition": "Exception is intentionally swallowed to preserve an already-raised causal failure (the enclosing re-raise or primary error is the authoritative outcome). Suppression here cannot fabricate success.",
+   "rule": "python-pass"
+  },
+  {
+   "classification": "expected_control_flow",
+   "id": "53da6dfeb3d900a2eb28",
+   "line": 70,
+   "owner": "pacify-x-repair",
+   "path": "runtime/secure_publish.py",
+   "rationale": "Directory creation is idempotent; an existing directory satisfies the post-condition.",
+   "review_condition": "Idempotent directory/file creation guard: an existing path is the expected post-condition, so the exception is consumed and execution continues.",
+   "rule": "python-pass"
+  }
+ ],
+ "schema_version": "2.0"
 }
